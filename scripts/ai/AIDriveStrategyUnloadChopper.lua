@@ -353,7 +353,6 @@ function AIDriveStrategyUnloadChopper:startMovingAwayFromChopper(newState, combi
         -- Check our final destetation for fruit
         local hasFruit = PathfinderUtil.hasFruit(x, z, 1, 1)
 
-
         -- Make an AP path so we make 180
         self:debug('startMovingAwayFromChopper: Creating chopper drive away course at x=%d z=%d offsetX=%d', x, z, offsetX)
         local path, length = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver, self.vehicle.rootNode, 0, goal,
@@ -447,10 +446,19 @@ function AIDriveStrategyUnloadChopper:driveBehindCombine()
     -- TODO: this - 1 is a workaround the fact that we use a simple P controller instead of a PI
 
     -- DZ is altered from beside as we want to use how close we are to combine as our dz instead of the trailers target node
-    local dz = -self.proximityController:checkBlockingVehicleFront() + 1.25
-    -- If we lose the combine set the dz to 0 so we stop and give chopper to come back into aligment 
-    if dz == math.huge then
-        dz = 0
+    local dz, targetVehicle = self.proximityController:checkBlockingVehicleFront()
+    -- If we lose the combine fall back to using distance to combine moved back by the offsetZ supplied by the combine
+    if targetVehicle ~= self.combineToUnload then
+        --- This math doesn't work. We need a better way to handle the edge of losing the Chopper due to missalginment. 
+        -- Can't use total distance as if we get beside we still are mathatical offsetz behind it
+        -- Can't use dz because as the chopper rotates to get back into aligment this shifts
+        -- Just use a constant in hopes that this slow speed will keep us close to the chopper that we then can pick it back up with 
+        -- Proximit controller
+
+        dz = 1
+
+    else
+        dz = -dz + 1.25
     end
     -- use a factor to make sure we reach the pipe fast, but be more gentle while discharging
     local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
@@ -479,7 +487,7 @@ function AIDriveStrategyUnloadChopper:chopperIsTurning()
         return
     end
     
-    if self.combineToUnload:getCpDriveStrategy():isTurning()  then
+    if self.combineToUnload:getCpDriveStrategy():isTurning() or self.combineToUnload:getCpDriveStrategy():isAboutToTurn()  then
         -- Back up until the chopper is in front us so we don't interfer with its turn and make sure we stay behind it
         local _, _, dz = self:getDistanceFromCombine(self.combineToUnload)
         if self.combineToUnload:getCpDriveStrategy():getChaseMode() then
@@ -489,14 +497,13 @@ function AIDriveStrategyUnloadChopper:chopperIsTurning()
                 self:setMaxSpeed(0)
             end
         else
-            
-            
             if dz < 0 then
                 self:setMaxSpeed(self.settings.reverseSpeed:getValue())
             elseif dz > -3 then
                 self:setMaxSpeed(0)
             end
         end
+        self.chopperOnConnectingTrack = false
     elseif self.combineToUnload:getCpDriveStrategy():getConnectingTrack() then
         -- Connecting track the chopper just drives foward don't move and wait for the chopper to stop before meeting back up with it
         self:setMaxSpeed(0)
@@ -802,7 +809,7 @@ function AIDriveStrategyUnloadChopper:isBehindAndAlignedToCombine(debugEnabled)
         return false
     end
     local d = MathUtil.vector2Length(dx, dz)
-    if d > (40) then
+    if d > (20) then
         self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: too far from combine (%.1f > 30)', d)
         return false
     end
@@ -858,35 +865,3 @@ function AIDriveStrategyUnloadChopper:isOkToStartUnloadingCombine()
         return false
     end
 end
-
-
--- TODO This is currently unsed but for sugarcane trailers the target node might have to be fixed due to complications of small size
--- Auto aim doesn't seem to accualty fix anything
--- function AIDriveStrategyUnloadChopper:driveBesideCombine()
---     -- we don't want a moving target
---     self:fixAutoAimNode()
---     local targetNode = self:getTrailersTargetNode()
---     if self.combineToUnload:getCpDriveStrategy():getSugarCaneHarvester() then
---         local trailer = AIUtil.getImplementOrVehicleWithSpecialization(self.vehicle, Trailer)
---         targetNode = trailer.rootNode
---     end
---     local _, offsetZ = self:getPipeOffset(self.combineToUnload)
---     -- TODO: this - 1 is a workaround the fact that we use a simple P controller instead of a PI
---     local _, _, dz = localToLocal(targetNode, self:getCombineRootNode(), 0, 0, -offsetZ - 2)
---     -- use a factor to make sure we reach the pipe fast, but be more gentle while discharging
---     local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
---     local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(-dz * factor, -10, 15)
-
---     -- slow down while the pipe is unfolding to avoid crashing onto it
---     if self.combineToUnload:getCpDriveStrategy():isPipeMoving() then
---         speed = (math.min(speed, self.combineToUnload:getLastSpeed() + 2))
---     end
-
---     self:renderText(0, 0.02, "%s: driveBesideCombine: dz = %.1f, speed = %.1f, factor = %.1f",
---             CpUtil.getName(self.vehicle), dz, speed, factor)
-
---     if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
---         DebugUtil.drawDebugNode(targetNode, 'target')
---     end
---     self:setMaxSpeed(math.max(0, speed))
--- end

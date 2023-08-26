@@ -229,12 +229,7 @@ function AIDriveStrategyChopperCourse:setPipeOffsetX()
     
     if self.isSugarCaneHarvester then
         -- Since the sugarcane havester rotates we need to find total pipe length and use that as our offset. 
-        -- This may cause issues becase the pipe root node is behind the vehicle root node added a minus 2 offset to help
-        -- TODO Find out how to acces the pipe root node and measure total distance from pipe root to dischare node as this is our pipe length
-        -- pipeNode = g_combineUnloadManager:getPipesBaseNode(self.vehicle)
-        -- dischargeNode = self:getDischargeNode()
-        -- local dx, _, dz = localToLocal(pipeNode, dischargeNode, 0, 0,0)
-        -- self.pipeOffsetX = MathUtil.vector2Length(dx, dz) - 2 
+        -- This math is handled in pipecontroller
         self.pipeOffsetX = self.pipeController:getPipeOffsetX()
     else
         -- Use the work width plus a little bit. But make sure we don't go further than 80% of the max discarge. 
@@ -245,23 +240,23 @@ function AIDriveStrategyChopperCourse:setPipeOffsetX()
 end
 
 function AIDriveStrategyChopperCourse:setPipeOffsetZ(offset)
-    -- If offset is supplied use that(Chase Mode) other wise use minus 3 that way we avoid max rotation of the chopper pipe
-    self.pipeOffsetZ = offset or -3
+    -- If offset is supplied use that(Chase Mode) plus what is returned from pipecontroller
+    self.pipeOffsetZ = (offset or 0) + self.pipeController:getPipeOffsetZ()
 end
--- Return out current pipe offset plus any user supplied offset
+
+-- Return our current pipe offset plus any user supplied offset
 function AIDriveStrategyChopperCourse:getPipeOffset(additionalOffsetX, additionalOffsetZ)
     self:debugSparse('Chopper PipeOffsetX is %.2f', self.pipeOffsetX)
     return self.pipeOffsetX + additionalOffsetX, self.pipeOffsetZ + additionalOffsetZ
 end
 
--- Currently works sometimes the row dosn't return causing the next row to be used causing driving in fruit
 function AIDriveStrategyChopperCourse:updatePipeOffset(ix)
     -- We can't use self.fruitRight and self.fruitLeft as theses are only reliable during haversting.
-    -- Pipe in fruit map can't be used on headlands so always use hasFruit and isn't generate for Choppers correctly
+    -- Pipe in fruit map can't be used on headlands so always use hasFruit and isn't generated for Choppers correctly
     -- Instead use the has Pathfinder Utiliy hasFruit() which is accesed by the parent class functions
     -- If fruit is found using our current pipe offset update to the opposite side
    
-    -- Reset the pipeoffset if we where being chased by a unloader driver.
+    -- Reset the pipeoffset if we were being chased by a unloader driver.
     if self.pipeOffsetX == 0 then
         self:setPipeOffsetX()
         self:setPipeOffsetZ()
@@ -326,7 +321,7 @@ function AIDriveStrategyChopperCourse:updatePipeOffset(ix)
                 -- We need this so the unloader knows what turn manuvers to use
                 self.chaseMode = true
                 self:debug('I found fruit and the oppisite side isn\'t on the field I must be on an edge row engage chase mode')
-            else
+            elseif not hasFruit then
                 self:debug('I didn\'t find fruit and the oppisite side ins\'t on the field stick to my orginal side')
                 self.pipeOffsetX = -self.pipeOffsetX
             end
@@ -345,6 +340,7 @@ end
 function AIDriveStrategyChopperCourse:getLandRow()
     return self.landRow
 end
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Unloader Handling Functions
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------

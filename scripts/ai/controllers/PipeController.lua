@@ -272,14 +272,8 @@ function PipeController:measurePipeProperties()
     local dischargeNode = self:getDischargeNode()
 
     
-    if ImplementUtil.isChopper(self.implement) then
-        self:debug("Finding the pipe base node of the chopper")
-        -- Find the base node of the chopper. So we can measure pipe distance
-        local pipeNode = self:getPipesBaseNode()
-        self:debug('pipeNode = %s', pipeNode)
-        local dx, _, dz = localToLocal(pipeNode, dischargeNode.node, 0, 0, 0)
-        self.pipeOffsetX = MathUtil.vector2Length(dx, dz) 
-    elseif self.implement.getAIDirectionNode then 
+    
+    if self.implement.getAIDirectionNode then 
         self:debug("The pipe is installed at the root vehicle.")
         self.pipeOffsetX, _, self.pipeOffsetZ = localToLocal(dischargeNode.node, 
             self.implement:getAIDirectionNode(), 0, 0, 0)
@@ -292,6 +286,14 @@ function PipeController:measurePipeProperties()
         local dist = ImplementUtil.getDistanceToImplementNode(self.vehicle:getAIDirectionNode(),
             self.implement, self.implement.rootNode)
         self.pipeOffsetZ = pipeOffsetZ + dist
+    end
+    if ImplementUtil.isChopper(self.implement) then
+        self:debug("Finding the pipe base node of the chopper")
+        -- Find the base node of the pipe. So we can measure pipe length
+        -- This is more for sugarcane havesters as maxDischargeDistance is a better measure of pipeoffsetX for choppers
+        local pipeNode = self:getPipesBaseNode()
+        local dx, _, dz = localToLocal(pipeNode, dischargeNode.node, 0, 0, 0)
+        self.pipeOffsetX = MathUtil.vector2Length(dx, dz) 
     end
     self.pipeOnLeftSide = self.pipeOffsetX >= 0
     self:debug("Measuring pipe properties => pipeOffsetX: %.2f, pipeOffsetZ: %.2f, pipeOnLeftSide: %s", 
