@@ -449,13 +449,13 @@ function AIDriveStrategyUnloadChopper:driveBehindCombine()
     local dz, targetVehicle = self.proximityController:checkBlockingVehicleFront()
     -- If we lose the combine fall back to using distance to combine moved back by the offsetZ supplied by the combine
     if targetVehicle ~= self.combineToUnload then
-        --- This math doesn't work. We need a better way to handle the edge of losing the Chopper due to missalginment. 
-        -- Can't use total distance as if we get beside we still are mathatical offsetz behind it
-        -- Can't use dz because as the chopper rotates to get back into aligment this shifts
-        -- Just use a constant in hopes that this slow speed will keep us close to the chopper that we then can pick it back up with 
-        -- Proximit controller
-
-        dz = 1
+        --- We need a better way to handle the edge of losing the Chopper due to missalginment. 
+        -- This math should work but just doesn't 
+        local _, zOffset = self:getPipeOffset(self.combineToUnload)
+        _, _, dz = localToLocal(Markers.getFrontMarkerNode(self.vehicle), self:getCombineRootNode(), 0, 0, 0)
+        self:debug('%.2f', dz)
+        dz = dz - zOffset - 3
+        self:debug('After: %.2f', dz)
 
     else
         dz = -dz + 1.25
