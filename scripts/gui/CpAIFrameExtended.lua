@@ -35,7 +35,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 
 	self:registerControls({"multiTextOptionPrefab","subTitlePrefab","courseGeneratorLayoutElements",
 							"courseGeneratorLayout","courseGeneratorHeader","drawingCustomFieldHeader",
-							"vineCourseGeneratorLayoutElements"})
+							"vineCourseGeneratorLayoutElements", "courseGeneratorFrame"})
 
 	--- TODO: Figure out the correct implementation for Issues #1015 & #1457.
 	local element = self:getDescendantByName("ingameMenuAI")
@@ -45,7 +45,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	delete(xmlFile)
 	self:exposeControlsAsFields()
 	self.courseGeneratorLayout:onGuiSetupFinished()
---	element:applyScreenAlignment()
+	self.courseGeneratorFrame:applyScreenAlignment()
 	element:updateAbsolutePosition()
 
 	self.drawingCustomFieldHeader:setVisible(false)
