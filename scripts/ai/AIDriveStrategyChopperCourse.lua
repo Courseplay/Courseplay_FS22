@@ -2,7 +2,7 @@
 This file is part of Courseplay (https://github.com/Courseplay/courseplay)
 Copyright (C) 2021 Peter Vaiko
 
-Chopper support added by Pops64
+Chopper support added by Pops64 2023
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -67,7 +67,7 @@ function AIDriveStrategyChopperCourse:setAllStaticParameters()
     -- Check if we are a sugarcane havester for special handling
     self.isSugarCaneHarvester = self:getSugarCaneHarvester()
 
-    -- We need set this as a variable and update left/right side on turns in self:updatePipeOffset()
+    -- We need set this as a variable and update left/right side on turns in self:checkPipeOffsetXForFruit()
     self:setPipeOffsetX()
     -- This is used to increase offset z when being chased instead along side
     self:setPipeOffsetZ()
@@ -126,9 +126,9 @@ function AIDriveStrategyChopperCourse:getDriveData(dt, vX, vY, vZ)
     return AIDriveStrategyFieldWorkCourse.getDriveData(self, dt, vX, vY, vZ)
 end
 
---- We need to update pipeoffset after turn as fruit side may have changed
+--- We need to check pipeoffsetX after a turn as fruit side may have changed
 function AIDriveStrategyChopperCourse:resumeFieldworkAfterTurn(ix)
-    self:updatePipeOffset(ix)
+    self:checkPipeOffsetXForFruit(ix)
     AIDriveStrategyChopperCourse.superClass().resumeFieldworkAfterTurn(self, ix)
 end
 
@@ -144,7 +144,7 @@ function AIDriveStrategyChopperCourse:onWaypointPassed(ix, course)
         return AIDriveStrategyFieldWorkCourse.onWaypointPassed(self, ix, course)
     end
 
-    -- Is this really need any more seeing how fruit check is handled by updatePipeOffset
+    -- Is this really need any more seeing how fruit check is handled by checkPipeOffsetXForFruit
     self:checkFruit()
 
     if self.state == self.states.WORKING then
@@ -250,7 +250,7 @@ function AIDriveStrategyChopperCourse:getPipeOffset(additionalOffsetX, additiona
     return self.pipeOffsetX + additionalOffsetX, self.pipeOffsetZ + additionalOffsetZ
 end
 
-function AIDriveStrategyChopperCourse:updatePipeOffset(ix)
+function AIDriveStrategyChopperCourse:checkPipeOffsetXForFruit(ix)
     -- We can't use self.fruitRight and self.fruitLeft as theses are only reliable during haversting.
     -- Pipe in fruit map can't be used on headlands so always use hasFruit and isn't generated for Choppers correctly
     -- Instead use the has Pathfinder Utiliy hasFruit() which is accesed by the parent class functions
@@ -262,12 +262,12 @@ function AIDriveStrategyChopperCourse:updatePipeOffset(ix)
         self:setPipeOffsetZ()
         self.chaseMode = false
         self.landRow = false
-        self:debug('updatePipeOffset: reset chase mode')
+        self:debug('checkPipeOffsetXForFruit: reset chase mode')
     end
     
     -- We need a waypoint to check use a supplied one(When we are getting the next unloader) or if nothing is supplied just use our current one
     local fruitCheckWaypoint = ix or self.course:getCurrentWaypointIx()
-    self:debug('updatePipeOffset: Fruitwaypoint was set to %d', fruitCheckWaypoint)
+    self:debug('checkPipeOffsetXForFruit: Fruitwaypoint was set to %d', fruitCheckWaypoint)
 
     if not self.course:isOnHeadland(fruitCheckWaypoint) then
         local lRow, rowStartIx = self.course:getRowLength(fruitCheckWaypoint)
@@ -458,7 +458,7 @@ function AIDriveStrategyChopperCourse:callUnloaderWhenNeeded()
         bestUnloader, _ = self:findUnloader(self.vehicle, nil)
         self:debugSparse('callUnloaderWhenNeeded: stopped, need unloader here and I currently don\'t have any unloaders')
         if bestUnloader then
-            self:updatePipeOffset()
+            self:checkPipeOffsetXForFruit()
             bestUnloader:getCpDriveStrategy():call(self.vehicle, nil)
         end
         return

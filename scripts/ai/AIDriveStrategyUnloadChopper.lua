@@ -1,7 +1,7 @@
 --[[
 This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
 Copyright (C) 2022 Peter Vaiko
-Chopper Support added by Pops64
+Chopper Support added by Pops64 2023
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -53,6 +53,9 @@ AIDriveStrategyUnloadChopper.UNLOAD_TYPES = {
 }
 
 AIDriveStrategyUnloadChopper.maxDirectionDifferenceDeg = 15
+
+AIDriveStrategyUnloadChopper.safetyDistanceFromChopper = 0.75
+AIDriveStrategyUnloadChopper.targetDistanceBehindChopper = 1
 
 -- Developer hack: to check the class of an object one should use the is_a() defined in CpObject.lua.
 -- However, when we reload classes on the fly during the development, the is_a() calls in other modules still
@@ -438,36 +441,55 @@ function AIDriveStrategyUnloadChopper:unloadMovingCombine()
     end
 end
 
+-- This code work needs to be tested leaving orginal code uncommetend for now
 function AIDriveStrategyUnloadChopper:driveBehindCombine()
-    self:fixAutoAimNode()
-    -- Left in for debuging code
-    local targetNode = self:getTrailersTargetNode()
+    local _, zOffset = self:getPipeOffset(self.combineToUnload)
+    -- This is broken this is the choppers back of header which causes issue
+    local distanceToChoppersBack, _, dz = self:getDistanceFromCombine()
+	local fwdDistance = self.proximityController:checkBlockingVehicleFront()
+	if dz < 0 then
+		-- I'm way too forward, stop here as I'm most likely beside the chopper, let it pass before
+		-- moving to the middle
+		self:setMaxSpeed(0)
+	end
+	local errorSafety = self.safetyDistanceFromChopper - fwdDistance
+	local errorTarget = self.targetDistanceBehindChopper - dz
+	local error = math.abs(errorSafety) < math.abs(errorTarget) and errorSafety or errorTarget
+	local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
+    local deltaV = MathUtil.clamp(-error * factor, -10, 15)
+	local speed = (self.combineToUnload.lastSpeedReal * 3600) + deltaV
+	-- self:renderText(0, 0.7, 'd = %.1f, dz = %.1f, speed = %.1f, errSafety = %.1f, errTarget = %.1f',
+	-- 		distanceToChoppersBack, dz, speed, errorSafety, errorTarget)
+	-- return speed
+    -- self:fixAutoAimNode()
+    -- -- Left in for debuging code
+     local targetNode = self:getTrailersTargetNode()
 
-    -- TODO: this - 1 is a workaround the fact that we use a simple P controller instead of a PI
+    -- -- TODO: this - 1 is a workaround the fact that we use a simple P controller instead of a PI
 
-    -- DZ is altered from beside as we want to use how close we are to combine as our dz instead of the trailers target node
-    local dz, targetVehicle = self.proximityController:checkBlockingVehicleFront()
-    -- If we lose the combine fall back to using distance to combine moved back by the offsetZ supplied by the combine
-    if targetVehicle ~= self.combineToUnload then
-        --- We need a better way to handle the edge of losing the Chopper due to missalginment. 
-        -- This math should work but just doesn't 
-        local _, zOffset = self:getPipeOffset(self.combineToUnload)
-        _, _, dz = localToLocal(Markers.getFrontMarkerNode(self.vehicle), self:getCombineRootNode(), 0, 0, 0)
-        self:debug('%.2f', dz)
-        dz = dz - zOffset - 3
-        self:debug('After: %.2f', dz)
+    -- -- DZ is altered from beside as we want to use how close we are to combine as our dz instead of the trailers target node
+    -- local dz, targetVehicle = self.proximityController:checkBlockingVehicleFront()
+    -- -- If we lose the combine fall back to using distance to combine moved back by the offsetZ supplied by the combine
+    -- if targetVehicle ~= self.combineToUnload then
+    --     -- We need a better way to handle the edge case of losing the Chopper due to missalginment. 
+    --     -- This math should work but just doesn't 
+    --     local _, zOffset = self:getPipeOffset(self.combineToUnload)
+    --     _, _, dz = localToLocal(Markers.getFrontMarkerNode(self.vehicle), self:getCombineRootNode(), 0, 0, 0)
+    --     self:debug('%.2f', dz)
+    --     dz = dz - zOffset - 3
+    --     self:debug('After: %.2f', dz)
 
-    else
-        dz = -dz + 1.25
-    end
-    -- use a factor to make sure we reach the pipe fast, but be more gentle while discharging
-    local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
-    local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(-dz * factor, -10, 15)
+    -- else
+    --     dz = -dz + 1.25
+    -- end
+    -- -- use a factor to make sure we reach the pipe fast, but be more gentle while discharging
+    -- local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
+    -- local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(-dz * factor, -10, 15)
 
-    -- slow down while the pipe is unfolding to avoid crashing onto it
-    if self.combineToUnload:getCpDriveStrategy():isPipeMoving() then
-        speed = (math.min(speed, self.combineToUnload:getLastSpeed() + 2))
-    end
+    -- -- slow down while the pipe is unfolding to avoid crashing onto it
+    -- if self.combineToUnload:getCpDriveStrategy():isPipeMoving() then
+    --     speed = (math.min(speed, self.combineToUnload:getLastSpeed() + 2))
+    -- end
 
     self:renderText(0, 0.02, "%s: driveBesideCombine: dz = %.1f, speed = %.1f, factor = %.1f",
             CpUtil.getName(self.vehicle), dz, speed, factor)
