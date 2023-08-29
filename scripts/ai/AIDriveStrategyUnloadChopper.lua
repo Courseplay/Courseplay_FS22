@@ -441,20 +441,17 @@ function AIDriveStrategyUnloadChopper:unloadMovingCombine()
     end
 end
 
--- This code work needs to be tested leaving orginal code uncommetend for now
--- This function only works when are perfectly align and can use proximity completey breaks down when we have to rely on getDistanceFromCombine()
 function AIDriveStrategyUnloadChopper:driveBehindChopper()
-    local _, zOffset = self:getPipeOffset(self.combineToUnload)
-    -- This is broken this is the choppers back of header which causes issue
+
     local distanceToChoppersBack, _, dz = self:getDistanceFromCombine()
-    -- dz = dz - self.combineToUnload:getCpDriveStrategy().measuredBackDistance - 1.5 --- This is only a temporay fix add 1.5 due to the fact that the backMarker Node isn't accutally at the back on all choppers. TODO Make a new function to fix this
-    --local distanceToChoppersBack, _, dz = self:getDistanceFromChopper()
 	local fwdDistance = self.proximityController:checkBlockingVehicleFront()
+
 	if dz < 0 then
 		-- I'm way too forward, stop here as I'm most likely beside the chopper, let it pass before
 		-- moving to the middle
 		self:setMaxSpeed(0)
 	end
+
 	local errorSafety = self.safetyDistanceFromChopper - fwdDistance
 	local errorTarget = self.targetDistanceBehindChopper - dz
 	local error = math.abs(errorSafety) < math.abs(errorTarget) and errorSafety or errorTarget
@@ -463,39 +460,9 @@ function AIDriveStrategyUnloadChopper:driveBehindChopper()
 	local speed = (self.combineToUnload.lastSpeedReal * 3600) + deltaV
 	self:renderText(0, 0.02, 'd = %.1f, dz = %.1f, speed = %.1f, errSafety = %.1f, errTarget = %.1f',
 	 		distanceToChoppersBack, dz, speed, errorSafety, errorTarget)
-	-- return speed
-    -- self:fixAutoAimNode()
-    -- -- Left in for debuging code
-     local targetNode = self:getTrailersTargetNode()
 
-    -- -- TODO: this - 1 is a workaround the fact that we use a simple P controller instead of a PI
-
-    -- -- DZ is altered from beside as we want to use how close we are to combine as our dz instead of the trailers target node
-    -- local dz, targetVehicle = self.proximityController:checkBlockingVehicleFront()
-    -- -- If we lose the combine fall back to using distance to combine moved back by the offsetZ supplied by the combine
-    -- if targetVehicle ~= self.combineToUnload then
-    --     -- We need a better way to handle the edge case of losing the Chopper due to missalginment. 
-    --     -- This math should work but just doesn't 
-    --     local _, zOffset = self:getPipeOffset(self.combineToUnload)
-    --     _, _, dz = localToLocal(Markers.getFrontMarkerNode(self.vehicle), self:getCombineRootNode(), 0, 0, 0)
-    --     self:debug('%.2f', dz)
-    --     dz = dz - zOffset - 3
-    --     self:debug('After: %.2f', dz)
-
-    -- else
-    --     dz = -dz + 1.25
-    -- end
-    -- -- use a factor to make sure we reach the pipe fast, but be more gentle while discharging
-    -- local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
-    -- local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(-dz * factor, -10, 15)
-
-    -- -- slow down while the pipe is unfolding to avoid crashing onto it
-    -- if self.combineToUnload:getCpDriveStrategy():isPipeMoving() then
-    --     speed = (math.min(speed, self.combineToUnload:getLastSpeed() + 2))
-    -- end
-
-    --self:renderText(0, 0.02, "%s: driveBesideCombine: dz = %.1f, speed = %.1f, factor = %.1f",
-    --        CpUtil.getName(self.vehicle), dz, speed, factor)
+    -- Left in for debuging code
+    local targetNode = self:getTrailersTargetNode()
 
     if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
         DebugUtil.drawDebugNode(targetNode, 'target')
@@ -888,12 +855,4 @@ function AIDriveStrategyUnloadChopper:isOkToStartUnloadingCombine()
         self:debugSparse('combine not ready to unload, waiting')
         return false
     end
-end
-
--- This may or not work. Problay not remove once we get this fixed
-function AIDriveStrategyUnloadChopper:getDistanceFromChopper()
-    local dx, _, dz = localToLocal(self:getCombineRootNode(),
-            Markers.getFrontMarkerNode(self.vehicle), 0, 0, 0)
-            dz = dz - self.combineToUnload:getCpDriveStrategy():getMeasuredBackDistance()
-    return MathUtil.vector2Length(dx, dz), dx, dz
 end
