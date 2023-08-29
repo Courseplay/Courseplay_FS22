@@ -324,7 +324,7 @@ end
 function AIUtil.getFirstAttachedImplement(vehicle,suppressLog)
 	-- by default, it is the vehicle's front
 	local maxDistance = vehicle.size.length / 2 + vehicle.size.lengthOffset
-	local _, _, d = localToLocal(vehicle.rootNode, AIUtil.getDirectionNode(vehicle), 0, 0, 0)
+	local _, _, rootNodeOffset = localToLocal(vehicle.rootNode, AIUtil.getDirectionNode(vehicle), 0, 0, 0)
 	maxDistance = maxDistance + rootNodeOffset
 	local firstImplement = vehicle
 	for _, implement in pairs(AIUtil.getAllAttachedImplements(vehicle)) do
