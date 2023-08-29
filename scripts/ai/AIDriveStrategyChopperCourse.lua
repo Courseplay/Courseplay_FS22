@@ -33,7 +33,7 @@ Drive strategy for driving a field work course
 AIDriveStrategyChopperCourse = {}
 local AIDriveStrategyChopperCourse_mt = Class(AIDriveStrategyChopperCourse, AIDriveStrategyCombineCourse)
 
--- The chopper may start outside of the field this setting permints expansion of the field boundary in this case
+-- The chopper may start outside of the field this setting permits expansion of the field boundary in this case
 AIDriveStrategyChopperCourse.distanceOverFieldEdgeAllowed = 50
 
 -- Developer hack: to check the class of an object one should use the is_a() defined in CpObject.lua.
@@ -64,7 +64,7 @@ function AIDriveStrategyChopperCourse:setAllStaticParameters()
     self:checkMarkers()
     AIDriveStrategyChopperCourse.superClass().setAllStaticParameters(self)
 
-    -- Check if we are a sugarcane havester for special handling
+    -- Check if we are a sugarcane harvester for special handling
     self.isSugarCaneHarvester = self:getSugarCaneHarvester()
 
     -- We need set this as a variable and update left/right side on turns in self:checkPipeOffsetXForFruit()
@@ -90,7 +90,7 @@ end
 
 function AIDriveStrategyChopperCourse:update(dt)
     AIDriveStrategyCombineCourse.update(self, dt)
-    -- Old Code need to make Choppers work
+    -- Old Code still needed to make Choppers work
     self:updateChopperFillType()
 end
 
@@ -175,8 +175,8 @@ function AIDriveStrategyChopperCourse:checkRendezvous()
             self:cancelRendezvous()
             unloaderWhoDidNotShowUp:getCpDriveStrategy():onMissedRendezvous(self.vehicle)
         end
-        if self:getNextUnloader() and self:getNextUnloader():readyToRecive() then
-            -- We only cancel the rendezvous if we try to switch the unloaders here there will be mutliple calls to it causing logic breaks
+        if self:getNextUnloader() and self:getNextUnloader():readyToReceive() then
+            -- We only cancel the rendezvous if we try to switch the unloaders here there will be multiple calls to it causing logic breaks
             self:debug('Discharging to %s, cancelling unloader rendezvous %s is ready to come along side', CpUtil.getName(self:getCurrentUnloader().vehicle), CpUtil.getName(self:getNextUnloader().vehicle))
             self:cancelRendezvous()
         end
@@ -221,7 +221,7 @@ function AIDriveStrategyChopperCourse:checkMarkers()
     end
 end
 
--- TODO: move this to the PipeController? Rename this is it doesnt check pipe in checks for trailer in range
+-- TODO: move this to the PipeController? Rename this is it doesn't check pipe in checks for trailer in range
 function AIDriveStrategyChopperCourse:handlePipe()
     self.pipeController:handleChopperPipe()
 end
@@ -234,11 +234,11 @@ function AIDriveStrategyChopperCourse:setPipeOffsetX()
     
     
     if self.isSugarCaneHarvester then
-        -- Since the sugarcane havester rotates we need to find total pipe length and use that as our offset. 
-        -- This math is handled in pipecontroller
+        -- Since the sugarcane harvester rotates we need to find total pipe length and use that as our offset. 
+        -- This math is handled in pipe controller
         self.pipeOffsetX = self.pipeController:getPipeOffsetX()
     else
-        -- Use the work width plus a little bit. But make sure we don't go further than 80% of the max discarge. 
+        -- Use the work width plus a little bit. But make sure we don't go further than 80% of the max discharge. 
         -- This may cause issues on very large modded choppers that didn't alter the discharge distance
         self.pipeOffsetX =  math.min(self.chopperController:getChopperDischargeDistance() * .8, self:getWorkWidth()/2 + 4)
     end
@@ -246,7 +246,7 @@ function AIDriveStrategyChopperCourse:setPipeOffsetX()
 end
 
 function AIDriveStrategyChopperCourse:setPipeOffsetZ(offset)
-    -- If offset is supplied use that(Chase Mode) plus what is returned from pipecontroller
+    -- If offset is supplied use that(Chase Mode) plus what is returned from pipe controller
     self.pipeOffsetZ = (offset or 0) + self.pipeController:getPipeOffsetZ()
 end
 
@@ -257,9 +257,9 @@ function AIDriveStrategyChopperCourse:getPipeOffset(additionalOffsetX, additiona
 end
 
 function AIDriveStrategyChopperCourse:checkPipeOffsetXForFruit(ix)
-    -- We can't use self.fruitRight and self.fruitLeft as theses are only reliable during haversting.
+    -- We can't use self.fruitRight and self.fruitLeft as theses are only reliable during harvesting.
     -- Pipe in fruit map can't be used on headlands so always use hasFruit and isn't generated for Choppers correctly
-    -- Instead use the has Pathfinder Utiliy hasFruit() which is accesed by the parent class functions
+    -- Instead use the has Pathfinder Utility hasFruit() which is accessed by the parent class functions
     -- If fruit is found using our current pipe offset update to the opposite side
    
     -- Reset the pipeoffset if we were being chased by a unloader driver.
@@ -278,7 +278,7 @@ function AIDriveStrategyChopperCourse:checkPipeOffsetXForFruit(ix)
     if not self.course:isOnHeadland(fruitCheckWaypoint) then
         local lRow, rowStartIx = self.course:getRowLength(fruitCheckWaypoint)
         self:debug('checkPipeOffsetXForFruit: lRow = %d rowStartIx = %d',lRow, rowStartIx)
-        -- We didn't get a rowlength back try again a little further ahead
+        -- We didn't get a row length back try again a little further ahead
         if lRow == 0 then
             lRow, rowStartIx = self.course:getRowLength(fruitCheckWaypoint+2)
         end
@@ -293,27 +293,27 @@ function AIDriveStrategyChopperCourse:checkPipeOffsetXForFruit(ix)
 
     -- If we are on the first headland engage chase mode and the pipeoffset to zero disabled for sugarcane
     if self.course:isOnHeadland(fruitCheckWaypoint, 1 ) and not self.isSugarCaneHarvester then
-        self:debug('I am on a headland enganing chase mode')
+        self:debug('I am on a headland engaging chase mode')
         self.pipeOffsetX = 0
         self:setPipeOffsetZ(-self.measuredBackDistance) 
-        -- We need this so the unloader knows what turn manuvers to use
+        -- We need this so the unloader knows what turn manuevers to use
         self.chaseMode = true
     else
         -- Check to see if the waypoint that we are using would put the unloader in the fruit using out current pipe offset
-        -- And if would use the oppisite vaule of the pipe offset as the should be cleared because the should be our last row worked
+        -- And if would use the opposite value of the pipe offset as the should be cleared because the should be our last row worked
         local hasFruit = self:isPipeInFruitAtWaypointNow(self.course, fruitCheckWaypoint, self.pipeOffsetX)
         self:debug('I found fruit %s at waypoint %d', tostring(hasFruit), fruitCheckWaypoint)
         if hasFruit then
             self:debug('I found fruit on my current side switch to the opposite side')
             self.pipeOffsetX = -self.pipeOffsetX
-            -- Perform another check to see with out updated pipeoffset to make sure that was our last row worked and it is inded clear of fruit
+            -- Perform another check to see with out updated pipeoffset to make sure that was our last row worked and it is indeed clear of fruit
             -- If we find fruit again that means we no clear lane for the unloader drive and have it follow us down the row we are clearing
             hasFruit = self:isPipeInFruitAtWaypointNow(self.course, fruitCheckWaypoint, self.pipeOffsetX)
             if hasFruit and not self.isSugarCaneHarvester then
                 self:debug('I found fruit again I must be on a land row switch to chase mode')
                 self.pipeOffsetX = 0
                 self:setPipeOffsetZ(-self.measuredBackDistance)
-                -- We need this so the unloader knows what turn manuvers to use
+                -- We need this so the unloader knows what turn manuevers to use
                 self.chaseMode = true
                 self.landRow = true
                 return
@@ -325,16 +325,16 @@ function AIDriveStrategyChopperCourse:checkPipeOffsetXForFruit(ix)
         local fieldId = CpFieldUtil.getFieldIdAtWorldPosition(x, z)
 
         if not CpFieldUtil.isNodeOnField(self.storage.fruitCheckHelperWpNode.node, fieldId) then
-            -- The point we are using isn't on the field check the otherside of the chopper to see if there is fruit and if there is no fruit use have the unloader follow us on that side
+            -- The point we are using isn't on the field check the other side of the chopper to see if there is fruit and if there is no fruit use have the unloader follow us on that side
             -- Otherwise just have the unloader follow us
             if hasFruit and not self.isSugarCaneHarvester then 
                 self.pipeOffsetX = 0
                 self:setPipeOffsetZ(-self.measuredBackDistance - 2)
-                -- We need this so the unloader knows what turn manuvers to use
+                -- We need this so the unloader knows what turn manuevers to use
                 self.chaseMode = true
-                self:debug('I found fruit and the oppisite side isn\'t on the field I must be on an edge row engage chase mode')
+                self:debug('I found fruit and the opposite side isn\'t on the field I must be on an edge row engage chase mode')
             elseif not hasFruit then
-                self:debug('I didn\'t find fruit and the oppisite side ins\'t on the field stick to my orginal side')
+                self:debug('I didn\'t find fruit and the opposite side ins\'t on the field stick to my original side')
                 self.pipeOffsetX = -self.pipeOffsetX
             end
         else
@@ -407,8 +407,8 @@ function AIDriveStrategyChopperCourse:getUnloader(driver)
     end
 end
 
--- This is called any time our NextUnloader is ready to replace out current.(Within a certian distance and aligned) It checks to make sure we have a current and if we do we clear it out
--- (The current unloader isn't always johny on the spot telling the chopper to clear itself out)
+-- This is called any time our NextUnloader is ready to replace out current.(Within a certain distance and aligned) It checks to make sure we have a current and if we do we clear it out
+-- (The current unloader isn't always johnny on the spot telling the chopper to clear itself out)
 -- Then we register as the current and reset the nextUnloader
 function AIDriveStrategyChopperCourse:updateNextUnloader()
     if self:getCurrentUnloader() then
@@ -430,13 +430,13 @@ function AIDriveStrategyChopperCourse:getNextUnloader()
     return self.unloaders.nextUnloader:get()
 end
 
--- Another saftey check to make sure we always have a current unloader
--- This is ran every waypointpassed() call. It asks if our next unloader is behind and aligned and within 25 meters of lastwaypoint of its driveToCombine Course
+-- Another safety check to make sure we always have a current unloader
+-- This is ran every waypointpassed() call. It asks if our next unloader is behind and aligned and within 25 meters of last waypoint of its driveToCombine Course
 function AIDriveStrategyChopperCourse:checkNextUnloader()
     if not self:getCurrentUnloader() and self:getNextUnloader() then
         self:debug('checkNextUnloader: I lost my current unloder and I have one that is arriving switch them')
         self:updateNextUnloader()
-    elseif self:getNextUnloader() and self:getNextUnloader():readyToRecive() then
+    elseif self:getNextUnloader() and self:getNextUnloader():readyToReceive() then
         self:debug('checkNextUnloader: Discharging to %s, and %s is ready to come along side', CpUtil.getName(self:getCurrentUnloader().vehicle), CpUtil.getName(self:getNextUnloader().vehicle))
         --TODO This is the user method to request drive now. It resets after 3 secs which may cause and already full unloader to return if there is a reason for it go to idle state from drive to unload
         self:getCurrentUnloader():requestDriveUnloadNow()
@@ -445,7 +445,7 @@ function AIDriveStrategyChopperCourse:checkNextUnloader()
 end
 
 
--- Coppied from parent. Altered to handle a current and next unloader
+-- Copied from parent. Altered to handle a current and next unloader
 function AIDriveStrategyChopperCourse:callUnloaderWhenNeeded()
 
     if self:getCurrentUnloader() and self:getNextUnloader() then
@@ -604,7 +604,7 @@ function AIDriveStrategyChopperCourse:isReadyToUnload(noUnloadWithPipeInFruit)
 end
 
 function AIDriveStrategyChopperCourse:isChopperOnConnectingTrack()
-    -- Connecting Tracks can be followed with an aligment turn which isn't a turn state but Driving to work Start
+    -- Connecting Tracks can be followed with an alignment turn which isn't a turn state but Driving to work Start
     -- The unloader driver relies on this so pathfinder isn't called before we are in our correct location
     return self.state == self.states.ON_CONNECTING_TRACK or self.state == self.states.DRIVING_TO_WORK_START_WAYPOINT
 end
@@ -684,14 +684,14 @@ function AIDriveStrategyChopperCourse:estimateDistanceUntilFull(ix)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
--- Utilites
+-- Utilities
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 
--- Check for sugarcane havesert certian logic needs to be disabled when we are unloding them
+-- Check for sugarcane harvester certain logic needs to be disabled when we are unloading them
 function AIDriveStrategyChopperCourse:getSugarCaneHarvester()
     for i, fillUnit in ipairs(self.vehicle:getFillUnits()) do
         if self.vehicle:getFillUnitSupportsFillType(i, FillType.SUGARCANE) then
-            self:debug('This is a Sugarcane havester')
+            self:debug('This is a Sugarcane harvester')
             return true
         end
     end
@@ -725,14 +725,14 @@ function AIDriveStrategyChopperCourse:checkFruit()
             self.fruitLeft, self.fruitRight, tostring(self.fieldOnLeft), tostring(self.fieldOnRight))
 end
 
--- Function to allow us to revice the nearest trailer objects
+-- Function to allow us to receive the nearest trailer objects
 function AIDriveStrategyChopperCourse:nearestChopperTrailer()
     local trailer = self.pipeController:getClosestObject()
     local targetObject = self.pipeController:getDischargeObject()
     return trailer, targetObject
 end
 
--- Return true for no headlands so we can reduce off field pently for our unloader driver
+-- Return true for no headlands so we can reduce off field penalty for our unloader driver
 function AIDriveStrategyChopperCourse:hasNoHeadlands()
     return self.course:getNumberOfHeadlands() == 0
 end
@@ -769,19 +769,19 @@ function AIDriveStrategyChopperCourse:updateChopperFillType()
 end
 
 
--- This is current broken and any trailer nearby will cause it to be true. Mabye it is not .vehicle but a get implements to return the trailer object instead?
+-- This is current broken and any trailer nearby will cause it to be true. Maybe it is not .vehicle but a get implements to return the trailer object instead?
 function AIDriveStrategyChopperCourse:isChopperWaitingForUnloader()
     local trailer, targetObject = self:nearestChopperTrailer()
     local dischargeNode = self.pipeController:getDischargeNode()
     self:debugSparse('%s %s', dischargeNode, self:isAnyWorkAreaProcessing())
     if not (targetObject == nil or trailer == nil) then 
-        if targetObject and targetObject.getIsCpActive and targetObject:getIsCpActive() then
-            local strategy = targetObject:getCpDriveStrategy()
+        if targetObject and targetObject.rootVehicle.getIsCpActive and targetObject.rootVehicle:getIsCpActive() then
+            local strategy = targetObject.rootVehicle:getCpDriveStrategy()
             if strategy.isAChopperUnloadAIDriver
                 and self:getCurrentUnloader()
-                and self:getCurrentUnloader().vehicle == targetObject 
-                and self:getCurrentUnloader():readyToRecive() then
-                    self:debug('Chopper has a CP Driven trailer now, continue')
+                and self:getCurrentUnloader().vehicle == targetObject.rootVehicle 
+                and self:getCurrentUnloader():readyToReceive() then
+                    self:debugSparse('Chopper has a CP Driven trailer now, continue')
                     return false
             end
         else

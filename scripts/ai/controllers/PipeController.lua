@@ -275,7 +275,7 @@ function PipeController:measurePipeProperties()
     if ImplementUtil.isChopper(self.implement) then
         self:debug("Finding the pipe base node of the chopper")
         -- Find the base node of the pipe. So we can measure pipe 
-        -- This is more for sugarcane havesters as maxDischargeDistance is a better measure of pipeoffsetX for choppers
+        -- This is more for sugarcane harvesters as maxDischargeDistance is a better measure of pipeoffsetX for choppers
         local pipeNode = self:getPipesBaseNode()
         local dx, _, dz = localToLocal(pipeNode, dischargeNode.node, 0, 0, 0)
         self.pipeOffsetX = MathUtil.vector2Length(dx, dz)

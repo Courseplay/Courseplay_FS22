@@ -1,4 +1,4 @@
--- A subclass of the combine controller to provide clean seperation between Chopper specfic functions and combine functions
+-- A subclass of the combine controller to provide clean separation between Chopper specific functions and combine functions
 -- Due to the interrelated nature of choppers and combines we should inherit the combine controller class
 -- Chopper Support Added By Pops64 2023
 ---@class ChopperController : CombineController

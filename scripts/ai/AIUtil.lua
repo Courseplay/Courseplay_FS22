@@ -324,6 +324,8 @@ end
 function AIUtil.getFirstAttachedImplement(vehicle,suppressLog)
 	-- by default, it is the vehicle's front
 	local maxDistance = vehicle.size.length / 2 + vehicle.size.lengthOffset
+	-- We need to determine the length between the rootNode and the AiDirectionNode 
+	-- So we can compensate our measurements that still use Root as a reference when we now use Direction Node as our linked reference point
 	local _, _, rootNodeOffset = localToLocal(vehicle.rootNode, AIUtil.getDirectionNode(vehicle), 0, 0, 0)
 	maxDistance = maxDistance + rootNodeOffset
 	local firstImplement = vehicle

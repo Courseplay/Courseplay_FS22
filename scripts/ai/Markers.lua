@@ -53,6 +53,8 @@ local function setBackMarkerNode(vehicle, measuredBackDistance)
                 debugText, backMarkerOffset, dBetweenRootAndReverserNode)
     else
         referenceNode =  AIUtil.getDirectionNode(vehicle)
+        -- We need to determine the length between the rootNode and the AiDirectionNode 
+	    -- So we can compensate our measurements that still use Root as a reference when we now use Direction Node as our linked reference point
         local _, _, rootNodeOffset = localToLocal(vehicle.rootNode, AIUtil.getDirectionNode(vehicle), 0, 0, 0)
         backMarkerOffset = - vehicle.size.length / 2 + vehicle.size.lengthOffset + rootNodeOffset
         CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Using the vehicle\'s root node for the back marker node, %d m from root node', backMarkerOffset)

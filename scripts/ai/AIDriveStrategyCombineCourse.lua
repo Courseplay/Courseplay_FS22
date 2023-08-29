@@ -1314,7 +1314,7 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
             self.frontMarkerDistance, self.backMarkerDistance,
             self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
 
-    -- Combines drive special headland corner maneuvers, except potato and sugarbeet harvesters
+    -- Combines drive special headland corner maneuvers, except potato and sugar beet harvesters
     if self.turnContext:isHeadlandCorner() then
         if self:isPotatoOrSugarBeetHarvester() then
             self:debug('Headland turn but this harvester uses normal turn maneuvers.')

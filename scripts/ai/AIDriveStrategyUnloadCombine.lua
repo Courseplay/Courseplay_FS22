@@ -443,7 +443,7 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
 
     elseif self.state == self.states.MOVING_BACK_WITH_TRAILER_FULL then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
-        -- drive back until the combine backmarker is 3m behind us to have some room for the pathfinder
+        -- drive back until the combine back marker is 3m behind us to have some room for the pathfinder
         local _, _, dz = self:getDistanceFromCombine(self.state.properties.vehicle)
         if dz > -3 then
             self:startUnloadingTrailers()
@@ -516,7 +516,7 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
     local targetNode = self:getTrailersTargetNode()
     local _, offsetZ = self:getPipeOffset(self.combineToUnload)
     -- TODO: this - 1 is a workaround the fact that we use a simple P controller instead of a PI 
-    -- Updated to use direction node as pipeOffset now refereces that not rootNode
+    -- Updated to use direction node as pipeOffset now that no longer reference rootNode
     local _, _, dz = localToLocal(targetNode, self.combineToUnload:getAIDirectionNode(), 0, 0, -offsetZ)
     -- use a factor to make sure we reach the pipe fast, but be more gentle while discharging
     local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
@@ -721,7 +721,7 @@ function AIDriveStrategyUnloadCombine:fixAutoAimNode()
     self.autoAimNodeFixed = true
 end
 
--- Release the auto aim target to restore default behaviour
+-- Release the auto aim target to restore default behavior
 function AIDriveStrategyUnloadCombine:releaseAutoAimNode()
     self.autoAimNodeFixed = false
 end
@@ -1153,7 +1153,7 @@ function AIDriveStrategyUnloadCombine:call(combine, waypoint)
             -- (short) pathfinding to get under the pipe.
             zOffset = -self:getCombinesMeasuredBackDistance() - 10
         else
-            -- allow trailer space to align after sharp turns (noticed it more affects potato/sugarbeet harvesters with
+            -- allow trailer space to align after sharp turns (noticed it more affects potato/sugar beet harvesters with
             -- pipes close to vehicle)
             local pipeLength = math.abs(self:getPipeOffset(self.combineToUnload))
             -- allow for more align space for shorter pipes
