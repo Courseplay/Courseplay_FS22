@@ -420,7 +420,7 @@ function AIDriveStrategyUnloadChopper:unloadMovingCombine()
 
     if combineStrategy:getChaseMode() then
         -- Since we are going to be right behind the chopper. We need a alter the driveBeside code so call this altered function of driveBeside
-        self:driveBehindCombine()
+        self:driveBehindChopper()
     else
         self:driveBesideCombine()
     end
@@ -442,12 +442,13 @@ function AIDriveStrategyUnloadChopper:unloadMovingCombine()
 end
 
 -- This code work needs to be tested leaving orginal code uncommetend for now
-function AIDriveStrategyUnloadChopper:driveBehindCombine()
+-- This function only works when are perfectly align and can use proximity completey breaks down when we have to rely on getDistanceFromCombine()
+function AIDriveStrategyUnloadChopper:driveBehindChopper()
     local _, zOffset = self:getPipeOffset(self.combineToUnload)
     -- This is broken this is the choppers back of header which causes issue
     local distanceToChoppersBack, _, dz = self:getDistanceFromCombine()
-    dz = dz - self.combineToUnload:getCpDriveStrategy().measuredBackDistance - 1.5 --- This is only a temporay fix add 1.5 due to the fact that the backMarker Node isn't accutally at the back on all choppers. TODO Make a new function to fix this
-    --local distanceToChoppersBack, _, dz = self.combineToUnload:getCpDriveStrategy():getDistanceFromChopper(self.vehicle)
+    -- dz = dz - self.combineToUnload:getCpDriveStrategy().measuredBackDistance - 1.5 --- This is only a temporay fix add 1.5 due to the fact that the backMarker Node isn't accutally at the back on all choppers. TODO Make a new function to fix this
+    --local distanceToChoppersBack, _, dz = self:getDistanceFromChopper()
 	local fwdDistance = self.proximityController:checkBlockingVehicleFront()
 	if dz < 0 then
 		-- I'm way too forward, stop here as I'm most likely beside the chopper, let it pass before
@@ -511,7 +512,7 @@ function AIDriveStrategyUnloadChopper:chopperIsTurning()
         return
     end
     
-    if self.combineToUnload:getCpDriveStrategy():isTurning() or self.combineToUnload:getCpDriveStrategy():isAboutToTurn()  then
+    if self.combineToUnload:getCpDriveStrategy():isTurning() then
         -- Back up until the chopper is in front us so we don't interfer with its turn and make sure we stay behind it
         local _, _, dz = self:getDistanceFromCombine(self.combineToUnload)
         if self.combineToUnload:getCpDriveStrategy():getChaseMode() then
@@ -527,7 +528,6 @@ function AIDriveStrategyUnloadChopper:chopperIsTurning()
                 self:setMaxSpeed(0)
             end
         end
-        self.chopperOnConnectingTrack = false
     elseif self.combineToUnload:getCpDriveStrategy():getConnectingTrack() then
         -- Connecting track the chopper just drives foward don't move and wait for the chopper to stop before meeting back up with it
         self:setMaxSpeed(0)
@@ -888,4 +888,12 @@ function AIDriveStrategyUnloadChopper:isOkToStartUnloadingCombine()
         self:debugSparse('combine not ready to unload, waiting')
         return false
     end
+end
+
+-- This may or not work. Problay not remove once we get this fixed
+function AIDriveStrategyUnloadChopper:getDistanceFromChopper()
+    local dx, _, dz = localToLocal(self:getCombineRootNode(),
+            Markers.getFrontMarkerNode(self.vehicle), 0, 0, 0)
+            dz = dz - self.combineToUnload:getCpDriveStrategy():getMeasuredBackDistance()
+    return MathUtil.vector2Length(dx, dz), dx, dz
 end

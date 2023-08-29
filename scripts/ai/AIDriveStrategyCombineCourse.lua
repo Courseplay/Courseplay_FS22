@@ -1279,7 +1279,7 @@ end
 
 ---@return boolean the combine is about to turn
 function AIDriveStrategyCombineCourse:isAboutToTurn()
-    if self.state == self.states.WORKING and self.course then
+    if (self.state == self.states.WORKING and self.course then
         return self.course:isCloseToNextTurn(10)
     else
         return false
@@ -1830,17 +1830,17 @@ function AIDriveStrategyCombineCourse:getMeasuredBackDistance()
     return self.measuredBackDistance
 end
 
---- Determine how far the back of the combine is from the direction node
+--- Determine how far the back of the combine is from the dirrootection node
 -- TODO: attached/towed harvesters
 function AIDriveStrategyCombineCourse:measureBackDistance()
     self.measuredBackDistance = 0
-    -- raycast from a point behind the vehicle forward towards the direction node
+    -- raycast from a point behind the vehicle forward towards the root node
     local nx, ny, nz = localDirectionToWorld(self.vehicle.rootNode, 0, 0, 1)
     local x, y, z = localToWorld(self.vehicle.rootNode, 0, 1.5, -self.maxBackDistance)
     raycastAll(x, y, z, nx, ny, nz, 'raycastBackCallback', self.maxBackDistance, self)
 end
 
--- I believe this tries to figure out how far the back of a combine is from its direction node.
+-- I believe this tries to figure out how far the back of a combine is from its root node.
 function AIDriveStrategyCombineCourse:raycastBackCallback(hitObjectId, x, y, z, distance, nx, ny, nz, subShapeIndex)
     if hitObjectId ~= 0 then
         local object = g_currentMission:getNodeObject(hitObjectId)
