@@ -28,6 +28,13 @@ local function createMarkerIfDoesNotExist(vehicle, name, referenceNode)
     end
 end
 
+local function createLinkBetweenNodes(vehicle, referenceNode, name)
+    createMarkerIfDoesNotExist(vehicle, name,  referenceNode)
+    -- relink to current reference node (in case of implement change for example
+    unlink(g_vehicleMarkers[vehicle].name)
+    link(referenceNode, g_vehicleMarkers[vehicle].name)
+end
+
 -- Put a node on the back of the vehicle for easy distance checks use this instead of the root/direction node
 local function setBackMarkerNode(vehicle, measuredBackDistance)
     local backMarkerOffset = 0
@@ -71,10 +78,15 @@ local function setFrontMarkerNode(vehicle)
     CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Using the %s\'s root node for the front marker node, %d m from root node',
             CpUtil.getName(firstImplement), frontMarkerOffset)
 
-    createMarkerIfDoesNotExist(vehicle, 'frontMarkerNode',  AIUtil.getDirectionNode(vehicle))
-    -- relink to current reference node (in case of implement change for example
-    unlink(g_vehicleMarkers[vehicle].frontMarkerNode)
-    link( AIUtil.getDirectionNode(vehicle), g_vehicleMarkers[vehicle].frontMarkerNode)
+    -- If we don't have an implement on the front we must use the vehicles root node as our reference
+    -- We fall back to relying on vehicle lenght to deterime the front node and AI Direction Node is rarely in the center of the vehilce
+    -- The root node is always in the center if not there is a giants supplied offset? Maybe, would have to trace the vehicle.size.lengthOffset variable deeper
+    if vehicle == firstImplement then
+        createLinkBetweenNodes(vehicle, vehicle.rootNode, 'frontMarkerNode')
+    else
+        createLinkBetweenNodes(vehicle, AIUtil.getDirectionNode(vehicle), 'frontMarkerNode') 
+    end
+    
     setTranslation(g_vehicleMarkers[vehicle].frontMarkerNode, 0, 0, frontMarkerOffset)
     g_vehicleMarkers[vehicle].frontMarkerOffset = frontMarkerOffset
 end
