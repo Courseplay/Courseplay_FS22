@@ -53,7 +53,8 @@ local function setBackMarkerNode(vehicle, measuredBackDistance)
                 debugText, backMarkerOffset, dBetweenRootAndReverserNode)
     else
         referenceNode =  AIUtil.getDirectionNode(vehicle)
-        backMarkerOffset = - vehicle.size.length / 2 + vehicle.size.lengthOffset
+        local _, _, rootNodeOffset = localToLocal(vehicle.rootNode, AIUtil.getDirectionNode(vehicle), 0, 0, 0)
+        backMarkerOffset = - vehicle.size.length / 2 + vehicle.size.lengthOffset + rootNodeOffset
         CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Using the vehicle\'s root node for the back marker node, %d m from root node', backMarkerOffset)
     end
 
