@@ -70,17 +70,11 @@ local function setFrontMarkerNode(vehicle)
     local firstImplement, frontMarkerOffset = AIUtil.getFirstAttachedImplement(vehicle)
     CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Using the %s\'s root node for the front marker node, %d m from root node',
             CpUtil.getName(firstImplement), frontMarkerOffset)
-    if vehicle == firstImplement then
-        createMarkerIfDoesNotExist(vehicle, 'frontMarkerNode',  vehicle.rootNode)
-        unlink(g_vehicleMarkers[vehicle].frontMarkerNode)
-        link( vehicle.rootNode, g_vehicleMarkers[vehicle].frontMarkerNode)
-    else 
-        createMarkerIfDoesNotExist(vehicle, 'frontMarkerNode',  AIUtil.getDirectionNode(vehicle))
-        unlink(g_vehicleMarkers[vehicle].frontMarkerNode)
-        link( AIUtil.getDirectionNode(vehicle), g_vehicleMarkers[vehicle].frontMarkerNode)
-    end
+
+    createMarkerIfDoesNotExist(vehicle, 'frontMarkerNode',  AIUtil.getDirectionNode(vehicle))
     -- relink to current reference node (in case of implement change for example
-    
+    unlink(g_vehicleMarkers[vehicle].frontMarkerNode)
+    link( AIUtil.getDirectionNode(vehicle), g_vehicleMarkers[vehicle].frontMarkerNode)
     setTranslation(g_vehicleMarkers[vehicle].frontMarkerNode, 0, 0, frontMarkerOffset)
     g_vehicleMarkers[vehicle].frontMarkerOffset = frontMarkerOffset
 end
