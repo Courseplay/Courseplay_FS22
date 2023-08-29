@@ -780,3 +780,10 @@ function AIDriveStrategyChopperCourse:isChopperWaitingForUnloader()
                 tostring(dischargeNode), tostring(targetObject), tostring(trailer))
     return true
 end
+
+-- This may or not work. Problay not remove once we get this fixed
+function AIDriveStrategyChopperCourse:getDistanceFromChopper(target)
+    local dx, _, dz = localToLocal(self.vehicle:getAIDirectionNode(),
+            Markers.getFrontMarkerNode(target), 0, 0, -self.measuredBackDistance)
+    return MathUtil.vector2Length(dx, dz), dx, dz
+end

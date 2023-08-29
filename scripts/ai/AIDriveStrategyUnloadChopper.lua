@@ -446,6 +446,8 @@ function AIDriveStrategyUnloadChopper:driveBehindCombine()
     local _, zOffset = self:getPipeOffset(self.combineToUnload)
     -- This is broken this is the choppers back of header which causes issue
     local distanceToChoppersBack, _, dz = self:getDistanceFromCombine()
+    dz = dz - self.combineToUnload:getCpDriveStrategy().measuredBackDistance - 1.5 --- This is only a temporay fix add 1.5 due to the fact that the backMarker Node isn't accutally at the back on all choppers. TODO Make a new function to fix this
+    --local distanceToChoppersBack, _, dz = self.combineToUnload:getCpDriveStrategy():getDistanceFromChopper(self.vehicle)
 	local fwdDistance = self.proximityController:checkBlockingVehicleFront()
 	if dz < 0 then
 		-- I'm way too forward, stop here as I'm most likely beside the chopper, let it pass before
@@ -458,8 +460,8 @@ function AIDriveStrategyUnloadChopper:driveBehindCombine()
 	local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
     local deltaV = MathUtil.clamp(-error * factor, -10, 15)
 	local speed = (self.combineToUnload.lastSpeedReal * 3600) + deltaV
-	-- self:renderText(0, 0.7, 'd = %.1f, dz = %.1f, speed = %.1f, errSafety = %.1f, errTarget = %.1f',
-	-- 		distanceToChoppersBack, dz, speed, errorSafety, errorTarget)
+	self:renderText(0, 0.02, 'd = %.1f, dz = %.1f, speed = %.1f, errSafety = %.1f, errTarget = %.1f',
+	 		distanceToChoppersBack, dz, speed, errorSafety, errorTarget)
 	-- return speed
     -- self:fixAutoAimNode()
     -- -- Left in for debuging code
@@ -491,8 +493,8 @@ function AIDriveStrategyUnloadChopper:driveBehindCombine()
     --     speed = (math.min(speed, self.combineToUnload:getLastSpeed() + 2))
     -- end
 
-    self:renderText(0, 0.02, "%s: driveBesideCombine: dz = %.1f, speed = %.1f, factor = %.1f",
-            CpUtil.getName(self.vehicle), dz, speed, factor)
+    --self:renderText(0, 0.02, "%s: driveBesideCombine: dz = %.1f, speed = %.1f, factor = %.1f",
+    --        CpUtil.getName(self.vehicle), dz, speed, factor)
 
     if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
         DebugUtil.drawDebugNode(targetNode, 'target')
