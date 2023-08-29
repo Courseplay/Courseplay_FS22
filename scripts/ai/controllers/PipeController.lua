@@ -272,29 +272,18 @@ function PipeController:measurePipeProperties()
     local dischargeNode = self:getDischargeNode()
 
     
-    
-    if self.implement.getAIDirectionNode then 
-        self:debug("The pipe is installed at the root vehicle.")
-        self.pipeOffsetX, _, self.pipeOffsetZ = localToLocal(dischargeNode.node, 
-            self.implement:getAIDirectionNode(), 0, 0, 0)
-    else 
-        --- Pipe is installed on an implement.
-        self:debug("The pipe is installed on an implement.")
-        local pipeOffsetZ
-        self.pipeOffsetX, _, pipeOffsetZ = localToLocal(dischargeNode.node, 
-            self.implement.rootNode, 0, 0, 0)
-        local dist = ImplementUtil.getDistanceToImplementNode(self.vehicle:getAIDirectionNode(),
-            self.implement, self.implement.rootNode)
-        self.pipeOffsetZ = pipeOffsetZ + dist
-    end
     if ImplementUtil.isChopper(self.implement) then
         self:debug("Finding the pipe base node of the chopper")
-        -- Find the base node of the pipe. So we can measure pipe length
+        -- Find the base node of the pipe. So we can measure pipe 
         -- This is more for sugarcane havesters as maxDischargeDistance is a better measure of pipeoffsetX for choppers
         local pipeNode = self:getPipesBaseNode()
         local dx, _, dz = localToLocal(pipeNode, dischargeNode.node, 0, 0, 0)
-        self.pipeOffsetX = MathUtil.vector2Length(dx, dz) 
+        self.pipeOffsetX = MathUtil.vector2Length(dx, dz)
+        _, self.pipeOffsetZ = self:calcPipeOffset(pipeNode) 
+    else
+        self.pipeOffsetX, self.pipeOffsetZ = self:calcPipeOffset(dischargeNode.node)
     end
+    
     self.pipeOnLeftSide = self.pipeOffsetX >= 0
     self:debug("Measuring pipe properties => pipeOffsetX: %.2f, pipeOffsetZ: %.2f, pipeOnLeftSide: %s", 
         self.pipeOffsetX, self.pipeOffsetZ, tostring(self.pipeOnLeftSide))
@@ -314,6 +303,25 @@ function PipeController:getPipesBaseNode()
            return node.node
        end
    end
+end
+
+function PipeController:calcPipeOffset(targetNode)
+    local pipeOffsetX, pipeOffsetZ = 0, 0
+    if self.implement.getAIDirectionNode then 
+        self:debug("The pipe is installed at the root vehicle.")
+        pipeOffsetX, _, pipeOffsetZ = localToLocal(targetNode, 
+            self.implement:getAIDirectionNode(), 0, 0, 0)
+    else 
+        --- Pipe is installed on an implement.
+        self:debug("The pipe is installed on an implement.")
+        local implementPipeOffsetZ
+        pipeOffsetX, _, OffsetZ = localToLocal(targetNode, 
+            self.implement.rootNode, 0, 0, 0)
+        local dist = ImplementUtil.getDistanceToImplementNode(self.vehicle:getAIDirectionNode(),
+            self.implement, self.implement.rootNode)
+            pipeOffsetZ = implementPipeOffsetZ + dist
+    end
+    return pipeOffsetX, pipeOffsetZ
 end
 
 --- Unfolds the pipe completely to measure the pipe properties.

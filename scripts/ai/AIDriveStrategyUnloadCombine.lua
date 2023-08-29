@@ -515,8 +515,9 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
     self:fixAutoAimNode()
     local targetNode = self:getTrailersTargetNode()
     local _, offsetZ = self:getPipeOffset(self.combineToUnload)
-    -- TODO: this - 1 is a workaround the fact that we use a simple P controller instead of a PI
-    local _, _, dz = localToLocal(targetNode, self:getCombineRootNode(), 0, 0, -offsetZ - 2)
+    -- TODO: this - 1 is a workaround the fact that we use a simple P controller instead of a PI 
+    -- Updated to use direction node as pipeOffset now refereces that not rootNode
+    local _, _, dz = localToLocal(targetNode, self.combineToUnload:getAIDirectionNode(), 0, 0, -offsetZ)
     -- use a factor to make sure we reach the pipe fast, but be more gentle while discharging
     local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
     local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(-dz * factor, -10, 15)

@@ -432,7 +432,7 @@ function AIDriveStrategyUnloadChopper:unloadMovingCombine()
         return
     end
     -- The chopper is turning or driving on a connecting track
-    if combineStrategy:isTurning() or combineStrategy:getConnectingTrack() then
+    if combineStrategy:isTurning() or combineStrategy:isChopperOnConnectingTrack() then
         -- Create a backup course so we stay out of the way of Chopper doing unpredictable stuff
         self:debug('The chopper is turning I better turn to')
         local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 100)
@@ -495,7 +495,7 @@ function AIDriveStrategyUnloadChopper:chopperIsTurning()
                 self:setMaxSpeed(0)
             end
         end
-    elseif self.combineToUnload:getCpDriveStrategy():getConnectingTrack() then
+    elseif self.combineToUnload:getCpDriveStrategy():isChopperOnConnectingTrack() then
         -- Connecting track the chopper just drives foward don't move and wait for the chopper to stop before meeting back up with it
         self:setMaxSpeed(0)
     elseif not self:isBehindAndAlignedToCombine() and not self:isInFrontAndAlignedToMovingCombine() then
@@ -510,6 +510,7 @@ end
 
 function AIDriveStrategyUnloadChopper:pathfinderForUnloadChopperTurn()
     self:debug('Chopper finished turning I need to turn around to')
+    self.combineToUnload:getCpDriveStrategy():checkPipeOffsetXForFruit()
     local xOffset, zOffset = self:getPipeOffset(self.combineToUnload)
     
     self:startPathfindingToCombine(self.onPathfindingDoneChopperTurn, xOffset, -10)
@@ -591,7 +592,7 @@ function AIDriveStrategyUnloadChopper:driveToMovingCombine()
 
     -- Am I close to the end of my rendevous course and I am still in front? Slow down to wait for it to pass
     local _, _, dz = self:getDistanceFromCombine(self.combineToUnload)
-    if self.course:isCloseToLastWaypoint(30) and dz > 0 then
+    if self.course:isCloseToLastWaypoint(30) and dz < 0 then
         self:setMaxSpeed(self:getFieldSpeed()/2)
     end
 
@@ -800,7 +801,7 @@ function AIDriveStrategyUnloadChopper:isBehindAndAlignedToCombine(debugEnabled)
         return false
     end
     local d = MathUtil.vector2Length(dx, dz)
-    if d > (20) then
+    if d > (30) then
         self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: too far from combine (%.1f > 30)', d)
         return false
     end

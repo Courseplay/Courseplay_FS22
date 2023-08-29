@@ -127,10 +127,10 @@ function AIDriveStrategyChopperCourse:getDriveData(dt, vX, vY, vZ)
 end
 
 --- We need to check pipeoffsetX after a turn as fruit side may have changed
-function AIDriveStrategyChopperCourse:resumeFieldworkAfterTurn(ix)
-    self:checkPipeOffsetXForFruit(ix)
-    AIDriveStrategyChopperCourse.superClass().resumeFieldworkAfterTurn(self, ix)
-end
+-- function AIDriveStrategyChopperCourse:resumeFieldworkAfterTurn(ix)
+--     self:checkPipeOffsetXForFruit(ix)
+--     AIDriveStrategyChopperCourse.superClass().resumeFieldworkAfterTurn(self, ix)
+-- end
 
 -----------------------------------------------------------------------------------------------------------------------
 --- Event listeners
@@ -155,6 +155,12 @@ function AIDriveStrategyChopperCourse:onWaypointPassed(ix, course)
     end
 
     AIDriveStrategyFieldWorkCourse.onWaypointPassed(self, ix, course)
+end
+
+--- Called when the last waypoint of a course is passed, Non of the parent logic applies to us just call the fieldwork function
+-- 
+function AIDriveStrategyCombineCourse:onLastWaypointPassed()
+    AIDriveStrategyFieldWorkCourse.onLastWaypointPassed(self)
 end
 
 function AIDriveStrategyChopperCourse:checkRendezvous()
@@ -271,10 +277,15 @@ function AIDriveStrategyChopperCourse:checkPipeOffsetXForFruit(ix)
 
     if not self.course:isOnHeadland(fruitCheckWaypoint) then
         local lRow, rowStartIx = self.course:getRowLength(fruitCheckWaypoint)
-        if rowStartIx then
+        self:debug('checkPipeOffsetXForFruit: lRow = %d rowStartIx = %d',lRow, rowStartIx)
+        -- We didn't get a rowlength back try again a little further ahead
+        if lRow == 0 then
+            lRow, rowStartIx = self.course:getRowLength(fruitCheckWaypoint+2)
+        end
+        if rowStartIx and not lRow == 0 then -- Yeah! We got a row length lets use the middle of the row to determine where the fruit is
             fruitCheckWaypoint = self.course:getNextWaypointIxWithinDistance(rowStartIx, lRow / 2)
             self:debug('Fruitwaypoint was set to the middle of the row %d', fruitCheckWaypoint)
-        else
+        else -- We still didn't get a row length just set it 10 ahead and hope for the best
             fruitCheckWaypoint = fruitCheckWaypoint + 10
             self:debug('Fruitwaypoint was set 10 ahead to couldn\'t determine row length %d', fruitCheckWaypoint)
         end
@@ -284,7 +295,7 @@ function AIDriveStrategyChopperCourse:checkPipeOffsetXForFruit(ix)
     if self.course:isOnHeadland(fruitCheckWaypoint, 1 ) and not self.isSugarCaneHarvester then
         self:debug('I am on a headland enganing chase mode')
         self.pipeOffsetX = 0
-        self:setPipeOffsetZ(-self.measuredBackDistance - 2) 
+        self:setPipeOffsetZ(-self.measuredBackDistance) 
         -- We need this so the unloader knows what turn manuvers to use
         self.chaseMode = true
     else
@@ -301,7 +312,7 @@ function AIDriveStrategyChopperCourse:checkPipeOffsetXForFruit(ix)
             if hasFruit and not self.isSugarCaneHarvester then
                 self:debug('I found fruit again I must be on a land row switch to chase mode')
                 self.pipeOffsetX = 0
-                self:setPipeOffsetZ(-self.measuredBackDistance - 2)
+                self:setPipeOffsetZ(-self.measuredBackDistance)
                 -- We need this so the unloader knows what turn manuvers to use
                 self.chaseMode = true
                 self.landRow = true
@@ -592,15 +603,16 @@ function AIDriveStrategyChopperCourse:isReadyToUnload(noUnloadWithPipeInFruit)
     return true
 end
 
-function AIDriveStrategyChopperCourse:getConnectingTrack()
-    return self.state == self.states.ON_CONNECTING_TRACK
+function AIDriveStrategyChopperCourse:isChopperOnConnectingTrack()
+    -- Connecting Tracks can be followed with an aligment turn which isn't a turn state but Driving to work Start
+    -- The unloader driver relies on this so pathfinder isn't called before we are in our correct location
+    return self.state == self.states.ON_CONNECTING_TRACK or self.state == self.states.DRIVING_TO_WORK_START_WAYPOINT
 end
 
 
 -- Copied from parent altered to remove pipe in fruit map logic. We don't have a pipeInFruit map for choppers
 --- We calculated a waypoint to meet the unloader (either because it asked for it or we think we'll need
---- to unload. Now make sure that this location is not around a turn or the pipe isn't in the fruit by
---- trying to move it up or down a bit. If that's not possible, just leave it and see what happens :)
+--- to unload. Now make sure that this location is not around a turn 
 function AIDriveStrategyChopperCourse:findBestWaypointToUnloadOnUpDownRows(ix, isPipeInFruitAllowed)
     local dToNextTurn = self.course:getDistanceToNextTurn(ix) or math.huge
     local lRow, ixAtRowStart = self.course:getRowLength(ix)
@@ -727,7 +739,7 @@ end
 
 function AIDriveStrategyChopperCourse:isFuelSaveAllowed()
     local isFuelSaveAllowed = AIDriveStrategyCombineCourse.isFuelSaveAllowed(self)
-    return isFuelSaveAllowed or self:isChopperWaitingForUnloader()
+    return isFuelSaveAllowed or self:isChopperWaitingForUnloader() or not (self:getCurrentUnloader() and self:getCurrentUnloader():isUnloaderTurning())
 end
 
 -- Not being used?
@@ -781,4 +793,3 @@ function AIDriveStrategyChopperCourse:isChopperWaitingForUnloader()
                 tostring(dischargeNode), tostring(targetObject), tostring(trailer))
     return true
 end
-
