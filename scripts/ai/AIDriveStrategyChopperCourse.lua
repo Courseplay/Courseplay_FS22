@@ -311,8 +311,9 @@ function AIDriveStrategyChopperCourse:checkPipeOffsetXForFruit(ix)
         
         -- Once final check to make sure the pipeoffset we are going to supply to the unloader is on the field.
         local x, _, z = localToWorld(self.storage.fruitCheckHelperWpNode.node, self.pipeOffsetX, 0, 0)
-        local fieldPolygon = self.course:getFieldPolygon()
-        if not CpMathUtil.isPointInPolygon(fieldPolygon, x, z) then
+        local fieldId = CpFieldUtil.getFieldIdAtWorldPosition(x, z)
+
+        if not CpFieldUtil.isNodeOnField(self.storage.fruitCheckHelperWpNode.node, fieldId) then
             -- The point we are using isn't on the field check the otherside of the chopper to see if there is fruit and if there is no fruit use have the unloader follow us on that side
             -- Otherwise just have the unloader follow us
             if hasFruit and not self.isSugarCaneHarvester then 
