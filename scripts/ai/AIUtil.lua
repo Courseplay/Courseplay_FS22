@@ -322,8 +322,10 @@ end
 ---@return table, number frontmost object and the distance between the front of that object and the root node of the vehicle
 --- when > 0 in front of the vehicle
 function AIUtil.getFirstAttachedImplement(vehicle,suppressLog)
-	-- by default, it is the vehicle's front
-	local maxDistance = vehicle.size.length / 2 + vehicle.size.lengthOffset
+	-- by default, it is the vehicle's front. We must do local to local due to using AI DIrection Node in the setMarkers function and the differnce in location between root and AIDirection
+	local _, _, maxDistance = localToLocal(vehicle.rootNode, AIUtil.getDirectionNode(vehicle), 0, 0,
+	vehicle.size.length / 2 + vehicle.size.lengthOffset)
+	--local maxDistance = vehicle.size.length / 2 + vehicle.size.lengthOffset
 	local firstImplement = vehicle
 	for _, implement in pairs(AIUtil.getAllAttachedImplements(vehicle)) do
 		if implement.object ~= nil then
