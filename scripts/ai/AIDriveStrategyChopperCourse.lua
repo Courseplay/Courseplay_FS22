@@ -104,6 +104,7 @@ function AIDriveStrategyChopperCourse:getDriveData(dt, vX, vY, vZ)
         -- Harvesting
         self:checkRendezvous()
         self:checkBlockingUnloader()
+        self:checkUnloaderState()
 
         if self:isChopperWaitingForUnloader() then
             self:debug('No trailer calling for an unloader')
@@ -151,7 +152,7 @@ function AIDriveStrategyChopperCourse:onWaypointPassed(ix, course)
         self:estimateDistanceUntilFull(ix)
         self:callUnloaderWhenNeeded()
         -- Alteration from parent function we need to check every once in a while to see if the next unloader incoming is ready to replace out current unloader
-        self:checkNextUnloader()
+        
     end
 
     AIDriveStrategyFieldWorkCourse.onWaypointPassed(self, ix, course)
@@ -271,9 +272,17 @@ function AIDriveStrategyChopperCourse:checkPipeOffsetXForFruit(ix)
         self:debug('checkPipeOffsetXForFruit: reset chase mode')
     end
     
+
     -- We need a waypoint to check use a supplied one(When we are getting the next unloader) or if nothing is supplied just use our current one
     local fruitCheckWaypoint = ix or self.course:getCurrentWaypointIx()
     self:debug('checkPipeOffsetXForFruit: Fruitwaypoint was set to %d', fruitCheckWaypoint)
+
+    -- Safety check to make sure we don't go beyond the last waypoint. With out some serious logic there is no good way to handle this situation
+    -- Keep the offset the same and hope for the best
+    if self.course:isBeyondLastWaypointIx(fruitCheckWaypoint + 11) then
+        self:debug('checkPipeOffsetXForFruit: Fruitwaypoint %d will be beyond the last waypoint', fruitCheckWaypoint)
+        return
+    end
 
     if not self.course:isOnHeadland(fruitCheckWaypoint) then
         
@@ -389,7 +398,8 @@ function AIDriveStrategyChopperCourse:deregisterUnloader(driver, noEventSend)
             self:cancelRendezvous()
         end
     end
-    self:resetUnloader(driver)
+    self:changeUnloader()
+    --self:resetUnloader(driver)
 end
 
 -- Not sure when this is called TODO make a global reset but only if this is called when everything is shutting down otherwise we will cause logic breaks
@@ -411,7 +421,7 @@ end
 -- This is called any time our NextUnloader is ready to replace out current.(Within a certain distance and aligned) It checks to make sure we have a current and if we do we clear it out
 -- (The current unloader isn't always johnny on the spot telling the chopper to clear itself out)
 -- Then we register as the current and reset the nextUnloader
-function AIDriveStrategyChopperCourse:updateNextUnloader()
+function AIDriveStrategyChopperCourse:changeUnloader()
     if self:getCurrentUnloader() then
         self:resetUnloader(self:getCurrentUnloader())
     end
@@ -433,15 +443,14 @@ end
 
 -- Another safety check to make sure we always have a current unloader
 -- This is ran every waypointpassed() call. It asks if our next unloader is behind and aligned and within 25 meters of last waypoint of its driveToCombine Course
-function AIDriveStrategyChopperCourse:checkNextUnloader()
+function AIDriveStrategyChopperCourse:checkUnloaderState()
     if not self:getCurrentUnloader() and self:getNextUnloader() then
-        self:debug('checkNextUnloader: I lost my current unloder and I have one that is arriving switch them')
-        self:updateNextUnloader()
+        self:debug('checkUnloaderState: I lost my current unloader and I have one that is arriving switch them')
+        self:changeUnloader()
     elseif self:getNextUnloader() and self:getNextUnloader():readyToReceive() then
-        self:debug('checkNextUnloader: Discharging to %s, and %s is ready to come along side', CpUtil.getName(self:getCurrentUnloader().vehicle), CpUtil.getName(self:getNextUnloader().vehicle))
+        self:debug('checkUnloaderState: Discharging to %s, and %s is ready to come along side', CpUtil.getName(self:getCurrentUnloader().vehicle), CpUtil.getName(self:getNextUnloader().vehicle))
         --TODO This is the user method to request drive now. It resets after 3 secs which may cause and already full unloader to return if there is a reason for it go to idle state from drive to unload
         self:getCurrentUnloader():requestDriveUnloadNow()
-        self:updateNextUnloader()
     end
 end
 

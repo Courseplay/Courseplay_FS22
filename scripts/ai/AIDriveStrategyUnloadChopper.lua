@@ -330,8 +330,8 @@ function AIDriveStrategyUnloadChopper:startMovingAwayFromChopper(newState, combi
 
     -- Check to see if we are snugged up against the chopper if we are just back away
     if combine and combine.getCpDriveStrategy and combine:getCpDriveStrategy():getChaseMode() then
-        self:debug('startMovingAwayFromChopper: Create reverse course to back away')
         local backupMultipler = combine:getCpDriveStrategy():getLandRow() and 2.5 or 2
+        self:debug('startMovingAwayFromChopper: Create reverse course to back away, Backup Multipler %.1f',backupMultipler )
         self.driveAwayFromChopperCourse = Course.createStraightReverseCourse(self.vehicle, self.turningRadius * backupMultipler )
        -- If we have a land row we also have to turn around this is to ease pathfinder calculation
         if combine:getCpDriveStrategy():getLandRow() then
@@ -803,7 +803,7 @@ function AIDriveStrategyUnloadChopper:isBehindAndAlignedToCombine(debugEnabled)
         return false
     end
     local d = MathUtil.vector2Length(dx, dz)
-    if d > (30) then
+    if d > (20) then
         self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: too far from combine (%.1f > 30)', d)
         return false
     end
