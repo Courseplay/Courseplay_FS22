@@ -368,7 +368,9 @@ function AIDriveStrategyUnloadChopper:startMovingAwayFromChopper(newState, combi
         else
             -- We had fruit or couldn't find a path lets just drive forward enough to give pathfinder time before we block the unloader
             -- TODO Optimizations pathfinder needs be called while driving this course on rows that are very narrow pathfinder takes a long time
-            self.driveAwayFromChopperCourse = Course.createStraightForwardCourse(self.vehicle, 50) 
+            self.driveAwayFromChopperCourse = Course.createStraightForwardCourse(self.vehicle, self.combineCourse and
+                                                                                                self.combineCourse:getDistanceToNextTurn(self.combineCourse:getCurrentWaypointIx())
+                                                                                                or 50) 
         end
     end
     self:startCourse(self.driveAwayFromChopperCourse, 1)

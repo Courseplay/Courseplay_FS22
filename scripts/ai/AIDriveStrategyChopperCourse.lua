@@ -270,75 +270,76 @@ function AIDriveStrategyChopperCourse:checkPipeOffsetXForFruit(ix)
         self.landRow = false
         self:debug('checkPipeOffsetXForFruit: reset chase mode')
     end
-    
-    -- We need a waypoint to check use a supplied one(When we are getting the next unloader) or if nothing is supplied just use our current one
-    local fruitCheckWaypoint = ix or self.course:getCurrentWaypointIx()
-    self:debug('checkPipeOffsetXForFruit: Fruitwaypoint was set to %d', fruitCheckWaypoint)
+    if self.course then 
+        -- We need a waypoint to check use a supplied one(When we are getting the next unloader) or if nothing is supplied just use our current one
+        local fruitCheckWaypoint = ix or self.course:getCurrentWaypointIx()
+        self:debug('checkPipeOffsetXForFruit: Fruitwaypoint was set to %d', fruitCheckWaypoint)
 
-    if not self.course:isOnHeadland(fruitCheckWaypoint) then
-        local lRow, rowStartIx = self.course:getRowLength(fruitCheckWaypoint)
-        self:debug('checkPipeOffsetXForFruit: lRow = %d rowStartIx = %d',lRow, rowStartIx)
-        -- We didn't get a row length back try again a little further ahead
-        if lRow == 0 then
-            lRow, rowStartIx = self.course:getRowLength(fruitCheckWaypoint+2)
-        end
-        if rowStartIx and not lRow == 0 then -- Yeah! We got a row length lets use the middle of the row to determine where the fruit is
-            fruitCheckWaypoint = self.course:getNextWaypointIxWithinDistance(rowStartIx, lRow / 2)
-            self:debug('Fruitwaypoint was set to the middle of the row %d', fruitCheckWaypoint)
-        else -- We still didn't get a row length just set it 10 ahead and hope for the best
-            fruitCheckWaypoint = fruitCheckWaypoint + 10
-            self:debug('Fruitwaypoint was set 10 ahead to couldn\'t determine row length %d', fruitCheckWaypoint)
-        end
-    end
-
-    -- If we are on the first headland engage chase mode and the pipeoffset to zero disabled for sugarcane
-    if self.course:isOnHeadland(fruitCheckWaypoint, 1 ) and not self.isSugarCaneHarvester then
-        self:debug('I am on a headland engaging chase mode')
-        self.pipeOffsetX = 0
-        self:setPipeOffsetZ(-self.measuredBackDistance) 
-        -- We need this so the unloader knows what turn manuevers to use
-        self.chaseMode = true
-    else
-        -- Check to see if the waypoint that we are using would put the unloader in the fruit using out current pipe offset
-        -- And if would use the opposite value of the pipe offset as the should be cleared because the should be our last row worked
-        local hasFruit = self:isPipeInFruitAtWaypointNow(self.course, fruitCheckWaypoint, self.pipeOffsetX)
-        self:debug('I found fruit %s at waypoint %d', tostring(hasFruit), fruitCheckWaypoint)
-        if hasFruit then
-            self:debug('I found fruit on my current side switch to the opposite side')
-            self.pipeOffsetX = -self.pipeOffsetX
-            -- Perform another check to see with out updated pipeoffset to make sure that was our last row worked and it is indeed clear of fruit
-            -- If we find fruit again that means we no clear lane for the unloader drive and have it follow us down the row we are clearing
-            hasFruit = self:isPipeInFruitAtWaypointNow(self.course, fruitCheckWaypoint, self.pipeOffsetX)
-            if hasFruit and not self.isSugarCaneHarvester then
-                self:debug('I found fruit again I must be on a land row switch to chase mode')
-                self.pipeOffsetX = 0
-                self:setPipeOffsetZ(-self.measuredBackDistance)
-                -- We need this so the unloader knows what turn manuevers to use
-                self.chaseMode = true
-                self.landRow = true
-                return
+        if not self.course:isOnHeadland(fruitCheckWaypoint) then
+            local lRow, rowStartIx = self.course:getRowLength(fruitCheckWaypoint)
+            self:debug('checkPipeOffsetXForFruit: lRow = %d rowStartIx = %d',lRow, rowStartIx)
+            -- We didn't get a row length back try again a little further ahead
+            if lRow == 0 then
+                lRow, rowStartIx = self.course:getRowLength(fruitCheckWaypoint+2)
+            end
+            if lRow > 0 and rowStartIx then -- Yeah! We got a row length lets use the middle of the row to determine where the fruit is
+                fruitCheckWaypoint = self.course:getNextWaypointIxWithinDistance(rowStartIx, lRow / 2)
+                self:debug('Fruitwaypoint was set to the middle of the row %d', fruitCheckWaypoint)
+            else -- We still didn't get a row length just set it 10 ahead and hope for the best
+                fruitCheckWaypoint = fruitCheckWaypoint + 10
+                self:debug('Fruitwaypoint was set 10 ahead to couldn\'t determine row length %d', fruitCheckWaypoint)
             end
         end
-        
-        -- Once final check to make sure the pipeoffset we are going to supply to the unloader is on the field.
-        local x, _, z = localToWorld(self.storage.fruitCheckHelperWpNode.node, self.pipeOffsetX, 0, 0)
-        local fieldId = CpFieldUtil.getFieldIdAtWorldPosition(x, z)
 
-        if not CpFieldUtil.isNodeOnField(self.storage.fruitCheckHelperWpNode.node, fieldId) then
-            -- The point we are using isn't on the field check the other side of the chopper to see if there is fruit and if there is no fruit use have the unloader follow us on that side
-            -- Otherwise just have the unloader follow us
-            if hasFruit and not self.isSugarCaneHarvester then 
-                self.pipeOffsetX = 0
-                self:setPipeOffsetZ(-self.measuredBackDistance - 2)
-                -- We need this so the unloader knows what turn manuevers to use
-                self.chaseMode = true
-                self:debug('I found fruit and the opposite side isn\'t on the field I must be on an edge row engage chase mode')
-            elseif not hasFruit then
-                self:debug('I didn\'t find fruit and the opposite side ins\'t on the field stick to my original side')
-                self.pipeOffsetX = -self.pipeOffsetX
-            end
+        -- If we are on the first headland engage chase mode and the pipeoffset to zero disabled for sugarcane
+        if self.course:isOnHeadland(fruitCheckWaypoint, 1 ) and not self.isSugarCaneHarvester then
+            self:debug('I am on a headland engaging chase mode')
+            self.pipeOffsetX = 0
+            self:setPipeOffsetZ(-self.measuredBackDistance) 
+            -- We need this so the unloader knows what turn manuevers to use
+            self.chaseMode = true
         else
-            self:debug('No fruit found use the same side')
+            -- Check to see if the waypoint that we are using would put the unloader in the fruit using out current pipe offset
+            -- And if would use the opposite value of the pipe offset as the should be cleared because the should be our last row worked
+            local hasFruit = self:isPipeInFruitAtWaypointNow(self.course, fruitCheckWaypoint, self.pipeOffsetX)
+            self:debug('I found fruit %s at waypoint %d', tostring(hasFruit), fruitCheckWaypoint)
+            if hasFruit then
+                self:debug('I found fruit on my current side switch to the opposite side')
+                self.pipeOffsetX = -self.pipeOffsetX
+                -- Perform another check to see with out updated pipeoffset to make sure that was our last row worked and it is indeed clear of fruit
+                -- If we find fruit again that means we no clear lane for the unloader drive and have it follow us down the row we are clearing
+                hasFruit = self:isPipeInFruitAtWaypointNow(self.course, fruitCheckWaypoint, self.pipeOffsetX)
+                if hasFruit and not self.isSugarCaneHarvester then
+                    self:debug('I found fruit again I must be on a land row switch to chase mode')
+                    self.pipeOffsetX = 0
+                    self:setPipeOffsetZ(-self.measuredBackDistance)
+                    -- We need this so the unloader knows what turn manuevers to use
+                    self.chaseMode = true
+                    self.landRow = true
+                    return
+                end
+            end
+            
+            -- Once final check to make sure the pipeoffset we are going to supply to the unloader is on the field.
+            local x, _, z = localToWorld(self.storage.fruitCheckHelperWpNode.node, self.pipeOffsetX, 0, 0)
+            local fieldId = CpFieldUtil.getFieldIdAtWorldPosition(x, z)
+
+            if not CpFieldUtil.isNodeOnField(self.storage.fruitCheckHelperWpNode.node, fieldId) then
+                -- The point we are using isn't on the field check the other side of the chopper to see if there is fruit and if there is no fruit use have the unloader follow us on that side
+                -- Otherwise just have the unloader follow us
+                if hasFruit and not self.isSugarCaneHarvester then 
+                    self.pipeOffsetX = 0
+                    self:setPipeOffsetZ(-self.measuredBackDistance - 2)
+                    -- We need this so the unloader knows what turn manuevers to use
+                    self.chaseMode = true
+                    self:debug('I found fruit and the opposite side isn\'t on the field I must be on an edge row engage chase mode')
+                elseif not hasFruit then
+                    self:debug('I didn\'t find fruit and the opposite side ins\'t on the field stick to my original side')
+                    self.pipeOffsetX = -self.pipeOffsetX
+                end
+            else
+                self:debug('No fruit found use the same side')
+            end
         end
     end
 end
@@ -739,7 +740,7 @@ end
 
 function AIDriveStrategyChopperCourse:isFuelSaveAllowed()
     local isFuelSaveAllowed = AIDriveStrategyCombineCourse.isFuelSaveAllowed(self)
-    return isFuelSaveAllowed or self:isChopperWaitingForUnloader() or not (self:getCurrentUnloader() and self:getCurrentUnloader():isUnloaderTurning())
+    return isFuelSaveAllowed or self:isChopperWaitingForUnloader() or (self:getCurrentUnloader() and not self:getCurrentUnloader():isUnloaderTurning())
 end
 
 -- Not being used?
