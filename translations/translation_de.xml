@@ -321,7 +321,7 @@
     <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Ermöglicht die Anzeige des Kurses auf der kleinen Karte."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Helfer-Infofenster"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Schaltet das Infofenster für die CP-Helfer an oder aus."/>
-    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Aktiviert aber unsichtbar ohne Nachricht"/>
+    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Aktiv mit Nachricht"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Spielermaus"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Aktiviert/deaktiviert die Mausinteraktion außerhalb eines Fahrzeugs."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Bevorzuge erstellten Feldrand"/>
