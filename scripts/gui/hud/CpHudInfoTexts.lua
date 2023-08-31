@@ -195,7 +195,10 @@ function CpHudInfoTexts:enterVehicle(vehicle)
 end
 
 function CpHudInfoTexts:isVisible()
-	return g_Courseplay.globalSettings.infoTextHudActive:getValue()
+    if g_Courseplay.globalSettings.infoTextHudActive:getValue() == g_Courseplay.globalSettings.ACTIVE_HIDE_HUD_WITHOUT_MESSAGE then 
+        return self.activeTexts > 0
+    end
+	return g_Courseplay.globalSettings.infoTextHudActive:getValue() ~= g_Courseplay.globalSettings.DISABLED
 end
 
 function CpHudInfoTexts:isDisabled()

@@ -321,6 +321,7 @@
     <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Permite o desenho de rotas no minimapa."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Mostrar janela de textos informativos"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Exibe uma janela de texto informativo."/>
+    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Active but invisible without message"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Evento do mouse do jogador"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Ativa/desativa o evento do mouse do jogador para a exibição do texto informativo fora de um veículo."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Optar por campo customizado"/>

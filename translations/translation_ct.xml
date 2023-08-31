@@ -321,6 +321,7 @@
     <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="啟用在迷你地圖上繪製路線."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="顯示訊息文本窗口 "/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="顯示一個訊息文本窗口。"/>
+    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Active but invisible without message"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="車外滑鼠交互"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="啟用/禁用車輛外的滑鼠交互。"/>
     <text name="CP_global_setting_preferCustomFields_title" text="首選自訂田地"/>

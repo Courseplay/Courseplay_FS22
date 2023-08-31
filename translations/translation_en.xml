@@ -321,6 +321,7 @@
     <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Enables drawing of the course onto the mini map."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Show info texts window"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Displays an info text window."/>
+    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Active with message"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Player mouse event"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Enables/disables the player mouse event for the info text display outside of a vehicle."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Prefer custom fields"/>

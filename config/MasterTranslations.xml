@@ -1103,6 +1103,10 @@
 			<Text language="de"><![CDATA[Schaltet das Infofenster für die CP-Helfer an oder aus.]]></Text>
 			<Text language="en"><![CDATA[Displays an info text window.]]></Text>
 		</Translation>
+		<Translation name="CP_global_setting_infoTextHudActive_active_hide_without_message">
+			<Text language="de"><![CDATA[Aktiv mit Nachricht]]></Text>
+			<Text language="en"><![CDATA[Active with message]]></Text>
+		</Translation>
 		<Translation name="CP_global_setting_infoTextHudPlayerMouseActive_title">
 			<Text language="de"><![CDATA[Spielermaus]]></Text>
 			<Text language="en"><![CDATA[Player mouse event]]></Text>

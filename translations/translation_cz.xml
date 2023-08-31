@@ -321,6 +321,7 @@
     <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Umožňuje vykreslit trasu do mini mapy."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Zobrazit informační textové okno"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Zobrazí informační textové okno."/>
+    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Active but invisible without message"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Chování myši hráče"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Povolí/zakáže chování myši hráče pro zobrazení informačního textu mimo vozidlo."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Preference vlastního pole"/>

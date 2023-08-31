@@ -321,6 +321,7 @@
     <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Engedélyezi az útvonal kirajzolását a kis térképre."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Infóablak megjelenítése"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Jármüvek állapota, értesítések megjelenítese egy infóablakban."/>
+    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Active but invisible without message"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Kattintás az infóablakban"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Engedélyezi a jármüválasztást az infóablakból."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Felhasználói szántóföld előnyben"/>

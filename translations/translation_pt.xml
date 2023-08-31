@@ -321,6 +321,7 @@
     <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Activa desenhar as rotas no minimap."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Mostrar a janela de informação"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Mostrar a janela de informação."/>
+    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Active but invisible without message"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Uso estendido do cursor do rato"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Liga ou desliga o uso estendido do cursor do rato para as outras modificações que também usam o mesmo para disponibilizar informações fora do veículo. Melhora a compatibilidade com outras modificações."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Detecção prioritário de campos personalizados"/>
