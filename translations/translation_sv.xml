@@ -321,6 +321,7 @@
     <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Möjliggör ritning av kurser på minikartan."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Visa info-textfönster"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Visar ett info-textfönster."/>
+    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Active but invisible without message"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Spelarens musevenemang"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Aktiverar/inaktiverar Spelarens musevenemang för info -textvisningen utanför ett fordon."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Föredra anpassade fält"/>

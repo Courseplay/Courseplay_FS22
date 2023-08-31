@@ -321,6 +321,7 @@
     <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Muliggør tegning af ruten på minimappet."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Vis info tekst vindue"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Viser info tekst vindue."/>
+    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Active but invisible without message"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Mus begivenhed"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Aktiverer/deaktiverer afspillerens musehændelse for infotekstvisning uden for et køretøj."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Foretræk brugerdefinerede marker"/>

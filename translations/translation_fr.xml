@@ -321,6 +321,7 @@
     <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Affiche les courses actives sur la mini-carte de l'ATH."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Afficher la fenêtre d'informations"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Affiche une fenêtre supplémentaire d'informations supplémentaires."/>
+    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Active but invisible without message"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Utilisation du curseur étendue"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Active ou désactive la gestion du curseur pour les autres mods utilisant également le curseur pour les textes d'information en dehors des véhicules. Améliore la compatibilité avec les mods de type VehicleInfo."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Détection prioritaire des champs perso."/>

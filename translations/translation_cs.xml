@@ -321,6 +321,7 @@
     <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Enables drawing of the course onto the mini map."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="显示信息文本窗口 "/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="显示一个信息文本窗口。"/>
+    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Active but invisible without message"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="车外鼠标交互"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="启用/禁用车辆外的鼠标交互。"/>
     <text name="CP_global_setting_preferCustomFields_title" text="首选自定义田地"/>

@@ -321,6 +321,7 @@
     <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Parkurun mini harita üzerine çizilmesini sağlar."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Bilgi metinleri penceresini göster"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Bir bilgi metni penceresi görüntüler."/>
+    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Active but invisible without message"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Oyuncu fare olayı"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Enables/disables the player mouse event for the info text display outside of a vehicle."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Özel alanları tercih et"/>
