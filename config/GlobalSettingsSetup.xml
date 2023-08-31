@@ -53,7 +53,18 @@
 		<Setting classType="AIParameterBooleanSetting" name="showsAllActiveCourses" isUserSetting="true" defaultBool="false" isExpertModeOnly="true"/>
 		<Setting classType="AIParameterBooleanSetting" name="drawOntoTheHudMap" isUserSetting="true" defaultBool="true"/>
 		<Setting classType="AIParameterBooleanSetting" name="showActionEventHelp" isUserSetting="true" defaultBool="false" onChangeCallback="onActionEventTextVisibilityChanged"/>
-		<Setting classType="AIParameterBooleanSetting" name="infoTextHudActive" isUserSetting="true" defaultBool="true"/>
+		<Setting classType="AIParameterSettingList" name="infoTextHudActive" isUserSetting="true" default="1">
+			<Values>
+				<Value name="DISABLED">0</Value>
+				<Value name="ACTIVE">1</Value>
+				<Value name="ACTIVE_HIDE_HUD_WITHOUT_MESSAGE">2</Value>
+			</Values>
+			<Texts>
+				<Text prefix="false">CP_deactivated</Text>
+				<Text prefix="false">CP_activated</Text>
+				<Text>active_hide_without_message</Text>
+			</Texts>
+		</Setting>
 		<Setting classType="AIParameterBooleanSetting" name="infoTextHudPlayerMouseActive" isUserSetting="true" defaultBool="true" isExpertModeOnly="true"/>
 		<Setting classType="AIParameterBooleanSetting" name="preferCustomFields" isUserSetting="true"/>
 		<Setting classType="AIParameterSettingList" name="distanceUnit" isUserSetting="true" default="0" onChangeCallback="onDistanceUnitChanged">

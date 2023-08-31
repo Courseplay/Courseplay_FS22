@@ -324,7 +324,7 @@ function CpAIJob:getIsHudJob()
 end
 
 function CpAIJob:showNotification(aiMessage)
-	if not g_Courseplay.globalSettings.infoTextHudActive:getValue() then 
+	if g_Courseplay.globalSettings.infoTextHudActive:getValue() == g_Courseplay.globalSettings.DISABLED then 
 		CpAIJob:superClass().showNotification(self, aiMessage)
 		return
 	end
