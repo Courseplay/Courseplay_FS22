@@ -8,6 +8,10 @@ ShovelController.POSITIONS = {
     PRE_UNLOADING = 3,
     UNLOADING = 4,
 }
+ShovelController.MAX_TRIGGER_HEIGHT = 8
+ShovelController.MIN_TRIGGER_HEIGHT = 2
+ShovelController.TRIGGER_HEIGHT_RAYCAST_COLLISION_MASK = CollisionFlag.STATIC_WORLD + CollisionFlag.STATIC_OBJECTS + 
+                                                         CollisionFlag.STATIC_OBJECT + CollisionFlag.VEHICLE
 
 function ShovelController:init(vehicle, implement, isConsoleCommand)
     ImplementController.init(self, vehicle, implement)
@@ -93,6 +97,51 @@ end
 
 function ShovelController:isHighDumpShovel()
     return g_vehicleConfigurations:get(self.implement, "shovelMovingToolIx") ~= nil
+end
+
+--- Calculates the minimal unloading height for the trigger.
+---@param triggerNode any
+---@return boolean
+function ShovelController:calculateMinimalUnloadingHeight(triggerNode)
+    local sx, sy, sz = getWorldTranslation(self.vehicle:getAIDirectionNode())
+    local tx, ty, tz = getWorldTranslation(triggerNode)
+    local length = MathUtil.vector2Length(tx - sx, tz - sz) + 0.25
+    local dx, dy, dz = tx - sx, ty - sy, tz -sz
+    local terrainHeight = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, sx, 0, sz)
+    for i=self.MIN_TRIGGER_HEIGHT, self.MAX_TRIGGER_HEIGHT, 0.25 do 
+        self.objectWasHit = false
+        raycastAll(sx, terrainHeight + i, sz,  dx, 0, dz, 
+            "calculateMinimalUnloadingHeightRaycastCallback", 
+            length, self, 
+            self.TRIGGER_HEIGHT_RAYCAST_COLLISION_MASK)
+        if not self.objectWasHit then 
+            self:debug("Finished raycast with minimal height: %.2f", i)
+            self.implement:setCpShovelMinimalUnloadHeight(i + 0.25)
+            return true
+        end
+    end
+    self:debug("Could not find a valid minimal height, so we use the maximum: %.2f", self.MAX_TRIGGER_HEIGHT)
+    self.implement:setCpShovelMinimalUnloadHeight(self.MAX_TRIGGER_HEIGHT)
+    return false
+end
+
+function ShovelController:calculateMinimalUnloadingHeightRaycastCallback(hitObjectId, x, y, z, distance, nx, ny, nz, subShapeIndex, shapeId, isLast)
+    if hitObjectId then 
+        local object = g_currentMission.nodeToObject[hitObjectId]
+        if object then 
+            self:debug("Object: %s was hit!", CpUtil.getName(object))
+            if object ~= self.vehicle and object ~= self.implement then 
+                self.objectWasHit = true
+                return true
+            end
+        else 
+            self:debug("Shape was hit!")
+            self.objectWasHit = true
+            return true
+        end
+        return false
+    end
+    return false
 end
 
 function ShovelController:onFinished()

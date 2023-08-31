@@ -591,6 +591,7 @@ function AIDriveStrategyShovelSiloLoader:approachTrailerForUnloading()
     local firstWpIx = course:getNearestWaypoints(self.vehicle:getAIDirectionNode())
     self:startCourse(course, firstWpIx)
     self:setNewState(self.states.DRIVING_TO_UNLOAD)
+    self.shovelController:calculateMinimalUnloadingHeight(self.targetTrailer.exactFillRootNode)
 end
 
 --- Drives from the position node in front of the trigger to the unload trigger, so the unloading can begin after that.
@@ -602,6 +603,7 @@ function AIDriveStrategyShovelSiloLoader:approachUnloadStationForUnloading()
     local firstWpIx = course:getNearestWaypoints(self.vehicle:getAIDirectionNode())
     self:startCourse(course, firstWpIx)
     self:setNewState(self.states.DRIVING_TO_UNLOAD)
+    self.shovelController:calculateMinimalUnloadingHeight(self.unloadTrigger:getFillUnitExactFillRootNode())
 end
 
 ----------------------------------------------------------------

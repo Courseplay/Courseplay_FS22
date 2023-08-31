@@ -49,12 +49,6 @@ CpShovelPositions = {
 			47
 		},
 	},
-	UNLOADING_POSITION = {
-		ARM_LIMITS = {
-			2.7,
-			2.8
-		},
-	},
 	DEBUG = true
 }
 CpShovelPositions.MOD_NAME = g_currentModName
@@ -64,7 +58,6 @@ CpShovelPositions.KEY = "." .. CpShovelPositions.SPEC_NAME
 
 function CpShovelPositions.initSpecialization()
     local schema = Vehicle.xmlSchemaSavegame
-	
 	g_devHelper.consoleCommands:registerConsoleCommand("cpShovelPositionsPrintShovelDebug", 
         "Prints debug information for the shovel", 
         "consoleCommandPrintShovelDebug", CpShovelPositions)
@@ -74,6 +67,9 @@ function CpShovelPositions.initSpecialization()
 	g_devHelper.consoleCommands:registerConsoleCommand("cpShovelPositionsSetArmLimit", 
         "Set's the arm max limit", 
         "consoleCommandSetPreUnloadArmLimit", CpShovelPositions)
+	g_devHelper.consoleCommands:registerConsoleCommand('cpShovelPositionsSetMinimalUnloadHeight', 
+		'cpSetShovelSetMinimalUnloadHeight',
+		'consoleCommandSetMinimalUnloadHeight', CpShovelPositions)
 end
 
 function CpShovelPositions.prerequisitesPresent(specializations)
@@ -100,7 +96,7 @@ function CpShovelPositions.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "cpResetShovelState", CpShovelPositions.cpResetShovelState)
 	SpecializationUtil.registerFunction(vehicleType, "cpSetupShovelPositions", CpShovelPositions.cpSetupShovelPositions)
 	SpecializationUtil.registerFunction(vehicleType, "areCpShovelPositionsDirty", CpShovelPositions.areCpShovelPositionsDirty)
-	SpecializationUtil.registerFunction(vehicleType, "getCpShovelUnloadingPositionHeight", CpShovelPositions.getCpShovelUnloadingPositionHeight)
+	SpecializationUtil.registerFunction(vehicleType, "setCpShovelMinimalUnloadHeight", CpShovelPositions.setCpShovelMinimalUnloadHeight)
 end
 
 --------------------------------------------
@@ -113,10 +109,10 @@ local function executeConsoleCommand(func, ...)
 		CpUtil.info("Not entered a valid vehicle!")
 		return false
 	end
-	if vehicle:getIsAIActive() then 
-		CpUtil.infoVehicle(vehicle, "Error, AI is active!")
-		return false
-	end
+	-- if vehicle:getIsAIActive() then 
+	-- 	CpUtil.infoVehicle(vehicle, "Error, AI is active!")
+	-- 	return false
+	-- end
 	local shovels, found = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, Shovel)
 	if not found then 
 		CpUtil.infoVehicle(vehicle, "No shovel implement found!")
@@ -191,6 +187,18 @@ function CpShovelPositions:consoleCommandPrintShovelDebug(cylinderedDepth)
 	end)
 end
 
+function CpShovelPositions:consoleCommandSetMinimalUnloadHeight(height)
+	return executeConsoleCommand(function(shovelImplement, height)
+		height = tonumber(height)
+		if height == nil then 
+			CpUtil.infoVehicle(shovelImplement, "No valid height given! height: %s", tostring(height))
+			return false
+		end
+		local spec = shovelImplement.spec_cpShovelPositions
+		spec.minimalShovelUnloadHeight = height
+	end, height)
+end
+
 --------------------------------------------
 --- Event Listener
 --------------------------------------------
@@ -202,6 +210,7 @@ function CpShovelPositions:onLoad(savegame)
 	--- Current shovel state.
 	spec.state = CpShovelPositions.DEACTIVATED
 	spec.isDirty = false
+	spec.minimalShovelUnloadHeight = 4
 end
 
 function CpShovelPositions:onPostAttach()
@@ -287,6 +296,10 @@ function CpShovelPositions:cpSetupShovelPositions()
 						spec.shovelToolIx = i
 						spec.shovelTool = tool
 						spec.shovelVehicle = vehicle
+					elseif tool.axis == "AXIS_FRONTLOADER_ARM2" then 
+						spec.armExtendToolIx = i
+						spec.armExtendTool = tool
+						spec.armExtendVehicle = vehicle
 					end
 				end
 			end
@@ -302,7 +315,9 @@ end
 ---@param heightOffset number|nil
 ---@param isUnloading boolean|nil
 ---@return boolean|nil
-function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, isLoading, heightOffset, isUnloading)
+function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, 
+	isLoading, heightOffset, isUnloading)
+	heightOffset = heightOffset or 0
 	local min, max = unpack(shovelLimits)
 	--- Target angle of the shovel node, which is at the end of the shovel.
 	local targetAngle = math.rad(min) + math.rad(max - min)/2
@@ -310,12 +325,11 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, isLoad
 	--- Target height of the arm.
 	--- This is relative to the attacher joint of the shovel.
 	local targetHeight = min + (max - min)/2
-
 	local shovelTool = self.spec_cpShovelPositions.shovelTool
 	local armTool = self.spec_cpShovelPositions.armTool
 	local shovelVehicle = self.spec_cpShovelPositions.shovelVehicle
 	local armVehicle = self.spec_cpShovelPositions.armVehicle
-
+	local minimalTargetHeight = self.spec_cpShovelPositions.minimalShovelUnloadHeight
 	local curRot = {}
 	curRot[1], curRot[2], curRot[3] = getRotation(shovelTool.node)
 	local oldShovelRot = curRot[shovelTool.rotationAxis]
@@ -331,22 +345,52 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, isLoad
 	
 	local attacherJointNode = self.spec_attachable.attacherJoint.node
 	local angle, shovelNode = CpShovelPositions.getShovelData(self)
-	local _, shovelY, _ = localToLocal(self.rootNode, attacherJointNode, 0, 0, 0)
-	heightOffset = heightOffset or 0
-
-	--- local tempNode = createTransformGroup("tempVehicleSizeCenter")
-	-- link(vehicle.rootNode, tempNode)
-	-- setTranslation(tempNode, vehicle.size.widthOffset, vehicle.size.heightOffset + vehicle.size.height / 2, vehicle.size.lengthOffset)
-	-- DebugUtil.drawDebugCube(tempNode, vehicle.size.width, vehicle.size.height, vehicle.size.length, 0, 0, 1)
-	-- delete(tempNode)
-
-
+	--local _, shovelY, _ = localToLocal(self.rootNode, attacherJointNode, 0, 0, 0)
+	local _, shovelY, _ = localToLocal(armVehicle.rootNode, shovelVehicle.rootNode, 0, 0, 0)
+	
 	--- All values will be calculated in the coordinate system from the vehicle root node.
 
 	local _, ty, tz = localToLocal(getChildAt(armTool.node, 0), armVehicle.rootNode, 0, 0, 0)
 	local ax, ay, az = localToLocal(armTool.node, armVehicle.rootNode, 0, 0, 0)
-	local sx, sy, sz = 0, targetHeight - shovelY - self.size.heightOffset + heightOffset, 0
-	local ex, ey, ez = 0, targetHeight - shovelY - self.size.heightOffset + heightOffset, 20
+	local wx, _, wz = getWorldTranslation(armVehicle.rootNode)
+	local deltaY = 0
+	if isUnloading then
+		deltaY = minimalTargetHeight - ay
+	end
+	local by = shovelY
+	if self.spec_foliageBending and self.spec_foliageBending.bendingNodes[1] then 
+		local bending = self.spec_foliageBending.bendingNodes[1]
+		if bending.id ~= nil and bending.node ~= nil then 
+			local sx, _, sz = localToWorld(shovelTool.node, 0, 0, 0)
+			local bx1, by1, bz1 = localToWorld(bending.node, 0, 0, bending.minZ)
+			local bx2, by2, bz2 = localToWorld(bending.node, 0, 0, bending.maxZ)
+			DebugUtil.drawDebugLine(bx1, by1, bz1, bx2, by2, bz2, 0, 0, 1)
+			if by1 < by2 then 
+				_, by, _ = worldToLocal(shovelTool.node, sx, by1, sz)
+				DebugUtil.drawDebugLine(sx, by1, sz, sx, by1 - by, sz, 0, 0, 1)
+			else 
+				_, by, _ = worldToLocal(shovelTool.node, sx, by2, sz)
+				DebugUtil.drawDebugLine(sx, by2, sz, sx, by2 - by, sz, 0, 0, 1)
+			end
+		end
+	else 
+		local bx1, by1, bz1 = localToWorld(self.rootNode, 0, 0, self.size.lengthOffset + self.size.length/2)
+		local bx2, by2, bz2 = localToWorld(self.rootNode, 0, 0, self.size.lengthOffset - self.size.length/2)
+		DebugUtil.drawDebugLine(bx1, by1, bz1, bx2, by2, bz2, 0, 0, 1)
+		local sx, _, sz = localToWorld(shovelTool.node, 0, 0, 0)
+		if by1 < by2 then 
+			_, by, _ = worldToLocal(shovelTool.node, sx, by1, sz)
+		else 
+			_, by, _ = worldToLocal(shovelTool.node, sx, by2, sz)
+		end
+	end
+
+	local sx, sy, sz = 0, -by + targetHeight + heightOffset + deltaY, 0
+	local ex, ey, ez = 0, -by + targetHeight + heightOffset + deltaY, 20
+	local wsx, wsy, wsz = localToWorld(armVehicle.rootNode, sx, sy, sz)
+	local wex, wey, wez = localToWorld(armVehicle.rootNode, ex, ey, ez)
+	local terrainHeight = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, wsx, 0, wsz)
+
 	local yMax = ay + radiusArmToolToShovelTool
 	local yMin = ay - radiusArmToolToShovelTool
 	if sy > yMax then 
@@ -359,8 +403,9 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, isLoad
 		sy = yMin + 0.01
 		ey = yMin + 0.01
 	end
-	local hasIntersection, i1z, i1y, i2z, i2y = MathUtil.getCircleLineIntersection(az, ay, radiusArmToolToShovelTool,
-															sz, sy, ez, ey)
+	local hasIntersection, i1z, i1y, i2z, i2y = MathUtil.getCircleLineIntersection(
+		az, ay, radiusArmToolToShovelTool,
+		sz, sy, ez, ey)
 	
 	local isDirty, alpha, oldRotRelativeArmRot
 	if hasIntersection then
@@ -373,9 +418,14 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, isLoad
 
 		alpha = math.atan2(i1y - ay, i1z - az)
 		local beta = -math.atan2(i2y - ay, i2z - az)
-		local angle = MathUtil.clamp(oldArmRot - MathUtil.getAngleDifference(alpha, oldRotRelativeArmRot), armTool.rotMin, armTool.rotMax)
-		isDirty = ImplementUtil.moveMovingToolToRotation(armVehicle, armTool, dt, angle)
+		local angle = MathUtil.clamp(oldArmRot - MathUtil.getAngleDifference(
+			alpha, oldRotRelativeArmRot), armTool.rotMin, armTool.rotMax)
+		isDirty = ImplementUtil.moveMovingToolToRotation(
+			armVehicle, armTool, dt, angle)
 	end
+
+	--- Controls the arm extension
+
 
 	local highDumpShovelTool
 	local highDumpShovelIx = g_vehicleConfigurations:get(self, "shovelMovingToolIx")
@@ -414,20 +464,19 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, isLoad
 	local goalAngle = MathUtil.clamp(oldShovelRot + deltaAngle, shovelTool.rotMin, shovelTool.rotMax)
 	isDirty = ImplementUtil.moveMovingToolToRotation(shovelVehicle, 
 		shovelTool, dt, goalAngle) or isDirty
-	
 	if isUnloading and highDumpShovelTool then
 		--- Uses the high dump shovel functionality.
 		isDirty = isDirty or ImplementUtil.moveMovingToolToRotation(self, highDumpShovelTool, dt,
 				highDumpShovelTool.invertAxis and highDumpShovelTool.rotMin or highDumpShovelTool.rotMax)
 	end
-
 	--- Debug information
-	local wsx, wsy, wsz = localToWorld(armVehicle.rootNode, sx, sy, sz)
-	local wex, wey, wez = localToWorld(armVehicle.rootNode, ex, ey, ez)
-	if g_currentMission.controlledVehicle == self.rootVehicle and CpDebug:isChannelActive(CpDebug.DBG_SILO) then 
+	if g_currentMission.controlledVehicle == shovelVehicle.rootVehicle and 
+		CpDebug:isChannelActive(CpDebug.DBG_SILO, shovelVehicle.rootVehicle) then 
 		DebugUtil.drawDebugLine(wsx, wsy, wsz, wex, wey, wez)
-		DebugUtil.drawDebugCircleAtNode(armVehicle.rootNode, radiusArmToolToShovelTool, 30, nil, 
-			true, {ax, ay, az})
+		DebugUtil.drawDebugLine(wsx, terrainHeight + minimalTargetHeight , wsz, 
+			wex, terrainHeight + minimalTargetHeight, wez, 0, 0, 1)
+		DebugUtil.drawDebugCircleAtNode(armVehicle.rootNode, radiusArmToolToShovelTool, 
+			30, nil, true, {ax, ay, az})
 		CpUtil.drawDebugNode(armVehicle.rootNode)
 		CpUtil.drawDebugNode(armTool.node)
 		CpUtil.drawDebugNode(shovelTool.node)
@@ -438,7 +487,7 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, isLoad
 		if hasIntersection then	
 			table.insert(debugData, {
 				value = "",
-				name = "Arm Rotation" })
+				name = "Arm Rotation:" })
 			table.insert(debugData, { 
 				name = "alpha", value = math.deg(alpha) })
 			table.insert(debugData, { 
@@ -448,10 +497,14 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, isLoad
 			table.insert(debugData, {
 				name = "deltaAlpha", value = math.deg(MathUtil.getAngleDifference(alpha, oldRotRelativeArmRot)) })
 			table.insert(debugData, {
+				name = "deltaY", value = deltaY})
+			table.insert(debugData, {
+				name = "shovelY", value = shovelY})
+			table.insert(debugData, {
 				name = "dirRot", value = math.deg(oldRotRelativeArmRot) })
 			table.insert(debugData, {
 				name = "distAlpha", value = MathUtil.vector2Length(i1z - tz, i1y - ty) })
-		
+
 			table.insert(debugData, {
 				value = "",
 				name = "",
@@ -460,14 +513,35 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, isLoad
 		end
 		table.insert(debugData, {
 			value = "",
-			name = "Shovel Rotation" })
+			name = "Shovel Rotation:" })
 		table.insert(debugData, { 
 			name = "angle", value = math.deg(angle) })
 		table.insert(debugData, { 
 			name = "deltaAngle", value = math.deg(deltaAngle) })	
 		table.insert(debugData, { 
 			name = "targetAngle", value = math.deg(targetAngle) })	
-		DebugUtil.renderTable(0.4, 0.4, 0.018, debugData, 0)
+		table.insert(debugData, {
+			value = "",
+			name = "Diff:" })
+		table.insert(debugData, { 
+			name = "unload height", value = minimalTargetHeight })		
+
+		DebugUtil.renderTable(0.4, 0.4, 0.018, 
+			debugData, 0)
+
+		if self.spec_foliageBending ~= nil then
+			local offset = 0.25
+	
+			for _, bendingNode in ipairs(self.spec_foliageBending.bendingNodes) do
+				if bendingNode.id ~= nil then
+					DebugUtil.drawDebugRectangle(bendingNode.node, bendingNode.minX, bendingNode.maxX, bendingNode.minZ, bendingNode.maxZ, bendingNode.yOffset, 1, 0, 0)
+					DebugUtil.drawDebugRectangle(bendingNode.node, bendingNode.minX - offset, bendingNode.maxX + offset, bendingNode.minZ - offset, bendingNode.maxZ + offset, bendingNode.yOffset, 0, 1, 0)
+					DebugUtil.drawDebugNode(bendingNode.node, "Bending node")
+				end	
+			end
+		end
+
+
 	end
 	return isDirty
 end
@@ -506,7 +580,9 @@ function CpShovelPositions:updatePreUnloadPosition(dt)
 	local isDirty
 	if angle then
 		isDirty = CpShovelPositions.setShovelPosition(self, dt, 
-			CpShovelPositions.PRE_UNLOAD_POSITION.SHOVEL_LIMITS, CpShovelPositions.PRE_UNLOAD_POSITION.ARM_LIMITS) 
+			CpShovelPositions.PRE_UNLOAD_POSITION.SHOVEL_LIMITS, 
+			CpShovelPositions.PRE_UNLOAD_POSITION.ARM_LIMITS,
+			false, nil) 
 	end
 	spec.isDirty = isDirty
 end
@@ -524,39 +600,25 @@ function CpShovelPositions:updateUnloadingPosition(dt)
 	spec.isDirty = isDirty
 end
 
-function CpShovelPositions:getCpShovelUnloadingPositionHeight()
-	return CpShovelPositions.PRE_UNLOAD_POSITION.ARM_LIMITS
+function CpShovelPositions:setCpShovelMinimalUnloadHeight(height)
+	local spec = self.spec_cpShovelPositions
+	spec.minimalShovelUnloadHeight = height
 end
 
 --- Gets all relevant shovel data.
 function CpShovelPositions:getShovelData()
 	local shovelSpec = self.spec_shovel
-	if shovelSpec == nil then 
-		CpShovelPositions.debug(self, "Shovel spec not found!")
-		return 
-	end
 	local info = shovelSpec.shovelDischargeInfo
     if info == nil or info.node == nil then 
-		CpShovelPositions.debugt(self, "Info or node not found!")
+		CpShovelPositions.debug(self, "Info or node not found!")
 		return 
 	end
     if info.maxSpeedAngle == nil or info.minSpeedAngle == nil then
 		CpShovelPositions.debug(self, "maxSpeedAngle or minSpeedAngle not found!")
 		return 
 	end
-
-	if shovelSpec.shovelNodes == nil then 
-		CpShovelPositions.debug(self, "Shovel nodes not found!")
-		return 
-	end
-
 	if shovelSpec.shovelNodes[1] == nil then 
 		CpShovelPositions.debug(self, "Shovel nodes index 0 not found!")
-		return 
-	end
-
-	if shovelSpec.shovelNodes[1].node == nil then 
-		CpShovelPositions.debug(self, "Shovel node not found!")
 		return 
 	end
 	local _, dy, _ = localDirectionToWorld(info.node, 0, 0, 1)

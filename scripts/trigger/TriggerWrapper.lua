@@ -25,6 +25,8 @@ function CpTrigger:getTarget()
 	return self.trigger:getTarget()
 end
 
+---@param fillUnitIndex number
+---@return number
 function CpTrigger:getFillUnitExactFillRootNode(fillUnitIndex)
 	return self.trigger:getFillUnitExactFillRootNode(fillUnitIndex)
 end
