@@ -112,8 +112,32 @@ You can define the following custom settings:
     Ignore bales detected by the forward-looking proximity controller if any implement has this set to true.
     This can be set for bale pushers to prevent the Courseplay driver stopping when a bale is blocking the way.
 
+- fixWheelLoaderDirectionNodeByMovingToolIx
+	Fixes the ai direction node for the platinum wheel loaders, as their direction is not changed based on the rotation.
+	As a fix the parent node of the arm moving tool ix is used.
+
 -->
 <VehicleConfigurations>
+	<Configurations>
+		<Configuration type="FLOAT">toolOffsetX</Configuration>
+		<Configuration type="BOOL">noReverse</Configuration>
+		<Configuration type="FLOAT">turnRadius</Configuration>
+		<Configuration type="FLOAT">workingWidth</Configuration>
+		<Configuration type="FLOAT">balerUnloadDistance</Configuration>
+		<Configuration type="FLOAT">directionNodeOffsetZ</Configuration>
+		<Configuration type="BOOL">implementWheelAlwaysOnGround</Configuration>
+		<Configuration type="BOOL">ignoreCollisionBoxesWhenFolded</Configuration>
+		<Configuration type="FLOAT">baleCollectorOffset</Configuration>
+		<Configuration type="BOOL">disableUnfolding</Configuration>
+		<Configuration type="BOOL">raiseLate</Configuration>
+		<Configuration type="BOOL">lowerEarly</Configuration>
+		<Configuration type="BOOL">useVehicleSizeForMarkers</Configuration>
+		<Configuration type="INT">armMovingToolIx</Configuration>
+		<Configuration type="INT">movingToolIx</Configuration>
+		<Configuration type="INT">shovelMovingToolIx</Configuration>
+		<Configuration type="BOOL">ignoreBaleCollisionForward</Configuration>
+		<Configuration type="INT">fixWheelLoaderDirectionNodeByMovingToolIx</Configuration>
+	</Configurations>
     <!--[GIANTS]-->
 
     <!-- Harvesters -->
@@ -343,6 +367,9 @@ You can define the following custom settings:
 	<Vehicle name="l180HHighTipShovel.xml"
              shovelMovingToolIx = "1"
     />
+	<Vehicle name="l180H.xml"
+		fixWheelLoaderDirectionNodeByMovingToolIx = "1"
+	/>
 
     <!--Vermeer-->
     <Vehicle name="tm1410.xml"

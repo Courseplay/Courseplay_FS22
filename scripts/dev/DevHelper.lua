@@ -262,10 +262,22 @@ function DevHelper:showAIMarkers()
     CpUtil.drawDebugNode(frontMarker, false, 3)
     CpUtil.drawDebugNode(backMarker, false, 3)
 
-    if self.vehicle:getAIDirectionNode() then 
+    local directionNode = self.vehicle:getAIDirectionNode()
+    if directionNode then 
         CpUtil.drawDebugNode(self.vehicle:getAIDirectionNode(), false , 3, "AiDirectionNode")
     end
-
+    local reverseNode = self.vehicle:getAIReverserNode()
+    if reverseNode and reverseNode ~= directionNode then 
+        CpUtil.drawDebugNode(reverseNode, false , 3, "AiReverseNode")
+    end
+    local steeringNode = self.vehicle:getAISteeringNode()
+    if steeringNode and steeringNode ~= directionNode then 
+        CpUtil.drawDebugNode(steeringNode, false , 3, "AiSteeringNode")
+    end
+    local articulatedAxisReverseNode = self.spec_articulatedAxis and self.spec_articulatedAxis.aiRevereserNode
+    if articulatedAxisReverseNode and articulatedAxisReverseNode ~= directionNode and articulatedAxisReverseNode ~= reverseNode then 
+        CpUtil.drawDebugNode(articulatedAxisReverseNode, false , 3, "AiArticulatedAxisReverseNode")
+    end   
 end
 
 function DevHelper:togglePpcControlledNode()
