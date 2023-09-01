@@ -321,7 +321,7 @@
     <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Consente di visualizzare il percorso sulla minimappa."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Mostra la finestra dei testi informativi"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Visualizza una finestra di testo informativo."/>
-    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Active but invisible without message"/>
+    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Attivo ma invisibile senza messaggio"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Interazione mouse fuori veicolo"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Abilita/disabilita l'interazione del mouse all'esterno di un veicolo."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Preferire il campo personalizzato"/>
