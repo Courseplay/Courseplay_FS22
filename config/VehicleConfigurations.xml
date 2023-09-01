@@ -134,6 +134,11 @@ You can define the following custom settings:
 
     <!-- Implements -->
 
+    <!--\vehicles\elho-->
+    <Vehicle name="duett7300.xml"
+             workingWidth = "7.3"
+    />
+
     <!--\vehicles\holaras-->
     <Vehicle name="stego485Pro.xml"
              workingWidth = "4.8"
