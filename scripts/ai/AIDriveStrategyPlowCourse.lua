@@ -49,7 +49,10 @@ function AIDriveStrategyPlowCourse:getDriveData(dt, vX, vY, vZ)
         -- the unworked side, and then can we start working
         self:setMaxSpeed(0)
         self:updatePlowOffset()
-        if self:isPlowTurning() then
+        if self:isPlowRotating() then
+            --- If the plow is already being rotated at the start,
+            --- we still need to check if the rotation 
+            --- is in correct direction, as the course generator directed.
             self:rotatePlows()
 			self:debug("Needs to wait until the plow has finished rotating.")
 			self.state = self.states.ROTATING_PLOW
@@ -59,7 +62,7 @@ function AIDriveStrategyPlowCourse:getDriveData(dt, vX, vY, vZ)
 		end
     elseif self.state == self.states.ROTATING_PLOW then
         self:setMaxSpeed(0)
-        if not self:isPlowTurning() then
+        if not self:isPlowRotating() then
             self:updatePlowOffset()
             self:startWaitingForLower()
             self:lowerImplements()
@@ -104,7 +107,7 @@ end
 
 --- Is a plow currently rotating?
 ---@return boolean
-function AIDriveStrategyPlowCourse:isPlowTurning()
+function AIDriveStrategyPlowCourse:isPlowRotating()
     for _, controller in pairs(self.controllers) do 
         if controller.isRotationActive and controller:isRotationActive() then 
             return true
