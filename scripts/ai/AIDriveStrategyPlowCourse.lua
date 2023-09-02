@@ -45,8 +45,6 @@ end
 
 function AIDriveStrategyPlowCourse:getDriveData(dt, vX, vY, vZ)
     if self.state == self.states.INITIAL then
-        -- When starting work with a plow it first may need to be unfolded and then turned so it is facing to
-        -- the unworked side, and then can we start working
         self:setMaxSpeed(0)
         self:updatePlowOffset()
         if self:isPlowRotating() then
@@ -57,12 +55,16 @@ function AIDriveStrategyPlowCourse:getDriveData(dt, vX, vY, vZ)
 			self:debug("Needs to wait until the plow has finished rotating.")
 			self.state = self.states.ROTATING_PLOW
 		else 
+            --- The plow can not be rotated, 
+            --- so we check if the plow is unfolded
+            --- and try again to rotate the plow in the correct direction.
             self:debug("Plows have to be unfolded first!")
 			self.state = self.states.UNFOLDING_PLOW
 		end
     elseif self.state == self.states.ROTATING_PLOW then
         self:setMaxSpeed(0)
         if not self:isPlowRotating() then
+            --- Initial Rotation has finished and fieldwork can start.
             self:updatePlowOffset()
             self:startWaitingForLower()
             self:lowerImplements()
@@ -71,9 +73,17 @@ function AIDriveStrategyPlowCourse:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.UNFOLDING_PLOW then
         self:setMaxSpeed(0)
         if self:isPlowRotationAllowed() then 
+            --- The Unfolding has finished and 
+            --- we need to check if the rotation is correct.
             self:rotatePlows()
             self:debug("Plow was unfolded and rotation can begin")
 			self.state = self.states.ROTATING_PLOW
+        elseif self:getCanContinueWork() then 
+            --- Unfolding has finished and no extra rotation is needed.
+            self:updatePlowOffset()
+            self:startWaitingForLower()
+            self:lowerImplements()
+            self:debug('Plow is unfolded and ready to start')
         end
     end
     return AIDriveStrategyFieldWorkCourse.getDriveData(self, dt, vX, vY, vZ)
