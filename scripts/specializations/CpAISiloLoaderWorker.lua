@@ -54,7 +54,6 @@ function CpAISiloLoaderWorker.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartText', CpAISiloLoaderWorker.getCpStartText)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtFirstWp', CpAISiloLoaderWorker.startCpAtFirstWp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtLastWp', CpAISiloLoaderWorker.startCpAtLastWp)
-    SpecializationUtil.registerOverwrittenFunction(vehicleType, "getAIDirectionNode", CpAISiloLoaderWorker.getAIDirectionNode)
 end
 ------------------------------------------------------------------------------------------------------------------------
 --- Event listeners
@@ -192,25 +191,4 @@ end
 
 function CpAISiloLoaderWorker:stopCpSiloLoaderWorker()
     self:stopCpDriver()
-end
-
---- Fixes the Direction for the platinum wheel loader, as
---- their direction is not updated base on the rotation.
---- So we use the parent node of the arm tool node.
----@param superFunc any
-function CpAISiloLoaderWorker:getAIDirectionNode(superFunc)
-    if not self:getIsCpActive() then return superFunc(self) end
-    local movingToolIx = g_vehicleConfigurations:get(self, "fixWheelLoaderDirectionNodeByMovingToolIx") 
-    if movingToolIx ~= nil then
-        -- Fix the Platinum wheel loader's "revereser" node, which is pointing backwards instead forwards
-        -- like on every other articulated axis vehicle
-        -- TODO: this should probably be in an appended function to ArticulatedAxis
-        -- TODO: maybe even add a new node and use that, instead of rotating the original node
-        -- TODO: add a separate vehicle config entry just for this, in case not all the Platinum vehicles are screwed up the same way?
-        if self.spec_articulatedAxis and self.spec_articulatedAxis.aiRevereserNode then
-            setRotation(self.spec_articulatedAxis.aiRevereserNode, 0, 0, 0)
-        end
-        return getParent(self.spec_cylindered.movingTools[movingToolIx].node)
-    end
-    return superFunc(self)
 end

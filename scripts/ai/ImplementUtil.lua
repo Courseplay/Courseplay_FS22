@@ -366,9 +366,10 @@ end
 ---@param tool table moving tool
 ---@param dt number
 ---@param rotTarget number target rotation in radiant
+---@return boolean
 function ImplementUtil.moveMovingToolToRotation(implement, tool, dt, rotTarget)
     if tool.rotSpeed == nil then
-		return
+		return false
 	end
 	local spec = implement.spec_cylindered
 	tool.curRot[1], tool.curRot[2], tool.curRot[3] = getRotation(tool.node)

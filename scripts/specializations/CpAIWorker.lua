@@ -79,6 +79,8 @@ function CpAIWorker.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'stopCurrentAIJob', CpAIWorker.stopCurrentAIJob)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanMotorRun', CpAIWorker.getCanMotorRun)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'stopFieldWorker', CpAIWorker.stopFieldWorker)
+    SpecializationUtil.registerOverwrittenFunction(vehicleType, "getAIReverserNode", CpAIWorker.getAIReverserNode)
+    SpecializationUtil.registerOverwrittenFunction(vehicleType, "getAIDirectionNode", CpAIWorker.getAIDirectionNode)
 end
 
 ---------------------------------------------------
@@ -510,6 +512,39 @@ function CpAIWorker:getCpReverseDrivingDirectionNode()
     end
     return spec.reverseDrivingDirectionNode
 end
+
+--- Fixes the ai reverse node rotation for articulated axis vehicles,
+--- if the node is pointing backwards and not forwards.
+function CpAIWorker:getAIReverserNode(superFunc)
+    local spec = self.spec_cpAIWorker
+ --   if not self:getIsCpActive() then return superFunc(self) end
+    if self.spec_articulatedAxis and self.spec_articulatedAxis.aiRevereserNode then
+        if g_vehicleConfigurations:get(self, "articulatedAxisReverseNodeInverted") then
+            if not spec.articulatedAxisReverseNode then 
+                spec.articulatedAxisReverseNode = CpUtil.createNode(
+                    "cpAiRevereserNode", 0, 0, 0, 
+                    getParent(self.spec_articulatedAxis.aiRevereserNode))
+            end
+            return spec.articulatedAxisReverseNode
+        end
+    end
+    return superFunc(self)
+end
+
+--- Fixes the Direction for the platinum wheel loader, as
+--- their direction is not updated base on the rotation.
+--- So we use the parent node of the arm tool node.
+---@param superFunc any
+function CpAIWorker:getAIDirectionNode(superFunc)
+ --   if not self:getIsCpActive() then return superFunc(self) end
+    local movingToolIx = g_vehicleConfigurations:get(self, "fixWheelLoaderDirectionNodeByMovingToolIx") 
+    if movingToolIx ~= nil then
+        return getParent(self.spec_cylindered.movingTools[movingToolIx].node)
+    end
+    return superFunc(self)
+end
+
+
 
 --- TODO: Do we really need the AIDriveStrategyCollision from giants, as this one is only active for fieldwork?
 function CpAIWorker:isCollisionDetectionEnabled()

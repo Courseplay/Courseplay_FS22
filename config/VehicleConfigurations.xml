@@ -116,6 +116,9 @@ You can define the following custom settings:
 	Fixes the ai direction node for the platinum wheel loaders, as their direction is not changed based on the rotation.
 	As a fix the parent node of the arm moving tool ix is used.
 
+- articulatedAxisReverseNodeInverted
+	Is the reverse node for articulated axis vehicles rotated by 180 degree?
+
 -->
 <VehicleConfigurations>
 	<Configurations>
@@ -137,6 +140,7 @@ You can define the following custom settings:
 		<Configuration type="INT">shovelMovingToolIx</Configuration>
 		<Configuration type="BOOL">ignoreBaleCollisionForward</Configuration>
 		<Configuration type="INT">fixWheelLoaderDirectionNodeByMovingToolIx</Configuration>
+		<Configuration type="BOOL">articulatedAxisReverseNodeInverted</Configuration>
 	</Configurations>
     <!--[GIANTS]-->
 
@@ -369,6 +373,7 @@ You can define the following custom settings:
     />
 	<Vehicle name="l180H.xml"
 		fixWheelLoaderDirectionNodeByMovingToolIx = "1"
+		articulatedAxisReverseNodeInverted = "true"
         turnRadius = "12"
 	/>
     <Vehicle name="l120HHighTipShovel.xml"
@@ -376,6 +381,7 @@ You can define the following custom settings:
     />
 	<Vehicle name="l120H.xml"
 		fixWheelLoaderDirectionNodeByMovingToolIx = "1"
+		articulatedAxisReverseNodeInverted = "true"
         turnRadius = "10"
 	/>
 

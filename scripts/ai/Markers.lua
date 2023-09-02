@@ -15,6 +15,13 @@
 
 Markers = {}
 
+function Markers.registerConsoleCommands()
+    g_devHelper.consoleCommands:registerConsoleCommand("cpFrontAndBackerMarkerCalculate", 
+        "Calculates the front and back markers", "consoleCommandReload", Markers)
+    g_devHelper.consoleCommands:registerConsoleCommand("cpFrontAndBackerMarkerPrintDebug", 
+        "Print Marker data", "consoleCommandPrintDebug", Markers)
+end
+Markers.registerConsoleCommands()
 -- a global table with the vehicle as the key to persist the marker nodes we don't want to leak through jobs
 -- and also don't want to deal with keeping track when to delete them
 g_vehicleMarkers = {}
@@ -119,4 +126,32 @@ function Markers.getMarkerNodes(vehicle)
     local frontMarker = Markers.getFrontMarkerNode(vehicle)
     local backMarker = Markers.getBackMarkerNode(vehicle)
     return frontMarker, backMarker, g_vehicleMarkers[vehicle].frontMarkerOffset, g_vehicleMarkers[vehicle].backMarkerOffset
+end
+
+--------------------------------------------
+--- Console Commands
+--------------------------------------------
+
+function Markers:consoleCommandReload(backDistance)
+    local vehicle = g_currentMission.controlledVehicle
+    if not vehicle then 
+        CpUtil.info("No valid vehicle entered!")
+        return     
+    end
+    if backDistance then 
+        backDistance = tonumber(backDistance)
+    end
+    Markers.setMarkerNodes(vehicle, backDistance)
+    Markers:consoleCommandPrintDebug()
+end
+
+function Markers:consoleCommandPrintDebug()
+    local vehicle = g_currentMission.controlledVehicle
+    if not vehicle then 
+        CpUtil.info("No valid vehicle entered!")
+        return     
+    end
+    local _, frontMarkerDistance = Markers.getFrontMarkerNode(vehicle)
+    local _, backMarkerDistance = Markers.getBackMarkerNode(vehicle)
+    CpUtil.infoVehicle(vehicle, "Front distance: %.2f, back distance: %.2f", frontMarkerDistance, backMarkerDistance)
 end

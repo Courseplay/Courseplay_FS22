@@ -130,8 +130,8 @@ function AIDriveStrategyShovelSiloLoader:startWithoutCourse(jobParameters)
     local dirX, dirZ = self.silo:getLengthDirection()
     local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
     self.siloFrontNode = CpUtil.createNode("siloFrontNode", cx, cz, yRot)
-    self.siloAreaToAvoid = PathfinderUtil.NodeArea(self.siloFrontNode, -self.silo:getWidth()/2 - 1, 
-        -1, self.silo:getWidth() + 2, self.silo:getLength() + 2)
+    self.siloAreaToAvoid = PathfinderUtil.NodeArea(self.siloFrontNode, -self.silo:getWidth()/2 - 3, 
+        -3, self.silo:getWidth() + 6, self.silo:getLength() + 6)
 
     self.siloController = CpBunkerSiloLoaderController(self.silo, self.vehicle, self)
 end
@@ -159,7 +159,9 @@ function AIDriveStrategyShovelSiloLoader:setAllStaticParameters()
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
     self.proximityController = ProximityController(self.vehicle, self:getWorkWidth())
     self.proximityController:registerIgnoreObjectCallback(self, self.ignoreProximityObject)
-    self:setFrontAndBackMarkers()
+    Markers.setMarkerNodes(self.vehicle)
+    self.frontMarkerNode, self.backMarkerNode, self.frontMarkerDistance, self.backMarkerDistance = 
+        Markers.getMarkerNodes(self.vehicle)
     self.siloEndProximitySensor = SingleForwardLookingProximitySensorPack(self.vehicle, self.shovelController:getShovelNode(), 5, 1)
     self.heapNode = CpUtil.createNode("heapNode", 0, 0, 0, nil)
     self.lastTrailerSearch = 0
@@ -635,7 +637,7 @@ end
 function AIDriveStrategyShovelSiloLoader:startReversingAwayFromUnloading()
     local _, _, spaceToTrailer = localToLocal(self.shovelController:getShovelNode(), self.vehicle:getAIDirectionNode(), 0, 0, 0)
     local course = Course.createStraightReverseCourse(self.vehicle, 2*spaceToTrailer, 
-        0, self.vehicle.rootNode )
+        0, self.vehicle:getAIDirectionNode() )
     self:startCourse(course, 1)
     self:setNewState(self.states.REVERSING_AWAY_FROM_UNLOAD)
 end

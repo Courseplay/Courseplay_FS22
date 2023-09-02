@@ -133,7 +133,7 @@ end
 --- @return any|nil the value of the configuration attribute or nil if there's no custom config for it
 function VehicleConfigurations:get(object, attribute)
     if not self:isValidAttribute(attribute) then 
-        CpUtil.infoImplement(object, "The given attribute name: %s is not valid!", attribute)
+        CpUtil.infoImplement(object, "The given vehicle config attribute name: %s is not valid!", attribute)
         return 
     end
     if object and object.configFileNameClean then   

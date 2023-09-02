@@ -116,7 +116,7 @@ function ShovelController:calculateMinimalUnloadingHeight(triggerNode)
             self.TRIGGER_HEIGHT_RAYCAST_COLLISION_MASK)
         if not self.objectWasHit then 
             self:debug("Finished raycast with minimal height: %.2f", i)
-            self.implement:setCpShovelMinimalUnloadHeight(i + 0.25)
+            self.implement:setCpShovelMinimalUnloadHeight(i + 1)
             return true
         end
     end

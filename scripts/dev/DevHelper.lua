@@ -39,15 +39,26 @@ function DevHelper:debug(...)
     CpUtil.info(string.format(...))
 end
 
+--- Makes sure deleting of the selected vehicle can be detected
+function DevHelper:removedSelectedVehicle()
+    self.vehicle = nil
+end
+
 function DevHelper:update()
     if not self.isEnabled then return end
 
     local lx, lz, hasCollision, vehicle
 
     -- make sure not calling this for something which does not have courseplay installed (only ones with spec_aiVehicle)
-    if g_currentMission.controlledVehicle and g_currentMission.controlledVehicle.spec_aiVehicle then
-
+    if g_currentMission.controlledVehicle and g_currentMission.controlledVehicle.spec_cpAIWorker then
+        if self.vehicle ~= g_currentMission.controlledVehicle then
+            if self.vehicle then
+                self.vehicle:removeDeleteListener(self, "removedSelectedVehicle")
+            end
+            --self.vehicleData = PathfinderUtil.VehicleData(g_currentMission.controlledVehicle, true)
+        end
         self.vehicle = g_currentMission.controlledVehicle
+        self.vehicle:addDeleteListener(self, "removedSelectedVehicle")
         self.node = g_currentMission.controlledVehicle:getAIDirectionNode()
         lx, _, lz = localDirectionToWorld(self.node, 0, 0, 1)
 
@@ -264,19 +275,19 @@ function DevHelper:showAIMarkers()
 
     local directionNode = self.vehicle:getAIDirectionNode()
     if directionNode then 
-        CpUtil.drawDebugNode(self.vehicle:getAIDirectionNode(), false , 3, "AiDirectionNode")
+        CpUtil.drawDebugNode(self.vehicle:getAIDirectionNode(), false , 4, "AiDirectionNode")
     end
     local reverseNode = self.vehicle:getAIReverserNode()
-    if reverseNode and reverseNode ~= directionNode then 
-        CpUtil.drawDebugNode(reverseNode, false , 3, "AiReverseNode")
+    if reverseNode then 
+        CpUtil.drawDebugNode(reverseNode, false , 4.5, "AiReverseNode")
     end
     local steeringNode = self.vehicle:getAISteeringNode()
-    if steeringNode and steeringNode ~= directionNode then 
-        CpUtil.drawDebugNode(steeringNode, false , 3, "AiSteeringNode")
+    if steeringNode then 
+        CpUtil.drawDebugNode(steeringNode, false , 5, "AiSteeringNode")
     end
-    local articulatedAxisReverseNode = self.spec_articulatedAxis and self.spec_articulatedAxis.aiRevereserNode
-    if articulatedAxisReverseNode and articulatedAxisReverseNode ~= directionNode and articulatedAxisReverseNode ~= reverseNode then 
-        CpUtil.drawDebugNode(articulatedAxisReverseNode, false , 3, "AiArticulatedAxisReverseNode")
+    local articulatedAxisReverseNode = AIUtil.getArticulatedAxisVehicleReverserNode(self.vehicle)
+    if articulatedAxisReverseNode then 
+        CpUtil.drawDebugNode(articulatedAxisReverseNode, false , 5.5, "AiArticulatedAxisReverseNode")
     end   
 end
 
