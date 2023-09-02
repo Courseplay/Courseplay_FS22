@@ -86,7 +86,7 @@ function AIReverseDriver:getDriveData()
 
 	local maxTractorAngle = math.rad(75)
 
-	-- for articulated vehicles use the articulated axis' rotation node as it is a better indicator or the
+	-- for articulated vehicles use the articulated axis' reverser node as it is a better indicator or the
 	-- vehicle's orientation than the direction node which often turns/moves with an articulated vehicle part
 	-- TODO: consolidate this with AITurn:getTurnNode() and if getAIDirectionNode() considers this already
 	local tractorNode
