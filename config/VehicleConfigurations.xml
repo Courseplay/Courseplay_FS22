@@ -369,6 +369,14 @@ You can define the following custom settings:
     />
 	<Vehicle name="l180H.xml"
 		fixWheelLoaderDirectionNodeByMovingToolIx = "1"
+        turnRadius = "12"
+	/>
+    <Vehicle name="l120HHighTipShovel.xml"
+             shovelMovingToolIx = "1"
+    />
+	<Vehicle name="l120H.xml"
+		fixWheelLoaderDirectionNodeByMovingToolIx = "1"
+        turnRadius = "10"
 	/>
 
     <!--Vermeer-->
