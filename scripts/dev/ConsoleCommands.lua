@@ -5,6 +5,7 @@ CpConsoleCommands.commands = {
 	--- call name, description, function
 	{ 'cpAddMoney', 'adds money', 'addMoney' },
 	{ 'cpRestartSaveGame', 'Load and start a savegame', 'restartSaveGame' },
+	{ 'cpReturnToSaveGameSelect', 'Returns to the menu', 'returnToSaveGameSelect' },
 	{ 'print', 'Print a variable', 'printVariable' },
 	{ 'printGlobalCpVariable', 'Print a global cp variable', 'printGlobalCpVariable' },
 	{ 'printVehicleVariable', 'Print g_currentMission.controlledVehicle.variable', 'printVehicleVariable' },
@@ -74,6 +75,13 @@ function CpConsoleCommands:restartSaveGame(saveGameNumber)
 		end
 		doRestart(true, " -autoStartSavegameId " .. saveGameNumber)
 		CpUtil.info('Restarting savegame %d', saveGameNumber)
+	end
+end
+
+function CpConsoleCommands:returnToSaveGameSelect()
+	if g_server then
+		doRestart(true, "0#" )
+		CpUtil.info('Restarting to menu')
 	end
 end
 

@@ -274,8 +274,8 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/ai/AIDriveStrategyDriveToFieldWorkStart.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyAttachHeader.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyFieldWorkCourse.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyCombineCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyPlowCourse.lua"/>
+		<sourceFile filename="scripts/ai/AIDriveStrategyCombineCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyFindBales.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyUnloadCombine.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyVineFieldWorkCourse.lua"/>
@@ -317,6 +317,7 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/ai/controllers/DynamicMountAttacherController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/StumpCutterController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/FoldableController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/PlowController.lua"/>
 		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
 		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
 		<sourceFile filename="scripts/ai/InfoTextsManager.lua"/>

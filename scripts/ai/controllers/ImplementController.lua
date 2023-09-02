@@ -71,12 +71,20 @@ end
 
 --- Called by the drive strategy on lowering of the implements.
 function ImplementController:onLowering()
-    
+    --- override 
 end
 
 --- Called by the drive strategy on raising of the implements.
 function ImplementController:onRaising()
-    
+    --- override
+end
+
+function ImplementController:onStart()
+    --- override
+end
+
+function ImplementController:onFinished()
+    --- override
 end
 
 --- Any object this controller wants us to ignore, can register here a callback at the proximity controller
