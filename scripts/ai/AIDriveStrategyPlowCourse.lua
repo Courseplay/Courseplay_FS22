@@ -15,16 +15,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-Drive strategy for driving a field work course
+Derived fieldwork course strategy, which handles plows.
+
+- Makes sure that all plows are unfolded and rotated in the correct direction,
+  which was determined by the course generator.
+- Applies the automatic tool offset calculation for all attached plows.
+
 
 ]]--
-
-
---[[
- 
- AI Drive Strategy for plows
-
-]]
 
 ---@class AIDriveStrategyPlowCourse : AIDriveStrategyFieldWorkCourse
 AIDriveStrategyPlowCourse = {}
@@ -115,6 +113,8 @@ function AIDriveStrategyPlowCourse:isPlowTurning()
     return false
 end
 
+--- Are all plows allowed to be turned?
+---@return boolean
 function AIDriveStrategyPlowCourse:isPlowRotationAllowed()
     local allowed = true
     for _, controller in pairs(self.controllers) do 
@@ -125,6 +125,7 @@ function AIDriveStrategyPlowCourse:isPlowRotationAllowed()
     return allowed
 end
 
+--- Initial plow rotation based on the ridge marker side selection by the course generator.
 function AIDriveStrategyPlowCourse:rotatePlows()
     self:debug('Starting work: check if plow needs to be turned.')
     local ridgeMarker = self.course:getRidgeMarkerState(self.ppc:getCurrentWaypointIx())

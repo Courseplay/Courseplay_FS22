@@ -1,4 +1,5 @@
----
+--- Controller for Plows
+--- Implements the automatic side(x) Offset calculation.
 ---@class PlowController : ImplementController
 PlowController = CpObject(ImplementController)
 
@@ -7,23 +8,6 @@ function PlowController:init(vehicle, implement)
     self.plowSpec = self.implement.spec_plow
 end
 
-function PlowController:onLowering()
-    
-end
-
-function PlowController:onRaising()
-    
-end
-
-function PlowController:onStart()
-
-end
-
-function PlowController:getDriveData()
-	local maxSpeed
-
-	return nil, nil, nil, maxSpeed
-end
 
 function PlowController:getAutomaticXOffset()
 	local aiLeftMarker, aiRightMarker, aiBackMarker = self.implement:getAIMarkers()
@@ -82,6 +66,8 @@ function PlowController:getIsPlowRotationAllowed()
     return self.implement:getIsPlowRotationAllowed()
 end
 
+--- Rotates the plow if possible.
+---@param shouldBeOnTheLeft boolean|nil
 function PlowController:rotate(shouldBeOnTheLeft)
     if self:isRotatablePlow() and self:getIsPlowRotationAllowed() then
         self.implement:setRotationMax(shouldBeOnTheLeft)
