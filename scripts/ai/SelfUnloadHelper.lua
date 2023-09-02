@@ -141,10 +141,13 @@ function SelfUnloadHelper:getTargetParameters(fieldPolygon, myVehicle, fillType,
     offsetX = objectWithPipeAttributes.pipeOnLeftSide and -offsetX or offsetX
     -- arrive near the trailer alignLength meters behind the target, from there, continue straight a bit
     local _, steeringLength = AIUtil.getSteeringParameters(myVehicle)
-    local alignLength = (trailerLength / 2) + dZ + math.max(myVehicle.size.length / 2, steeringLength)
+    --- Make sure the front marker distance is also checked for large harvesters like the big potato harvester.
+    local _, frontMarkerOffset = Markers.getFrontMarkerNode(myVehicle) 
+    local alignLength = (trailerLength / 2) + dZ + math.max(myVehicle.size.length / 2 + frontMarkerOffset, steeringLength)
     CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, myVehicle,
-            'Trailer length: %.1f, width: %.1f, dZ: %.1f, align length %.1f, my length: %.1f, steering length %.1f, offsetX %.1f',
-            trailerLength, trailerWidth, dZ, alignLength, myVehicle.size.length, steeringLength, offsetX)
+            'Trailer length: %.1f, width: %.1f, dZ: %.1f, align length %.1f, my length: %.1f, steering length %.1f, offsetX %.1f, frontMarkerOffset: %.2f',
+            trailerLength, trailerWidth, dZ, alignLength, 
+            myVehicle.size.length, steeringLength, offsetX, frontMarkerOffset)
     return targetNode, alignLength, offsetX, bestTrailer
 end
 
