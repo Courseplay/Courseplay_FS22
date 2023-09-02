@@ -303,7 +303,7 @@
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Gdy to ustawienie jest aktywne, wszystkie kombajny zostaną zatrzymane i będą czekały na zakończenie opadów."/>
     <text name="CP_global_setting_fruitDestruction_title" text="Niszczenie upraw przez pomocnika SI"/>
     <text name="CP_global_setting_fruitDestruction_tooltip" text="Włącza/Wyłącza niszczenie upraw przez pomocników."/>
-    <text name="CP_global_setting_fruitDestruction_only_cp" text="Aktywowane tylko dla pomocników Coursesplay"/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Aktywowane tylko dla pomocników Courseplay"/>
     <text name="CP_global_setting_fruitDestruction_all_helpers" text="Aktywowany dla każdego pomocnika"/>
     <!---->
     <!--Global settings user settings-->
@@ -321,7 +321,7 @@
     <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Umożliwia narysowanie kursu na mini mapie."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Pokaż okno informacyjne"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Wyświetla okno z dodatkowymi informacjami."/>
-    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Active but invisible without message"/>
+    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Widoczne tylko z wiadomością"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Funkcje myszy"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Włącza/wyłącza funkcje myszy dla wyświetlania tekstu informacyjnego poza pojazdem."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Preferuj własne pola"/>
