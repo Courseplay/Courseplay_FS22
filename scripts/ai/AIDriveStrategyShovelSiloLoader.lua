@@ -355,7 +355,7 @@ function AIDriveStrategyShovelSiloLoader:ignoreProximityObject(object, vehicle)
     if object == self.unloadStation then 
         return true
     end
-    if self.unloadTrigger:isTheSameObject(object) then 
+    if self.unloadTrigger and self.unloadTrigger:isTheSameObject(object) then 
         return true
     end
     if self.targetTrailer then
