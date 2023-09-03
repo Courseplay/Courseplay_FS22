@@ -82,6 +82,8 @@ end
 
 function CpShovelPositions.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "cpSetShovelState", CpShovelPositions.cpSetShovelState)
+	SpecializationUtil.registerFunction(vehicleType, "cpSetTemporaryShovelState", CpShovelPositions.cpSetTemporaryShovelState)
+	SpecializationUtil.registerFunction(vehicleType, "cpSetTemporaryLoadingShovelState", CpShovelPositions.cpSetTemporaryLoadingShovelState)
     SpecializationUtil.registerFunction(vehicleType, "cpResetShovelState", CpShovelPositions.cpResetShovelState)
 	SpecializationUtil.registerFunction(vehicleType, "cpSetupShovelPositions", CpShovelPositions.cpSetupShovelPositions)
 	SpecializationUtil.registerFunction(vehicleType, "areCpShovelPositionsDirty", CpShovelPositions.areCpShovelPositionsDirty)
@@ -133,11 +135,16 @@ function CpShovelPositions:onUpdateTick(dt)
 	elseif spec.state == CpShovelPositions.UNLOADING then 
 		CpUtil.try(CpShovelPositions.updateUnloadingPosition, self, dt)
 	end
+	if spec.resetStateWhenReached and not self:areCpShovelPositionsDirty() then 
+		self:cpSetShovelState(CpShovelPositions.DEACTIVATED)
+		spec.resetStateWhenReached = false
+	end
 end
 
 --- Changes the current shovel state position.
 function CpShovelPositions:cpSetShovelState(state)
 	local spec = self.spec_cpShovelPositions
+	spec.resetWhenReached = false
 	if spec.state ~= state then
 		spec.state = state
 		if state == CpShovelPositions.DEACTIVATED then 
@@ -145,6 +152,16 @@ function CpShovelPositions:cpSetShovelState(state)
 			ImplementUtil.stopMovingTool(spec.shovelVehicle, spec.shovelTool)
 		end
 	end
+end
+
+function CpShovelPositions:cpSetTemporaryShovelState(state)
+	local spec = self.spec_cpShovelPositions
+	self:cpSetShovelState(state)
+	spec.resetStateWhenReached = true
+end
+
+function CpShovelPositions:cpSetTemporaryLoadingShovelState()
+	self:cpSetTemporaryShovelState(CpShovelPositions.LOADING)
 end
 
 --- Deactivates the shovel position control.

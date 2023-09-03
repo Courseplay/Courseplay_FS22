@@ -440,6 +440,7 @@ function AIDriveStrategyShovelSiloLoader:searchForTrailerToUnloadInto()
     local trailerData, dist = self:getClosestTrailerAndDistance({})
     if not trailerData then 
         self:debug("No valid trailer found anywhere!")
+        self:setInfoText(InfoTextManager.WAITING_FOR_UNLOADER)
         return
     end
     local trailer = trailerData.trailer
@@ -447,8 +448,10 @@ function AIDriveStrategyShovelSiloLoader:searchForTrailerToUnloadInto()
         self:debug("Closest Trailer %s attached to %s with the distance %.2fm/%.2fm found is to far away!", 
             CpUtil.getName(trailer), trailer.rootVehicle and CpUtil.getName(trailer.rootVehicle) or "no root vehicle",
             dist, self.maxValidTrailerDistanceToSiloFront)
+        self:setInfoText(InfoTextManager.WAITING_FOR_UNLOADER)
         return
     end
+    self:clearInfoText(InfoTextManager.WAITING_FOR_UNLOADER)
     --- Sets the unload position node in front of the closest side of the trailer.
     self:debug("Found a valid trailer %s within distance %.2f", CpUtil.getName(trailer), dist)
     self.targetTrailer = trailerData
@@ -541,7 +544,7 @@ function AIDriveStrategyShovelSiloLoader:onPathfindingDoneToUnloadPosition(path,
         self:setNewState(self.states.DRIVING_TO_UNLOAD_POSITION)
     else 
         self:debug("Failed to drive close to unload position.")
-      --  self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
+        self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
     end
 end
 
@@ -575,7 +578,9 @@ function AIDriveStrategyShovelSiloLoader:onPathfindingDoneToTrailer(path, goalNo
         self:setNewState(self.states.DRIVING_TO_UNLOAD_TRAILER)
     else 
         self:debug("Failed to find path to trailer!")
-        self:setNewState(self.states.WAITING_FOR_TRAILER)
+        ---self:setNewState(self.states.WAITING_FOR_TRAILER)
+        --- Later on we might try another approach?
+        self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
     end
 end
 ----------------------------------------------------------------
