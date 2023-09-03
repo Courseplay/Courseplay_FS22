@@ -563,7 +563,7 @@ function CpAIWorker:disableCollisionDetection()
 end
 
 function CpAIWorker:getCollisionCheckActive(superFunc,...)
-    local spec = self.spec_cpAIWorker
+    local spec = self.vehicle.spec_cpAIWorker
     if spec.collisionDetectionEnabled then
         return superFunc(self,...)
     else

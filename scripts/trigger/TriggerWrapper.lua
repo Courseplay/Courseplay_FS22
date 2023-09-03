@@ -60,3 +60,9 @@ function CpTrigger:drawPlot(map, selectedTrigger, fillTypes)
 	self.plot:setHighlighted(self == selectedTrigger)
 	self.plot:draw(map)
 end
+
+function CpTrigger:isTheSameObject(otherObject)
+	if self.trigger:getTarget().owningPlaceable == otherObject then 
+		return true
+	end
+end

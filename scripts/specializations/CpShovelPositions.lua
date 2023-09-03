@@ -58,18 +58,7 @@ CpShovelPositions.KEY = "." .. CpShovelPositions.SPEC_NAME
 
 function CpShovelPositions.initSpecialization()
     local schema = Vehicle.xmlSchemaSavegame
-	g_devHelper.consoleCommands:registerConsoleCommand("cpShovelPositionsPrintShovelDebug", 
-        "Prints debug information for the shovel", 
-        "consoleCommandPrintShovelDebug", CpShovelPositions)
-	g_devHelper.consoleCommands:registerConsoleCommand("cpShovelPositionsSetState", 
-        "Set's the current shovel state", 
-        "consoleCommandSetShovelState", CpShovelPositions)
-	g_devHelper.consoleCommands:registerConsoleCommand("cpShovelPositionsSetArmLimit", 
-        "Set's the arm max limit", 
-        "consoleCommandSetPreUnloadArmLimit", CpShovelPositions)
-	g_devHelper.consoleCommands:registerConsoleCommand('cpShovelPositionsSetMinimalUnloadHeight', 
-		'cpSetShovelSetMinimalUnloadHeight',
-		'consoleCommandSetMinimalUnloadHeight', CpShovelPositions)
+	CpShovelPositions.initConsoleCommands()
 end
 
 function CpShovelPositions.prerequisitesPresent(specializations)
@@ -97,106 +86,6 @@ function CpShovelPositions.registerFunctions(vehicleType)
 	SpecializationUtil.registerFunction(vehicleType, "cpSetupShovelPositions", CpShovelPositions.cpSetupShovelPositions)
 	SpecializationUtil.registerFunction(vehicleType, "areCpShovelPositionsDirty", CpShovelPositions.areCpShovelPositionsDirty)
 	SpecializationUtil.registerFunction(vehicleType, "setCpShovelMinimalUnloadHeight", CpShovelPositions.setCpShovelMinimalUnloadHeight)
-end
-
---------------------------------------------
---- Console Commands
---------------------------------------------
-
-local function executeConsoleCommand(func, ...)
-	local vehicle = g_currentMission.controlledVehicle
-	if not vehicle then 
-		CpUtil.info("Not entered a valid vehicle!")
-		return false
-	end
-	-- if vehicle:getIsAIActive() then 
-	-- 	CpUtil.infoVehicle(vehicle, "Error, AI is active!")
-	-- 	return false
-	-- end
-	local shovels, found = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, Shovel)
-	if not found then 
-		CpUtil.infoVehicle(vehicle, "No shovel implement found!")
-		return false
-	end
-	return func(shovels[1], ...)
-end
-
-function CpShovelPositions:consoleCommandSetShovelState(state)
-	return executeConsoleCommand(function(shovelImplement, state)
-		state = tonumber(state)
-		if state == nil or state < 0 or state > CpShovelPositions.NUM_STATES then 
-			CpUtil.infoVehicle(shovelImplement, "No valid state(0 - %d) was given!", CpShovelPositions.NUM_STATES)
-			return false
-		end
-		shovelImplement:cpSetShovelState(state)
-	end, state)
-end
-
-function CpShovelPositions:consoleCommandSetPreUnloadArmLimit(min, max)
-	return executeConsoleCommand(function(shovelImplement, min, max)
-		min = tonumber(min)
-		max = tonumber(max)
-		if min == nil or max == nil then 
-			CpUtil.infoVehicle(shovelImplement, "No valid limits given! min: %s, max: %s", tostring(min), tostring(max))
-			return false
-		end
-		CpShovelPositions.PRE_UNLOAD_POSITION.ARM_LIMITS = { min, max }
-	end, min, max)
-end
-
-function CpShovelPositions:consoleCommandPrintShovelDebug(cylinderedDepth)
-	return executeConsoleCommand(function(shovelImplement)
-		--- Position debug
-		CpUtil.infoImplement(shovelImplement, "-- Position debug --")
-		local spec = shovelImplement.spec_cpShovelPositions
-		if spec then 
-			CpUtil.infoImplement(shovelImplement, " arm tool %s -> %s", 
-				CpUtil.getName(spec.armVehicle), tostring(spec.armToolIx))
-			CpUtil.infoImplement(shovelImplement, " shovel tool %s -> %s", 
-				CpUtil.getName(spec.shovelVehicle), tostring(spec.shovelToolIx))
-			local highDumpShovelIx = g_vehicleConfigurations:get(shovelImplement, "shovelMovingToolIx")	
-			CpUtil.infoImplement(shovelImplement, " shovel high dump %s -> %s", 
-				CpUtil.getName(shovelImplement), tostring(highDumpShovelIx))
-		end
-
-		CpUtil.infoImplement(shovelImplement, "-- Position debug --")
-		--- Shovel debug
-		local controller = ShovelController(shovelImplement.rootVehicle, shovelImplement, true)
-		controller:printShovelDebug()
-		controller:delete()
-		--- Cylindered debug here
-		CpUtil.infoImplement(shovelImplement, "-- Cylindered debug --")
-		cylinderedDepth = cylinderedDepth and tonumber(cylinderedDepth) or 0
-
-		local childVehicles = shovelImplement.rootVehicle:getChildVehicles()
-		for _, vehicle in ipairs(childVehicles) do
-			if vehicle.spec_cylindered then
-				for ix, tool in pairs(vehicle.spec_cylindered.movingTools) do
-					CpUtil.infoImplement(shovelImplement, " %s => ix: %d ",
-						CpUtil.getName(vehicle), ix)
-					if cylinderedDepth > 0 then
-						CpUtil.infoImplement(shovelImplement, " %s", 
-							DebugUtil.debugTableToString(tool, "   ", 0, cylinderedDepth))
-					end
-					CpUtil.infoImplement(shovelImplement, " %s => ix: %d finished", 
-						CpUtil.getName(vehicle), ix)
-				end
-			end
-		end
-		CpUtil.infoImplement(shovelImplement, "-- Cylindered debug finished --")
-	end)
-end
-
-function CpShovelPositions:consoleCommandSetMinimalUnloadHeight(height)
-	return executeConsoleCommand(function(shovelImplement, height)
-		height = tonumber(height)
-		if height == nil then 
-			CpUtil.infoVehicle(shovelImplement, "No valid height given! height: %s", tostring(height))
-			return false
-		end
-		local spec = shovelImplement.spec_cpShovelPositions
-		spec.minimalShovelUnloadHeight = height
-	end, height)
 end
 
 --------------------------------------------
@@ -361,12 +250,9 @@ end
 ---@param dt number
 ---@param shovelLimits table
 ---@param armLimits table
----@param isLoading boolean|nil
 ---@param heightOffset number|nil
----@param isUnloading boolean|nil
 ---@return boolean|nil
-function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, 
-	isLoading, heightOffset, isUnloading)
+function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, heightOffset)
 	heightOffset = heightOffset or 0
 	local spec = self.spec_cpShovelPositions
 	local min, max = unpack(shovelLimits)
@@ -404,11 +290,7 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits,
 	local _, ty, tz = localToLocal(getChildAt(armTool.node, 0), armVehicle.rootNode, 0, 0, 0)
 	local ax, ay, az = localToLocal(armTool.node, armVehicle.rootNode, 0, 0, 0)
 	local wx, _, wz = getWorldTranslation(armVehicle.rootNode)
-	local deltaY = 0
 
-	if spec.state == CpShovelPositions.PRE_UNLOAD or spec.state == CpShovelPositions.UNLOADING then
-		deltaY = minimalTargetHeight - ay
-	end
 	local by = shovelY
 	if self.spec_foliageBending and self.spec_foliageBending.bendingNodes[1] then 
 		local bending = self.spec_foliageBending.bendingNodes[1]
@@ -436,12 +318,15 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits,
 			_, by, _ = worldToLocal(shovelTool.node, sx, by2, sz)
 		end
 	end
-
-	local sx, sy, sz = 0, -by + targetHeight + heightOffset + deltaY, 0
-	local ex, ey, ez = 0, -by + targetHeight + heightOffset + deltaY, 20
+	local deltaY = 0
+	if spec.state == CpShovelPositions.PRE_UNLOAD or spec.state == CpShovelPositions.UNLOADING then
+		targetHeight = minimalTargetHeight 
+	end
+	local sx, sy, sz = 0, -by + targetHeight + heightOffset, 0
+	local ex, ey, ez = 0, sy, 20
 	local wsx, wsy, wsz = localToWorld(armVehicle.rootNode, sx, sy, sz)
 	local wex, wey, wez = localToWorld(armVehicle.rootNode, ex, ey, ez)
-	local terrainHeight = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, wsx, 0, wsz)
+	local _, terrainHeight, _ = getWorldTranslation(self.rootVehicle.rootNode, 0, 0, 0)
 
 	local yMax = ay + radiusArmToolToShovelTool
 	local yMin = ay - radiusArmToolToShovelTool
@@ -472,6 +357,15 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits,
 			skipArm = true
 		end
 	end
+	if spec.state ~= CpShovelPositions.UNLOADING then 
+		if spec.isHighDumpShovel then 
+			isDirty = CpShovelPositions.foldHighDumpShovel(self, dt) or isDirty
+			if isDirty then 
+				skipArm = true
+			end
+		end
+	end
+
 	local alpha, oldRotRelativeArmRot = 0, 0
 	if hasIntersection then
 		--- Controls the arm height
@@ -492,9 +386,6 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits,
 	end
 
 	if spec.state ~= CpShovelPositions.UNLOADING then 
-		if spec.isHighDumpShovel then 
-			isDirty = CpShovelPositions.foldHighDumpShovel(self, dt) or isDirty
-		end
 		isDirty = isDirty or CpShovelPositions.controlShovelPosition(self, dt, targetAngle - angle)
 	end
 
@@ -583,8 +474,7 @@ function CpShovelPositions:updateLoadingPosition(dt)
 	if angle then 
 		isDirty = CpShovelPositions.setShovelPosition(self, dt, 
 			CpShovelPositions.LOADING_POSITION.SHOVEL_LIMITS, 
-			CpShovelPositions.LOADING_POSITION.ARM_LIMITS, 
-			true, heightOffset)
+			CpShovelPositions.LOADING_POSITION.ARM_LIMITS, heightOffset)
 	end
 	spec.isDirty = isDirty
 end
@@ -597,8 +487,7 @@ function CpShovelPositions:updateTransportPosition(dt)
 	if angle then 
 		isDirty = CpShovelPositions.setShovelPosition(self, dt, 
 			CpShovelPositions.TRANSPORT_POSITION.SHOVEL_LIMITS, 
-			CpShovelPositions.TRANSPORT_POSITION.ARM_LIMITS, 
-			false, heightOffset)
+			CpShovelPositions.TRANSPORT_POSITION.ARM_LIMITS, heightOffset)
 	end
 	spec.isDirty = isDirty
 end
@@ -610,8 +499,7 @@ function CpShovelPositions:updatePreUnloadPosition(dt)
 	if angle then
 		isDirty = CpShovelPositions.setShovelPosition(self, dt, 
 			CpShovelPositions.PRE_UNLOAD_POSITION.SHOVEL_LIMITS, 
-			CpShovelPositions.PRE_UNLOAD_POSITION.ARM_LIMITS,
-			false, nil) 
+			CpShovelPositions.PRE_UNLOAD_POSITION.ARM_LIMITS, nil) 
 	end
 	spec.isDirty = isDirty
 end
@@ -623,8 +511,7 @@ function CpShovelPositions:updateUnloadingPosition(dt)
 	if angle and maxAngle then 
 		isDirty = CpShovelPositions.setShovelPosition(self, dt, 
 		{math.deg(maxAngle), math.deg(maxAngle) + 2}, 
-		CpShovelPositions.PRE_UNLOAD_POSITION.ARM_LIMITS, false, 
-		nil, true)
+		CpShovelPositions.PRE_UNLOAD_POSITION.ARM_LIMITS, nil)
 	end
 	spec.isDirty = isDirty
 end
@@ -660,4 +547,131 @@ function CpShovelPositions.debug(implement, ...)
 	if CpShovelPositions.DEBUG then
 		CpUtil.infoImplement(implement, ...)
 	end
+end
+
+
+--------------------------------------------
+--- Console Commands
+--------------------------------------------
+
+function CpShovelPositions.initConsoleCommands()
+	g_devHelper.consoleCommands:registerConsoleCommand("cpShovelPositionsPrintShovelDebug", 
+        "Prints debug information for the shovel", 
+        "consoleCommandPrintShovelDebug", CpShovelPositions)
+	g_devHelper.consoleCommands:registerConsoleCommand("cpShovelPositionsSetState", 
+        "Set's the current shovel state", 
+        "consoleCommandSetShovelState", CpShovelPositions)
+	g_devHelper.consoleCommands:registerConsoleCommand("cpShovelPositionsSetArmLimit", 
+        "Set's the arm max limit", 
+        "consoleCommandSetPreUnloadArmLimit", CpShovelPositions)
+	g_devHelper.consoleCommands:registerConsoleCommand('cpShovelPositionsSetMinimalUnloadHeight', 
+		'Sets the minimal unload height to a fixed value',
+		'consoleCommandSetMinimalUnloadHeight', CpShovelPositions)
+	g_devHelper.consoleCommands:registerConsoleCommand('cpShovelPositionsMeasureAndSetMinUnloadHeight', 
+		'Measures and sets the minimal unload height',
+		'consoleCommandMeasureAndSetMinimalUnloadHeight', CpShovelPositions)
+end
+
+local function executeConsoleCommand(func, ...)
+	local vehicle = g_currentMission.controlledVehicle
+	if not vehicle then 
+		CpUtil.info("Not entered a valid vehicle!")
+		return false
+	end
+	-- if vehicle:getIsAIActive() then 
+	-- 	CpUtil.infoVehicle(vehicle, "Error, AI is active!")
+	-- 	return false
+	-- end
+	local shovels, found = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, Shovel)
+	if not found then 
+		CpUtil.infoVehicle(vehicle, "No shovel implement found!")
+		return false
+	end
+	return func(shovels[1], ...)
+end
+
+function CpShovelPositions:consoleCommandSetShovelState(state)
+	return executeConsoleCommand(function(shovelImplement, state)
+		state = tonumber(state)
+		if state == nil or state < 0 or state > CpShovelPositions.NUM_STATES then 
+			CpUtil.infoVehicle(shovelImplement, "No valid state(0 - %d) was given!", CpShovelPositions.NUM_STATES)
+			return false
+		end
+		shovelImplement:cpSetShovelState(state)
+	end, state)
+end
+
+function CpShovelPositions:consoleCommandSetPreUnloadArmLimit(min, max)
+	return executeConsoleCommand(function(shovelImplement, min, max)
+		min = tonumber(min)
+		max = tonumber(max)
+		if min == nil or max == nil then 
+			CpUtil.infoVehicle(shovelImplement, "No valid limits given! min: %s, max: %s", tostring(min), tostring(max))
+			return false
+		end
+		CpShovelPositions.PRE_UNLOAD_POSITION.ARM_LIMITS = { min, max }
+	end, min, max)
+end
+
+function CpShovelPositions:consoleCommandPrintShovelDebug(cylinderedDepth)
+	return executeConsoleCommand(function(shovelImplement)
+		--- Position debug
+		CpUtil.infoImplement(shovelImplement, "-- Position debug --")
+		local spec = shovelImplement.spec_cpShovelPositions
+		if spec then 
+			CpUtil.infoImplement(shovelImplement, " arm tool %s -> %s", 
+				CpUtil.getName(spec.armVehicle), tostring(spec.armToolIx))
+			CpUtil.infoImplement(shovelImplement, " shovel tool %s -> %s", 
+				CpUtil.getName(spec.shovelVehicle), tostring(spec.shovelToolIx))
+			local highDumpShovelIx = g_vehicleConfigurations:get(shovelImplement, "shovelMovingToolIx")	
+			CpUtil.infoImplement(shovelImplement, " shovel high dump %s -> %s", 
+				CpUtil.getName(shovelImplement), tostring(highDumpShovelIx))
+		end
+
+		CpUtil.infoImplement(shovelImplement, "-- Position debug --")
+		--- Shovel debug
+		local controller = ShovelController(shovelImplement.rootVehicle, shovelImplement, true)
+		controller:printShovelDebug()
+		controller:delete()
+		--- Cylindered debug here
+		CpUtil.infoImplement(shovelImplement, "-- Cylindered debug --")
+		cylinderedDepth = cylinderedDepth and tonumber(cylinderedDepth) or 0
+
+		local childVehicles = shovelImplement.rootVehicle:getChildVehicles()
+		for _, vehicle in ipairs(childVehicles) do
+			if vehicle.spec_cylindered then
+				for ix, tool in pairs(vehicle.spec_cylindered.movingTools) do
+					CpUtil.infoImplement(shovelImplement, " %s => ix: %d ",
+						CpUtil.getName(vehicle), ix)
+					if cylinderedDepth > 0 then
+						CpUtil.infoImplement(shovelImplement, " %s", 
+							DebugUtil.debugTableToString(tool, "   ", 0, cylinderedDepth))
+					end
+					CpUtil.infoImplement(shovelImplement, " %s => ix: %d finished", 
+						CpUtil.getName(vehicle), ix)
+				end
+			end
+		end
+		CpUtil.infoImplement(shovelImplement, "-- Cylindered debug finished --")
+	end)
+end
+
+function CpShovelPositions:consoleCommandSetMinimalUnloadHeight(height)
+	return executeConsoleCommand(function(shovelImplement, height)
+		height = tonumber(height)
+		if height == nil then 
+			CpUtil.infoVehicle(shovelImplement, "No valid height given! height: %s", tostring(height))
+			return false
+		end
+		local spec = shovelImplement.spec_cpShovelPositions
+		spec.minimalShovelUnloadHeight = height
+	end, height)
+end
+
+function CpShovelPositions:consoleCommandMeasureAndSetMinimalUnloadHeight()
+	return executeConsoleCommand(function(shovelImplement)
+		local controller = ShovelController(shovelImplement.rootVehicle, shovelImplement, true)
+		controller:calculateMinimalUnloadingHeight()
+		controller:delete()
+	end)
 end

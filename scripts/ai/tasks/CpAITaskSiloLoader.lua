@@ -33,8 +33,8 @@ end
 
 function CpAITaskSiloLoader:start()
 	if self.isServer then
-		local _, unloadTrigger, _ = self.job:getUnloadTriggerAt(self.job:getCpJobParameters().unloadPosition)
-		self.vehicle:startCpSiloLoaderWorker(self.job:getCpJobParameters(), self.silo, self.heap, unloadTrigger)
+		local _, unloadTrigger, unloadStation = self.job:getUnloadTriggerAt(self.job:getCpJobParameters().unloadPosition)
+		self.vehicle:startCpSiloLoaderWorker(self.job:getCpJobParameters(), self.silo, self.heap, unloadTrigger, unloadStation)
 	end
 
 	CpAITaskSiloLoader:superClass().start(self)

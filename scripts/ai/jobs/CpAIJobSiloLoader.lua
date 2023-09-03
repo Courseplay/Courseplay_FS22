@@ -184,9 +184,9 @@ end
 
 --- Gets the unload trigger at the unload position.
 ---@param unloadPosition CpAIParameterPositionAngle
----@return boolean
----@return table|nil
----@return table|nil
+---@return boolean found?
+---@return table|nil Trigger
+---@return table|nil unloadStation
 function CpAIJobSiloLoader:getUnloadTriggerAt(unloadPosition)
 	local x, z = unloadPosition:getPosition()
 	local dirX, dirZ = unloadPosition:getDirection()

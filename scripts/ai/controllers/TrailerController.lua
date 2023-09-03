@@ -59,9 +59,9 @@ end
 --- Gets the dischargeNode and offset from a selected tip side.
 ---@param tipSideID number
 ---@param isTippingToGroundNeeded boolean
----@return table dischargeNodeIndex
----@return table dischargeNode
----@return number xOffset 
+---@return table|nil dischargeNodeIndex
+---@return table|nil dischargeNode
+---@return number|nil xOffset 
 function TrailerController:getDischargeNodeAndOffsetForTipSide(tipSideID, isTippingToGroundNeeded)
 	local tipSide = self.trailerSpec.tipSides[tipSideID]
     if not tipSide then 
