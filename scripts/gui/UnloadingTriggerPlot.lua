@@ -1,4 +1,4 @@
---- Draws the bunker silo dimensions on the in game map.
+--- Draws an unloading triggers as a X Symbol on the in game menu map.
 ---@class UnloadingTriggerPlot 
 UnloadingTriggerPlot = CpObject()
 

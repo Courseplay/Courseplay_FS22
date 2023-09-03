@@ -19,6 +19,7 @@ function ShovelController:init(vehicle, implement, isConsoleCommand)
     self.shovelNode = ImplementUtil.getShovelNode(implement)
     self.turnOnSpec = self.implement.spec_turnOnVehicle
     self.isConsoleCommand = isConsoleCommand
+    --- Sugar can unlading is still WIP
     self.isSugarCaneTrailer = self.implement.spec_trailer ~= nil
     self.sugarCaneTrailer = {
         isDischargeActive = false,
@@ -40,6 +41,7 @@ end
 function ShovelController:getDriveData()
 	local maxSpeed
     if self.isSugarCaneTrailer then
+        --- Sugar cane trailer discharge
         if self.sugarCaneTrailer.isDischargeActive then
             if self.sugarCaneTrailer.isDischargingTimer:get() then
                 --- Waiting until the discharging stopped or 
@@ -67,8 +69,8 @@ function ShovelController:getDriveData()
 end
 
 function ShovelController:update(dt)
-    --- Sugar cane trailer discharge
     if self.isSugarCaneTrailer then
+        --- Sugar cane trailer discharge
         if self.sugarCaneTrailer.isDischargeActive then
             if self:isEmpty() then 
                 self:finishedSugarCaneTrailerDischarge()
@@ -164,7 +166,7 @@ function ShovelController:isHighDumpShovel()
 end
 
 --- Calculates the minimal unloading height for the trigger.
----@param triggerNode any
+---@param triggerNode number|nil
 ---@return boolean
 function ShovelController:calculateMinimalUnloadingHeight(triggerNode)
     local sx, sy, sz = getWorldTranslation(self.vehicle:getAIDirectionNode())
@@ -200,6 +202,7 @@ function ShovelController:calculateMinimalUnloadingHeight(triggerNode)
     return false
 end
 
+--- Callback checks if an object was hit.
 function ShovelController:calculateMinimalUnloadingHeightRaycastCallback(hitObjectId, x, y, z, distance, nx, ny, nz, subShapeIndex, shapeId, isLast)
     if hitObjectId then 
         local object = g_currentMission.nodeToObject[hitObjectId]
@@ -225,6 +228,8 @@ function ShovelController:onFinished()
     end
 end
 
+--- Applies the given shovel position and 
+--- enables shovels that need an activation for unloading.
 ---@param pos number shovel position 1-4
 ---@return boolean reached? 
 function ShovelController:moveShovelToPosition(pos)
@@ -253,7 +258,7 @@ function ShovelController:moveShovelToPosition(pos)
 end
 
 --------------------------------------------
---- Sugar cane trailer functions
+--- WIP! Sugar cane trailer functions
 --------------------------------------------
 
 --- Gets the dischargeNode and offset from a selected tip side.

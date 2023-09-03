@@ -547,6 +547,7 @@ end
 
 
 --- TODO: Do we really need the AIDriveStrategyCollision from giants, as this one is only active for fieldwork?
+--- Maybe there is already a unique cp logic implemented, that catches the use cases.
 function CpAIWorker:isCollisionDetectionEnabled()
     local spec = self.spec_cpAIWorker
     return spec.collisionDetectionEnabled

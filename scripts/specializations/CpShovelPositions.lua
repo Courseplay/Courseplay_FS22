@@ -205,6 +205,7 @@ function CpShovelPositions:cpSetupShovelPositions()
 						spec.shovelTool = tool
 						spec.shovelVehicle = vehicle
 					elseif tool.axis == "AXIS_FRONTLOADER_ARM2" then 
+						--- WIP for telescope loaders
 						spec.armExtendToolIx = i
 						spec.armExtendTool = tool
 						spec.armExtendVehicle = vehicle
@@ -215,12 +216,18 @@ function CpShovelPositions:cpSetupShovelPositions()
 	end
 end
 
+--- Controls the shovel rotation.
+--- Also opens/closes the shovel if needed.
+---@param dt number
+---@param targetAngle number
+---@return boolean isDirty
 function CpShovelPositions:controlShovelPosition(dt, targetAngle)
 	local spec = self.spec_cpShovelPositions
 	local shovelData = ImplementUtil.getShovelNode(self)
 	local isDirty = false
 	if shovelData.movingToolActivation and not spec.isHighDumpShovel then
 		--- The shovel has a moving tool for grabbing.
+		--- So it needs to be opened for loading and unloading.
 		for i, tool in pairs(self.spec_cylindered.movingTools) do 
 			if tool.axis and tool.rotMax ~= nil and tool.rotMin ~= nil then 
 				if spec.state ~= CpShovelPositions.TRANSPORT then 
@@ -244,6 +251,12 @@ function CpShovelPositions:controlShovelPosition(dt, targetAngle)
 	spec.shovelTool, dt, goalAngle) or isDirty
 end
 
+--- Performs the unloading with a high dump shovel.
+--- This kind of a shovel has a moving tool for unloading.
+---@param dt number
+---@return boolean isDirty
+---@return number angle
+---@return number targetAngle
 function CpShovelPositions:unfoldHighDumpShovel(dt)
 	local highDumpShovelTool = self.spec_cylindered.movingTools[self.spec_cpShovelPositions.highDumpMovingToolIx]
 	local _, dy, _ = localDirectionToWorld(getParent(highDumpShovelTool.node), 0, 0, 1)
@@ -257,6 +270,9 @@ function CpShovelPositions:unfoldHighDumpShovel(dt)
 	return isDirty, angle, targetAngle
 end
 
+--- Folds the high dump shovel back to the normal position.
+---@param dt number
+---@return boolean isDirty
 function CpShovelPositions:foldHighDumpShovel(dt)
 	local highDumpShovelTool = self.spec_cylindered.movingTools[self.spec_cpShovelPositions.highDumpMovingToolIx]
 	return ImplementUtil.moveMovingToolToRotation(self, highDumpShovelTool, dt,
@@ -268,7 +284,7 @@ end
 ---@param shovelLimits table
 ---@param armLimits table
 ---@param heightOffset number|nil
----@return boolean|nil
+---@return boolean
 function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, heightOffset)
 	heightOffset = heightOffset or 0
 	local spec = self.spec_cpShovelPositions
@@ -310,8 +326,11 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, height
 
 	local by = shovelY
 	if self.spec_foliageBending and self.spec_foliageBending.bendingNodes[1] then 
+		--- The foliage bending area can be used to get relatively exact dimensions of the shovel.
 		local bending = self.spec_foliageBending.bendingNodes[1]
 		if bending.id ~= nil and bending.node ~= nil then 
+			--- Trying to find the lowest point of shovel.
+			--- This might be front tip or near the attacher.
 			local sx, _, sz = localToWorld(shovelTool.node, 0, 0, 0)
 			local bx1, by1, bz1 = localToWorld(bending.node, 0, 0, bending.minZ)
 			local bx2, by2, bz2 = localToWorld(bending.node, 0, 0, bending.maxZ)
@@ -533,6 +552,8 @@ function CpShovelPositions:updateUnloadingPosition(dt)
 	spec.isDirty = isDirty
 end
 
+--- Sets the unload height target of the lowest part of the shovel.
+---@param height number
 function CpShovelPositions:setCpShovelMinimalUnloadHeight(height)
 	local spec = self.spec_cpShovelPositions
 	spec.minimalShovelUnloadHeight = height

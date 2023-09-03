@@ -14,8 +14,8 @@ CpInGameMenuAIFrameExtended.curDrawPositions={}
 CpInGameMenuAIFrameExtended.drawDelay = g_updateLoopIndex
 CpInGameMenuAIFrameExtended.DELAY = 1 
 CpInGameMenuAIFrameExtended.hotspotFilterState = {}
+--- Hotspots visible, while drawing a custom field border.
 CpInGameMenuAIFrameExtended.validCustomFieldCreationHotspots = {
-	--- Hotspots visible, while drawing a custom field border.
 	[MapHotspot.CATEGORY_FIELD] = true,
 --	[MapHotspot.CATEGORY_UNLOADING] = true,
 --	[MapHotspot.CATEGORY_LOADING] = true,
@@ -29,8 +29,8 @@ CpInGameMenuAIFrameExtended.validCustomFieldCreationHotspots = {
 	[CustomFieldHotspot.CATEGORY] = true
 }
 
+--- Hotspots visible, while picking a loading position.
 CpInGameMenuAIFrameExtended.validPickingLoadingPositionHotspots = {
-	--- Hotspots visible, while picking a loading position.
 	[MapHotspot.CATEGORY_FIELD] = true,
 --	[MapHotspot.CATEGORY_UNLOADING] = true,
 --	[MapHotspot.CATEGORY_LOADING] = true,
@@ -155,6 +155,7 @@ end
 InGameMenuAIFrame.onLoadMapFinished = Utils.appendedFunction(InGameMenuAIFrame.onLoadMapFinished,
 		CpInGameMenuAIFrameExtended.onAIFrameLoadMapFinished)
 
+--- Creates alternative buttons, which are put into the button layout.
 function CpInGameMenuAIFrameExtended:setupButtons()
 	local function createBtn(prefab, text, callback)
 		local btn = prefab:clone(prefab.parent)
@@ -221,6 +222,7 @@ InGameMenuAIFrame.updateContextInputBarVisibility = Utils.appendedFunction(InGam
 
 function CpInGameMenuAIFrameExtended:setJobMenuVisible(visible)
 	if not visible then 
+		--- Removes the map hotspot, if the job menu of the vehicle is closed.
 		g_currentMission:removeMapHotspot(self.driveToAiTargetMapHotspot)
 		g_currentMission:removeMapHotspot(self.fieldSiloAiTargetMapHotspot)
 		g_currentMission:removeMapHotspot(self.unloadAiTargetMapHotspot)
@@ -289,6 +291,7 @@ function InGameMenuAIFrame:onClickOpenCloseCourseGenerator()
 	end
 end
 
+--- Generates the correct course generator layout and binds the settings to the gui elements.
 function CpInGameMenuAIFrameExtended:bindCourseGeneratorSettings()
 	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
 	if vehicle ~=nil and vehicle.getCourseGeneratorSettings then

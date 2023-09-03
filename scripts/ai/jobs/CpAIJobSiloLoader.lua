@@ -1,5 +1,5 @@
---- Job for stationary loader.
----@class CpAIJobSiloLoader : CpAIJobFieldWork
+--- AI Job for silo loader like the ropa maus or wheel loaders.
+---@class CpAIJobSiloLoader : CpAIJob
 ---@field heapPlot HeapPlot
 ---@field heapNode number
 CpAIJobSiloLoader = {
@@ -79,7 +79,6 @@ function CpAIJobSiloLoader:applyCurrentState(vehicle, mission, farmId, isDirectS
 	end
 end
 
-
 function CpAIJobSiloLoader:setValues()
 	CpAIJob.setValues(self)
 	local vehicle = self.vehicleParameter:getVehicle()
@@ -134,7 +133,7 @@ function CpAIJobSiloLoader:validate(farmId)
 	end
 	if not AIUtil.hasChildVehicleWithSpecialization(vehicle, ConveyorBelt) then 
 		if self.cpJobParameters.unloadAt:getValue() == CpSiloLoaderJobParameters.UNLOAD_TRIGGER then 
-			--- Validate the trigger setup
+			--- Validates the unload trigger setup
 			local found, unloadTrigger, unloadStation = self:getUnloadTriggerAt(self.cpJobParameters.unloadPosition)
 			if found then 
 				self.unloadStation = unloadStation
@@ -144,6 +143,9 @@ function CpAIJobSiloLoader:validate(farmId)
 				end
 				local id = NetworkUtil.getObjectId(unloadStation)
 				if id ~= nil then 
+					CpUtil.debugVehicle(CpDebug.DBG_SILO, vehicle, 
+						"Found a valid unload trigger: %s for %s", 
+						CpUtil.getName(unloadTrigger), CpUtil.getName(unloadStation))
 					self:getCpJobParameters().unloadStation:setValue(id)
 					self:getCpJobParameters().unloadStation:validateUnloadingStation()
 				end
@@ -199,7 +201,9 @@ function CpAIJobSiloLoader:getUnloadTriggerAt(unloadPosition)
 		fillType = silo:getFillType()
 	end
 	local found, trigger, station = g_triggerManager:getDischargeableUnloadTriggerAt( x, z, dirX, dirZ, 5, 25)
-	if found and fillType~=nil then 
+	if found and fillType ~= nil then 
+		--- Additional check if the fill type of the silo 
+		--- matches with the fill type of the unload target.
 		if not trigger:getIsFillTypeAllowed(fillType) then 
 			--- Fill type is not supported by the trigger.
 			found = false
@@ -230,10 +234,12 @@ function CpAIJobSiloLoader:drawSilos(map)
 end
 
 
---- Gets the unload station.
+--- Gets all the unloading stations.
 function CpAIJobSiloLoader:getUnloadingStations()
 	local unloadingStations = {}
 	for _, unloadingStation in pairs(g_currentMission.storageSystem:getUnloadingStations()) do
+		--- TODO: Maybe a few stations need to be ignored?
+		--- For example stations that have no possible correct fill type
 		table.insert(unloadingStations, unloadingStation)
 	end
 	return unloadingStations

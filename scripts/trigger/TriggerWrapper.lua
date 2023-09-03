@@ -61,6 +61,7 @@ function CpTrigger:drawPlot(map, selectedTrigger, fillTypes)
 	self.plot:draw(map)
 end
 
+--- Is the trigger part of the given object?
 function CpTrigger:isTheSameObject(otherObject)
 	if self.trigger:getTarget().owningPlaceable == otherObject then 
 		return true

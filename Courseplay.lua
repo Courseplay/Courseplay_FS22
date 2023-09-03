@@ -196,7 +196,7 @@ function Courseplay:update(dt)
     g_bunkerSiloManager:update(dt)
     g_triggerManager:update(dt)
     if not self.postInit then 
-        -- Doubles the map zoom. Mainly to make it easier to set targets for unload triggers.
+        -- Doubles the map zoom for 4x Maps. Mainly to make it easier to set targets for unload triggers.
         self.postInit = true
         local function setIngameMapFix(mapElement)
             local factor = 2*mapElement.terrainSize/2048
