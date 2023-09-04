@@ -345,7 +345,7 @@ function AIDriveStrategyUnloadChopper:startMovingAwayFromChopper(newState, combi
         end
     else
         
-        -- Determine what side the offset should be applied
+        -- Determine what side the offset should be applied. Negative because the goal is 180 from out current direction
         local offsetFix = -(self.combineOffset/math.abs(self.combineOffset))
         -- Determine how far away should we turn away
         local offsetX = math.max(math.abs(self.combineOffset * 2), self.turningRadius * 2)
@@ -356,21 +356,25 @@ function AIDriveStrategyUnloadChopper:startMovingAwayFromChopper(newState, combi
         -- Check our final destination for fruit
         local hasFruit = PathfinderUtil.hasFruit(x, z, 1, 1)
 
+        -- Check to make sure we stay on the field
+        local fieldId = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
+        local isField = CpFieldUtil.isOnField(x, z, fieldId)
+
         -- Make an AP path so we make 180
-        self:debug('startMovingAwayFromChopper: Creating chopper drive away course at x=%d z=%d offsetX=%d', x, z, offsetX)
+        self:debug('startMovingAwayFromChopper: Creating chopper drive away course at x=%d z=%d offsetX=%d hasFruit=%s isField=%s', x, z, offsetX, tostring(hasFruit), tostring(isField))
         local path, length = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver, self.vehicle.rootNode, 0, goal,
         offsetX, -10, self.turningRadius)
         -- If we don't have fruit and we found a path go ahead and make a 180 to get of the way of the next unloader
-        if path and not hasFruit then
+        if path and not hasFruit and isField then
             self:debug('startMovingAwayFromChopper: I found a Analytic Path and I am now going to drive it')
             self.driveAwayFromChopperCourse = Course.createFromAnalyticPath(self.vehicle, path, true)
             self.driveAwayFromChopperCourse:extend(AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength, dx, dz)
         else
             -- We had fruit or couldn't find a path lets just drive forward enough to give pathfinder time before we block the unloader
             -- TODO Optimizations pathfinder needs be called while driving this course on rows that are very narrow pathfinder takes a long time
-            self.driveAwayFromChopperCourse = Course.createStraightForwardCourse(self.vehicle, self.combineCourse and
-                                                                                                self.combineCourse:getDistanceToNextTurn(self.combineCourse:getCurrentWaypointIx())
-                                                                                                or 50) 
+            local currentIx = self.combineCourse and self.combineCourse:getCurrentWaypointIx()
+            local distanceToDriveAway = self.combineCourse and not self.combineCourse:isOnHeadland(currentIx) and self.combineCourse:getDistanceToNextTurn(currentIx) or 25
+            self.driveAwayFromChopperCourse = Course.createStraightForwardCourse(self.vehicle, distanceToDriveAway) 
         end
     end
     self:startCourse(self.driveAwayFromChopperCourse, 1)
