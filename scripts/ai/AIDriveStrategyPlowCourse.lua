@@ -15,16 +15,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-Drive strategy for driving a field work course
+Derived fieldwork course strategy, which handles plows.
+
+- Makes sure that all plows are unfolded and rotated in the correct direction,
+  which was determined by the course generator.
+- Applies the automatic tool offset calculation for all attached plows.
+
 
 ]]--
-
-
---[[
- 
- AI Drive Strategy for plows
-
-]]
 
 ---@class AIDriveStrategyPlowCourse : AIDriveStrategyFieldWorkCourse
 AIDriveStrategyPlowCourse = {}
@@ -45,55 +43,48 @@ function AIDriveStrategyPlowCourse.new(customMt)
     return self
 end
 
-function AIDriveStrategyPlowCourse:setAIVehicle(vehicle, jobParameters)
-    -- need to set the plow before calling the parent's setAIVehicle so if it calls any
-    -- overwritten functions, we have the plow set up already
-    self.plow = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, Plow)[1]
-    AIDriveStrategyPlowCourse:superClass().setAIVehicle(self, vehicle, jobParameters)
-    if self:hasRotatablePlow() then
-        self:debug('has rotatable plow.')
-    end
-end
-
 function AIDriveStrategyPlowCourse:getDriveData(dt, vX, vY, vZ)
     if self.state == self.states.INITIAL then
-        -- When starting work with a plow it first may need to be unfolded and then turned so it is facing to
-        -- the unworked side, and then can we start working
-
         self:setMaxSpeed(0)
-        self:setOffsetX()
-
-        -- this will unfold the plow when necessary
-        self.vehicle:raiseAIEvent("onAIStart", "onAIImplementStart")
-        self.vehicle:requestActionEventUpdate()
-
-        if self.plow.getIsUnfolded and self.plow:getIsUnfolded() then
-            self:debug('Plow already unfolded, now rotating if needed')
-            self:rotatePlow()
-            self.state = self.states.ROTATING_PLOW
-        else
-            self:debug('Unfolding plow')
-            self.state = self.states.UNFOLDING_PLOW
-        end
+        self:updatePlowOffset()
+        if self:isPlowRotating() then
+            --- If the plow is already being rotated at the start,
+            --- we still need to check if the rotation 
+            --- is in correct direction, as the course generator directed.
+            self:rotatePlows()
+			self:debug("Needs to wait until the plow has finished rotating.")
+			self.state = self.states.ROTATING_PLOW
+		else 
+            --- The plow can not be rotated, 
+            --- so we check if the plow is unfolded
+            --- and try again to rotate the plow in the correct direction.
+            self:debug("Plows have to be unfolded first!")
+			self.state = self.states.UNFOLDING_PLOW
+		end
     elseif self.state == self.states.ROTATING_PLOW then
         self:setMaxSpeed(0)
-        if not self.plow.spec_plow:getIsAnimationPlaying(self.plow.spec_plow.rotationPart.turnAnimation) then
-            self:setOffsetX()
+        if not self:isPlowRotating() then
+            --- Initial Rotation has finished and fieldwork can start.
+            self:updatePlowOffset()
             self:startWaitingForLower()
-            self:lowerImplements(self.vehicle)
-            self:debug('Plow rotation finished, ')
+            self:lowerImplements()
+            self:debug('Plow initial rotation finished')
         end
     elseif self.state == self.states.UNFOLDING_PLOW then
         self:setMaxSpeed(0)
-        if self.plow.getIsUnfolded and self.plow:getIsUnfolded() then
-            if self.plow:getIsPlowRotationAllowed() then
-                self:debug('Plow unfolded, now rotating if needed')
-                self:rotatePlow()
-            end
-            self.state = self.states.ROTATING_PLOW
+        if self:isPlowRotationAllowed() then 
+            --- The Unfolding has finished and 
+            --- we need to check if the rotation is correct.
+            self:rotatePlows()
+            self:debug("Plow was unfolded and rotation can begin")
+			self.state = self.states.ROTATING_PLOW
+        elseif self:getCanContinueWork() then 
+            --- Unfolding has finished and no extra rotation is needed.
+            self:updatePlowOffset()
+            self:startWaitingForLower()
+            self:lowerImplements()
+            self:debug('Plow is unfolded and ready to start')
         end
-    elseif self.state == self.states.TURNING then
-
     end
     return AIDriveStrategyFieldWorkCourse.getDriveData(self, dt, vX, vY, vZ)
 end
@@ -104,90 +95,77 @@ function AIDriveStrategyPlowCourse:onWaypointPassed(ix, course)
     -- the tractor (which may be the case when starting). When passing waypoints we'll most likely be driving
     -- straight and thus calculating a proper tool offset
     if self.state == self.states.WORKING then
-        self:setOffsetX()
+        self:updatePlowOffset()
     end
     AIDriveStrategyFieldWorkCourse.onWaypointPassed(self, ix, course)
 end
 
-function AIDriveStrategyPlowCourse:rotatePlow()
+--- Updates the X Offset based on the plows attached.
+function AIDriveStrategyPlowCourse:updatePlowOffset()
+    local xOffset = 0
+    for _, controller in pairs(self.controllers) do 
+        if controller.getAutomaticXOffset then 
+            xOffset = xOffset + controller:getAutomaticXOffset()
+        end
+    end
+    local oldOffset = self.aiOffsetX
+    -- set to the average of old and new to smooth a little bit to avoid oscillations
+    self.aiOffsetX = (0.5 * self.aiOffsetX + 1.5 * xOffset) / 2
+    self:debug("Plow offset calculated was %.2f and it changed from %.2f to %.2f",
+        xOffset, oldOffset, self.aiOffsetX)
+end
+
+--- Is a plow currently rotating?
+---@return boolean
+function AIDriveStrategyPlowCourse:isPlowRotating()
+    for _, controller in pairs(self.controllers) do 
+        if controller.isRotationActive and controller:isRotationActive() then 
+            return true
+        end
+    end
+    return false
+end
+
+--- Are all plows allowed to be turned?
+---@return boolean
+function AIDriveStrategyPlowCourse:isPlowRotationAllowed()
+    local allowed = true
+    for _, controller in pairs(self.controllers) do 
+        if controller.getIsPlowRotationAllowed and not controller:getIsPlowRotationAllowed() then 
+            allowed = false
+        end
+    end
+    return allowed
+end
+
+--- Initial plow rotation based on the ridge marker side selection by the course generator.
+function AIDriveStrategyPlowCourse:rotatePlows()
     self:debug('Starting work: check if plow needs to be turned.')
     local ridgeMarker = self.course:getRidgeMarkerState(self.ppc:getCurrentWaypointIx())
     local plowShouldBeOnTheLeft = ridgeMarker == CourseGenerator.RIDGEMARKER_RIGHT
     self:debug('Ridge marker %d, plow should be on the left %s', ridgeMarker, tostring(plowShouldBeOnTheLeft))
-    self.plow:setRotationMax(plowShouldBeOnTheLeft)
-end
-
---- Attempt to set the tool offset automatically, assuming the attacher joint of the tool is in the middle (the axis
---- of the tractor). Then find the relative distance of the attacher node to the left/right AI markers:
---- a tool with no offset will have the same distance from left and right
---- a tool with offset will be closer to either left or right AI marker.
-function AIDriveStrategyPlowCourse:setOffsetX()
-    local aiLeftMarker, aiRightMarker, aiBackMarker = self.plow.spec_plow:getAIMarkers()
-    if aiLeftMarker and aiBackMarker and aiRightMarker then
-        local attacherJoint = self.plow:getActiveInputAttacherJoint()
-        local referenceNode = attacherJoint and attacherJoint.node or self.vehicle:getAIDirectionNode()
-        -- find out the left/right AI markers distance from the attacher joint (or, if does not exist, the
-        -- vehicle's root node) to calculate the offset.
-        self.plowReferenceNode = referenceNode
-        local leftMarkerDistance, rightMarkerDistance = self:getOffsets(referenceNode, aiLeftMarker, aiRightMarker)
-        -- some plows rotate the markers with the plow, so swap left and right when needed
-        -- so find out if the left is really on the left of the vehicle's root node or not
-        local leftDx, _, _ = localToLocal(aiLeftMarker, self.vehicle:getAIDirectionNode(), 0, 0, 0)
-        local rightDx, _, _ = localToLocal(aiRightMarker, self.vehicle:getAIDirectionNode(), 0, 0, 0)
-        if leftDx < rightDx then
-            -- left is positive x, so looks like the plow is inverted, swap left/right then
-            leftMarkerDistance, rightMarkerDistance = -rightMarkerDistance, -leftMarkerDistance
+    for _, controller in pairs(self.controllers) do 
+        if controller.rotate then 
+            controller:rotate(plowShouldBeOnTheLeft)
         end
-        -- TODO: Fix this offset dependency and copy paste
-        local newToolOffsetX = -(leftMarkerDistance + rightMarkerDistance) / 2
-        -- set to the average of old and new to smooth a little bit to avoid oscillations
-        self.settings.toolOffsetX:setFloatValue((0.5 * self.settings.toolOffsetX:getValue() + 1.5 * newToolOffsetX) / 2)
-        self:debug('%s: left = %.1f, right = %.1f, leftDx = %.1f, rightDx = %.1f, new = %.1f, setting tool offsetX to %.2f',
-                CpUtil.getName(self.plow), leftMarkerDistance, rightMarkerDistance, leftDx, rightDx, newToolOffsetX,
-                self.settings.toolOffsetX:getValue())
     end
 end
 
--- If the left/right AI markers had a consistent orientation (rotation) we could use localToLocal to get the
--- referenceNode's distance in the marker's coordinate system. But that's not the case, so we'll use some vector
--- algebra to calculate how far left/right the markers are from the referenceNode.
-function AIDriveStrategyPlowCourse:getOffsets(referenceNode, aiLeftMarker, aiRightMarker)
-    local refX, _, refZ = getWorldTranslation(referenceNode)
-    local lx, _, lz = getWorldTranslation(aiLeftMarker)
-    local rx, _, rz = getWorldTranslation(aiRightMarker)
-    local leftOffset = -self:getScalarProjection(lx - refX, lz - refZ, lx - rx, lz - rz)
-    local rightOffset = self:getScalarProjection(rx - refX, rz - refZ, rx - lx, rz - lz)
-    return leftOffset, rightOffset
-end
-
---- Get scalar projection of vector v onto vector u
-function AIDriveStrategyPlowCourse:getScalarProjection(vx, vz, ux, uz)
-    local dotProduct = vx * ux + vz * uz
-    local length = math.sqrt(ux * ux + uz * uz)
-    return dotProduct / length
-end
-
-function AIDriveStrategyPlowCourse:hasRotatablePlow()
-    return self.plow.spec_plow.rotationPart.turnAnimation ~= nil
-end
-
---- We expect this to be called before the turn starts, so after the turn
+-----------------------------------------------------------------------------------------------------------------------
+--- Dynamic parameters (may change while driving)
+-----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyPlowCourse:getTurnEndSideOffset()
-    -- only when we are working (and making 180 turns), not when aligning for start
-    if self:hasRotatablePlow() and self:isWorking() then
-        local toolOffsetX = self.settings.toolOffsetX:getValue()
+    if self:isWorking() then
+        self:updatePlowOffset()
         -- need the double tool offset as the turn end still has the current offset, after the rotation it'll be
         -- on the other side, (one toolOffsetX would put it to 0 only)
-        return 2 * toolOffsetX
+        return 2 * self.aiOffsetX
     else
         return 0
     end
 end
 
-function AIDriveStrategyPlowCourse:stop(msg)
-    --- Make sure after the driver has finished.
-    --- Clients and server values are synced,
-    --- as the server updates the value locally during driving.
-    self.settings.toolOffsetX:setFloatValue(self.settings.toolOffsetX:getValue())
-    FieldworkAIDriver.stop(self,msg)
+function AIDriveStrategyPlowCourse:updateFieldworkOffset(course)
+	--- Ignore the tool offset setting.
+	course:setOffset((self.aiOffsetX or 0), (self.aiOffsetZ or 0))
 end

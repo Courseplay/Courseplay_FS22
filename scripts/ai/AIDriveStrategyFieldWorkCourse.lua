@@ -254,6 +254,7 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
     self:addImplementController(vehicle, MowerController, Mower, defaultDisabledStates)
 
     self:addImplementController(vehicle, RidgeMarkerController, RidgeMarker, defaultDisabledStates)
+    self:addImplementController(vehicle, PlowController, Plow, defaultDisabledStates)
 
     self:addImplementController(vehicle, PickupController, Pickup, defaultDisabledStates)
     self:addImplementController(vehicle, SprayerController, Sprayer, {})
