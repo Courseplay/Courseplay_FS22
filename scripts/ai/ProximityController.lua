@@ -161,10 +161,6 @@ end
 ---@return boolean|nil direction is forwards if true or nil
 ---@return number maximum speed adjusted to slow down (or 0 to stop) when obstacles are ahead, otherwise maxSpeed
 function ProximityController:getDriveData(maxSpeed, moveForwards)
-
-    --- Resets the traffic info text.
-    self.vehicle:resetCpActiveInfoText(InfoTextManager.BLOCKED_BY_OBJECT)
-
     local d, vehicle, object, range, deg, dAvg, hitTerrain = math.huge, nil, nil, 10, 0, 0, false
     local pack = moveForwards and self.forwardLookingProximitySensorPack or self.backwardLookingProximitySensorPack
     if pack then
@@ -173,12 +169,14 @@ function ProximityController:getDriveData(maxSpeed, moveForwards)
     end
     if self:ignoreObject(object, vehicle, moveForwards, hitTerrain) then
         self:setState(self.states.NO_OBSTACLE, 'No obstacle')
+        self.vehicle:resetCpActiveInfoText(InfoTextManager.BLOCKED_BY_OBJECT)
         return nil, nil, nil, maxSpeed
     end
     if object then 
         --- Makes sure the detected object is not an implement or the root vehicle.
         for _, childVehicle in pairs(self.vehicle:getChildVehicles()) do
             if object == childVehicle then
+                self.vehicle:resetCpActiveInfoText(InfoTextManager.BLOCKED_BY_OBJECT)
                 return nil, nil, nil, maxSpeed
             end
         end 
@@ -228,8 +226,9 @@ function ProximityController:getDriveData(maxSpeed, moveForwards)
     end
     if self.showBlockedByObjectMessageTimer:get() then 
         self.vehicle:setCpInfoTextActive(InfoTextManager.BLOCKED_BY_OBJECT)
+    else 
+        self.vehicle:resetCpActiveInfoText(InfoTextManager.BLOCKED_BY_OBJECT)
     end
-
     return nil, nil, nil, maxSpeed
 end
 

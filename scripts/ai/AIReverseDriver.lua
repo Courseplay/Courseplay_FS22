@@ -91,8 +91,11 @@ function AIReverseDriver:getDriveData()
 	-- TODO: consolidate this with AITurn:getTurnNode() and if getAIDirectionNode() considers this already
 	local tractorNode
 	if self.vehicle.spec_articulatedAxis then
-		tractorNode = AIUtil.getArticulatedAxisVehicleReverserNode(self.vehicle)
-	else
+		--- TODO consolidate this with AIUtil.getReverserNode() maybe ??
+		local node = self.vehicle.getAIReverserNode and self.vehicle:getAIReverserNode()
+		tractorNode = node or AIUtil.getArticulatedAxisVehicleReverserNode(self.vehicle)
+	end
+	if not tractorNode then
 		tractorNode = self.vehicle:getAIDirectionNode()
 	end
 

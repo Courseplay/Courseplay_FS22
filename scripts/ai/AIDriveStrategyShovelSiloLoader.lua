@@ -332,8 +332,6 @@ function AIDriveStrategyShovelSiloLoader:getDriveData(dt, vX, vY, vZ)
 end
 
 function AIDriveStrategyShovelSiloLoader:update(dt)
-    AIDriveStrategyCourse.update(self)
-    self:updateImplementControllers(dt)
     if CpDebug:isChannelActive(CpDebug.DBG_SILO, self.vehicle) then
         if self.course:isTemporary() then
             self.course:draw()
@@ -353,6 +351,8 @@ function AIDriveStrategyShovelSiloLoader:update(dt)
         end
         CpUtil.drawDebugNode(self.unloadPositionNode, false, 3)
     end
+    self:updateImplementControllers(dt)
+    AIDriveStrategyCourse.update(self)
 end
 
 --- Ignores the bunker silo and the unload target for the proximity sensors.
