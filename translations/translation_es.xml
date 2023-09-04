@@ -321,7 +321,7 @@
     <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Habilita/Desabilita el dibujado de los Cursos en el Minimapa"/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Ventana de Textos Informativos"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Muestra la Ventana de Textos Informativos."/>
-    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Active but invisible without message"/>
+    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Activo, pero invisible sin mensaje."/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Evento del mouse del jugador"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Habilita/Deshabilita el evento del mouse del jugador para la visualización de texto de información fuera de un vehículo."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Preferencia de Campos Personalizados"/>
