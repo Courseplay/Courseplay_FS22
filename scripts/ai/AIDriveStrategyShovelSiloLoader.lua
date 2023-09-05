@@ -147,6 +147,8 @@ function AIDriveStrategyShovelSiloLoader:startWithoutCourse(jobParameters)
         -3, self.silo:getWidth() + 6, self.silo:getLength() + 6)
 
     self.siloController = CpBunkerSiloLoaderController(self.silo, self.vehicle, self)
+
+    self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
 end
 
 -----------------------------------------------------------------------------------------------------------------------
