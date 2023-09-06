@@ -528,4 +528,9 @@ You can define the following custom settings:
              workingWidth = "9.7m"
     />
 
+    <!--Mod: FS22_newHollandW190D-->
+    <Vehicle name="w190D.xml"
+             turnRadius = "10"
+    />
+
 </VehicleConfigurations>
