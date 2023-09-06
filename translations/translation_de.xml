@@ -836,9 +836,16 @@ Mit einem Radlader oder Tranktor mit Frontlader und Schaufel, lassen sich Bunker
 Die Schaufelpositionen werden dabei automatisch auf die richtige Position gesetzt.
 Ist der Modus im HUD nicht direkt zu sehen, sollte er durch das durchschalten der &quot;Startposition&quot; gewählt werden können.
 
-Schaufeln mit gebiss öffnen dieses sogar beim laden und abladen und schließen dieses zum Transport.
+Im HUD erscheint dann das gewohnte Ziel Icon um direkt mit dem richtigen Modus auf der Helfer Karte zu landen.
+Außerdem gibt es eine Anzeige des Fortschritts, die anzeigt, wie viel % des erkannten Haufens bereits abgearbeitet wurde.
+Die Arbeitsbreite muss eventuell auch angepasst werden, wenn ihr ein Bunker Silo leeren möchtet.
 
-Die Schaufel zum zerkleinern von Zuckerrüben wird auch unterstützt.
+Der Versatz Schaufelhöhe dient dazu, die höhe über dem Boden anzupassen. Diese Höhe sollte relativ genau sein, damit auch alles eingesammelt wird,
+oder damit der Radlader nicht an Kanten fest hängt. Wird der Wert verändert, fährt die Schaufel automatisch auf die Position und die eingestellte Höhe.
+Zum zurück setzen einfach auf den Text klicken. Der Wert geht von +1 bis -1 in 0,1er Schritten.
+
+Schaufeln mit gebiss öffnen dieses sogar beim laden und abladen und schließen dieses zum Transport,
+sogar die Schaufel zum zerkleinern von Zuckerrüben wird mit allen Funktionen unterstützt.
 "/>
     <text name="CP_help_page_shovelLoaderBasic_text" text="
 Um einen Radlader Fahrer zu starten, müssen zunächst über das Ziel Icon im HUD die Lade- und Entladeposition gewählt werden.
@@ -851,8 +858,8 @@ Möchtest du in ein Lager entladen, muss zunächst das Ziel umgestellt werden un
 "/>
     <text name="CP_help_page_shovelLoaderTrigger_text" text="
 Die Auswahl eines Triggers wirkt zunächst kompliziert, ist aber im Prinzip recht einfach.
-Da Gebäude mehrere Trigger haben können, muss dieses selber gewählt werden.
-Die verfügbaren Trigger werden als orangene Kreuze dar gestellt.
+Da Gebäude mehrere Trigger haben können, muss dieser selber gewählt werden.
+Die verfügbaren Trigger werden als orangene Kreuze da gestellt.
 Um einen Trigger zu wählen, setzt du den Punkt in der mitte des Runden Icons einfach mittig auf das Kreuz.
 Anschließend musst du noch die richtung wählen, in die der Fahrer den Trigger anfahren soll, da es keine klare Richtung eines Triggers gibt.
 Das Kreuz sollte jetzt wie im Bild dar gestellt gelb sein.
