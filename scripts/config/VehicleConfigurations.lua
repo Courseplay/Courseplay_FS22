@@ -139,17 +139,20 @@ function VehicleConfigurations:get(object, attribute)
         CpUtil.infoImplement(object, "The given vehicle config attribute name: %s is not valid!", attribute)
         return 
     end
+    local function getConfigName(data)
+        if data[object.configFileNameClean] then 
+            return data[object.configFileNameClean][attribute]
+        elseif data[object.configFileNameClean..".xml"] then 
+            return data[object.configFileNameClean..".xml"][attribute]
+        end
+    end
     if object and object.configFileNameClean then   
         local modName = object.customEnvironment 
-        if self.modVehicleConfigurations[modName] then 
+        if modName and self.modVehicleConfigurations[modName] then 
             --- If a mod name was given, then also check the xml filename.
-            if self.modVehicleConfigurations[modName][object.configFileNameClean] then 
-                return self.modVehicleConfigurations[modName][object.configFileNameClean][attribute]
-            end
-        elseif self.vehicleConfigurations[object.configFileNameClean] then
-            return self.vehicleConfigurations[object.configFileNameClean][attribute]
-        elseif self.vehicleConfigurations[object.configFileNameClean..".xml"] then
-            return self.vehicleConfigurations[object.configFileNameClean..".xml"][attribute]
+            return getConfigName(self.modVehicleConfigurations[modName])
+        else
+            return getConfigName(self.vehicleConfigurations)
         end
     end
 end
@@ -225,6 +228,12 @@ function VehicleConfigurations:registerConsoleCommands()
     g_devHelper.consoleCommands:registerConsoleCommand("cpVehicleConfigurationsListAttributes", 
         "Prints all valid attribute names", 
         "consoleCommandPrintAttributeNames", self)
+    g_devHelper.consoleCommands:registerConsoleCommand("cpVehicleConfigurationsPrintAttributes", 
+        "Prints all normal attributes", 
+        "consoleCommandPrintAllNormalVehicleConfigurations", self)
+    g_devHelper.consoleCommands:registerConsoleCommand("cpVehicleConfigurationsPrintModAttributes", 
+        "Prints all mod name attributes", 
+        "consoleCommandPrintAllModNameVehicleConfigurations", self)
 end
 
 function VehicleConfigurations:consoleCommandReload()
@@ -285,6 +294,26 @@ function VehicleConfigurations:consoleCommandPrintAllAttributeValuesForVehicleAn
                         tostring(data.value))
                 end
             end
+        end
+    end
+end
+
+function VehicleConfigurations:consoleCommandPrintAllModNameVehicleConfigurations()
+    for modName, configurations in pairs(self.modVehicleConfigurations) do 
+        for name, configs in pairs(configurations) do
+            for n, v in pairs(configs) do 
+                CpUtil.info("(%s => Mod: %s) %s => %s",
+                    name, modName, n, v)
+            end
+        end
+    end
+end
+
+function VehicleConfigurations:consoleCommandPrintAllNormalVehicleConfigurations()
+    for name, configs in pairs(self.vehicleConfigurations) do 
+        for n, v in pairs(configs) do 
+            CpUtil.info("(%s) %s => %s",
+                name, n, v)
         end
     end
 end
