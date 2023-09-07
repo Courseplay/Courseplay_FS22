@@ -833,25 +833,25 @@ Anschließend kann der Helfer gestartet werden.
     <text name="CP_help_page_shovelLoader_title" text="Radlader/Frontlader"/>
     <text name="CP_help_page_shovelLoaderGeneral_text" text="
 Mit einem Radlader oder Tranktor mit Frontlader und Schaufel, lassen sich Bunker Silos oder Haufen automatisch aufnehmen und automatisch in einen Anhänger oder Lager abladen.
-Die Schaufelpositionen werden dabei automatisch auf die richtige Position gesetzt.
-Ist der Modus im HUD nicht direkt zu sehen, sollte er durch das durchschalten der &quot;Startposition&quot; gewählt werden können.
+Die Schaufelpositionen werden dabei automatisch auf die richtige Position gefahren.
+Ist der Modus im HUD nicht direkt zu sehen, schalte die &quot;Startposition&quot; durch bis der Modus erscheint.
 
 Im HUD erscheint dann das gewohnte Ziel Icon um direkt mit dem richtigen Modus auf der Helfer Karte zu landen.
-Außerdem gibt es eine Anzeige des Fortschritts, die anzeigt, wie viel % des erkannten Haufens bereits abgearbeitet wurde.
-Die Arbeitsbreite muss eventuell auch angepasst werden, wenn ihr ein Bunker Silo leeren möchtet.
+Es gibt eine Anzeige, die den Fortschritt anzeigt, wie viel % des erkannten Haufens bereits abgearbeitet wurde.
+Die Arbeitsbreite muss eventuell angepasst werden, wenn ihr ein Bunker Silo leeren möchtet.
 
 Der Versatz Schaufelhöhe dient dazu, die höhe über dem Boden anzupassen. Diese Höhe sollte relativ genau sein, damit auch alles eingesammelt wird,
 oder damit der Radlader nicht an Kanten fest hängt. Wird der Wert verändert, fährt die Schaufel automatisch auf die Position und die eingestellte Höhe.
 Zum zurück setzen einfach auf den Text klicken. Der Wert geht von +1 bis -1 in 0,1er Schritten.
 
-Schaufeln mit gebiss öffnen dieses sogar beim laden und abladen und schließen dieses zum Transport,
+Schaufeln mit Gebiss öffnen dieses sogar beim laden und abladen und schließen dieses zum Transport,
 sogar die Schaufel zum zerkleinern von Zuckerrüben wird mit allen Funktionen unterstützt.
 "/>
     <text name="CP_help_page_shovelLoaderBasic_text" text="
 Um einen Radlader Fahrer zu starten, müssen zunächst über das Ziel Icon im HUD die Lade- und Entladeposition gewählt werden.
 Die Ladeposition wird wie auch bereits beim Lader mit der Ladeposition gewählt. Ein blauer Ramen entsteht um den Haufen.
 
-Die Abladeposition hängt davon ab, ob du in einen Anhänger oder in einen Trigger entladen möchtest.
+Die Abladeposition hängt davon ab, ob du in einen Anhänger oder in einen Lager entladen möchtest.
 In einen Anhänger funktioniert automatisch und braucht keine Position. Es wird der naheste, stehende Anhänger gewählt und seitlich angefahren.
 
 Möchtest du in ein Lager entladen, muss zunächst das Ziel umgestellt werden und anschließend den Marker auf den Trigger gesetzt werden.
