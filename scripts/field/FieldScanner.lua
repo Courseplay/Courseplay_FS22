@@ -12,9 +12,9 @@ FieldScanner = CpObject()
 function FieldScanner:init(resolution)
     -- minimum practical resolution depends on how many meters a pixel in the density map really is, I'm not
     -- sure if it is 1 or 0.5, so 0.2 seems to be a safe bet
-    self.resolution = resolution or 0.2
+    self.resolution = resolution or 0.1
     self.highResolution = 0.1
-    self.normalTracerLookahead = 5.0
+    self.normalTracerLookahead = 1.0
     self.shortTracerLookahead = self.normalTracerLookahead / 10
     self.angleStep = self.highResolution / self.normalTracerLookahead
 end
