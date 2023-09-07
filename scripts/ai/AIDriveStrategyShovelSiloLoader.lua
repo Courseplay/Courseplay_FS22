@@ -138,6 +138,8 @@ function AIDriveStrategyShovelSiloLoader:startWithoutCourse(jobParameters)
         self:debug("Heap was found.")
         self.silo = self.heapSilo
     end
+    --- fill level, when the driver is started
+    self.fillLevelLeftOverSinceStart = self.silo:getTotalFillLevel()
 
     local cx, cz = self.silo:getFrontCenter()
     local dirX, dirZ = self.silo:getLengthDirection()
@@ -355,6 +357,10 @@ function AIDriveStrategyShovelSiloLoader:update(dt)
     end
     self:updateImplementControllers(dt)
     AIDriveStrategyCourse.update(self)
+end
+
+function AIDriveStrategyShovelSiloLoader:updateCpStatus(status)
+    status:setSiloLoaderStatus(self.silo:getTotalFillLevel(), self.fillLevelLeftOverSinceStart)
 end
 
 --- Ignores the bunker silo and the unload target for the proximity sensors.
