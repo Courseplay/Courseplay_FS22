@@ -51,6 +51,9 @@ function VehicleConfigurations:registerXmlSchema()
 end
 
 function VehicleConfigurations:loadFromXml()
+    self.vehicleConfigurations = {}
+    self.modVehicleConfigurations = {}
+    self.attributes = {}
     self.xmlFileName = Utils.getFilename('config/VehicleConfigurations.xml', Courseplay.BASE_DIRECTORY)
     self:registerXmlSchema()
     self.xmlFile = self:loadXmlFile(self.xmlFileName, true)
@@ -254,7 +257,10 @@ function VehicleConfigurations:consoleCommandPrintSingleAttributeValuesForVehicl
     local values = self:queryAttributeValues(vehicle, attribute)
     for _, data in pairs(values) do
         if data.found then 
-            CpUtil.infoVehicle(data.implement, "%s", tostring(data.value))
+            CpUtil.infoVehicle(data.implement, "(%s => Mod: %s) %s", 
+                tostring(data.implement.configFileNameClean), 
+                tostring(data.implement.customEnvironment ~= nil and data.implement.customEnvironment or false),
+                tostring(data.value))
         else 
             CpUtil.infoVehicle(data.implement, "not found")
         end
@@ -273,7 +279,10 @@ function VehicleConfigurations:consoleCommandPrintAllAttributeValuesForVehicleAn
             CpUtil.info("Found the following for %s: ....", attribute)
             for _, data in pairs(values) do
                 if data.found then 
-                    CpUtil.infoVehicle(data.implement, "%s", tostring(data.value))
+                    CpUtil.infoVehicle(data.implement, "(%s => Mod: %s) %s",
+                        tostring(data.implement.configFileNameClean), 
+                        tostring(data.implement.customEnvironment ~= nil and data.implement.customEnvironment or false),
+                        tostring(data.value))
                 end
             end
         end
@@ -282,7 +291,8 @@ end
 
 function VehicleConfigurations:consoleCommandPrintAttributeNames()
     for attribute, xmlValueType in pairs(self.attributes) do 
-        CpUtil.info("Attribute: %s => %s", attribute, XMLValueType.TYPES[xmlValueType].name)
+        CpUtil.info("Attribute: %s => %s",
+            attribute, XMLValueType.TYPES[xmlValueType].name)
     end
 end
 
