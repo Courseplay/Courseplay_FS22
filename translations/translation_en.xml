@@ -832,27 +832,27 @@ Now it's possible to start the helper.
 "/>
     <text name="CP_help_page_shovelLoader_title" text="Wheel loader/Front loader"/>
     <text name="CP_help_page_shovelLoaderGeneral_text" text="
-With a wheel loader or tractor with a front loader and shovel attached, you can load stuff from a heap or out of a silo bunker and unload it into a trailer or storage.
+With a wheel loader or tractor with a front loader and shovel attached, you can pick up a heap from the ground or out of a bunker silo and unload it into a trailer or storage.
 The shovel positions will be moved to the correct position automatically.
-In case the mod is not directly visable on the hud, toggle the &quot;start position&quot; untill the mode appears.
+In case the mode is not directly visable on the hud, toggle the &quot;start position&quot; untill the mode appears.
 
-On the HUD, the know target icon appears to get directly to the AI Map with the mode active.
-There is also a display that shows how much % of the heap is left, that the shovel driver is working on.
-The work width might need to be adjusted in case you want to pick up stuff from the bunker silo.
+On the HUD, the known target icon appears to get directly to the AI Map with the mode active.
+There is also a display that shows how many liters of the heap is left, that the shovel driver is working on.
+The work width might need to be adjusted in case you want to pick up stuff from the bunker silo, to not hit the side walls.
 
-The hight offset of the shoveld is used to adjust the hight abouve the ground. This should be checked and needs to be close to ground, to pick up all stuff on the ground,
-but also that the shovel doesn't get stuck on an edge of a bunker silo. If the values gets changed, the shovel will move to the loading position with the set offset.
+The hight offset of the shoveld is used to adjust the hight above the ground. This should be checked and needs to be close to ground, to pick up all stuff on the ground,
+but also that the shovel doesn't get stuck on an edge of a bunker silo. If the value gets changed, the shovel will move to the loading position with the set offset.
 To reset the hight, click on the text. The value can be adjusted from +1 to -1 in 0.1 setps.
 
-Shovels with a flap will open automatically and close them for transport,
-the shovel to shred sugar beets are also fully functional.
+Shovels with a flap will open automatically and close them for transport.
+The shovel to shred sugar beets is completly functional as well.
 "/>
     <text name="CP_help_page_shovelLoaderBasic_text" text="
 To start a wheel loader driver, you need to set the load and unload position by clicking the target icon on the hud.
-The loading position works the same like the one from the loader. A blue square will created arround the heap.
+The loading position works the same like the one from the loader. A blue square will be created arround the heap.
 
 The unloading position depends if you want to unload into a trailer or into a storage.
-Unload into a trailer works automatically and doesn't need a position. The driver will check for the nearest standing trailer and drives to it from the side.
+Unloading into a trailer works automatically and doesn't need a position. The driver will check for the nearest standing trailer and drives to its side.
 
 If you want to unload into a storage, you need to switch the target and then mark the trigger of the storage.
 "/>
