@@ -404,7 +404,7 @@ You can define the following custom settings:
     <!--Mod: Gregoire Besson SPSL9 -->
     <Vehicle name="spsl9.xml"
              toolOffsetX = "2.1"
-             turnRadius = "12"
+             turnRadius = "6"
              implementWheelAlwaysOnGround = "true"
 			 workingWidth = "10.5"
              noReverse = "true"

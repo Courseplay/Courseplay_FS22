@@ -6,6 +6,7 @@ PlowController = CpObject(ImplementController)
 function PlowController:init(vehicle, implement)
     ImplementController.init(self, vehicle, implement)
     self.plowSpec = self.implement.spec_plow
+    self.lastTurnProgress = 0
 end
 
 
@@ -66,10 +67,35 @@ function PlowController:getIsPlowRotationAllowed()
     return self.implement:getIsPlowRotationAllowed()
 end
 
+function PlowController:isFullyRotated()
+    local rotationAnimationTime = self.implement:getAnimationTime(self.plowSpec.rotationPart.turnAnimation)
+    return rotationAnimationTime < 0.001 or rotationAnimationTime > 0.999
+end
+
 --- Rotates the plow if possible.
 ---@param shouldBeOnTheLeft boolean|nil
 function PlowController:rotate(shouldBeOnTheLeft)
     if self:isRotatablePlow() and self:getIsPlowRotationAllowed() then
         self.implement:setRotationMax(shouldBeOnTheLeft)
+    end
+end
+
+function PlowController:onFinishRow()
+    if self:isRotatablePlow() then
+        self.implement:setRotationCenter()
+    end
+end
+
+function PlowController:onEndTurn(isLeftTurn)
+    if self:isRotatablePlow() then
+        self.implement:setRotationMax(isLeftTurn)
+    end
+end
+
+function PlowController:canContinueWork()
+    if self:isRotatablePlow() then
+        return self:isFullyRotated()
+    else
+        return true
     end
 end
