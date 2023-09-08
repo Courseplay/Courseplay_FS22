@@ -93,7 +93,7 @@
     <!---->
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Ladeposition"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Ladeposition"/>
-    <text name="CP_siloLoader_fillLevelProgress" text="Fortschritt: "/>
+    <text name="CP_siloLoader_fillLevelProgress" text="Liter übrig: "/>
     <text name="CP_siloLoaderJobParameters_subTitle_unloading" text="Abladen in:"/>
     <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="Anhänger"/>
     <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="Abladestation"/>
