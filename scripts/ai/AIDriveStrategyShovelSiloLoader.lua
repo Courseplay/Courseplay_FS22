@@ -293,10 +293,6 @@ function AIDriveStrategyShovelSiloLoader:getDriveData(dt, vX, vY, vZ)
             self:searchForTrailerToUnloadInto()
             self.lastTrailerSearch = g_time
         end
-        if CpDebug:isChannelActive(CpDebug.DBG_SILO, self.vehicle) then
-            DebugUtil.drawDebugCircleAtNode(self.siloFrontNode, self.maxValidTrailerDistanceToSiloFront, 
-                math.ceil(self.maxValidTrailerDistanceToSiloFront), nil, false, {0, 3, 0})
-        end
     elseif self.state == self.states.DRIVING_TO_UNLOAD then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
         local refNode
@@ -337,6 +333,10 @@ end
 
 function AIDriveStrategyShovelSiloLoader:update(dt)
     if CpDebug:isChannelActive(CpDebug.DBG_SILO, self.vehicle) then
+        if self.siloFrontNode and self.state == self.states.WAITING_FOR_TRAILER then
+            DebugUtil.drawDebugCircleAtNode(self.siloFrontNode, self.maxValidTrailerDistanceToSiloFront, 
+                math.ceil(self.maxValidTrailerDistanceToSiloFront), nil, false, {0, 3, 0})
+        end
         if self.course:isTemporary() then
             self.course:draw()
         elseif self.ppc:getCourse():isTemporary() then
