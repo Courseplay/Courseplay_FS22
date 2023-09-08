@@ -35,11 +35,11 @@ function CpSiloLoaderWorkerHudPageElement:setupElements(baseHud, vehicle, lines,
     end)
 
 
-    --- Progress of fill level removed since the start of the driver.
+    --- Displays the fill level of current worked on heap.
     local x, y = unpack(lines[4].left)
     self.fillLevelProgressLabel = CpTextHudElement.new(self , x , y, CpBaseHud.defaultFontSize)
     self.fillLevelProgressLabel:setTextDetails(g_i18n:getText("CP_siloLoader_fillLevelProgress"))
-    --- Progress of fill level removed since the start of the driver.
+    --- Displays the fill level of current worked on heap.
     local x, y = unpack(lines[4].right)
     self.fillLevelProgressText = CpTextHudElement.new(self, x, y, CpBaseHud.defaultFontSize, RenderText.ALIGN_RIGHT)
     
