@@ -2504,54 +2504,54 @@ Now it's possible to start the helper.
 		</Translation>
 		<Translation name="CP_help_page_shovelLoaderGeneral_text">
 			<Text language="de"><![CDATA[
-Mit einem Radlader oder Tranktor mit Frontlader und Schaufel, lassen sich Bunker Silos oder Haufen automatisch aufnehmen und automatisch in einen Anhänger oder Lager abladen.
+Mit einem Radlader oder Traktor mit Frontlader und Schaufel lassen sich Haufen vom Boden oder aus einem Bunker Silo automatisch aufnehmen und in einen Anhänger oder Lager abladen.
 Die Schaufelpositionen werden dabei automatisch auf die richtige Position gefahren.
 Ist der Modus im HUD nicht direkt zu sehen, schalte die "Startposition" durch bis der Modus erscheint.
 
 Im HUD erscheint dann das gewohnte Ziel Icon um direkt mit dem richtigen Modus auf der Helfer Karte zu landen.
-Es gibt eine Anzeige, die den Fortschritt anzeigt, wie viel % des erkannten Haufens bereits abgearbeitet wurde.
-Die Arbeitsbreite muss eventuell angepasst werden, wenn ihr ein Bunker Silo leeren möchtet.
+Es gibt eine Anzeige, die die verbleibenden Liter des Haufens anzeigt.
+Die Arbeitsbreite muss im HUD eventuell angepasst werden, wenn ihr ein Bunker Silo leeren möchtet, um nicht seitlich in die Wand zu fahren.
 
-Der Versatz Schaufelhöhe dient dazu, die höhe über dem Boden anzupassen. Diese Höhe sollte relativ genau sein, damit auch alles eingesammelt wird,
+Der Versatz der Schaufelhöhe dient dazu, die höhe über dem Boden anzupassen. Diese Höhe sollte relativ genau sein, damit auch alles eingesammelt wird,
 oder damit der Radlader nicht an Kanten fest hängt. Wird der Wert verändert, fährt die Schaufel automatisch auf die Position und die eingestellte Höhe.
-Zum zurück setzen einfach auf den Text klicken. Der Wert geht von +1 bis -1 in 0,1er Schritten.
+Ein Klick auf den Text, setzt den Wert auf 0 zurück. Der Wert lässt sich von +1 bis -1 in 0,1er Schritten anpassen.
 
-Schaufeln mit Gebiss öffnen dieses sogar beim laden und abladen und schließen dieses zum Transport,
-sogar die Schaufel zum zerkleinern von Zuckerrüben wird mit allen Funktionen unterstützt.
+Schaufeln mit Gebiss öffnen dieses sogar beim laden und abladen und schließen dieses zum Transport.
+Die Schaufel zum zerkleinern von Zuckerrüben mit allen Funktionen wird auch unterstützt.
 ]]></Text>
 			<Text language="en"><![CDATA[
-With a wheel loader or tractor with a front loader and shovel attached, you can load stuff from a heap or out of a silo bunker and unload it into a trailer or storage.
+With a wheel loader or tractor with a front loader and shovel attached, you can pick up a heap from the ground or out of a bunker silo and unload it into a trailer or storage.
 The shovel positions will be moved to the correct position automatically.
-In case the mod is not directly visable on the hud, toggle the "start position" untill the mode appears.
+In case the mode is not directly visable on the hud, toggle the "start position" untill the mode appears.
 
-On the HUD, the know target icon appears to get directly to the AI Map with the mode active.
-There is also a display that shows how much % of the heap is left, that the shovel driver is working on.
-The work width might need to be adjusted in case you want to pick up stuff from the bunker silo.
+On the HUD, the known target icon appears to get directly to the AI Map with the mode active.
+There is also a display that shows how many liters of the heap is left, that the shovel driver is working on.
+The work width might need to be adjusted in case you want to pick up stuff from the bunker silo, to not hit the side walls.
 
-The hight offset of the shoveld is used to adjust the hight abouve the ground. This should be checked and needs to be close to ground, to pick up all stuff on the ground,
-but also that the shovel doesn't get stuck on an edge of a bunker silo. If the values gets changed, the shovel will move to the loading position with the set offset.
+The hight offset of the shoveld is used to adjust the hight above the ground. This should be checked and needs to be close to ground, to pick up all stuff on the ground,
+but also that the shovel doesn't get stuck on an edge of a bunker silo. If the value gets changed, the shovel will move to the loading position with the set offset.
 To reset the hight, click on the text. The value can be adjusted from +1 to -1 in 0.1 setps.
 
-Shovels with a flap will open automatically and close them for transport,
-the shovel to shred sugar beets are also fully functional.
+Shovels with a flap will open automatically and close them for transport.
+The shovel to shred sugar beets is completly functional as well.
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_shovelLoaderBasic_text">
 			<Text language="de"><![CDATA[
 Um einen Radlader Fahrer zu starten, müssen zunächst über das Ziel Icon im HUD die Lade- und Entladeposition gewählt werden.
-Die Ladeposition wird wie auch bereits beim Lader mit der Ladeposition gewählt. Ein blauer Ramen entsteht um den Haufen.
+Die Ladeposition wird wie auch bereits beim Lader gewählt. Ein blauer Ramen entsteht um den Haufen.
 
 Die Abladeposition hängt davon ab, ob du in einen Anhänger oder in einen Lager entladen möchtest.
 In einen Anhänger funktioniert automatisch und braucht keine Position. Es wird der naheste, stehende Anhänger gewählt und seitlich angefahren.
 
-Möchtest du in ein Lager entladen, muss zunächst das Ziel umgestellt werden und anschließend den Marker auf den Trigger gesetzt werden.
+Möchtest du in ein Lager entladen, muss zunächst das Ziel umgestellt werden und anschließend der Marker auf den Trigger gesetzt werden.
 ]]></Text>
 			<Text language="en"><![CDATA[
 To start a wheel loader driver, you need to set the load and unload position by clicking the target icon on the hud.
-The loading position works the same like the one from the loader. A blue square will created arround the heap.
+The loading position works the same like the one from the loader. A blue square will be created arround the heap.
 
 The unloading position depends if you want to unload into a trailer or into a storage.
-Unload into a trailer works automatically and doesn't need a position. The driver will check for the nearest standing trailer and drives to it from the side.
+Unloading into a trailer works automatically and doesn't need a position. The driver will check for the nearest standing trailer and drives to its side.
 
 If you want to unload into a storage, you need to switch the target and then mark the trigger of the storage.
 ]]></Text>
@@ -2563,7 +2563,7 @@ Da Gebäude mehrere Trigger haben können, muss dieser selber gewählt werden.
 Die verfügbaren Trigger werden als orangene Kreuze da gestellt.
 Um einen Trigger zu wählen, setzt du den Punkt in der mitte des Runden Icons einfach mittig auf das Kreuz.
 Anschließend musst du noch die richtung wählen, in die der Fahrer den Trigger anfahren soll, da es keine klare Richtung eines Triggers gibt.
-Das Kreuz sollte jetzt wie im Bild dar gestellt gelb sein.
+Das Kreuz sollte jetzt, wie im Bild da gestellt, gelb sein.
 ]]></Text>
 			<Text language="en"><![CDATA[
 Selecting a trigger does look a bit complicated, but in reality it is realy easy.
