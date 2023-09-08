@@ -583,7 +583,7 @@ end
 
 function CpShovelPositions.debug(implement, ...)
 	if CpShovelPositions.DEBUG then
-		CpUtil.infoImplement(implement, ...)
+		CpUtil.debugImplement(implement, ...)
 	end
 end
 
