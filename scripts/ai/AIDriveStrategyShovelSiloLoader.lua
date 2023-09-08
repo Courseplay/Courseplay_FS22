@@ -59,7 +59,7 @@ AIDriveStrategyShovelSiloLoader.myStates = {
 }
 
 AIDriveStrategyShovelSiloLoader.maxValidTrailerDistanceToSiloFront = 30
-AIDriveStrategyShovelSiloLoader.searchForTrailerDelaySec = 30 
+AIDriveStrategyShovelSiloLoader.searchForTrailerDelaySec = 10 
 AIDriveStrategyShovelSiloLoader.distShovelTrailerPreUnload = 7
 AIDriveStrategyShovelSiloLoader.distShovelUnloadStationPreUnload = 8
 AIDriveStrategyShovelSiloLoader.isStuckMs = 1000 * 15

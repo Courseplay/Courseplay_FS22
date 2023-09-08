@@ -302,8 +302,8 @@
 			<Text language="en"><![CDATA[Loading position]]></Text>
 		</Translation>
 		<Translation name="CP_siloLoader_fillLevelProgress">
-			<Text language="de"><![CDATA[Fortschritt: ]]></Text>
-			<Text language="en"><![CDATA[Progress: ]]></Text>
+			<Text language="de"><![CDATA[Liter übrig: ]]></Text>
+			<Text language="en"><![CDATA[Liters left: ]]></Text>
 		</Translation>
 		<Translation name="CP_siloLoaderJobParameters_subTitle_unloading">
 			<Text language="de"><![CDATA[Abladen in:]]></Text>
