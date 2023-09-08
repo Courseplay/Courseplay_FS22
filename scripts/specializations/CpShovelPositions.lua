@@ -230,7 +230,7 @@ function CpShovelPositions:controlShovelPosition(dt, targetAngle)
 		--- So it needs to be opened for loading and unloading.
 		for i, tool in pairs(self.spec_cylindered.movingTools) do 
 			if tool.axis and tool.rotMax ~= nil and tool.rotMin ~= nil then 
-				if spec.state ~= CpShovelPositions.TRANSPORT then 
+				if spec.state == CpShovelPositions.LOADING or spec.state == CpShovelPositions.UNLOADING then 
 					--- Opens the shovel for loading and unloading
 					isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt,
 						tool.invertAxis and tool.rotMin or tool.rotMax)

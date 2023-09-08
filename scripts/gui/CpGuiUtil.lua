@@ -512,3 +512,23 @@ function CpGuiUtil.openGlobalSettingsGui(vehicle)
     local inGameMenu = CpGuiUtil.preOpeningInGameMenu(vehicle)
     inGameMenu:goToPage(inGameMenu.pageCpGlobalSettings)
 end
+
+CpGuiUtil.UNIT_EXTENSIONS = {
+	"k",
+	"M",
+	"G",
+	"T"
+}
+--- Converts the number into kilo, mega, giga or tera units with the correct symbol.
+---@param num number
+---@return number
+---@return string
+function CpGuiUtil.getFixedUnitValueWithUnitSymbol(num)
+	for i=4, 1, -1 do 
+		local delta = math.pow(10, 3 * i)
+		if num >= delta then 
+			return num / delta, CpGuiUtil.UNIT_EXTENSIONS[i]
+		end
+	end
+	return num, ""
+end
