@@ -84,8 +84,10 @@ end
 --- Rotate the plow to the center position to allow for smaller turn radius (when not rotated,
 --- the tractor's back wheel touching the plow won't let us turn sharp enough, and thus
 --- using a lot of real estate for a turn.
-function PlowController:onFinishRow()
-    if self:isRotatablePlow() then
+---@param isHeadlandTurn boolean true if this is a headland turn
+function PlowController:onFinishRow(isHeadlandTurn)
+    -- no need to rotate to center on headland turns
+    if self:isRotatablePlow() and not isHeadlandTurn then
         self.implement:setRotationCenter()
     end
 end

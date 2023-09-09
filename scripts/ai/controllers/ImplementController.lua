@@ -87,7 +87,7 @@ function ImplementController:onFinished()
     --- override
 end
 
-function ImplementController:onFinishRow()
+function ImplementController:onFinishRow(isHeadlandTurn)
 end
 
 function ImplementController:onTurnEndProgress(workStartNode, isLeftTurn)
