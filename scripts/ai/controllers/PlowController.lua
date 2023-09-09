@@ -80,14 +80,25 @@ function PlowController:rotate(shouldBeOnTheLeft)
     end
 end
 
+--- This is called once when the row is finished and the turn is just about to start.
+--- Rotate the plow to the center position to allow for smaller turn radius (when not rotated,
+--- the tractor's back wheel touching the plow won't let us turn sharp enough, and thus
+--- using a lot of real estate for a turn.
 function PlowController:onFinishRow()
     if self:isRotatablePlow() then
         self.implement:setRotationCenter()
     end
 end
 
+--- This is called in every loop when we approach the start of the row, the location where
+--- the plow must be lowered. Currently AIDriveStrategyFieldworkCourse takes care of the lowering,
+--- here we only make sure that the plow is rotated to the work position (from the center position)
+--- in time.
+---@param workStartNode number node where the work starts as calculated by TurnContext
+---@param isLeftTurn boolean is this a left turn?
 function PlowController:onTurnEndProgress(workStartNode, isLeftTurn)
     if self:isRotatablePlow() and not self:isFullyRotated() and not self:isRotationActive() then
+        -- more or less aligned with the first waypoint of the row, start rotating to working position
         if CpMathUtil.isSameDirection(self.implement.rootNode, workStartNode, 30) then
             self.implement:setRotationMax(isLeftTurn)
         end
