@@ -314,7 +314,6 @@ function KTurn:turn(dt)
     -- we end the K turn with a temporary course leading straight into the next row. During this turn the
     -- AI driver's state remains TURNING and thus calls AITurn:drive() which wil take care of raising the implements
     local endTurn = function(course)
-        self.driveStrategy:raiseControllerEvent(AIDriveStrategyCourse.onEndTurnEvent, self.turnContext:isLeftTurn())
         self.state = self.states.ENDING_TURN
         self.ppc:setCourse(course)
         self.ppc:initialize(1)
@@ -578,7 +577,6 @@ function CourseTurn:turn()
 
     if TurnManeuver.hasTurnControl(self.turnCourse, self.turnCourse:getCurrentWaypointIx(),
             TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END) then
-        self.driveStrategy:raiseControllerEvent(AIDriveStrategyCourse.onEndTurnEvent, self.turnContext:isLeftTurn())
         self.state = self.states.ENDING_TURN
         self:debug('About to end turn')
     end
@@ -588,6 +586,8 @@ end
 ---@return boolean true if it is ok the continue driving, false when the vehicle should stop
 function CourseTurn:endTurn(dt)
     -- keep driving on the turn course until we need to lower our implements
+    self.driveStrategy:raiseControllerEvent(AIDriveStrategyCourse.onTurnEndProgressEvent,
+            self.turnContext.workStartNode, self.turnContext:isLeftTurn())
     local shouldLower, dz = self.driveStrategy:shouldLowerImplements(self.turnContext.workStartNode, self.ppc:isReversing())
     if shouldLower then
         if not self.implementsLowered then

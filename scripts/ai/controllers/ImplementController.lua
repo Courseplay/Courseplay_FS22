@@ -90,7 +90,7 @@ end
 function ImplementController:onFinishRow()
 end
 
-function ImplementController:onEndTurn()
+function ImplementController:onTurnEndProgress(workStartNode, isLeftTurn)
 end
 
 --- Any object this controller wants us to ignore, can register here a callback at the proximity controller

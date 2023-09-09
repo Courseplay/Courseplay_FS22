@@ -86,9 +86,11 @@ function PlowController:onFinishRow()
     end
 end
 
-function PlowController:onEndTurn(isLeftTurn)
-    if self:isRotatablePlow() then
-        self.implement:setRotationMax(isLeftTurn)
+function PlowController:onTurnEndProgress(workStartNode, isLeftTurn)
+    if self:isRotatablePlow() and not self:isFullyRotated() and not self:isRotationActive() then
+        if CpMathUtil.isSameDirection(self.implement.rootNode, workStartNode, 30) then
+            self.implement:setRotationMax(isLeftTurn)
+        end
     end
 end
 
