@@ -234,7 +234,7 @@ You can define the following custom settings:
 	/>
     <Vehicle name="titan18.xml"
              noReverse="true"
-             turnRadius = "9"
+             turnRadius = "7.5"
              implementWheelAlwaysOnGround = "true"
              raiseLate = "true"
              lowerEarly = "true"
@@ -353,7 +353,7 @@ You can define the following custom settings:
     <Vehicle name="pw10012.xml"
              noReverse = "true"
              implementWheelAlwaysOnGround = "true"
-             turnRadius = "14"
+             turnRadius = "7.5"
              raiseLate = "true"
              lowerEarly = "true"
     />
@@ -403,8 +403,7 @@ You can define the following custom settings:
     <!--Implements-->
     <!--Mod: Gregoire Besson SPSL9 -->
     <Vehicle name="spsl9.xml"
-             toolOffsetX = "2.1"
-             turnRadius = "6"
+             turnRadius = "7.5"
              implementWheelAlwaysOnGround = "true"
 			 workingWidth = "10.5"
              noReverse = "true"
