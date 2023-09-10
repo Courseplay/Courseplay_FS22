@@ -143,6 +143,7 @@ end
 
 --- Changes the current shovel state position.
 function CpShovelPositions:cpSetShovelState(state)
+	if not self.isServer then return end
 	local spec = self.spec_cpShovelPositions
 	spec.resetWhenReached = false
 	if spec.state ~= state then
@@ -155,6 +156,7 @@ function CpShovelPositions:cpSetShovelState(state)
 end
 
 function CpShovelPositions:cpSetTemporaryShovelState(state)
+	if not self.isServer then return end
 	local spec = self.spec_cpShovelPositions
 	self:cpSetShovelState(state)
 	spec.resetStateWhenReached = true
@@ -166,6 +168,7 @@ end
 
 --- Deactivates the shovel position control.
 function CpShovelPositions:cpResetShovelState()
+	if not self.isServer then return end
 	CpShovelPositions.debug(self, "Reset shovelPositionState.")
 	local spec = self.spec_cpShovelPositions
 	spec.state = CpShovelPositions.DEACTIVATED
