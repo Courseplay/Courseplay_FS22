@@ -468,6 +468,7 @@ function CpAIWorker:cpHold(ms)
     end
 end
 
+---@param strategy AIDriveStrategyCourse
 function CpAIWorker:startCpWithStrategy(strategy)
     local spec = self.spec_cpAIWorker
     spec.driveStrategy = strategy

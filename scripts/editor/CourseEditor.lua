@@ -114,7 +114,9 @@ function CourseEditor:showYesNoDialog(title, callbackFunc)
 end
 
 function CourseEditor:delete()
-	self.courseDisplay:delete()
+	if self.courseDisplay then
+		self.courseDisplay:delete()
+	end
 end
 
 --- Updates the course display, when a waypoint change happened.
