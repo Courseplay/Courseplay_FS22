@@ -6,7 +6,6 @@ PlowController = CpObject(ImplementController)
 function PlowController:init(vehicle, implement)
     ImplementController.init(self, vehicle, implement)
     self.plowSpec = self.implement.spec_plow
-    self.lastTurnProgress = 0
 end
 
 
