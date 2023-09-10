@@ -106,7 +106,7 @@ end
 ---@param isLeftTurn boolean is this a left turn?
 function PlowController:onTurnEndProgress(workStartNode, isLeftTurn)
     if self:isRotatablePlow() and not self:isFullyRotated() and not self:isRotationActive() then
-        -- more or less aligned with the first waypoint of th   e row, start rotating to working position
+        -- more or less aligned with the first waypoint of the row, start rotating to working position
         if CpMathUtil.isSameDirection(self.implement.rootNode, workStartNode, 30) then
             self.implement:setRotationMax(isLeftTurn)
         end
