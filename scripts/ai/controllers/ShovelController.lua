@@ -222,7 +222,7 @@ function ShovelController:calculateMinimalUnloadingHeightRaycastCallback(hitObje
     return false
 end
 
-function ShovelController:onFinished()
+function ShovelController:delete()
     if self.implement.cpResetShovelState then
         self.implement:cpResetShovelState()
     end

@@ -297,6 +297,8 @@ end
 
 --- Used to enable/disable release of the helper
 --- and handles post release functionality with for example auto drive.
+--- TODO: this might by only called on the client, so 
+--- server depended code has to be moved to stopJob or similar code.
 function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
     if message then
         CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "stop message: %s", message:getMessage())
