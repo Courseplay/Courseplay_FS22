@@ -2,7 +2,7 @@
 --- For now only unload triggers are supported.
 ---@class TriggerManager
 TriggerManager = CpObject()
-TriggerManager.DEBUG = true
+TriggerManager.DEBUG = false
 function TriggerManager:init()
 	---@type table<number,CpTrigger>
 	self.unloadTriggers = {}
