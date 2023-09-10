@@ -570,8 +570,6 @@ function CourseTurn:turn()
 
     local gx, gz, moveForwards, maxSpeed = AITurn.turn(self)
 
-    self:updateTurnProgress()
-
     self:changeDirectionWhenAligned()
     self:changeToFwdWhenWaypointReached()
 
@@ -617,14 +615,6 @@ function CourseTurn:endTurn(dt)
         end
     end
     return true
-end
-
-function CourseTurn:updateTurnProgress()
-    if self.turnCourse and not self.turnContext:isHeadlandCorner() then
-        -- turn progress is for example rotating plows, no need to worry about that during headland turns
-        local progress = self.turnCourse:getCurrentWaypointIx() / self.turnCourse:getNumberOfWaypoints()
-        self.driveStrategy:raiseControllerEvent(AIDriveStrategyCourse.onTurnProgressEvent, progress, self.turnContext:isLeftTurn())
-    end
 end
 
 function CourseTurn:onWaypointChange(ix)
@@ -957,10 +947,6 @@ function FinishRowOnly:startTurn()
         self:debug('Row finished, no callback supplied, so resuming fieldwork')
         self:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
     end
-end
-
-function FinishRowOnly:updateTurnProgress()
-    -- do nothing since this isn't really a turn
 end
 
 --- A turn which really isn't a turn just a course to start a field work row using the supplied course and

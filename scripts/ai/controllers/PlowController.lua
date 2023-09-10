@@ -80,6 +80,13 @@ function PlowController:rotate(shouldBeOnTheLeft)
     end
 end
 
+--- We rotate plows in 180º turns to the center so we can turn on a smaller radius. This is
+--- triggered by the onFinishRow and onTurnEndProgress controller events emitted by all
+--- CourseTurn and derived turns.
+--- With the Giants helper, plows are rotated by the onAIFieldWorkerTurnProgress event which
+--- we now only use in the KTurn (only 3-point hitch mounted plows use the KTurn, so all
+--- plow turns are covered)
+
 --- This is called once when the row is finished and the turn is just about to start.
 --- Rotate the plow to the center position to allow for smaller turn radius (when not rotated,
 --- the tractor's back wheel touching the plow won't let us turn sharp enough, and thus
@@ -100,7 +107,7 @@ end
 ---@param isLeftTurn boolean is this a left turn?
 function PlowController:onTurnEndProgress(workStartNode, isLeftTurn)
     if self:isRotatablePlow() and not self:isFullyRotated() and not self:isRotationActive() then
-        -- more or less aligned with the first waypoint of the row, start rotating to working position
+        -- more or less aligned with the first waypoint of th   e row, start rotating to working position
         if CpMathUtil.isSameDirection(self.implement.rootNode, workStartNode, 30) then
             self.implement:setRotationMax(isLeftTurn)
         end
