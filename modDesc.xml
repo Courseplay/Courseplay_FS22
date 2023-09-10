@@ -222,11 +222,24 @@ Changelog 7.1.0.0:
 	<extraSourceFiles>
 		<sourceFile filename="scripts/CpObject.lua"/>
 		<sourceFile filename="Courseplay.lua"/>
+
 		<sourceFile filename="scripts/CpUtil.lua"/>
+
 		<sourceFile filename="scripts/debug/CpDebug.lua"/>
 		<sourceFile filename="scripts/debug/CourseRecorder.lua"/>
 		<sourceFile filename="scripts/dev/ConsoleCommands.lua"/>
 		<sourceFile filename="scripts/dev/DevHelper.lua"/>
+		<sourceFile filename="scripts/config/VehicleConfigurations.lua"/>
+
+		<sourceFile filename="scripts/util/CpMathUtil.lua"/>
+		<sourceFile filename="scripts/util/MovingAverage.lua"/>
+		<sourceFile filename="scripts/util/CpRemainingTime.lua"/>
+
+		<sourceFile filename="scripts/CpSettingsUtil.lua"/>
+		<sourceFile filename="scripts/Waypoint.lua"/>
+		<sourceFile filename="scripts/Course.lua"/>
+		<sourceFile filename="scripts/CpGlobalSettings.lua"/>
+
 		<sourceFile filename="scripts/courseManager/FileSystem.lua"/>
 		<sourceFile filename="scripts/courseManager/AssignedCoursesManager.lua"/>
 		<sourceFile filename="scripts/courseGenerator/CourseGenerator.lua"/>
@@ -238,21 +251,20 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/courseGenerator/track.lua"/>
 		<sourceFile filename="scripts/courseGenerator/geo.lua"/>
 		<sourceFile filename="scripts/courseGenerator/Vector.lua"/>
-		<sourceFile filename="scripts/Waypoint.lua"/>
-		<sourceFile filename="scripts/Course.lua"/>
-		<sourceFile filename="scripts/util/CpMathUtil.lua"/>
-		<sourceFile filename="scripts/util/MovingAverage.lua"/>
-		<sourceFile filename="scripts/util/CpRemainingTime.lua"/>
+
 		<sourceFile filename="scripts/field/CpFieldUtil.lua"/>
 		<sourceFile filename="scripts/field/CustomField.lua"/>
 		<sourceFile filename="scripts/field/CustomFieldManager.lua"/>
 		<sourceFile filename="scripts/field/FieldScanner.lua"/>
 		<sourceFile filename="scripts/field/VineScanner.lua"/>
+
 		<sourceFile filename="scripts/silo/BunkerSiloVehicleController.lua"/>
 		<sourceFile filename="scripts/silo/BunkerSiloWrapper.lua"/>
 		<sourceFile filename="scripts/silo/BunkerSiloManager.lua"/>
+
 		<sourceFile filename="scripts/trigger/TriggerWrapper.lua"/>
 		<sourceFile filename="scripts/trigger/TriggerManager.lua"/>
+
 		<sourceFile filename="scripts/pathfinder/BinaryHeap.lua"/>
 		<sourceFile filename="scripts/pathfinder/State3D.lua"/>
 		<sourceFile filename="scripts/pathfinder/AnalyticSolution.lua"/>
@@ -261,17 +273,30 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/pathfinder/ReedsSheppSolver.lua"/>
 		<sourceFile filename="scripts/pathfinder/HybridAStar.lua"/>
 		<sourceFile filename="scripts/pathfinder/PathfinderUtil.lua"/>
+
 		<sourceFile filename="scripts/ai/AIUtil.lua"/>
 		<sourceFile filename="scripts/ai/ImplementUtil.lua"/>
 		<sourceFile filename="scripts/ai/ProximityController.lua"/>
 		<sourceFile filename="scripts/ai/FieldWorkerProximityController.lua"/>
 		<sourceFile filename="scripts/ai/CollisionAvoidanceController.lua"/>
+		<sourceFile filename="scripts/ai/AIMessages.lua"/>
+		<sourceFile filename="scripts/ai/Markers.lua"/>
+		<sourceFile filename="scripts/ai/ProximitySensor.lua"/>
+		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
+		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
+		<sourceFile filename="scripts/ai/InfoTextsManager.lua"/>
+		<sourceFile filename="scripts/ai/PurePursuitController.lua"/>
+		<sourceFile filename="scripts/ai/SelfUnloadHelper.lua"/>
+		<sourceFile filename="scripts/ai/VehicleScanner.lua"/>
+		<sourceFile filename="scripts/ai/WorkWidthUtil.lua"/>
+		<sourceFile filename="scripts/ai/AIReverseDriver.lua"/>
+
 		<sourceFile filename="scripts/ai/turns/AITurn.lua"/>
 		<sourceFile filename="scripts/ai/turns/Corner.lua"/>
 		<sourceFile filename="scripts/ai/turns/TurnContext.lua"/>
 		<sourceFile filename="scripts/ai/turns/TurnManeuver.lua"/>
 		<sourceFile filename="scripts/ai/turns/TurnContext.lua"/>
-		<sourceFile filename="scripts/ai/AIReverseDriver.lua"/>
+
 		<sourceFile filename="scripts/ai/AIDriveStrategyCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyDriveToFieldWorkStart.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyAttachHeader.lua"/>
@@ -283,16 +308,8 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/ai/AIDriveStrategyVineFieldWorkCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyBunkerSilo.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategySiloLoader.lua"/>
-		<sourceFile filename="scripts/ai/AIMessages.lua"/>
-		<sourceFile filename="scripts/ai/Markers.lua"/>
-		<sourceFile filename="scripts/ai/ProximitySensor.lua"/>
-		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
-		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
-		<sourceFile filename="scripts/ai/InfoTextsManager.lua"/>
-		<sourceFile filename="scripts/ai/PurePursuitController.lua"/>
-		<sourceFile filename="scripts/ai/SelfUnloadHelper.lua"/>
-		<sourceFile filename="scripts/ai/VehicleScanner.lua"/>
-		<sourceFile filename="scripts/ai/WorkWidthUtil.lua"/>
+		<sourceFile filename="scripts/ai/AIDriveStrategyShovelSiloLoader.lua"/>
+
 		<sourceFile filename="scripts/ai/controllers/ImplementController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/BalerController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/BaleWrapperController.lua"/>
@@ -327,35 +344,14 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/ai/controllers/StumpCutterController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/FoldableController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/PlowController.lua"/>
-		<sourceFile filename="scripts/ai/AIUtil.lua"/>
-		<sourceFile filename="scripts/ai/ImplementUtil.lua"/>
-		<sourceFile filename="scripts/ai/ProximityController.lua"/>
-		<sourceFile filename="scripts/ai/FieldWorkerProximityController.lua"/>
-		<sourceFile filename="scripts/ai/CollisionAvoidanceController.lua"/>
-		<sourceFile filename="scripts/ai/turns/AITurn.lua"/>
-		<sourceFile filename="scripts/ai/turns/Corner.lua"/>
-		<sourceFile filename="scripts/ai/turns/TurnContext.lua"/>
-		<sourceFile filename="scripts/ai/turns/TurnManeuver.lua"/>
-		<sourceFile filename="scripts/ai/turns/TurnContext.lua"/>
-		<sourceFile filename="scripts/ai/AIReverseDriver.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyCourse.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyAttachHeader.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyDriveToFieldWorkStart.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyFieldWorkCourse.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyCombineCourse.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyPlowCourse.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyFindBales.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyUnloadCombine.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyVineFieldWorkCourse.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyBunkerSilo.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategySiloLoader.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyShovelSiloLoader.lua"/>
+
 		<sourceFile filename="scripts/ai/parameters/AIParameterSettingInterface.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterSetting.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterSettingList.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterBooleanSetting.lua"/>
 		<sourceFile filename="scripts/ai/parameters/CpAIParameterUnloadingStation.lua"/>
 		<sourceFile filename="scripts/ai/parameters/CpAIParameterPositionAngle.lua"/>
+
 		<sourceFile filename="scripts/ai/jobs/CpJobParameters.lua"/>
 		<sourceFile filename="scripts/ai/jobs/CpAIJob.lua"/>
 		<sourceFile filename="scripts/ai/jobs/CpAIJobFieldWork.lua"/>
@@ -363,6 +359,7 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/ai/jobs/CpAIJobCombineUnloader.lua"/>
 		<sourceFile filename="scripts/ai/jobs/CpAIJobBunkerSilo.lua"/>
 		<sourceFile filename="scripts/ai/jobs/CpAIJobSiloLoader.lua"/>
+
 		<sourceFile filename="scripts/ai/tasks/CpAITaskFieldWork.lua"/>
 		<sourceFile filename="scripts/ai/tasks/CpAITaskBaleFinder.lua"/>
 		<sourceFile filename="scripts/ai/tasks/CpAITaskCombineUnloader.lua"/>
@@ -370,9 +367,7 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/ai/tasks/CpAITaskAttachHeader.lua"/>
 		<sourceFile filename="scripts/ai/tasks/CpAITaskBunkerSilo.lua"/>
 		<sourceFile filename="scripts/ai/tasks/CpAITaskSiloLoader.lua"/>
-		<sourceFile filename="scripts/CpSettingsUtil.lua"/>
-		<sourceFile filename="scripts/CpGlobalSettings.lua"/>
-		<sourceFile filename="scripts/config/VehicleConfigurations.lua"/>
+
 		<sourceFile filename="scripts/gui/CpGuiUtil.lua"/>
 		<sourceFile filename="scripts/gui/CoursePlot.lua"/>
 		<sourceFile filename="scripts/gui/FieldPlot.lua"/>
@@ -387,6 +382,7 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/gui/CpCourseManagerFrame.lua"/>
 		<sourceFile filename="scripts/gui/CourseDisplay.lua"/>
 		<sourceFile filename="scripts/gui/CpGamePadHudScreen.lua"/>
+
 		<sourceFile filename="scripts/gui/hud/HudElements.lua"/>
 		<sourceFile filename="scripts/gui/hud/CpBaseHud.lua"/>
 		<sourceFile filename="scripts/gui/hud/CpHudInfoTexts.lua"/>
@@ -395,6 +391,7 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/gui/hud/CpCombineUnloaderHudPage.lua"/>
 		<sourceFile filename="scripts/gui/hud/CpBunkerSiloWorkerHudPage.lua"/>
 		<sourceFile filename="scripts/gui/hud/CpSiloLoaderWorkerHudPage.lua"/>
+
 		<sourceFile filename="scripts/editor/brushes/BaseBrush.lua"/>
 		<sourceFile filename="scripts/editor/brushes/basic/InsertWaypoint.lua"/>
 		<sourceFile filename="scripts/editor/brushes/basic/MoveWaypoint.lua"/>
@@ -407,6 +404,7 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/editor/brushes/advanced/CurveWaypoints.lua"/>
 		<sourceFile filename="scripts/editor/EditorCourseWrapper.lua"/>
 		<sourceFile filename="scripts/editor/CourseEditor.lua"/>
+
 		<sourceFile filename="scripts/events/CoursesEvent.lua"/>
 		<sourceFile filename="scripts/events/CpJoinEvent.lua"/>
 		<sourceFile filename="scripts/events/GlobalSettingsEvent.lua"/>
