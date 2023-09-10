@@ -117,8 +117,15 @@ You can define the following custom settings:
 	Fixes the ai direction node for the platinum wheel loaders, as their direction is not changed based on the rotation.
 	As a fix the parent node of the arm moving tool ix is used.
 
-- articulatedAxisReverseNodeInverted
+- articulatedAxisReverseNodeInverted: boolean
 	Is the reverse node for articulated axis vehicles rotated by 180 degree?
+
+- unloadXOffset: number
+	Offset of the discharge node or a given pipe for unloading into a trailer.
+	For pipes this overwrites the measured pipe offset.
+
+- disablePipeMovingToolCorrection: boolean
+	Disables the pipe height adjustment for trailers of a few pipe implements/vehicles.
 
 -->
 <VehicleConfigurations>
@@ -143,6 +150,8 @@ You can define the following custom settings:
 		<Configuration type="BOOL">ignoreBaleCollisionForward</Configuration>
 		<Configuration type="INT">fixWheelLoaderDirectionNodeByMovingToolIx</Configuration>
 		<Configuration type="BOOL">articulatedAxisReverseNodeInverted</Configuration>
+		<Configuration type="BOOL">disablePipeMovingToolCorrection</Configuration>
+		<Configuration type="FLOAT">unloadOffsetX</Configuration>
 	</Configurations>
     <!--[GIANTS]-->
 
@@ -535,4 +544,9 @@ You can define the following custom settings:
              turnRadius = "10"
     />
 
+	<!--Mod: FS22_strawHarvest-->
+    <Vehicle name="premos5000.xml"
+			 disablePipeMovingToolCorrection = "true"
+			 unloadOffsetX = "-3.56"
+    />
 </VehicleConfigurations>

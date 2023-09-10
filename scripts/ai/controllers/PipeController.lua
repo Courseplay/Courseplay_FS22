@@ -293,7 +293,11 @@ function PipeController:measurePipeProperties()
         currentPipeState, targetPipeState, pipeAnimTime)
     self:printFoldableDebug()
     self:printPipeDebug()
-
+    local configOffsetX = g_vehicleConfigurations:get(self.implement, "unloadOffsetX" )
+    if configOffsetX ~= nil then 
+        self:debug("Setting pipe x offset to configured %.2f x offset", configOffsetX)
+        self.pipeOffsetX = configOffsetX
+    end
 end
 
 --- Unfolds the pipe completely to measure the pipe properties.
@@ -403,6 +407,13 @@ end
 
 function PipeController:setupMoveablePipe()
     self.validMovingTools = {}
+    self.hasPipeMovingTools = false
+    self.tempBaseNode = CpUtil.createNode("tempBaseNode", 0, 0, 0)
+    self.tempDependedNode = CpUtil.createNode("tempDependedNode", 0, 0, 0)
+    if g_vehicleConfigurations:get(self.implement, "disablePipeMovingToolCorrection") then 
+        --- Moveable pipe will not be adjusted based on a nearby trailer.
+        return
+    end
     if self.cylinderedSpec and self.pipeSpec.numAutoAimingStates <= 0 then
         for i, m in ipairs(self.cylinderedSpec.movingTools) do
             -- Gets only the pipe moving tools.
@@ -436,9 +447,6 @@ function PipeController:setupMoveablePipe()
             self.baseMovingToolChild = m
         end
     end
-
-    self.tempBaseNode = CpUtil.createNode("tempBaseNode", 0, 0, 0)
-    self.tempDependedNode = CpUtil.createNode("tempDependedNode", 0, 0, 0)
 
     self:debug("Number of moveable pipe elements found: %d", #self.validMovingTools)
 
