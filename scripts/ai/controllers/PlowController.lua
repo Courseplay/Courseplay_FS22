@@ -66,10 +66,57 @@ function PlowController:getIsPlowRotationAllowed()
     return self.implement:getIsPlowRotationAllowed()
 end
 
+function PlowController:isFullyRotated()
+    local rotationAnimationTime = self.implement:getAnimationTime(self.plowSpec.rotationPart.turnAnimation)
+    return rotationAnimationTime < 0.001 or rotationAnimationTime > 0.999
+end
+
 --- Rotates the plow if possible.
 ---@param shouldBeOnTheLeft boolean|nil
 function PlowController:rotate(shouldBeOnTheLeft)
     if self:isRotatablePlow() and self:getIsPlowRotationAllowed() then
         self.implement:setRotationMax(shouldBeOnTheLeft)
+    end
+end
+
+--- We rotate plows in 180º turns to the center so we can turn on a smaller radius. This is
+--- triggered by the onFinishRow and onTurnEndProgress controller events emitted by all
+--- CourseTurn and derived turns.
+--- With the Giants helper, plows are rotated by the onAIFieldWorkerTurnProgress event which
+--- we now only use in the KTurn (only 3-point hitch mounted plows use the KTurn, so all
+--- plow turns are covered)
+
+--- This is called once when the row is finished and the turn is just about to start.
+--- Rotate the plow to the center position to allow for smaller turn radius (when not rotated,
+--- the tractor's back wheel touching the plow won't let us turn sharp enough, and thus
+--- using a lot of real estate for a turn.
+---@param isHeadlandTurn boolean true if this is a headland turn
+function PlowController:onFinishRow(isHeadlandTurn)
+    -- no need to rotate to center on headland turns
+    if self:isRotatablePlow() and not isHeadlandTurn then
+        self.implement:setRotationCenter()
+    end
+end
+
+--- This is called in every loop when we approach the start of the row, the location where
+--- the plow must be lowered. Currently AIDriveStrategyFieldworkCourse takes care of the lowering,
+--- here we only make sure that the plow is rotated to the work position (from the center position)
+--- in time.
+---@param workStartNode number node where the work starts as calculated by TurnContext
+---@param isLeftTurn boolean is this a left turn?
+function PlowController:onTurnEndProgress(workStartNode, isLeftTurn)
+    if self:isRotatablePlow() and not self:isFullyRotated() and not self:isRotationActive() then
+        -- more or less aligned with the first waypoint of the row, start rotating to working position
+        if CpMathUtil.isSameDirection(self.implement.rootNode, workStartNode, 30) then
+            self.implement:setRotationMax(isLeftTurn)
+        end
+    end
+end
+
+function PlowController:canContinueWork()
+    if self:isRotatablePlow() then
+        return self:isFullyRotated()
+    else
+        return true
     end
 end

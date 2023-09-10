@@ -1328,7 +1328,7 @@ function AIDriveStrategyCombineCourse:getTurnCourse()
 end
 
 function AIDriveStrategyCombineCourse:startTurn(ix)
-    self:debug('Starting a combine turn.')
+    self:debug('    Starting a combine turn.')
 
     self.turnContext = TurnContext(self.vehicle, self.course, ix, ix + 1, self.turnNodes, self:getWorkWidth(),
             self.frontMarkerDistance, self.backMarkerDistance,
@@ -1336,7 +1336,7 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
 
     -- Combines drive special headland corner maneuvers, except potato and sugarbeet harvesters
     if self.turnContext:isHeadlandCorner() then
-        if self:isPotatoOrSugarBeetHarvester() then
+        if self.combineController:isPotatoOrSugarBeetHarvester() then
             self:debug('Headland turn but this harvester uses normal turn maneuvers.')
             AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
         elseif self.course:isOnConnectingTrack(ix) then
@@ -1520,16 +1520,6 @@ function AIDriveStrategyCombineCourse:isDischarging()
     return self.pipeController:isDischarging()
 end
 
-function AIDriveStrategyCombineCourse:isPotatoOrSugarBeetHarvester()
-    for i, fillUnit in ipairs(self.vehicle:getFillUnits()) do
-        if self.vehicle:getFillUnitSupportsFillType(i, FillType.POTATO) or
-                self.vehicle:getFillUnitSupportsFillType(i, FillType.SUGARBEET) then
-            self:debug('This is a potato or sugar beet harvester.')
-            return true
-        end
-    end
-    return false
-end
 
 -----------------------------------------------------------------------------------------------------------------------
 --- Self unload

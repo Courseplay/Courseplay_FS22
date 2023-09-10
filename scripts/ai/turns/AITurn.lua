@@ -246,6 +246,7 @@ function AITurn:finishRow(dt)
     -- keep driving straight until we need to raise our implements
     if self.driveStrategy:shouldRaiseImplements(self:getRaiseImplementNode()) then
         self.driveStrategy:raiseImplements()
+        self.driveStrategy:raiseControllerEvent(AIDriveStrategyCourse.onFinishRowEvent, self.turnContext:isHeadlandCorner())
         self:debug('Row finished, starting turn.')
         self:startTurn()
     end
@@ -307,16 +308,12 @@ end
 function KTurn:startTurn()
     AITurn.startTurn(self)
     self.state = self.states.FORWARD
-    self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", 0, self.turnContext:isLeftTurn())
-    self:debug('Turn progress 0')
 end
 
 function KTurn:turn(dt)
     -- we end the K turn with a temporary course leading straight into the next row. During this turn the
     -- AI driver's state remains TURNING and thus calls AITurn:drive() which wil take care of raising the implements
     local endTurn = function(course)
-        self:debug('Turn progress 100')
-        self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", 100, self.turnContext:isLeftTurn())
         self.state = self.states.ENDING_TURN
         self.ppc:setCourse(course)
         self.ppc:initialize(1)
@@ -346,7 +343,7 @@ function KTurn:turn(dt)
                 endTurn(self.endingTurnCourse)
             else
                 -- reverse until we can make turn to the turn end point
-                self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", 50, self.turnContext:isLeftTurn())
+                self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", 0.5, self.turnContext:isLeftTurn())
                 self:debug('Turn progress 50')
                 self.state = self.states.REVERSE
                 self.endingTurnCourse = TurnEndingManeuver(self.vehicle, self.turnContext,
@@ -573,8 +570,6 @@ function CourseTurn:turn()
 
     local gx, gz, moveForwards, maxSpeed = AITurn.turn(self)
 
-    self:updateTurnProgress()
-
     self:changeDirectionWhenAligned()
     self:changeToFwdWhenWaypointReached()
 
@@ -589,6 +584,8 @@ end
 ---@return boolean true if it is ok the continue driving, false when the vehicle should stop
 function CourseTurn:endTurn(dt)
     -- keep driving on the turn course until we need to lower our implements
+    self.driveStrategy:raiseControllerEvent(AIDriveStrategyCourse.onTurnEndProgressEvent,
+            self.turnContext.workStartNode, self.turnContext:isLeftTurn())
     local shouldLower, dz = self.driveStrategy:shouldLowerImplements(self.turnContext.workStartNode, self.ppc:isReversing())
     if shouldLower then
         if not self.implementsLowered then
@@ -605,7 +602,7 @@ function CourseTurn:endTurn(dt)
             -- for those people who set insanely high turn speeds...
             local implementCheckDistance = math.max(1, 0.1 * self.vehicle:getLastSpeed())
             if dz and dz > -implementCheckDistance then
-                if self.vehicle:getCanAIFieldWorkerContinueWork() then
+                if self.driveStrategy:getCanContinueWork() then
                     self:debug("implements lowered, resume fieldwork")
                     self:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
                 else
@@ -618,21 +615,6 @@ function CourseTurn:endTurn(dt)
         end
     end
     return true
-end
-
-function CourseTurn:updateTurnProgress()
-    if self.turnCourse and not self.turnContext:isHeadlandCorner() then
-        -- turn progress is for example rotating plows, no need to worry about that during headland turns
-        local progress = self.turnCourse:getCurrentWaypointIx() / self.turnCourse:getNumberOfWaypoints()
-        if (progress - (self.lastProgress or 0)) > 0.1 then
-            -- just send 0 and 1 as it looks like some plows won't turn fully if they receive something in between
-            -- also, start turning a bit before we reach the middle of the turn to make sure it is ready
-            local progressToSend = progress <= 0.3 and 0 or 1
-            self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", progressToSend, self.turnContext:isLeftTurn())
-            self:debug('progress %.1f (left: %s)', progressToSend, self.turnContext:isLeftTurn())
-            self.lastProgress = progress
-        end
-    end
 end
 
 function CourseTurn:onWaypointChange(ix)
@@ -967,10 +949,6 @@ function FinishRowOnly:startTurn()
     end
 end
 
-function FinishRowOnly:updateTurnProgress()
-    -- do nothing since this isn't really a turn
-end
-
 --- A turn which really isn't a turn just a course to start a field work row using the supplied course and
 --- making sure we start working at the start point defined by the turn context with all implements lowered in time.
 --- This does not actually drive the course like the other AITurn derivates to keep full control in the strategy
@@ -1045,7 +1023,7 @@ function StartRowOnly:getDriveData()
         -- for those people who set insanely high turn speeds...
         local implementCheckDistance = math.max(1, 0.1 * self.vehicle:getLastSpeed())
         if dz and dz > -implementCheckDistance then
-            if self.vehicle:getCanAIFieldWorkerContinueWork() then
+            if self.driveStrategy:getCanContinueWork() then
                 self:debug("implements lowered, resume fieldwork")
                 self:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
             else

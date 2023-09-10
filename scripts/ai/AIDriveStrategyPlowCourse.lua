@@ -169,3 +169,12 @@ function AIDriveStrategyPlowCourse:updateFieldworkOffset(course)
 	--- Ignore the tool offset setting.
 	course:setOffset((self.aiOffsetX or 0), (self.aiOffsetZ or 0))
 end
+
+--- When we return from a turn, the offset is reverted and should immediately set, not waiting
+--- for the first waypoint to pass as it is on the wrong side right after the turn
+function AIDriveStrategyPlowCourse:resumeFieldworkAfterTurn(ix)
+    -- call twice to trick the smoothing and reach the desired value sooner.
+    self:updatePlowOffset()
+    self:updatePlowOffset()
+    AIDriveStrategyPlowCourse.superClass().resumeFieldworkAfterTurn(self, ix)
+end

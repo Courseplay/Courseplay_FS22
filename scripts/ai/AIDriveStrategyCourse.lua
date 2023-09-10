@@ -37,6 +37,11 @@ AIDriveStrategyCourse.onFinishedEvent = "onFinished"
 AIDriveStrategyCourse.onStartEvent = "onStart"
 AIDriveStrategyCourse.updateEvent = "update"
 AIDriveStrategyCourse.deleteEvent = "delete"
+--- A row has just been finished, implements are being raised and about to start the actual turn
+AIDriveStrategyCourse.onFinishRowEvent = "onFinishRow"
+--- The actual turn is done, now we are starting into the row and will lower the implements when
+--- they reach the start of the row
+AIDriveStrategyCourse.onTurnEndProgressEvent = "onTurnEndProgress"
 
 function AIDriveStrategyCourse.new(customMt)
     if customMt == nil then

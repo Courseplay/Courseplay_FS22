@@ -124,6 +124,18 @@ end
 function CombineController:isDroppingStrawSwath()
     return self.combineSpec.strawPSenabled
 end
+
+function CombineController:isPotatoOrSugarBeetHarvester()
+    for i, fillUnit in ipairs(self.implement:getFillUnits()) do
+        if self.implement:getFillUnitSupportsFillType(i, FillType.POTATO) or
+                self.implement:getFillUnitSupportsFillType(i, FillType.SUGARBEET) then
+            self:debug('This is a potato or sugar beet harvester.')
+            return true
+        end
+    end
+    return false
+end
+
 -------------------------------------------------------------
 --- Chopper
 -------------------------------------------------------------
