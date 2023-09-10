@@ -39,6 +39,13 @@ function AIUtil.getDirectionNode(vehicle)
 	return vehicle.getAIDirectionNode and vehicle:getAIDirectionNode() or vehicle.rootNode
 end
 
+---@return number the z offset of the root node in the direction node's coordinate system: if > 0, the direction node
+--- is behind the root node, otherwise in front of it
+function AIUtil.getDirectionNodeToRootNodeOffset(vehicle)
+	local _, _, dz = localToLocal(vehicle.rootNode, AIUtil.getDirectionNode(vehicle), 0, 0, 0)
+	return dz
+end
+
 --- If we are towing an implement, move to a bigger radius in tight turns
 --- making sure that the towed implement's trajectory remains closer to the
 --- course.
@@ -164,6 +171,18 @@ function AIUtil.getReverserNode(vehicle, reversingImplement, suppressLog)
 		reverserNode, debugText = AIUtil.getArticulatedAxisVehicleReverserNode(vehicle)
 	end
 	return reverserNode, debugText
+end
+
+---@return number the offset of the reverser node from the direction node, usually negative as the
+--- reverser node is behind the direction node. If there is no reverser node, return 0
+function AIUtil.getDirectionNodeToReverserNodeOffset(vehicle)
+	local reverserNode = AIUtil.getReverserNode(vehicle)
+	if reverserNode then
+		local _, _, dz = localToLocal(reverserNode, AIUtil.getDirectionNode(vehicle), 0, 0, 0)
+		return dz
+	else
+		return 0
+	end
 end
 
 -- Get the turning radius of the vehicle and its implements (copied from AIDriveStrategyStraight.updateTurnData())
@@ -319,11 +338,11 @@ function AIUtil.getAllAttachedImplements(object, implements)
 	return implements
 end
 
----@return table, number frontmost object and the distance between the front of that object and the root node of the vehicle
+---@return table, number frontmost object and the distance between the front of that object and the direction node of the vehicle
 --- when > 0 in front of the vehicle
-function AIUtil.getFirstAttachedImplement(vehicle,suppressLog)
+function AIUtil.getFirstAttachedImplement(vehicle, suppressLog)
 	-- by default, it is the vehicle's front
-	local maxDistance = vehicle.size.length / 2 + vehicle.size.lengthOffset
+	local maxDistance = vehicle.size.length / 2 + vehicle.size.lengthOffset + AIUtil.getDirectionNodeToRootNodeOffset(vehicle)
 	local firstImplement = vehicle
 	for _, implement in pairs(AIUtil.getAllAttachedImplements(vehicle)) do
 		if implement.object ~= nil then
@@ -348,10 +367,10 @@ function AIUtil.getFirstAttachedImplement(vehicle,suppressLog)
 	return firstImplement, maxDistance
 end
 
----@return table, number rearmost object and the distance between the back of that object and the root node of the object
+---@return table, number rearmost object and the distance between the back of that object and the direction node of the object
 function AIUtil.getLastAttachedImplement(vehicle,suppressLog)
 	-- by default, it is the vehicle's back
-	local minDistance = vehicle.size.length / 2 - vehicle.size.lengthOffset
+	local minDistance = vehicle.size.length / 2 - vehicle.size.lengthOffset + AIUtil.getDirectionNodeToRootNodeOffset(vehicle)
 	-- size.lengthOffset > 0 if the root node is towards the back of the vehicle, < 0 if it is towards the front
 	local lastImplement = vehicle
 	for _, implement in pairs(AIUtil.getAllAttachedImplements(vehicle)) do
@@ -375,23 +394,6 @@ function AIUtil.getLastAttachedImplement(vehicle,suppressLog)
 		end
 	end
 	return lastImplement, minDistance
-end
-
-function AIUtil.isAllFolded(object)
-	if SpecializationUtil.hasSpecialization(Foldable, object.specializations) then
-		if object:getIsUnfolded() then
-			-- object is unfolded, so all can't be folded
-			return false
-		end
-	end
-	for _, implement in pairs(object:getAttachedImplements()) do
-		if not AIUtil.isAllFolded(implement.object) then
-			-- at least on implement is not completely folded so all can't be folded
-			return false
-		end
-	end
-	-- nothing is unfolded
-	return true
 end
 
 --- These functions only find directly attached implements/trailer to the vehicle.

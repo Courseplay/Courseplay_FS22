@@ -404,14 +404,6 @@ function Course:getNextDirectionChangeFromIx(ix)
 	end
 end
 
-function Course:getNextWaitPointFromIx(ix)
-	for i = ix, #self.waypoints do
-		if self:isWaitAt(i) then
-			return i
-		end
-	end
-end
-
 function Course:switchingToReverseAt(ix)
 	return not self:isReverseAt(ix) and self:isReverseAt(ix + 1)
 end
@@ -422,10 +414,6 @@ end
 
 function Course:isUnloadAt(ix)
 	return self.waypoints[ix].unload
-end
-
-function Course:isWaitAt(ix)
-	return self.waypoints[ix].interact
 end
 
 function Course:getHeadlandNumber(ix)
@@ -613,10 +601,10 @@ end
 function Course:print()
 	for i = 1, #self.waypoints do
 		local p = self.waypoints[i]
-		print(string.format('%d: x=%.1f z=%.1f a=%.1f yRot=%.1f ts=%s te=%s r=%s i=%s d=%.1f t=%d l=%s p=%s tt=%s',
+		print(string.format('%d: x=%.1f z=%.1f a=%.1f yRot=%.1f ts=%s te=%s r=%s d=%.1f t=%d l=%s p=%s tt=%s dx=%.1f dz=%.1f',
 			i, p.x, p.z, p.angle or -1, math.deg(p.yRot or 0),
-			tostring(p.turnStart), tostring(p.turnEnd), tostring(p.rev), tostring(p.interact),
-			p.dToHere or -1, p.turnsToHere or -1, tostring(p.lane), tostring(p.pipeInFruit), tostring(p.useTightTurnOffset)))
+			tostring(p.turnStart), tostring(p.turnEnd), tostring(p.rev), p.dToHere or -1, p.turnsToHere or -1,
+				tostring(p.lane), tostring(p.pipeInFruit), tostring(p.useTightTurnOffset), p.dx, p.dz))
 	end
 end
 
@@ -697,16 +685,6 @@ function Course:hasUnloadPointAround(ix, forward, backward)
 	return self:hasWaypointWithPropertyAround(ix, forward, backward, function(p) return p.unload end)
 end
 
---- Is any of the waypoints around ix a wait point?
----@param ix number waypoint index to look around
----@param forward number look forward this number of waypoints when searching
----@param backward number look back this number of waypoints when searching
----@return boolean true if any of the waypoints are wait points and the index of the next wait point
-function Course:hasWaitPointAround(ix, forward, backward)
-	-- TODO: clarify if we use interact or wait or both?
-	return self:hasWaypointWithPropertyAround(ix, forward, backward, function(p) return p.wait or p.interact end)
-end
-
 function Course:hasWaypointWithPropertyAround(ix, forward, backward, hasProperty)
 	for i = math.max(ix - backward + 1, 1), math.min(ix + forward - 1, #self.waypoints) do
 		if hasProperty(self.waypoints[i]) then
@@ -723,14 +701,6 @@ end
 ---@return boolean true if any of the waypoints are unload points and the index of the next unload point
 function Course:hasUnloadPointWithinDistance(ix, distance)
 	return self:hasWaypointWithPropertyWithinDistance(ix, distance, function(p) return p.unload end)
-end
-
---- Is there a wait waypoint within distance around ix?
----@param ix number waypoint index to look around
----@param distance number distance in meters to look around the waypoint
----@return boolean true if any of the waypoints are wait points and the index of that wait point
-function Course:hasWaitPointWithinDistance(ix, distance)
-	return self:hasWaypointWithPropertyWithinDistance(ix, distance, function(p) return p.wait or p.interact end)
 end
 
 --- Is there an turn (start or end) around ix?
@@ -1048,13 +1018,28 @@ end
 --- allow the towed implement to also reach the cusp, or, when reversing, reverse enough that the tractor reaches
 --- the cusp.
 function Course:adjustForTowedImplements(extensionLength)
-	local waypoints = {self.waypoints[1]}
-	for i = 2, #self.waypoints do
-		if self:switchingDirectionAt(i) then
-			local wp = self.waypoints[i - 1]
+	self:extendCusps(extensionLength, function (i) return self:switchingDirectionAt(i) end)
+end
+
+--- Same here, for vehicles which have a reverser node. When driving in reverse, we use the reverser node
+--- for the PPC. The reverser node reaches the waypoint where the direction changes to forward earlier
+--- than the direction node we used to calculate the path because it is usually further back than the
+--- direction node. This makes the vehicle change to forward too early and aligning with the forward
+--- leg difficult.
+--- Therefore, we extend the reversing leg a bit so the direction node can reach the calculate direction
+--- change waypoint.
+function Course:adjustForReversing(extensionLength)
+	self:extendCusps(extensionLength, function (i) return self:switchingToForwardAt(i) end)
+end
+
+function Course:extendCusps(extensionLength, selectionFunc)
+	local waypoints = {}
+	for i = 1, #self.waypoints do
+		if selectionFunc(i) then
+			local wp = self.waypoints[i]
 			local newWp = Waypoint(wp)
-			newWp.x = wp.x + wp.dx * extensionLength
-			newWp.z = wp.z + wp.dz * extensionLength
+			newWp.x = wp.x - wp.dx * extensionLength
+			newWp.z = wp.z - wp.dz * extensionLength
 			table.insert(waypoints, newWp)
 		else
 			table.insert(waypoints, self.waypoints[i])
@@ -1284,27 +1269,6 @@ function Course:addReverseForAutoDriveCourse()
 		end
 		self.waypoints[i].rev = reverse or nil
 	end
-end
-
--- Create a legacy course. This is used for compatibility when loading a virtual AutoDrive course
-function Course:createLegacyCourse()
-	local legacyCourse = {}
-	for i = 1, #self.waypoints do
-		local x, _, z = self:getWaypointPosition(i)
-		legacyCourse[i] = {
-			x = x,
-			cx = x, -- darn legacy cx/cz, why? why? why cx? why not just x? please someone explain...
-			z = z,
-			cz = z,
-			rev = self:isReverseAt(i),
-			angle = self:getWaypointAngleDeg(i),
-			unload = self:isUnloadAt(i),
-			wait = self:isWaitAt(i)
-		}
-	end
-	legacyCourse[1].crossing = true
-	legacyCourse[#legacyCourse].crossing = true
-	return legacyCourse
 end
 
 function Course:worldToWaypointLocal(ix, x, y, z)

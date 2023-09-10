@@ -7,9 +7,9 @@
             - moved all the way to the back of the vehicle or the rear most attached implement.
 
         - front marker offset:
-            - distance between the vehicle root node and the front maker node (positive)
+            - distance between the vehicle direction node and the front maker node (positive)
         - back marker offset:
-            - distance between the vehicle root node and the back maker node (negative)
+            - distance between the vehicle direction node and the back maker node (negative)
 
 ]]
 
@@ -68,7 +68,7 @@ end
 -- Put a node on the front of the vehicle for easy distance checks use this instead of the root/direction node
 local function setFrontMarkerNode(vehicle)
     local firstImplement, frontMarkerOffset = AIUtil.getFirstAttachedImplement(vehicle)
-    CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Using the %s\'s root node for the front marker node, %d m from root node',
+    CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Using the %s\'s direction node for the front marker node, %d m from direction node',
             CpUtil.getName(firstImplement), frontMarkerOffset)
 
     createMarkerIfDoesNotExist(vehicle, 'frontMarkerNode',  AIUtil.getDirectionNode(vehicle))
