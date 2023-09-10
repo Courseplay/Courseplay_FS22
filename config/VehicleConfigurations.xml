@@ -98,11 +98,12 @@ You can define the following custom settings:
 	Used to control the target tilt.
 
 - loadingShovelOffset: number -1 : 1
-	Offset relative to the calculated loading shovel position, needs to be set for a shovel implement.
+	Offset to the loading and transport shovel position in meter for the height of the shovel.
 
 - shovelMovingToolIx: number
-	If the shovel is a high dump shovel then this moving tool ix is needed.
-
+	If the shovel is a high dump shovel then the moving tool index of the correct one is needed.
+	Usually this index is 1 for the first moving tool.
+	
 - modName: Name of the .zip file (without '.zip')
     In case a Mod has the same .xml filename for the vehicle/implement, as a default giants vehicle/implement,
     add the name of the .zip file to prevent conflicts. For example: "FS22_exampleMod".
@@ -138,6 +139,7 @@ You can define the following custom settings:
 		<Configuration type="INT">armMovingToolIx</Configuration>
 		<Configuration type="INT">movingToolIx</Configuration>
 		<Configuration type="INT">shovelMovingToolIx</Configuration>
+		<Configuration type="FLOAT">loadingShovelOffset</Configuration>
 		<Configuration type="BOOL">ignoreBaleCollisionForward</Configuration>
 		<Configuration type="INT">fixWheelLoaderDirectionNodeByMovingToolIx</Configuration>
 		<Configuration type="BOOL">articulatedAxisReverseNodeInverted</Configuration>

@@ -79,12 +79,6 @@ function CoursePlot:setStopPosition( x, z )
 	self.stopPosition.x, self.stopPosition.z = x, z
 end
 
--- function CoursePlot:screenToWorld( x, y )
--- 	local worldX = ((x - self.x) / self.scaleX) - self.worldOffsetX
--- 	local worldZ = ((y - self.y - self.height) / -self.scaleZ) - self.worldOffsetZ
--- 	return worldX, worldZ
--- end
-
 -- Draw the waypoints in the screen area defined in new(), the bottom left corner
 -- is at worldX/worldZ coordinates, the size shown is worldWidth wide (and high)
 function CoursePlot:drawPoints(map, points, isHudMap)

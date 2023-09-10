@@ -890,8 +890,8 @@ function PathfinderUtil.getNodePositionAndDirection(node, xOffset, zOffset)
 end
 
 ---@param vehicle table
----@param xOffset|nil
----@param zOffset|nil
+---@param xOffset number|nil
+---@param zOffset number|nil
 ---@return State3D position/heading of vehicle
 function PathfinderUtil.getVehiclePositionAsState3D(vehicle, xOffset, zOffset)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection( AIUtil.getDirectionNode(vehicle), xOffset, zOffset)

@@ -72,7 +72,6 @@ function CpAIWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "cpHold", CpAIWorker.cpHold)
     SpecializationUtil.registerFunction(vehicleType, "cpBrakeToStop", CpAIWorker.cpBrakeToStop)
     SpecializationUtil.registerFunction(vehicleType, "getCpDriveStrategy", CpAIWorker.getCpDriveStrategy)
-    SpecializationUtil.registerFunction(vehicleType, 'getCpReverseDrivingDirectionNode', CpAIWorker.getCpReverseDrivingDirectionNode)
 end
 
 function CpAIWorker.registerOverwrittenFunctions(vehicleType)
@@ -503,21 +502,12 @@ function CpAIWorker:getCpDriveStrategy()
     return spec.driveStrategy
 end
 
-function CpAIWorker:getCpReverseDrivingDirectionNode()
-    local spec = self.spec_cpAIWorker
-    if not spec.reverseDrivingDirectionNode and SpecializationUtil.hasSpecialization(ReverseDriving, self.specializations) then
-        spec.reverseDrivingDirectionNode =
-            CpUtil.createNewLinkedNode(self, "realReverseDrivingDirectionNode", self:getAIDirectionNode())
-        setRotation(spec.reverseDrivingDirectionNode, 0, math.pi, 0)
-    end
-    return spec.reverseDrivingDirectionNode
-end
-
 --- Fixes the ai reverse node rotation for articulated axis vehicles,
 --- if the node is pointing backwards and not forwards.
+--- TODO: Consider consolidation with AIUtil.getArticulatedAxisVehicleReverserNode
 function CpAIWorker:getAIReverserNode(superFunc)
     local spec = self.spec_cpAIWorker
- --   if not self:getIsCpActive() then return superFunc(self) end
+    if not self:getIsCpActive() then return superFunc(self) end
     if self.spec_articulatedAxis and self.spec_articulatedAxis.aiRevereserNode then
         if g_vehicleConfigurations:get(self, "articulatedAxisReverseNodeInverted") then
             if not spec.articulatedAxisReverseNode then 
@@ -536,7 +526,7 @@ end
 --- So we use the parent node of the arm tool node.
 ---@param superFunc any
 function CpAIWorker:getAIDirectionNode(superFunc)
- --   if not self:getIsCpActive() then return superFunc(self) end
+    if not self:getIsCpActive() then return superFunc(self) end
     local movingToolIx = g_vehicleConfigurations:get(self, "fixWheelLoaderDirectionNodeByMovingToolIx") 
     if movingToolIx ~= nil then
         return getParent(self.spec_cylindered.movingTools[movingToolIx].node)
