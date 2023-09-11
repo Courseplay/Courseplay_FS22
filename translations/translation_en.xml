@@ -832,37 +832,40 @@ Now it's possible to start the helper.
 "/>
     <text name="CP_help_page_shovelLoader_title" text="Wheel loader/Front loader"/>
     <text name="CP_help_page_shovelLoaderGeneral_text" text="
-With a wheel loader or tractor with a front loader and shovel attached, you can pick up a heap from the ground or out of a bunker silo and unload it into a trailer or storage.
-The shovel positions will be moved to the correct position automatically.
-In case the mode is not directly visable on the hud, toggle the &quot;start position&quot; untill the mode appears.
+This mode enables wheel loader and tractors with a front loader. 
+With a shovel attached a heap can be picked up from the ground or loading from a bunker silo can be accomplished.
+The picked up fill level can be unloaded automatically into a nearby trailer or a selected unloading station like a BGA.
+The shovel will automatically be moved to the correct positions for loading, unloading and so on.
+In case the mode is not directly visable on the hud, you can toggle the &quot;start position&quot; until the shovel mode appears.
 
-On the HUD, the known target icon appears to get directly to the AI Map with the mode active.
-There is also a display that shows how many liters of the heap is left, that the shovel driver is working on.
-The work width might need to be adjusted in case you want to pick up stuff from the bunker silo, to not hit the side walls.
+The target icon on the hud can be used to open the AI map to select the loading and the unloading targets.
+The hud also shows the leftover fill level of the heap or silo, while the helper is working.
+If the loading target is a bunker silo, then the work width might need to be adjusted to avoid hitting the side walls of the silo.
 
-The hight offset of the shoveld is used to adjust the hight above the ground. This should be checked and needs to be close to ground, to pick up all stuff on the ground,
-but also that the shovel doesn't get stuck on an edge of a bunker silo. If the value gets changed, the shovel will move to the loading position with the set offset.
-To reset the hight, click on the text. The value can be adjusted from +1 to -1 in 0.1 setps.
+The hight offset setting is used to adjust the hight above the ground, as not all shovel can calculated correctly. 
+This should be checked, if the shovel is to low for loading and the driver can't turn anymore or the shovel is to high and fill level is missed to the ground.
+If the value gets changed, the shovel will automatically move to the loading position to show the impact of the offset.
+To reset the offset you need to click on the settings text in the hud. The value can be adjusted from +1 to -1 in 0.1 setps.
 
-Shovels with a flap will open automatically and close them for transport.
+Shovels with a silage grab will open and close automatically for loading and unloading.
 The shovel to shred sugar beets is completly functional as well.
 "/>
     <text name="CP_help_page_shovelLoaderBasic_text" text="
-To start a wheel loader driver, you need to set the load and unload position by clicking the target icon on the hud.
-The loading position works the same like the one from the loader. A blue square will be created arround the heap.
+To start a wheel loader helper, you need to set the load and unload positions by clicking the target icon on the hud.
+The loading position works the same like the one from the loader mode. A blue square will be created arround the heap.
 
-The unloading position depends if you want to unload into a trailer or into a storage.
-Unloading into a trailer works automatically and doesn't need a position. The driver will check for the nearest standing trailer and drives to its side.
+The unloading position depends if you want to unload into a trailer or into an unloading station.
+Unloading into a trailer works automatically and doesn't need a dedicated unload position. The driver will check for the nearest standing trailer and unloads to it from the side.
 
-If you want to unload into a storage, you need to switch the target and then mark the trigger of the storage.
+If you want to unload into an unloading station, you need to switch the target and then mark the trigger with the unloading position.
 "/>
     <text name="CP_help_page_shovelLoaderTrigger_text" text="
-Selecting a trigger does look a bit complicated, but in reality it is realy easy.
-Every building can have more then one trigger, thats why you have to choose the one you want.
-The available trigger will be shown with an orange cross.
-To select one, place the middle of the round marker on the middle of the cross.
-Now you just need to select the direction on where the driver should drive to the trigger, since triggers doesn't come with an information about their direction.
-The cross should look like as shown in the picture.
+Selecting a trigger does look a bit complicated at first, but in reality it is really easy.
+Every building can have more then one trigger so you have to choose the one you want to unload to.
+All available triggers will be shown with an orange cross on the AI Map.
+To select one place the middle of the round marker on the middle of the cross.
+The driection of the arrow tells the helper from which direction he will approach the trigger for unloading.
+Now your selection should look similar to the image.
 "/>
     <!---->
     <!--Input bindings-->
