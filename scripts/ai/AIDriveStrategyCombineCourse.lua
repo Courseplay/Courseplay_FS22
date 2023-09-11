@@ -148,7 +148,6 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
     self.pocketReverseDistance = 20
     -- register ourselves at our boss
     -- TODO_22 g_combineUnloadManager:addCombineToList(self.vehicle, self)
-    self:measureBackDistance()
     self.waitingForUnloaderAtEndOfRow = CpTemporaryObject()
     --- My unloader. This expires in a few seconds, so unloaders have to renew their registration periodically
     ---@type CpTemporaryObject
@@ -1922,8 +1921,8 @@ end
 function AIDriveStrategyCombineCourse:measureBackDistance()
     self.measuredBackDistance = 0
     -- raycast from a point behind the vehicle forward towards the direction node
-    local nx, ny, nz = localDirectionToWorld(self.vehicle.rootNode, 0, 0, 1)
-    local x, y, z = localToWorld(self.vehicle.rootNode, 0, 1.5, -self.maxBackDistance)
+    local nx, ny, nz = localDirectionToWorld(AIUtil.getDirectionNode(self.vehicle), 0, 0, 1)
+    local x, y, z = localToWorld(AIUtil.getDirectionNode(self.vehicle), 0, 1.5, -self.maxBackDistance)
     raycastAll(x, y, z, nx, ny, nz, 'raycastBackCallback', self.maxBackDistance, self)
 end
 

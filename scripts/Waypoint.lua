@@ -90,7 +90,6 @@ function Waypoint:set(wp, cpIndex)
 	self.cpIndex = cpIndex or 0
 	self.turnStart = wp.turnStart
 	self.turnEnd = wp.turnEnd
-	self.interact = wp.wait or wp.interact or false
 	self.isConnectingTrack = wp.isConnectingTrack or nil
 	self.lane = wp.lane
 	self.rowNumber = wp.rowNumber

@@ -379,9 +379,10 @@ function AIDriveStrategyCourse:setFrontAndBackMarkers()
     self:debug('front marker: %.1f, back marker: %.1f', frontMarkerDistance, backMarkerDistance)
 end
 
---- Gets the front and back marker offset
----@return number front marker distance
----@return number back marker distance
+--- Gets the front and back marker offset relative to the direction node. These markers define the front
+--- and the back of the work area. When negative, they are behind the direction node, when positive, in front of it.
+---@return number distance of the foremost work area from the direction node, negative when behind the direction node
+---@return number distance of the rearmost work area from the direction node, negative when behind the direction node
 function AIDriveStrategyCourse:getFrontAndBackMarkers()
     if not self.frontMarkerDistance then
         self:setFrontAndBackMarkers()

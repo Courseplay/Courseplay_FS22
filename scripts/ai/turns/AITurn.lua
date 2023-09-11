@@ -606,7 +606,7 @@ function CourseTurn:endTurn(dt)
                     self:debug("implements lowered, resume fieldwork")
                     self:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
                 else
-                    self:debug('waiting for lower at dz=%.1f %s', dz, self.vehicle:getAttachedImplements()[1].object:getCanAIImplementContinueWork())
+                    self:debug('waiting for lower at dz=%.1f', dz)
                     -- we are almost at the start of the row but still not lowered everything,
                     -- hold.
                     return false
@@ -726,10 +726,12 @@ function CourseTurn:onPathfindingDone(path)
     if path and #path > 2 then
         self:debug('Pathfinding finished with %d waypoints (%d ms)', #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
         self.turnCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-        self.turnCourse:adjustForTowedImplements(2)
         -- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
         self.turnCourse:setUseTightTurnOffsetForLastWaypoints(15)
         local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.turnCourse, nil, true)
+        local x = AIUtil.getDirectionNodeToReverserNodeOffset(self.vehicle)
+        self:debug('Extending course at direction switch for reversing: %.1f m', -x )
+        self.turnCourse:adjustForReversing(math.max(0, -x))
         TurnManeuver.setLowerImplements(self.turnCourse, endingTurnLength, true)
     else
         self:debug('No path found in %d ms, falling back to normal turn course generator', g_currentMission.time - (self.pathfindingStartedAt or 0))
