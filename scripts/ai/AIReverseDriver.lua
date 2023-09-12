@@ -52,19 +52,22 @@ function AIReverseDriver:getDriveData()
 		return nil
 	end
 
-	local trailerNode = self.reversingImplement.steeringAxleNode
-	local xTipper, yTipper, zTipper = getWorldTranslation(trailerNode);
+	-- if there's a reverser node on the tool, use that, otherwise the steering node
+	-- the reverser direction node, if exists, works better for tools with offset or for 
+	-- rotating plows where it remains oriented and placed correctly
+	local trailerNode = AIVehicleUtil.getAIToolReverserDirectionNode(self.vehicle) or self.reversingImplement.steeringAxleNode
+	local xTrailer, yTrailer, zTrailer = getWorldTranslation(trailerNode);
 
 	local trailerFrontNode = self.reversingImplement.reversingProperties.frontNode
 	local xFrontNode,yFrontNode,zFrontNode = getWorldTranslation(trailerFrontNode)
 
 	local tx, ty, tz = self.ppc:getGoalPointPosition()
 
-	local lxTipper, lzTipper = AIVehicleUtil.getDriveDirection(trailerNode, tx, ty, tz)
+	local lxTrailer, lzTrailer = AIVehicleUtil.getDriveDirection(trailerNode, tx, ty, tz)
 
-	self:showDirection(trailerNode, lxTipper, lzTipper, 1, 0, 0)
+	self:showDirection(trailerNode, lxTrailer, lzTrailer, 1, 0, 0)
 
-	local lxFrontNode, lzFrontNode = AIVehicleUtil.getDriveDirection(trailerFrontNode, xTipper, yTipper, zTipper)
+	local lxFrontNode, lzFrontNode = AIVehicleUtil.getDriveDirection(trailerFrontNode, xTrailer, yTrailer, zTrailer)
 
 	local lxTractor, lzTractor = 0, 0
 
@@ -95,7 +98,7 @@ function AIReverseDriver:getDriveData()
 		local trailerToWaypointAngle = self:getLocalYRotationToPoint(trailerNode, tx, ty, tz, -1) * rotDelta
 		trailerToWaypointAngle = MathUtil.clamp(trailerToWaypointAngle, -math.rad(90), math.rad(90))
 
-		local dollyToTrailerAngle = self:getLocalYRotationToPoint(trailerFrontNode, xTipper, yTipper, zTipper, -1)
+		local dollyToTrailerAngle = self:getLocalYRotationToPoint(trailerFrontNode, xTrailer, yTrailer, zTrailer, -1)
 
 		local tractorToDollyAngle = self:getLocalYRotationToPoint(tractorNode, xFrontNode, yFrontNode, zFrontNode, -1)
 
@@ -192,7 +195,7 @@ end
 function AIReverseDriver:calculateErrors(tractorNode, trailerNode)
 
 	-- PPC already has the cross track error (lateral error)
-	local crossTrackError = self.ppc:getCrossTrackError()
+	local crossTrackError = self.ppc:getCrossTrackError() --+ self.settings.toolOffsetX:getValue()
 
 	-- Calculate the orientation error, the angle between the trailers current direction and
 	-- the path direction

@@ -157,12 +157,12 @@ end
 function AIUtil.getReverserNode(vehicle, reversingImplement, suppressLog)
 	local reverserNode, debugText
 	-- if there's a reverser node on the tool, use that
-	reversingImplement = reversingImplement and reversingImplement or AIUtil.getFirstReversingImplementWithWheels(vehicle, suppressLog)
-	if reversingImplement and reversingImplement.steeringAxleNode then
-		reverserNode, debugText = reversingImplement.steeringAxleNode, 'implement steering axle node'
-	end
+	reverserNode, debugText = AIVehicleUtil.getAIToolReverserDirectionNode(vehicle), 'AIToolReverserDirectionNode'
 	if not reverserNode then
-		reverserNode, debugText = AIVehicleUtil.getAIToolReverserDirectionNode(vehicle), 'AIToolReverserDirectionNode'
+		reversingImplement = reversingImplement and reversingImplement or AIUtil.getFirstReversingImplementWithWheels(vehicle, suppressLog)
+		if reversingImplement and reversingImplement.steeringAxleNode then
+			reverserNode, debugText = reversingImplement.steeringAxleNode, 'implement steering axle node'
+		end
 	end
 	if not reverserNode and vehicle.getAIReverserNode then
 		reverserNode, debugText = vehicle:getAIReverserNode(), 'AIReverserNode'
