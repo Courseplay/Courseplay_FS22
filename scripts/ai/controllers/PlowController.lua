@@ -103,11 +103,16 @@ end
 --- here we only make sure that the plow is rotated to the work position (from the center position)
 --- in time.
 ---@param workStartNode number node where the work starts as calculated by TurnContext
+---@param shouldLower boolean the implement should be lowered as we are close to the work start (this
+--- should most likely be calculated here in the controller, but for now, we get it from an argument
 ---@param isLeftTurn boolean is this a left turn?
-function PlowController:onTurnEndProgress(workStartNode, isLeftTurn)
+function PlowController:onTurnEndProgress(workStartNode, shouldLower, isLeftTurn)
     if self:isRotatablePlow() and not self:isFullyRotated() and not self:isRotationActive() then
         -- more or less aligned with the first waypoint of the row, start rotating to working position
-        if CpMathUtil.isSameDirection(self.implement.rootNode, workStartNode, 30) then
+        -- or, when it should have been lowered, that is, we are too late, not aligned yet, but
+        -- rotate anyway
+        if CpMathUtil.isSameDirection(self.implement.rootNode, workStartNode, 30) or shouldLower then
+            self:debug('Rotating plow to working position now.')
             self.implement:setRotationMax(isLeftTurn)
         end
     end

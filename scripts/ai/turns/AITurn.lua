@@ -584,9 +584,9 @@ end
 ---@return boolean true if it is ok the continue driving, false when the vehicle should stop
 function CourseTurn:endTurn(dt)
     -- keep driving on the turn course until we need to lower our implements
-    self.driveStrategy:raiseControllerEvent(AIDriveStrategyCourse.onTurnEndProgressEvent,
-            self.turnContext.workStartNode, self.turnContext:isLeftTurn())
     local shouldLower, dz = self.driveStrategy:shouldLowerImplements(self.turnContext.workStartNode, self.ppc:isReversing())
+    self.driveStrategy:raiseControllerEvent(AIDriveStrategyCourse.onTurnEndProgressEvent,
+            self.turnContext.workStartNode, shouldLower, self.turnContext:isLeftTurn())
     if shouldLower then
         if not self.implementsLowered then
             -- have not started lowering implements yet
