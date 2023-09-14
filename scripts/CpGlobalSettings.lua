@@ -119,6 +119,8 @@ function CpGlobalSettings:registerConsoleCommands()
         "consoleCommandPrintSetting", self)
 end
 
+--- Either prints all settings or a desired setting by the name or index in the setting table.
+---@param name any
 function CpGlobalSettings:consoleCommandPrintSetting(name)
     if name == nil then 
         CpUtil.info("%d Global settings printed", tostring(self.settings))

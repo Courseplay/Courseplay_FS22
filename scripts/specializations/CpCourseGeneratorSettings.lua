@@ -248,6 +248,8 @@ function CpCourseGeneratorSettings.registerConsoleCommands()
         "consoleCommandPrintSetting", CpCourseGeneratorSettings)
 end
 
+--- Either prints all settings or a desired setting by the name or index in the setting table.
+---@param name any
 function CpCourseGeneratorSettings:consoleCommandPrintSetting(name)
     local vehicle = g_currentMission.controlledVehicle
     if not vehicle then 
