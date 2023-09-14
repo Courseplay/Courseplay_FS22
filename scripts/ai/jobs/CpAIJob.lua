@@ -1,6 +1,7 @@
 --- Basic cp job.
 --- Every cp job should be derived from this job.
 ---@class CpAIJob : AIJob
+---@field jobTypeIndex number
 CpAIJob = {
 	name = "",
 	jobName = "",
@@ -9,7 +10,13 @@ CpAIJob = {
 local AIJobCp_mt = Class(CpAIJob, AIJob)
 
 function CpAIJob.new(isServer, customMt)
-	local self = AIJob.new(isServer, customMt or AIJobCp_mt)
+	local mt = customMt or AIJobCp_mt
+	mt.__tostring = function(_self)
+		CpUtil.info("Job: %s", g_currentMission.aiJobTypeManager:getJobTypeByIndex(_self.jobTypeIndex).name)
+		return string.format("%d Job parameters", tostring(_self.cpJobParameters))
+	end
+
+	local self = AIJob.new(isServer, mt)
 	self.isDirectStart = false
 	self:setupTasks(isServer)
 	

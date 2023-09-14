@@ -139,9 +139,7 @@ end
 
 
 function CpJobParameters:__tostring()
-    for i, setting in ipairs(self.settings) do 
-        CpUtil.info("%s", tostring(setting))
-    end
+   return tostring(self.settings)
 end
 
 --- Are the setting values roughly equal.

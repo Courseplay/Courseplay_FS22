@@ -23,6 +23,8 @@ function CpCourseGeneratorSettings.initSpecialization()
     CpSettingsUtil.registerXmlSchema(schema, 
         "vehicles.vehicle(?)"..CpCourseGeneratorSettings.KEY..CpCourseGeneratorSettings.VINE_SETTINGS_KEY.."(?)")
     CpCourseGeneratorSettings.loadSettingsSetup()
+
+    CpCourseGeneratorSettings.registerConsoleCommands()
 end
 
 
@@ -234,4 +236,37 @@ function CpCourseGeneratorSettings:generateWorkWidthSettingValuesAndTexts(settin
         table.insert(texts, i)
     end
     return values, texts
+end
+
+---------------------------------------------
+--- Console Commands
+---------------------------------------------
+
+function CpCourseGeneratorSettings.registerConsoleCommands()
+    g_devHelper.consoleCommands:registerConsoleCommand("cpSettingsPrintGenerator", 
+        "Prints the course generator settings or a given setting", 
+        "consoleCommandPrintSetting", CpCourseGeneratorSettings)
+end
+
+function CpCourseGeneratorSettings:consoleCommandPrintSetting(name)
+    local vehicle = g_currentMission.controlledVehicle
+    if not vehicle then 
+        CpUtil.info("Not entered a valid vehicle!")
+        return
+    end
+    local spec = vehicle.spec_cpCourseGeneratorSettings
+    if not spec then 
+        CpUtil.infoVehicle(vehicle, "has no course generator settings!")
+        return
+    end
+    if name == nil then 
+        CpUtil.infoVehicle(vehicle,"%d Course generator settings printed", tostring(spec.settings))
+        return
+    end
+    local num = tonumber(name)
+    if num then 
+        CpUtil.infoVehicle(vehicle, tostring(spec.settings[num]))
+        return
+    end
+    CpUtil.infoVehicle(vehicle, tostring(spec[name]))
 end

@@ -147,6 +147,24 @@ function AIParameterSetting:debug(str, ...)
 	end
 end
 
+function AIParameterSetting:info(str, ...)
+	local name = string.format("%s: ", self.name)
+	if self.vehicle == nil then
+		CpUtil.info(name..str, ...)
+	else 
+		CpUtil.infoVehicle(self.vehicle, name..str, ...)
+	end
+end
+
+function AIParameterSetting:error(str, ...)
+	local name = string.format("%s: ", self.name)
+	if self.vehicle == nil then
+		CpUtil.error(name..str, ...)
+	else 
+		CpUtil.errorVehicle(self.vehicle, name..str, ...)
+	end
+end
+
 function AIParameterSetting:getDebugString()
 	return tostring(self)
 end

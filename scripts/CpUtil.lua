@@ -109,30 +109,6 @@ function CpUtil.getVariable(variableName)
 	return f and f() or nil
 end
 
-function CpUtil.internalPrint(printFunc, infoString, ...)
-	CpUtil.try(
-		function (...)
-			printFunc(string.format('%s %s', infoString, string.format(...)))
-		end,
-		...)
-end
-
--- convenience debug function that expects string.format() arguments,
--- CpUtil.debugVehicle( CpDebug.DBG_TURN, "fill level is %.1f, mode = %d", fillLevel, mode )
----@param channel number
-function CpUtil.debugFormat(channel, ...)
-	if CpDebug and CpDebug:isChannelActive(channel) then
-		local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
-		local timestamp = getDate( ":%S")
-		channel = channel or 0
-		CpUtil.try(
-			function (...)
-				print(string.format('%s [dbg%d lp%d] %s', timestamp, channel, updateLoopIndex, string.format(...)))
-			end,
-			...)
-	end
-end
-
 --- (Safely) get the name of a vehicle or implement.
 ---@param object table vehicle or implement
 function CpUtil.getName(object)
@@ -149,6 +125,35 @@ function CpUtil.getName(object)
 	return object.getName and object:getName() .. '/' .. helperName or 'Unknown'
 end
 
+function CpUtil.internalPrint(tag, ...)
+	CpUtil.try(
+		function (...)
+			local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
+			local timestamp = getDate( ":%S")
+			local infoString = string.format('%s [%s lp%d]', timestamp, tag or "---", updateLoopIndex)
+			print(string.format('%s %s', infoString, string.format(...)))
+		end, ...)
+end
+
+function CpUtil.internalPrintVehicle(vehicle, tag, str, ...)
+	str = string.format("%s: %s", CpUtil.getName(vehicle), str)
+	CpUtil.internalPrint(tag, str, ...)
+end
+
+function CpUtil.internalPrintImplement(implement, tag, str, ...)
+	str = string.format("%s: %s", CpUtil.getName(implement), str)
+	CpUtil.internalPrintVehicle(implement.rootVehicle, tag, str, ...)
+end
+
+-- convenience debug function that expects string.format() arguments,
+-- CpUtil.debugVehicle( CpDebug.DBG_TURN, "fill level is %.1f, mode = %d", fillLevel, mode )
+---@param channel number
+function CpUtil.debugFormat(channel, ...)
+	if CpDebug and CpDebug:isChannelActive(channel) then
+		CpUtil.internalPrint("dbg"..channel, ...)
+	end
+end
+
 -- convenience debug function to show the vehicle name and expects string.format() arguments, 
 -- CpUtil.debugVehicle( CpDebug.DBG_TURN, vehicle, "fill level is %.1f, mode = %d", fillLevel, mode )
 ---@param channel number
@@ -157,14 +162,7 @@ function CpUtil.debugVehicle(channel, vehicle, ...)
 	local rootVehicle = vehicle and vehicle.rootVehicle
 	local active = rootVehicle == nil or rootVehicle.getCpSettings == nil or CpUtil.isVehicleDebugActive(rootVehicle)
 	if CpDebug and active and CpDebug:isChannelActive(channel) then
-		local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
-		local timestamp = getDate( ":%S")
-		channel = channel or 0
-		CpUtil.try(
-			function (...)
-				print(string.format('%s [dbg%d lp%d] %s: %s', timestamp, channel, updateLoopIndex, CpUtil.getName(vehicle), string.format( ... )))
-			end,
-			...)
+		CpUtil.internalPrintVehicle(vehicle, "dbg"..channel, ...)
 	end
 end
 
@@ -183,45 +181,31 @@ function CpUtil.isVehicleDebugActive(vehicle)
 end
 
 function CpUtil.info(...)
-	local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
-	local timestamp = getDate( ":%S")
-	CpUtil.try(
-		function (...)
-			print(string.format('%s [info lp%d] %s', timestamp, updateLoopIndex, string.format(...)))
-		end,
-		...)
+	CpUtil.internalPrint("info", ...)
 end
 
 function CpUtil.infoVehicle(vehicle, ...)
-	local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
-	local timestamp = getDate( ":%S")
-	CpUtil.try(
-		function (...)
-			print(string.format('%s [info lp%d] %s: %s', timestamp, updateLoopIndex, CpUtil.getName(vehicle), string.format( ... )))
-		end,
-		...)
+	CpUtil.internalPrintVehicle(vehicle, "info", ...)
 end
 
 function CpUtil.infoImplement(implement, ...)
-	local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
-	local timestamp = getDate( ":%S")
-	CpUtil.try(
-		function (...)
-			local rootVehicle = implement.rootVehicle or implement
-			print(string.format('%s [info lp%d] %s(%s): %s', timestamp, updateLoopIndex, CpUtil.getName(rootVehicle), CpUtil.getName(implement), string.format( ... )))
-		end,
-		...)
+	CpUtil.internalPrintImplement(implement, "info", ...)
 end
 
 --- The same as CpUtil.info(), but also uses printCallstack()
 function CpUtil.error(...)
 	printCallstack()
-	local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
-	local timestamp = getDate( ":%S")
-	if printError == nil then 
-		printError = print
-	end
-	CpUtil.internalPrint(printError, string.format('%s [error lp%d]', timestamp, updateLoopIndex), ...)
+	CpUtil.internalPrint("error", ...)
+end
+
+function CpUtil.errorVehicle(vehicle, ...)
+	printCallstack()
+	CpUtil.internalPrintVehicle( vehicle, "error", ...)
+end
+
+function CpUtil.errorImplement(implement, ...)
+	printCallstack()
+	CpUtil.internalPrintImplement(implement, "error", ...)
 end
 
 --- Create a node at x, z, direction according to yRotation.

@@ -8,6 +8,8 @@ function CpGlobalSettings:init()
     g_messageCenter:subscribe(MessageType.SETTING_CHANGED[GameSettings.SETTING.USE_MILES], self.onUnitChanged, self)
     g_messageCenter:subscribe(MessageType.SETTING_CHANGED[GameSettings.SETTING.USE_ACRE], self.onUnitChanged, self)
     g_messageCenter:subscribe(MessageType.CP_DISTANCE_UNIT_CHANGED, self.onUnitChanged, self)
+
+    self:registerConsoleCommands()
 end
 
 function CpGlobalSettings:registerXmlSchema(schema,baseKey)
@@ -105,4 +107,27 @@ end
 
 function CpGlobalSettings:debug(str,...)
     CpUtil.debugFormat(CpDebug.DBG_HUD,"Global settings: "..str,...)    
+end
+
+---------------------------------------------
+--- Console Commands
+---------------------------------------------
+
+function CpGlobalSettings:registerConsoleCommands()
+    g_devHelper.consoleCommands:registerConsoleCommand("cpSettingsPrintGlobal", 
+        "Prints the global settings or a given setting", 
+        "consoleCommandPrintSetting", self)
+end
+
+function CpGlobalSettings:consoleCommandPrintSetting(name)
+    if name == nil then 
+        CpUtil.info("%d Global settings printed", tostring(self.settings))
+        return
+    end
+    local num = tonumber(name)
+    if num then 
+        CpUtil.info(tostring(self.settings[num]))
+        return
+    end
+    CpUtil.info(tostring(self[name]))
 end

@@ -26,6 +26,8 @@ function CpVehicleSettings.initSpecialization()
         "vehicles.vehicle(?)" .. CpVehicleSettings.KEY .. CpVehicleSettings.USER_KEY .. "(?)")
 
     CpVehicleSettings.loadSettingsSetup()
+
+    CpVehicleSettings.registerConsoleCommands()
 end
 
 
@@ -413,4 +415,37 @@ function CpVehicleSettings:generateSpeedSettingValuesAndTexts(setting, lastValue
         table.insert(texts, i)
     end
     return values, texts, math.min(lastValue, maxSpeed)
+end
+
+---------------------------------------------
+--- Console Commands
+---------------------------------------------
+
+function CpVehicleSettings.registerConsoleCommands()
+    g_devHelper.consoleCommands:registerConsoleCommand("cpSettingsPrintVehicle", 
+        "Prints the vehicle settings or a given setting", 
+        "consoleCommandPrintSetting", CpVehicleSettings)
+end
+
+function CpVehicleSettings:consoleCommandPrintSetting(name)
+    local vehicle = g_currentMission.controlledVehicle
+    if not vehicle then 
+        CpUtil.info("Not entered a valid vehicle!")
+        return
+    end
+    local spec = vehicle.spec_cpVehicleSettings
+    if not spec then 
+        CpUtil.infoVehicle(vehicle, "has no vehicle settings!")
+        return
+    end
+    if name == nil then 
+        CpUtil.infoVehicle(vehicle,"%d Vehicle settings printed", tostring(spec.settings))
+        return
+    end
+    local num = tonumber(name)
+    if num then 
+        CpUtil.infoVehicle(vehicle, tostring(spec.settings[num]))
+        return
+    end
+    CpUtil.infoVehicle(vehicle, tostring(spec[name]))
 end

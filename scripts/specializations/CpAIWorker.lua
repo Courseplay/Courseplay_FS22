@@ -538,7 +538,11 @@ end
 
 function CpAIWorker.registerConsoleCommands()
     g_devHelper.consoleCommands:registerConsoleCommand("cpVehicleOnWorkStartTest", 
-        "Raise the field work start event.", "consoleCommandRaiseWorkStart", CpAIWorker)
+        "Raise the field work start event.", 
+        "consoleCommandRaiseWorkStart", CpAIWorker)
+    g_devHelper.consoleCommands:registerConsoleCommand("cpSettingsPrintJob", 
+        "Prints the current job and job parameters", 
+        "consoleCommandPrintCurrentSelectedJob", CpAIWorker)
     --- TODO: Adding functions to execute the lowering, raising and fieldwork end events.
 end
 
@@ -562,4 +566,17 @@ function CpAIWorker:consoleCommandRaiseWorkStart()
     for _, c in pairs(controllers) do 
         c:delete()
     end
+end
+
+function CpAIWorker:consoleCommandPrintCurrentSelectedJob()
+    local vehicle = g_currentMission.controlledVehicle
+    if not vehicle or vehicle.getCpStartableJob == nil then 
+        CpUtil.info("Not entered a valid vehicle!")
+        return
+    end
+    local job = vehicle:getCpStartableJob()
+    if  not job then 
+        CpUtil.infoVehicle(vehicle, "No valid job found!")
+    end
+    CpUtil.infoVehicle(vehicle, tostring(job))
 end

@@ -313,8 +313,7 @@ end
 function AIParameterSettingList:getClosestIxFromSetup(ix)
 	local value = self.data.values[ix]
 	if value == nil then 
-		self:debug("Setting value bugged, ix: %s", tostring(ix))
-		printCallstack()
+		self:error("Setting value bugged, ix: %s", tostring(ix))
 		return 1
 	end
 	-- find the value requested
