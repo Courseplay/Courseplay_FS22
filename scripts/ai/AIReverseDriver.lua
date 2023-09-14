@@ -52,46 +52,39 @@ function AIReverseDriver:getDriveData()
 		return nil
 	end
 
-	-- if there's a reverser node on the tool, use that, otherwise the steering node
-	-- the reverser direction node, if exists, works better for tools with offset or for 
-	-- rotating plows where it remains oriented and placed correctly
-	local trailerNode = AIVehicleUtil.getAIToolReverserDirectionNode(self.vehicle) or self.reversingImplement.steeringAxleNode
-	local xTrailer, yTrailer, zTrailer = getWorldTranslation(trailerNode);
+    -- if there's a reverser node on the tool, use that, otherwise the steering node
+    -- the reverser direction node, if exists, works better for tools with offset or for
+    -- rotating plows where it remains oriented and placed correctly
+    local trailerNode = AIVehicleUtil.getAIToolReverserDirectionNode(self.vehicle) or self.reversingImplement.steeringAxleNode
+    local trailerFrontNode = self.reversingImplement.reversingProperties.frontNode
 
-	local trailerFrontNode = self.reversingImplement.reversingProperties.frontNode
-	local xFrontNode,yFrontNode,zFrontNode = getWorldTranslation(trailerFrontNode)
+    local tx, ty, tz = self.ppc:getGoalPointPosition()
+    local lxTrailer, lzTrailer = AIVehicleUtil.getDriveDirection(trailerNode, tx, ty, tz)
+    self:showDirection(trailerNode, lxTrailer, lzTrailer, 1, 0, 0)
 
-	local tx, ty, tz = self.ppc:getGoalPointPosition()
+    local maxTractorAngle = math.rad(75)
 
-	local lxTrailer, lzTrailer = AIVehicleUtil.getDriveDirection(trailerNode, tx, ty, tz)
+    -- for articulated vehicles use the articulated axis' rotation node as it is a better indicator or the
+    -- vehicle's orientation than the direction node which often turns/moves with an articulated vehicle part
+    -- TODO: consolidate this with AITurn:getTurnNode() and if getAIDirectionNode() considers this already
+    local tractorNode
+    local useArticulatedAxisRotationNode = SpecializationUtil.hasSpecialization(ArticulatedAxis, self.vehicle.specializations) and self.vehicle.spec_articulatedAxis.rotationNode
+    if useArticulatedAxisRotationNode then
+        tractorNode = self.vehicle.spec_articulatedAxis.rotationNode
+    else
+        tractorNode = self.vehicle:getAIDirectionNode()
+    end
 
-	self:showDirection(trailerNode, lxTrailer, lzTrailer, 1, 0, 0)
+    local lx, lz, angleDiff
 
-	local lxFrontNode, lzFrontNode = AIVehicleUtil.getDriveDirection(trailerFrontNode, xTrailer, yTrailer, zTrailer)
+    if self.reversingImplement.reversingProperties.isPivot then
+        local xTrailer, yTrailer, zTrailer = getWorldTranslation(trailerNode);
+        local xFrontNode, yFrontNode, zFrontNode = getWorldTranslation(trailerFrontNode)
+        local lxFrontNode, lzFrontNode = AIVehicleUtil.getDriveDirection(trailerFrontNode, xTrailer, yTrailer, zTrailer)
+        self:showDirection(trailerFrontNode, lxFrontNode, lzFrontNode, 0, 1, 0)
 
-	local lxTractor, lzTractor = 0, 0
-
-	local maxTractorAngle = math.rad(75)
-
-	-- for articulated vehicles use the articulated axis' rotation node as it is a better indicator or the
-	-- vehicle's orientation than the direction node which often turns/moves with an articulated vehicle part
-	-- TODO: consolidate this with AITurn:getTurnNode() and if getAIDirectionNode() considers this already
-	local tractorNode
-	local useArticulatedAxisRotationNode = 
-		SpecializationUtil.hasSpecialization(ArticulatedAxis, self.vehicle.specializations) and self.vehicle.spec_articulatedAxis.rotationNode
-	if useArticulatedAxisRotationNode then
-		tractorNode = self.vehicle.spec_articulatedAxis.rotationNode
-	else
-		tractorNode = self.vehicle:getAIDirectionNode()
-	end
-
-	local lx, lz, angleDiff
-	
-	if self.reversingImplement.reversingProperties.isPivot then
-		self:showDirection(trailerFrontNode, lxFrontNode, lzFrontNode, 0, 1, 0)
-
-		lxTractor, lzTractor = AIVehicleUtil.getDriveDirection(tractorNode, xFrontNode, yFrontNode, zFrontNode)
-		self:showDirection(tractorNode,lxTractor, lzTractor, 0, 0.7, 0)
+        local lxTractor, lzTractor = AIVehicleUtil.getDriveDirection(tractorNode, xFrontNode, yFrontNode, zFrontNode)
+        self:showDirection(tractorNode, lxTractor, lzTractor, 0, 0.7, 0)
 
 		local rotDelta = (self.reversingImplement.reversingProperties.nodeDistance *
 				(0.5 - (0.023 * self.reversingImplement.reversingProperties.nodeDistance - 0.073)))
@@ -238,12 +231,13 @@ function AIReverseDriver:calculateHitchCorrectionAngle(crossTrackError, orientat
 	-- gain correction
 	local gainCorrection = 1.5
 
-	local hitchAngle = gainCorrection * (
-					kXeBase * crossTrackError +
-					kOeBase * orientationError +
-					kCeBase * curvatureError
-	)
-	hitchAngle = MathUtil.clamp(hitchAngle, -math.rad(35), math.rad(35))
+    local hitchAngle = gainCorrection * (
+            kXeBase * crossTrackError +
+            kOeBase * orientationError +
+            kCeBase * curvatureError
+    )
+    local maxHitchAngle = math.rad(35)
+    hitchAngle = MathUtil.clamp(hitchAngle, -maxHitchAngle, maxHitchAngle)
 
 	local correctionAngle = -(hitchAngle - currentHitchAngle)
 
