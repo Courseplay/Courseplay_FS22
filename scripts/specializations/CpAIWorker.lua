@@ -516,6 +516,7 @@ end
 
 --- Auto drive start
 function CpAIWorker:onStartAutoDrive()
+    self:resetCpAllActiveInfoTexts()
     if g_server then 
         if self.ad.restartCP then 
             --- Use last job parameters.
