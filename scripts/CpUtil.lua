@@ -150,7 +150,7 @@ end
 ---@param channel number
 function CpUtil.debugFormat(channel, ...)
 	if CpDebug and CpDebug:isChannelActive(channel) then
-		CpUtil.internalPrint("dbg"..channel, ...)
+		CpUtil.internalPrint(CpDebug:getText(channel), ...)
 	end
 end
 
@@ -162,7 +162,7 @@ function CpUtil.debugVehicle(channel, vehicle, ...)
 	local rootVehicle = vehicle and vehicle.rootVehicle
 	local active = rootVehicle == nil or rootVehicle.getCpSettings == nil or CpUtil.isVehicleDebugActive(rootVehicle)
 	if CpDebug and active and CpDebug:isChannelActive(channel) then
-		CpUtil.internalPrintVehicle(vehicle, "dbg"..channel, ...)
+		CpUtil.internalPrintVehicle(vehicle, CpDebug:getText(channel), ...)
 	end
 end
 
