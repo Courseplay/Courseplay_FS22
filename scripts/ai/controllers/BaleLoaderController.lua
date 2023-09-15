@@ -54,9 +54,17 @@ function BaleLoaderController:canBeFolded()
 end
 
 function BaleLoaderController:update()
-    if self:isFull() and self:isChangingBaleSize() then 
-        if self.baleLoaderSpec.emptyState == BaleLoader.EMPTY_NONE then
-            self.baleLoader:startAutomaticBaleUnloading()
+    if self:isFull() then 
+        if self:isChangingBaleSize() then 
+            if self.baleLoaderSpec.emptyState == BaleLoader.EMPTY_NONE then
+                self.baleLoader:startAutomaticBaleUnloading()
+            end
+        end
+        if not self:isBaleFinderMode() then 
+            --- In the fieldwork mode the driver has to stop once full
+            --- The bale finder mode controls this in the strategy.
+            --- TODO: Breaks multiple trailers in fieldwork!
+            self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
         end
     end
 end
@@ -71,6 +79,13 @@ function BaleLoaderController:getDriveData()
     if self.baleLoaderSpec.emptyState == BaleLoader.EMPTY_WAIT_TO_SINK then
         maxSpeed = 1
     end
+    if not self:isBaleFinderMode() then 
+        if self:isGrabbingBale() then 
+            self:debugSparse("Waiting until the bale pickup has finished.")
+            maxSpeed = 0
+        end
+    end
+
     return nil, nil, nil, maxSpeed
 end
 
@@ -92,4 +107,13 @@ end
 --- Is the bale loader transforming the picked up bale to a different bale size ?
 function BaleLoaderController:isChangingBaleSize()
     return self.baleLoaderSpec.balePacker.node ~= nil and self.baleLoaderSpec.balePacker.filename ~= nil
+end
+
+--- Is the bale finder mode active and not a normal fieldworker?
+function BaleLoaderController:isBaleFinderMode()
+    --- For field work the bale loader has to wait until loading finished
+    --- and needs to stop when the full.
+    --- TODO: this is a more a hack and the fieldwork strategy 
+    ---       or another instance should handle the is full check
+    return self.driveStrategy:isa(AIDriveStrategyFindBales)
 end
