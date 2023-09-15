@@ -54,7 +54,7 @@ function AIUtil.calculateTightTurnOffset(vehicle, vehicleTurningRadius, course, 
 	local tightTurnOffset
 
 	local function smoothOffset(offset)
-		return (offset + 3 * (previousOffset or 0 )) / 4
+		return (offset + 4 * (previousOffset or 0 )) / 5
 	end
 
 	-- first of all, does the current waypoint have radius data?

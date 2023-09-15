@@ -241,15 +241,6 @@ function PurePursuitController:switchControlledNode()
 	end
 end
 
---- Compatibility function to return the original waypoint index as in vehicle.Waypoints. This
--- is the same as self.currentWpNode.ix unless we have combined courses where the legacy CP code
--- concatenates all courses into one Waypoints array (as opposed to the AIDriver which splits these
--- combined courses into its parts). The rest of the CP code however (HUD, reverse, etc.) works with
--- vehicle.Waypoints and vehicle.cp.waypointIndex and therefore expects the combined index
-function PurePursuitController:getCurrentOriginalWaypointIx()
-	return self.course.waypoints[self:getCurrentWaypointIx()].cpIndex
-end
-
 function PurePursuitController:update()
 	if not self.course then
 		self:debugSparse('no course set.')

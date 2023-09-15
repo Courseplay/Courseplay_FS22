@@ -52,7 +52,7 @@ end
 
 function CpRemainingTime:update(dt)
 	if g_currentMission.controlledVehicle == self.vehicle and self.DEBUG_ACTIVE and CpDebug:isChannelActive(self.debugChannel, self.vehicle) then
-		DebugUtil.renderTable(0.4, 0.4, 0.018, {
+		DebugUtil.renderTable(0.2, 0.2, 0.018, {
 			{name = "time", value = CpGuiUtil.getFormatTimeText(self.time)},
 			{name = "optimal speed", value = MathUtil.mpsToKmh(self:getOptimalSpeed())},
 			{name = "optimal time", value = CpGuiUtil.getFormatTimeText(self:getOptimalCourseTime(self.course, self.lastIx))},
