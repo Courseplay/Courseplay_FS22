@@ -283,9 +283,10 @@ function TurnManeuver:moveCourseBack(course, dBack, ixBeforeEndingTurnSection, e
 		-- allow early direction change when aligned
 		TurnManeuver.setTurnControlForLastWaypoints(movedCourse, endingTurnLength,
 			TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED, true, true)
+		-- go all the way to the back marker distance so there's plenty of room for lower early too
 		local reverseAfterTurn = Course.createFromNode(self.vehicle, self.turnContext.vehicleAtTurnEndNode,
 			0, dFromTurnEnd + self.steeringLength,
-			math.min(dFromTurnEnd, self.turnContext.frontMarkerDistance), -0.8, true)
+			math.min(dFromTurnEnd, self.turnContext.backMarkerDistance), -0.8, true)
 		movedCourse:append(reverseAfterTurn)
 	elseif self.turnContext.turnEndForwardOffset <= 0 and dFromTurnEnd >= 0 then
 		self:debug('Reverse to work start (implement in front)')

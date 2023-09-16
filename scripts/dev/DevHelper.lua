@@ -284,7 +284,7 @@ function DevHelper:showDriveData()
     local strategy = self.vehicle:getCpDriveStrategy()
     if not strategy then return end
     strategy.ppc:update()
-    strategy.reverser:getForwardDriveData()
+    strategy.reverser:getDriveData()
 end
 
 -- make sure to recreate the global dev helper whenever this script is (re)loaded

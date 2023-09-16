@@ -16,7 +16,12 @@ function PlowController:init(vehicle, implement)
 end
 
 
+---@return number|nil if an X offset could be calculated, return that, otherwise nil
 function PlowController:getAutomaticXOffset()
+    if self:isRotatablePlow() and not self:isFullyRotated() then
+        self:debug('Plow is not fully rotated, not calculating offset')
+        return nil
+    end
 	local aiLeftMarker, aiRightMarker, aiBackMarker = self.implement:getAIMarkers()
     if aiLeftMarker and aiBackMarker and aiRightMarker then
         local attacherJoint = self.implement:getActiveInputAttacherJoint()

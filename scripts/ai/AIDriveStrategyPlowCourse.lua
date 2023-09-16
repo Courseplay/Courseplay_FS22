@@ -104,8 +104,13 @@ end
 function AIDriveStrategyPlowCourse:updatePlowOffset()
     local xOffset = 0
     for _, controller in pairs(self.controllers) do 
-        if controller.getAutomaticXOffset then 
-            xOffset = xOffset + controller:getAutomaticXOffset()
+        if controller.getAutomaticXOffset then
+            local autoOffset = controller:getAutomaticXOffset()
+            if autoOffset == nil then
+                self:debug('Plow offset can\'t be calculated now, leaving offset at %.2f', self.aiOffsetX)
+                return
+            end
+            xOffset = xOffset + autoOffset
         end
     end
     local oldOffset = self.aiOffsetX
