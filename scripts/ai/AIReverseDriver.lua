@@ -63,87 +63,90 @@ function AIReverseDriver:debug(...)
 end
 
 function AIReverseDriver:getDriveData()
-	if self.reversingImplement == nil then
-		-- no wheeled implement, simple reversing the PPC can handle by itself
-		return nil
-	end
+    if self.reversingImplement == nil then
+        -- no wheeled implement, simple reversing the PPC can handle by itself
+        return nil
+    end
 
-	local trailerNode = self.reversingImplement.steeringAxleNode
-	local xTipper, yTipper, zTipper = getWorldTranslation(trailerNode);
+    -- if there's a reverser node on the tool, use that, otherwise the steering node
+    -- the reverser direction node, if exists, works better for tools with offset or for
+    -- rotating plows where it remains oriented and placed correctly
+    local trailerNode = AIVehicleUtil.getAIToolReverserDirectionNode(self.vehicle) or self.reversingImplement.steeringAxleNode
+    local trailerFrontNode = self.reversingImplement.reversingProperties.frontNode
 
-	local trailerFrontNode = self.reversingImplement.reversingProperties.frontNode
-	local xFrontNode,yFrontNode,zFrontNode = getWorldTranslation(trailerFrontNode)
+    local tx, ty, tz = self.ppc:getGoalPointPosition()
+    local lxTrailer, lzTrailer = AIVehicleUtil.getDriveDirection(trailerNode, tx, ty, tz)
+    self:showDirection(trailerNode, lxTrailer, lzTrailer, 1, 0, 0)
 
-	local tx, ty, tz = self.ppc:getGoalPointPosition()
+    local maxTractorAngle = math.rad(75)
 
-	local lxTipper, lzTipper = AIVehicleUtil.getDriveDirection(trailerNode, tx, ty, tz)
+    -- for articulated vehicles use the articulated axis' rotation node as it is a better indicator or the
+    -- vehicle's orientation than the direction node which often turns/moves with an articulated vehicle part
+    -- TODO: consolidate this with AITurn:getTurnNode() and if getAIDirectionNode() considers this already
+    local tractorNode
+    local useArticulatedAxisRotationNode = SpecializationUtil.hasSpecialization(ArticulatedAxis, self.vehicle.specializations) and self.vehicle.spec_articulatedAxis.rotationNode
+    if useArticulatedAxisRotationNode then
+        tractorNode = self.vehicle.spec_articulatedAxis.rotationNode
+    else
+        tractorNode = self.vehicle:getAIDirectionNode()
+    end
 
-	self:showDirection(trailerNode, lxTipper, lzTipper, 1, 0, 0)
+    local lx, lz, angleDiff
 
-	local lxFrontNode, lzFrontNode = AIVehicleUtil.getDriveDirection(trailerFrontNode, xTipper, yTipper, zTipper)
+    if self.reversingImplement.reversingProperties.isPivot then
+        -- The trailer/implement has a front axle (or dolly) with a draw bar.
+        -- The current Courseplay dev team has no idea how this works :), this is magic
+        -- from the old code, written by Satissis (Claus).
+        -- TODO: adapt a documented algorithm for these trailers
+        local xTrailer, yTrailer, zTrailer = getWorldTranslation(trailerNode);
+        local xFrontNode, yFrontNode, zFrontNode = getWorldTranslation(trailerFrontNode)
+        local lxFrontNode, lzFrontNode = AIVehicleUtil.getDriveDirection(trailerFrontNode, xTrailer, yTrailer, zTrailer)
+        self:showDirection(trailerFrontNode, lxFrontNode, lzFrontNode, 0, 1, 0)
 
-	local lxTractor, lzTractor = 0, 0
+        local lxTractor, lzTractor = AIVehicleUtil.getDriveDirection(tractorNode, xFrontNode, yFrontNode, zFrontNode)
+        self:showDirection(tractorNode, lxTractor, lzTractor, 0, 0.7, 0)
 
-	local maxTractorAngle = math.rad(75)
+        local rotDelta = (self.reversingImplement.reversingProperties.nodeDistance *
+                (0.5 - (0.023 * self.reversingImplement.reversingProperties.nodeDistance - 0.073)))
+        local trailerToWaypointAngle = self:getLocalYRotationToPoint(trailerNode, tx, ty, tz, -1) * rotDelta
+        trailerToWaypointAngle = MathUtil.clamp(trailerToWaypointAngle, -math.rad(90), math.rad(90))
 
-	-- for articulated vehicles use the articulated axis' reverser node as it is a better indicator or the
-	-- vehicle's orientation than the direction node which often turns/moves with an articulated vehicle part
-	-- TODO: consolidate this with AITurn:getTurnNode() and if getAIDirectionNode() considers this already
-	local tractorNode
-	if self.vehicle.spec_articulatedAxis then
-		--- TODO consolidate this with AIUtil.getReverserNode() maybe ??
-		local node = self.vehicle.getAIReverserNode and self.vehicle:getAIReverserNode()
-		tractorNode = node or AIUtil.getArticulatedAxisVehicleReverserNode(self.vehicle)
-	end
-	if not tractorNode then
-		tractorNode = self.vehicle:getAIDirectionNode()
-	end
+        local dollyToTrailerAngle = self:getLocalYRotationToPoint(trailerFrontNode, xTrailer, yTrailer, zTrailer, -1)
 
-	local lx, lz, angleDiff
-	
-	if self.reversingImplement.reversingProperties.isPivot then
-		self:showDirection(trailerFrontNode, lxFrontNode, lzFrontNode, 0, 1, 0)
+        local tractorToDollyAngle = self:getLocalYRotationToPoint(tractorNode, xFrontNode, yFrontNode, zFrontNode, -1)
 
-		lxTractor, lzTractor = AIVehicleUtil.getDriveDirection(tractorNode, xFrontNode, yFrontNode, zFrontNode)
-		self:showDirection(tractorNode,lxTractor, lzTractor, 0, 0.7, 0)
+        local rearAngleDiff = (dollyToTrailerAngle - trailerToWaypointAngle)
+        rearAngleDiff = MathUtil.clamp(rearAngleDiff, -math.rad(45), math.rad(45))
 
-		local rotDelta = (self.reversingImplement.reversingProperties.nodeDistance *
-				(0.5 - (0.023 * self.reversingImplement.reversingProperties.nodeDistance - 0.073)))
-		local trailerToWaypointAngle = self:getLocalYRotationToPoint(trailerNode, tx, ty, tz, -1) * rotDelta
-		trailerToWaypointAngle = MathUtil.clamp(trailerToWaypointAngle, -math.rad(90), math.rad(90))
+        local frontAngleDiff = (tractorToDollyAngle - dollyToTrailerAngle)
+        frontAngleDiff = MathUtil.clamp(frontAngleDiff, -math.rad(45), math.rad(45))
 
-		local dollyToTrailerAngle = self:getLocalYRotationToPoint(trailerFrontNode, xTipper, yTipper, zTipper, -1)
+        angleDiff = (frontAngleDiff - rearAngleDiff) *
+                (1.5 - (self.reversingImplement.reversingProperties.nodeDistance * 0.4 - 0.9) + rotDelta)
+        angleDiff = MathUtil.clamp(angleDiff, -math.rad(45), math.rad(45))
 
-		local tractorToDollyAngle = self:getLocalYRotationToPoint(tractorNode, xFrontNode, yFrontNode, zFrontNode, -1)
+        lx, lz = MathUtil.getDirectionFromYRotation(angleDiff)
+    else
+        -- the trailer/implement is like a semi-trailer, has a rear axle only, the front of the implement
+        -- is supported by the tractor
+        local crossTrackError, orientationError, curvatureError, currentHitchAngle = self:calculateErrors(tractorNode, trailerNode)
+        angleDiff = self:calculateHitchCorrectionAngle(crossTrackError, orientationError, curvatureError, currentHitchAngle)
+        angleDiff = MathUtil.clamp(angleDiff, -maxTractorAngle, maxTractorAngle)
 
-		local rearAngleDiff	= (dollyToTrailerAngle - trailerToWaypointAngle)
-		rearAngleDiff = MathUtil.clamp(rearAngleDiff, -math.rad(45), math.rad(45))
+        lx, lz = MathUtil.getDirectionFromYRotation(angleDiff)
+    end
 
-		local frontAngleDiff = (tractorToDollyAngle - dollyToTrailerAngle)
-		frontAngleDiff = MathUtil.clamp(frontAngleDiff, -math.rad(45), math.rad(45))
-
-		angleDiff = (frontAngleDiff - rearAngleDiff) * 
-				(1.5 - (self.reversingImplement.reversingProperties.nodeDistance * 0.4 - 0.9) + rotDelta)
-		angleDiff = MathUtil.clamp(angleDiff, -math.rad(45), math.rad(45))
-
-		lx, lz = MathUtil.getDirectionFromYRotation(angleDiff)
-	else
-		local crossTrackError, orientationError, curvatureError, currentHitchAngle = self:calculateErrors(tractorNode, trailerNode)
-		angleDiff = self:calculateHitchCorrectionAngle(crossTrackError, orientationError, curvatureError, currentHitchAngle)
-		angleDiff = MathUtil.clamp(angleDiff, -maxTractorAngle, maxTractorAngle)
-
-		lx, lz = MathUtil.getDirectionFromYRotation(angleDiff)
-	end
-
-	self:showDirection(tractorNode, lx, lz, 0.7, 0, 1)
-	-- do a little bit of damping if using the articulated axis as lx tends to oscillate around 0 which results in the
-	-- speed adjustment kicking in and slowing down the vehicle.
-	if useArticulatedAxisRotationNode and math.abs(lx) < 0.04 then lx = 0 end
-	-- construct an artificial goal point to drive to
-	lx, lz = -lx * self.ppc:getLookaheadDistance(), -lz * self.ppc:getLookaheadDistance()
-	-- AIDriveStrategy wants a global position to drive to (which it later converts to local, but whatever...)
-	local gx, _, gz = localToWorld(self.vehicle:getAIDirectionNode(), lx, 0, lz)
-	return gx, gz, false, self.settings.reverseSpeed:getValue()
+    self:showDirection(tractorNode, lx, lz, 0.7, 0, 1)
+    -- do a little bit of damping if using the articulated axis as lx tends to oscillate around 0 which results in the
+    -- speed adjustment kicking in and slowing down the vehicle.
+    if useArticulatedAxisRotationNode and math.abs(lx) < 0.04 then
+        lx = 0
+    end
+    -- construct an artificial goal point to drive to
+    lx, lz = -lx * self.ppc:getLookaheadDistance(), -lz * self.ppc:getLookaheadDistance()
+    -- AIDriveStrategy wants a global position to drive to (which it later converts to local, but whatever...)
+    local gx, _, gz = localToWorld(self.vehicle:getAIDirectionNode(), lx, 0, lz)
+    return gx, gz, false, self.settings.reverseSpeed:getValue()
 end
 
 function AIReverseDriver:getLocalYRotationToPoint(node, x, y, z, direction)
