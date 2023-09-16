@@ -235,14 +235,11 @@ end
 --- is to make sure that when the course changes to reverse and there is a reverse node, the first reverse
 --- waypoint is behind the reverser node. Otherwise we'll just keep backing up until the emergency brake is triggered.
 function TurnManeuver:getReversingOffset()
-	if self.steeringLength == 0 then
-		local reverserNode, debugText = AIUtil.getReverserNode(self.vehicle)
-		if reverserNode then
-			local _, _, dz = localToLocal(reverserNode, self.vehicleDirectionNode, 0, 0, 0)
-			self:debug('Using the vehicle\'s steering length 0, use reverser node (%s) distance %.1f instead',
-					debugText, dz)
-			return math.abs(dz)
-		end
+	local reverserNode, debugText = AIUtil.getReverserNode(self.vehicle)
+	if reverserNode then
+		local _, _, dz = localToLocal(reverserNode, self.vehicleDirectionNode, 0, 0, 0)
+		self:debug('Using reverser node (%s) distance %.1f', debugText, dz)
+		return math.abs(dz)
 	end
 	return self.steeringLength
 end
@@ -283,9 +280,13 @@ function TurnManeuver:moveCourseBack(course, dBack, ixBeforeEndingTurnSection, e
 		-- allow early direction change when aligned
 		TurnManeuver.setTurnControlForLastWaypoints(movedCourse, endingTurnLength,
 			TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED, true, true)
+		-- go all the way to the back marker distance so there's plenty of room for lower early too, also, the
+		-- reversingOffset may be even behind the back marker, especially for vehicles which have a AIToolReverserDirectionNode
+		-- which is then used as the PPC controlled node, and thus it must be far enough that we reach the lowering
+		-- point before the controlled node reaches the end of the course
 		local reverseAfterTurn = Course.createFromNode(self.vehicle, self.turnContext.vehicleAtTurnEndNode,
 			0, dFromTurnEnd + self.steeringLength,
-			math.min(dFromTurnEnd, self.turnContext.frontMarkerDistance), -0.8, true)
+			math.min(dFromTurnEnd, self.turnContext.backMarkerDistance, -reversingOffset), -0.8, true)
 		movedCourse:append(reverseAfterTurn)
 	elseif self.turnContext.turnEndForwardOffset <= 0 and dFromTurnEnd >= 0 then
 		self:debug('Reverse to work start (implement in front)')

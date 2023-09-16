@@ -185,7 +185,6 @@ You can define the following custom settings:
     <!--\vehicles\ropa-->
     <Vehicle name="keiler2.xml"
              toolOffsetX = "-2.0"
-             noReverse = "true"
     />
 	<!--\vehicles\ropa-->
     <Vehicle name="nawaRoMaus.xml"
@@ -228,12 +227,10 @@ You can define the following custom settings:
     />
     <!--\vehicles\lemken-->
     <Vehicle name="titan11.xml"
-             noReverse = "true"
              turnRadius = "7.5"
              implementWheelAlwaysOnGround = "true"
 	/>
     <Vehicle name="titan18.xml"
-             noReverse="true"
              turnRadius = "7.5"
              implementWheelAlwaysOnGround = "true"
              raiseLate = "true"
@@ -252,7 +249,6 @@ You can define the following custom settings:
              noReverse = "false"
              turnRadius = "9"
     />
-    <!--vehicles\seedHawk-->
     <Vehicle name="980AirCart.xml"
              noReverse = "true"
     />
@@ -406,7 +402,6 @@ You can define the following custom settings:
              turnRadius = "7.5"
              implementWheelAlwaysOnGround = "true"
 			 workingWidth = "10.5"
-             noReverse = "true"
     />
     <!--Mod: KOECKERLING Vector 460-->
 	<Vehicle name="vector460.xml"

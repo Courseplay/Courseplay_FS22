@@ -6,16 +6,28 @@ PlowController = CpObject(ImplementController)
 function PlowController:init(vehicle, implement)
     ImplementController.init(self, vehicle, implement)
     self.plowSpec = self.implement.spec_plow
+    -- towed (not hitch mounted) and can reverse
+    self.towed = AIUtil.getFirstReversingImplementWithWheels(vehicle, true)
+    -- temporarily store the direction of the last turn. This hack is for the case when for some reason
+    -- the plow was not rotated into the working position before lowering. If that's the case, onLowering will
+    -- rotate it but it needs to know which direction to lower, which, however is not known at that point
+    -- anymore
+    self.lastTurnIsLeftTurn = CpTemporaryObject()
 end
 
 
+---@return number|nil if an X offset could be calculated, return that, otherwise nil
 function PlowController:getAutomaticXOffset()
+    if self:isRotatablePlow() and not self:isFullyRotated() then
+        self:debugSparse('Plow is not fully rotated, not calculating offset')
+        return nil
+    end
 	local aiLeftMarker, aiRightMarker, aiBackMarker = self.implement:getAIMarkers()
     if aiLeftMarker and aiBackMarker and aiRightMarker then
         local attacherJoint = self.implement:getActiveInputAttacherJoint()
         local referenceNode = attacherJoint and attacherJoint.node or self.vehicle:getAIDirectionNode()
         -- find out the left/right AI markers distance from the attacher joint (or, if does not exist, the
-        -- vehicle's root node) to calculate the offset.
+        -- vehicle's direction node) to calculate the offset.
         self.plowReferenceNode = referenceNode
         local leftMarkerDistance, rightMarkerDistance = self:getOffsets(referenceNode, 
 			aiLeftMarker, aiRightMarker)
@@ -28,7 +40,7 @@ function PlowController:getAutomaticXOffset()
             leftMarkerDistance, rightMarkerDistance = -rightMarkerDistance, -leftMarkerDistance
         end
         local newToolOffsetX = -(leftMarkerDistance + rightMarkerDistance) / 2
-        self:debug('Current Offset left = %.1f, right = %.1f, leftDx = %.1f, rightDx = %.1f, new = %.1f',
+        self:debugSparse('Current Offset left = %.1f, right = %.1f, leftDx = %.1f, rightDx = %.1f, new = %.1f',
             leftMarkerDistance, rightMarkerDistance, leftDx, rightDx, newToolOffsetX)
 		return newToolOffsetX
     end
@@ -98,17 +110,44 @@ function PlowController:onFinishRow(isHeadlandTurn)
     end
 end
 
+
+--- making sure the plow is in the working position when lowering
+-- TODO: this whole magic hack would not be necessary if we moved the actual lowering into onTurnEndProgress()
+function PlowController:onLowering()
+    -- if we just turned (that is, not starting to work)
+    local lastTurnIsLeftTurn = self.lastTurnIsLeftTurn:get()
+    if lastTurnIsLeftTurn ~= nil and
+            self:isRotatablePlow() and not self:isFullyRotated() and not self:isRotationActive() then
+        self:debug('Lowering, rotating plow to working position (last turn is left %s).', lastTurnIsLeftTurn)
+        -- rotation direction depends on the direction of the last turn
+        self.implement:setRotationMax(lastTurnIsLeftTurn)
+    end
+end
+
 --- This is called in every loop when we approach the start of the row, the location where
 --- the plow must be lowered. Currently AIDriveStrategyFieldworkCourse takes care of the lowering,
 --- here we only make sure that the plow is rotated to the work position (from the center position)
 --- in time.
 ---@param workStartNode number node where the work starts as calculated by TurnContext
+---@param reversing boolean driving in reverse now
+---@param shouldLower boolean the implement should be lowered as we are close to the work start (this
+--- should most likely be calculated here in the controller, but for now, we get it from an argument
 ---@param isLeftTurn boolean is this a left turn?
-function PlowController:onTurnEndProgress(workStartNode, isLeftTurn)
+function PlowController:onTurnEndProgress(workStartNode, reversing, shouldLower, isLeftTurn)
+    self.lastTurnIsLeftTurn:set(isLeftTurn or false, 2000)
     if self:isRotatablePlow() and not self:isFullyRotated() and not self:isRotationActive() then
         -- more or less aligned with the first waypoint of the row, start rotating to working position
-        if CpMathUtil.isSameDirection(self.implement.rootNode, workStartNode, 30) then
-            self.implement:setRotationMax(isLeftTurn)
+        if CpMathUtil.isSameDirection(self.implement.rootNode, workStartNode, 30) or shouldLower then
+            if self.towed then
+                -- let towed plows remain in the center position while reversing to the start of the row
+                if not reversing then
+                    self:debug('Rotating towed plow to working position.')
+                    self.implement:setRotationMax(isLeftTurn)
+                end
+            else
+                self:debug('Rotating hitch-mounted plow to working position.')
+                self.implement:setRotationMax(isLeftTurn)
+            end
         end
     end
 end

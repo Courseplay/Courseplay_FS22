@@ -339,18 +339,18 @@ function AIDriveStrategyFieldWorkCourse:shouldLowerImplements(turnEndNode, rever
 end
 
 ---@param object table is a vehicle or implement object with AI markers (marking the working area of the implement)
----@param turnEndNode number node at the first waypoint of the row, pointing in the direction of travel. This is where
+---@param workStartNode number node at the first waypoint of the row, pointing in the direction of travel. This is where
 --- the implement should be in the working position after a turn
 ---@param reversing boolean are we reversing? When reversing towards the turn end point, we must lower the implements
 --- when we are _behind_ the turn end node (dz < 0), otherwise once we reach it (dz > 0)
 ---@return boolean, boolean, number the second one is true when the first is valid, and the distance to the work start
 --- in meters (<0) when driving forward, nil when driving backwards.
-function AIDriveStrategyFieldWorkCourse:shouldLowerThisImplement(object, turnEndNode, reversing)
+function AIDriveStrategyFieldWorkCourse:shouldLowerThisImplement(object, workStartNode, reversing)
     local aiLeftMarker, aiRightMarker, aiBackMarker = WorkWidthUtil.getAIMarkers(object, true)
     if not aiLeftMarker then return false, false, nil end
-    local dxLeft, _, dzLeft = localToLocal(aiLeftMarker, turnEndNode, 0, 0, 0)
-    local dxRight, _, dzRight = localToLocal(aiRightMarker, turnEndNode, 0, 0, 0)
-    local dxBack, _, dzBack = localToLocal(aiBackMarker, turnEndNode, 0, 0, 0)
+    local dxLeft, _, dzLeft = localToLocal(aiLeftMarker, workStartNode, 0, 0, 0)
+    local dxRight, _, dzRight = localToLocal(aiRightMarker, workStartNode, 0, 0, 0)
+    local dxBack, _, dzBack = localToLocal(aiBackMarker, workStartNode, 0, 0, 0)
     local loweringDistance
     if AIUtil.hasAIImplementWithSpecialization(self.vehicle, SowingMachine) then
         -- sowing machines are stopped while lowering, but leave a little reserve to allow for stopping
@@ -362,10 +362,14 @@ function AIDriveStrategyFieldWorkCourse:shouldLowerThisImplement(object, turnEnd
         loweringDistance = math.min(self.vehicle.lastSpeed, self.settings.turnSpeed:getValue() / 3600) *
                 self.loweringDurationMs + 0.5 -- vehicle.lastSpeed is in meters per millisecond
     end
-    local dzFront = (dzLeft + dzRight) / 2
+    local aligned = CpMathUtil.isSameDirection(object.rootNode, workStartNode, 15)
+    -- some implements, especially plows may have the left and right markers offset longitudinally
+    -- so if the implement is aligned with the row direction already, then just take the front one
+    -- if not aligned, work with an average
+    local dzFront = aligned and math.max(dzLeft, dzRight) or (dzLeft + dzRight) / 2
     local dxFront = (dxLeft + dxRight) / 2
-    self:debug('%s: dzLeft = %.1f, dzRight = %.1f, dzFront = %.1f, dxFront = %.1f, dzBack = %.1f, loweringDistance = %.1f, reversing %s',
-            CpUtil.getName(object), dzLeft, dzRight, dzFront, dxFront, dzBack, loweringDistance, tostring(reversing))
+    self:debug('%s: dzLeft = %.1f, dzRight = %.1f, aligned = %s, dzFront = %.1f, dxFront = %.1f, dzBack = %.1f, loweringDistance = %.1f, reversing %s',
+            CpUtil.getName(object), dzLeft, dzRight, aligned, dzFront, dxFront, dzBack, loweringDistance, tostring(reversing))
     local dz = self:getImplementLowerEarly() and dzFront or dzBack
     if reversing then
         return dz < 0, true, nil
@@ -397,7 +401,7 @@ end
 function AIDriveStrategyFieldWorkCourse:isThisImplementAligned(object, node)
     local aiFrontMarker, _, _ = WorkWidthUtil.getAIMarkers(object, true)
     if not aiFrontMarker then return true end
-    return CpMathUtil.isSameDirection(aiFrontMarker, node, 2)
+    return CpMathUtil.isSameDirection(aiFrontMarker, node, 5)
 end
 
 -----------------------------------------------------------------------------------------------------------------------
