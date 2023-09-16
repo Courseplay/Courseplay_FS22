@@ -137,10 +137,17 @@ end
 ---@param class table class to save the data
 ---@param filePath string
 function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
-    local xmlFile = XMLFile.load("settingSetupXml", filePath, CpSettingsUtil.setupXmlSchema)
-    class.settings = {}
+	local xmlFile = XMLFile.load("settingSetupXml", filePath, CpSettingsUtil.setupXmlSchema)
+	class.settings = {}
+	setmetatable(class.settings, { __tostring = function(self)
+		--- Adds tostring function to print all settings
+		for i, s in ipairs(self) do 
+			CpUtil.info("%2d: %s", i, tostring(s))
+		end
+		return tostring(#self)
+	end})
 	class.settingsBySubTitle = {}
-    local uniqueID = 0
+	local uniqueID = 0
 	local autoUpdateGui = xmlFile:getValue("Settings#autoUpdateGui")
 	local setupKey = xmlFile:getValue("Settings#prefixText")
 	local pageTitle = xmlFile:getValue("Settings#title")
@@ -256,7 +263,9 @@ end
 ---@param class table 
 ---@param settings table
 function CpSettingsUtil.cloneSettingsTable(class, settings, ...)
+	local mt = getmetatable(settings)
 	class.settings = {}
+	setmetatable(class.settings, mt)
 	for _, setting in ipairs(settings) do 
 		local settingClone = setting:clone(...)
 		table.insert(class.settings, settingClone)

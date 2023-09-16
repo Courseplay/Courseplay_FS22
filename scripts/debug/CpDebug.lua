@@ -20,7 +20,6 @@ function CpDebug:init()
 	self.isEnabled = true
 	--- Is the debug channel menu active ?
 	self.menuVisible = false
-
 	self.activatedColor = {1, 0.5, 0, 1.0}
 	self.disabledColor = {1, 1, 1, 1}
 end
@@ -62,9 +61,15 @@ function CpDebug:isChannelActive(ix, vehicle)
 	if self.channels[ix] then
 		return self.channels[ix].active and vehicleDebugEnabled
 	else
-		CpUtil.info('Error: debug channel %s not found!', tostring(ix))
-		printCallstack()
+		CpUtil.error('Error: debug channel %s not found!', tostring(ix))
 	end
+end
+
+function CpDebug:getText(ix)
+	if not self.channels[ix] then 
+		return "---"
+	end
+	return self.channels[ix].text
 end
 
 function CpDebug:setChannelActive(ix, active)

@@ -538,7 +538,11 @@ end
 
 function CpAIWorker.registerConsoleCommands()
     g_devHelper.consoleCommands:registerConsoleCommand("cpVehicleOnWorkStartTest", 
-        "Raise the field work start event.", "consoleCommandRaiseWorkStart", CpAIWorker)
+        "Raise the field work start event.", 
+        "consoleCommandRaiseWorkStart", CpAIWorker)
+    g_devHelper.consoleCommands:registerConsoleCommand("cpSettingsPrintJob", 
+        "Prints the current job parameters", 
+        "consoleCommandPrintCurrentSelectedJobParameters", CpAIWorker)
     --- TODO: Adding functions to execute the lowering, raising and fieldwork end events.
 end
 
@@ -562,4 +566,30 @@ function CpAIWorker:consoleCommandRaiseWorkStart()
     for _, c in pairs(controllers) do 
         c:delete()
     end
+end
+
+--- Either prints all settings or a desired setting by the name or index in the setting table.
+---@param name any
+function CpAIWorker:consoleCommandPrintCurrentSelectedJobParameters(name)
+    local vehicle = g_currentMission.controlledVehicle
+    if not vehicle or vehicle.getCpStartableJob == nil then 
+        CpUtil.info("Not entered a valid vehicle!")
+        return
+    end
+    local job = vehicle:getCpStartableJob()
+    if not job then 
+        CpUtil.infoVehicle(vehicle, "No valid job found!")
+        return
+    end
+    local parameters = job:getCpJobParameters()
+    if name == nil then 
+        CpUtil.infoVehicle(vehicle, "%s Job parameters", tostring(parameters))
+        return
+    end
+    local num = tonumber(name)
+    if num then 
+        CpUtil.infoVehicle(vehicle, tostring(parameters.settings[num]))
+        return
+    end
+    CpUtil.infoVehicle(vehicle, tostring(parameters[name]))
 end
