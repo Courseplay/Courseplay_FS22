@@ -63,7 +63,7 @@ function BaleLoaderController:update()
         if not self:isBaleFinderMode() then 
             --- In the fieldwork mode the driver has to stop once full
             --- The bale finder mode controls this in the strategy.
-            --- TODO: Breaks multiple trailers in fieldwork!
+            --- TODO: Breaks multiple trailers in fieldwork (on one tractor)!
             self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
         end
     end
