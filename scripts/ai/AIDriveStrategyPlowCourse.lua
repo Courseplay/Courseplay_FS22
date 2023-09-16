@@ -40,6 +40,9 @@ function AIDriveStrategyPlowCourse.new(customMt)
     local self = AIDriveStrategyFieldWorkCourse.new(customMt)
     AIDriveStrategyFieldWorkCourse.initStates(self, AIDriveStrategyPlowCourse.myStates)
     self.debugChannel = CpDebug.DBG_FIELDWORK
+    -- the plow offset is automatically calculated on each waypoint and if it wasn't calculated for a while
+    -- or when some event (like a turn) invalidated it
+    self.plowOffsetUnknown = CpTemporaryObject(true)
     return self
 end
 
@@ -86,6 +89,9 @@ function AIDriveStrategyPlowCourse:getDriveData(dt, vX, vY, vZ)
             self:debug('Plow is unfolded and ready to start')
         end
     end
+    if self.plowOffsetUnknown:get() then
+        self:updatePlowOffset()
+    end
     return AIDriveStrategyFieldWorkCourse.getDriveData(self, dt, vX, vY, vZ)
 end
 
@@ -107,7 +113,7 @@ function AIDriveStrategyPlowCourse:updatePlowOffset()
         if controller.getAutomaticXOffset then
             local autoOffset = controller:getAutomaticXOffset()
             if autoOffset == nil then
-                self:debug('Plow offset can\'t be calculated now, leaving offset at %.2f', self.aiOffsetX)
+                self:debugSparse('Plow offset can\'t be calculated now, leaving offset at %.2f', self.aiOffsetX)
                 return
             end
             xOffset = xOffset + autoOffset
@@ -115,9 +121,12 @@ function AIDriveStrategyPlowCourse:updatePlowOffset()
     end
     local oldOffset = self.aiOffsetX
     -- set to the average of old and new to smooth a little bit to avoid oscillations
-    self.aiOffsetX = (0.5 * self.aiOffsetX + 1.5 * xOffset) / 2
-    self:debug("Plow offset calculated was %.2f and it changed from %.2f to %.2f",
-        xOffset, oldOffset, self.aiOffsetX)
+    -- when we have a valid previous value
+    self.aiOffsetX = self.plowOffsetUnknown:get() and xOffset or ((0.5 * self.aiOffsetX + 1.5 * xOffset) / 2)
+    if math.abs(oldOffset - xOffset) > 0.05 then
+        self:debug("Plow offset calculated was %.2f and it changed from %.2f to %.2f", xOffset, oldOffset, self.aiOffsetX)
+    end
+    self.plowOffsetUnknown:set(false, 3000)
 end
 
 --- Is a plow currently rotating?
@@ -178,8 +187,6 @@ end
 --- When we return from a turn, the offset is reverted and should immediately set, not waiting
 --- for the first waypoint to pass as it is on the wrong side right after the turn
 function AIDriveStrategyPlowCourse:resumeFieldworkAfterTurn(ix)
-    -- call twice to trick the smoothing and reach the desired value sooner.
-    self:updatePlowOffset()
-    self:updatePlowOffset()
+    self.plowOffsetUnknown:reset()
     AIDriveStrategyPlowCourse.superClass().resumeFieldworkAfterTurn(self, ix)
 end

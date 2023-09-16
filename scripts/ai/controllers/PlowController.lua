@@ -19,7 +19,7 @@ end
 ---@return number|nil if an X offset could be calculated, return that, otherwise nil
 function PlowController:getAutomaticXOffset()
     if self:isRotatablePlow() and not self:isFullyRotated() then
-        self:debug('Plow is not fully rotated, not calculating offset')
+        self:debugSparse('Plow is not fully rotated, not calculating offset')
         return nil
     end
 	local aiLeftMarker, aiRightMarker, aiBackMarker = self.implement:getAIMarkers()
@@ -27,7 +27,7 @@ function PlowController:getAutomaticXOffset()
         local attacherJoint = self.implement:getActiveInputAttacherJoint()
         local referenceNode = attacherJoint and attacherJoint.node or self.vehicle:getAIDirectionNode()
         -- find out the left/right AI markers distance from the attacher joint (or, if does not exist, the
-        -- vehicle's root node) to calculate the offset.
+        -- vehicle's direction node) to calculate the offset.
         self.plowReferenceNode = referenceNode
         local leftMarkerDistance, rightMarkerDistance = self:getOffsets(referenceNode, 
 			aiLeftMarker, aiRightMarker)
@@ -40,7 +40,7 @@ function PlowController:getAutomaticXOffset()
             leftMarkerDistance, rightMarkerDistance = -rightMarkerDistance, -leftMarkerDistance
         end
         local newToolOffsetX = -(leftMarkerDistance + rightMarkerDistance) / 2
-        self:debug('Current Offset left = %.1f, right = %.1f, leftDx = %.1f, rightDx = %.1f, new = %.1f',
+        self:debugSparse('Current Offset left = %.1f, right = %.1f, leftDx = %.1f, rightDx = %.1f, new = %.1f',
             leftMarkerDistance, rightMarkerDistance, leftDx, rightDx, newToolOffsetX)
 		return newToolOffsetX
     end
