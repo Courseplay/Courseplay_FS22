@@ -18,6 +18,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 The AIReverseDriver takes over the steering if there is a towed implement
 or a trailer to be reversed.
 
+We control the Giants vehicles by passing a goal point (in the vehicle's reference frame)
+to the AIVehicleUtil.driveToPoint() function. The goal point is calculated by the
+PurePursuitController and when driving forward or backward without a towed implement,
+it can directly be used.
+
+When driving backwards with a towed implement, we want the implement to follow the path
+so the PurePursuitController uses a reference node on the implement to calculate a goal point
+towards which the implement needs to be steered to stay on the path.
+
+We can't use this goal point to directly control the tractor, we need to calculate a
+'virtual' goal point for the tractor to be able to use AIVehicleUtil.driveToPoint().
+
+This works by calculating the hitch angle (angle between the tractor and the trailer) that
+would result in turning the implement towards the goal point. For the details, see the
+papers referenced below.
+
 ]]--
 
 ---@class AIReverseDriver
@@ -78,6 +94,10 @@ function AIReverseDriver:getDriveData()
     local lx, lz, angleDiff
 
     if self.reversingImplement.reversingProperties.isPivot then
+        -- The trailer/implement has a front axle (or dolly) with a draw bar.
+        -- The current Courseplay dev team has no idea how this works :), this is magic
+        -- from the old code, written by Satissis (Claus).
+        -- TODO: adapt a documented algorithm for these trailers
         local xTrailer, yTrailer, zTrailer = getWorldTranslation(trailerNode);
         local xFrontNode, yFrontNode, zFrontNode = getWorldTranslation(trailerFrontNode)
         local lxFrontNode, lzFrontNode = AIVehicleUtil.getDriveDirection(trailerFrontNode, xTrailer, yTrailer, zTrailer)
@@ -107,6 +127,8 @@ function AIReverseDriver:getDriveData()
 
         lx, lz = MathUtil.getDirectionFromYRotation(angleDiff)
     else
+        -- the trailer/implement is like a semi-trailer, has a rear axle only, the front of the implement
+        -- is supported by the tractor
         local crossTrackError, orientationError, curvatureError, currentHitchAngle = self:calculateErrors(tractorNode, trailerNode)
         angleDiff = self:calculateHitchCorrectionAngle(crossTrackError, orientationError, curvatureError, currentHitchAngle)
         angleDiff = MathUtil.clamp(angleDiff, -maxTractorAngle, maxTractorAngle)
@@ -143,6 +165,8 @@ function AIReverseDriver:showDirection(node, lx, lz, r, g, b)
     end
 end
 
+--- Another Claus magic code to determine if the trailer has a front axle and find a node
+--- for it to control.
 ---@param implement table implement.object
 function AIReverseDriver:setReversingProperties(implement)
     if implement.reversingProperties and implement.reversingProperties.frontNode then
@@ -186,8 +210,7 @@ end
 ---    Peter Ridley and Peter Corke. Load haul dump vehicle kinematics and control.
 ---        Journal of dynamic systems, measurement, and control, 125(1):54–59, 2003.
 --- and
----        Amro Elhassan. Autonomous driving system for reversing an articulated vehicle, 2015
-
+---    Amro Elhassan. Autonomous driving system for reversing an articulated vehicle, 2015
 --- Calculate the path following errors (also called path disturbance inputs in the context of a controller)
 function AIReverseDriver:calculateErrors(tractorNode, trailerNode)
 
