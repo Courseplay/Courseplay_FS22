@@ -18,27 +18,27 @@
     <text name="CP_error_no_course" text="Először hozz létre egy útvonalat"/>
     <text name="CP_error_could_not_generate_course" text="Hiba az útvonaltervezéskor"/>
     <text name="CP_error_not_on_field" text="Csak szántóföldön lehet munkát végezni"/>
-    <text name="CP_error_unloader_to_far_away_from_field" text="Az ürítő jármű túl messze van a mezőtől."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Az kirakodó jármű túl messze van a mezőtől."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="A kezdő pozíció túl messze van a mezőtől."/>
-    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
-    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Field unload position is too far away from the field."/>
-    <text name="CP_error_vehicle_too_far_away_from_field" text="Vehicle is too far away from the field to start."/>
-    <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
-    <text name="CP_error_no_heap_found" text="No silo found."/>
+    <text name="CP_error_giants_unloader_not_available" text="Giants kirakodó nem elérhető."/>
+    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="A szántóföldi kirakodó pozíció túl messze van a mezőtől."/>
+    <text name="CP_error_vehicle_too_far_away_from_field" text="A jármű túl messze van a mezőtől a kezdéshez."/>
+    <text name="CP_error_no_bunkerSilo_found" text="Siló nem található."/>
+    <text name="CP_error_no_heap_found" text="Siló nem található."/>
     <!---->
     <!--AI job parameters-->
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="Szántóföld:"/>
-    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
+    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Siló pozíció:"/>
+    <text name="CP_jobParameters_parkPosition_title" text="Parkolási pozíció:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Útvonal kezdete:"/>
     <text name="CP_jobParameters_startAt_title" text="Útvonal kezdete:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="Melyik útvonalpontnál kezdje a munkát"/>
     <text name="CP_jobParameters_startAt_nearest" text="legközelebbi pont"/>
     <text name="CP_jobParameters_startAt_first" text="első pont"/>
     <text name="CP_jobParameters_startAt_last" text="utoljára használt pont"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Silo load mode"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker siló mód"/>
+    <text name="CP_jobParameters_startAt_siloLoader" text="Silo töltési mód"/>
     <text name="CP_jobParameters_startAt_unload" text="kirakodó kombájn/aprító"/>
     <text name="CP_jobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
     <text name="CP_jobParameters_startAt_bales" text="bálák összegyűjtése/csomagolása"/>
@@ -58,49 +58,49 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="összes"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="csak a csomagoltak"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="csak a nem csomagoltak"/>
-    <text name="CP_baleFinder_balesLeftover" text="Bales left:"/>
+    <text name="CP_baleFinder_balesLeftover" text="Maradék bálák:"/>
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Unload: "/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Unload:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Combine"/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Loader"/>
-    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
-    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Use unload on field:"/>
-    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Field unloading position:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Trailer tip side:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Kirakodás: "/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Kirakodás:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Kombájn"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Rakodó"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants kirakodó:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Giants kirakodó használata:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Kirakodó állomás:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Giants kirakodó:"/>
+    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Szántóföldi kirakodás használata:"/>
+    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Szántóföldi kirakodó pozíció:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Pótkocsi billentési oldal:"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
-    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direction into the silo:"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direction into the silo:"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Forwards"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Reverse"/>
-    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Waiting for unloader:"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Waiting for unloader:"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="in silo"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="at park position"/>
-    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Stop at 99% compaction"/>
-    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Stop at 99% compaction"/>
-    <text name="CP_bunkerSilo_compactionPercentage" text="Silo compaction:"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Silóba hajtás iránya:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Silóba hajtás iránya:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Előre"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Hátra"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Várakozás a kirakodóra:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Várakozás a kirakodóra:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="silóban"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="parkolási pozíción"/>
+    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Megállás 99% tömörítésnél"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Megállás 99% tömörítésnél"/>
+    <text name="CP_bunkerSilo_compactionPercentage" text="Siló tömörítés:"/>
     <!---->
     <!--AI silo lader worker job parameters-->
     <!---->
-    <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Loading position"/>
-    <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Loading position"/>
-    <text name="CP_siloLoader_fillLevelProgress" text="Progress: "/>
+    <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Rakodási pozíció"/>
+    <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Rakodási pozíció"/>
+    <text name="CP_siloLoader_fillLevelProgress" text="Folyamat: "/>
     <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Terepmunka"/>
     <text name="CP_job_baleCollect" text="CP: Bálagyűjtés/csomagolás"/>
     <text name="CP_job_combineUnload" text="CP: Kombájn ürítése"/>
-    <text name="CP_job_bunkerSilo" text="CP: Silo work"/>
-    <text name="CP_job_siloLoader" text="CP: Silo loading"/>
+    <text name="CP_job_bunkerSilo" text="CP: Siló munka"/>
+    <text name="CP_job_siloLoader" text="CP: Siló töltés"/>
     <text name="CP_ai_page_generate_course" text="CP: Útvonaltervezés"/>
     <text name="CP_ai_page_open_course_generator" text="CP: Útvonaltervező megnyitása/zárása."/>
     <!---->
@@ -110,9 +110,9 @@
     <text name="CP_ai_messageError" text="%s segítő váratlanul abbahagyta a munkát - letért az útvonalról!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="%s segítő váratlanul abbahagyta a munkát - Nincs a kiválasztott típusú bála!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="AI segítő %s váratlanul abbahagyta a munkát - útvonal nem található!"/>
-    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
-    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
-    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI munkás %s váratlanul abbahagyta a munkát - kirakodás a mezőn nem lehetséges!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="AI munkás %s váratlanul abbahagyta a munkát - vágóasztal felcsatolása lehetetlen!"/>
+    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI munkás %s váratlanul abbahagyta a munkát - automatikus vágóasztal felcsatolás kikapcsolva!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -141,8 +141,8 @@
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Engedélyezi az útkereső használatát fordulókban, pl. akadályok ill. termény kikerüléséhez"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Hajtsa össze a munkagépet a munka végén"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Engedélyezi/letiltja a munkagépek automatikus összecsukását a munka végén."/>
-    <text name="CP_vehicle_setting_returnToStart_title" text="Return to starting point"/>
-    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Return to starting point after finished fieldwork."/>
+    <text name="CP_vehicle_setting_returnToStart_title" text="Visszatérés a kezdőpontra"/>
+    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Visszatérés a kezdőpontra a munka végeztével."/>
     <text name="CP_vehicle_setting_raiseImplementLate_title" text="Szerszám emelés"/>
     <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Korán vagy késésel emelje fel a szerszámot a forduló kezdetén."/>
     <text name="CP_vehicle_setting_raiseImplementLate_early" text="korán"/>
@@ -157,12 +157,12 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="Az AI megpróbálja elkerülni, hogy a terménybe hajtson"/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Szerszámeltolás oldalra"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Szerszámeltolás balra/jobbra"/>
-    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
-    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bála felszedés eltolása"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Eltolás a bálagyűjtőkhöz"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Szerszámeltolás hosszirányban"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Szerszámeltolás előre/hátra"/>
-    <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
-    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Kiürítési határérték:"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="A segítő kiüríti a pótkocsit, ha a töltési szint meghaladja a beállított értéket"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Szilázsadalék ellenőrzés"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Álljon meg ha a szilázsadalék-tartály üres"/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Szimmetrikus sávváltás"/>
@@ -175,8 +175,8 @@
     <!--Vehicle bunker silo settings-->
     <!---->
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
-    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
-    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Munkaszélesség"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Munkaszélesség. Értéke: 0 - 50"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
@@ -188,8 +188,8 @@
     <text name="CP_vehicle_setting_turnSpeed_tooltip" text="Maximális sebesség forduló közben. 2 - 25 km/ó"/>
     <text name="CP_vehicle_setting_reverseSpeed_title" text="Tolatás"/>
     <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="Maximális sebesség tolatás közben. 2 - 25 km/ó"/>
-    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silo"/>
-    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximum speed while driving in a silo. Value: 2 - 25"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Siló"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximális sebesség silóban. 2 - 25"/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
@@ -202,8 +202,8 @@
     <!---->
     <!--Vehicle settings combine-->
     <!---->
-    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatic cutter attach"/>
-    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Allows automatic attachment of a cutter, which needs to be attach as a trailer or on a seperate header trailer."/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatikus vágóasztal felcsatolás"/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Engedélyezi egy vágóasztal automatikus felcsatolását, amely lehet vontatott, vagy speciális pótkocsin szállított vágóasztal."/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="Mindig hajtsa ki a csövet"/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="Mindig hajtsa ki a csövet, amikor a kombájn megtelt és a kirakodóra vár."/>
     <text name="CP_vehicle_setting_stopForUnload_title" text="Ürítés csak álló helyzetben"/>
@@ -299,12 +299,12 @@
     <text name="CP_global_setting_fuelThreshold_tooltip" text="A segítő abbahagyja a munkát, ha az üzemanyagszint ez alá csökken."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Maximum meghibásodás"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="A segítő abbahagyja a munkát, ha a jármű/szerszám ennél jobban meghibásodik. 100% soha nem hagyja abba."/>
-    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
-    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
-    <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
-    <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
-    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
-    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Kombájn megállítása esőben"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Ha a beállítás aktív, akkor minden betakarító gép megvárja, amíg eláll az eső."/>
+    <text name="CP_global_setting_fruitDestruction_title" text="AI Segítő termény taposás"/>
+    <text name="CP_global_setting_fruitDestruction_tooltip" text="Engedélyezi/letiltja a termény taposást segítők számára."/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Csak Coursesplay segítőknek"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Minden segítőnek"/>
     <!---->
     <!--Global settings user settings-->
     <!---->
@@ -365,7 +365,7 @@ Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felü
     <text name="CP_courseManager_entryExistAlreadyError" text="A fájl már létezik a célmappában (%s)!"/>
     <text name="CP_courseManager_noAccessError" text="Nincs hozzáférés a mappához (%s)!"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="A célhely nem mappa (%s)!"/>
-    <text name="CP_courseManager_targetIsNoCourseError" text="A célhely nem tanfolyam (%s)!"/>
+    <text name="CP_courseManager_targetIsNoCourseError" text="A célhely nem útvonal (%s)!"/>
     <text name="CP_courseManager_basicSettings" text="Útvonal kezelés"/>
     <text name="CP_courseManager_advancedSettings" text="Fájlok szerkesztése"/>
     <text name="CP_courseManager_activate" text="Aktiválás"/>
@@ -412,13 +412,13 @@ Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felü
     <text name="CP_infoTexts_drivingToSelfUnload" text="Pótkocsihoz vezetés"/>
     <text name="CP_infoTexts_outOfMoney" text="elfogyott a pénz"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Várja hogy elálljon az eső"/>
-    <text name="CP_infoTexts_waitForUnloader" text="Waiting on unloader"/>
+    <text name="CP_infoTexts_waitForUnloader" text="Várakozás a kirakodóra"/>
     <text name="CP_infoTexts_errorStopped" text="letért az útvonalról, megállt"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Rossz bálatípus"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Útvonal nem található"/>
-    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
-    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
-    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Cutter attaching deactivated"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Talajra billentés nem lehetséges"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="A vágóasztal nem támogatott"/>
+    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Vágóasztal felcsatolás kikapcsolva"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -426,15 +426,15 @@ Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felü
     <text name="CP_customFieldManager_confirm_delete" text="Törlöd a %s szántóföldet?"/>
     <text name="CP_customFieldManager_delete" text="Szántóföld törlés"/>
     <text name="CP_customFieldManager_rename" text="Szántóföld átnevezés"/>
-    <text name="CP_customFieldManager_rename_error" text="Custom field name %s already in use."/>
+    <text name="CP_customFieldManager_rename_error" text="Egyedi mező név %s már használatban van."/>
     <text name="CP_customFieldManager_edit" text="Egyedi szántóföld szerkesztése"/>
     <text name="CP_customFieldManager_draw" text="Szántóföld rajzolás"/>
     <text name="CP_customFieldManager_draw_header" text="Jobb klikkel tudod a szántóföld határait megrajzolni"/>
     <text name="CP_customFieldManager_save" text="Szántóföld mentés"/>
     <text name="CP_controllerGui_startRecording" text="Szántóföld-határ rögzítés indítása"/>
     <text name="CP_controllerGui_stopRecording" text="Szántóföld-határ rögzítés leállítása"/>
-    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
-    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
+    <text name="CP_controllerGui_pauseRecording" text="Egyedi mező rögzítés szüneteltetése."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Egyedi mező rögzítés folytatása."/>
     <!---->
     <!--Help menu-->
     <!---->
