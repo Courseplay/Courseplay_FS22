@@ -526,10 +526,9 @@ function AIDriveStrategyShovelSiloLoader:onPathfindingDoneToStart(path)
         self:startCourse(alignmentCourse, 1)
         self:setNewState(self.states.DRIVING_ALIGNMENT_COURSE)
     else 
-        local course = self:getRememberedCourseAndIx()
-        self:debug("No alignment path found, so driving directly to the course!")
-        self:startCourse(course, 1)
-        self:setNewState(self.states.DRIVING_INTO_SILO)
+        self:debug("No path to the silo found!")
+        self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
+        --- TODO: Might need to consider a retry to another silo lane
     end
 end
 
