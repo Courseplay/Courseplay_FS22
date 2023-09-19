@@ -113,12 +113,7 @@ function CpShovelPositions:onPostAttach()
 end
 
 function CpShovelPositions:onDraw()
-	if CpShovelPositions.DEBUG and self:getRootVehicle() then 
-		local angle, shovelNode, maxAngle, minAngle, factor = CpShovelPositions.getShovelData(self)
-		if shovelNode then
-			DebugUtil.drawDebugNode(shovelNode, "shovelNode")
-		end
-	end
+
 end
 
 function CpShovelPositions:onUpdateTick(dt)
