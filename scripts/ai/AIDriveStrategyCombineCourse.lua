@@ -537,7 +537,6 @@ end
 
 --- Some of our turns need a short look ahead distance, make sure we restore the normal after the turn
 function AIDriveStrategyCombineCourse:resumeFieldworkAfterTurn(ix)
-    self.state = self.states.WORKING
     self.ppc:setNormalLookaheadDistance()
     AIDriveStrategyCombineCourse.superClass().resumeFieldworkAfterTurn(self, ix)
 end
