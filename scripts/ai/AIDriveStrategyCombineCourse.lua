@@ -537,6 +537,7 @@ end
 
 --- Some of our turns need a short look ahead distance, make sure we restore the normal after the turn
 function AIDriveStrategyCombineCourse:resumeFieldworkAfterTurn(ix)
+    self.state = self.states.WORKING
     self.ppc:setNormalLookaheadDistance()
     AIDriveStrategyCombineCourse.superClass().resumeFieldworkAfterTurn(self, ix)
 end
@@ -1307,7 +1308,7 @@ end
 
 --- Can the cutter be turned off ?
 function AIDriveStrategyCombineCourse:getCanCutterBeTurnedOff()
-    return self:isWaitingForUnload() or
+    return self:isWaitingForUnload() or self.state == self.states.TURNING or
             (self.state == self.states.UNLOADING_ON_FIELD and self:isUnloadStateOneOf(self.selfUnloadStates) and
             -- we want that cutter to be turned on when returning to fieldwork after self unload
                     self.unloadState ~= self.states.RETURNING_FROM_SELF_UNLOAD)

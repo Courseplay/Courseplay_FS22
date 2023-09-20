@@ -591,6 +591,8 @@ function CourseTurn:endTurn(dt)
         if not self.implementsLowered then
             -- have not started lowering implements yet
             self:debug('Turn ending, lowering implements')
+            -- driveStrategy.state can be set to WORKING which is also checked if harvester header can be turned on
+            self.driveStrategy.state = self.driveStrategy.states.WORKING
             self.driveStrategy:lowerImplements()
             self.implementsLowered = true
             if self.ppc:isReversing() then

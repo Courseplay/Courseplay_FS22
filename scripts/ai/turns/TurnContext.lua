@@ -458,7 +458,10 @@ function TurnContext:getTurnEndNodeAndOffsets(steeringLength)
         -- implement in front of vehicle. Turn should end with the implement at the work start position, this is where
         -- the vehicle's root node is on the vehicleAtTurnEndNode
         turnEndNode = self.vehicleAtTurnEndNode
-        goalOffset = 0
+
+        -- set the turning endpoint a bit futher from the field starting point
+        -- for better aligment for front implements (e.g. potatoharvester)
+        goalOffset = -self.frontMarkerDistance
     else
         -- implement behind vehicle. Since we are turning, we want to be aligned with the next row with our vehicle
         -- on the work start node so by the time the implement reaches it, it is also aligned
