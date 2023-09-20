@@ -25,6 +25,7 @@
     <text name="CP_error_vehicle_too_far_away_from_field" text="車輛離田地太遠，無法啟動."/>
     <text name="CP_error_no_bunkerSilo_found" text="未發現筒倉"/>
     <text name="CP_error_no_heap_found" text="未發現筒倉"/>
+    <text name="CP_error_no_unload_trigger_found" text="No unloading point found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -93,6 +94,9 @@
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="裝載位置"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="裝載位置"/>
     <text name="CP_siloLoader_fillLevelProgress" text="Progress: "/>
+    <text name="CP_siloLoaderJobParameters_subTitle_unloading" text="Unloading at:"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="Trailer"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="Unload station"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -177,6 +181,8 @@
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="筒倉工作設定"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="工作寬度"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="工作寬度 數值範圍: 0 - 50"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Shovel loading offset. Value: -1 - 1"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Shovel loading offset. Value: -1 - 1"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
@@ -799,6 +805,16 @@ Courseplay能夠在青貯筒倉中壓實或分佈糠秕，或在楔形筒倉中�
 要啟動AI選單上的裝載標記，需要進行設定。
 這個標記可以檢測到堆或筒倉，並在地圖上突出顯示它們。
 那麼現在可以啟用小幫手了。
+"/>
+    <text name="CP_help_page_shovelLoader_title" text="Wheelloader Driver"/>
+    <text name="CP_help_page_shovelLoaderGeneral_text" text="
+WIP
+"/>
+    <text name="CP_help_page_shovelLoaderBasic_text" text="
+WIP
+"/>
+    <text name="CP_help_page_shovelLoaderTrigger_text" text="
+WIP
 "/>
     <!---->
     <!--Input bindings-->

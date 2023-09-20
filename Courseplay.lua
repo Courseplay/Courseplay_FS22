@@ -157,7 +157,7 @@ end
 function Courseplay.drawHudMap(map)
 	if g_Courseplay.globalSettings.drawOntoTheHudMap:getValue() then
 		local vehicle = g_currentMission.controlledVehicle
-		if vehicle and vehicle:getIsEntered() and not g_gui:getIsGuiVisible() and vehicle.spec_courseplaySpec and not vehicle.spec_locomotive then 
+		if vehicle and vehicle:getIsEntered() and not g_gui:getIsGuiVisible() and vehicle.spec_cpAIWorker and not vehicle.spec_locomotive then 
 			SpecializationUtil.raiseEvent(vehicle, "onCpDrawHudMap", map)
 		end
 	end
@@ -192,14 +192,28 @@ end
 FSCareerMissionInfo.saveToXMLFile = Utils.prependedFunction(FSCareerMissionInfo.saveToXMLFile, Courseplay.saveToXMLFile)
 
 function Courseplay:update(dt)
-	g_devHelper:update()
-	g_bunkerSiloManager:update(dt)
+    g_devHelper:update()
+    g_bunkerSiloManager:update(dt)
+    g_triggerManager:update(dt)
+    if not self.postInit then 
+        -- Doubles the map zoom for 4x Maps. Mainly to make it easier to set targets for unload triggers.
+        self.postInit = true
+        local function setIngameMapFix(mapElement)
+            local factor = 2*mapElement.terrainSize/2048
+            mapElement.zoomMax = mapElement.zoomMax * factor
+            mapElement.zoomDefault = mapElement.zoomDefault * factor
+            mapElement.mapZoom = mapElement.zoomDefault
+        end
+        setIngameMapFix(g_currentMission.inGameMenu.pageAI.ingameMap)
+        setIngameMapFix(g_currentMission.inGameMenu.pageMapOverview.ingameMap)
+    end
 end
 
 function Courseplay:draw()
 	if not g_gui:getIsGuiVisible() then
 		g_vineScanner:draw()
 		g_bunkerSiloManager:draw()
+		g_triggerManager:draw()
 	end
 	g_devHelper:draw()
 	CpDebug:draw()
@@ -323,27 +337,19 @@ end
 function Courseplay.register(typeManager)
 	--- TODO: make this function async. 
 	for typeName, typeEntry in pairs(typeManager.types) do	
-		if CourseplaySpec.prerequisitesPresent(typeEntry.specializations) then
-			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".courseplaySpec")	
-		end
-		if CpVehicleSettings.prerequisitesPresent(typeEntry.specializations) then
-			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpVehicleSettings")	
-		end
-		if CpCourseGeneratorSettings.prerequisitesPresent(typeEntry.specializations) then
-			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpCourseGeneratorSettings")	
-		end
-		if CpCourseManager.prerequisitesPresent(typeEntry.specializations) then
-			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpCourseManager")	
-		end
 		CpAIWorker.register(typeManager, typeName, typeEntry.specializations)
+		CpVehicleSettings.register(typeManager, typeName, typeEntry.specializations)
+		CpCourseGeneratorSettings.register(typeManager, typeName, typeEntry.specializations)
+		CpCourseManager.register(typeManager, typeName, typeEntry.specializations)
 		CpAIFieldWorker.register(typeManager, typeName, typeEntry.specializations)
 		CpAIBaleFinder.register(typeManager, typeName, typeEntry.specializations)
 		CpAICombineUnloader.register(typeManager, typeName, typeEntry.specializations)
-		CpAIBunkerSiloWorker.register(typeManager, typeName, typeEntry.specializations)
 		CpAISiloLoaderWorker.register(typeManager, typeName, typeEntry.specializations)
+		CpAIBunkerSiloWorker.register(typeManager, typeName, typeEntry.specializations)
 		CpGamePadHud.register(typeManager, typeName,typeEntry.specializations)
 		CpHud.register(typeManager, typeName, typeEntry.specializations)
 		CpInfoTexts.register(typeManager, typeName, typeEntry.specializations)
+		CpShovelPositions.register(typeManager, typeName, typeEntry.specializations)
 	end
 end
 TypeManager.finalizeTypes = Utils.prependedFunction(TypeManager.finalizeTypes, Courseplay.register)

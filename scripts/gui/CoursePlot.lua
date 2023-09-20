@@ -79,45 +79,6 @@ function CoursePlot:setStopPosition( x, z )
 	self.stopPosition.x, self.stopPosition.z = x, z
 end
 
-function CoursePlot:worldToScreen(map, worldX, worldZ, isHudMap)
-	local objectX = (worldX + map.worldCenterOffsetX) / map.worldSizeX * 0.5 + 0.25
-	local objectZ = (worldZ + map.worldCenterOffsetZ) / map.worldSizeZ * 0.5 + 0.25
-	local x, y, _, _ = map.fullScreenLayout:getMapObjectPosition(objectX, objectZ, 0, 0, 0, true)
-	local rot = 0
-	local visible = true
-	if isHudMap then 
-		--- The plot is displayed in the hud.
-		objectX = (worldX + map.worldCenterOffsetX) / map.worldSizeX * map.mapExtensionScaleFactor + map.mapExtensionOffsetX
-		objectZ = (worldZ + map.worldCenterOffsetZ) / map.worldSizeZ * map.mapExtensionScaleFactor + map.mapExtensionOffsetZ
-
-		x, y, rot, visible = map.layout:getMapObjectPosition(objectX, objectZ, 0, 0, 0, false)
-		if map.state == IngameMap.STATE_MINIMAP_ROUND and map.layout.rotateWithMap then 
-			x, y, rot, visible = self:getMapObjectPositionCircleLayoutFix(map.layout, objectX, objectZ, 0, 0, 0, false)
-		end
-	end
-	return x, y, rot, visible
-end
-
---- Giants was not so kind, as to allow getting the positions even, if the object is outside the map range ...
---- This is a custom version for: IngameMapLayoutCircle:getMapObjectPosition(...)
-function CoursePlot:getMapObjectPositionCircleLayoutFix(layout, objectU, objectV, width, height, rot, persistent)
-	local mapWidth, mapHeight = layout:getMapSize()
-	local mapX, mapY = layout:getMapPosition()
-	local objectX = objectU * mapWidth + mapX
-	local objectY = (1 - objectV) * mapHeight + mapY
-	objectX, objectY, rot = layout:rotateWithMap(objectX, objectY, rot, persistent)
-	objectX = objectX - width * 0.5
-	objectY = objectY - height * 0.5
-
-	return objectX, objectY, rot, true
-end
-
-function CoursePlot:screenToWorld( x, y )
-	local worldX = ((x - self.x) / self.scaleX) - self.worldOffsetX
-	local worldZ = ((y - self.y - self.height) / -self.scaleZ) - self.worldOffsetZ
-	return worldX, worldZ
-end
-
 -- Draw the waypoints in the screen area defined in new(), the bottom left corner
 -- is at worldX/worldZ coordinates, the size shown is worldWidth wide (and high)
 function CoursePlot:drawPoints(map, points, isHudMap)
@@ -129,14 +90,14 @@ function CoursePlot:drawPoints(map, points, isHudMap)
 	if points and #points > 1 then
 		-- I know this is in helpers.lua already but that code has too many dependencies
 		-- on global variables and vehicle.cp.
-		local wp, np, startX, startY, endX, endY, dx, dz, dx2D, dy2D, width, rotation, r, g, b, sv, ev
+		local wp, np, startX, startY, endX, endY, dx, dz, dx2D, dy2D, width, rotation, r, g, b, sv, ev, _
 		-- render a line between subsequent waypoints
 		for i = 1, #points - 1 do
 			wp = points[ i ]
 			np = points[ i + 1 ]
 
-			startX, startY, _, sv = self:worldToScreen(map, wp.x, wp.z, isHudMap)
-			endX, endY, _, ev = self:worldToScreen(map, np.x, np.z, isHudMap)
+			startX, startY, _, sv = CpGuiUtil.worldToScreen(map, wp.x, wp.z, isHudMap)
+			endX, endY, _, ev = CpGuiUtil.worldToScreen(map, np.x, np.z, isHudMap)
 	
 			-- render only if it is on the plot area
 			if startX and startY and endX and endY then
@@ -176,7 +137,7 @@ function CoursePlot:draw(map, isHudMap)
 
 	-- render a sign marking the end of the course
 	if self.stopPosition.x and self.stopPosition.z then
-		local x, y, rotation = self:worldToScreen( map,self.stopPosition.x, self.stopPosition.z, isHudMap)
+		local x, y, rotation = CpGuiUtil.worldToScreen( map,self.stopPosition.x, self.stopPosition.z, isHudMap)
 		if x and y then
 			setOverlayColor( self.stopSignOverlayId, 1, 1, 1, 1 )
 			renderOverlay( self.stopSignOverlayId,
@@ -188,7 +149,7 @@ function CoursePlot:draw(map, isHudMap)
 
 	-- render a sign marking the current position used as a starting location for the course
 	if self.startPosition.x and self.startPosition.z then
-		local x, y, rotation = self:worldToScreen(map, self.startPosition.x, self.startPosition.z, isHudMap)
+		local x, y, rotation = CpGuiUtil.worldToScreen(map, self.startPosition.x, self.startPosition.z, isHudMap)
 		if x and y then
 			setOverlayColor( self.startSignOverlayId, 1, 1, 1, 0.8 )
 			renderOverlay( self.startSignOverlayId,

@@ -1,6 +1,8 @@
 
 local modName = CpAISiloLoaderWorker and CpAISiloLoaderWorker.MOD_NAME -- for reload
 
+--- Specialization for the silo loader job
+--- Used for shovel loader and big silo loader, like the Ropa NarwaRo.
 ---@class CpAISiloLoaderWorker
 CpAISiloLoaderWorker = {}
 
@@ -92,11 +94,11 @@ function CpAISiloLoaderWorker:onUpdate(dt)
     local spec = self.spec_cpAISiloLoaderWorker
 end
 
---- Is the bunker silo allowed?
 function CpAISiloLoaderWorker:getCanStartCpSiloLoaderWorker()
-	return not self:getCanStartCpFieldWork() and not self:getCanStartCpBaleFinder() and not self:hasCpCourse() 
-        and not self:getCanStartCpCombineUnloader() and AIUtil.hasChildVehicleWithSpecialization(self, Shovel) 
-        and AIUtil.hasChildVehicleWithSpecialization(self, ConveyorBelt)
+	return not self:getCanStartCpFieldWork() 
+        and not self:getCanStartCpBaleFinder() 
+        and not self:getCanStartCpCombineUnloader() 
+        and AIUtil.hasChildVehicleWithSpecialization(self, Shovel) 
 end
 
 function CpAISiloLoaderWorker:getCanStartCp(superFunc)
@@ -105,7 +107,11 @@ end
 
 function CpAISiloLoaderWorker:getCpStartableJob(superFunc, isStartedByHud)
     local spec = self.spec_cpAISiloLoaderWorker
-	return superFunc(self) or self:getCanStartCpSiloLoaderWorker() and spec.cpJob
+    local job = self:getCanStartCpSiloLoaderWorker() and spec.cpJob
+    if isStartedByHud and not AIUtil.hasChildVehicleWithSpecialization(self, ConveyorBelt) then 
+        job = self:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_SILO_LOADING and job
+    end
+	return superFunc(self, isStartedByHud) or job
 end
 
 function CpAISiloLoaderWorker:getCpStartText(superFunc)
@@ -166,13 +172,19 @@ function CpAISiloLoaderWorker:startCpAtLastWp(superFunc, ...)
     end
 end
 
-function CpAISiloLoaderWorker:startCpSiloLoaderWorker(jobParameters, bunkerSilo, heap)
+function CpAISiloLoaderWorker:startCpSiloLoaderWorker(jobParameters, bunkerSilo, heap, unloadTrigger, unloadStation)
     if self.isServer then 
-        local strategy = AIDriveStrategySiloLoader.new()
-        -- this also starts the strategy
+        local strategy
+        if SpecializationUtil.hasSpecialization(ConveyorBelt, self.specializations) then 
+            CpUtil.debugVehicle(CpDebug.DBG_SILO, self, "Starting a silo loader strategy.")
+            strategy = AIDriveStrategySiloLoader.new()
+        else 
+            CpUtil.debugVehicle(CpDebug.DBG_SILO, self, "Starting a shovel silo loader strategy.")
+            strategy = AIDriveStrategyShovelSiloLoader.new()
+            strategy:setUnloadTriggerAndStation(unloadTrigger, unloadStation)
+        end
         strategy:setSiloAndHeap(bunkerSilo, heap)
         strategy:setAIVehicle(self, jobParameters)
-        CpUtil.debugVehicle(CpDebug.DBG_SILO, self, "Starting silo worker job.")
         self:startCpWithStrategy(strategy)
     end
 end

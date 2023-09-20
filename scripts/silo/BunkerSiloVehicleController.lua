@@ -29,8 +29,6 @@ function CpBunkerSiloVehicleController:init(silo, vehicle, driveStrategy, direct
 			  ^
 			  |
 		]]
-		
-
 		if dsz > dhz then 
 			self:debug("Silo needs to be inverted.")
 			self.isInverted = true
@@ -44,8 +42,6 @@ function CpBunkerSiloVehicleController:init(silo, vehicle, driveStrategy, direct
 			| v	|
 			wx	sx  
 		]]
-
-
 		self.isInverted = true
 	elseif dsz < 0 and dhz > 0 then 
 		self:debug("Start distance: dsz: %.2f, dhz: %.2f", dsz, dhz)
@@ -317,6 +313,24 @@ CpBunkerSiloLoaderController = CpObject(CpBunkerSiloVehicleController)
 function CpBunkerSiloLoaderController:init(silo, vehicle, driveStrategy)
 	CpBunkerSiloVehicleController.init(self, silo, vehicle, 
 		driveStrategy, vehicle:getAIDirectionNode())
+
+
+	local sx, sz = self.silo:getStartPosition()
+	local hx, hz = self.silo:getHeightPosition()
+	local dx, _, dz = getWorldTranslation(vehicle:getAIDirectionNode())
+	self.isInverted = false
+	
+	if MathUtil.vector2Length(sx-dx, sz-dz) < MathUtil.vector2Length(hx-dx, hz-dz) then
+		if self.silo.siloMode == CpBunkerSilo.SIDE_MODES.ONE_SIDED_INVERTED then 
+			self.isInverted = true
+		end
+	else
+		self.isInverted = true
+		if self.silo.siloMode == CpBunkerSilo.SIDE_MODES.ONE_SIDED then 
+			self.isInverted = false
+		end
+	end
+
 end
 
 --- Gets the next line with the most fill level.

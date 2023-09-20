@@ -65,68 +65,98 @@ function CpSilo:init(sx, sz, wx, wz, hx, hz)
 
 end
 
+---@return number sx
+---@return number sz
 function CpSilo:getStartPosition()
 	return self.sx, self.sz	
 end
 
+---@return number wx
+---@return number wz
 function CpSilo:getWidthPosition()
 	return self.wx, self.wz	
 end
 
+---@return number hx
+---@return number hz
 function CpSilo:getHeightPosition()
 	return self.hx, self.hz	
 end
 
+---@return number width
 function CpSilo:getWidth()
 	return self.width	
 end
 
+---@return number length
 function CpSilo:getLength()
 	return self.length
 end
 
+---@return number dirX
+---@return number dirZ
 function CpSilo:getLengthDirection()
 	return self.dirXLength, self.dirZLength
 end
 
+---@return number dirX
+---@return number dirZ
 function CpSilo:getWidthDirection()
 	return self.dirXWidth, self.dirZWidth
 end
 
+---@return number cx
+---@return number cz
 function CpSilo:getCenter()
 	local cx, cz = self:getFrontCenter()
 	return cx + self.dirXLength * self.length/2, cz + self.dirZLength * self.length/2
 end
 
+---@return number fcx
+---@return number fcz
 function CpSilo:getFrontCenter()
 	local width = self:getWidth()
 	return self.sx + self.dirXWidth * width/2, self.sz + self.dirZWidth * width/2
 end
 
+---@return number bcx
+---@return number bcz
 function CpSilo:getBackCenter()
 	local length = self:getLength()
 	local fcx, fcz = self:getFrontCenter()
 	return fcx + self.dirXLength * length/2, fcz + self.dirZLength * length/2
 end
 
---- Is the point directly in the silo area.
+--- Is the point directly in the silo area?
+---@param x number
+---@param z number
+---@return boolean
 function CpSilo:isPointInSilo(x, z)
 	return self:isPointInArea(x, z, self.area)
 end
 
+---@param node number
+---@return boolean
 function CpSilo:isNodeInSilo(node)
 	local x, _, z = getWorldTranslation(node)
 	return self:isPointInArea(x, z, self.area)
 end
 
+---@param vehicle table
+---@return boolean
 function CpSilo:isVehicleInSilo(vehicle)
 	return self:isNodeInSilo(vehicle.rootNode)
 end
 
+---@param x number
+---@param z number
+---@param area table
+---@return boolean
 function CpSilo:isPointInArea(x, z, area)
 	return CpMathUtil.isPointInPolygon(area, x, z)	
 end
 
+---@return table area
 function CpSilo:getArea()
 	return self.area
 end
@@ -173,6 +203,10 @@ function CpSilo:getTotalFillLevel()
 		return DensityMapHeightUtil.getFillLevelAtArea(fillType, self.sx, self.sz, self.wx, self.wz, self.hx, self.hz)
 	end
 	return 0
+end
+
+function CpSilo:isTheSameSilo()
+	--- override
 end
 
 --- Heap Bunker Silo
@@ -386,6 +420,14 @@ end
 
 function CpBunkerSilo:getNode()
 	return self.silo.interactionTriggerNode	
+end
+
+function CpBunkerSilo:getFillType()
+	return self.silo.outputFillType
+end
+
+function CpBunkerSilo:getTotalFillLevel()
+	return self.silo.fillLevel
 end
 
 function CpBunkerSilo:delete()
@@ -665,12 +707,4 @@ function CpBunkerSilo:getDebugData()
 		end
 	end
 	return data
-end
-
-function CpBunkerSilo:getFillType()
-	return self.silo.outputFillType
-end
-
-function CpBunkerSilo:getTotalFillLevel()
-	return self.silo.fillLevel
 end

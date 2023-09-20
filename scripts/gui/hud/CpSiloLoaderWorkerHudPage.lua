@@ -35,14 +35,17 @@ function CpSiloLoaderWorkerHudPageElement:setupElements(baseHud, vehicle, lines,
     end)
 
 
-    --- Progress of fill level removed since the start of the driver.
+    --- Displays the fill level of current worked on heap.
     local x, y = unpack(lines[4].left)
     self.fillLevelProgressLabel = CpTextHudElement.new(self , x , y, CpBaseHud.defaultFontSize)
     self.fillLevelProgressLabel:setTextDetails(g_i18n:getText("CP_siloLoader_fillLevelProgress"))
-    --- Progress of fill level removed since the start of the driver.
+    --- Displays the fill level of current worked on heap.
     local x, y = unpack(lines[4].right)
     self.fillLevelProgressText = CpTextHudElement.new(self, x, y, CpBaseHud.defaultFontSize, RenderText.ALIGN_RIGHT)
     
+    --- Shovel loading height offset.
+    self.loadingShovelHeightOffsetBtn = baseHud:addLineTextButton(self, 2, CpBaseHud.defaultFontSize, 
+        vehicle:getCpSettings().loadingShovelHeightOffset) 
 
     CpGuiUtil.addCopyAndPasteButtons(self, baseHud, 
     vehicle, lines, wMargin, hMargin, 1)
@@ -84,6 +87,11 @@ function CpSiloLoaderWorkerHudPageElement:updateContent(vehicle, status)
     local workWidth = vehicle:getCpSettings().bunkerSiloWorkWidth
     self.workWidthBtn:setTextDetails(workWidth:getTitle(), workWidth:getString())
     self.workWidthBtn:setVisible(workWidth:getIsVisible())
+
+    local loadingHeightOffset = vehicle:getCpSettings().loadingShovelHeightOffset
+    self.loadingShovelHeightOffsetBtn:setTextDetails(loadingHeightOffset:getTitle(), loadingHeightOffset:getString())
+    self.loadingShovelHeightOffsetBtn:setVisible(loadingHeightOffset:getIsVisible())
+    self.loadingShovelHeightOffsetBtn:setDisabled(loadingHeightOffset:getIsDisabled())
 
     self.fillLevelProgressText:setTextDetails(status:getSiloFillLevelPercentageLeftOver())
 
@@ -145,4 +153,15 @@ function CpSiloLoaderWorkerHudPageElement:arePositionEqual(parameters, otherPara
         return false
     end
     return true 
+end
+
+function CpSiloLoaderWorkerHudPageElement:isStartingPointBtnDisabled(vehicle)
+    return AIUtil.hasChildVehicleWithSpecialization(vehicle, ConveyorBelt) or vehicle:getIsCpActive()
+end
+
+function CpSiloLoaderWorkerHudPageElement:getStartingPointBtnText(vehicle)
+    if self:isStartingPointBtnDisabled(vehicle) then 
+        return vehicle:getCpStartText()
+    end
+    return vehicle:getCpStartingPointSetting():getString()
 end

@@ -1,5 +1,6 @@
 --- Bunker silo task
 ---@class CpAITaskSiloLoader
+---@field job table
 CpAITaskSiloLoader = {}
 local CpAITaskSiloLoader_mt = Class(CpAITaskSiloLoader, AITask)
 
@@ -32,7 +33,8 @@ end
 
 function CpAITaskSiloLoader:start()
 	if self.isServer then
-		self.vehicle:startCpSiloLoaderWorker(self.job:getCpJobParameters(), self.silo, self.heap)
+		local _, unloadTrigger, unloadStation = self.job:getUnloadTriggerAt(self.job:getCpJobParameters().unloadPosition)
+		self.vehicle:startCpSiloLoaderWorker(self.job:getCpJobParameters(), self.silo, self.heap, unloadTrigger, unloadStation)
 	end
 
 	CpAITaskSiloLoader:superClass().start(self)

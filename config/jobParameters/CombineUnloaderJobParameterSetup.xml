@@ -27,7 +27,7 @@
 	<SettingSubTitle title="giantsUnloader">
 		<!-- Is the giants ai unloader wanted for unloading? -->
 		<Setting classType="AIParameterBooleanSetting" name="useGiantsUnload" defaultBool="false" isDisabled ="isGiantsUnloadDisabled"/>
-		<Setting classType="CpAIParameterUnloadingStation" name="unloadingStation" isDisabled ="isUnloadStationSelectorDisabled" generateValuesFunction="generateUnloadingStations"/>
+		<Setting classType="CpAIParameterUnloadingStation" name="unloadingStation" isVisible ="isUnloadStationSelectorVisible" generateValuesFunction="generateUnloadingStations"/>
 	</SettingSubTitle>
 	<SettingSubTitle title="fieldUnload">
 		<!-- Is unloading onto the field allowed? -->

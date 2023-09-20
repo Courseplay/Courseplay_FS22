@@ -10,6 +10,20 @@
 		<Setting classType="CpAIParameterPositionAngle" name="startPosition" positionParameterType="DRIVE_TO"/>
 	</SettingSubTitle>
 	<SettingSubTitle title="loadPosition">
-		<Setting classType="CpAIParameterPositionAngle" name="loadPosition" positionParameterType="UNLOAD"/>
+		<Setting classType="CpAIParameterPositionAngle" name="loadPosition" positionParameterType="LOAD"/>
+	</SettingSubTitle>
+	<SettingSubTitle title="unloading">
+		<Setting classType="AIParameterSettingList" name="unloadAt" isDisabled="isShovelSiloLoadDisabled">
+			<Values>
+				<Value name="UNLOAD_TRAILER">1</Value>
+				<Value name="UNLOAD_TRIGGER">2</Value>
+			</Values>
+			<Texts>
+				<Text>trailer</Text>
+				<Text>unloadTrigger</Text>
+			</Texts>
+		</Setting>
+		<Setting classType="CpAIParameterPositionAngle" name="unloadPosition" positionParameterType="UNLOAD" isDisabled="isUnloadPositionDisabled"/>
+		<Setting classType="CpAIParameterUnloadingStation" name="unloadStation" isDisabled="isUnloadStationDisabled" generateValuesFunction="generateUnloadingStations"></Setting>
 	</SettingSubTitle>
 </Settings>

@@ -19,7 +19,7 @@ function CpAIBaleFinder.initSpecialization()
 end
 
 function CpAIBaleFinder.prerequisitesPresent(specializations)
-    return SpecializationUtil.hasSpecialization(CpAIFieldWorker, specializations) 
+    return SpecializationUtil.hasSpecialization(CpAIWorker, specializations) 
 end
 
 function CpAIBaleFinder.register(typeManager,typeName,specializations)
@@ -135,9 +135,9 @@ function CpAIBaleFinder:getCanStartCp(superFunc)
 end
 
 --- Only use the bale finder, if the cp field work job is not possible.
-function CpAIBaleFinder:getCpStartableJob(superFunc)
+function CpAIBaleFinder:getCpStartableJob(superFunc, ...)
     local spec = self.spec_cpAIBaleFinder
-	return superFunc(self) or self:getCanStartCpBaleFinder() and spec.cpJob
+	return superFunc(self, ...) or self:getCanStartCpBaleFinder() and spec.cpJob
 end
 
 function CpAIBaleFinder:getCpStartText(superFunc)

@@ -109,7 +109,7 @@ end
 function CpAIParameterPosition:isAlmostEqualTo(otherPosition)
 	local x, z = otherPosition:getPosition()
 	if x ~= nil and self.x ~= nil then
-		return MathUtil.vector2Length(self.x - x, self.z - z)	<= 1
+		return MathUtil.vector2Length(self.x - x, self.z - z) <= 1
 	end
 	return false
 end
@@ -121,7 +121,8 @@ CpAIParameterPositionAngle = CpObject(CpAIParameterPosition)
 CpAIParameterPositionAngle.POSITION_TYPES = {
 		DRIVE_TO = 0,	--- with angle
 		FIELD_OR_SILO = 1, --- without angle
-		UNLOAD = 2 --- with angle
+		UNLOAD = 2, --- with angle
+		LOAD = 3 --- with angle
 	}
 ---@param data table
 ---@param vehicle table

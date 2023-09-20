@@ -25,6 +25,7 @@
     <text name="CP_error_vehicle_too_far_away_from_field" text="O veículo está muito longe do campo para começar."/>
     <text name="CP_error_no_bunkerSilo_found" text="Nenhum silo foi encontrado."/>
     <text name="CP_error_no_heap_found" text="Nenhum silo encontrado."/>
+    <text name="CP_error_no_unload_trigger_found" text="No unloading point found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -93,6 +94,9 @@
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Posição para carregar"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Posição para carregar"/>
     <text name="CP_siloLoader_fillLevelProgress" text="Progressâo: "/>
+    <text name="CP_siloLoaderJobParameters_subTitle_unloading" text="Unloading at:"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="Trailer"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="Unload station"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -177,6 +181,8 @@
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Configuração trabalho no silo"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Largura de trabalho"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Largura de trabalho. Valor: 0 - 50"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Shovel loading offset. Value: -1 - 1"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Shovel loading offset. Value: -1 - 1"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
@@ -816,6 +822,16 @@ A carreta pode ser descarregado usando Courseplay
 Para iniciar, o marcador de carregamento no menu AI precisa ser definido.
 O marcador detecta montes ou silos e os destaca no mapa.
 Agora é possível iniciar o auxiliar.
+"/>
+    <text name="CP_help_page_shovelLoader_title" text="Wheelloader Driver"/>
+    <text name="CP_help_page_shovelLoaderGeneral_text" text="
+WIP
+"/>
+    <text name="CP_help_page_shovelLoaderBasic_text" text="
+WIP
+"/>
+    <text name="CP_help_page_shovelLoaderTrigger_text" text="
+WIP
 "/>
     <!---->
     <!--Input bindings-->

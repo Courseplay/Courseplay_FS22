@@ -19,7 +19,7 @@ end
 
 
 function CpInfoTexts.prerequisitesPresent(specializations)
-    return SpecializationUtil.hasSpecialization(CpAIFieldWorker, specializations) 
+    return SpecializationUtil.hasSpecialization(CpAIWorker, specializations) 
 end
 
 function CpInfoTexts.registerEventListeners(vehicleType)	

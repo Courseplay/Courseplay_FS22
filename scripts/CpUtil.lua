@@ -169,11 +169,10 @@ end
 --- Debug function for implements, that calls CpUtil.debugVehicle, with the root vehicle. 
 ---@param channel number
 ---@param implement table
----@param ... unknown
-function CpUtil.debugImplement(channel, implement, ...)
+function CpUtil.debugImplement(channel, implement, str, ...)
 	local rootVehicle = implement and implement.rootVehicle or implement
 	CpUtil.debugVehicle(channel, rootVehicle, 
-					CpUtil.getName(implement) .. ': ' .. string.format(...))
+		CpUtil.getName(implement) .. ": " .. str, ...)
 end
 
 function CpUtil.isVehicleDebugActive(vehicle)

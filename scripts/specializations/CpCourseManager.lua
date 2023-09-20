@@ -5,8 +5,9 @@
 CpCourseManager = {}
 
 CpCourseManager.MOD_NAME = g_currentModName
-
-CpCourseManager.KEY = "."..CpCourseManager.MOD_NAME..".cpCourseManager"
+CpCourseManager.NAME = ".cpCourseManager"
+CpCourseManager.SPEC_NAME = CpCourseManager.MOD_NAME .. CpCourseManager.NAME
+CpCourseManager.KEY = "." .. CpCourseManager.MOD_NAME .. CpCourseManager.NAME
 CpCourseManager.xmlKey = "Course"
 CpCourseManager.rootKey = "AssignedCourses"
 CpCourseManager.rootKeyFileManager = "Courses"
@@ -43,8 +44,14 @@ function CpCourseManager.initSpecialization()
     schema:register(XMLValueType.INT, key .. "#assignedCoursesID", "Assigned Courses id.")
 end
 
+function CpCourseManager.register(typeManager,typeName,specializations)
+	if CpCourseManager.prerequisitesPresent(specializations) then
+		typeManager:addSpecialization(typeName, CpCourseManager.SPEC_NAME)
+	end
+end
+
 function CpCourseManager.prerequisitesPresent(specializations)
-    return SpecializationUtil.hasSpecialization(AIFieldWorker, specializations) 
+    return SpecializationUtil.hasSpecialization(CpAIWorker, specializations) 
 end
 
 function CpCourseManager.registerEventListeners(vehicleType)	
@@ -113,8 +120,7 @@ end
 
 function CpCourseManager:onLoad(savegame)
 	--- Register the spec: spec_cpCourseManager 
-    local specName = CpCourseManager.MOD_NAME .. ".cpCourseManager"
-    self.spec_cpCourseManager  = self["spec_" .. specName]
+    self.spec_cpCourseManager = self["spec_" .. CpCourseManager.SPEC_NAME]
     local spec = self.spec_cpCourseManager 
     spec.coursePlot = CoursePlot(g_currentMission.inGameMenu.ingameMap)
 

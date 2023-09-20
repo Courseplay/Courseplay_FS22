@@ -132,11 +132,9 @@ function CpStatus:getCompactionText(withoutPercentageSymbol)
 end
 
 function CpStatus:getSiloFillLevelPercentageLeftOver(withoutPercentageSymbol)
-    if self.isActive and self.fillLevelPercentageLeftOver ~=nil  then 
-        if withoutPercentageSymbol then 
-            return tostring(self.fillLevelPercentageLeftOver)
-        end
-        return string.format('%d%%', self.fillLevelPercentageLeftOver)
+    if self.isActive and self.fillLevelLeftOver ~= nil  then 
+        local value, unitExtension = CpGuiUtil.getFixedUnitValueWithUnitSymbol(self.fillLevelLeftOver)
+        return string.format("%.1f %s%s", value, unitExtension, g_i18n:getText("unit_literShort"))
     end 
     return '--'
 end

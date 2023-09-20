@@ -15,6 +15,13 @@
 
 Markers = {}
 
+function Markers.registerConsoleCommands()
+    g_devHelper.consoleCommands:registerConsoleCommand("cpFrontAndBackerMarkerCalculate", 
+        "Calculates the front and back markers", "consoleCommandReload", Markers)
+    g_devHelper.consoleCommands:registerConsoleCommand("cpFrontAndBackerMarkerPrintDebug", 
+        "Print Marker data", "consoleCommandPrintDebug", Markers)
+end
+Markers.registerConsoleCommands()
 -- a global table with the vehicle as the key to persist the marker nodes we don't want to leak through jobs
 -- and also don't want to deal with keeping track when to delete them
 g_vehicleMarkers = {}
@@ -36,23 +43,23 @@ local function setBackMarkerNode(vehicle, measuredBackDistance)
     if AIUtil.hasImplementsOnTheBack(vehicle) then
         local lastImplement
         lastImplement, backMarkerOffset = AIUtil.getLastAttachedImplement(vehicle)
-        referenceNode =  AIUtil.getDirectionNode(vehicle)
+        referenceNode = AIUtil.getDirectionNode(vehicle)
         CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Using the last implement\'s rear distance for the back marker node, %d m from root node', backMarkerOffset)
     elseif measuredBackDistance then
-        referenceNode =  AIUtil.getDirectionNode(vehicle)
+        referenceNode = AIUtil.getDirectionNode(vehicle)
         backMarkerOffset = -measuredBackDistance
         CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'back marker node on measured back distance %.1f', measuredBackDistance)
     elseif reverserNode then
         -- if there is a reverser node, use that, mainly because that most likely will turn with an implement
         -- or with the back component of an articulated vehicle. Just need to find out the distance correctly
-        local dx, _, dz = localToLocal(reverserNode,  AIUtil.getDirectionNode(vehicle), 0, 0, 0)
+        local dx, _, dz = localToLocal(reverserNode, AIUtil.getDirectionNode(vehicle), 0, 0, 0)
         local dBetweenRootAndReverserNode = MathUtil.vector2Length(dx, dz)
         backMarkerOffset = dBetweenRootAndReverserNode - vehicle.size.length / 2 - vehicle.size.lengthOffset
         referenceNode = reverserNode
         CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Using the %s node for the back marker node %d m from root node (%d m between root and reverser)',
                 debugText, backMarkerOffset, dBetweenRootAndReverserNode)
     else
-        referenceNode =  AIUtil.getDirectionNode(vehicle)
+        referenceNode = AIUtil.getDirectionNode(vehicle)
         backMarkerOffset = - vehicle.size.length / 2 + vehicle.size.lengthOffset
         CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Using the vehicle\'s root node for the back marker node, %d m from root node', backMarkerOffset)
     end
@@ -119,4 +126,32 @@ function Markers.getMarkerNodes(vehicle)
     local frontMarker = Markers.getFrontMarkerNode(vehicle)
     local backMarker = Markers.getBackMarkerNode(vehicle)
     return frontMarker, backMarker, g_vehicleMarkers[vehicle].frontMarkerOffset, g_vehicleMarkers[vehicle].backMarkerOffset
+end
+
+--------------------------------------------
+--- Console Commands
+--------------------------------------------
+
+function Markers:consoleCommandReload(backDistance)
+    local vehicle = g_currentMission.controlledVehicle
+    if not vehicle then 
+        CpUtil.info("No valid vehicle entered!")
+        return     
+    end
+    if backDistance then 
+        backDistance = tonumber(backDistance)
+    end
+    Markers.setMarkerNodes(vehicle, backDistance)
+    Markers:consoleCommandPrintDebug()
+end
+
+function Markers:consoleCommandPrintDebug()
+    local vehicle = g_currentMission.controlledVehicle
+    if not vehicle then 
+        CpUtil.info("No valid vehicle entered!")
+        return     
+    end
+    local _, frontMarkerDistance = Markers.getFrontMarkerNode(vehicle)
+    local _, backMarkerDistance = Markers.getBackMarkerNode(vehicle)
+    CpUtil.infoVehicle(vehicle, "Front distance: %.2f, back distance: %.2f", frontMarkerDistance, backMarkerDistance)
 end

@@ -366,18 +366,18 @@ end
 ---@param tool table moving tool
 ---@param dt number
 ---@param rotTarget number target rotation in radiant
+---@return boolean
 function ImplementUtil.moveMovingToolToRotation(implement, tool, dt, rotTarget)
     if tool.rotSpeed == nil then
-		return
+		return false
 	end
 	local spec = implement.spec_cylindered
 	tool.curRot[1], tool.curRot[2], tool.curRot[3] = getRotation(tool.node)
 	local oldRot = tool.curRot[tool.rotationAxis]
 	local diff = rotTarget - oldRot
-	local rotSpeed = MathUtil.clamp(diff * tool.rotSpeed, tool.rotSpeed/3, 0.5)
-	if diff < 0 then
-		rotSpeed=rotSpeed*(-1)
-	end
+    local dir = MathUtil.sign(diff)
+	local rotSpeed = MathUtil.clamp( math.abs(diff) * math.abs(tool.rotSpeed), math.abs(tool.rotSpeed)/3, 0.5 )
+    rotSpeed = dir * rotSpeed
 	if math.abs(diff) < 0.03 or rotSpeed == 0 then
 		ImplementUtil.stopMovingTool(implement, tool)
 		return false
@@ -404,9 +404,16 @@ function ImplementUtil.stopMovingTool(implement, tool)
 end
 
 function ImplementUtil.getLevelerNode(object)
-    return object.spec_leveler and object.spec_leveler.nodes and object.spec_leveler.nodes[1] and object.spec_leveler.nodes[1]
+    return object.spec_leveler and object.spec_leveler.nodes and object.spec_leveler.nodes[1]
 end
 
+function ImplementUtil.getShovelNode(object)
+    return object.spec_shovel and object.spec_shovel.shovelNodes and object.spec_shovel.shovelNodes[1]
+end
+
+--- Visually displays the bale collector offset
+---@param vehicle table
+---@param offset number
 function ImplementUtil.showBaleCollectorOffset(vehicle, offset)
     local implement = AIUtil.getImplementWithSpecialization(vehicle, BaleLoader)
     if not implement then 
@@ -418,3 +425,87 @@ function ImplementUtil.showBaleCollectorOffset(vehicle, offset)
         DebugUtil.drawDebugLine(x, y, z, dx, dy, dz, 1, 0, 0)
     end
 end
+
+--- Checks if loading from an implement to another is possible.
+---@param loadTargetImplement table
+---@param implementToLoadFrom table
+---@param dischargeNode table|nil optional otherwise the current selected node is used.
+---@param debugFunc function|nil
+---@return boolean is loading possible?
+---@return number|nil target implement fill unit ix to load into.
+---@return number|nil fill type to load
+---@return number|nil target exact fill root node
+---@return number|nil alternative fill type, when the implement gets turned on
+function ImplementUtil.getCanLoadTo(loadTargetImplement, implementToLoadFrom, dischargeNode, debugFunc)
+    
+    local function debug(str, ...)
+        if debugFunc then
+            debugFunc(str, ...)
+        end
+    end
+
+    if dischargeNode == nil then 
+        dischargeNode = implementToLoadFrom:getCurrentDischargeNode()
+    end
+    if dischargeNode == nil then 
+        debug("No valid discharge node found!")
+        return false, nil, nil, nil
+    end
+
+    local fillType = implementToLoadFrom:getDischargeFillType(dischargeNode)
+    local alternativeFillType
+    if implementToLoadFrom.spec_turnOnVehicle then 
+        --- The discharge node flips when the implement gets turned on.
+        --- The fill type might be different then.
+        local turnOnDischargeNode = implementToLoadFrom.spec_turnOnVehicle.activateableDischargeNode
+        if turnOnDischargeNode then 
+            alternativeFillType = implementToLoadFrom:getDischargeFillType(turnOnDischargeNode)
+        end
+    end
+    if fillType == nil or fillType == FillType.UNKNOWN then 
+        debug("No valid fill type to load!")
+        return false, nil, nil, nil
+    end
+
+    --- Is the fill unit a valid load target?
+    ---@param fillUnitIndex number
+    ---@return boolean
+    ---@return number|nil
+    ---@return number|nil
+    local function canLoad(fillUnitIndex)
+        if  not loadTargetImplement:getFillUnitSupportsFillType(fillUnitIndex, fillType) and 
+            not loadTargetImplement:getFillUnitSupportsFillType(fillUnitIndex, alternativeFillType)  then
+            debug("Fill unit(%d) doesn't support fill type %s", fillUnitIndex, g_fillTypeManager:getFillTypeNameByIndex(fillType))
+            return false
+        end
+        if not loadTargetImplement:getFillUnitAllowsFillType(fillUnitIndex, fillType) and 
+            not loadTargetImplement:getFillUnitAllowsFillType(fillUnitIndex, alternativeFillType) then
+            debug("Fill unit(%d) doesn't allow fill type %s", fillUnitIndex, g_fillTypeManager:getFillTypeNameByIndex(fillType))
+            return false
+        end
+        if loadTargetImplement.getFillUnitFreeCapacity and 
+            loadTargetImplement:getFillUnitFreeCapacity(fillUnitIndex, fillType, implementToLoadFrom:getActiveFarm()) <= 0 and
+            loadTargetImplement:getFillUnitFreeCapacity(fillUnitIndex, alternativeFillType, implementToLoadFrom:getActiveFarm()) <= 0 then
+            debug("Fill unit(%d) is full with fill type %s!", fillUnitIndex, g_fillTypeManager:getFillTypeNameByIndex(fillType))
+            return false  
+        end
+        if loadTargetImplement.getIsFillAllowedFromFarm and 
+            not loadTargetImplement:getIsFillAllowedFromFarm(implementToLoadFrom:getActiveFarm()) then
+            debug("Fill unit(%d) filling to target farm %s from %s not allowed!", 
+                fillUnitIndex, loadTargetImplement:getOwnerFarmId(), implementToLoadFrom:getActiveFarm())
+            return false
+        end
+        return true, fillUnitIndex, loadTargetImplement:getFillUnitExactFillRootNode(fillUnitIndex)
+    end
+
+    local validTarget, targetFillUnitIndex, exactFillRootNode
+    for fillUnitIndex, fillUnit in pairs(loadTargetImplement:getFillUnits()) do 
+        validTarget, targetFillUnitIndex, exactFillRootNode = canLoad(fillUnitIndex)
+        if validTarget then 
+            break
+        end
+    end
+
+    return validTarget, targetFillUnitIndex, fillType, exactFillRootNode, alternativeFillType
+end
+

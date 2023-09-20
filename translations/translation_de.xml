@@ -25,6 +25,7 @@
     <text name="CP_error_vehicle_too_far_away_from_field" text="Fahrzeug ist zu weit vom Feld entfernt."/>
     <text name="CP_error_no_bunkerSilo_found" text="Keinen Silo gefunden."/>
     <text name="CP_error_no_heap_found" text="Keinen Haufen gefunden."/>
+    <text name="CP_error_no_unload_trigger_found" text="Keinen Abladepunkt gefunden."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -92,7 +93,10 @@
     <!---->
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Ladeposition"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Ladeposition"/>
-    <text name="CP_siloLoader_fillLevelProgress" text="Fortschritt: "/>
+    <text name="CP_siloLoader_fillLevelProgress" text="Liter übrig: "/>
+    <text name="CP_siloLoaderJobParameters_subTitle_unloading" text="Abladen in:"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="Anhänger"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="Abladestation"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -177,6 +181,8 @@
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloarbeiter Einstellungen"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Arbeitsbreite"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Arbeitsbreite. Wert: 0 - 50"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Versatz Schaufelhöhe."/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Höhenversatz der Schaufel für die Ladeposition. Wert: -1 - 1"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
@@ -823,6 +829,41 @@ Bedenkt dabei, dass das automatische Abtanken mit CP in Fahrtrichtung des Laders
 Als erstes muss auf der Helferkarte der Lade-Marker gesetzt werden.
 Dieses erkennt vorhandende Haufen oder Silos und markiert den ausgewählten.
 Anschließend kann der Helfer gestartet werden.
+"/>
+    <text name="CP_help_page_shovelLoader_title" text="Radlader/Frontlader"/>
+    <text name="CP_help_page_shovelLoaderGeneral_text" text="
+Mit einem Radlader oder Traktor mit Frontlader und Schaufel lassen sich Haufen vom Boden oder aus einem Bunker Silo automatisch aufnehmen und in einen Anhänger oder Lager abladen.
+Die Schaufel wird dabei automatisch an die richtigen Positionen gefahren.
+Ist der Modus im HUD nicht direkt zu sehen, schalte die &quot;Startposition&quot; durch bis der Modus erscheint.
+
+Im HUD erscheint dann das gewohnte Ziel Icon um direkt mit dem richtigen Modus auf der Helfer Karte zu landen.
+Es gibt eine Anzeige, die die verbleibenden Füllmenge des Haufens anzeigt.
+Die Arbeitsbreite muss im HUD eventuell angepasst werden, wenn ihr ein Bunker Silo leeren möchtet, um nicht seitlich in die Wand zu fahren.
+
+Der Versatz der Schaufelhöhe dient dazu, die Höhe über dem Boden anzupassen. Diese Höhe sollte relativ genau sein, damit auch alles eingesammelt wird
+oder damit der Radlader nicht an Kanten fest hängt. Wird der Wert verändert, fährt die Schaufel automatisch auf die Position und die eingestellte Höhe.
+Ein Klick auf den Text, setzt den Wert auf 0 zurück. Der Wert lässt sich zwischen +1 bis -1 anpassen.
+
+Schaufeln mit Gebiss öffnen dieses automatisch beim laden und abladen und schließen dieses zum Transport.
+Die Schaufel zum Zerkleinern von Zuckerrüben wird mit allen Funktionen unterstützt.
+"/>
+    <text name="CP_help_page_shovelLoaderBasic_text" text="
+Um einen Radlader Fahrer zu starten, müssen zunächst über das Ziel Icon im HUD die Lade- und Entladepositionen gewählt werden.
+Die Ladeposition wird wie auch bereits beim Lader gewählt. Ein blauer Ramen entsteht um den gefunden Haufen.
+
+Die Abladeposition hängt davon ab, ob du in einen Anhänger oder in eine Abladestation entladen möchtest.
+Abladen in einen Anhänger funktioniert automatisch und braucht keine zusätzliche Position. 
+Es wird der naheste, stehende Anhänger gewählt und seitlich angefahren.
+
+Möchtest du in eine Abladestation entladen, muss zunächst das Ziel umgestellt werden und anschließend der Marker auf den Trigger gesetzt werden.
+"/>
+    <text name="CP_help_page_shovelLoaderTrigger_text" text="
+Die Auswahl eines Triggers wirkt zunächst kompliziert, ist aber im Prinzip recht einfach.
+Da Gebäude mehrere Trigger haben können, muss dieser selber gewählt werden.
+Die verfügbaren Trigger werden als orangene Kreuze da gestellt.
+Um einen Trigger zu wählen, setzt du den Punkt in der Mitte des runden Icons einfach mittig auf das Kreuz.
+Die Richtung des Pfeils entspricht hierbei die Anfahrtsrichtung vom Helfer.
+Das Kreuz sollte jetzt, wie im Bild da gestellt, gelb sein.
 "/>
     <!---->
     <!--Input bindings-->

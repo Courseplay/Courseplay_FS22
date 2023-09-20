@@ -6,9 +6,12 @@
 CpCourseGeneratorSettings = {}
 
 CpCourseGeneratorSettings.MOD_NAME = g_currentModName
-CpCourseGeneratorSettings.KEY = "."..CpCourseGeneratorSettings.MOD_NAME..".cpCourseGeneratorSettings"
 CpCourseGeneratorSettings.SETTINGS_KEY = ".settings"
 CpCourseGeneratorSettings.VINE_SETTINGS_KEY = ".vineSettings"
+CpCourseGeneratorSettings.NAME = ".cpCourseGeneratorSettings"
+CpCourseGeneratorSettings.SPEC_NAME = CpCourseGeneratorSettings.MOD_NAME .. CpCourseGeneratorSettings.NAME
+CpCourseGeneratorSettings.KEY = "." .. CpCourseGeneratorSettings.MOD_NAME .. CpCourseGeneratorSettings.NAME
+
 function CpCourseGeneratorSettings.initSpecialization()
 	local schema = Vehicle.xmlSchemaSavegame
     --- Old save format
@@ -27,9 +30,14 @@ function CpCourseGeneratorSettings.initSpecialization()
     CpCourseGeneratorSettings.registerConsoleCommands()
 end
 
+function CpCourseGeneratorSettings.register(typeManager,typeName,specializations)
+	if CpCourseGeneratorSettings.prerequisitesPresent(specializations) then
+		typeManager:addSpecialization(typeName, CpCourseGeneratorSettings.SPEC_NAME)
+	end
+end
 
 function CpCourseGeneratorSettings.prerequisitesPresent(specializations)
-    return SpecializationUtil.hasSpecialization(AIFieldWorker, specializations) 
+    return SpecializationUtil.hasSpecialization(CpAIWorker, specializations) 
 end
 
 function CpCourseGeneratorSettings.registerEvents(vehicleType)
@@ -79,8 +87,7 @@ end
 
 function CpCourseGeneratorSettings:onLoad(savegame)
 	--- Register the spec: spec_cpCourseGeneratorSettings
-    local specName = CpCourseGeneratorSettings.MOD_NAME .. ".cpCourseGeneratorSettings"
-    self.spec_cpCourseGeneratorSettings = self["spec_" .. specName]
+    self.spec_cpCourseGeneratorSettings = self["spec_" .. CpCourseGeneratorSettings.SPEC_NAME]
     local spec = self.spec_cpCourseGeneratorSettings
     spec.gui = g_currentMission.inGameMenu.pageAI
     --- Clones the generic settings to create different settings containers for each vehicle. 

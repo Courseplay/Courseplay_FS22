@@ -364,8 +364,8 @@ function CpAIJob.registerJob(AIJobTypeManager)
 	AIJobTypeManager:registerJobType(CpAIJobBaleFinder.name, CpAIJobBaleFinder.jobName, CpAIJobBaleFinder)
 	AIJobTypeManager:registerJobType(CpAIJobFieldWork.name, CpAIJobFieldWork.jobName, CpAIJobFieldWork)
 	AIJobTypeManager:registerJobType(CpAIJobCombineUnloader.name, CpAIJobCombineUnloader.jobName, CpAIJobCombineUnloader)
-	AIJobTypeManager:registerJobType(CpAIJobBunkerSilo.name, CpAIJobBunkerSilo.jobName, CpAIJobBunkerSilo)
 	AIJobTypeManager:registerJobType(CpAIJobSiloLoader.name, CpAIJobSiloLoader.jobName, CpAIJobSiloLoader)
+	AIJobTypeManager:registerJobType(CpAIJobBunkerSilo.name, CpAIJobBunkerSilo.jobName, CpAIJobBunkerSilo)
 end
 
 

@@ -424,11 +424,13 @@ function CpBaseHud:getActiveHudPage(vehicle)
         return self.combineUnloaderLayout
     elseif vehicle:getCanStartCpBaleFinder() and not vehicle:hasCpCourse() then
         return self.baleFinderLayout
-    elseif vehicle:getCanStartCpBunkerSiloWorker() and vehicle:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO 
-        or AIUtil.hasChildVehicleWithSpecialization(vehicle, Leveler) then
-        return self.bunkerSiloWorkerLayout
-    elseif vehicle:getCanStartCpSiloLoaderWorker() then 
+    elseif vehicle:getCanStartCpSiloLoaderWorker() and (vehicle:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_SILO_LOADING
+        or AIUtil.hasChildVehicleWithSpecialization(vehicle, ConveyorBelt)) then 
         return self.siloLoaderWorkerLayout
+    elseif vehicle:getCanStartCpBunkerSiloWorker() and (vehicle:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO or
+        (AIUtil.hasChildVehicleWithSpecialization(vehicle, Leveler)
+        and not AIUtil.hasChildVehicleWithSpecialization(vehicle, Shovel))) then
+        return self.bunkerSiloWorkerLayout
     else
         return self.fieldworkLayout
     end

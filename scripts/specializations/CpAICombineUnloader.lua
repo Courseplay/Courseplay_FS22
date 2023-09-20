@@ -215,9 +215,9 @@ function CpAICombineUnloader:getCanStartCp(superFunc)
     return superFunc(self) or self:getCanStartCpCombineUnloader() and not self:getIsCpCourseRecorderActive()
 end
 
-function CpAICombineUnloader:getCpStartableJob(superFunc)
+function CpAICombineUnloader:getCpStartableJob(superFunc, ...)
     local spec = self.spec_cpAICombineUnloader
-    return superFunc(self) or self:getCanStartCpCombineUnloader() and spec.cpJob
+    return superFunc(self, ...) or self:getCanStartCpCombineUnloader() and spec.cpJob
 end
 
 function CpAICombineUnloader:getCpStartText(superFunc)

@@ -111,8 +111,7 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
     self:initializeImplementControllers(vehicle)
     self.ppc = PurePursuitController(vehicle)
     self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
-    -- TODO_22 properly implement this in courseplaySpec
-    self.storage = vehicle.spec_courseplaySpec
+    self.storage = vehicle.spec_cpAIWorker
 
     self.settings = vehicle:getCpSettings()
     self.courseGeneratorSettings = vehicle:getCourseGeneratorSettings()
@@ -602,13 +601,13 @@ end
 ---------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyCourse:disableCollisionDetection()
     if self.vehicle then
-        CourseplaySpec.disableCollisionDetection(self.vehicle)
+        CpAIWorker.disableCollisionDetection(self.vehicle)
     end
 end
 
 function AIDriveStrategyCourse:enableCollisionDetection()
     if self.vehicle then
-        CourseplaySpec.enableCollisionDetection(self.vehicle)
+        CpAIWorker.enableCollisionDetection(self.vehicle)
     end
 end
 

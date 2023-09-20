@@ -1,5 +1,5 @@
---- Job for stationary loader.
----@class CpAIJobSiloLoader : CpAIJobFieldWork
+--- AI Job for silo loader like the ropa maus or wheel loaders.
+---@class CpAIJobSiloLoader : CpAIJob
 ---@field heapPlot HeapPlot
 ---@field heapNode number
 CpAIJobSiloLoader = {
@@ -36,6 +36,7 @@ function CpAIJobSiloLoader:setupJobParameters()
 	CpAIJobSiloLoader:superClass().setupJobParameters(self)
 	self:setupCpJobParameters(CpSiloLoaderJobParameters(self))
 	self.cpJobParameters.loadPosition:setSnappingAngle(math.pi/8) -- AI menu snapping angle of 22.5 degree.
+	self.cpJobParameters.unloadPosition:setSnappingAngle(math.pi/8) -- AI menu snapping angle of 22.5 degree.
 end
 
 function CpAIJobSiloLoader:getIsAvailableForVehicle(vehicle)
@@ -46,8 +47,8 @@ function CpAIJobSiloLoader:getCanStartJob()
 	return self.hasValidPosition
 end
 
----@param vehicle Vehicle
----@param mission Mission
+---@param vehicle table
+---@param mission table
 ---@param farmId number
 ---@param isDirectStart boolean disables the drive to by giants
 ---@param isStartPositionInvalid boolean resets the drive to target position by giants and the field position to the vehicle position.
@@ -68,8 +69,15 @@ function CpAIJobSiloLoader:applyCurrentState(vehicle, mission, farmId, isDirectS
 		self.cpJobParameters.loadPosition:setPosition(x, z)
 		self.cpJobParameters.loadPosition:setAngle(angle)
 	end
-end
 
+	local x, z = self.cpJobParameters.unloadPosition:getPosition()
+
+	-- no unload position use the vehicle's current position
+	if x == nil or z == nil then
+		x, _, z = getWorldTranslation(vehicle.rootNode)
+		self.cpJobParameters.unloadPosition:setPosition(x, z)
+	end
+end
 
 function CpAIJobSiloLoader:setValues()
 	CpAIJob.setValues(self)
@@ -95,7 +103,10 @@ function CpAIJobSiloLoader:validate(farmId)
 	self.heapPlot:setVisible(false)
 	self.heap = nil
 	self.bunkerSilo = nil
+	self.unloadStation = nil
+	self.unloadTrigger = nil
 	self.hasValidPosition = false
+	self:getCpJobParameters().unloadStation:setValue(-1)
 	local isValid, errorMessage = CpAIJob.validate(self, farmId)
 	if not isValid then
 		return isValid, errorMessage
@@ -120,7 +131,33 @@ function CpAIJobSiloLoader:validate(farmId)
 	else 
 		return false, g_i18n:getText("CP_error_no_heap_found")
 	end
-
+	if not AIUtil.hasChildVehicleWithSpecialization(vehicle, ConveyorBelt) then 
+		if self.cpJobParameters.unloadAt:getValue() == CpSiloLoaderJobParameters.UNLOAD_TRIGGER then 
+			--- Validates the unload trigger setup
+			local found, unloadTrigger, unloadStation = self:getUnloadTriggerAt(self.cpJobParameters.unloadPosition)
+			if found then 
+				self.unloadStation = unloadStation
+				self.unloadTrigger = unloadTrigger
+				if unloadStation == nil then 
+					return false, g_i18n:getText("CP_error_no_unload_trigger_found")
+				end
+				local id = NetworkUtil.getObjectId(unloadStation)
+				if id ~= nil then 
+					CpUtil.debugVehicle(CpDebug.DBG_SILO, vehicle, 
+						"Found a valid unload trigger: %s for %s", 
+						CpUtil.getName(unloadTrigger), CpUtil.getName(unloadStation))
+					self:getCpJobParameters().unloadStation:setValue(id)
+					self:getCpJobParameters().unloadStation:validateUnloadingStation()
+				end
+			else 
+				return false, g_i18n:getText("CP_error_no_unload_trigger_found")
+			end
+			local unloadPosition = self:getCpJobParameters().unloadPosition
+			if unloadPosition.x == nil or unloadPosition.angle == nil then 
+				return false, g_i18n:getText("CP_error_no_unload_trigger_found")
+			end
+		end
+	end
 	return isValid, errorMessage
 end
 
@@ -147,7 +184,80 @@ function CpAIJobSiloLoader:getBunkerSiloOrHeap(loadPosition, node)
 	return found, nil, heapSilo
 end
 
+--- Gets the unload trigger at the unload position.
+---@param unloadPosition CpAIParameterPositionAngle
+---@return boolean found?
+---@return table|nil Trigger
+---@return table|nil unloadStation
+function CpAIJobSiloLoader:getUnloadTriggerAt(unloadPosition)
+	local x, z = unloadPosition:getPosition()
+	local dirX, dirZ = unloadPosition:getDirection()
+	if x == nil or dirX == nil then
+		return false
+	end	
+	local fillType
+	local silo = self.heap or self.bunkerSilo
+	if silo then 
+		fillType = silo:getFillType()
+	end
+	local found, trigger, station = g_triggerManager:getDischargeableUnloadTriggerAt( x, z, dirX, dirZ, 5, 25)
+	if found and fillType ~= nil then 
+		--- Additional check if the fill type of the silo 
+		--- matches with the fill type of the unload target.
+		if not trigger:getIsFillTypeAllowed(fillType) then 
+			--- Fill type is not supported by the trigger.
+			found = false
+			local convertedOutputFillTypes = self:getConvertedFillTypes()
+			for _, convertedFillType in ipairs(convertedOutputFillTypes) do 
+				--- Checks possible found fill type conversions
+				if trigger:getIsFillTypeAllowed(convertedFillType) then
+					found = true
+					break
+				end
+			end
+		end
+	end
+	return found, trigger, station
+end
+
 function CpAIJobSiloLoader:drawSilos(map)
     self.heapPlot:draw(map)
 	g_bunkerSiloManager:drawSilos(map, self.bunkerSilo) 
+	if self.cpJobParameters.unloadAt:getValue() == CpSiloLoaderJobParameters.UNLOAD_TRIGGER then 
+		local fillTypes = self:getConvertedFillTypes()
+		local silo = self.heap or self.bunkerSilo
+		if silo then 
+			table.insert(fillTypes, silo:getFillType())
+		end
+		g_triggerManager:drawDischargeableTriggers(map, self.unloadTrigger, fillTypes)
+	end
+end
+
+
+--- Gets all the unloading stations.
+function CpAIJobSiloLoader:getUnloadingStations()
+	local unloadingStations = {}
+	for _, unloadingStation in pairs(g_currentMission.storageSystem:getUnloadingStations()) do
+		--- TODO: Maybe a few stations need to be ignored?
+		--- For example stations that have no possible correct fill type
+		table.insert(unloadingStations, unloadingStation)
+	end
+	return unloadingStations
+end
+
+--- Gets converted fill types if there are any.
+---@return table
+function CpAIJobSiloLoader:getConvertedFillTypes()
+	local fillTypes = {}
+	local vehicle = self:getVehicle()
+	if vehicle then 
+		local shovels, found = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, Shovel)
+		local spec = found and shovels[1].spec_turnOnVehicle
+		if spec and spec.activateableDischargeNode and spec.activateableDischargeNode.fillTypeConverter  then 
+			for _, data in pairs(spec.activateableDischargeNode.fillTypeConverter) do 
+				table.insert(fillTypes, data.targetFillTypeIndex)
+			end
+		end
+	end
+	return fillTypes
 end

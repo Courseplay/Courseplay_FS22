@@ -25,6 +25,7 @@
     <text name="CP_error_vehicle_too_far_away_from_field" text="Транспортное средство слишком далеко от поля, чтобы стартовать."/>
     <text name="CP_error_no_bunkerSilo_found" text="Силосную яму не найдено."/>
     <text name="CP_error_no_heap_found" text="Не найдена куча."/>
+    <text name="CP_error_no_unload_trigger_found" text="No unloading point found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -93,6 +94,9 @@
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Позиция загрузки"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Позиция загрузки"/>
     <text name="CP_siloLoader_fillLevelProgress" text="Прогресс: "/>
+    <text name="CP_siloLoaderJobParameters_subTitle_unloading" text="Unloading at:"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="Trailer"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="Unload station"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -177,6 +181,8 @@
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Настройки работника в силосной яме"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Рабочая ширина"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Рабочая ширина. Значение: 0 - 50"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Shovel loading offset. Value: -1 - 1"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Shovel loading offset. Value: -1 - 1"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
@@ -809,6 +815,16 @@ Courseplay способен прессовать или распределять
 Чтобы начать необходимо установить погрузочный маркер в меню ИИ.
 Маркер обнаруживает кучи или бункеры и выделяет их на карте.
 Теперь можно запускать помощника.
+"/>
+    <text name="CP_help_page_shovelLoader_title" text="Wheelloader Driver"/>
+    <text name="CP_help_page_shovelLoaderGeneral_text" text="
+WIP
+"/>
+    <text name="CP_help_page_shovelLoaderBasic_text" text="
+WIP
+"/>
+    <text name="CP_help_page_shovelLoaderTrigger_text" text="
+WIP
 "/>
     <!---->
     <!--Input bindings-->
