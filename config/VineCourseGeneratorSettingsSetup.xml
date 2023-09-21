@@ -21,6 +21,6 @@
             </Texts>
         </Setting>
         <Setting classType="AIParameterSettingList" name="vineMultiTools" min="1" max="5" default="1"/>
-        <Setting classType="AIParameterSettingList" name="vineRowsToSkip" min="0" max="2" default="0"/>
+        <Setting classType="AIParameterSettingList" name="vineRowsToSkip" min="0" max="4" default="0"/>
     </SettingSubTitle>
 </Settings>
