@@ -12,17 +12,32 @@
 ## What Works
 
 * **Multiplayer support**
-* Fieldwork and vine work with courses from the course generator.
-* Course manager for saving/loading/renaming/moving and deleting of courses.
-* Wrapping and collecting of bales with or without a course.
-* Unloading of combines with unloaders.
-* Creating heaps of sugar beets or other fruits on the field with the combine unloader.
-* Unloading silo loaders, like the ``ROPA Maus`` and letting AD or Giants unload the trailer after that.
-* Compacting of a bunker silo or pushing the chaff into the back of a silo.
-* Let the combine unload into nearby trailers (combine self unload).
-* Field work with up to 5 vehicles on the same course (multi tool course).
-* Creating custom fields by recording a course or drawing on the AI Map.
-* Course editor to edit fieldwork courses or custom field borders.
+* Fieldwork mode:
+  * Course generator for complex fields with many option like headlands or beets with combines and so on ..
+  * Up to 5 workers with the same tools can work together on a field with the same course (multi tools)
+  * Generate courses for vine work
+  * Save/load/rename/move courses
+  * Load courses for baling, straw or grass collection and so on
+  * Combines can automatically unload into nearby trailers (combine self unload)
+* Bale collector mode:
+  * Wrapping bales on a field without a course
+  * Collecting bales on the field without a course and unloading them with [AutoDrive](https://github.com/Stephan-S/FS22_AutoDrive)
+* Combine unloader mode:
+  * Unload combines on the field
+  * Sending the giants helper or [AutoDrive](https://github.com/Stephan-S/FS22_AutoDrive) to unload at an unload station
+  * Creating heaps of sugar beets or other fruits on the field
+  * Unloading a loader vehicle, like the ``ROPA Maus`` and letting [AutoDrive](https://github.com/Stephan-S/FS22_AutoDrive) or Giants unload the trailer after that
+* Silo load mode:
+  * Loading from a heap or bunker silo with loader, like the ``ROPA Maus``
+  * Using a wheel loader or a front loader to load from a heap or a bunker silo and unload to:
+    * Unloading to nearby trailers
+    * Unloading to an unloading station, which needs to be selected on the AI menu
+* Bunker silo mode:
+  * Compacting the silo with or without tools like this one [Silo distributor](https://www.farming-simulator.com/mod.php?lang=de&country=de&mod_id=242708&title=fs2022)
+  * Using a shield in a silo with a back wall to push the chaff to the back of silo
+* Misc:
+  * Creating custom fields by recording the boarder with a vehicle or drawing on the AI Map.
+  * Course editor in the buy menu to edit courses or custom fields.
 * Mod support with [AutoDrive](https://github.com/Stephan-S/FS22_AutoDrive):
   * Sending the fieldwork driver to refill seeds/fertilizers and so on.
   * Sending the fieldworker/ bale collector to unload collected straw and so on.
