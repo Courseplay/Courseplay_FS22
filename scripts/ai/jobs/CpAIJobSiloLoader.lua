@@ -15,7 +15,7 @@ CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH = 25
 --- Trailer unload marker width, -TRAILER_SEARCH_WIDTH/2 to TRAILER_SEARCH_WIDTH/2 
 CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH = 20
 --- Max distance the trailer unload spot can be from the silo/heap.
-CpAIJobSiloLoader.MAX_TRAILER_DISTANCE_FROM_SILO = 100
+CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO = 100
 
 function CpAIJobSiloLoader.new(isServer, customMt)
 	local self = CpAIJob.new(isServer, customMt or AIJobCombineUnloaderCp_mt)
@@ -146,7 +146,7 @@ function CpAIJobSiloLoader:validate(farmId)
 	if not AIUtil.hasChildVehicleWithSpecialization(vehicle, ConveyorBelt) then 
 		if self.cpJobParameters.unloadAt:getValue() == CpSiloLoaderJobParameters.UNLOAD_TRIGGER then 
 			--- Validates the unload trigger setup
-			local found, unloadTrigger, unloadStation = self:getUnloadTriggerAt(self.cpJobParameters.unloadPosition)
+			local found, unloadTrigger, unloadStation, validDistanceToSilo = self:getUnloadTriggerAt(self.cpJobParameters.unloadPosition)
 			if found then 
 				self.unloadStation = unloadStation
 				self.unloadTrigger = unloadTrigger
@@ -168,6 +168,9 @@ function CpAIJobSiloLoader:validate(farmId)
 			if unloadPosition.x == nil or unloadPosition.angle == nil then 
 				return false, g_i18n:getText("CP_error_no_unload_trigger_found")
 			end
+			if not validDistanceToSilo then 
+				return false, g_i18n:getText("CP_error_unload_target_to_far_away_from_silo")
+			end
 		else 
 			local found, area, validDistanceToSilo = CpAIJobSiloLoader.getTrailerUnloadArea(
 				self.cpJobParameters.unloadPosition, self.bunkerSilo or self.heap)
@@ -176,7 +179,7 @@ function CpAIJobSiloLoader:validate(farmId)
 				self.trailerAreaPlot:setArea(area)
 			end
 			if not validDistanceToSilo then 
-				return false, g_i18n:getText("CP_error_trailer_unload_to_far_away_from_silo")
+				return false, g_i18n:getText("CP_error_unload_target_to_far_away_from_silo")
 			end
 		end
 	end
@@ -224,8 +227,8 @@ function CpAIJobSiloLoader.getTrailerUnloadArea(position, silo)
 	if silo then 
 		local fx, fz = silo:getFrontCenter()
 		local bx, bz = silo:getBackCenter()
-		if MathUtil.vector2Length(x-fx, z-fz) < CpAIJobSiloLoader.MAX_TRAILER_DISTANCE_FROM_SILO and
-			MathUtil.vector2Length(x-bx, z-bz) < CpAIJobSiloLoader.MAX_TRAILER_DISTANCE_FROM_SILO  then
+		if MathUtil.vector2Length(x-fx, z-fz) < CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO and
+			MathUtil.vector2Length(x-bx, z-bz) < CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO  then
 			return true, area, false
 		end
 	end	
@@ -260,6 +263,7 @@ end
 ---@return boolean found?
 ---@return table|nil Trigger
 ---@return table|nil unloadStation
+---@return boolean|nil distance is close enough to the bunker silo/heap
 function CpAIJobSiloLoader:getUnloadTriggerAt(unloadPosition)
 	local x, z = unloadPosition:getPosition()
 	local dirX, dirZ = unloadPosition:getDirection()
@@ -287,6 +291,12 @@ function CpAIJobSiloLoader:getUnloadTriggerAt(unloadPosition)
 				end
 			end
 		end
+	end
+	local fx, fz = silo:getFrontCenter()
+	local bx, bz = silo:getBackCenter()
+	if MathUtil.vector2Length(x-fx, z-fz) < CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO and
+		MathUtil.vector2Length(x-bx, z-bz) < CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO  then
+		return found, trigger, station, true
 	end
 	return found, trigger, station
 end
