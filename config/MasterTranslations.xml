@@ -83,6 +83,10 @@
 			<Text language="de"><![CDATA[Keinen Abladepunkt gefunden.]]></Text>
 			<Text language="en"><![CDATA[No unloading point found.]]></Text>
 		</Translation>
+		<Translation name="CP_error_trailer_unload_to_far_away_from_silo">
+			<Text language="de"><![CDATA[Anhänger Abladepunkt ist zu weit vom Silo entfernt.]]></Text>
+			<Text language="en"><![CDATA[Trailer unloading point is to far away from the silo.]]></Text>
+		</Translation>
 	</Category>
 	<Category name="AI job parameters">	
 		<Translation name="CP_jobParameters_fieldPosition_title">

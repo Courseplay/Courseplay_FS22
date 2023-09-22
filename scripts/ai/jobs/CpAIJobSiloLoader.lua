@@ -14,6 +14,8 @@ local AIJobCombineUnloaderCp_mt = Class(CpAIJobSiloLoader, CpAIJob)
 CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH = 25
 --- Trailer unload marker width, -TRAILER_SEARCH_WIDTH/2 to TRAILER_SEARCH_WIDTH/2 
 CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH = 20
+--- Max distance the trailer unload spot can be from the silo/heap.
+CpAIJobSiloLoader.MAX_TRAILER_DISTANCE_FROM_SILO = 100
 
 function CpAIJobSiloLoader.new(isServer, customMt)
 	local self = CpAIJob.new(isServer, customMt or AIJobCombineUnloaderCp_mt)
@@ -167,10 +169,14 @@ function CpAIJobSiloLoader:validate(farmId)
 				return false, g_i18n:getText("CP_error_no_unload_trigger_found")
 			end
 		else 
-			local found, area = CpAIJobSiloLoader.getTrailerUnloadArea(self.cpJobParameters.unloadPosition)
+			local found, area, validDistanceToSilo = CpAIJobSiloLoader.getTrailerUnloadArea(
+				self.cpJobParameters.unloadPosition, self.bunkerSilo or self.heap)
 			if found then 
 				self.trailerAreaPlot:setVisible(true)
 				self.trailerAreaPlot:setArea(area)
+			end
+			if not validDistanceToSilo then 
+				return false, g_i18n:getText("CP_error_trailer_unload_to_far_away_from_silo")
 			end
 		end
 	end
@@ -179,13 +185,15 @@ end
 
 --- Gets the area for search for trailers
 ---@param position CpAIParameterPositionAngle
+---@param silo CpSilo|nil
 ---@return boolean found?
 ---@return table area
-function CpAIJobSiloLoader.getTrailerUnloadArea(position)
+---@return boolean distance to silo is valid
+function CpAIJobSiloLoader.getTrailerUnloadArea(position, silo)
 	local x, z = position:getPosition()
 	local dirX, dirZ = position:getDirection()
 	if x == nil or dirX == nil then
-		return false, {}
+		return false, {}, true
 	end
 	--- Rotation matrix to rotate Z directions to x directions
 	local dirX2 = dirX * math.cos(math.pi/2) - dirZ * math.sin(math.pi/2)
@@ -213,7 +221,15 @@ function CpAIJobSiloLoader.getTrailerUnloadArea(position)
 			z = z + dirZ * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 + dirZ2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2
 		},
 	}
-	return true, area
+	if silo then 
+		local fx, fz = silo:getFrontCenter()
+		local bx, bz = silo:getBackCenter()
+		if MathUtil.vector2Length(x-fx, z-fz) < CpAIJobSiloLoader.MAX_TRAILER_DISTANCE_FROM_SILO and
+			MathUtil.vector2Length(x-bx, z-bz) < CpAIJobSiloLoader.MAX_TRAILER_DISTANCE_FROM_SILO  then
+			return true, area, false
+		end
+	end	
+	return true, area, true
 end
 
 --- Gets the bunker silo or heap at the loading position in that order.
