@@ -210,8 +210,6 @@ function AIDriveStrategyDriveToFieldWorkStart:onPathfindingDoneToCourseStart(pat
         self:debug('Pathfinding to start fieldwork finished with %d waypoints (%d ms)',
                 #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
         courseToStart = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-        -- make sure the course extends to the first waypoint
-        courseToStart:appendWaypoints({fieldWorkCourse:getWaypoint(ix)})
         courseToStart:adjustForTowedImplements(2)
     else
         self:debug('Pathfinding to start fieldwork failed, using alignment course instead')
