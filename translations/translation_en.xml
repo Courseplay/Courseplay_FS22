@@ -855,8 +855,7 @@ To start a wheel loader helper, you need to set the load and unload positions by
 The loading position works the same like the one from the loader mode. A blue square will be created arround the heap.
 
 The unloading position depends if you want to unload into a trailer or into an unloading station.
-Unloading into a trailer works automatically and doesn't need a dedicated unload position. The driver will check for the nearest standing trailer and unloads to it from the side.
-
+A Trailer will be looked for withint the placable search area and will be driven to automatically. The direction doesn't matter.
 If you want to unload into an unloading station, you need to switch the target and then mark the trigger with the unloading position.
 "/>
     <text name="CP_help_page_shovelLoaderTrigger_text" text="

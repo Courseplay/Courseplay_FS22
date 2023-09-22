@@ -852,9 +852,7 @@ Um einen Radlader Fahrer zu starten, müssen zunächst über das Ziel Icon im HU
 Die Ladeposition wird wie auch bereits beim Lader gewählt. Ein blauer Ramen entsteht um den gefunden Haufen.
 
 Die Abladeposition hängt davon ab, ob du in einen Anhänger oder in eine Abladestation entladen möchtest.
-Abladen in einen Anhänger funktioniert automatisch und braucht keine zusätzliche Position. 
-Es wird der naheste, stehende Anhänger gewählt und seitlich angefahren.
-
+Ein Anhänger wird innerhalb des platzierbaren Suchbereichs gesucht und wird zum abladen automatisch angefahren. Die Richtung spielt dabei keine Rolle.
 Möchtest du in eine Abladestation entladen, muss zunächst das Ziel umgestellt werden und anschließend der Marker auf den Trigger gesetzt werden.
 "/>
     <text name="CP_help_page_shovelLoaderTrigger_text" text="
