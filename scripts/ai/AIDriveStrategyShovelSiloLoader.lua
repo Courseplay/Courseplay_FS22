@@ -431,18 +431,18 @@ function AIDriveStrategyShovelSiloLoader:isValidTrailer(trailer, trailerToIgnore
         return false
     end
     if trailer.rootVehicle and not AIUtil.isStopped(trailer.rootVehicle) then 
-        debug("is not stopped!", CpUtil.getName(trailer))
+        debug("is not stopped!")
         return false
     end
     if trailerToIgnore and table.hasElement(trailerToIgnore, trailer) then 
-        debug("will be ignored!", CpUtil.getName(trailer))
+        debug("will be ignored!")
         return false
     end       
     local canLoad, fillUnitIndex, fillType, exactFillRootNode = 
         ImplementUtil.getCanLoadTo(trailer, self.shovelImplement, 
         nil, debug) 
     if not canLoad or exactFillRootNode == nil then 
-        debug("can't be used!", CpUtil.getName(trailer))
+        debug("can't be used!")
         return false
     end
     return true, {  fillUnitIndex = fillUnitIndex,
