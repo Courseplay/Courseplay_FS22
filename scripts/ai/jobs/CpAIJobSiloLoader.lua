@@ -11,9 +11,9 @@ CpAIJobSiloLoader = {
 local AIJobCombineUnloaderCp_mt = Class(CpAIJobSiloLoader, CpAIJob)
 
 --- Trailer unload marker length, -TRAILER_SEARCH_LENGTH/2 to TRAILER_SEARCH_LENGTH/2 
-CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH = 20
+CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH = 25
 --- Trailer unload marker width, -TRAILER_SEARCH_WIDTH/2 to TRAILER_SEARCH_WIDTH/2 
-CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH = 10
+CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH = 20
 
 function CpAIJobSiloLoader.new(isServer, customMt)
 	local self = CpAIJob.new(isServer, customMt or AIJobCombineUnloaderCp_mt)

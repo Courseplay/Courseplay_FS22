@@ -2545,9 +2545,7 @@ Um einen Radlader Fahrer zu starten, müssen zunächst über das Ziel Icon im HU
 Die Ladeposition wird wie auch bereits beim Lader gewählt. Ein blauer Ramen entsteht um den gefunden Haufen.
 
 Die Abladeposition hängt davon ab, ob du in einen Anhänger oder in eine Abladestation entladen möchtest.
-Abladen in einen Anhänger funktioniert automatisch und braucht keine zusätzliche Position. 
-Es wird der naheste, stehende Anhänger gewählt und seitlich angefahren.
-
+Ein Anhänger wird innerhalb des platzierbaren Suchbereichs gesucht und wird zum abladen automatisch angefahren. Die Richtung spielt dabei keine Rolle.
 Möchtest du in eine Abladestation entladen, muss zunächst das Ziel umgestellt werden und anschließend der Marker auf den Trigger gesetzt werden.
 ]]></Text>
 			<Text language="en"><![CDATA[
@@ -2555,8 +2553,7 @@ To start a wheel loader helper, you need to set the load and unload positions by
 The loading position works the same like the one from the loader mode. A blue square will be created arround the heap.
 
 The unloading position depends if you want to unload into a trailer or into an unloading station.
-Unloading into a trailer works automatically and doesn't need a dedicated unload position. The driver will check for the nearest standing trailer and unloads to it from the side.
-
+A Trailer will be looked for withint the placable search area and will be driven to automatically. The direction doesn't matter.
 If you want to unload into an unloading station, you need to switch the target and then mark the trigger with the unloading position.
 ]]></Text>
 		</Translation>
