@@ -23,7 +23,7 @@
 				<Text>unloadTrigger</Text>
 			</Texts>
 		</Setting>
-		<Setting classType="CpAIParameterPositionAngle" name="unloadPosition" positionParameterType="UNLOAD" isDisabled="isUnloadPositionDisabled"/>
+		<Setting classType="CpAIParameterPositionAngle" name="unloadPosition" positionParameterType="UNLOAD"/>
 		<Setting classType="CpAIParameterUnloadingStation" name="unloadStation" isDisabled="isUnloadStationDisabled" generateValuesFunction="generateUnloadingStations"></Setting>
 	</SettingSubTitle>
 </Settings>

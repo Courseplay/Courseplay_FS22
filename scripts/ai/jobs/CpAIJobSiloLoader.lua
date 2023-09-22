@@ -1,6 +1,7 @@
 --- AI Job for silo loader like the ropa maus or wheel loaders.
 ---@class CpAIJobSiloLoader : CpAIJob
 ---@field heapPlot HeapPlot
+---@field trailerAreaPlot HeapPlot
 ---@field heapNode number
 CpAIJobSiloLoader = {
 	name = "SILO_LOADER_CP",
@@ -9,11 +10,19 @@ CpAIJobSiloLoader = {
 }
 local AIJobCombineUnloaderCp_mt = Class(CpAIJobSiloLoader, CpAIJob)
 
+--- Trailer unload marker length, -TRAILER_SEARCH_LENGTH/2 to TRAILER_SEARCH_LENGTH/2 
+CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH = 20
+--- Trailer unload marker width, -TRAILER_SEARCH_WIDTH/2 to TRAILER_SEARCH_WIDTH/2 
+CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH = 10
+
 function CpAIJobSiloLoader.new(isServer, customMt)
 	local self = CpAIJob.new(isServer, customMt or AIJobCombineUnloaderCp_mt)
 
 	self.heapPlot = HeapPlot(g_currentMission.inGameMenu.ingameMap)
     self.heapPlot:setVisible(false)
+
+	self.trailerAreaPlot = HeapPlot(g_currentMission.inGameMenu.ingameMap)
+
 
 	self.heapNode = CpUtil.createNode("siloNode", 0, 0, 0, nil)
 	self.heap = nil
@@ -101,6 +110,7 @@ end
 --- Called when parameters change, scan field
 function CpAIJobSiloLoader:validate(farmId)
 	self.heapPlot:setVisible(false)
+	self.trailerAreaPlot:setVisible(false)
 	self.heap = nil
 	self.bunkerSilo = nil
 	self.unloadStation = nil
@@ -156,9 +166,54 @@ function CpAIJobSiloLoader:validate(farmId)
 			if unloadPosition.x == nil or unloadPosition.angle == nil then 
 				return false, g_i18n:getText("CP_error_no_unload_trigger_found")
 			end
+		else 
+			local found, area = CpAIJobSiloLoader.getTrailerUnloadArea(self.cpJobParameters.unloadPosition)
+			if found then 
+				self.trailerAreaPlot:setVisible(true)
+				self.trailerAreaPlot:setArea(area)
+			end
 		end
 	end
 	return isValid, errorMessage
+end
+
+--- Gets the area for search for trailers
+---@param position CpAIParameterPositionAngle
+---@return boolean found?
+---@return table area
+function CpAIJobSiloLoader.getTrailerUnloadArea(position)
+	local x, z = position:getPosition()
+	local dirX, dirZ = position:getDirection()
+	if x == nil or dirX == nil then
+		return false, {}
+	end
+	--- Rotation matrix to rotate Z directions to x directions
+	local dirX2 = dirX * math.cos(math.pi/2) - dirZ * math.sin(math.pi/2)
+	local dirZ2 = dirX * math.sin(math.pi/2) + dirZ * math.cos(math.pi/2)
+	--- Creates a rectangle for the trailer unload area 
+	local area =  {
+		{
+			x = x + dirX * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 + dirX2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2, 
+			z = z + dirZ * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 + dirZ2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2
+		},
+		{
+			x = x + dirX * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 - dirX2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2, 
+			z = z + dirZ * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 - dirZ2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2
+		},
+		{
+			x = x - dirX * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 - dirX2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2, 
+			z = z - dirZ * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 - dirZ2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2
+		},
+		{
+			x = x - dirX * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 + dirX2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2, 
+			z = z - dirZ * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 + dirZ2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2
+		},
+		{
+			x = x + dirX * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 + dirX2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2, 
+			z = z + dirZ * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 + dirZ2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2
+		},
+	}
+	return true, area
 end
 
 --- Gets the bunker silo or heap at the loading position in that order.
@@ -230,6 +285,9 @@ function CpAIJobSiloLoader:drawSilos(map)
 			table.insert(fillTypes, silo:getFillType())
 		end
 		g_triggerManager:drawDischargeableTriggers(map, self.unloadTrigger, fillTypes)
+	else 
+		--- Drawing trailer area
+		self.trailerAreaPlot:draw(map)
 	end
 end
 

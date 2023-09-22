@@ -26,6 +26,7 @@ function HeapPlot:init(silo)
 	self.isVisible = true
 end
 
+---@param area table
 function HeapPlot:setArea(area)
 	self.area = area
 end

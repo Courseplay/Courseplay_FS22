@@ -193,7 +193,7 @@ end
 
 function CpAIParameterPositionAngle:getDirection()
 	if self.angle == nil then
-		return
+		return 0, 1
 	end
 
 	local xDir, zDir = MathUtil.getDirectionFromYRotation(self.angle)
