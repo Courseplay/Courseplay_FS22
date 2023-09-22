@@ -400,6 +400,22 @@ function AIDriveStrategyShovelSiloLoader:setNewState(newState)
     self.state = newState
 end
 
+--- Checks if a valid target was found, which means either a trailer or a manure spreader.
+---@param trailer table
+---@return boolean
+function AIDriveStrategyShovelSiloLoader:hasTrailerValidSpecializations(trailer)
+    if SpecializationUtil.hasSpecialization(Trailer, trailer.specializations) then 
+        --- All normal trailers
+        return true
+    end
+    if SpecializationUtil.hasSpecialization(Sprayer, trailer.specializations) 
+        and trailer.spec_sprayer.isManureSpreader then 
+        --- Manure spreader
+        return true
+    end
+    return false
+end
+
 --- Is the trailer valid or not?
 ---@param trailer table
 ---@param trailerToIgnore table|nil
@@ -410,11 +426,12 @@ function AIDriveStrategyShovelSiloLoader:isValidTrailer(trailer, trailerToIgnore
         self:debug("%s attached to: %s => %s", CpUtil.getName(trailer), 
                 trailer.rootVehicle and CpUtil.getName(trailer.rootVehicle) or "no root vehicle", string.format(...))
     end
-    if not SpecializationUtil.hasSpecialization(Trailer, trailer.specializations) then 
+    if not self:hasTrailerValidSpecializations(trailer) then 
+        debug("has not valid specializations setup")
         return false
     end
     if trailer.rootVehicle and not AIUtil.isStopped(trailer.rootVehicle) then 
-        self:debug("is not stopped!", CpUtil.getName(trailer))
+        debug("is not stopped!", CpUtil.getName(trailer))
         return false
     end
     if trailerToIgnore and table.hasElement(trailerToIgnore, trailer) then 
