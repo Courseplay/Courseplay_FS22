@@ -25,8 +25,8 @@
     <text name="CP_error_vehicle_too_far_away_from_field" text="Il veicolo è troppo lontano dal campo per partire."/>
     <text name="CP_error_no_bunkerSilo_found" text="Nessun bunker silos trovato."/>
     <text name="CP_error_no_heap_found" text="Nessun cumulo trovato."/>
-    <text name="CP_error_no_unload_trigger_found" text="No unloading point found."/>
-    <text name="CP_error_unload_target_to_far_away_from_silo" text="Chosen unloading point is to far away from the silo."/>
+    <text name="CP_error_no_unload_trigger_found" text="Nessun punto di scarico trovato."/>
+    <text name="CP_error_unload_target_to_far_away_from_silo" text="Il punto di scarico scelto è troppo lontano dal silos."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -95,9 +95,9 @@
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Posizione di caricamento"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Posizione di caricamento"/>
     <text name="CP_siloLoader_fillLevelProgress" text="Avanzamento: "/>
-    <text name="CP_siloLoaderJobParameters_subTitle_unloading" text="Unloading at:"/>
-    <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="Trailer"/>
-    <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="Unload station"/>
+    <text name="CP_siloLoaderJobParameters_subTitle_unloading" text="Scarico a:"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="Rimorchio"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="Stazione di scarico"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -182,8 +182,8 @@
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Impostazioni del lavoratore del bunker silo"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Larghezza di lavoro"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Larghezza di lavoro. Valore: 0 - 50"/>
-    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Shovel loading offset. Value: -1 - 1"/>
-    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Shovel loading offset. Value: -1 - 1"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Compensazione caricamento pala. Valore: -1 - 1"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Compensazione caricamento pala. Valore: -1 - 1"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
