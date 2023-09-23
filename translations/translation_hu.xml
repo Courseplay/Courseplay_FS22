@@ -26,7 +26,6 @@
     <text name="CP_error_no_bunkerSilo_found" text="Siló nem található."/>
     <text name="CP_error_no_heap_found" text="Siló nem található."/>
     <text name="CP_error_no_unload_trigger_found" text="No unloading point found."/>
-    <text name="CP_error_unload_target_to_far_away_from_silo" text="Chosen unloading point is to far away from the silo."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -408,12 +407,12 @@ Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felü
     <!--Info texts-->
     <!---->
     <text name="CP_infoTexts_isStuck" text="elakadt"/>
-    <text name="CP_infoTexts_blockedByObject" text="valamiben elakadt"/>
-    <text name="CP_infoTexts_shouldRefuel" text="hamarosan tankolni kell"/>
-    <text name="CP_infoTexts_needsFuel" text="tankolni kell"/>
-    <text name="CP_infoTexts_needsRepair" text="javítani kell"/>
-    <text name="CP_infoTexts_needsFilling" text="fel kell tölteni"/>
-    <text name="CP_infoTexts_needsUnloading" text="üríteni kell"/>
+    <text name="CP_infoTexts_blockedByObject" text="Valamiben elakadt"/>
+    <text name="CP_infoTexts_shouldRefuel" text="Hamarosan tankolni kell!"/>
+    <text name="CP_infoTexts_needsFuel" text="Üzemanyagszint alacsony!"/>
+    <text name="CP_infoTexts_needsRepair" text="A jármű javításra szorul!"/>
+    <text name="CP_infoTexts_needsFilling" text="Az eszköz kiürült!"/>
+    <text name="CP_infoTexts_needsUnloading" text="Az eszköz megtelt!"/>
     <text name="CP_infoTexts_workFinished" text="készen van"/>
     <text name="CP_infoTexts_drivingToCombine" text="Kombájnhoz vezetés"/>
     <text name="CP_infoTexts_drivingToSelfUnload" text="Pótkocsihoz vezetés"/>
@@ -446,9 +445,9 @@ Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felü
     <!--Help menu-->
     <!---->
     <text name="CP_help_title" text="Courseplay"/>
-    <text name="CP_help_subTitle" text="A Modification for Farming Simulator 22 "/>
+    <text name="CP_help_subTitle" text="Egy módosítás Farming Simulator 22 játékhoz"/>
     <text name="CP_help_page_blank" text=""/>
-    <text name="CP_help_page_General_title" text="General Information"/>
+    <text name="CP_help_page_General_title" text="Általános információ"/>
     <text name="CP_help_page_GeneralBase_text" text="
 A Courseplay segítségével mező útvonalakat generálhatsz ráadás funkciókkal, például fordulósávokkal (headland).
 Szintén lehetővé teszi bálázók és rakodókocsik használatát, amiket a korábbi fűnyírókkal, vagy aratógépekkel azonos útvonalon küldhetsz végig.
@@ -502,63 +501,63 @@ Ezt követően mindig változtathatsz más értékekkel és generálhatsz útvon
 A kísérletezés és különböző beállítások hatásainak megfigyelése különböző mezőkön a legjobb módja, hogy hozzászokj ehhez.
 "/>
     <text name="CP_help_page_courseGeneratorBaseFunctions_text" text="
-Basics:
-The first few values you see here, are real basic stuff.
-- Work width: Most tools get the exact work width detected and you won't have to care about this setting at all. Adjusting it, will have an impact on your overall course.
-- Multiple Tools: This setting is used when you want more then just one vehicle to work on your course. As this gets a bit more complicated, there is a separate help topic for it.
-- Number of Headlands: The best way to keep your vehicles on the field while turning at the end of each row is to add headlands.
-The Number of the Headlands multiplied by the work width should be at least the total length of your vehicle plus the attached tool.
-Center options:
-- Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
-Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have the combine's pipe point out of the fruit most of the time to easier unload them.
-- Up/Down row direction: automatic mostly finds the best direction, but sometimes the longest edge fits better. If you are not happy with either one, choose manual and set the direction manually.
-- Rows to skip: This is a very helpful option to accelerate your work, as tools won't have to back up to turn into the next row.
-- Rows per Land: This has only impact when the field center is set to lands and will tell the generator how many rows each land should have. The more rows, the fewer lands will be generated.
-- Up/down row angle: When the Up/Down row direction is set to manual, this setting will tell the generate the direction.
+Alapok:
+Az első néhány érték, amit itt látsz, igazán alapvető dolog.
+- Munkaszélesség: A legtöbb gép munkaszélessége automatikusan beolvasásra kerül, így ezzel a beállítással egyáltalán nem kell törődnöd. Ennek módosítása hatással lesz a generált útvonalra.
+- Több eszköz: Ez a beállítás akkor használható, ha egynél több gépet akarsz egyidejűleg dolgoztatni egy útvonalon. Mivel ez egy kicsit bonyolultabb, van hozzá egy külön segítő rovat.
+- Fordulósávok száma: A legjobb módja annak, hogy a gépeidet a mezőn tartsd, miközben a sorok végén megfordulnak az, ha fordulósávokat adsz az útvonalhoz.
+A fordulósávok számát szorozva a munkaszélességgel érdemes legalább annyira állítani, mint a járműved és a csatolt munkagép együttes hossza.
+Központi opciók:
+- Mező közepe: Különböző módok vannak arra, hogy miként nézzen ki a mező középső mintázata. A klassikus és legtöbbet használt opció az fel/le.
+Spirális, Versenypálya és Blokk mind saját előnyökkel rendelkezik a többi módhoz képest. Blokk opció esetén például a kombájn csöve legtöbbször a terményből kifelé mutat a könnyebb kirakodásért.
+- Fel/le irány: Általában az automatikus opció megtalálja a legjobb irányt, de néha a leghosszabb él jobban passzol. Ha egyik sem felel meg neked, válaszd a kézi módot és állítsd be az irányt magad.
+- Kihagyandó sorok: Ez egy nagyon hasznos lehetőség a munkád felgyorsításához, mivel a gépeknek nem kell tolatniuk a következő sorra való forduláshoz.
+- Sorok blokkonként: Ennek csak akkor van hatása, ha a mező közepe blokkokar van állítva és megmondja a generátornak, hogy hány sor legyen egy blokkban. Ha több a sor, kevesebb blokk lesz generálva.
+- Fel/le sorok szöge: Amikor a fel/le irány mellett a kézi módot választod, ez a beállítás megmondja a generátornak a sorok irányszögét. 0° jelenti az Észak-Dél irányt.
 "/>
     <text name="CP_help_page_courseGeneratorHeadland_text" text="
-Headland settings will only show up, when you have set at least 1 at Number of headlands.
-You gain options for where to start on, corner settings, direction and overlap.
-Headlands are highly suggested to prevent tools leaving the field when turning.
+A fordulósáv beállítások csak akkor jelennek meg, ha a fordulósávok számát legalább 1-re állítod.
+Ezzel olyan lehetőségeket nyersz, mint a kezdés helye, sarok beállítások, irány és átfedés.
+A fordulósávok használata erősen ajánlott a fordulás közbeni mező elhagyás megelőzése érdekében.
 "/>
     <text name="CP_help_page_courseGeneratorHeadlandFunctions_text" text="
-- Start work on: As mentioned in the extended AI Menu, the field position is used to set the start or end position for the field work course.
-When set to start on headland, it tells where the start should be. When changed to start on rows, it will tell where to end the work.
-- Headland corners: Smooth will have a simple smoothing over the corners, This works for all tools, but will lead to tiny unworked patches in the corners.
-They can be reduced with overlap, but never disappear. Sharp will generate a turn based on the angle of the field border angle.
-Round will take the current selected vehicles turn radius into account to have the best round corner for that tool.
-- Headland direction: clockwise or counter-clockwise. This can be important for combines and harvesters, depending on wich side the pipe or conveyor belt is.
-- Headland overlap: How much % overlap all headlands should have. The first one will have no overlap with the field border, but the inner ones will overlap with their neighbour.
+- Munka kezdés helye: Ahogy említésre kerül a bővített AI menüben, a mező pozíciója arra szolgál, hogy a mezőmunka utvonal kezdetét vagy végét megadjuk.
+Amikor fordulósávon kezdés van beállítva, akkor a kezdés helyét adod meg. Ha középen kezdésre váltasz, akkor az útvonal végét adod meg.
+- Fordulósáv sarkok: A simított egyszerűen elsimítja a sarkokat, ami minden géppel működik, de kicsi, megmunkálatlan foltokhoz vezet a sarkoknál.
+Ezek csökkenthetők átfedéssel, de sosem tűnnek el. Az éles egy forduló manővert fog generálni a mezősarok szögét alapul véve.
+A kerek opció figyelembe veszi a kiválasztott jármű fordulási sugarát, hogy a legjobb ívet kaphasd az adott járműhöz.
+- Fordulósáv iránya: Órairányú vagy órával ellentétes. Ez fontos lehet betakarító gépeknél attól függően, hogy melyik oldalon van a cső, vagy kirakodó szalag.
+- Fordulósáv átfedés: Fordulósávok átfedése százalékban megadva. Az első nem lesz fedésben a mező határával, de a belső sávok átfedésben lesznek egymással.
 "/>
     <text name="CP_help_page_courseGeneratorExtras_text" text="
-Field Margin explanation:
-Positive values reduce field size to add a buffer around the worked area in case you have obstacles near the field border.
-Negative values enlarge worked area beyond the field boundary to cover up field borders that are not perfectly detected.
+Mezőhatár magyarázata:
+A pozitív értékek csökkentik a mező méretét és egy biztonsági sávot hoznak létre arraz az esetre, ha akadályok lennének a határhoz közel.
+A negatív értékek megnövelik a művelt területet a mező határain túlra, hogy lefedjék a nem megfelelően detektált határokat.
 "/>
-    <text name="CP_help_page_courseManager_title" text="Course manager"/>
+    <text name="CP_help_page_courseManager_title" text="Útvonal kezelő"/>
     <text name="CP_help_page_courseManagerBase_text" text="
-The course manager allows you to save courses and enables you to load the saved course later again.
-This is really important, when you want to have multiple workers driving the same course for convoy (multi tools).
-This feature also allows you to pickup the swath left behind by a combine or a windrower with a forage wagon or a baler.
+Az útvonal kezelő lehetővé teszi útvonalak mentését és későbbi újra betöltését.
+Ez nagyon fontos amikor több munkást akarsz alkalmazni ugyanazon az útvonalon konvoj módban (több eszköz).
+Ez a funkció lehetővé teszi továbbá a hátrahagyott rend felszedését egy kombájn vagy rendsodró után, felszedőkocsi vagy bálázó használatával.
 
-The save location for the course files is: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (or for vanilla e.g. MapUS).
-The course manager works differently from what you are used to in FS19.
-Courses are saved into folders, which will be displayed on the left. This means you would need at least one folder to start saving courses into. 
-Folders can simply created by the button at the bottom of the screen and entering a name.
-Courses are only saved localy for now.
+Az útvonalfájlok mentési helye: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (or for vanilla e.g. MapUS).
+Az útvonalkezelő másként működik, mint amihez hozzászoktál FS19-ben.
+Az útvonalak mentése mappákban történik, amik bal oldalon jelennek meg. Ez azt jelenti, hogy az útvonalak mentése előtt szükséged lesz legalább egy mappára. 
+Mappákat egyszerűen létrehozhatsz a képernyő alján található gombbal és név beírásával.
+Az útvonalak jelenleg csak helyi fájlokként kerülnek mentésre.
 "/>
     <text name="CP_help_page_courseManagerBaseFunctions_text" text="
-When you have a course loaded, you can save it by clicking on the save course button and then on the folder. Then a pop up window will appear where you can enter the name of your course.
-The name and location can be changed later.
-To remove the course from your vehicle, click on 'Clear current course' button.
-For loading a course you would have to select the folder first, click on the load course button and then simply clicking on the course you want to load.
-Clicking on change mode activates the edit mode of the course manager.
+Ha van egy betöltött útvonalad, azt úgy tudod menteni, hogy először az Útvonal mentése gombra kattintasz, majd a célmappára. Ezután egy felugró ablak jelenik meg, ahová beírhatod az útvonal nevét.
+A név és mentési hely később módosítható.
+A betöltött útvonal járművedről való eltávolításához kattints a 'Jelenlegi útvonal törlése' gombra.
+Egy útvonal betöltéséhez először válaszd ki a mappát, majd egyszerűen kattints a betölteni kívánt útvonalra.
+A 'Módváltás' gombra kattintva aktiválhatod az útvonalkezelő szerkesztő módját.
 "/>
     <text name="CP_help_page_courseManagerEdit_text" text="
-With the edit mode is active you have these options:
-- Moving a course into another directory.
-- Deleting courses or directories.
-- Renaming courses or directories.
+A szerkesztő mód aktiválása a következő opciókat teszi elérhetővé:
+- Útvonal mozgatása másik mappába.
+- Útvonalak vagy mappák törlése.
+- Útvonalak vagy mappák átnevezése.
 "/>
     <text name="CP_help_page_courseManagerEditFunctions_text" text="
 For moving a course: 
