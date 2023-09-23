@@ -29,6 +29,7 @@ function CpAIJobSiloLoader.new(isServer, customMt)
 	self.heapNode = CpUtil.createNode("siloNode", 0, 0, 0, nil)
 	self.heap = nil
 	self.hasValidPosition = false
+	self.debugChannel = CpDebug.DBG_SILO
 	return self
 end
 
@@ -230,8 +231,12 @@ function CpAIJobSiloLoader.getTrailerUnloadArea(position, silo)
 		--- to the trailer unload area marker is which the max limit. 
 		local fx, fz = silo:getFrontCenter()
 		local bx, bz = silo:getBackCenter()
-		if MathUtil.vector2Length(x-fx, z-fz) > CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO and
-			MathUtil.vector2Length(x-bx, z-bz) > CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO then
+		local dist1 = MathUtil.vector2Length(x-fx, z-fz)
+		local dist2 = MathUtil.vector2Length(x-bx, z-bz)
+		CpUtil.debugFormat(CpDebug.DBG_SILO, "Trailer marker is %.1fm/%.1fm away from the silo", 
+			math.min(dist1, dist2), CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO)
+		if dist1 > CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO and
+			dist2 > CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO then
 			--- Trailer unload area is to far away from the silo
 			return true, area, false
 		end
@@ -303,8 +308,13 @@ function CpAIJobSiloLoader:getUnloadTriggerAt(unloadPosition)
 	local fx, fz = silo:getFrontCenter()
 	local bx, bz = silo:getBackCenter()
 	--- Checks the distance of the unloading station to the bunker silo/heap 
-	if MathUtil.vector2Length(x-fx, z-fz) < CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO or
-		MathUtil.vector2Length(x-bx, z-bz) < CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO  then
+	local dist1 = MathUtil.vector2Length(x-fx, z-fz)
+	local dist2 = MathUtil.vector2Length(x-bx, z-bz)
+	self:debug("Unloading trigger: %s is %.1fm/%.1fm away from the silo", 
+		CpUtil.getName(station), math.min(dist1, dist2), 
+		self.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO)
+	if dist1 < CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO or
+		dist2 < CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO  then
 		--- Unloading point is close enough to the bunker silo.
 		return found, trigger, station, true
 	end
