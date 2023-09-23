@@ -186,7 +186,8 @@ function CpAIJobSiloLoader:validate(farmId)
 	return isValid, errorMessage
 end
 
---- Gets the area for search for trailers
+--- Gets the area to search for trailers 
+--- and optional check if the trailer area is close enough to the silo 
 ---@param position CpAIParameterPositionAngle
 ---@param silo CpSilo|nil
 ---@return boolean found?
@@ -225,10 +226,13 @@ function CpAIJobSiloLoader.getTrailerUnloadArea(position, silo)
 		},
 	}
 	if silo then 
+		--- Checks if the distance between the front or back of the bunker silo/heap 
+		--- to the trailer unload area marker is which the max limit. 
 		local fx, fz = silo:getFrontCenter()
 		local bx, bz = silo:getBackCenter()
-		if MathUtil.vector2Length(x-fx, z-fz) > CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO or
+		if MathUtil.vector2Length(x-fx, z-fz) > CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO and
 			MathUtil.vector2Length(x-bx, z-bz) > CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO then
+			--- Trailer unload area is to far away from the silo
 			return true, area, false
 		end
 	end	
@@ -259,6 +263,10 @@ function CpAIJobSiloLoader:getBunkerSiloOrHeap(loadPosition, node)
 end
 
 --- Gets the unload trigger at the unload position.
+--- Checks for the correct fill type 
+--- between the silo and the unload target.
+--- Also checks if the unloading target 
+--- is close enough to the silo.
 ---@param unloadPosition CpAIParameterPositionAngle
 ---@return boolean found?
 ---@return table|nil Trigger
@@ -294,8 +302,10 @@ function CpAIJobSiloLoader:getUnloadTriggerAt(unloadPosition)
 	end
 	local fx, fz = silo:getFrontCenter()
 	local bx, bz = silo:getBackCenter()
-	if MathUtil.vector2Length(x-fx, z-fz) < CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO and
+	--- Checks the distance of the unloading station to the bunker silo/heap 
+	if MathUtil.vector2Length(x-fx, z-fz) < CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO or
 		MathUtil.vector2Length(x-bx, z-bz) < CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO  then
+		--- Unloading point is close enough to the bunker silo.
 		return found, trigger, station, true
 	end
 	return found, trigger, station
