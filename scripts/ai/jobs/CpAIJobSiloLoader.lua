@@ -196,7 +196,7 @@ function CpAIJobSiloLoader.getTrailerUnloadArea(position, silo)
 	local x, z = position:getPosition()
 	local dirX, dirZ = position:getDirection()
 	if x == nil or dirX == nil then
-		return false, {}, true
+		return false, {}, false
 	end
 	--- Rotation matrix to rotate Z directions to x directions
 	local dirX2 = dirX * math.cos(math.pi/2) - dirZ * math.sin(math.pi/2)
@@ -227,8 +227,8 @@ function CpAIJobSiloLoader.getTrailerUnloadArea(position, silo)
 	if silo then 
 		local fx, fz = silo:getFrontCenter()
 		local bx, bz = silo:getBackCenter()
-		if MathUtil.vector2Length(x-fx, z-fz) < CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO and
-			MathUtil.vector2Length(x-bx, z-bz) < CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO  then
+		if MathUtil.vector2Length(x-fx, z-fz) > CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO or
+			MathUtil.vector2Length(x-bx, z-bz) > CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO then
 			return true, area, false
 		end
 	end	
