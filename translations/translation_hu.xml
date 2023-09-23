@@ -550,7 +550,7 @@ Az útvonalak jelenleg csak helyi fájlokként kerülnek mentésre.
 Ha van egy betöltött útvonalad, azt úgy tudod menteni, hogy először az Útvonal mentése gombra kattintasz, majd a célmappára. Ezután egy felugró ablak jelenik meg, ahová beírhatod az útvonal nevét.
 A név és mentési hely később módosítható.
 A betöltött útvonal járművedről való eltávolításához kattints a 'Jelenlegi útvonal törlése' gombra.
-Egy útvonal betöltéséhez először válaszd ki a mappát, majd egyszerűen kattints a betölteni kívánt útvonalra.
+Egy útvonal betöltéséhez először válaszd ki a mappát, kattints az 'Útvonal betöltése' gombra, majd kattints a betölteni kívánt útvonalra.
 A 'Módváltás' gombra kattintva aktiválhatod az útvonalkezelő szerkesztő módját.
 "/>
     <text name="CP_help_page_courseManagerEdit_text" text="
