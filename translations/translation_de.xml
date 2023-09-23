@@ -850,10 +850,10 @@ Die Schaufel zum Zerkleinern von Zuckerrüben wird mit allen Funktionen unterst�
 "/>
     <text name="CP_help_page_shovelLoaderBasic_text" text="
 Um einen Radlader Fahrer zu starten, müssen zunächst über das Ziel Icon im HUD die Lade- und Entladepositionen gewählt werden.
-Die Ladeposition wird wie auch bereits beim Lader gewählt. Ein blauer Ramen entsteht um den gefunden Haufen.
+Die Ladeposition wird wie auch bereits beim Lader gewählt. Ein blauer Rahmen entsteht um den gefunden Haufen.
 
 Die Abladeposition hängt davon ab, ob du in einen Anhänger oder in eine Abladestation entladen möchtest.
-Falls Abladen in einen Anhänger aktiviert ist, muss der Bereich wo der Anhänger abgestellt wird auf der AI Karte ausgewählt werden.
+Falls Abladen in einen Anhänger aktiviert ist, muss der Bereich, wo der Anhänger abgestellt wird auf der AI Karte ausgewählt werden.
 Der Helfer fährt automatisch stehende Anhänger in diesem Bereich an. Die Richtung des Pfeils von der AI Karte spielt hier keine Rolle.
 Möchtest du in eine Abladestation entladen, muss zunächst das Ziel umgestellt werden und anschließend der Marker auf den Trigger gesetzt werden.
 "/>
