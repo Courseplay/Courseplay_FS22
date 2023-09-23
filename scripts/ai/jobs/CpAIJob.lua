@@ -26,6 +26,7 @@ function CpAIJob.new(isServer, customMt)
 
 	self:setupJobParameters()
 
+	self.debugChannel = CpDebug.DBG_FIELDWORK
 	return self
 end
 
@@ -346,6 +347,16 @@ end
 function CpAIJob:getCanGenerateFieldWorkCourse()
 	return false
 end
+
+function CpAIJob:debug(...)
+	local vehicle = self:getVehicle()
+	if vehicle then 
+		CpUtil.debugVehicle(self.debugChannel, vehicle, ...)
+	else 
+		CpUtil.debugFormat(self.debugChannel, ...)
+	end
+end
+
 
 --- Ugly hack to fix a mp problem from giants, where the job class can not be found.
 function CpAIJob.getJobTypeIndex(aiJobTypeManager, superFunc, job)

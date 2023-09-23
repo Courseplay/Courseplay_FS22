@@ -124,7 +124,7 @@ end
 function CpSilo:getBackCenter()
 	local length = self:getLength()
 	local fcx, fcz = self:getFrontCenter()
-	return fcx + self.dirXLength * length/2, fcz + self.dirZLength * length/2
+	return fcx + self.dirXLength * length, fcz + self.dirZLength * length
 end
 
 --- Is the point directly in the silo area?

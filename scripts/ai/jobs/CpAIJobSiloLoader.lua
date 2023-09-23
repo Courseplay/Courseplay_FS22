@@ -1,6 +1,7 @@
 --- AI Job for silo loader like the ropa maus or wheel loaders.
 ---@class CpAIJobSiloLoader : CpAIJob
 ---@field heapPlot HeapPlot
+---@field trailerAreaPlot HeapPlot
 ---@field heapNode number
 CpAIJobSiloLoader = {
 	name = "SILO_LOADER_CP",
@@ -9,15 +10,26 @@ CpAIJobSiloLoader = {
 }
 local AIJobCombineUnloaderCp_mt = Class(CpAIJobSiloLoader, CpAIJob)
 
+--- Trailer unload marker length, -TRAILER_SEARCH_LENGTH/2 to TRAILER_SEARCH_LENGTH/2 
+CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH = 25
+--- Trailer unload marker width, -TRAILER_SEARCH_WIDTH/2 to TRAILER_SEARCH_WIDTH/2 
+CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH = 20
+--- Max distance the trailer unload spot can be from the silo/heap.
+CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO = 180
+
 function CpAIJobSiloLoader.new(isServer, customMt)
 	local self = CpAIJob.new(isServer, customMt or AIJobCombineUnloaderCp_mt)
 
 	self.heapPlot = HeapPlot(g_currentMission.inGameMenu.ingameMap)
     self.heapPlot:setVisible(false)
 
+	self.trailerAreaPlot = HeapPlot(g_currentMission.inGameMenu.ingameMap)
+
+
 	self.heapNode = CpUtil.createNode("siloNode", 0, 0, 0, nil)
 	self.heap = nil
 	self.hasValidPosition = false
+	self.debugChannel = CpDebug.DBG_SILO
 	return self
 end
 
@@ -101,6 +113,7 @@ end
 --- Called when parameters change, scan field
 function CpAIJobSiloLoader:validate(farmId)
 	self.heapPlot:setVisible(false)
+	self.trailerAreaPlot:setVisible(false)
 	self.heap = nil
 	self.bunkerSilo = nil
 	self.unloadStation = nil
@@ -134,7 +147,7 @@ function CpAIJobSiloLoader:validate(farmId)
 	if not AIUtil.hasChildVehicleWithSpecialization(vehicle, ConveyorBelt) then 
 		if self.cpJobParameters.unloadAt:getValue() == CpSiloLoaderJobParameters.UNLOAD_TRIGGER then 
 			--- Validates the unload trigger setup
-			local found, unloadTrigger, unloadStation = self:getUnloadTriggerAt(self.cpJobParameters.unloadPosition)
+			local found, unloadTrigger, unloadStation, validDistanceToSilo = self:getUnloadTriggerAt(self.cpJobParameters.unloadPosition)
 			if found then 
 				self.unloadStation = unloadStation
 				self.unloadTrigger = unloadTrigger
@@ -156,9 +169,79 @@ function CpAIJobSiloLoader:validate(farmId)
 			if unloadPosition.x == nil or unloadPosition.angle == nil then 
 				return false, g_i18n:getText("CP_error_no_unload_trigger_found")
 			end
+			if not validDistanceToSilo then 
+				return false, g_i18n:getText("CP_error_unload_target_to_far_away_from_silo")
+			end
+		else 
+			local found, area, validDistanceToSilo = CpAIJobSiloLoader.getTrailerUnloadArea(
+				self.cpJobParameters.unloadPosition, self.bunkerSilo or self.heap)
+			if found then 
+				self.trailerAreaPlot:setVisible(true)
+				self.trailerAreaPlot:setArea(area)
+			end
+			if not validDistanceToSilo then 
+				return false, g_i18n:getText("CP_error_unload_target_to_far_away_from_silo")
+			end
 		end
 	end
 	return isValid, errorMessage
+end
+
+--- Gets the area to search for trailers 
+--- and optional check if the trailer area is close enough to the silo 
+---@param position CpAIParameterPositionAngle
+---@param silo CpSilo|nil
+---@return boolean found?
+---@return table area
+---@return boolean distance to silo is valid
+function CpAIJobSiloLoader.getTrailerUnloadArea(position, silo)
+	local x, z = position:getPosition()
+	local dirX, dirZ = position:getDirection()
+	if x == nil or dirX == nil then
+		return false, {}, false
+	end
+	--- Rotation matrix to rotate Z directions to x directions
+	local dirX2 = dirX * math.cos(math.pi/2) - dirZ * math.sin(math.pi/2)
+	local dirZ2 = dirX * math.sin(math.pi/2) + dirZ * math.cos(math.pi/2)
+	--- Creates a rectangle for the trailer unload area 
+	local area =  {
+		{
+			x = x + dirX * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 + dirX2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2, 
+			z = z + dirZ * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 + dirZ2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2
+		},
+		{
+			x = x + dirX * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 - dirX2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2, 
+			z = z + dirZ * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 - dirZ2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2
+		},
+		{
+			x = x - dirX * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 - dirX2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2, 
+			z = z - dirZ * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 - dirZ2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2
+		},
+		{
+			x = x - dirX * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 + dirX2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2, 
+			z = z - dirZ * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 + dirZ2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2
+		},
+		{
+			x = x + dirX * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 + dirX2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2, 
+			z = z + dirZ * CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH/2 + dirZ2 * CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH/2
+		},
+	}
+	if silo then 
+		--- Checks if the distance between the front or back of the bunker silo/heap 
+		--- to the trailer unload area marker is which the max limit. 
+		local fx, fz = silo:getFrontCenter()
+		local bx, bz = silo:getBackCenter()
+		local dist1 = MathUtil.vector2Length(x-fx, z-fz)
+		local dist2 = MathUtil.vector2Length(x-bx, z-bz)
+		CpUtil.debugFormat(CpDebug.DBG_SILO, "Trailer marker is %.1fm/%.1fm away from the silo", 
+			math.min(dist1, dist2), CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO)
+		if dist1 > CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO and
+			dist2 > CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO then
+			--- Trailer unload area is to far away from the silo
+			return true, area, false
+		end
+	end	
+	return true, area, true
 end
 
 --- Gets the bunker silo or heap at the loading position in that order.
@@ -185,10 +268,15 @@ function CpAIJobSiloLoader:getBunkerSiloOrHeap(loadPosition, node)
 end
 
 --- Gets the unload trigger at the unload position.
+--- Checks for the correct fill type 
+--- between the silo and the unload target.
+--- Also checks if the unloading target 
+--- is close enough to the silo.
 ---@param unloadPosition CpAIParameterPositionAngle
 ---@return boolean found?
 ---@return table|nil Trigger
 ---@return table|nil unloadStation
+---@return boolean|nil distance is close enough to the bunker silo/heap
 function CpAIJobSiloLoader:getUnloadTriggerAt(unloadPosition)
 	local x, z = unloadPosition:getPosition()
 	local dirX, dirZ = unloadPosition:getDirection()
@@ -217,6 +305,19 @@ function CpAIJobSiloLoader:getUnloadTriggerAt(unloadPosition)
 			end
 		end
 	end
+	local fx, fz = silo:getFrontCenter()
+	local bx, bz = silo:getBackCenter()
+	--- Checks the distance of the unloading station to the bunker silo/heap 
+	local dist1 = MathUtil.vector2Length(x-fx, z-fz)
+	local dist2 = MathUtil.vector2Length(x-bx, z-bz)
+	self:debug("Unloading trigger: %s is %.1fm/%.1fm away from the silo", 
+		CpUtil.getName(station), math.min(dist1, dist2), 
+		self.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO)
+	if dist1 < CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO or
+		dist2 < CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO  then
+		--- Unloading point is close enough to the bunker silo.
+		return found, trigger, station, true
+	end
 	return found, trigger, station
 end
 
@@ -230,6 +331,9 @@ function CpAIJobSiloLoader:drawSilos(map)
 			table.insert(fillTypes, silo:getFillType())
 		end
 		g_triggerManager:drawDischargeableTriggers(map, self.unloadTrigger, fillTypes)
+	else 
+		--- Drawing trailer area
+		self.trailerAreaPlot:draw(map)
 	end
 end
 

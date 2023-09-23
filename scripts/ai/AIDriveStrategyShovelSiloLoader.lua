@@ -122,6 +122,7 @@ function AIDriveStrategyShovelSiloLoader:startWithoutCourse(jobParameters)
         --- to place the unload position node slightly in front.
         local x, y, z = getWorldTranslation(self.unloadTrigger:getFillUnitExactFillRootNode(1))
         setTranslation(self.unloadPositionNode, x, y, z)
+        ---@type CpAIParameterPositionAngle
         local position = jobParameters.unloadPosition
         local dirX, dirZ = position:getDirection()
         setDirection(self.unloadPositionNode, dirX, 0, dirZ, 0, 0, 1)
@@ -130,6 +131,11 @@ function AIDriveStrategyShovelSiloLoader:startWithoutCourse(jobParameters)
         setTranslation(self.unloadPositionNode, dx, dy, dz)
     else 
         self:debug("Starting shovel silo to unload into trailer.")
+        ---@type CpAIParameterPositionAngle
+        local position = jobParameters.unloadPosition
+        local _
+        _, self.trailerSearchArea = CpAIJobSiloLoader.getTrailerUnloadArea(position)
+
     end
     if self.bunkerSilo ~= nil then 
         self:debug("Bunker silo was found.")
@@ -459,12 +465,15 @@ function AIDriveStrategyShovelSiloLoader:getClosestTrailerAndDistance(trailerToI
     local closestDistance = math.huge
     local closestTrailerData = nil
     for i, vehicle in pairs(g_currentMission.vehicles) do 
-        local dist = calcDistanceFrom(vehicle.rootNode, self.siloFrontNode)
-        if dist < closestDistance then 
-            local valid, trailerData = self:isValidTrailer(vehicle, trailerToIgnore) 
-            if valid then
-                closestDistance = dist
-                closestTrailerData = trailerData
+        local x, _, z = getWorldTranslation(vehicle.rootNode)
+        if CpMathUtil.isPointInPolygon(self.trailerSearchArea, x, z ) then
+            local dist = calcDistanceFrom(vehicle.rootNode, self.siloFrontNode)
+            if dist < closestDistance then 
+                local valid, trailerData = self:isValidTrailer(vehicle, trailerToIgnore) 
+                if valid then
+                    closestDistance = dist
+                    closestTrailerData = trailerData
+                end
             end
         end
     end

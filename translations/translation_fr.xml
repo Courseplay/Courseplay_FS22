@@ -26,6 +26,7 @@
     <text name="CP_error_no_bunkerSilo_found" text="Aucun silo détecté."/>
     <text name="CP_error_no_heap_found" text="Aucun tas ou silo détecté."/>
     <text name="CP_error_no_unload_trigger_found" text="No unloading point found."/>
+    <text name="CP_error_unload_target_to_far_away_from_silo" text="Chosen unloading point is to far away from the silo."/>
     <!---->
     <!--AI job parameters-->
     <!---->

@@ -83,6 +83,10 @@
 			<Text language="de"><![CDATA[Keinen Abladepunkt gefunden.]]></Text>
 			<Text language="en"><![CDATA[No unloading point found.]]></Text>
 		</Translation>
+		<Translation name="CP_error_unload_target_to_far_away_from_silo">
+			<Text language="de"><![CDATA[Ausgewählter Abladepunkt ist zu weit vom Silo entfernt.]]></Text>
+			<Text language="en"><![CDATA[Chosen unloading point is to far away from the silo.]]></Text>
+		</Translation>
 	</Category>
 	<Category name="AI job parameters">	
 		<Translation name="CP_jobParameters_fieldPosition_title">
@@ -2545,9 +2549,8 @@ Um einen Radlader Fahrer zu starten, müssen zunächst über das Ziel Icon im HU
 Die Ladeposition wird wie auch bereits beim Lader gewählt. Ein blauer Ramen entsteht um den gefunden Haufen.
 
 Die Abladeposition hängt davon ab, ob du in einen Anhänger oder in eine Abladestation entladen möchtest.
-Abladen in einen Anhänger funktioniert automatisch und braucht keine zusätzliche Position. 
-Es wird der naheste, stehende Anhänger gewählt und seitlich angefahren.
-
+Falls Abladen in einen Anhänger aktiviert ist, muss der Bereich wo der Anhänger abgestellt wird auf der AI Karte ausgewählt werden.
+Der Helfer fährt automatisch stehende Anhänger in diesem Bereich an. Die Richtung des Pfeils von der AI Karte spielt hier keine Rolle.
 Möchtest du in eine Abladestation entladen, muss zunächst das Ziel umgestellt werden und anschließend der Marker auf den Trigger gesetzt werden.
 ]]></Text>
 			<Text language="en"><![CDATA[
@@ -2555,8 +2558,8 @@ To start a wheel loader helper, you need to set the load and unload positions by
 The loading position works the same like the one from the loader mode. A blue square will be created arround the heap.
 
 The unloading position depends if you want to unload into a trailer or into an unloading station.
-Unloading into a trailer works automatically and doesn't need a dedicated unload position. The driver will check for the nearest standing trailer and unloads to it from the side.
-
+If unloading into the trailer is selected, then the area where the trailer will be parked needs to be selected on the AI Menu.
+The helper will drive to any parked trailer in the area. The direction of the marker has no real meaning.
 If you want to unload into an unloading station, you need to switch the target and then mark the trigger with the unloading position.
 ]]></Text>
 		</Translation>
