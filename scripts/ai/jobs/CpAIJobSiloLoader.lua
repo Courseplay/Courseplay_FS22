@@ -15,7 +15,7 @@ CpAIJobSiloLoader.TRAILER_SEARCH_LENGTH = 25
 --- Trailer unload marker width, -TRAILER_SEARCH_WIDTH/2 to TRAILER_SEARCH_WIDTH/2 
 CpAIJobSiloLoader.TRAILER_SEARCH_WIDTH = 20
 --- Max distance the trailer unload spot can be from the silo/heap.
-CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO = 100
+CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO = 180
 
 function CpAIJobSiloLoader.new(isServer, customMt)
 	local self = CpAIJob.new(isServer, customMt or AIJobCombineUnloaderCp_mt)
