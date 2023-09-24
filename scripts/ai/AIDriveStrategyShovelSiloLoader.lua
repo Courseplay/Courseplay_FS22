@@ -58,7 +58,6 @@ AIDriveStrategyShovelSiloLoader.myStates = {
     REVERSING_AWAY_FROM_UNLOAD = {shovelPosition = ShovelController.POSITIONS.PRE_UNLOADING, shovelMovingSpeed = 0},
 }
 
-AIDriveStrategyShovelSiloLoader.maxValidTrailerDistanceToSiloFront = 30
 AIDriveStrategyShovelSiloLoader.searchForTrailerDelaySec = 10 
 AIDriveStrategyShovelSiloLoader.distShovelTrailerPreUnload = 7
 AIDriveStrategyShovelSiloLoader.distShovelUnloadStationPreUnload = 8
@@ -339,10 +338,6 @@ end
 
 function AIDriveStrategyShovelSiloLoader:update(dt)
     if CpDebug:isChannelActive(CpDebug.DBG_SILO, self.vehicle) then
-        if self.siloFrontNode and self.state == self.states.WAITING_FOR_TRAILER then
-            DebugUtil.drawDebugCircleAtNode(self.siloFrontNode, self.maxValidTrailerDistanceToSiloFront, 
-                math.ceil(self.maxValidTrailerDistanceToSiloFront), nil, false, {0, 3, 0})
-        end
         if self.course:isTemporary() then
             self.course:draw()
         elseif self.ppc:getCourse():isTemporary() then
@@ -490,13 +485,6 @@ function AIDriveStrategyShovelSiloLoader:searchForTrailerToUnloadInto()
         return
     end
     local trailer = trailerData.trailer
-    if dist > self.maxValidTrailerDistanceToSiloFront then
-        self:debug("Closest Trailer %s attached to %s with the distance %.2fm/%.2fm found is to far away!", 
-            CpUtil.getName(trailer), trailer.rootVehicle and CpUtil.getName(trailer.rootVehicle) or "no root vehicle",
-            dist, self.maxValidTrailerDistanceToSiloFront)
-        self:setInfoText(InfoTextManager.WAITING_FOR_UNLOADER)
-        return
-    end
     self:clearInfoText(InfoTextManager.WAITING_FOR_UNLOADER)
     --- Sets the unload position node in front of the closest side of the trailer.
     self:debug("Found a valid trailer %s within distance %.2f", CpUtil.getName(trailer), dist)
