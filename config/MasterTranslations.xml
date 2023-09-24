@@ -1946,7 +1946,7 @@ R: Removes the copied course from the clipboard.
 		</Translation>
 		<Translation name="CP_help_page_customFieldRecord_text">
 			<Text language="de"><![CDATA[
-Es gibt zwei Möglichkeiten ein eigenes Feld zu erstellen.
+Es gibt zwei Möglichkeiten, ein eigenes Feld zu erstellen.
 Die erste Option ist mit dem "Aufzeichnen"-Button im HUD.
 Starte die Aufnahme und fahre deinen Feldrand ab, den du aufzeichnen möchtest.
 Bist du wieder am Startpunkt angekommen, drücke den "Aufzeichnen"-Button noch mal und du wirst gefragt, ob du den Feldrand speichern möchtest.
@@ -1961,7 +1961,7 @@ Once your finished, simply press the button again and you will be asked if you w
 		<Translation name="CP_help_page_customFieldDone_text">
 			<Text language="de"><![CDATA[
 Im Helfermenü kannst du deinen Randkurs mit Namen sehen.
-Wenn du auf den Namen klickst, kannst du den Kurs löschen, umbenennen, oder mit dem Editor bearbeiten.
+Wenn du auf den Namen klickst, kannst du den Kurs löschen, umbenennen oder mit dem Editor bearbeiten.
 ]]></Text>
 			<Text language="en"><![CDATA[
 The custom field borders will be displayed in the AI menu.
@@ -1971,7 +1971,7 @@ By clicking on the name you will get the option to either delete, rename or edit
 		<Translation name="CP_help_page_customFieldDraw_text">
 			<Text language="de"><![CDATA[
 Die zweite Option ist das Zeichnen im Helfermenü.
-Dazu darfst du kein Fahrzeug ausgewählt haben (Linksklick irgendwo auf der Karte) und du bekommt die Option einen Randkurs zu zeichnen.
+Dazu darfst du kein Fahrzeug ausgewählt haben (Linksklick irgendwo auf der Karte) und du bekommst die Option, einen Randkurs zu zeichnen.
 Wenn du das Zeichnen gestartet hast, wird der Text "Zeichne einen Randkurs" angezeigt.
 Mit der rechten Maustaste kannst du jetzt den ersten Punkt setzen.
 Mit einem weiteren Rechtsklick wird eine Linie von deinem ersten zum zweiten Punkt gezogen, der zweite Punkt ist nun wieder der Startpunkt für die nächste Linie.
@@ -2002,7 +2002,7 @@ It is possible to have up to 5 vehicles working together on the same field in a 
 Sobald ein Multitoolkurs geladen ist, muss die Bahn gewählt werden, auf der gefahren werden soll.
 Die Bahnen haben immer den gleichen Namen:
 links(2), links(1), mitte, rechts(1), rechts(2).
-2 Fahrzeuge haben links(1) und rechts (1), 4 haben links(2) und rechts(2).
+2 Fahrzeuge haben links(1) und rechts (1) zur Auswahl, 4 Fahrzeuge zudem noch links(2) und rechts(2).
 Mit 3 oder 5 Fahrzeugen ist dann auch die mittlere Bahn verfügbar.
 ]]></Text>
 			<Text language="en"><![CDATA[
