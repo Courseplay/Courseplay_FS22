@@ -696,11 +696,11 @@
 	</Category>
 	<Category name="Vehicle settings combine">
 		<Translation name="CP_vehicle_setting_automaticCutterAttach_title">
-			<Text language="de"><![CDATA[Automatisches Schneidwerk ankuppeln]]></Text>
+			<Text language="de"><![CDATA[Automatisches Schneidwerkankuppeln]]></Text>
 			<Text language="en"><![CDATA[Automatic cutter attach]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_automaticCutterAttach_tooltip">
-			<Text language="de"><![CDATA[Ermöglicht das automatische ankuppeln von Schneidwerken, welche als Anhänger angekuppelt sind.]]></Text>
+			<Text language="de"><![CDATA[Ermöglicht das automatische Ankuppeln von Schneidwerken, welche als Anhänger angekuppelt sind.]]></Text>
 			<Text language="en"><![CDATA[Allows automatic attachment of a cutter, which needs to be attach as a trailer or on a seperate header trailer.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_pipeAlwaysUnfold_title">
@@ -786,7 +786,7 @@
 			<Text language="en"><![CDATA[Number of headlands. Value: 0 - 40]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title">
-			<Text language="de"><![CDATA[Vorgewende-Überlappung]]></Text>
+			<Text language="de"><![CDATA[Überlappung Vorgewende]]></Text>
 			<Text language="en"><![CDATA[Headland overlap]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip">
@@ -814,11 +814,11 @@
 			<Text language="en"><![CDATA[Rows per land]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip">
-			<Text language="de"><![CDATA[Wenn Zentrierung Beet ausgewählt ist, dann befinden sich so viele Reihen im Block. Wert: 0 - 24]]></Text>
+			<Text language="de"><![CDATA[Wenn Zentrierung 'Beete' ausgewählt ist, dann befinden sich so viele Reihen im Block. Wert: 0 - 24]]></Text>
 			<Text language="en"><![CDATA[When the center mode is 'lands', this many rows are in each block. Value: 0 - 24]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_isClockwise_title">
-			<Text language="de"><![CDATA[Vorgewende-Richtung]]></Text>
+			<Text language="de"><![CDATA[Richtung Vorgewende]]></Text>
 			<Text language="en"><![CDATA[Headland direction]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip">
@@ -930,7 +930,7 @@
 			<Text language="en"><![CDATA[Start work on]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip">
-			<Text language="de"><![CDATA[Startpunkt auf dem Vorgewende oder auf den Bahnen]]></Text>
+			<Text language="de"><![CDATA[Startpunkt auf dem Vorgewende oder auf den Bahnen.]]></Text>
 			<Text language="en"><![CDATA[Start working on the headland or center of the field]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland">
@@ -1148,7 +1148,7 @@
 			<Text language="en"><![CDATA[Prefer custom fields]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_preferCustomFields_tooltip">
-			<Text language="de"><![CDATA[Bevorzugt den selbst erstellten Feldrand, wenn dieser auf einen normalen Feld liegt.]]></Text>
+			<Text language="de"><![CDATA[Bevorzugt den selbst erstellten Feldrand, wenn dieser auf einem normalen Feld liegt.]]></Text>
 			<Text language="en"><![CDATA[Prefer custom field if there is also a regular field at the selected position.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_distanceUnit_title">
@@ -1252,7 +1252,7 @@
 			<Text language="en"><![CDATA[Course name:]]></Text>
 		</Translation>
 		<Translation name="CP_courseManager_deleteWarning">
-			<Text language="de"><![CDATA[Sicher, dass du (%s) löschen möchtest ?]]></Text>
+			<Text language="de"><![CDATA[Sicher, dass du (%s) löschen möchtest?]]></Text>
 			<Text language="en"><![CDATA[Are you sure, you want to delete (%s)?]]></Text>
 		</Translation>
 		<Translation name="CP_courseManager_editCourseWarning">
@@ -1413,7 +1413,7 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Assignes the headland number to the selcted waypoint.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeHeadland_secondary_text">
-			<Text language="de"><![CDATA[Ändert die Vorgewendenummer für Wepunkte über, die die Maus gezogen wird.]]></Text>
+			<Text language="de"><![CDATA[Ändert die Vorgewendenummer für Wepunkte, über die die Maus gezogen wird.]]></Text>
 			<Text language="en"><![CDATA[Continues assigning of the headland number to the hovered waypoints.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeHeadland_primary_axis_text">
@@ -1433,11 +1433,11 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Changes the selected waypoint to a connecting track.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeConnectingTrack_secondary_text">
-			<Text language="de"><![CDATA[Makiert Wegpunkte über die mit der Maus gezogen wird als Überfahrstrecke.]]></Text>
+			<Text language="de"><![CDATA[Makiert Wegpunkte, über die mit der Maus gezogen wird, als Überfahrstrecke.]]></Text>
 			<Text language="en"><![CDATA[Continues assigning of waypoints to connecting track.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeRowNumber_title">
-			<Text language="de"><![CDATA[Ändert Bahn Nummer]]></Text>
+			<Text language="de"><![CDATA[Ändert Bahnnummer]]></Text>
 			<Text language="en"><![CDATA[Changes row number]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeRowNumber_primary_text">
@@ -1445,7 +1445,7 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Changes the row number of the selected waypoint.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeRowNumber_secondary_text">
-			<Text language="de"><![CDATA[Ändert die Bahnnummer für alle Wegpunkte über die mit der Maus gezogen wird.]]></Text>
+			<Text language="de"><![CDATA[Ändert die Bahnnummer für alle Wegpunkte, über die mit der Maus gezogen wird.]]></Text>
 			<Text language="en"><![CDATA[Continues assigning of waypoints with a row number.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeRowNumber_primary_axis_text">
@@ -1619,7 +1619,7 @@ Feldkurse können auch als Multitoolkurs gebaut werden, dadurch ist es möglich 
 Für Drescher gibt es die Möglichkeit des automatischen Abtankens in einen Anhänger nahe des Feldes.
 Eigene Feldränder können mit einem Fahrzeug aufgezeichnet oder auf der Menükarte gezeichnet werden und anschließend für die Generierung eines Feldkurses benutzt werden.
 Außerdem hat CP ein Interface für AutoDrive, dadurch ist es möglich Sämaschinen auffüllen zu lassen, Ladewagen zu entleeren und vieles mehr.
-Ab Version 7.2.1.0 ist es auch möglich, mit dem Drescher Abfahrer die geladene Frucht als Haufen am Feldrand abzulegen.
+Ab Version 7.2.1.0 ist es auch möglich, mit dem Drescher-Abfahrer die geladene Frucht als Haufen am Feldrand abzulegen.
 
 Für weitere Informationen, schaut bitte auf Github vorbei unter:  https://github.com/Courseplay/Courseplay_FS22 .
 Dort könnte ihr Fragen stellen, Fehlerberichte einreichen oder Verbesserungen vorschlagen.
@@ -1672,7 +1672,7 @@ For generating a course and starting the courseplay jobs, you will need to creat
 		</Translation>
 		<Translation name="CP_help_page_startJobMenuFunctions_text">
 			<Text language="de"><![CDATA[
-Um deinen ersten Job zu starten, musst du ein Fahrzeug mit einem für die Arbeit gültigem Arbeitsgerät auswählen.
+Um deinen ersten Job zu starten, musst du ein Fahrzeug mit einem für die Arbeit gültigen Arbeitsgerät auswählen.
 Klicke dann auf "Job erstellen" und wähle "CP: Feldarbeit" für Feldarbeitsgeräte,
 oder "CP: Ballen sammeln/wickeln" für Ballenwickler oder -sammler aus.
 ]]></Text>
@@ -1771,7 +1771,7 @@ Spiral, Racetrack and Lands have their own specific advantages over the others. 
 		<Translation name="CP_help_page_courseGeneratorHeadland_text">
 			<Text language="de"><![CDATA[
 Vorgewende-Einstellungen werden erst sichtbar, wenn die Anzahl der Vorgewende mindestens auf 1 gesetzt ist.
-Du erhältst Zugang zu Einstellungen, wie z.B. dem Wendemanöver für die Ecken, die Richtung, wo gestartet werden soll, oder wie viel Überlappung die Bahnen haben sollen.
+Du erhältst Zugang zu Einstellungen, wie z.B. dem Wendemanöver für die Ecken, die Richtung, wo gestartet werden soll oder wie viel Überlappung die Bahnen haben sollen.
 Vorgewende sind empfohlen, damit die Arbeitsgeräte beim Wenden von einer Feldbahn zur nächsten auf dem Feld bleiben.
 ]]></Text>
 			<Text language="en"><![CDATA[
@@ -1803,7 +1803,7 @@ Round will take the current selected vehicles turn radius into account to have t
 		<Translation name="CP_help_page_courseGeneratorExtras_text">
 			<Text language="de"><![CDATA[
 Feldgrenze:
-Positive Werte reduzieren den Arbeitsbereich um einen Puffer zum Feldrand generieren. Das ist nützlich, sollten sich einige Objekte zu dicht an der Feldkante befinden.
+Positive Werte reduzieren den Arbeitsbereich, um einen Puffer zum Feldrand zu generieren. Das ist nützlich, sollten sich einige Objekte zu dicht an der Feldkante befinden.
 Negative Werte vergrößern den Arbeitsbereich über das Feld hinaus, um eine größere Abdeckung zu bekommen, z.B. wenn der Feldrand nicht genau genug erkannt wurde.
 ]]></Text>
 			<Text language="en"><![CDATA[
@@ -1820,11 +1820,11 @@ Negative values enlarge worked area beyond the field boundary to cover up field 
 			<Text language="de"><![CDATA[
 Der Kursmanager erlaubt es dir, Kurse zu speichern und später wieder zu laden.
 Das ist z.B. wichtig, wenn mehrere Fahrzeuge auf einem Kurs arbeiten sollten (Multitool).
-Außerdem kannst du so die Kurse von z.B. einem Drescher auch später für eine Ballenpresse oder Sammelwagen zum Stroh aufsammeln verwenden.
+Außerdem kannst du so z.B. die Kurse von einem Drescher später für eine Ballenpresse oder einen Sammelwagen zum Stroh aufsammeln verwenden.
 
 Der Speicherort für die Kurse ist: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (oder für Vanilla z.B. MapUS).
 Der Kursmanager funktioniert anders als du es im LS19 gewohnt bist.
-Kurse werden immer in Ordner gespeichert, welche auf der linken Seite angezeigt werden. Das bedeutet du brauchst mindestens einen Ordner, um Kurse dort abspeichern zu können.
+Kurse werden immer in Ordner gespeichert, welche auf der linken Seite angezeigt werden. Das bedeutet, du brauchst mindestens einen Ordner, um Kurse dort abspeichern zu können.
 Ordner können ganz leicht durch den Button unten am Bildschirmrand erstellt werden.
 ]]></Text>
 			<Text language="en"><![CDATA[
