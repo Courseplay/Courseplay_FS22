@@ -114,7 +114,7 @@
 			<Text language="en"><![CDATA[Where to start field work]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_nearest">
-			<Text language="de"><![CDATA[Nahester Wegpunkt]]></Text>
+			<Text language="de"><![CDATA[Nächster Wegpunkt]]></Text>
 			<Text language="en"><![CDATA[nearest waypoint]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_first">
