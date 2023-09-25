@@ -32,8 +32,8 @@
 			<Text language="en"><![CDATA[ft]]></Text>
 		</Translation>
 		<Translation name="CP_copy">
-			<Text language="de"><![CDATA[Kurs kopieren: ]]></Text>
-			<Text language="en"><![CDATA[Copy course: ]]></Text>
+			<Text language="de"><![CDATA[Kurs kopieren:]]></Text>
+			<Text language="en"><![CDATA[Copy course:]]></Text>
 		</Translation>
 		<Translation name="CP_infoText">
 			<Text language="de"><![CDATA[Courseplay(%s): Für Hilfe, Fehler oder Patch Notes, bitte hier vorbei schauen: https://github.com/Courseplay/Courseplay_FS22.]]></Text>
@@ -111,18 +111,18 @@
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_tooltip">
 			<Text language="de"><![CDATA[Wo die Arbeit gestartet wird.]]></Text>
-			<Text language="en"><![CDATA[Where to start field work]]></Text>
+			<Text language="en"><![CDATA[Where to start field work.]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_nearest">
-			<Text language="de"><![CDATA[Nächster Wegpunkt]]></Text>
+			<Text language="de"><![CDATA[nächster Wegpunkt]]></Text>
 			<Text language="en"><![CDATA[nearest waypoint]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_first">
-			<Text language="de"><![CDATA[Erster Wegpunkt]]></Text>
+			<Text language="de"><![CDATA[erster Wegpunkt]]></Text>
 			<Text language="en"><![CDATA[first waypoint]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_last">
-			<Text language="de"><![CDATA[Letzter Wegpunkt]]></Text>
+			<Text language="de"><![CDATA[letzter Wegpunkt]]></Text>
 			<Text language="en"><![CDATA[last waypoint]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_bunkerSilo">
@@ -188,26 +188,26 @@
 			<Text language="en"><![CDATA[Baletype:]]></Text>
 		</Translation>
 		<Translation name="CP_baleFinderJobParameters_baleWrapType_all_bales">
-			<Text language="de"><![CDATA[Alle Ballen]]></Text>
+			<Text language="de"><![CDATA[alle Ballen]]></Text>
 			<Text language="en"><![CDATA[all bales]]></Text>
 		</Translation>
 		<Translation name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales">
-			<Text language="de"><![CDATA[Nur gewickelte]]></Text>
+			<Text language="de"><![CDATA[nur gewickelte]]></Text>
 			<Text language="en"><![CDATA[only wrapped]]></Text>
 		</Translation>
 		<Translation name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales">
-			<Text language="de"><![CDATA[Nur ungewickelte]]></Text>
+			<Text language="de"><![CDATA[nur ungewickelte]]></Text>
 			<Text language="en"><![CDATA[only not wrapped]]></Text>
 		</Translation>
 		<Translation name="CP_baleFinder_balesLeftover">
-			<Text language="de"><![CDATA[Ballen übrig: ]]></Text>
+			<Text language="de"><![CDATA[Ballen übrig:]]></Text>
 			<Text language="en"><![CDATA[Bales left:]]></Text>
 		</Translation>		
 	</Category>
 	<Category name="AI combine unloader job parameters">
 		<Translation name="CP_combineUnloaderJobParameters_subTitle_unloadTarget">
 			<Text language="de"><![CDATA[Entlade:]]></Text>
-			<Text language="en"><![CDATA[Unload: ]]></Text>
+			<Text language="en"><![CDATA[Unload:]]></Text>
 		</Translation>
 		<Translation name="CP_combineUnloaderJobParameters_unloadTarget_title">
 			<Text language="de"><![CDATA[Entlade:]]></Text>
@@ -260,19 +260,19 @@
 			<Text language="en"><![CDATA[Direction into the silo:]]></Text>
 		</Translation>
 		<Translation name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards">
-			<Text language="de"><![CDATA[Vorwärts]]></Text>
+			<Text language="de"><![CDATA[vorwärts]]></Text>
 			<Text language="en"><![CDATA[Forwards]]></Text>
 		</Translation>
 		<Translation name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse">
-			<Text language="de"><![CDATA[Rückwärts]]></Text>
+			<Text language="de"><![CDATA[rückwärts]]></Text>
 			<Text language="en"><![CDATA[Reverse]]></Text>
 		</Translation>
 		<Translation name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition">
-			<Text language="de"><![CDATA[Warten auf Abfahrer:]]></Text>
+			<Text language="de"><![CDATA[warten auf Abfahrer:]]></Text>
 			<Text language="en"><![CDATA[Waiting for unloader:]]></Text>
 		</Translation>
 		<Translation name="CP_bunkerSiloJobParameters_waitAtParkPosition_title">
-			<Text language="de"><![CDATA[Warten auf Abfahrer:]]></Text>
+			<Text language="de"><![CDATA[warten auf Abfahrer:]]></Text>
 			<Text language="en"><![CDATA[Waiting for unloader:]]></Text>
 		</Translation>
 		<Translation name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo">
@@ -424,15 +424,15 @@
 			<Text language="en"><![CDATA[Show the current course of the vehicle.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_showCourse_startStop">
-			<Text language="de"><![CDATA[Nur Start/Ende]]></Text>
+			<Text language="de"><![CDATA[nur Start/Ende]]></Text>
 			<Text language="en"><![CDATA[Start/stop only]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_showCourse_currentWaypoint">
-			<Text language="de"><![CDATA[Aktuelle Wegpunkte]]></Text>
+			<Text language="de"><![CDATA[aktuelle Wegpunkte]]></Text>
 			<Text language="en"><![CDATA[Current waypoints]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_showCourse_all">
-			<Text language="de"><![CDATA[Alle Wegpunkte]]></Text>
+			<Text language="de"><![CDATA[alle Wegpunkte]]></Text>
 			<Text language="en"><![CDATA[All waypoints]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_openHudWithMouse_title">
@@ -564,7 +564,7 @@
 			<Text language="en"><![CDATA[Tool offset vertical]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_fullThreshold_title">
-			<Text language="de"><![CDATA[Entleeren wenn über:]]></Text>
+			<Text language="de"><![CDATA[Entleeren, wenn über:]]></Text>
 			<Text language="en"><![CDATA[Empty when over:]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_fullThreshold_tooltip">
@@ -968,15 +968,15 @@
 			<Text language="en"><![CDATA[Should the course be driven on or beside the vine. This depends on the Tool. More Information in the help Menu.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left">
-			<Text language="de"><![CDATA[Links von der Rebe]]></Text>
+			<Text language="de"><![CDATA[links von der Rebe]]></Text>
 			<Text language="en"><![CDATA[Left side of the vine]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center">
-			<Text language="de"><![CDATA[Auf der Rebe]]></Text>
+			<Text language="de"><![CDATA[auf der Rebe]]></Text>
 			<Text language="en"><![CDATA[On the vine]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right">
-			<Text language="de"><![CDATA[Rechts von der Rebe]]></Text>
+			<Text language="de"><![CDATA[rechts von der Rebe]]></Text>
 			<Text language="en"><![CDATA[Right side of the vine]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title">
@@ -1413,7 +1413,7 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Assignes the headland number to the selcted waypoint.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeHeadland_secondary_text">
-			<Text language="de"><![CDATA[Ändert die Vorgewendenummer für Wepunkte, über die die Maus gezogen wird.]]></Text>
+			<Text language="de"><![CDATA[Ändert die Vorgewendenummer für Wegpunkte, über die die Maus gezogen wird.]]></Text>
 			<Text language="en"><![CDATA[Continues assigning of the headland number to the hovered waypoints.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeHeadland_primary_axis_text">
@@ -1824,7 +1824,7 @@ Außerdem kannst du so z.B. die Kurse von einem Drescher später für eine Balle
 
 Der Speicherort für die Kurse ist: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (oder für Vanilla z.B. MapUS).
 Der Kursmanager funktioniert anders als du es im LS19 gewohnt bist.
-Kurse werden immer in Ordner gespeichert, welche auf der linken Seite angezeigt werden. Das bedeutet, du brauchst mindestens einen Ordner, um Kurse dort abspeichern zu können.
+Kurse werden immer in Ordnern gespeichert, welche auf der linken Seite angezeigt werden. Das bedeutet, du brauchst mindestens einen Ordner, um dort Kurse abspeichern zu können.
 Ordner können ganz leicht durch den Button unten am Bildschirmrand erstellt werden.
 ]]></Text>
 			<Text language="en"><![CDATA[
