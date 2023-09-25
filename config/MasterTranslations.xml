@@ -114,15 +114,15 @@
 			<Text language="en"><![CDATA[Where to start field work.]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_nearest">
-			<Text language="de"><![CDATA[nächster Wegpunkt]]></Text>
+			<Text language="de"><![CDATA[Nahester Wegpunkt]]></Text>
 			<Text language="en"><![CDATA[nearest waypoint]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_first">
-			<Text language="de"><![CDATA[erster Wegpunkt]]></Text>
+			<Text language="de"><![CDATA[Erster Wegpunkt]]></Text>
 			<Text language="en"><![CDATA[first waypoint]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_last">
-			<Text language="de"><![CDATA[letzter Wegpunkt]]></Text>
+			<Text language="de"><![CDATA[Letzter Wegpunkt]]></Text>
 			<Text language="en"><![CDATA[last waypoint]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_bunkerSilo">
@@ -188,15 +188,15 @@
 			<Text language="en"><![CDATA[Baletype:]]></Text>
 		</Translation>
 		<Translation name="CP_baleFinderJobParameters_baleWrapType_all_bales">
-			<Text language="de"><![CDATA[alle Ballen]]></Text>
+			<Text language="de"><![CDATA[Alle Ballen]]></Text>
 			<Text language="en"><![CDATA[all bales]]></Text>
 		</Translation>
 		<Translation name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales">
-			<Text language="de"><![CDATA[nur gewickelte]]></Text>
+			<Text language="de"><![CDATA[Nur gewickelte]]></Text>
 			<Text language="en"><![CDATA[only wrapped]]></Text>
 		</Translation>
 		<Translation name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales">
-			<Text language="de"><![CDATA[nur ungewickelte]]></Text>
+			<Text language="de"><![CDATA[Nur ungewickelte]]></Text>
 			<Text language="en"><![CDATA[only not wrapped]]></Text>
 		</Translation>
 		<Translation name="CP_baleFinder_balesLeftover">
@@ -424,15 +424,15 @@
 			<Text language="en"><![CDATA[Show the current course of the vehicle.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_showCourse_startStop">
-			<Text language="de"><![CDATA[nur Start/Ende]]></Text>
+			<Text language="de"><![CDATA[Nur Start/Ende]]></Text>
 			<Text language="en"><![CDATA[Start/stop only]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_showCourse_currentWaypoint">
-			<Text language="de"><![CDATA[aktuelle Wegpunkte]]></Text>
+			<Text language="de"><![CDATA[Aktuelle Wegpunkte]]></Text>
 			<Text language="en"><![CDATA[Current waypoints]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_showCourse_all">
-			<Text language="de"><![CDATA[alle Wegpunkte]]></Text>
+			<Text language="de"><![CDATA[Alle Wegpunkte]]></Text>
 			<Text language="en"><![CDATA[All waypoints]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_openHudWithMouse_title">
@@ -528,7 +528,7 @@
 			<Text language="en"><![CDATA[Only turning on the field]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_turnOnField_tooltip">
-			<Text language="de"><![CDATA[Versucht, beim Wendemanöver auf dem Feld zu bleiben. Nicht mit allen Geräten möglich.]]></Text>
+			<Text language="de"><![CDATA[Versucht beim Wendemanöver auf dem Feld zu bleiben. Nicht mit allen Geräten möglich.]]></Text>
 			<Text language="en"><![CDATA[Only turning on the field. Not possible with all tools.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_avoidFruit_title">
@@ -564,7 +564,7 @@
 			<Text language="en"><![CDATA[Tool offset vertical]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_fullThreshold_title">
-			<Text language="de"><![CDATA[Entleeren, wenn über:]]></Text>
+			<Text language="de"><![CDATA[Entleeren wenn über:]]></Text>
 			<Text language="en"><![CDATA[Empty when over:]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_fullThreshold_tooltip">
@@ -814,7 +814,7 @@
 			<Text language="en"><![CDATA[Rows per land]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip">
-			<Text language="de"><![CDATA[Wenn Zentrierung 'Beete' ausgewählt ist, dann befinden sich so viele Reihen im Block. Wert: 0 - 24]]></Text>
+			<Text language="de"><![CDATA[Wenn Zentrierung Beete ausgewählt ist, dann befinden sich so viele Reihen im Block. Wert: 0 - 24]]></Text>
 			<Text language="en"><![CDATA[When the center mode is 'lands', this many rows are in each block. Value: 0 - 24]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_isClockwise_title">
@@ -826,11 +826,11 @@
 			<Text language="en"><![CDATA[Should the vehicle drive clockwise or counterclockwise on the headland.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise">
-			<Text language="de"><![CDATA[im Uhrzeigersinn]]></Text>
+			<Text language="de"><![CDATA[Im Uhrzeigersinn]]></Text>
 			<Text language="en"><![CDATA[clockwise]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise">
-			<Text language="de"><![CDATA[gegen den Uhrzeigersinn]]></Text>
+			<Text language="de"><![CDATA[Gegen den Uhrzeigersinn]]></Text>
 			<Text language="en"><![CDATA[counterclockwise]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_centerMode_title">
@@ -838,7 +838,7 @@
 			<Text language="en"><![CDATA[Field center]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip">
-			<Text language="de"><![CDATA[Unterschiedliche Bearbeitungsformen der Feldmitte.]]></Text>
+			<Text language="de"><![CDATA[Feldmitte]]></Text>
 			<Text language="en"><![CDATA[Field center]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_centerMode_up_down">
@@ -862,7 +862,7 @@
 			<Text language="en"><![CDATA[Headland corners]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip">
-			<Text language="de"><![CDATA[Bearbeitungsform der Ecken vom Vorgewende.]]></Text>
+			<Text language="de"><![CDATA[Vorgewende-Ecken]]></Text>
 			<Text language="en"><![CDATA[Headland corners]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth">
@@ -886,15 +886,15 @@
 			<Text language="en"><![CDATA[Direction of the rows in the center of the field.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic">
-			<Text language="de"><![CDATA[automatisch]]></Text>
+			<Text language="de"><![CDATA[Automatisch]]></Text>
 			<Text language="en"><![CDATA[automatic]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge">
-			<Text language="de"><![CDATA[längste Kante]]></Text>
+			<Text language="de"><![CDATA[Längste Kante]]></Text>
 			<Text language="en"><![CDATA[longest edge]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_rowDirection_manual">
-			<Text language="de"><![CDATA[manuell]]></Text>
+			<Text language="de"><![CDATA[Manuell]]></Text>
 			<Text language="en"><![CDATA[manual]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title">
@@ -902,7 +902,7 @@
 			<Text language="en"><![CDATA[Up/down row angle]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip">
-			<Text language="de"><![CDATA[Winkel der Bahnen (0 ist Norden), wenn Einstellung auf 'manuell' gesetzt ist. Wert: 0 - 175 Schritte: 5]]></Text>
+			<Text language="de"><![CDATA[Winkel der Bahnen (0 ist Norden), wenn Einstellung auf Manuell gesetzt ist. Wert: 0 - 175 Schritte: 5]]></Text>
 			<Text language="en"><![CDATA[Angle of up/down rows (0° is North) when manual. Value: 0 - 175 Steps: 5]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title">
@@ -968,15 +968,15 @@
 			<Text language="en"><![CDATA[Should the course be driven on or beside the vine. This depends on the Tool. More Information in the help Menu.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left">
-			<Text language="de"><![CDATA[links von der Rebe]]></Text>
+			<Text language="de"><![CDATA[Links von der Rebe]]></Text>
 			<Text language="en"><![CDATA[Left side of the vine]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center">
-			<Text language="de"><![CDATA[auf der Rebe]]></Text>
+			<Text language="de"><![CDATA[Auf der Rebe]]></Text>
 			<Text language="en"><![CDATA[On the vine]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right">
-			<Text language="de"><![CDATA[rechts von der Rebe]]></Text>
+			<Text language="de"><![CDATA[Rechts von der Rebe]]></Text>
 			<Text language="en"><![CDATA[Right side of the vine]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title">
@@ -1022,7 +1022,7 @@
 			<Text language="en"><![CDATA[Cp driver automatically repair, while driving.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_autoRepair_off">
-			<Text language="de"><![CDATA[nicht reparieren]]></Text>
+			<Text language="de"><![CDATA[Nicht reparieren]]></Text>
 			<Text language="en"><![CDATA[Don't repair]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_autoRepair_less_than_25">
@@ -1070,11 +1070,11 @@
 			<Text language="en"><![CDATA[Enable/disable the fruit destruction for helpers.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_fruitDestruction_only_cp">
-			<Text language="de"><![CDATA[aktiviert für CP-Helfer]]></Text>
+			<Text language="de"><![CDATA[Aktiviert für Courseplay Helfer]]></Text>
 			<Text language="en"><![CDATA[Activated for Courseplay helpers]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_fruitDestruction_all_helpers">
-			<Text language="de"><![CDATA[aktiviert für alle Helfer]]></Text>
+			<Text language="de"><![CDATA[Aktiviert für alle Helfer]]></Text>
 			<Text language="en"><![CDATA[Activated for every helpers]]></Text>
 		</Translation>
 	</Category>
@@ -1132,7 +1132,7 @@
 			<Text language="en"><![CDATA[Displays an info text window.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_infoTextHudActive_active_hide_without_message">
-			<Text language="de"><![CDATA[aktiv mit Nachricht]]></Text>
+			<Text language="de"><![CDATA[Aktiv mit Nachricht]]></Text>
 			<Text language="en"><![CDATA[Active with message]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_infoTextHudPlayerMouseActive_title">
@@ -1771,7 +1771,7 @@ Spiral, Racetrack and Lands have their own specific advantages over the others. 
 		<Translation name="CP_help_page_courseGeneratorHeadland_text">
 			<Text language="de"><![CDATA[
 Vorgewende-Einstellungen werden erst sichtbar, wenn die Anzahl der Vorgewende mindestens auf 1 gesetzt ist.
-Du erhältst Zugang zu Einstellungen, wie z.B. dem Wendemanöver für die Ecken, die Richtung, wo gestartet werden soll oder wie viel Überlappung die Bahnen haben sollen.
+Du erhältst Zugang zu Einstellungen, wie z.B. dem Wendemanöver für die Ecken, die Richtung, wo gestartet werden soll, oder wie viel Überlappung die Bahnen haben sollen.
 Vorgewende sind empfohlen, damit die Arbeitsgeräte beim Wenden von einer Feldbahn zur nächsten auf dem Feld bleiben.
 ]]></Text>
 			<Text language="en"><![CDATA[
@@ -1961,7 +1961,7 @@ Once your finished, simply press the button again and you will be asked if you w
 		<Translation name="CP_help_page_customFieldDone_text">
 			<Text language="de"><![CDATA[
 Im Helfermenü kannst du deinen Randkurs mit Namen sehen.
-Wenn du auf den Namen klickst, kannst du den Kurs löschen, umbenennen oder mit dem Editor bearbeiten.
+Wenn du auf den Namen klickst, kannst du den Kurs löschen, umbenennen, oder mit dem Editor bearbeiten.
 ]]></Text>
 			<Text language="en"><![CDATA[
 The custom field borders will be displayed in the AI menu.
