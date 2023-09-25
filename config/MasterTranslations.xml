@@ -268,11 +268,11 @@
 			<Text language="en"><![CDATA[Reverse]]></Text>
 		</Translation>
 		<Translation name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition">
-			<Text language="de"><![CDATA[warten auf Abfahrer:]]></Text>
+			<Text language="de"><![CDATA[Warten auf Abfahrer:]]></Text>
 			<Text language="en"><![CDATA[Waiting for unloader:]]></Text>
 		</Translation>
 		<Translation name="CP_bunkerSiloJobParameters_waitAtParkPosition_title">
-			<Text language="de"><![CDATA[warten auf Abfahrer:]]></Text>
+			<Text language="de"><![CDATA[Warten auf Abfahrer:]]></Text>
 			<Text language="en"><![CDATA[Waiting for unloader:]]></Text>
 		</Translation>
 		<Translation name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo">
