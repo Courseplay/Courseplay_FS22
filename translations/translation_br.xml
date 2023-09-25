@@ -25,8 +25,8 @@
     <text name="CP_error_vehicle_too_far_away_from_field" text="O veículo está muito longe do campo para começar."/>
     <text name="CP_error_no_bunkerSilo_found" text="Nenhum silo foi encontrado."/>
     <text name="CP_error_no_heap_found" text="Nenhum silo encontrado."/>
-    <text name="CP_error_no_unload_trigger_found" text="No unloading point found."/>
-    <text name="CP_error_unload_target_to_far_away_from_silo" text="Chosen unloading point is to far away from the silo."/>
+    <text name="CP_error_no_unload_trigger_found" text="Nenhum ponto para descarregar foi encontrado."/>
+    <text name="CP_error_unload_target_to_far_away_from_silo" text="Ponto escolhido para descarregar é muito longe do silo."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -182,8 +182,8 @@
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Configuração trabalho no silo"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Largura de trabalho"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Largura de trabalho. Valor: 0 - 50"/>
-    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Shovel loading offset. Value: -1 - 1"/>
-    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Shovel loading offset. Value: -1 - 1"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Distãncia da pá carregadeira. Valor: -1 - 1"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Distãncia da pá carregadeira. Valor: -1 - 1"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
