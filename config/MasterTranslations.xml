@@ -2344,7 +2344,7 @@ Attention: As soon as you release the mouse button, the waypoints will be set, t
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_unloader_title">
-			<Text language="de"><![CDATA[Ernter Abfahrer]]></Text>
+			<Text language="de"><![CDATA[Ernter-Abfahrer]]></Text>
 			<Text language="en"><![CDATA[Harvester unloader]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_unloaderGeneral_text">
