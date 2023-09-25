@@ -306,8 +306,8 @@
 			<Text language="en"><![CDATA[Loading position]]></Text>
 		</Translation>
 		<Translation name="CP_siloLoader_fillLevelProgress">
-			<Text language="de"><![CDATA[Liter übrig: ]]></Text>
-			<Text language="en"><![CDATA[Liters left: ]]></Text>
+			<Text language="de"><![CDATA[Liter übrig:]]></Text>
+			<Text language="en"><![CDATA[Liters left:]]></Text>
 		</Translation>
 		<Translation name="CP_siloLoaderJobParameters_subTitle_unloading">
 			<Text language="de"><![CDATA[Abladen in:]]></Text>
@@ -344,12 +344,12 @@
 			<Text language="en"><![CDATA[CP: Silo loading]]></Text>
 		</Translation>
 		<Translation name="CP_ai_page_generate_course">
-			<Text language="de"><![CDATA[CP: Feldkurs generieren.]]></Text>
-			<Text language="en"><![CDATA[CP: Generate fieldwork course.]]></Text>
+			<Text language="de"><![CDATA[CP: Feldkurs generieren]]></Text>
+			<Text language="en"><![CDATA[CP: Generate fieldwork course]]></Text>
 		</Translation>
 		<Translation name="CP_ai_page_open_course_generator">
-			<Text language="de"><![CDATA[CP: Kursgenerator öffnen/schließen.]]></Text>
-			<Text language="en"><![CDATA[CP: Open/close course generator.]]></Text>
+			<Text language="de"><![CDATA[CP: Kursgenerator öffnen/schließen]]></Text>
+			<Text language="en"><![CDATA[CP: Open/close course generator]]></Text>
 		</Translation>
 	</Category>
 	<Category name="AI error messages">	
@@ -421,7 +421,7 @@
 		</Translation>
 		<Translation name="CP_vehicle_setting_showCourse_tooltip">
 			<Text language="de"><![CDATA[Zeigt den Kurs des aktuell gewählten Fahrzeugs.]]></Text>
-			<Text language="en"><![CDATA[Show the current course of the vehicle]]></Text>
+			<Text language="en"><![CDATA[Show the current course of the vehicle.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_showCourse_startStop">
 			<Text language="de"><![CDATA[Nur Start/Ende]]></Text>
@@ -457,7 +457,7 @@
 		</Translation>
 		<Translation name="CP_vehicle_setting_stopAtEnd_tooltip">
 			<Text language="de"><![CDATA[Fahrzeug bleibt nach der Arbeit am Endpunkt stehen.]]></Text>
-			<Text language="en"><![CDATA[Stop at end]]></Text>
+			<Text language="en"><![CDATA[Stop at end.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_allowReversePathfinding_title">
 			<Text language="de"><![CDATA[Pathfinder darf rückwärts fahren]]></Text>
@@ -465,7 +465,7 @@
 		</Translation>
 		<Translation name="CP_vehicle_setting_allowReversePathfinding_tooltip">
 			<Text language="de"><![CDATA[Erlaubt dem Pathfinder, einen Rückwärtskurs zu generieren.]]></Text>
-			<Text language="en"><![CDATA[When applicable, allow the pathfinder to generate courses containing reverse driving]]></Text>
+			<Text language="en"><![CDATA[When applicable, allow the pathfinder to generate courses containing reverse driving.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_allowPathfinderTurns_title">
 			<Text language="de"><![CDATA[Benutze Pathfinder im Wendemanöver]]></Text>
@@ -473,7 +473,7 @@
 		</Translation>
 		<Translation name="CP_vehicle_setting_allowPathfinderTurns_tooltip">
 			<Text language="de"><![CDATA[Aktiviert den Pathfinder für Wendemanöver, zum Beispiel um Objekten oder der Frucht auszuweichen.]]></Text>
-			<Text language="en"><![CDATA[Enables using the pathfinder in turns, for example to avoid obstacles and fruit]]></Text>
+			<Text language="en"><![CDATA[Enables using the pathfinder in turns, for example to avoid obstacles and fruit.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_foldImplementAtEnd_title">
 			<Text language="de"><![CDATA[Geräte am Ende einklappen]]></Text>
@@ -528,7 +528,7 @@
 			<Text language="en"><![CDATA[Only turning on the field]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_turnOnField_tooltip">
-			<Text language="de"><![CDATA[Versucht beim Wendemanöver auf dem Feld zu bleiben. Nicht mit allen Geräten möglich.]]></Text>
+			<Text language="de"><![CDATA[Versucht, beim Wendemanöver auf dem Feld zu bleiben. Nicht mit allen Geräten möglich.]]></Text>
 			<Text language="en"><![CDATA[Only turning on the field. Not possible with all tools.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_avoidFruit_title">
@@ -536,8 +536,8 @@
 			<Text language="en"><![CDATA[Avoid driving in fruit]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_avoidFruit_tooltip">
-			<Text language="de"><![CDATA[Versucht nach Möglichkeit nicht in der Frucht zu fahren.]]></Text>
-			<Text language="en"><![CDATA[The AI will try to avoid driving in the fruit]]></Text>
+			<Text language="de"><![CDATA[Versucht nach Möglichkeit, nicht in der Frucht zu fahren.]]></Text>
+			<Text language="en"><![CDATA[The AI will try to avoid driving in the fruit.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_toolOffsetX_title">
 			<Text language="de"><![CDATA[Geräteversatz horizontal]]></Text>
@@ -569,7 +569,7 @@
 		</Translation>
 		<Translation name="CP_vehicle_setting_fullThreshold_tooltip">
 			<Text language="de"><![CDATA[Wenn der Füllstand des Abfahrers über diesem Wert liegt, wird er nicht auf den Drescher warten.]]></Text>
-			<Text language="en"><![CDATA[If the unloader's fill level is over this value, it won't wait for the combine]]></Text>
+			<Text language="en"><![CDATA[If the unloader's fill level is over this value, it won't wait for the combine.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_useAdditiveFillUnit_title">
 			<Text language="de"><![CDATA[Siliermittel überwachen]]></Text>
@@ -600,7 +600,7 @@
 			<Text language="en"><![CDATA[Vehicle debug]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_debugActive_tooltip">
-			<Text language="de"><![CDATA[Debuginformationen für das Fahrzeug ein- und ausschalten. Visuell und Logeinträge.]]></Text>
+			<Text language="de"><![CDATA[Debuginformationen für das Fahrzeug ein- oder ausschalten. Visuell und Logeinträge.]]></Text>
 			<Text language="en"><![CDATA[Enables/disables debug for this vehicle.]]></Text>
 		</Translation>
 	</Category>
@@ -691,7 +691,7 @@
 		</Translation>
 		<Translation name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip">
 			<Text language="de"><![CDATA[Schaltet die zusätzliche Saatfunktion des Gerätes ein oder aus.]]></Text>
-			<Text language="en"><![CDATA[Turns on or off the additional sowing function of the machine]]></Text>
+			<Text language="en"><![CDATA[Turns on or off the additional sowing function of the machine.]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Vehicle settings combine">
@@ -786,7 +786,7 @@
 			<Text language="en"><![CDATA[Number of headlands. Value: 0 - 40]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title">
-			<Text language="de"><![CDATA[Überlappung Vorgewende]]></Text>
+			<Text language="de"><![CDATA[Vorgewende-Überlappung]]></Text>
 			<Text language="en"><![CDATA[Headland overlap]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip">
@@ -818,19 +818,19 @@
 			<Text language="en"><![CDATA[When the center mode is 'lands', this many rows are in each block. Value: 0 - 24]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_isClockwise_title">
-			<Text language="de"><![CDATA[Richtung Vorgewende]]></Text>
+			<Text language="de"><![CDATA[Vorgewende-Richtung]]></Text>
 			<Text language="en"><![CDATA[Headland direction]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip">
 			<Text language="de"><![CDATA[Das Fahrzeug kann auf dem Vorgewende im oder gegen den Uhrzeigersinn fahren.]]></Text>
-			<Text language="en"><![CDATA[Should the vehicle drive clockwise or counterclockwise on the headland]]></Text>
+			<Text language="en"><![CDATA[Should the vehicle drive clockwise or counterclockwise on the headland.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise">
-			<Text language="de"><![CDATA[Im Uhrzeigersinn]]></Text>
+			<Text language="de"><![CDATA[im Uhrzeigersinn]]></Text>
 			<Text language="en"><![CDATA[clockwise]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise">
-			<Text language="de"><![CDATA[Gegen den Uhrzeigersinn]]></Text>
+			<Text language="de"><![CDATA[gegen den Uhrzeigersinn]]></Text>
 			<Text language="en"><![CDATA[counterclockwise]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_centerMode_title">
@@ -838,7 +838,7 @@
 			<Text language="en"><![CDATA[Field center]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip">
-			<Text language="de"><![CDATA[Feldmitte]]></Text>
+			<Text language="de"><![CDATA[Unterschiedliche Bearbeitungsformen der Feldmitte.]]></Text>
 			<Text language="en"><![CDATA[Field center]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_centerMode_up_down">
@@ -862,19 +862,19 @@
 			<Text language="en"><![CDATA[Headland corners]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip">
-			<Text language="de"><![CDATA[Vorgewende-Ecken]]></Text>
+			<Text language="de"><![CDATA[Bearbeitungsform der Ecken vom Vorgewende.]]></Text>
 			<Text language="en"><![CDATA[Headland corners]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth">
-			<Text language="de"><![CDATA[Weich]]></Text>
+			<Text language="de"><![CDATA[weich]]></Text>
 			<Text language="en"><![CDATA[smooth]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp">
-			<Text language="de"><![CDATA[Scharf]]></Text>
+			<Text language="de"><![CDATA[scharf]]></Text>
 			<Text language="en"><![CDATA[sharp]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round">
-			<Text language="de"><![CDATA[Rund]]></Text>
+			<Text language="de"><![CDATA[rund]]></Text>
 			<Text language="en"><![CDATA[round]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_rowDirection_title">
@@ -883,18 +883,18 @@
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip">
 			<Text language="de"><![CDATA[Richtung, in der die Bahnen gefahren werden sollen.]]></Text>
-			<Text language="en"><![CDATA[Direction of the rows in the center of the field]]></Text>
+			<Text language="en"><![CDATA[Direction of the rows in the center of the field.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic">
-			<Text language="de"><![CDATA[Automatisch]]></Text>
+			<Text language="de"><![CDATA[automatisch]]></Text>
 			<Text language="en"><![CDATA[automatic]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge">
-			<Text language="de"><![CDATA[Längste Kante]]></Text>
+			<Text language="de"><![CDATA[längste Kante]]></Text>
 			<Text language="en"><![CDATA[longest edge]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_rowDirection_manual">
-			<Text language="de"><![CDATA[Manuell]]></Text>
+			<Text language="de"><![CDATA[manuell]]></Text>
 			<Text language="en"><![CDATA[manual]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title">
@@ -902,7 +902,7 @@
 			<Text language="en"><![CDATA[Up/down row angle]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip">
-			<Text language="de"><![CDATA[Winkel der Bahnen (0 ist Norden), wenn Einstellung auf Manuell gesetzt ist. Wert: 0 - 175 Schritte: 5]]></Text>
+			<Text language="de"><![CDATA[Winkel der Bahnen (0 ist Norden), wenn Einstellung auf 'manuell' gesetzt ist. Wert: 0 - 175 Schritte: 5]]></Text>
 			<Text language="en"><![CDATA[Angle of up/down rows (0° is North) when manual. Value: 0 - 175 Steps: 5]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title">
@@ -911,7 +911,7 @@
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip">
 			<Text language="de"><![CDATA[Wie Inseln auf dem Feld umfahren werden sollen.]]></Text>
-			<Text language="en"><![CDATA[How the course should bypass islands in the field]]></Text>
+			<Text language="en"><![CDATA[How the course should bypass islands in the field.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none">
 			<Text language="de"><![CDATA[keine Umfahrung]]></Text>
@@ -981,7 +981,7 @@
 		</Translation>
 		<Translation name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title">
 			<Text language="de"><![CDATA[Geräte auf Kurs]]></Text>
-			<Text language="en"><![CDATA[Tools per course.]]></Text>
+			<Text language="en"><![CDATA[Tools per course]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip">
 			<Text language="de"><![CDATA[Wie viele Geräte auf diesem Kurs arbeiten. Mehr Informationen im Hilfemenü.]]></Text>
@@ -1011,7 +1011,7 @@
 		</Translation>
 		<Translation name="CP_global_setting_wageModifier_tooltip">
 			<Text language="de"><![CDATA[Lohn für CP-Fahrer, prozentual von dem Standardlohn.]]></Text>
-			<Text language="en"><![CDATA[Cp driver wages as percentage of normal worker's wages]]></Text>
+			<Text language="en"><![CDATA[Cp driver wages as percentage of normal worker's wages.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_autoRepair_title">
 			<Text language="de"><![CDATA[Automatische Reparatur]]></Text>
@@ -1022,7 +1022,7 @@
 			<Text language="en"><![CDATA[Cp driver automatically repair, while driving.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_autoRepair_off">
-			<Text language="de"><![CDATA[Nicht reparieren]]></Text>
+			<Text language="de"><![CDATA[nicht reparieren]]></Text>
 			<Text language="en"><![CDATA[Don't repair]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_autoRepair_less_than_25">
@@ -1058,7 +1058,7 @@
 			<Text language="en"><![CDATA[Stops harvester, while it's raining]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_stopThreshingDuringRain_tooltip">
-			<Text language="de"><![CDATA[Wenn die Einstellung aktiviert ist, dann warten alle Drescher solange bis der Regen aufhört.]]></Text>
+			<Text language="de"><![CDATA[Wenn die Einstellung aktiviert ist, dann warten alle Drescher solange, bis der Regen aufhört.]]></Text>
 			<Text language="en"><![CDATA[If the setting is active, then all harvester wait for the raining to stop.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_fruitDestruction_title">
@@ -1070,11 +1070,11 @@
 			<Text language="en"><![CDATA[Enable/disable the fruit destruction for helpers.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_fruitDestruction_only_cp">
-			<Text language="de"><![CDATA[Aktiviert für Courseplay Helfer]]></Text>
+			<Text language="de"><![CDATA[aktiviert für CP-Helfer]]></Text>
 			<Text language="en"><![CDATA[Activated for Courseplay helpers]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_fruitDestruction_all_helpers">
-			<Text language="de"><![CDATA[Aktiviert für alle Helfer]]></Text>
+			<Text language="de"><![CDATA[aktiviert für alle Helfer]]></Text>
 			<Text language="en"><![CDATA[Activated for every helpers]]></Text>
 		</Translation>
 	</Category>
@@ -1104,7 +1104,7 @@
 			<Text language="en"><![CDATA[Action event help]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_showActionEventHelp_tooltip">
-			<Text language="de"><![CDATA[Schaltet die Anzeige der Tastenbelegung an und aus.]]></Text>
+			<Text language="de"><![CDATA[Schaltet die Anzeige der Tastenbelegung an oder aus.]]></Text>
 			<Text language="en"><![CDATA[Shows action event help texts.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_showsAllActiveCourses_title">
@@ -1128,11 +1128,11 @@
 			<Text language="en"><![CDATA[Show info texts window]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_infoTextHudActive_tooltip">
-			<Text language="de"><![CDATA[Schaltet das Infofenster für die CP-Helfer an oder aus.]]></Text>
+			<Text language="de"><![CDATA[Schaltet das Infofenster für die CP-Helfer an, an bei Info oder aus.]]></Text>
 			<Text language="en"><![CDATA[Displays an info text window.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_infoTextHudActive_active_hide_without_message">
-			<Text language="de"><![CDATA[Aktiv mit Nachricht]]></Text>
+			<Text language="de"><![CDATA[aktiv mit Nachricht]]></Text>
 			<Text language="en"><![CDATA[Active with message]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_infoTextHudPlayerMouseActive_title">
@@ -1179,15 +1179,15 @@
 		</Translation>
 		<Translation name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip">
 			<Text language="de"><![CDATA[Maximaler zulässiger Winkel am Ziel. Kleine Winkel sind genauer, große schneller.]]></Text>
-			<Text language="en"><![CDATA[Maximum angle difference allowed at goal, bigger values are faster but less accurate]]></Text>
+			<Text language="en"><![CDATA[Maximum angle difference allowed at goal, bigger values are faster but less accurate.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_deltaAngleRelaxFactorDeg_title">
 			<Text language="de"><![CDATA[Änderungsfaktor Pathfinder]]></Text>
 			<Text language="en"><![CDATA[Delta angle relax factor]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip">
-			<Text language="de"><![CDATA[Faktor um die Pathfindergenauigkeit bei gescheiterten Versuchen zu senken. Größere Werte sind schneller.]]></Text>
-			<Text language="en"><![CDATA[Factor to decrease pathfinder accuracy with unsuccessful iterations, bigger values are faster]]></Text>
+			<Text language="de"><![CDATA[Faktor, um die Pathfindergenauigkeit bei gescheiterten Versuchen zu senken. Größere Werte sind schneller.]]></Text>
+			<Text language="en"><![CDATA[Factor to decrease pathfinder accuracy with unsuccessful iterations, bigger values are faster.]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Course manager">	
@@ -1316,7 +1316,7 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Continues deletion of hovered waypoints.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_delete_tertiary_text">
-			<Text language="de"><![CDATA[Löscht alle Wegpunkte bis zum letzen Wegpunkt.]]></Text>
+			<Text language="de"><![CDATA[Löscht alle Wegpunkte bis zum letzten Wegpunkt.]]></Text>
 			<Text language="en"><![CDATA[Deletes all waypoints until the last waypoint.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_delete_yesNo_deleteToLastWp_title">
