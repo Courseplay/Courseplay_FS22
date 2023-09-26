@@ -696,7 +696,7 @@
 	</Category>
 	<Category name="Vehicle settings combine">
 		<Translation name="CP_vehicle_setting_automaticCutterAttach_title">
-			<Text language="de"><![CDATA[Automatisches Schneidwerkankuppeln]]></Text>
+			<Text language="de"><![CDATA[Schneidwerk automatisch ankuppeln]]></Text>
 			<Text language="en"><![CDATA[Automatic cutter attach]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_automaticCutterAttach_tooltip">
