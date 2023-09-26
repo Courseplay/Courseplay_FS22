@@ -25,8 +25,8 @@
     <text name="CP_error_vehicle_too_far_away_from_field" text="Pojazd jest zbyt daleko pola, aby ruszyć."/>
     <text name="CP_error_no_bunkerSilo_found" text="Nie znaleziono silosu."/>
     <text name="CP_error_no_heap_found" text="Nie znaleziono pryzmy."/>
-    <text name="CP_error_no_unload_trigger_found" text="No unloading point found."/>
-    <text name="CP_error_unload_target_to_far_away_from_silo" text="Chosen unloading point is to far away from the silo."/>
+    <text name="CP_error_no_unload_trigger_found" text="Nie znaleziono punktu rozładunku."/>
+    <text name="CP_error_unload_target_to_far_away_from_silo" text="Wybrany punkt rozładunku jest zbyt daleko silosu."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -95,9 +95,9 @@
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Pozycja załadunku"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Pozycja załadunku"/>
     <text name="CP_siloLoader_fillLevelProgress" text="Postęp: "/>
-    <text name="CP_siloLoaderJobParameters_subTitle_unloading" text="Unloading at:"/>
-    <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="Trailer"/>
-    <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="Unload station"/>
+    <text name="CP_siloLoaderJobParameters_subTitle_unloading" text="Rozładunek na:"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="Przyczepa"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="Stacja rozładunku"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -182,8 +182,8 @@
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Ustawienia pracownika silosu"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Szerokość robocza"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Szerokość robocza. Zakres: 0 - 50"/>
-    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Shovel loading offset. Value: -1 - 1"/>
-    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Shovel loading offset. Value: -1 - 1"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Przes. załadunku łyżki. Zakres: -1 - 1"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Przesunięcie załadunku łyżki. Zakres: -1 - 1"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
@@ -812,7 +812,7 @@ Aby rozpocząć załadunek, punkt załadunkowy musi zostać ustawiony w menu SI.
 Znacznik wykrywa pryzmę lub silos i podświetla to na mapie.
 Terze możesz rozpocząć pracę pomocnika.
 "/>
-    <text name="CP_help_page_shovelLoader_title" text="Wheelloader Driver"/>
+    <text name="CP_help_page_shovelLoader_title" text="Kierowca ładowarki"/>
     <text name="CP_help_page_shovelLoaderGeneral_text" text="
 WIP
 "/>
