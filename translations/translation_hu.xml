@@ -540,7 +540,7 @@ Az útvonal kezelő lehetővé teszi útvonalak mentését és későbbi újra b
 Ez nagyon fontos amikor több munkást akarsz alkalmazni ugyanazon az útvonalon konvoj módban (több eszköz).
 Ez a funkció lehetővé teszi továbbá a hátrahagyott rend felszedését egy kombájn vagy rendsodró után, felszedőkocsi vagy bálázó használatával.
 
-Az útvonalfájlok mentési helye: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\<a térkép neve> (például MapUS az alapjátékban).
+Az útvonalfájlok mentési helye: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\&lt;a térkép neve&gt; (például MapUS az alapjátékban).
 Az útvonalkezelő másként működik, mint amihez hozzászoktál FS19-ben.
 Az útvonalak mentése mappákban történik, amik bal oldalon jelennek meg. Ez azt jelenti, hogy az útvonalak mentése előtt szükséged lesz legalább egy mappára. 
 Mappákat egyszerűen létrehozhatsz a képernyő alján található gombbal és név beírásával.
