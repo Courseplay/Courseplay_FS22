@@ -13,7 +13,7 @@
     <text name="CP_automatic" text="auto"/>
     <text name="CP_unit_meter" text="m"/>
     <text name="CP_unit_foot" text="ft"/>
-    <text name="CP_copy" text="Copy course: "/>
+    <text name="CP_copy" text="Copy course:"/>
     <text name="CP_infoText" text="Courseplay(%s): For help, bug reports or patch notes, please visit: https://github.com/Courseplay/Courseplay_FS22."/>
     <text name="CP_error_no_course" text="Generate a course before starting the job."/>
     <text name="CP_error_could_not_generate_course" text="Could not generate course. The log may have more information."/>
@@ -35,7 +35,7 @@
     <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Start at:"/>
     <text name="CP_jobParameters_startAt_title" text="Start at:"/>
-    <text name="CP_jobParameters_startAt_tooltip" text="Where to start field work"/>
+    <text name="CP_jobParameters_startAt_tooltip" text="Where to start field work."/>
     <text name="CP_jobParameters_startAt_nearest" text="nearest waypoint"/>
     <text name="CP_jobParameters_startAt_first" text="first waypoint"/>
     <text name="CP_jobParameters_startAt_last" text="last waypoint"/>
@@ -64,7 +64,7 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Unload: "/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Unload:"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Unload:"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Combine"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Loader"/>
@@ -94,7 +94,7 @@
     <!---->
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Loading position"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Loading position"/>
-    <text name="CP_siloLoader_fillLevelProgress" text="Liters left: "/>
+    <text name="CP_siloLoader_fillLevelProgress" text="Liters left:"/>
     <text name="CP_siloLoaderJobParameters_subTitle_unloading" text="Unloading at:"/>
     <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="Trailer"/>
     <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="Unload station"/>
@@ -106,8 +106,8 @@
     <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
     <text name="CP_job_bunkerSilo" text="CP: Silo work"/>
     <text name="CP_job_siloLoader" text="CP: Silo loading"/>
-    <text name="CP_ai_page_generate_course" text="CP: Generate fieldwork course."/>
-    <text name="CP_ai_page_open_course_generator" text="CP: Open/close course generator."/>
+    <text name="CP_ai_page_generate_course" text="CP: Generate fieldwork course"/>
+    <text name="CP_ai_page_open_course_generator" text="CP: Open/close course generator"/>
     <!---->
     <!--AI error messages-->
     <!---->
@@ -130,7 +130,7 @@
     <text name="CP_vehicle_setting_subTitle_speed" text="Speeds"/>
     <text name="CP_vehicle_setting_subTitle_debug" text="Debug settings"/>
     <text name="CP_vehicle_setting_showCourse_title" text="Show course"/>
-    <text name="CP_vehicle_setting_showCourse_tooltip" text="Show the current course of the vehicle"/>
+    <text name="CP_vehicle_setting_showCourse_tooltip" text="Show the current course of the vehicle."/>
     <text name="CP_vehicle_setting_showCourse_startStop" text="Start/stop only"/>
     <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="Current waypoints"/>
     <text name="CP_vehicle_setting_showCourse_all" text="All waypoints"/>
@@ -139,11 +139,11 @@
     <text name="CP_vehicle_setting_fuelSave_title" text="Fuel save"/>
     <text name="CP_vehicle_setting_fuelSave_tooltip" text="Turns off the vehicle, while waiting."/>
     <text name="CP_vehicle_setting_stopAtEnd_title" text="Stop at end"/>
-    <text name="CP_vehicle_setting_stopAtEnd_tooltip" text="Stop at end"/>
+    <text name="CP_vehicle_setting_stopAtEnd_tooltip" text="Stop at end."/>
     <text name="CP_vehicle_setting_allowReversePathfinding_title" text="Allow reverse for pathfinding"/>
-    <text name="CP_vehicle_setting_allowReversePathfinding_tooltip" text="When applicable, allow the pathfinder to generate courses containing reverse driving"/>
+    <text name="CP_vehicle_setting_allowReversePathfinding_tooltip" text="When applicable, allow the pathfinder to generate courses containing reverse driving."/>
     <text name="CP_vehicle_setting_allowPathfinderTurns_title" text="Allow using the pathfinder in turns"/>
-    <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Enables using the pathfinder in turns, for example to avoid obstacles and fruit"/>
+    <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Enables using the pathfinder in turns, for example to avoid obstacles and fruit."/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Fold tools at course end"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Enables/disables automatic folding of implements at the end of the course."/>
     <text name="CP_vehicle_setting_returnToStart_title" text="Return to starting point"/>
@@ -159,7 +159,7 @@
     <text name="CP_vehicle_setting_turnOnField_title" text="Only turning on the field"/>
     <text name="CP_vehicle_setting_turnOnField_tooltip" text="Only turning on the field. Not possible with all tools."/>
     <text name="CP_vehicle_setting_avoidFruit_title" text="Avoid driving in fruit"/>
-    <text name="CP_vehicle_setting_avoidFruit_tooltip" text="The AI will try to avoid driving in the fruit"/>
+    <text name="CP_vehicle_setting_avoidFruit_tooltip" text="The AI will try to avoid driving in the fruit."/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Tool offset horizontal"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Tool offset horizontal"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
@@ -167,7 +167,7 @@
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Tool offset vertical"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Tool offset vertical"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
-    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="If the unloader's fill level is over this value, it won't wait for the combine"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="If the unloader's fill level is over this value, it won't wait for the combine."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Check for silage additive"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="If active and silage additive is emtpy, the driver will stop."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Symmetric lane change"/>
@@ -205,7 +205,7 @@
     <text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" text="Sowing machines use fertilizer"/>
     <text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" text="Enables/disables fertilizer usage of sowing machines."/>
     <text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" text="Sowing option"/>
-    <text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" text="Turns on or off the additional sowing function of the machine"/>
+    <text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" text="Turns on or off the additional sowing function of the machine."/>
     <!---->
     <!--Vehicle settings combine-->
     <!---->
@@ -243,7 +243,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Rows per land"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="When the center mode is 'lands', this many rows are in each block. Value: 0 - 24"/>
     <text name="CP_vehicle_courseGeneratorSetting_isClockwise_title" text="Headland direction"/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland"/>
+    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
     <text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" text="clockwise"/>
     <text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" text="counterclockwise"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Field center"/>
@@ -258,14 +258,14 @@
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" text="sharp"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" text="round"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowDirection_title" text="Up/down row direction"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip" text="Direction of the rows in the center of the field"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip" text="Direction of the rows in the center of the field."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" text="automatic"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" text="longest edge"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" text="manual"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Up/down row angle"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Angle of up/down rows (0° is North) when manual. Value: 0 - 175 Steps: 5"/>
     <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" text="Island bypass mode"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" text="How the course should bypass islands in the field"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" text="How the course should bypass islands in the field."/>
     <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" text="no bypass"/>
     <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" text="simple"/>
     <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" text="circle"/>
@@ -285,7 +285,7 @@
     <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left" text="Left side of the vine"/>
     <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center" text="On the vine"/>
     <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right" text="Right side of the vine"/>
-    <text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title" text="Tools per course."/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title" text="Tools per course"/>
     <text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip" text="How many Tools can work together. More Information in the help Menu."/>
     <text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title" text="Vines to skip"/>
     <text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip" text="Skip vines should only be used, when the tool works on both vines (left and right)."/>
@@ -295,7 +295,7 @@
     <text name="CP_global_setting_title" text="Global settings"/>
     <text name="CP_global_setting_subTitle_general" text="Basic settings"/>
     <text name="CP_global_setting_wageModifier_title" text="Cp driver wages"/>
-    <text name="CP_global_setting_wageModifier_tooltip" text="Cp driver wages as percentage of normal worker's wages"/>
+    <text name="CP_global_setting_wageModifier_tooltip" text="Cp driver wages as percentage of normal worker's wages."/>
     <text name="CP_global_setting_autoRepair_title" text="Automatic repair"/>
     <text name="CP_global_setting_autoRepair_tooltip" text="Cp driver automatically repair, while driving."/>
     <text name="CP_global_setting_autoRepair_off" text="Don't repair"/>
@@ -342,9 +342,9 @@
     <!---->
     <text name="CP_global_setting_subTitle_pathfinder" text="Pathfinder settings"/>
     <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Angle difference at goal"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maximum angle difference allowed at goal, bigger values are faster but less accurate"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maximum angle difference allowed at goal, bigger values are faster but less accurate."/>
     <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Delta angle relax factor"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Factor to decrease pathfinder accuracy with unsuccessful iterations, bigger values are faster"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Factor to decrease pathfinder accuracy with unsuccessful iterations, bigger values are faster."/>
     <!---->
     <!--Course manager-->
     <!---->
@@ -694,8 +694,17 @@ The Informations are the following:
 - Needs to be refilled
 - Needs to be unloaded
 - Finished work
+- Driving to combine
+- Driving to trailer
 - Ouf of money
 - Waiting for rain to finish
+- Waiting on unloader
+- Left the course, stopped
+- Wrong bale type
+- No path found
+- Tipping to ground not possible
+- Cutter not supported
+- Cutter attaching deactivated
 "/>
     <text name="CP_help_page_vineWork_title" text="Vine work"/>
     <text name="CP_help_page_vineWorkConditions_text" text="
