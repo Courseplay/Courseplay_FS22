@@ -13,7 +13,7 @@
     <text name="CP_automatic" text="auto"/>
     <text name="CP_unit_meter" text="м"/>
     <text name="CP_unit_foot" text="ft"/>
-    <text name="CP_copy" text="Копировать курс: "/>
+    <text name="CP_copy" text="Копировать курс:"/>
     <text name="CP_infoText" text="CoursePlay(%s): Чтобы получить помощь, отправить отчет об ошибках или исправлениях, можете посетить: https://github.com/Courseplay/Courseplay_FS22."/>
     <text name="CP_error_no_course" text="Создайте курс до начала работы."/>
     <text name="CP_error_could_not_generate_course" text="Не удалось сгенерировать курс. В логе может содержаться дополнительная информация."/>
@@ -25,8 +25,8 @@
     <text name="CP_error_vehicle_too_far_away_from_field" text="Транспортное средство слишком далеко от поля, чтобы стартовать."/>
     <text name="CP_error_no_bunkerSilo_found" text="Силосную яму не найдено."/>
     <text name="CP_error_no_heap_found" text="Не найдена куча."/>
-    <text name="CP_error_no_unload_trigger_found" text="No unloading point found."/>
-    <text name="CP_error_unload_target_to_far_away_from_silo" text="Chosen unloading point is to far away from the silo."/>
+    <text name="CP_error_no_unload_trigger_found" text="Точка разгрузки не найдена."/>
+    <text name="CP_error_unload_target_to_far_away_from_silo" text="Выбранная точка разгрузки слишком далеко от силосной ямы."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -64,7 +64,7 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Разгрузка: "/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Разгрузка:"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Разгрузка:"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Комбайн"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Загрузчик"/>
@@ -95,9 +95,9 @@
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Позиция загрузки"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Позиция загрузки"/>
     <text name="CP_siloLoader_fillLevelProgress" text="Прогресс: "/>
-    <text name="CP_siloLoaderJobParameters_subTitle_unloading" text="Unloading at:"/>
-    <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="Trailer"/>
-    <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="Unload station"/>
+    <text name="CP_siloLoaderJobParameters_subTitle_unloading" text="Разгружать на:"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="Прицеп"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="Станция разгрузки"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -182,8 +182,8 @@
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Настройки работника в силосной яме"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Рабочая ширина"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Рабочая ширина. Значение: 0 - 50"/>
-    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Shovel loading offset. Value: -1 - 1"/>
-    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Shovel loading offset. Value: -1 - 1"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Смещение загрузки ковша. Значение: -1 - 1"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Смещение загрузки ковша. Значение: -1 - 1"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
@@ -328,7 +328,7 @@
     <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Включает отрисовку курса на мини-карте."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Окно с инфотекстом"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Отображать окно с информационным текстом."/>
-    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Active but invisible without message"/>
+    <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Активно, но невидимо без сообщений"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Player mouse event"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Включить/отключить Player Mouse Event для отображения окна с инфотекстом за пределами транспортного средства."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Предпочитать пользовательские поля"/>
@@ -687,10 +687,17 @@ R: Удаляет скопированный курс из буфера обме
 - Нуждается в заправке
 - Нуждается в разгрузке
 - Завершил работу
+- Движется к комбайну
+- Движется к прицепу
 - Закончились деньги
 - Ожидает пока закончится дождь
+- Ожидает разгрузчика
 - Покинул курс, остановился
 - Неправильный тип тюка
+- Путь не найден
+- Подбор с земли невозможно
+- Жатка не поддерживается
+- Жатки не закреплена
 "/>
     <text name="CP_help_page_vineWork_title" text="Работа в винограднике"/>
     <text name="CP_help_page_vineWorkConditions_text" text="
