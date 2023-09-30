@@ -732,8 +732,8 @@
 			<Text language="en"><![CDATA[Unload on first headland]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip">
-			<Text language="de"><![CDATA[Wenn aktiv, wird der Abfahrer auch im ersten Vorgewende gerufen.]]></Text>
-			<Text language="en"><![CDATA[Combine will call the unloader on the first headland.]]></Text>
+			<Text language="de"><![CDATA[Wenn aktiv, ruft der Drescher den Abfahrer im ersten Vorgewende, auch wenn dieser dann außerhalb des Feldes fahren muss. Wenn deaktiviert, baut der Drescher erst eine Tasche, bevor der Abfahrer gerufen wird.]]></Text>
+			<Text language="en"><![CDATA[Combine will call the unloader on the first headland, even when he have to drive outside of the field. If turned off, the combine first creates a pocket before calling an unloader.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_strawSwath_title">
 			<Text language="de"><![CDATA[Strohablage]]></Text>

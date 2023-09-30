@@ -89,7 +89,7 @@
 		<!--Selfunload-->
 		<Setting classType="AIParameterBooleanSetting" name="selfUnload"/>
 		<!--Unload on first Headland-->
-		<Setting classType="AIParameterBooleanSetting" name="unloadOnFirstHeadland" defaultBool="true" isExpertModeOnly="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="unloadOnFirstHeadland" defaultBool="false" isExpertModeOnly="true"/>
 		<!--Strawswath-->
 		<Setting classType="AIParameterSettingList" name="strawSwath" default="2">
 			<Values>
