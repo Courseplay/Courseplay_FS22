@@ -218,7 +218,7 @@
     <text name="CP_vehicle_setting_selfUnload_title" text="Combine self unload"/>
     <text name="CP_vehicle_setting_selfUnload_tooltip" text="Combine drives to trailer on or near the field to unload. Not supported in multitools or convoy mode."/>
     <text name="CP_vehicle_setting_unloadOnFirstHeadland_title" text="Unload on first headland"/>
-    <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="Combine will call the unloader on the first headland."/>
+    <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="Combine will call the unloader on the first headland, even when he have to drive outside of the field. If turned off, the combine first creates a pocket before calling an unloader."/>
     <text name="CP_vehicle_setting_strawSwath_title" text="Straw swath"/>
     <text name="CP_vehicle_setting_strawSwath_tooltip" text="Enables/disables straw swath or only disables it on headlands."/>
     <text name="CP_vehicle_setting_strawSwath_onlyCenter" text="Headlands disabled"/>

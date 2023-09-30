@@ -218,7 +218,7 @@
     <text name="CP_vehicle_setting_selfUnload_title" text="Drescher selbst abtanken"/>
     <text name="CP_vehicle_setting_selfUnload_tooltip" text="Drescher sucht sich einen Anhänger in der Nähe des Feldes, um dort selbständig abzutanken. Keine Unterstützung bei Multitool Kursen."/>
     <text name="CP_vehicle_setting_unloadOnFirstHeadland_title" text="Entladen im ersten Vorgewende"/>
-    <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="Wenn aktiv, wird der Abfahrer auch im ersten Vorgewende gerufen."/>
+    <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="Wenn aktiv, ruft der Drescher den Abfahrer im ersten Vorgewende, auch wenn dieser dann außerhalb des Feldes fahren muss. Wenn deaktiviert, baut der Drescher erst eine Tasche, bevor der Abfahrer gerufen wird."/>
     <text name="CP_vehicle_setting_strawSwath_title" text="Strohablage"/>
     <text name="CP_vehicle_setting_strawSwath_tooltip" text="Strohablage an, aus oder nur im Vorgewende aus."/>
     <text name="CP_vehicle_setting_strawSwath_onlyCenter" text="Vorgewende deaktiviert"/>
