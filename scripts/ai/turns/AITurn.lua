@@ -637,7 +637,9 @@ end
 --- change direction as soon as the implement is aligned.
 --- So check that here and force a direction change when possible.
 function CourseTurn:changeDirectionWhenAligned()
-    if TurnManeuver.hasTurnControl(self.turnCourse, self.turnCourse:getCurrentWaypointIx(), TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED) then
+    if self.ppc:getLastPassedWaypointIx() and
+            TurnManeuver.hasTurnControl(self.turnCourse, self.ppc:getLastPassedWaypointIx(),
+                    TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED) then
         local aligned = self.driveStrategy:areAllImplementsAligned(self.turnContext.turnEndWpNode.node)
         self:debug('aligned: %s', tostring(aligned))
         if aligned then
