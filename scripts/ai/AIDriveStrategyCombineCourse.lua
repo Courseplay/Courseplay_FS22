@@ -603,8 +603,7 @@ end
 function AIDriveStrategyCombineCourse:startWaitingForUnloadBeforeNextRow()
     self:debug('Waiting for unload before starting the next row')
     self.waitingForUnloaderAtEndOfRow:set(true, 30000)
-    self.state = self.states.UNLOADING_ON_FIELD
-    self.unloadState = self.states.WAITING_FOR_UNLOAD_BEFORE_STARTING_NEXT_ROW
+    self:stopForUnload(self.states.WAITING_FOR_UNLOAD_BEFORE_STARTING_NEXT_ROW, true)
 end
 
 --- The unloader may call this repeatedly to confirm that the rendezvous still stands, making sure the
