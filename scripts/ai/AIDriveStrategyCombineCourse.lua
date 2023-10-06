@@ -1413,11 +1413,25 @@ function AIDriveStrategyCombineCourse:handlePipe(dt)
 end
 
 function AIDriveStrategyCombineCourse:handleCombinePipe(dt)
-
-    if self.pipeController:isFillableTrailerUnderPipe() or self:isAutoDriveWaitingForPipe() then
+    if self:isAGoodTrailerInRange() or self:isAutoDriveWaitingForPipe() then
         self.pipeController:openPipe()
     else
         self.pipeController:closePipe(true)
+    end
+end
+
+function AIDriveStrategyCombineCourse:isAGoodTrailerInRange()
+    local _, trailer = self.pipeController:isFillableTrailerUnderPipe()
+    local unloaderVehicle = trailer and trailer:getRootVehicle()
+
+    if unloaderVehicle == nil then
+        return false
+    end
+
+    if AIDriveStrategyUnloadCombine.isActiveCpCombineUnloader(unloaderVehicle) then
+        return unloaderVehicle:getCpDriveStrategy():getCombineToUnload() == self.vehicle
+    else
+        return true
     end
 end
 
