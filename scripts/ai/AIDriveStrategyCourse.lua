@@ -120,7 +120,6 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
     self.allowReversePathfinding = AIUtil.getFirstReversingImplementWithWheels(self.vehicle) == nil
     self.turningRadius = AIUtil.getTurningRadius(vehicle)
 
-    self:enableCollisionDetection()
     self:setAllStaticParameters()
 
     -- TODO: this may or may not be the course we need for the strategy
@@ -594,21 +593,6 @@ end
 
 function AIDriveStrategyCourse:getRememberedCourseAndIx()
     return self.rememberedCourse, self.rememberedCourseStartIx
-end
-
-------------------------------------------------------------------------------------------------------------------------
---- Collision
----------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyCourse:disableCollisionDetection()
-    if self.vehicle then
-        CpAIWorker.disableCollisionDetection(self.vehicle)
-    end
-end
-
-function AIDriveStrategyCourse:enableCollisionDetection()
-    if self.vehicle then
-        CpAIWorker.enableCollisionDetection(self.vehicle)
-    end
 end
 
 ------------------------------------------------------------------------------------------------------------------------
