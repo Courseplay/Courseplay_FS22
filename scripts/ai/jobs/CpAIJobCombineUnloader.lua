@@ -361,3 +361,23 @@ end
 function CpAIJobCombineUnloader:getIsLooping()
 	return true
 end
+
+--- Gets the additional task description shown.
+--- TODO: Add the missing description once the task system is better implemented.
+---@return unknown
+function CpAIJobCombineUnloader:getDescription()
+	local desc = CpAIJob:superClass().getDescription(self)
+	local currentTask = self:getTaskByIndex(self.currentTaskIndex)
+    if currentTask == self.driveToTask then
+		desc = desc .. " - " .. g_i18n:getText("ai_taskDescriptionDriveToField")
+	elseif currentTask == self.combineUnloaderTask then
+		if self.cpJobParameters.unloadTarget:getValue() == CpCombineUnloaderJobParameters.UNLOAD_COMBINE then
+			desc = desc .. " - " .. g_i18n:getText("CP_ai_taskDescriptionUnloadCombine")
+		else 
+			desc = desc .. " - " .. g_i18n:getText("CP_ai_taskDescriptionUnloadSiloLoader")
+		end
+	elseif currentTask == self.driveToUnloadingTask or currentTask == self.dischargeTask then 
+		desc = desc .. " - " .. g_i18n:getText("CP_ai_taskDescriptionUnloadingWithGiants")
+	end
+	return desc
+end

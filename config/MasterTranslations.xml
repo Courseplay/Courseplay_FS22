@@ -382,6 +382,70 @@
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!]]></Text>
 		</Translation>
 	</Category>
+	<Category name="AI bale finder task descriptions">	
+		<Translation name="CP_ai_taskDescriptionCollectsBales">
+			<Text language="de"><![CDATA[Sammelt Ballen auf dem Feld]]></Text>
+			<Text language="en"><![CDATA[Collects bales on the field]]></Text>
+		</Translation>
+		<Translation name="CP_ai_taskDescriptionWrapsBales">
+			<Text language="de"><![CDATA[Wickelt Ballen auf dem Feld]]></Text>
+			<Text language="en"><![CDATA[Wraps bales on the field]]></Text>
+		</Translation>
+	</Category>
+	<Category name="AI combine unloader task descriptions">	
+		<Translation name="CP_ai_taskDescriptionUnloadCombine">
+			<Text language="de"><![CDATA[Entlädt Drescher]]></Text>
+			<Text language="en"><![CDATA[Unloads combine]]></Text>
+		</Translation>
+		<Translation name="CP_ai_taskDescriptionWaitsForTargetCombine">
+			<Text language="de"><![CDATA[Wartet auf Drescher]]></Text>
+			<Text language="en"><![CDATA[Waits for combine]]></Text>
+		</Translation>
+		<Translation name="CP_ai_taskDescriptionUnloadSiloLoader">
+			<Text language="de"><![CDATA[Entlädt Lade Fahrzeug]]></Text>
+			<Text language="en"><![CDATA[Unloads loader]]></Text>
+		</Translation>
+		<Translation name="CP_ai_taskDescriptionWaitsForTargetSiloLoader">
+			<Text language="de"><![CDATA[Wartet auf Lade Fahrzeug]]></Text>
+			<Text language="en"><![CDATA[Waits for loader]]></Text>
+		</Translation>
+		<Translation name="CP_ai_taskDescriptionUnloadingToHeap">
+			<Text language="de"><![CDATA[Entlädt auf einem Haufen]]></Text>
+			<Text language="en"><![CDATA[Unloads to a heap]]></Text>
+		</Translation>
+		<Translation name="CP_ai_taskDescriptionUnloadingToTrailer">
+			<Text language="de"><![CDATA[Entlädt in ein Anhänger]]></Text>
+			<Text language="en"><![CDATA[Unloads into trailer]]></Text>
+		</Translation>
+		<Translation name="CP_ai_taskDescriptionUnloadingWithGiants">
+			<Text language="de"><![CDATA[Entlädt mit Giants Helfer]]></Text>
+			<Text language="en"><![CDATA[Unloads with giants worker]]></Text>
+		</Translation>
+	</Category>
+	<Category name="AI silo worker task descriptions">	
+		<Translation name="CP_ai_taskDescriptionWorksInTheSilo">
+			<Text language="de"><![CDATA[Arbeitet im Silo]]></Text>
+			<Text language="en"><![CDATA[Works in the silo]]></Text>
+		</Translation>
+		<Translation name="CP_ai_taskDescriptionWaitsForUnloaders">
+			<Text language="de"><![CDATA[Wartet auf Ablader]]></Text>
+			<Text language="en"><![CDATA[Waits for unloader]]></Text>
+		</Translation>
+	</Category>
+	<Category name="AI silo loader task descriptions">	
+		<Translation name="CP_ai_taskDescriptionUnloadingToTrailer">
+			<Text language="de"><![CDATA[Entlädt zu einem Anhänger]]></Text>
+			<Text language="en"><![CDATA[Unloads to a trailer]]></Text>
+		</Translation>
+		<Translation name="CP_ai_taskDescriptionWaitsForTrailer">
+			<Text language="de"><![CDATA[Wartet auf einen Anhänger]]></Text>
+			<Text language="en"><![CDATA[Waits for a trailer]]></Text>
+		</Translation>
+		<Translation name="CP_ai_taskDescriptionUnloadingToTrigger">
+			<Text language="de"><![CDATA[Entlädt zu einer Abladestation]]></Text>
+			<Text language="en"><![CDATA[Unloads to an unload trigger]]></Text>
+		</Translation>
+	</Category>
 	<Category name="Vehicle settings">	
 		<Translation name="CP_vehicle_setting_title">
 			<Text language="de"><![CDATA[Fahrzeugeinstellungen für (%s)]]></Text>

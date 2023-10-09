@@ -120,7 +120,9 @@ end
 
 function BalerController:onFinished()
     -- TODO: not working, as this probably needs to be called, before the drive is released.
-    -- Baler.actionEventUnloading(self.implement)
+    -- if not self.balerSpec.automaticDrop or not self.balerSpec.platformAutomaticDrop then
+    --     Baler.actionEventUnloading(self.implement)
+    -- end
 end
 
 function BalerController:isThisMyBale(baleObject)

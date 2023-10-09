@@ -306,10 +306,7 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
         CpUtil.infoVehicle(self, "no stop message was given.")
         return superFunc(self, message, ...)
     end
-    local releaseMessage, hasFinished, event, isOnlyShownOnPlayerStart = g_infoTextManager:getInfoTextDataByAIMessage(message)
-
-    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "finished: %s, event: %s",
-            tostring(hasFinished), tostring(event))
+    
     local wasCpActive = self:getIsCpActive()
     if wasCpActive then
         local driveStrategy = self:getCpDriveStrategy()
@@ -330,24 +327,9 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
                     end
                 end
             end
-            driveStrategy:onFinished()
         end
     end
-    self:resetCpAllActiveInfoTexts()
-    --- Only add the info text, if it's available and nobody is in the vehicle.
-    if not self:getIsControlled() and releaseMessage and not isOnlyShownOnPlayerStart then
-        self:setCpInfoTextActive(releaseMessage)
-    end
-    superFunc(self, message, ...)
-    if wasCpActive then
-        if event then
-            SpecializationUtil.raiseEvent(self, event)
-        end
-        if hasFinished and self:getCpSettings().foldImplementAtEnd:getValue() then
-            --- Folds implements at the end if the setting is active.
-            self:prepareForAIDriving()
-        end
-    end
+    superFunc(self, message,...)
 end
 
 function CpAIWorker:startCpDriveTo(task, jobParameters)

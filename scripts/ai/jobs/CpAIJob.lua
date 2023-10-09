@@ -2,6 +2,9 @@
 --- Every cp job should be derived from this job.
 ---@class CpAIJob : AIJob
 ---@field jobTypeIndex number
+---@field getTaskByIndex function
+---@field currentTaskIndex number
+---@field superClass function
 CpAIJob = {
 	name = "",
 	jobName = "",
@@ -93,12 +96,35 @@ end
 function CpAIJob:stop(aiMessage)
 	if self.isServer then
 		local vehicle = self.vehicleParameter:getVehicle()
-
 		vehicle:deleteAgent()
 		vehicle:aiJobFinished()
+		local driveStrategy = vehicle:getCpDriveStrategy()
+        if driveStrategy then
+			driveStrategy:onFinished()
+		end
 	end
-	
 	CpAIJob:superClass().stop(self, aiMessage)
+	if not aiMessage then 
+		return
+	end
+	if self.isServer then
+		local vehicle = self.vehicleParameter:getVehicle()
+		vehicle:resetCpAllActiveInfoTexts()
+		local releaseMessage, hasFinished, event, isOnlyShownOnPlayerStart = g_infoTextManager:getInfoTextDataByAIMessage(aiMessage)
+		if releaseMessage then 
+			self:debug("Release message %s", tostring(releaseMessage))
+		end
+		if releaseMessage and not vehicle:getIsControlled() and not isOnlyShownOnPlayerStart  then
+			vehicle:setCpInfoTextActive(releaseMessage)
+		end
+		if event then
+			SpecializationUtil.raiseEvent(vehicle, event)
+		end
+		if hasFinished and vehicle:getCpSettings().foldImplementAtEnd:getValue() then
+			--- Folds implements at the end if the setting is active.
+			vehicle:prepareForAIDriving()
+		end
+	end	
 end
 
 --- Updates the parameter values.
@@ -175,19 +201,6 @@ function CpAIJob:validate(farmId)
 	end
 
 	return isValid, errorMessage
-end
-
-function CpAIJob:getDescription()
-	local desc = CpAIJob:superClass().getDescription(self)
-	local nextTask = self:getTaskByIndex(self.currentTaskIndex)
-
-	if nextTask == self.driveToTask then
-		desc = desc .. " - " .. g_i18n:getText("ai_taskDescriptionDriveToField")
-	elseif nextTask == self.fieldWorkTask then
-		desc = desc .. " - " .. g_i18n:getText("ai_taskDescriptionFieldWork")
-	end
-
-	return desc
 end
 
 function CpAIJob:getIsStartable(connection)
@@ -337,6 +350,11 @@ function CpAIJob:showNotification(aiMessage)
 		return
 	end
 	local releaseMessage, hasFinished, event = g_infoTextManager:getInfoTextDataByAIMessage(aiMessage)
+	if not releaseMessage and not aiMessage:isa(AIMessageSuccessStoppedByUser) then 
+		self:debug("No release message found, so we use the giants notification!")
+		CpAIJob:superClass().showNotification(self, aiMessage)
+		return
+	end
 	local vehicle = self:getVehicle()
 	--- Makes sure the message is shown, when a player is in the vehicle.
 	if releaseMessage and vehicle:getIsEntered() then 

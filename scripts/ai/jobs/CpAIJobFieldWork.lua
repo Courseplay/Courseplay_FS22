@@ -308,3 +308,15 @@ function CpAIJobFieldWork:onFinishAttachCutter()
     --- Finished attaching a given header.
     self.attachHeaderTask:skip()
 end
+
+--- Gets the additional task description shown.
+function CpAIJobFieldWork:getDescription()
+	local desc = CpAIJob:superClass().getDescription(self)
+	local currentTask = self:getTaskByIndex(self.currentTaskIndex)
+    if currentTask == self.driveToTask then
+		desc = desc .. " - " .. g_i18n:getText("ai_taskDescriptionDriveToField")
+	elseif currentTask == self.fieldWorkTask then
+		desc = desc .. " - " .. g_i18n:getText("ai_taskDescriptionFieldWork")
+	end
+	return desc
+end
