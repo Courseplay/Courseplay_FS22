@@ -419,6 +419,7 @@ Editör kapatıldığında kurs otomatik olarak kaydedilir ve seçilen kursu ge�
     <text name="CP_infoTexts_drivingToSelfUnload" text="Römorka sürüş"/>
     <text name="CP_infoTexts_outOfMoney" text="Parasız"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Yağmurun bitmesini bekliyorum"/>
+    <text name="CP_infoTexts_waitForSnowToClear" text="Waits for snow to disappear"/>
     <text name="CP_infoTexts_waitForUnloader" text="Boşaltıcı bekleniyor"/>
     <text name="CP_infoTexts_errorStopped" text="Kurstan ayrıldı, durdu"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Yanlış balya tipi"/>

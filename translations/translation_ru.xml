@@ -419,6 +419,7 @@
     <text name="CP_infoTexts_drivingToSelfUnload" text="Двигается к прицепу"/>
     <text name="CP_infoTexts_outOfMoney" text="Закончились деньги"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Ожидает пока закончится дождь"/>
+    <text name="CP_infoTexts_waitForSnowToClear" text="Waits for snow to disappear"/>
     <text name="CP_infoTexts_waitForUnloader" text="В ожидании разгружающего"/>
     <text name="CP_infoTexts_errorStopped" text="Покинул курс, остановился"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Неправильный тип тюка"/>

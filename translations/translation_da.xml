@@ -419,6 +419,7 @@ Ruten gemmes automatisk ved lukning af editoren og tilsidesætter den valgte rut
     <text name="CP_infoTexts_drivingToSelfUnload" text="køre til anhænger"/>
     <text name="CP_infoTexts_outOfMoney" text="Ikke nok penge"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Venter på at regnen stopper"/>
+    <text name="CP_infoTexts_waitForSnowToClear" text="Waits for snow to disappear"/>
     <text name="CP_infoTexts_waitForUnloader" text="Waiting on unloader"/>
     <text name="CP_infoTexts_errorStopped" text="Forlod ruten, stoppet"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Forkerte balle type"/>
