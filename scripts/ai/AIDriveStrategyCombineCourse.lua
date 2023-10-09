@@ -164,8 +164,9 @@ end
 function AIDriveStrategyCombineCourse:initializeImplementControllers(vehicle)
     AIDriveStrategyCombineCourse:superClass().initializeImplementControllers(self, vehicle)
     local _
-    _, self.pipeController = self:addImplementController(vehicle, PipeController, Pipe, {}, nil)
-    self.combine, self.combineController = self:addImplementController(vehicle, CombineController, Combine, {}, nil)
+    _, self.pipeController = self:addImplementController(vehicle, 
+        PipeController, Pipe, {}, nil)
+    self.combineController, self.combine = self:getFirstRegisteredImplementControllerByClass(CombineController)
 end
 
 function AIDriveStrategyCombineCourse:getProximitySensorWidth()

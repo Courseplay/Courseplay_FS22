@@ -222,16 +222,46 @@ function AIDriveStrategyCourse:addImplementController(vehicle, class, spec, stat
     local lastImplement, lastController
     for _, childVehicle in pairs(AIUtil.getAllChildVehiclesWithSpecialization(vehicle, spec, specReference)) do
         local controller = class(vehicle, childVehicle)
-        controller:setDisabledStates(states)
-        controller:setDriveStrategy(self)
-        table.insert(self.controllers, controller)
+        self:appendImplementController(controller, states)
         lastImplement, lastController = childVehicle, controller
     end
     return lastImplement, lastController
 end
 
-function AIDriveStrategyCourse:appendImplementController(controller)
+--- Appends an implement controller
+---@param controller ImplementController
+---@param disabledStates table|nil
+function AIDriveStrategyCourse:appendImplementController(controller, disabledStates)
+    if disabledStates then
+        controller:setDisabledStates(disabledStates)
+    end
+    controller:setDriveStrategy(self)
     table.insert(self.controllers, controller)
+end
+
+--- Gets all registered implement controller of a given type.
+---@param controllerClass ImplementController
+---@return boolean found?
+---@return table all found implement controllers
+function AIDriveStrategyCourse:getRegisteredImplementControllersByClass(controllerClass)
+    local foundControllers = {}
+    for _, controller in pairs(self.controllers) do 
+        if controller:is_a(controllerClass) then 
+            table.insert(foundControllers, controller)
+        end
+    end
+    return #foundControllers > 0, foundControllers
+end
+
+--- Gets the first found registered implement controller and it's implement.
+---@param controllerClass ImplementController
+---@return ImplementController|nil found implement controller
+---@return table|nil found implement
+function AIDriveStrategyCourse:getFirstRegisteredImplementControllerByClass(controllerClass)
+    local found, controllers = self:getRegisteredImplementControllersByClass(controllerClass)
+    if found then 
+        return controllers[1], controllers[1]:getImplement()
+    end
 end
 
 --- Checks if any controller disables fuel save, for example a round baler that is dropping a bale.
@@ -250,6 +280,7 @@ function AIDriveStrategyCourse:isFuelSaveAllowed()
 end
 
 function AIDriveStrategyCourse:initializeImplementControllers(vehicle)
+    --- override
 end
 
 --- Normal update function called every frame.

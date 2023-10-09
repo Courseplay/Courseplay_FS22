@@ -8,7 +8,9 @@ function CombineController:init(vehicle, combine)
     self.settings = vehicle:getCpSettings()
     self.beaconLightsActive = false
     self.hasPipe = SpecializationUtil.hasSpecialization(Pipe, combine.specializations)
-    self:fixDischargeDistanceForChopper()
+    if self.hasPipe then
+        self:fixDischargeDistanceForChopper()
+    end
 end
 
 function CombineController:update()
