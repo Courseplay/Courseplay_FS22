@@ -1,5 +1,5 @@
 --[[
-This file is part of Courseplay (https://github.com/Courseplay/courseplay)
+This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
 Copyright (C) 2021 Peter Vaiko
 
 This program is free software: you can redistribute it and/or modify
@@ -392,6 +392,37 @@ function ImplementUtil.moveMovingToolToRotation(implement, tool, dt, rotTarget)
     return false
 end
 
+--- Moves the moving tool translation to a given translation target.
+---@param implement table
+---@param tool table moving tool
+---@param dt number
+---@param transTarget number target translation
+---@return boolean
+function ImplementUtil.moveMovingToolToTranslation(implement, tool, dt, transTarget)
+    if tool.transSpeed == nil then
+		return false
+	end
+	local spec = implement.spec_cylindered
+	tool.curTrans[1], tool.curTrans[2], tool.curTrans[3] = getTranslation(tool.node)
+	local oldTrans = tool.curTrans[tool.translationAxis]
+	local diff = transTarget - oldTrans
+    local dir = MathUtil.sign(diff)
+	local transSpeed = MathUtil.clamp( math.abs(diff) * math.abs(tool.transSpeed), math.abs(tool.transSpeed)/3, 0.5 )
+    transSpeed = dir * transSpeed
+	if math.abs(diff) < 0.03 or transSpeed == 0 then
+		ImplementUtil.stopMovingTool(implement, tool)
+		return false
+	end
+	if Cylindered.setToolTranslation(implement, tool, transSpeed, dt, diff) then
+		Cylindered.setDirty(implement, tool)
+
+		implement:raiseDirtyFlags(tool.dirtyFlag)
+		implement:raiseDirtyFlags(spec.cylinderedDirtyFlag)
+        return true
+	end
+    return false
+end
+
 --- Force stops the moving tool.
 ---@param implement table
 ---@param tool table moving tool
@@ -509,3 +540,11 @@ function ImplementUtil.getCanLoadTo(loadTargetImplement, implementToLoadFrom, di
     return validTarget, targetFillUnitIndex, fillType, exactFillRootNode, alternativeFillType
 end
 
+function ImplementUtil.isAttachedToTrailerJoint(implement)
+    if implement.getActiveInputAttacherJoint then 
+        local type = implement:getActiveInputAttacherJoint().jointType
+        return type == AttacherJoints.JOINTTYPE_TRAILER or 
+            type == AttacherJoints.JOINTTYPE_TRAILERLOW
+    end
+    return false
+end

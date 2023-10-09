@@ -276,6 +276,7 @@ Changelog 7.1.0.0:
 
 		<sourceFile filename="scripts/ai/AIUtil.lua"/>
 		<sourceFile filename="scripts/ai/ImplementUtil.lua"/>
+		<sourceFile filename="scripts/ai/PathfinderController.lua"/>
 		<sourceFile filename="scripts/ai/ProximityController.lua"/>
 		<sourceFile filename="scripts/ai/FieldWorkerProximityController.lua"/>
 		<sourceFile filename="scripts/ai/CollisionAvoidanceController.lua"/>
@@ -325,6 +326,7 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/ai/controllers/BunkerSiloCompacterController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/ConveyorController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/ShovelController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/SugarCaneTrailerController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/AttachableController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/AttacherJointController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/DynamicMountAttacherController.lua"/>
@@ -344,7 +346,10 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/ai/AIDriveStrategyBunkerSilo.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategySiloLoader.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyShovelSiloLoader.lua"/>
-
+		<sourceFile filename="scripts/ai/strategies/AIDriveStrategySelfUnload.lua"/>
+		<sourceFile filename="scripts/ai/strategies/AIDriveStrategyUnloadOnField.lua"/>
+		<sourceFile filename="scripts/ai/strategies/AIDriveStrategyWaitingForHarvesterOrLoader.lua"/>
+		
 		<sourceFile filename="scripts/ai/parameters/AIParameterSettingInterface.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterSetting.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterSettingList.lua"/>
@@ -359,7 +364,8 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/ai/jobs/CpAIJobCombineUnloader.lua"/>
 		<sourceFile filename="scripts/ai/jobs/CpAIJobBunkerSilo.lua"/>
 		<sourceFile filename="scripts/ai/jobs/CpAIJobSiloLoader.lua"/>
-
+		
+		<sourceFile filename="scripts/ai/tasks/CpAITask.lua"/>
 		<sourceFile filename="scripts/ai/tasks/CpAITaskFieldWork.lua"/>
 		<sourceFile filename="scripts/ai/tasks/CpAITaskBaleFinder.lua"/>
 		<sourceFile filename="scripts/ai/tasks/CpAITaskCombineUnloader.lua"/>
@@ -367,6 +373,9 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/ai/tasks/CpAITaskAttachHeader.lua"/>
 		<sourceFile filename="scripts/ai/tasks/CpAITaskBunkerSilo.lua"/>
 		<sourceFile filename="scripts/ai/tasks/CpAITaskSiloLoader.lua"/>
+		<sourceFile filename="scripts/ai/tasks/CpAITaskSelfUnload.lua"/>
+		<sourceFile filename="scripts/ai/tasks/CpAITaskUnloadOnField.lua"/>
+		<sourceFile filename="scripts/ai/tasks/CpAITaskWaitingForHarvesterOrLoader.lua"/>
 
 		<sourceFile filename="scripts/gui/CpGuiUtil.lua"/>
 		<sourceFile filename="scripts/gui/CoursePlot.lua"/>

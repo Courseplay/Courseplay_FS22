@@ -29,9 +29,7 @@ This drive strategy implements:
 
 ---@class AIDriveStrategyShovelSiloLoader : AIDriveStrategyCourse
 ---@field shovelController ShovelController
-AIDriveStrategyShovelSiloLoader = {}
-local AIDriveStrategyShovelSiloLoader_mt = Class(AIDriveStrategyShovelSiloLoader, AIDriveStrategyCourse)
-
+AIDriveStrategyShovelSiloLoader = CpObject(AIDriveStrategyCourse)
 ----------------------------------------------------------------
 --- State properties
 ----------------------------------------------------------------
@@ -62,19 +60,15 @@ AIDriveStrategyShovelSiloLoader.searchForTrailerDelaySec = 10
 AIDriveStrategyShovelSiloLoader.distShovelTrailerPreUnload = 7
 AIDriveStrategyShovelSiloLoader.distShovelUnloadStationPreUnload = 8
 AIDriveStrategyShovelSiloLoader.isStuckMs = 1000 * 15
-function AIDriveStrategyShovelSiloLoader.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategyShovelSiloLoader_mt
-    end
-    local self = AIDriveStrategyCourse.new(customMt)
+function AIDriveStrategyShovelSiloLoader:init(...)
+    AIDriveStrategyCourse.init(self, ...)
     AIDriveStrategyCourse.initStates(self, AIDriveStrategyShovelSiloLoader.myStates)
     self.state = self.states.INITIAL
     self.debugChannel = CpDebug.DBG_SILO
-    return self
 end
 
 function AIDriveStrategyShovelSiloLoader:delete()
-    AIDriveStrategyShovelSiloLoader:superClass().delete(self)
+    AIDriveStrategyCourse.delete(self)
     if self.siloController then 
         self.siloController:delete()
         self.siloController = nil
@@ -394,11 +388,6 @@ end
 
 function AIDriveStrategyShovelSiloLoader:getWorkWidth()
     return self.settings.bunkerSiloWorkWidth:getValue()
-end
-
-function AIDriveStrategyShovelSiloLoader:setNewState(newState)
-    self:debug("Changed State from %s to %s", self.state.name, newState.name)
-    self.state = newState
 end
 
 --- Checks if a valid target was found, which means either a trailer or a manure spreader.

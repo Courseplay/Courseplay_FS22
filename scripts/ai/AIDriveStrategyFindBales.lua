@@ -1,5 +1,5 @@
 --[[
-This file is part of Courseplay (https://github.com/Courseplay/courseplay)
+This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
 Copyright (C) 2022 Peter Vaiko
 
 This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---       Might be a good idea to have the bale loader strategy derive from the find bales(only wrapper) strategy.
 
 ---@class AIDriveStrategyFindBales : AIDriveStrategyCourse
-AIDriveStrategyFindBales = {}
-local AIDriveStrategyFindBales_mt = Class(AIDriveStrategyFindBales, AIDriveStrategyCourse)
+AIDriveStrategyFindBales = CpObject(AIDriveStrategyCourse)
 
 AIDriveStrategyFindBales.myStates = {
     SEARCHING_FOR_NEXT_BALE = {},
@@ -33,11 +32,8 @@ AIDriveStrategyFindBales.myStates = {
     REVERSING_AFTER_PATHFINDER_FAILURE = {}
 }
 
-function AIDriveStrategyFindBales.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategyFindBales_mt
-    end
-    local self = AIDriveStrategyCourse.new(customMt)
+function AIDriveStrategyFindBales:init(...)
+    AIDriveStrategyCourse.init(self, ...)
     AIDriveStrategyCourse.initStates(self, AIDriveStrategyFindBales.myStates)
     self.state = self.states.INITIAL
     -- cache for the nodes created by TurnContext
@@ -48,12 +44,10 @@ function AIDriveStrategyFindBales.new(customMt)
     ---@type ImplementController[]
     self.controllers = {}
     self.bales = {}
-
-    return self
 end
 
 function AIDriveStrategyFindBales:delete()
-    AIDriveStrategyFindBales:superClass().delete(self)
+    AIDriveStrategyCourse.delete(self)
     TurnContext.deleteNodes(self.turnNodes)
 end
 
@@ -544,7 +538,7 @@ function AIDriveStrategyFindBales:isStoppingAtWaitPointAllowed()
 end
 
 function AIDriveStrategyFindBales:update(dt)
-    AIDriveStrategyFindBales:superClass().update(self, dt)
+    AIDriveStrategyCourse.update(self, dt)
     self:updateImplementControllers(dt)
 
     if self:areBaleLoadersFull() and self:isReadyToFoldImplements() then

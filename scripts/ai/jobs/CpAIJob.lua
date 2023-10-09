@@ -1,7 +1,29 @@
+--[[
+This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
+Copyright (C) 2022 - 2023 Courseplay Dev Team
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+]]
+
 --- Basic cp job.
 --- Every cp job should be derived from this job.
 ---@class CpAIJob : AIJob
 ---@field jobTypeIndex number
+---@field addTask function
+---@field getIsLooping function
+---@field currentTaskIndex number
+---@field tasks table
 CpAIJob = {
 	name = "",
 	jobName = "",
@@ -18,7 +40,6 @@ function CpAIJob.new(isServer, customMt)
 
 	local self = AIJob.new(isServer, mt)
 	self.isDirectStart = false
-	self:setupTasks(isServer)
 	
 	--- Small translation fix, needs to be removed once giants fixes it.
 	local ai = g_currentMission.aiJobTypeManager
@@ -27,6 +48,8 @@ function CpAIJob.new(isServer, customMt)
 	self:setupJobParameters()
 
 	self.debugChannel = CpDebug.DBG_FIELDWORK
+	self:setupTasks(isServer)
+	
 	return self
 end
 
@@ -34,6 +57,18 @@ end
 function CpAIJob:setupTasks(isServer)
 	self.driveToTask = AITaskDriveTo.new(isServer, self)
 	self:addTask(self.driveToTask)
+end
+
+
+---@param task CpAITask
+function CpAIJob:removeTask(task)
+	if task.taskIndex then
+		table.remove(self.tasks, task.taskIndex)
+		for i = #self.tasks, task.taskIndex, -1 do 
+			self.tasks[i].taskIndex = self.tasks[i].taskIndex - 1
+		end
+	end
+	task.taskIndex = nil
 end
 
 --- Setup all job parameters.
@@ -55,12 +90,20 @@ end
 
 --- Gets the first task to start with.
 function CpAIJob:getStartTaskIndex()
-	if self.isDirectStart or self:isTargetReached() then
+	if self.currentTaskIndex ~= 0 or self.isDirectStart or self:isTargetReached() then
 		-- skip Giants driveTo
 		-- TODO: this isn't very nice as we rely here on the derived classes to add more tasks
 		return 2
 	end
 	return 1
+end
+
+function CpAIJob:getNextTaskIndex()
+	if self:getIsLooping() and self.currentTaskIndex >= #self.tasks then 
+		--- Makes sure the giants task is skipped
+		return self:getStartTaskIndex()
+	end
+	return AIJob.getNextTaskIndex(self)
 end
 
 --- Should the giants path finder job be skipped?
@@ -79,7 +122,12 @@ function CpAIJob:isTargetReached()
 	return targetReached
 end
 
+function CpAIJob:onPreStart()
+	--- override
+end
+
 function CpAIJob:start(farmId)
+	self:onPreStart()
 	CpAIJob:superClass().start(self, farmId)
 
 	if self.isServer then

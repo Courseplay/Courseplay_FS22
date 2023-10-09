@@ -1,5 +1,5 @@
 --[[
-This file is part of Courseplay (https://github.com/Courseplay/courseplay)
+This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
 Copyright (C) 2022 
 
 This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---@field heapNode number
 ---@field shovelController ShovelController
 ---@field conveyorController ConveyorController
-AIDriveStrategySiloLoader = {}
-local AIDriveStrategySiloLoader_mt = Class(AIDriveStrategySiloLoader, AIDriveStrategyCourse)
+AIDriveStrategySiloLoader = CpObject(AIDriveStrategyCourse)
 
 AIDriveStrategySiloLoader.myStates = {
     DRIVING_ALIGNMENT_COURSE = {},
@@ -36,19 +35,15 @@ AIDriveStrategySiloLoader.myStates = {
 AIDriveStrategySiloLoader.distanceOverFieldEdgeAllowed = 25
 AIDriveStrategySiloLoader.siloAreaOffsetFieldUnload = 10
 
-function AIDriveStrategySiloLoader.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategySiloLoader_mt
-    end
-    local self = AIDriveStrategyCourse.new(customMt)
+function AIDriveStrategySiloLoader:init(...)
+    AIDriveStrategyCourse.init(self, ...)
     AIDriveStrategyCourse.initStates(self, AIDriveStrategySiloLoader.myStates)
     self.state = self.states.WAITING_FOR_PREPARING
     self.heapNode = CpUtil.createNode("heapNode", 0, 0, 0, nil)
-    return self
 end
 
 function AIDriveStrategySiloLoader:delete()
-    AIDriveStrategySiloLoader:superClass().delete(self)
+    AIDriveStrategyCourse.delete(self)
     if self.bunkerSiloController then 
         self.bunkerSiloController:delete()
         self.bunkerSiloController = nil
@@ -152,7 +147,7 @@ end
 --- Static parameters (won't change while driving)
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategySiloLoader:setAllStaticParameters()
-    AIDriveStrategySiloLoader:superClass().setAllStaticParameters(self)
+    AIDriveStrategyCourse.setAllStaticParameters(self)
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
     self.proximityController = ProximityController(self.vehicle, self:getWorkWidth())
 
@@ -377,49 +372,43 @@ function AIDriveStrategySiloLoader:callUnloaderWhenNeeded()
         return
     end
 
-    local bestUnloader, bestEte
+    local bestUnloader, bestStrategy, bestEte
     if self:isWaitingForUnload() then
-        bestUnloader, _ = self:findUnloader()
+        bestUnloader, bestStrategy = self:findUnloader()
         self:debug('callUnloaderWhenNeeded: stopped, need unloader here')
         if bestUnloader then
-            bestUnloader:getCpDriveStrategy():call(self.vehicle, nil)
+            bestStrategy:call(self.vehicle, nil)
         end
     end
 end
 
 function AIDriveStrategySiloLoader:findUnloader()
     local bestScore = -math.huge
-    local bestUnloader, bestEte
-    for _, vehicle in pairs(g_currentMission.vehicles) do
-        if AIDriveStrategyUnloadCombine.isActiveCpSiloLoader(vehicle) then
-            local x, _, z = getWorldTranslation(self.vehicle.rootNode)
-            ---@type AIDriveStrategyUnloadCombine
-            local driveStrategy = vehicle:getCpDriveStrategy()
-            if driveStrategy:isServingPosition(x, z, self.distanceOverFieldEdgeAllowed) then
-                local unloaderFillLevelPercentage = driveStrategy:getFillLevelPercentage()
-                if driveStrategy:isIdle() and unloaderFillLevelPercentage < 99 then
-                    local unloaderDistance, unloaderEte = driveStrategy:getDistanceAndEteToVehicle(self.vehicle)
-            
-                    local score = unloaderFillLevelPercentage - 0.1 * unloaderDistance
-                    self:debug('findUnloader: %s idle on my field, fill level %.1f, distance %.1f, ETE %.1f, score %.1f)',
-                            CpUtil.getName(vehicle), unloaderFillLevelPercentage, unloaderDistance, unloaderEte, score)
-                    if score > bestScore then
-                        bestUnloader = vehicle
-                        bestScore = score
-                        bestEte = unloaderEte
-                    end
-                else
-                    self:debug('findUnloader: %s serving my field but already busy', CpUtil.getName(vehicle))
-                end
-            else
-                self:debug('findUnloader: %s is not serving my field', CpUtil.getName(vehicle))
+    local bestUnloader, bestEte, bestStrategy
+
+    for strategy, vehicle  in pairs(AIDriveStrategyWaitingForHarvesterOrLoader.waitingUnloaders) do 
+        local x, _, z = getWorldTranslation(self.vehicle.rootNode)
+        if strategy:isServingPosition(x, z, self.distanceOverFieldEdgeAllowed) then 
+            --- Unloader is assigned to the field or close enough
+            local unloaderDistance, unloaderEte = strategy:getDistanceAndEteToVehicle(self.vehicle)
+            local unloaderFillLevelPercentage = strategy:getFillLevelPercentage()
+            local score = unloaderFillLevelPercentage - 0.1 * unloaderDistance
+            self:debug('findUnloader: %s idle on my field, fill level %.1f, distance %.1f, ETE %.1f, score %.1f)',
+                    CpUtil.getName(vehicle), unloaderFillLevelPercentage, unloaderDistance, unloaderEte, score)
+            if score > bestScore then
+                bestUnloader = vehicle
+                bestStrategy = strategy
+                bestScore = score
+                bestEte = unloaderEte
             end
+        else
+            self:debug('findUnloader: %s is not serving my field', CpUtil.getName(vehicle))
         end
     end
     if bestUnloader then
         self:debug('findUnloader: best unloader is %s (score %.1f, ETE %.1f)',
                 CpUtil.getName(bestUnloader), bestScore, bestEte)
-        return bestUnloader, bestEte
+        return bestUnloader, bestStrategy, bestEte
     else
         self:debug('findUnloader: no idle unloader found')
     end

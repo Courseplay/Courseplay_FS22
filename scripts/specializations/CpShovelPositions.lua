@@ -18,7 +18,9 @@ CpShovelPositions = {
 	TRANSPORT = 2,
 	PRE_UNLOAD = 3,
 	UNLOADING = 4,
-	NUM_STATES = 4,
+	SUGAR_CANE_TRANSPORT = 5,
+	SUGAR_CANE_UNLOADING = 6,
+	NUM_STATES = 6,
 	LOADING_POSITION = {
 		ARM_LIMITS = {
 			0,
@@ -63,7 +65,6 @@ end
 
 function CpShovelPositions.prerequisitesPresent(specializations)
     return SpecializationUtil.hasSpecialization(Shovel, specializations) and not 
-		SpecializationUtil.hasSpecialization(Trailer, specializations) and not 
 		SpecializationUtil.hasSpecialization(ConveyorBelt, specializations)
 end
 
@@ -129,10 +130,13 @@ function CpShovelPositions:onUpdateTick(dt)
 		CpUtil.try(CpShovelPositions.updatePreUnloadPosition, self, dt)
 	elseif spec.state == CpShovelPositions.UNLOADING then 
 		CpUtil.try(CpShovelPositions.updateUnloadingPosition, self, dt)
+	elseif spec.state == CpShovelPositions.SUGAR_CANE_TRANSPORT then 
+		CpUtil.try(CpShovelPositions.updateSugarCaneTransportPosition, self, dt)
+	elseif spec.state == CpShovelPositions.SUGAR_CANE_UNLOADING then 
+		CpUtil.try(CpShovelPositions.updateSugarCaneUnloadingPosition, self, dt)
 	end
 	if spec.resetStateWhenReached and not self:areCpShovelPositionsDirty() then 
 		self:cpSetShovelState(CpShovelPositions.DEACTIVATED)
-		spec.resetStateWhenReached = false
 	end
 end
 
@@ -140,7 +144,7 @@ end
 function CpShovelPositions:cpSetShovelState(state)
 	if not self.isServer then return end
 	local spec = self.spec_cpShovelPositions
-	spec.resetWhenReached = false
+	spec.resetStateWhenReached = false
 	if spec.state ~= state then
 		spec.state = state
 		if state == CpShovelPositions.DEACTIVATED then 
@@ -550,6 +554,24 @@ function CpShovelPositions:updateUnloadingPosition(dt)
 	spec.isDirty = isDirty
 end
 
+function CpShovelPositions:updateSugarCaneTransportPosition(dt)
+	local spec = self.spec_cpShovelPositions
+	local isDirty = ImplementUtil.moveMovingToolToRotation(self, 
+		spec.shovelTool, dt, spec.shovelTool.rotMax)
+	isDirty = isDirty or ImplementUtil.moveMovingToolToTranslation(self, 
+		spec.armTool, dt, spec.armTool.transMin)
+	spec.isDirty = isDirty
+end
+
+function CpShovelPositions:updateSugarCaneUnloadingPosition(dt)
+	local spec = self.spec_cpShovelPositions
+	local isDirty = ImplementUtil.moveMovingToolToTranslation(self, 
+		spec.armTool, dt, spec.armTool.transMax)
+	isDirty = isDirty or ImplementUtil.moveMovingToolToRotation(self, 
+		spec.shovelTool, dt, spec.shovelTool.rotMin)
+	spec.isDirty = isDirty
+end
+
 --- Sets the unload height target of the lowest part of the shovel.
 ---@param height number
 function CpShovelPositions:setCpShovelMinimalUnloadHeight(height)
@@ -562,15 +584,12 @@ function CpShovelPositions:getShovelData()
 	local shovelSpec = self.spec_shovel
 	local info = shovelSpec.shovelDischargeInfo
     if info == nil or info.node == nil then 
-		CpShovelPositions.debug(self, "Info or node not found!")
 		return 
 	end
     if info.maxSpeedAngle == nil or info.minSpeedAngle == nil then
-		CpShovelPositions.debug(self, "maxSpeedAngle or minSpeedAngle not found!")
 		return 
 	end
 	if shovelSpec.shovelNodes[1] == nil then 
-		CpShovelPositions.debug(self, "Shovel nodes index 0 not found!")
 		return 
 	end
 	local _, dy, _ = localDirectionToWorld(info.node, 0, 0, 1)

@@ -1,3 +1,21 @@
+--[[
+This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
+Copyright (C) 2022-2023 Courseplay Dev Team
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+]]
+
 ---@class ShovelController : ImplementController
 ShovelController = CpObject(ImplementController)
 
@@ -7,6 +25,8 @@ ShovelController.POSITIONS = {
     TRANSPORT = 2,
     PRE_UNLOADING = 3,
     UNLOADING = 4,
+    SUGAR_CANE_TRANSPORT = 5,
+    SUGAR_CANE_UNLOADING = 6,
 }
 ShovelController.MAX_TRIGGER_HEIGHT = 8
 ShovelController.MIN_TRIGGER_HEIGHT = 1
@@ -19,76 +39,6 @@ function ShovelController:init(vehicle, implement, isConsoleCommand)
     self.shovelNode = ImplementUtil.getShovelNode(implement)
     self.turnOnSpec = self.implement.spec_turnOnVehicle
     self.isConsoleCommand = isConsoleCommand
-    --- Sugar can unlading is still WIP
-    self.isSugarCaneTrailer = self.implement.spec_trailer ~= nil
-    self.sugarCaneTrailer = {
-        isDischargeActive = false,
-        isDischargingTimer = CpTemporaryObject(false),
-        movingTool = nil,
-        isMovingToolDirty = false,
-        isDischargingToGround = false
-    }
-    if self.isSugarCaneTrailer then 
-        --- Find the moving tool for the sugar cane trailer
-        for i, tool in pairs(implement.cylindered.movingTools) do 
-            if tool.axis then 
-                self.sugarCaneTrailer.movingTool = tool
-            end
-        end
-    end
-end
-
-function ShovelController:getDriveData()
-	local maxSpeed
-    if self.isSugarCaneTrailer then
-        --- Sugar cane trailer discharge
-        if self.sugarCaneTrailer.isDischargeActive then
-            if self.sugarCaneTrailer.isDischargingTimer:get() then
-                --- Waiting until the discharging stopped or 
-                --- the trailer is empty
-                maxSpeed = 0
-                self:debugSparse("Waiting for unloading!")
-            end
-            
-            -- if self.trailerSpec.tipState == Trailer.TIPSTATE_OPENING then 
-            --     --- Trailer not yet ready to unload.
-            --     maxSpeed = 0
-            --     self:debugSparse("Waiting for trailer animation opening!")
-            -- end
-            if self:isEmpty() then  
-                --- Waiting for the trailer animation to finish.
-                maxSpeed = 0
-                self:debugSparse("Waiting for trailer animation closing!")
-            end
-        else 
-            -- ImplementUtil.moveMovingToolToRotation(self.implement, 
-            --     self.sugarCaneTrailerMovingTool, dt , )
-        end
-    end
-	return nil, nil, nil, maxSpeed
-end
-
-function ShovelController:update(dt)
-    if self.isSugarCaneTrailer then
-        --- Sugar cane trailer discharge
-        if self.sugarCaneTrailer.isDischargeActive then
-            if self:isEmpty() then 
-                self:finishedSugarCaneTrailerDischarge()
-            end
-            if self.implement:getCanDischargeToGround(self.dischargeData.dischargeNode) then 
-                --- Update discharge timer
-                self.sugarCaneTrailer.isDischargingTimer:set(true, 500)
-                if not self:isDischarging() then 
-                    -- self.implement:setDischargeState(Dischargeable.DISCHARGE_STATE_GROUND)
-                end
-            end
-            -- ImplementUtil.moveMovingToolToRotation(self.implement, 
-            --     self.sugarCaneTrailerMovingTool, dt , )
-        else 
-            -- ImplementUtil.moveMovingToolToRotation(self.implement, 
-            --     self.sugarCaneTrailerMovingTool, dt , )
-        end
-    end
 end
 
 function ShovelController:getShovelNode()
@@ -255,82 +205,6 @@ function ShovelController:moveShovelToPosition(pos)
     end
     self.implement:cpSetShovelState(pos)
     return self.implement:areCpShovelPositionsDirty()
-end
-
---------------------------------------------
---- WIP! Sugar cane trailer functions
---------------------------------------------
-
---- Gets the dischargeNode and offset from a selected tip side.
----@param tipSideID number
----@param isTippingToGroundNeeded boolean
----@return table|nil dischargeNodeIndex
----@return table|nil dischargeNode
----@return number|nil xOffset 
-function ShovelController:getDischargeNodeAndOffsetForTipSide(tipSideID, isTippingToGroundNeeded)
-    local dischargeNode = self:getDischargeNode()
-    return dischargeNode.index, dischargeNode, self:getDischargeXOffset(dischargeNode)
-end
-
---- Gets the x offset of the discharge node relative to the implement root.
-function ShovelController:getDischargeXOffset(dischargeNode)
-    local node = dischargeNode.node
-    local xOffset, _ ,_ = localToLocal(node, self.implement.rootNode, 0, 0, 0)
-    return xOffset
-end
-
---- Starts AI Discharge to an object/trailer.
----@param dischargeNode table discharge node to use.
----@return boolean success
-function ShovelController:startDischarge(dischargeNode)
-    self.sugarCaneTrailer.isDischargeActive = true
-    return true
-end
-
---- Starts discharging to the ground if possible.
-function ShovelController:startDischargeToGround(dischargeNode)
-    self.sugarCaneTrailer.isDischargeActive = true
-    self.sugarCaneTrailer.isDischargingToGround = true
-    -- self.isDischargingToGround = true
-    -- self.dischargeData = {
-    --     dischargeNode = dischargeNode,
-    -- }
-	-- local tipSide = self.trailerSpec.dischargeNodeIndexToTipSide[dischargeNode.index]
-	-- if tipSide ~= nil then
-	-- 	self.implement:setPreferedTipSide(tipSide.index)
-	-- end
-    return true
-end
-
---- Callback for the drive strategy, when the unloading finished.
-function ShovelController:setFinishDischargeCallback(finishDischargeCallback)
-    self.sugarCaneTrailer.finishDischargeCallback = finishDischargeCallback
-end
-
---- Callback for ai discharge.
-function ShovelController:finishedSugarCaneTrailerDischarge()
-    self:debug("Finished unloading.")
-    if self.sugarCaneTrailer.finishDischargeCallback then 
-        self.sugarCaneTrailer.finishDischargeCallback(self.driveStrategy, self)
-    end
-    self.sugarCaneTrailer.isDischargeActive = false
-    self.sugarCaneTrailer.isDischargingToGround = false
-end
-
-function ShovelController:prepareForUnload()
-    return true
-end
-
-function ShovelController:isDischarging()
-    return self.implement:getDischargeState() ~= Dischargeable.DISCHARGE_STATE_OFF
-end
-
---- Gets the discharge node z offset relative to the root vehicle direction node.
-function ShovelController:getUnloadOffsetZ(dischargeNode)
-    local node = dischargeNode.node
-    local dist = ImplementUtil.getDistanceToImplementNode(self.vehicle:getAIDirectionNode(), 
-        self.implement, node)
-    return dist
 end
 
 --------------------------------------------

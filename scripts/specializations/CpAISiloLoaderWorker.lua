@@ -172,15 +172,15 @@ function CpAISiloLoaderWorker:startCpAtLastWp(superFunc, ...)
     end
 end
 
-function CpAISiloLoaderWorker:startCpSiloLoaderWorker(jobParameters, bunkerSilo, heap, unloadTrigger, unloadStation)
+function CpAISiloLoaderWorker:startCpSiloLoaderWorker(task, jobParameters, bunkerSilo, heap, unloadTrigger, unloadStation)
     if self.isServer then 
         local strategy
         if SpecializationUtil.hasSpecialization(ConveyorBelt, self.specializations) then 
             CpUtil.debugVehicle(CpDebug.DBG_SILO, self, "Starting a silo loader strategy.")
-            strategy = AIDriveStrategySiloLoader.new()
+            strategy = AIDriveStrategySiloLoader(task)
         else 
             CpUtil.debugVehicle(CpDebug.DBG_SILO, self, "Starting a shovel silo loader strategy.")
-            strategy = AIDriveStrategyShovelSiloLoader.new()
+            strategy = AIDriveStrategyShovelSiloLoader(task)
             strategy:setUnloadTriggerAndStation(unloadTrigger, unloadStation)
         end
         strategy:setSiloAndHeap(bunkerSilo, heap)

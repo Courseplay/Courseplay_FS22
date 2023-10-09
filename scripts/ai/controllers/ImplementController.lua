@@ -1,3 +1,21 @@
+--[[
+This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
+Copyright (C) 2022-2023 Courseplay Dev Team
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+]]
+
 ---@class ImplementController
 ImplementController = CpObject()
 
@@ -13,7 +31,7 @@ function ImplementController:getImplement()
     return self.implement
 end
 
----@param disabledStates table list of drive strategy states where the controlling of this implement is disabled
+---@param disabledStates table|nil list of drive strategy states where the controlling of this implement is disabled
 function ImplementController:setDisabledStates(disabledStates)
     self.disabledStates = disabledStates
 end
@@ -113,3 +131,73 @@ end
 function ImplementController:canContinueWork()
     return true
 end
+
+--------------------------------------------
+--- Interfaces
+--------------------------------------------
+
+ImplementControllerInterfaces = {}
+
+---@class UnloadImplementControllerInterface : ImplementController
+local UnloadImplementControllerInterface = CpObject(ImplementController)
+
+--- Gets the dischargeNode and offset from a selected tip side.
+---@param tipSideID number|nil
+---@param isTippingToGroundNeeded boolean|nil
+---@return number dischargeNodeIndex
+---@return table dischargeNode
+---@return number xOffset 
+function UnloadImplementControllerInterface:getDischargeNodeAndOffsetForTipSide(tipSideID, isTippingToGroundNeeded)
+    ---override
+    return 0, {}, 0
+end
+
+--- Gets the x offset of the dischargeNode
+---@param dischargeNode table
+---@return number
+function UnloadImplementControllerInterface:getDischargeXOffset(dischargeNode)
+    ---override
+    return 0
+end
+
+--- Starts discharging
+---@param dischargeNode table
+---@return boolean|nil
+function UnloadImplementControllerInterface:startDischarge(dischargeNode)
+    ---override
+end
+
+--- Starts discharging to the ground
+---@param dischargeNode table
+---@return boolean|nil
+function UnloadImplementControllerInterface:startDischargeToGround(dischargeNode)
+    ---override
+end
+
+--- Function callback once the discharge has finished
+---@param finishDischargeCallback function function callback(fillLevelPercentage) end
+function UnloadImplementControllerInterface:setFinishDischargeCallback(finishDischargeCallback)
+    ---override    
+end
+
+--- Prepares the trailer for discharging, for example pipe unfolding and so on ..
+---@return boolean|nil
+function UnloadImplementControllerInterface:prepareForUnload()
+    ---override
+end
+
+--- Is the trailer currently discharging?
+---@return boolean|nil
+function UnloadImplementControllerInterface:isDischarging()
+    ---override    
+end
+
+--- Gets the z offset 
+---@param dischargeNode table
+---@return number
+function UnloadImplementControllerInterface:getUnloadOffsetZ(dischargeNode)
+    ---override  
+    return 0 
+end
+---@type UnloadImplementControllerInterface
+ImplementControllerInterfaces.UnloadImplementControllerInterface = UnloadImplementControllerInterface

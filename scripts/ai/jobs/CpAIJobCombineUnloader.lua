@@ -1,3 +1,21 @@
+--[[
+This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
+Copyright (C) 2022 - 2023 Courseplay Dev Team
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+]]
+
 --- Combine unloader job.
 ---@class CpAIJobCombineUnloader : CpAIJob
 CpAIJobCombineUnloader = {
@@ -37,14 +55,35 @@ end
 
 function CpAIJobCombineUnloader:setupTasks(isServer)
 	CpAIJob.setupTasks(self, isServer)
-	self.combineUnloaderTask = CpAITaskCombineUnloader.new(isServer, self)
-	self:addTask(self.combineUnloaderTask)
-
-	--- Giants unload
+	self.waitingForHarvesterOrLoaderTask = CpAITaskWaitingForHarvesterOrLoader(isServer, self)
+	self.combineUnloaderTask = CpAITaskCombineUnloader(isServer, self)
 	self.driveToUnloadingTask = AITaskDriveTo.new(isServer, self)
 	self.dischargeTask = AITaskDischarge.new(isServer, self)
-	self:addTask(self.driveToUnloadingTask)
-	self:addTask(self.dischargeTask)
+	self.unloadOnFieldTask = CpAITaskUnloadOnField(isServer, self)
+	self.selfUnloadTask = CpAITaskSelfUnload(isServer, self)
+	self:addTask(self.combineUnloaderTask)
+end
+
+--- Only add the task, once we now which are necessary.
+function CpAIJobCombineUnloader:onPreStart()
+	--- First we need to reset these tasks
+	self:removeTask(self.driveToUnloadingTask)
+	self:removeTask(self.dischargeTask)
+	self:removeTask(self.unloadOnFieldTask)
+	self:removeTask(self.selfUnloadTask)
+	if self.cpJobParameters.useGiantsUnload:getValue() then
+		--- Giants unload
+		self:addTask(self.driveToUnloadingTask)
+		self:addTask(self.dischargeTask)
+		return 
+	end
+	if self.cpJobParameters.useFieldUnload:getValue() then
+		--- Unloading on the field
+		self:addTask(self.unloadOnFieldTask)
+		return
+	end
+	--- Self unload on the field
+	self:addTask(self.selfUnloadTask)
 end
 
 function CpAIJobCombineUnloader:setupJobParameters()
@@ -113,9 +152,16 @@ end
 function CpAIJobCombineUnloader:setValues()
 	CpAIJob.setValues(self)
 	local vehicle = self.vehicleParameter:getVehicle()
+	self.waitingForHarvesterOrLoaderTask:setVehicle(vehicle)
 	self.combineUnloaderTask:setVehicle(vehicle)
 	self:validateFieldPosition()
-	self:setupGiantsUnloaderData(vehicle)
+	if self.cpJobParameters.useGiantsUnload:getValue() then
+		self:setupGiantsUnloaderData(vehicle)
+	elseif self.cpJobParameters.useFieldUnload:getValue() then
+		self.unloadOnFieldTask:setVehicle(vehicle)
+	else
+		self.selfUnloadTask:setVehicle(vehicle)
+	end
 end
 
 function CpAIJobCombineUnloader:validateFieldPosition(isValid, errorMessage)
@@ -286,8 +332,12 @@ function CpAIJobCombineUnloader:setupGiantsUnloaderData(vehicle)
 end
 
 function CpAIJobCombineUnloader:getNextTaskIndex(isSkipTask)
-	--- Giants unload, sets the correct dischargeNode and vehicle and unload target information.
-	return AIJobDeliver.getNextTaskIndex(self, isSkipTask)
+	if self.cpJobParameters.useGiantsUnload:getValue() then
+		--- Giants unload, sets the correct dischargeNode and vehicle and unload target information.
+		return AIJobDeliver.getNextTaskIndex(self, isSkipTask)
+	else
+		return CpAIJobCombineUnloader:superClass().getNextTaskIndex(self, isSkipTask)
+	end
 end
 
 function CpAIJobCombineUnloader:canContinueWork()
@@ -309,9 +359,11 @@ end
 
 function CpAIJobCombineUnloader:startTask(task)
 	--- Giants unload, reset the discharge nodes before unloading.
-	if task == self.driveToUnloadingTask then
-		for _, dischargeNodeInfo in ipairs(self.dischargeNodeInfos) do
-			dischargeNodeInfo.dirty = true
+	if self.cpJobParameters.useGiantsUnload:getValue() then
+		if task == self.driveToUnloadingTask then
+			for _, dischargeNodeInfo in ipairs(self.dischargeNodeInfos) do
+				dischargeNodeInfo.dirty = true
+			end
 		end
 	end
 	CpAIJobCombineUnloader:superClass().startTask(self, task)
@@ -323,7 +375,17 @@ end
 ---@return number
 function CpAIJobCombineUnloader:getStartTaskIndex()
 	local startTask = CpAIJobCombineUnloader:superClass().getStartTaskIndex(self)
+	local vehicle = self:getVehicle()
+	local fillLevelPercentage = FillLevelManager.getTotalTrailerFillLevelPercentage(vehicle)
+	local readyToDriveUnloading = vehicle:getCpSettings().fullThreshold:getValue() < fillLevelPercentage
 	if not self.cpJobParameters.useGiantsUnload:getValue() then 
+		if readyToDriveUnloading then 
+			if self.cpJobParameters.useFieldUnload:getValue() then 
+				return self.unloadOnFieldTask.taskIndex
+			else 
+				return self.selfUnloadTask.taskIndex
+			end
+		end
 		return startTask
 	end
 	local vehicle = self:getVehicle()
@@ -333,8 +395,6 @@ function CpAIJobCombineUnloader:getStartTaskIndex()
 		CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Close to the field, start cp drive strategy.")
 		return startTask
 	end
-	local fillLevelPercentage = FillLevelManager.getTotalTrailerFillLevelPercentage(vehicle)
-	local readyToDriveUnloading = vehicle:getCpSettings().fullThreshold:getValue() < fillLevelPercentage
 	if readyToDriveUnloading then 
 		CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Not close to the field and vehicle is full, so start driving to unload.")
 		--- Small hack, so we can use the giants function and don't need to do copy & paste.
@@ -347,17 +407,16 @@ function CpAIJobCombineUnloader:getStartTaskIndex()
 	return startTask
 end
 
---- Callback by the drive strategy, when the trailer is full.
-function CpAIJobCombineUnloader:onTrailerFull(vehicle, driveStrategy)
-	if self.cpJobParameters.useGiantsUnload:getValue() then 
-		--- Giants unload
-		self.combineUnloaderTask:skip()
-		CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Trailer is full, giving control to giants!")
-	else 
-		vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
-	end
-end
-
 function CpAIJobCombineUnloader:getIsLooping()
 	return true
+end
+
+--- Applies the target data like the needed strategy and so on to the combine unloader task
+function CpAIJobCombineUnloader:setTarget(...)
+	self.combineUnloaderTask:setTarget(...)	
+end
+
+function CpAIJobCombineUnloader:skipToUnloadNow()
+	self.waitingForHarvesterOrLoaderTask:skip()
+	self.combineUnloaderTask:skip()
 end

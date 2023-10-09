@@ -175,11 +175,11 @@ function CpAIBunkerSiloWorker:startCpAtLastWp(superFunc, ...)
     end
 end
 
-function CpAIBunkerSiloWorker:startCpBunkerSiloWorker(silo, jobParameters, parkPosition)
+function CpAIBunkerSiloWorker:startCpBunkerSiloWorker(task, silo, jobParameters, parkPosition)
     if self.isServer then 
         self:resetCpCoursesFromGui()
         
-        local strategy =  AIDriveStrategyBunkerSilo.new()
+        local strategy =  AIDriveStrategyBunkerSilo(task)
         strategy:setSilo(silo)
         strategy:setParkPosition(parkPosition)
         -- this also starts the strategy

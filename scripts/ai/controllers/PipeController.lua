@@ -1,3 +1,21 @@
+--[[
+This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
+Copyright (C) 2022-2023 Courseplay Dev Team
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+]]
+
 --- Open/close combine and auger wagon pipes
 --- Controls moveable pipes and raises the base pipe rod to the maximum.
 ---@class PipeController : ImplementController
@@ -26,13 +44,14 @@ function PipeController:init(vehicle, implement, isConsoleCommand)
     end
 
     self.isDischargingTimer = CpTemporaryObject(false)
+    self.isDischargingActive = false
     self.isDischargingToGround = false
     self.dischargeData = {}
 end
 
 function PipeController:getDriveData()
     local maxSpeed
-    if self.isDischargingToGround then
+    if self.isDischargingActive then
         if self.isDischargingTimer:get() then
             --- Waiting until the discharging stopped or 
             --- the trailer is empty and the folding animation is playing.
@@ -49,19 +68,30 @@ function PipeController:getDriveData()
 end
 
 function PipeController:update(dt)
-    if self.isDischargingToGround then
-        if self:isEmpty() and self.implement:getAIHasFinishedDischarge(self.dischargeData.dischargeNode) then 
-            self:finishedDischarge()
-            return
-        end
-        if self.implement:getCanDischargeToGround(self.dischargeData.dischargeNode) then 
-            --- Update discharge timer
-            self.isDischargingTimer:set(true, 500)
-            if not self:isDischarging() then 
-                self.implement:setDischargeState(Dischargeable.DISCHARGE_STATE_GROUND)
+    if self.isDischargingActive then
+        if self.isDischargingToGround then
+            if self:isEmpty() and self.implement:getAIHasFinishedDischarge(self.dischargeData.dischargeNode) then 
+                self:finishedDischarge()
+                return
+            end
+            if self.implement:getCanDischargeToGround(self.dischargeData.dischargeNode) then 
+                --- Update discharge timer
+                self.isDischargingTimer:set(true, 500)
+                if not self:isDischarging() then 
+                    self.implement:setDischargeState(Dischargeable.DISCHARGE_STATE_GROUND)
+                end
+            else 
+                self.implement:setDischargeState(Dischargeable.DISCHARGE_STATE_OFF)
             end
         else 
-            self.implement:setDischargeState(Dischargeable.DISCHARGE_STATE_OFF)
+            if self:isEmpty() then 
+                self:finishedDischarge()
+                return
+            end
+            if not self:getDischargeObject() and not self:isDischarging() then 
+                self:finishedDischarge()
+                return
+            end
         end
     end
     self:updateMoveablePipe(dt)
@@ -197,11 +227,16 @@ function PipeController:getDischargeXOffset(dischargeNode)
     return xOffset
 end
 
+function PipeController:startDischarge(dischargeNode)
+    self.isDischargingActive = true
+end
+
 function PipeController:startDischargeToGround(dischargeNode)
     if not dischargeNode.canDischargeToGround and not dischargeNode.canDischargeToGroundAnywhere then 
         self:debug("Implement doesn't support unload to the ground!")
         return false
     end
+    self.isDischargingActive = true
     self.isDischargingToGround = true
     self.dischargeData = {
         dischargeNode = dischargeNode,
@@ -232,16 +267,21 @@ end
 function PipeController:finishedDischarge()
     self:debug("Finished unloading.")
     if self.finishDischargeCallback then 
-        self.finishDischargeCallback(self.driveStrategy, self)
+        self.finishDischargeCallback(self.driveStrategy, self, self:getFillLevelPercentage())
     end
     self.isDischargingToGround = false
+    self.isDischargingActive = false
     self.dischargeData = {}
     self:closePipe(false)
 end
 
 function PipeController:isEmpty()
+    return self:getFillLevelPercentage() <= 0
+end
+
+function PipeController:getFillLevelPercentage()
     local dischargeNode = self:getDischargeNode()
-    return self.implement:getFillUnitFillLevelPercentage(dischargeNode.fillUnitIndex) <= 0
+    return self.implement:getFillUnitFillLevelPercentage(dischargeNode.fillUnitIndex)
 end
 
 --- Gets the pipe z offset relative to the root vehicles direction node.

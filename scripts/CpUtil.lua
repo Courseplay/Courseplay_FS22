@@ -110,7 +110,7 @@ function CpUtil.getVariable(variableName)
 end
 
 --- (Safely) get the name of a vehicle or implement.
----@param object table vehicle or implement
+---@param object table|nil vehicle or implement
 function CpUtil.getName(object)
 	if object == nil then 
 		return 'Unknown'

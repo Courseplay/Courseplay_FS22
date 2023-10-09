@@ -205,10 +205,10 @@ function CpAIBaleFinder:onCpWrapTypeSettingChanged()
 end
 
 --- Custom version of AIFieldWorker:startFieldWorker()
-function CpAIBaleFinder:startCpBaleFinder(fieldPolygon, jobParameters)
+function CpAIBaleFinder:startCpBaleFinder(task, fieldPolygon, jobParameters)
     --- Calls the giants startFieldWorker function.
     if self.isServer then 
-        local strategy = AIDriveStrategyFindBales.new()
+        local strategy = AIDriveStrategyFindBales(task)
         -- this also starts the strategy
         strategy:setFieldPolygon(fieldPolygon)
         strategy:setAIVehicle(self, jobParameters)

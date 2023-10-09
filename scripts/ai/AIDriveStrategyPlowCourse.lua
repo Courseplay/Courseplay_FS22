@@ -1,5 +1,5 @@
 --[[
-This file is part of Courseplay (https://github.com/Courseplay/courseplay)
+This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
 Copyright (C) 2021 Peter Vaiko
 
 This program is free software: you can redistribute it and/or modify
@@ -25,25 +25,19 @@ Derived fieldwork course strategy, which handles plows.
 ]]--
 
 ---@class AIDriveStrategyPlowCourse : AIDriveStrategyFieldWorkCourse
-AIDriveStrategyPlowCourse = {}
-local AIDriveStrategyPlowCourse_mt = Class(AIDriveStrategyPlowCourse, AIDriveStrategyFieldWorkCourse)
+AIDriveStrategyPlowCourse = CpObject(AIDriveStrategyFieldWorkCourse)
 
 AIDriveStrategyPlowCourse.myStates = {
     ROTATING_PLOW = {},
     UNFOLDING_PLOW = {},
 }
 
-function AIDriveStrategyPlowCourse.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategyPlowCourse_mt
-    end
-    local self = AIDriveStrategyFieldWorkCourse.new(customMt)
+function AIDriveStrategyPlowCourse:init(...)
+    AIDriveStrategyFieldWorkCourse.init(self, ...)
     AIDriveStrategyFieldWorkCourse.initStates(self, AIDriveStrategyPlowCourse.myStates)
-    self.debugChannel = CpDebug.DBG_FIELDWORK
     -- the plow offset is automatically calculated on each waypoint and if it wasn't calculated for a while
     -- or when some event (like a turn) invalidated it
     self.plowOffsetUnknown = CpTemporaryObject(true)
-    return self
 end
 
 function AIDriveStrategyPlowCourse:getDriveData(dt, vX, vY, vZ)

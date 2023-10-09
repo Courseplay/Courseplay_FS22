@@ -1,5 +1,5 @@
 --[[
-This file is part of Courseplay (https://github.com/Courseplay/courseplay)
+This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
 Copyright (C) 2019 Peter Vaiko
 
 This program is free software: you can redistribute it and/or modify
@@ -219,7 +219,21 @@ end
 ---@return number total free capacity
 function FillLevelManager.getAllTrailerFillLevels(vehicle)
     local totalFillLevel, totalCapacity, totalFreeCapacity = 0, 0, 0
-    local trailers = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, Trailer, nil)
+    local trailers = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, Trailer)
+    local sugarCaneTrailer = SugarCaneTrailerController.getValidTrailer(vehicle)
+    if sugarCaneTrailer then 
+        --- Due to giants being lazy not all sugar cane trailers have a trailer specialization ...
+        --- Additionally need to make sure the trailer is not counted double ...
+        local trailerFound = false
+        for _,trailer in ipairs(trailers) do 
+            if trailer == sugarCaneTrailer then 
+                trailerFound = true
+            end
+        end
+        if not trailerFound then 
+            table.insert(trailers, sugarCaneTrailer)
+        end
+    end
     for i, trailer in ipairs(trailers) do 
         local fillLevel, capacity, freeCapacity = FillLevelManager.getTrailerFillLevels(trailer)
         totalFreeCapacity = totalFreeCapacity + freeCapacity

@@ -308,12 +308,12 @@ end
 
 
 --- Custom version of AIFieldWorker:startFieldWorker()
-function CpAIFieldWorker:startCpFieldWorker(jobParameters, startPosition)
+function CpAIFieldWorker:startCpFieldWorker(task, jobParameters, startPosition)
     --- Calls the giants startFieldWorker function.
     self:startFieldWorker()
     if self.isServer then 
         --- Replaces drive strategies.
-        CpAIFieldWorker.replaceAIFieldWorkerDriveStrategies(self, jobParameters, startPosition)
+        CpAIFieldWorker.replaceAIFieldWorkerDriveStrategies(self, task, jobParameters, startPosition)
 
         --- Remembers the last lane offset setting value that was used.
         local spec = self.spec_cpAIFieldWorker
@@ -328,7 +328,7 @@ end
 
 -- We replace the Giants AIDriveStrategyStraight with our AIDriveStrategyFieldWorkCourse  to take care of
 -- field work.
-function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters, startPosition)
+function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(task, jobParameters, startPosition)
     CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'This is a CP field work job, start the CP AI driver, setting up drive strategies...')
     local spec = self.spec_aiFieldWorker
     if spec.driveStrategies ~= nil then
@@ -343,21 +343,21 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters, star
     --- Checks if there are any vine nodes close to the starting point.
     if startPosition and g_vineScanner:hasVineNodesCloseBy(startPosition.x, startPosition.z) then 
         CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Found a vine course, install CP vine fieldwork drive strategy for it')
-        cpDriveStrategy = AIDriveStrategyVineFieldWorkCourse.new()
+        cpDriveStrategy = AIDriveStrategyVineFieldWorkCourse(task)
     elseif AIUtil.hasChildVehicleWithSpecialization(self, Plow) then
         CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Found a plow, install CP plow drive strategy for it')
-        cpDriveStrategy = AIDriveStrategyPlowCourse.new()
+        cpDriveStrategy = AIDriveStrategyPlowCourse(task)
     else
         local combine = AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) 
         local pipe = combine and SpecializationUtil.hasSpecialization(Pipe, combine.specializations)
         if combine and pipe then -- Default harvesters with a pipe.
             CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Found a combine with pipe, install CP combine drive strategy for it')
-            cpDriveStrategy = AIDriveStrategyCombineCourse.new()
+            cpDriveStrategy = AIDriveStrategyCombineCourse(task)
             self.spec_cpAIFieldWorker.combineDriveStrategy = cpDriveStrategy
         end
         if not cpDriveStrategy then 
             CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Installing default CP fieldwork drive strategy')
-            cpDriveStrategy = AIDriveStrategyFieldWorkCourse.new()
+            cpDriveStrategy = AIDriveStrategyFieldWorkCourse(task)
         end
     end
     CpUtil.try(cpDriveStrategy.setAIVehicle, cpDriveStrategy, self, jobParameters)
@@ -373,7 +373,9 @@ end
 --- Makes sure a callstack is printed, when an error appeared.
 --- TODO: Might be a good idea to stop the cp helper.
 local function onUpdate(vehicle, superFunc, ...)
-    CpUtil.try(superFunc, vehicle, ...)
+    if not CpUtil.try(superFunc, vehicle, ...) then 
+   --     vehicle:stopCurrentAIJob(AIMessageCpError.new())
+    end
 end
 
 AIFieldWorker.onUpdate = Utils.overwrittenFunction(AIFieldWorker.onUpdate, onUpdate)

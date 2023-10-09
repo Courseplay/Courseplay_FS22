@@ -1,36 +1,61 @@
-CpAITaskCombineUnloader = {}
-local AITaskCombineUnloaderCp_mt = Class(CpAITaskCombineUnloader, AITask)
+--[[
+This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
+Copyright (C) 2022 - 2023 Courseplay Dev Team
 
-function CpAITaskCombineUnloader.new(isServer, job, customMt)
-	local self = AITask.new(isServer, job, customMt or AITaskCombineUnloaderCp_mt)
-	self.vehicle = nil
-	return self
-end
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-function CpAITaskCombineUnloader:reset()
-	self.vehicle = nil
-	CpAITaskCombineUnloader:superClass().reset(self)
-end
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-function CpAITaskCombineUnloader:update(dt)
-end
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+]]
 
-function CpAITaskCombineUnloader:setVehicle(vehicle)
-	self.vehicle = vehicle
-end
+---@class CpAITaskCombineUnloader : CpAITask
+CpAITaskCombineUnloader = CpObject(CpAITask)
 
 function CpAITaskCombineUnloader:start()
 	if self.isServer then
-		self.vehicle:startCpCombineUnloader(self.job:getCpJobParameters())
+		self:debug("Combine unloader task started")
+		local class = self:getNeededStrategy()
+		---@type Interface_AIDriveStrategyUnloaderOfHarvesterOrLoader
+		local strategy = class(self)
+		strategy:setAIVehicle(self.vehicle, self.job:getCpJobParameters())
+		strategy:setTarget(self.targetVehicle, self.targetStrategy, self.targetPoint)
+		self.vehicle:startCpWithStrategy(strategy)
 	end
-
-	CpAITaskCombineUnloader:superClass().start(self)
+	CpAITask.start(self)
 end
 
-function CpAITaskCombineUnloader:stop()
-	CpAITaskCombineUnloader:superClass().stop(self)
+function CpAITaskCombineUnloader:reset()
+	CpAITask.reset(self)
+	self.targetStrategy = nil
+	self.targetVehicle = nil
+	self.targetPoint = nil
+end
 
+function CpAITaskCombineUnloader:stop(wasJobStopped)
 	if self.isServer then
-		self.vehicle:stopCpCombineUnloader()
+		self:debug("Combine unloader task stopped")
+		self.vehicle:stopCpDriver(wasJobStopped)
 	end
+	CpAITask.stop(self)
+end
+
+function CpAITaskCombineUnloader:setTarget(targetStrategy, targetVehicle, targetPoint)
+	self.targetStrategy = targetStrategy
+	self.targetVehicle = targetVehicle
+	self.targetPoint = targetPoint
+end
+
+function CpAITaskCombineUnloader:getNeededStrategy(unloadTargetStrategy)
+	if unloadTargetStrategy:is_a(AIDriveStrategySiloLoader) then 
+		return AIDriveStrategyUnloadCombine
+	end
+	return AIDriveStrategyUnloadCombine
 end

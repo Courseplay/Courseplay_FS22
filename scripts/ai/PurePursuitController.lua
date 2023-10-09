@@ -1,5 +1,5 @@
 --[[
-This file is part of Courseplay (https://github.com/Courseplay/courseplay)
+This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
 Copyright (C) 2018-2021 Peter Vaiko
 
 This program is free software: you can redistribute it and/or modify
@@ -164,12 +164,24 @@ end
 
 -- TODO: make this more generic and allow registering multiple listeners?
 -- could also implement listeners for events like notify me when within x meters of a waypoint, etc.
+--- Registers event listeners
+---@param waypointListener table
+---@param onWaypointPassedFunc function
+---@param onWaypointChangeFunc function
 function PurePursuitController:registerListeners(waypointListener, onWaypointPassedFunc, onWaypointChangeFunc)
 	-- for backwards compatibility, PPC currently is initialized by the legacy code so
 	-- by the time AIDriver takes over, it is already there. So let AIDriver tell PPC who's driving.
 	self.waypointListener = waypointListener
 	self.waypointPassedListenerFunc = onWaypointPassedFunc
 	self.waypointChangeListenerFunc = onWaypointChangeFunc
+end
+
+--- Removes the event listeners
+---@param listener table
+function PurePursuitController:removeListener(listener)
+	self.waypointListener = nil
+	self.waypointPassedListenerFunc = nil
+	self.waypointChangeListenerFunc = nil
 end
 
 function PurePursuitController:setLookaheadDistance(d)

@@ -75,8 +75,7 @@ This is currently screwed up...
 ---@field combineUnloadStates table
 ---@field trailerUnloadStates table
 ---@field fieldUnloadStates table
-AIDriveStrategyUnloadCombine = {}
-local AIDriveStrategyUnloadCombine_mt = Class(AIDriveStrategyUnloadCombine, AIDriveStrategyCourse)
+AIDriveStrategyUnloadCombine = CpObject(AIDriveStrategyCourse)
 
 -- when moving out of way of another vehicle, move at least so many meters
 AIDriveStrategyUnloadCombine.minDistanceWhenMovingOutOfWay = 5
@@ -177,11 +176,8 @@ AIDriveStrategyUnloadCombine.myFieldUnloadStates = {
     DRIVE_TO_FIELD_UNLOAD_PARK_POSITION = {},
 }
 
-function AIDriveStrategyUnloadCombine.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategyUnloadCombine_mt
-    end
-    local self = AIDriveStrategyCourse.new(customMt)
+function AIDriveStrategyUnloadCombine:init(...)
+    AIDriveStrategyCourse.init(self, ...)
 
     self.combineUnloadStates = CpUtil.initStates(self.combineUnloadStates, AIDriveStrategyUnloadCombine.myCombineUnloadStates)
     self.trailerUnloadStates = CpUtil.initStates(self.trailerUnloadStates, AIDriveStrategyUnloadCombine.myTrailerUnloadStates)
@@ -210,7 +206,6 @@ function AIDriveStrategyUnloadCombine.new(customMt)
     self.checkForTrailerToUnloadTo = CpTemporaryObject(true)
     self:resetPathfinder()
     self.unloadTargetType = self.UNLOAD_TYPES.COMBINE
-    return self
 end
 
 function AIDriveStrategyUnloadCombine:delete()
@@ -220,7 +215,7 @@ function AIDriveStrategyUnloadCombine:delete()
         CpUtil.destroyNode(self.fieldUnloadTurnEndNode)
     end
     self:releaseCombine()
-    AIDriveStrategyUnloadCombine:superClass().delete(self)
+    AIDriveStrategyCourse.delete(self)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -263,6 +258,9 @@ function AIDriveStrategyUnloadCombine:setJobParameterValues(jobParameters)
     else
         self:debug("Invalid start position found!")
     end
+    self.useFieldUnload = jobParameters.useFieldUnload:getValue()
+    self.useGiantsUnload = jobParameters.useGiantsUnload:getValue()
+
     if jobParameters.useFieldUnload:getValue() and not jobParameters.useFieldUnload:getIsDisabled() then
         local fieldUnloadPosition = jobParameters.fieldUnloadPosition
         if fieldUnloadPosition ~= nil and fieldUnloadPosition.x ~= nil and fieldUnloadPosition.z ~= nil and fieldUnloadPosition.angle ~= nil then
@@ -289,7 +287,7 @@ function AIDriveStrategyUnloadCombine:getUnloadTargetType()
 end
 
 function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
-    AIDriveStrategyUnloadCombine:superClass().setAIVehicle(self, vehicle)
+    AIDriveStrategyCourse.setAIVehicle(self, vehicle, jobParameters)
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
     self.collisionAvoidanceController = CollisionAvoidanceController(self.vehicle, self)
     self.proximityController = ProximityController(self.vehicle, self:getProximitySensorWidth())
@@ -299,12 +297,22 @@ function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
     -- remove any course already loaded (for instance to not to interfere with the fieldworker proximity controller)
     vehicle:resetCpCourses()
     self:resetPathfinder()
+    self:setJobParameterValues(jobParameters)
 end
 
 function AIDriveStrategyUnloadCombine:initializeImplementControllers(vehicle)
-    self.augerWagon, self.pipeController = self:addImplementController(vehicle, PipeController, Pipe, {}, nil)
-    self:debug('Auger wagon found: %s', self.augerWagon ~= nil)
-    self.trailer, self.trailerController = self:addImplementController(vehicle, TrailerController, Trailer, {}, nil)
+    local augerWagon, trailer
+    augerWagon, self.pipeController = self:addImplementController(vehicle, PipeController, Pipe, {}, nil)
+    self:debug('Found a auger wagon: %s', CpUtil.getName(self.augerWagon))
+    trailer, self.trailerController = self:addImplementController(vehicle, TrailerController, Trailer, {}, nil)
+    self.trailer = augerWagon or trailer
+    local sugarCaneTrailer = SugarCaneTrailerController.getValidTrailer(vehicle)
+    if sugarCaneTrailer then
+        self:debug("Found a sugar can trailer: %s", CpUtil.getName(sugarCaneTrailer))
+        self.trailer = sugarCaneTrailer
+        self.sugarCaneTrailerController = SugarCaneTrailerController(vehicle, sugarCaneTrailer)
+        self:appendImplementController(self.sugarCaneTrailerController)
+    end
     self:addImplementController(vehicle, MotorController, Motorized, {}, nil)
     self:addImplementController(vehicle, WearableController, Wearable, {}, nil)
     self:addImplementController(vehicle, CoverController, Cover, {}, nil)
@@ -400,7 +408,7 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
         -- - user sends us to unload the trailer
         -- - a trailer appears where we can unload our auger wagon if full
         self:setMaxSpeed(0)
-
+        
         if self:isDriveUnloadNowRequested() then
             self:debug('Drive unload now requested')
             self:startUnloadingTrailers()
@@ -562,7 +570,7 @@ function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
         self:startWaitingForSomethingToDo()
     elseif self.state == self.states.DRIVING_BACK_TO_START_POSITION_WHEN_FULL then
         self:debug('Inverted goal position reached, so give control back to the job.')
-        self.vehicle:getJob():onTrailerFull(self.vehicle, self)
+        self:onTrailerFull()
         ---------------------------------------------
         --- Self unload
         ---------------------------------------------
@@ -878,44 +886,38 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Start the course to unload the trailers
----@param waitForCombineIfNotFull boolean when not full, and no trailer found, start waiting for the combine
 --- instead of just stopping
 ------------------------------------------------------------------------------------------------------------------------
+
+function AIDriveStrategyUnloadCombine:onTrailerFull()
+    if self.useGiantsUnload then 
+        self:finishTask()
+        return
+    end
+    self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
+end
+
 function AIDriveStrategyUnloadCombine:startUnloadingTrailers()
     self:setMaxSpeed(0)
     self:releaseCombine()
 
-    if self.fieldUnloadPositionNode then
-        if self.augerWagon then
-            self:debug('Starting unloading on the field with an auger wagon.')
-            self:startUnloadingOnField(self.pipeController, false)
-        else
-            self:debug('Starting unloading on the field with a trailer.')
-            self:startUnloadingOnField(self.trailerController, true)
-        end
+    if self.useFieldUnload then 
+        self:finishTask()
         return
     end
-
-    if self.augerWagon then
-        self:debug('Have auger wagon, looking for a trailer.')
-        if self:startSelfUnload() then
-            self:debug('Trailer to unload to found, attempting self unload now')
-        else
-            self:debug('No trailer for self unload found, keep waiting')
-            self:startWaitingForSomethingToDo()
-        end
-    else
-        --- Trailer attached
-        if self.invertedStartPositionMarkerNode then
-            --- The start position is valid, so drive in there before releasing and giving control to giants or AD.
-            self:debug('Trailer is full and a valid start position is set, so drive there before AD or giants can take over.')
-            self:startPathfindingToInvertedGoalPositionMarker()
-        else
-            --- No valid start position was set, so release the driver and give control to giants or AD.
-            self:debug('Full and have no auger wagon, stop, so eventually AD can take over.')
-            self.vehicle:getJob():onTrailerFull(self.vehicle, self)
-        end
+    if self.sugarCaneTrailerController or self.pipeController then 
+        --- Self unload takes over 
+        --- TODO: add option to unload normal trailers to goeweil baler
+        self:finishTask()
+        return
     end
+    if not self.invertedStartPositionMarkerNode then
+        self:debug('Trailer is full and and no valid start position is set, so give control to AD directly.')
+        self:onTrailerFull()
+        return
+    end
+    self:debug('Trailer is full and a valid start position is set, so drive there before AD or giants can take over.')
+    self:startPathfindingToInvertedGoalPositionMarker()
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -1864,7 +1866,7 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneToInvertedGoalPositionMar
         self:startCourse(course, 1)
     else
         self:debug("Could not find a path to the start position marker, pass over to the job!")
-        self.vehicle:getJob():onTrailerFull(self.vehicle, self)
+        self:onTrailerFull()
     end
 end
 
@@ -2431,7 +2433,6 @@ function AIDriveStrategyUnloadCombine:debug(...)
 end
 
 function AIDriveStrategyUnloadCombine:update(dt)
-    AIDriveStrategyUnloadCombine:superClass().update(self)
     if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
         if self.course then
             self.course:draw()
@@ -2459,6 +2460,7 @@ function AIDriveStrategyUnloadCombine:update(dt)
         end
     end
     self:updateImplementControllers(dt)
+    AIDriveStrategyCourse.update(self, dt)
 end
 
 function AIDriveStrategyUnloadCombine:renderText(x, y, ...)

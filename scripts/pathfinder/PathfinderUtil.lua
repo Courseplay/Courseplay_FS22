@@ -1,5 +1,5 @@
 --[[
-This file is part of Courseplay (https://github.com/Courseplay/courseplay)
+This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
 Copyright (C) 2019 Peter Vaiko
 
 This program is free software: you can redistribute it and/or modify
@@ -939,7 +939,7 @@ end
 --- (sideOffset > 0 is left)
 ------------------------------------------------------------------------------------------------------------------------
 ---@param vehicle table, will be used as the start location/heading, turn radius and size
----@param goalNode table The goal node
+---@param goalNode number The goal node
 ---@param xOffset number side offset of the goal from the goal node
 ---@param zOffset number length offset of the goal from the goal node
 ---@param allowReverse boolean allow reverse driving
@@ -969,7 +969,7 @@ end
 --- Interface function to start a simple A* pathfinder in the game. The goal is a node
 ------------------------------------------------------------------------------------------------------------------------
 ---@param vehicle table, will be used as the start location/heading, turn radius and size
----@param goalNode table The goal node
+---@param goalNode number The goal node
 ---@param xOffset number side offset of the goal from the goal node (> 0 is left)
 ---@param zOffset number length offset of the goal from the goal node (> 0 is front)
 ---@param fieldNum number if other than 0 or nil the pathfinding is restricted to the given field and its vicinity

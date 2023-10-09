@@ -1,39 +1,38 @@
-CpAITaskBaleFinder = {}
-local AITaskBaleFinderCp_mt = Class(CpAITaskBaleFinder, AITask)
+--[[
+This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
+Copyright (C) 2022 - 2023 Courseplay Dev Team
 
-function CpAITaskBaleFinder.new(isServer, job, customMt)
-	local self = AITask.new(isServer, job, customMt or AITaskBaleFinderCp_mt)
-	self.vehicle = nil
-	return self
-end
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-function CpAITaskBaleFinder:reset()
-	self.vehicle = nil
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-	CpAITaskBaleFinder:superClass().reset(self)
-end
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+]]
 
-function CpAITaskBaleFinder:update(dt)
-end
-
-function CpAITaskBaleFinder:setVehicle(vehicle)
-	self.vehicle = vehicle
-end
+---@class CpAITaskBaleFinder : CpAITask
+CpAITaskBaleFinder = CpObject(CpAITask)
 
 function CpAITaskBaleFinder:start()
 	if self.isServer then
+		self:debug("Bale finder task started")
 		local tx, tz = self.job:getCpJobParameters().fieldPosition:getPosition()
 		local fieldPolygon = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
-		self.vehicle:startCpBaleFinder(fieldPolygon, self.job:getCpJobParameters())
+		self.vehicle:startCpBaleFinder(self, fieldPolygon, self.job:getCpJobParameters())
 	end
-
-	CpAITaskBaleFinder:superClass().start(self)
+	CpAITask.start(self)
 end
 
-function CpAITaskBaleFinder:stop()
-	CpAITaskBaleFinder:superClass().stop(self)
-
+function CpAITaskBaleFinder:stop(wasJobStopped)
 	if self.isServer then
-		self.vehicle:stopCpBaleFinder()
+		self:debug("Bale finder task stopped")
+		self.vehicle:stopCpBaleFinder(wasJobStopped)
 	end
+	CpAITask.stop(self)
 end

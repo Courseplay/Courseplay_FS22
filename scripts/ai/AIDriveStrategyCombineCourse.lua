@@ -1,5 +1,5 @@
 --[[
-This file is part of Courseplay (https://github.com/Courseplay/courseplay)
+This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
 Copyright (C) 2019-2021 Peter Vaiko
 
 This program is free software: you can redistribute it and/or modify
@@ -17,9 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
 ---@class AIDriveStrategyCombineCourse : AIDriveStrategyFieldWorkCourse
-AIDriveStrategyCombineCourse = {}
-local AIDriveStrategyCombineCourse_mt = Class(AIDriveStrategyCombineCourse, AIDriveStrategyFieldWorkCourse)
-
+AIDriveStrategyCombineCourse = CpObject(AIDriveStrategyFieldWorkCourse)
 -- fill level when we start making a pocket to unload if we are on the outermost headland
 AIDriveStrategyCombineCourse.pocketFillLevelFullPercentage = 95
 AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow = 30
@@ -74,12 +72,9 @@ AIDriveStrategyCombineCourse.proximityStopThresholdSelfUnload = 0.1
 -- Therefore, use this instead, this is safe after a reload.
 AIDriveStrategyCombineCourse.isAAIDriveStrategyCombineCourse = true
 
-function AIDriveStrategyCombineCourse.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategyCombineCourse_mt
-    end
-    local self = AIDriveStrategyFieldWorkCourse.new(customMt)
-    AIDriveStrategyFieldWorkCourse.initStates(self, AIDriveStrategyCombineCourse.myStates)
+function AIDriveStrategyCombineCourse:init(...)
+    AIDriveStrategyFieldWorkCourse.init(self, ...)
+    AIDriveStrategyCourse.initStates(self, AIDriveStrategyCombineCourse.myStates)
     self.fruitLeft, self.fruitRight = 0, 0
     self.litersPerMeter = 0
     self.litersPerSecond = 0
@@ -95,7 +90,7 @@ function AIDriveStrategyCombineCourse.new(customMt)
     self.timeToCallUnloader = CpTemporaryObject(true)
 
     --- Register info texts
-    self:registerInfoTextForStates(self:getFillLevelInfoText(), {
+    self:registerInfoTextForStates(InfoTextManager.NEEDS_UNLOADING, {
         states = {
             [self.states.UNLOADING_ON_FIELD] = true
         },
@@ -109,7 +104,6 @@ function AIDriveStrategyCombineCourse.new(customMt)
 
     -- TODO: move this to a setting
     self.callUnloaderAtFillLevelPercentage = 80
-    return self
 end
 
 function AIDriveStrategyCombineCourse:getStateAsString()
@@ -124,7 +118,7 @@ end
 --- Initialization
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyCombineCourse:setAllStaticParameters()
-    AIDriveStrategyCombineCourse.superClass().setAllStaticParameters(self)
+    AIDriveStrategyFieldWorkCourse.setAllStaticParameters(self)
     self:debug('AIDriveStrategyCombineCourse set')
 
     if self:isChopper() then
@@ -162,7 +156,7 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 end
 
 function AIDriveStrategyCombineCourse:initializeImplementControllers(vehicle)
-    AIDriveStrategyCombineCourse:superClass().initializeImplementControllers(self, vehicle)
+    AIDriveStrategyFieldWorkCourse.initializeImplementControllers(self, vehicle)
     local _
     _, self.pipeController = self:addImplementController(vehicle, PipeController, Pipe, {}, nil)
     self.combine, self.combineController = self:addImplementController(vehicle, CombineController, Combine, {}, nil)
@@ -252,7 +246,7 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
             self:setMaxSpeed(0)
         end
     end
-    return AIDriveStrategyCombineCourse.superClass().getDriveData(self, dt, vX, vY, vZ)
+    return AIDriveStrategyFieldWorkCourse.getDriveData(self, dt, vX, vY, vZ)
 end
 
 function AIDriveStrategyCombineCourse:updateFieldworkOffset(course)
@@ -341,7 +335,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
         local fillLevel = self.combineController:getFillLevel()
         if fillLevel < 0.01 then
             self:debug('Unloading finished after fieldwork ended, end course')
-            AIDriveStrategyCombineCourse.superClass().finishFieldWork(self)
+            AIDriveStrategyFieldWorkCourse.finishFieldWork(self)
         else
             self:setMaxSpeed(0)
         end
@@ -416,7 +410,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
         if self:isUnloadFinished() then
             if not self:continueSelfUnloadToNextTrailer() then
                 self:debug('Self unloading finished after fieldwork ended, finishing fieldwork')
-                AIDriveStrategyCombineCourse.superClass().finishFieldWork(self)
+                AIDriveStrategyFieldWorkCourse.finishFieldWork(self)
             end
         end
     elseif self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD then
@@ -527,7 +521,7 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
             self.unloadState = self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED
         end
     else
-        AIDriveStrategyCombineCourse.superClass().onLastWaypointPassed(self)
+        AIDriveStrategyFieldWorkCourse.onLastWaypointPassed(self)
     end
 end
 
@@ -538,7 +532,7 @@ end
 --- Some of our turns need a short look ahead distance, make sure we restore the normal after the turn
 function AIDriveStrategyCombineCourse:resumeFieldworkAfterTurn(ix)
     self.ppc:setNormalLookaheadDistance()
-    AIDriveStrategyCombineCourse.superClass().resumeFieldworkAfterTurn(self, ix)
+    AIDriveStrategyFieldWorkCourse.resumeFieldworkAfterTurn(self, ix)
 end
 
 --- Stop, raise the header (if needed) and then, and only then change to the new states. This is to avoid leaving
@@ -813,12 +807,12 @@ function AIDriveStrategyCombineCourse:callUnloaderWhenNeeded()
         return
     end
 
-    local bestUnloader, bestEte
+    local bestUnloader, bestStrategy, bestEte, _
     if self:isWaitingForUnload() then
-        bestUnloader, _ = self:findUnloader(self.vehicle, nil)
+        bestUnloader, bestStrategy, _ = self:findUnloader(self.vehicle, nil)
         self:debug('callUnloaderWhenNeeded: stopped, need unloader here')
-        if bestUnloader then
-            bestUnloader:getCpDriveStrategy():call(self.vehicle, nil)
+        if bestStrategy then
+            bestStrategy:call(self, self.vehicle, nil)
         end
     else
         if not self.waypointIxWhenCallUnloader then
@@ -828,15 +822,17 @@ function AIDriveStrategyCombineCourse:callUnloaderWhenNeeded()
         -- Find a good waypoint to unload, as the calculated one may have issues, like pipe would be in the fruit,
         -- or in a turn, etc.
         -- TODO: isPipeInFruitAllowed
-        local tentativeRendezvousWaypointIx = self:findBestWaypointToUnload(self.waypointIxWhenCallUnloader, false)
+        local tentativeRendezvousWaypointIx = self:findBestWaypointToUnload(
+                self.waypointIxWhenCallUnloader, false)
         if not tentativeRendezvousWaypointIx then
             self:debug('callUnloaderWhenNeeded: can\'t find a good waypoint to meet the unloader')
             return
         end
-        bestUnloader, bestEte = self:findUnloader(nil, self.course:getWaypoint(tentativeRendezvousWaypointIx))
+        bestUnloader, bestStrategy, bestEte = self:findUnloader(nil, 
+            self.course:getWaypoint(tentativeRendezvousWaypointIx))
         -- getSpeedLimit() may return math.huge (inf), when turning for example, not sure why, and that throws off
         -- our ETE calculation
-        if bestUnloader and self.vehicle:getSpeedLimit(true) < 100 then
+        if bestUnloader and bestStrategy and self.vehicle:getSpeedLimit(true) < 100 then
             local dToUnloadWaypoint = self.course:getDistanceBetweenWaypoints(tentativeRendezvousWaypointIx,
                     self.course:getCurrentWaypointIx())
             local myEte = dToUnloadWaypoint / (self.vehicle:getSpeedLimit(true) / 3.6)
@@ -854,9 +850,11 @@ function AIDriveStrategyCombineCourse:callUnloaderWhenNeeded()
                 tentativeRendezvousWaypointIx = self.course:getNextWaypointIxWithinDistance(
                         self.course:getCurrentWaypointIx(), dToTentativeRendezvousWaypoint)
                 if tentativeRendezvousWaypointIx then
-                    bestUnloader, bestEte = self:findUnloader(nil, self.course:getWaypoint(tentativeRendezvousWaypointIx))
+                    bestUnloader, bestEte = self:findUnloader(nil, 
+                        self.course:getWaypoint(tentativeRendezvousWaypointIx))
                     if bestUnloader then
-                        self:callUnloader(bestUnloader, tentativeRendezvousWaypointIx, bestEte)
+                        self:callUnloader(bestUnloader, bestStrategy,
+                            tentativeRendezvousWaypointIx, bestEte)
                     end
                 else
                     self:debug('callUnloaderWhenNeeded: still can\'t find a good waypoint to meet the unloader')
@@ -864,14 +862,20 @@ function AIDriveStrategyCombineCourse:callUnloaderWhenNeeded()
             elseif bestEte + 5 > myEte then
                 -- do not call too early (like minutes before we get there), only when it needs at least as
                 -- much time to get there as the combine (-5 seconds)
-                self:callUnloader(bestUnloader, tentativeRendezvousWaypointIx, bestEte)
+                self:callUnloader(bestUnloader, bestStrategy, 
+                    tentativeRendezvousWaypointIx, bestEte)
             end
         end
     end
 end
 
-function AIDriveStrategyCombineCourse:callUnloader(bestUnloader, tentativeRendezvousWaypointIx, bestEte)
-    if bestUnloader:getCpDriveStrategy():call(self.vehicle,
+--- Calls a given unloader
+---@param bestUnloader table vehicle
+---@param strategy AIDriveStrategyWaitingForHarvesterOrLoader
+---@param tentativeRendezvousWaypointIx number
+---@param bestEte number
+function AIDriveStrategyCombineCourse:callUnloader(bestUnloader, strategy, tentativeRendezvousWaypointIx, bestEte)
+    if strategy:call(self.vehicle,
             self.course:getWaypoint(tentativeRendezvousWaypointIx)) then
         self.unloaderToRendezvous:set(bestUnloader, 1000 * (bestEte + 30))
         self.unloaderRendezvousWaypointIx = tentativeRendezvousWaypointIx
@@ -894,49 +898,44 @@ end
 
 --- Find an unloader to drive to the target, which may either be the combine itself (when stopped and waiting for unload)
 --- or a waypoint which the combine will reach in the future. Combine and waypoint parameters are mutually exclusive.
----@param combine table the combine vehicle if we need the unloader come to the combine, otherwise nil
----@param waypoint Waypoint the waypoint where the unloader should meet the combine, otherwise nil.
----@return table, number the best fitting unloader or nil, the estimated time en-route for the unloader to reach the
+---@param combine table|nil the combine vehicle if we need the unloader come to the combine, otherwise nil
+---@param waypoint Waypoint|nil the waypoint where the unloader should meet the combine, otherwise nil.
+---@return table|nil the best fitting unloader or nil
+---@return AIDriveStrategyWaitingForHarvesterOrLoader|nil
+---@return number|nil the estimated time en-route for the unloader to reach the
 --- target (combine or waypoint)
 function AIDriveStrategyCombineCourse:findUnloader(combine, waypoint)
     local bestScore = -math.huge
-    local bestUnloader, bestEte
-    for _, vehicle in pairs(g_currentMission.vehicles) do
-        if AIDriveStrategyUnloadCombine.isActiveCpCombineUnloader(vehicle) then
-            local x, _, z = getWorldTranslation(self.vehicle.rootNode)
-            ---@type AIDriveStrategyUnloadCombine
-            local driveStrategy = vehicle:getCpDriveStrategy()
-            if driveStrategy:isServingPosition(x, z, 0) then
-                local unloaderFillLevelPercentage = driveStrategy:getFillLevelPercentage()
-                if driveStrategy:isIdle() and unloaderFillLevelPercentage < 99 then
-                    local unloaderDistance, unloaderEte
-                    if combine then
-                        -- if already stopped, we want the unloader to come to us
-                        unloaderDistance, unloaderEte = driveStrategy:getDistanceAndEteToVehicle(combine)
-                    elseif self.waypointIxWhenCallUnloader then
-                        -- if still going, we want the unloader to meet us at the waypoint
-                        unloaderDistance, unloaderEte = driveStrategy:getDistanceAndEteToWaypoint(waypoint)
-                    end
-                    local score = unloaderFillLevelPercentage - 0.1 * unloaderDistance
-                    self:debug('findUnloader: %s idle on my field, fill level %.1f, distance %.1f, ETE %.1f, score %.1f)',
-                            CpUtil.getName(vehicle), unloaderFillLevelPercentage, unloaderDistance, unloaderEte, score)
-                    if score > bestScore then
-                        bestUnloader = vehicle
-                        bestScore = score
-                        bestEte = unloaderEte
-                    end
-                else
-                    self:debug('findUnloader: %s serving my field but already busy', CpUtil.getName(vehicle))
-                end
-            else
-                self:debug('findUnloader: %s is not serving my field', CpUtil.getName(vehicle))
+    local bestUnloader, bestStrategy, bestEte
+    for strategy, vehicle in pairs(AIDriveStrategyWaitingForHarvesterOrLoader.waitingUnloaders) do
+        local x, _, z = getWorldTranslation(self.vehicle.rootNode)
+        if strategy:isServingPosition(x, z, 0) then
+            local unloaderFillLevelPercentage = strategy:getFillLevelPercentage()
+            local unloaderDistance, unloaderEte
+            if combine then
+                -- if already stopped, we want the unloader to come to us
+                unloaderDistance, unloaderEte = strategy:getDistanceAndEteToVehicle(combine)
+            elseif self.waypointIxWhenCallUnloader then
+                -- if still going, we want the unloader to meet us at the waypoint
+                unloaderDistance, unloaderEte = strategy:getDistanceAndEteToWaypoint(waypoint)
             end
+            local score = unloaderFillLevelPercentage - 0.1 * unloaderDistance
+            self:debug('findUnloader: %s idle on my field, fill level %.1f, distance %.1f, ETE %.1f, score %.1f)',
+                    CpUtil.getName(vehicle), unloaderFillLevelPercentage, unloaderDistance, unloaderEte, score)
+            if score > bestScore then
+                bestUnloader = vehicle
+                bestStrategy = bestStrategy
+                bestScore = score
+                bestEte = unloaderEte
+            end
+        else
+            self:debug('findUnloader: %s is not serving my field', CpUtil.getName(vehicle))
         end
     end
     if bestUnloader then
         self:debug('findUnloader: best unloader is %s (score %.1f, ETE %.1f)',
                 CpUtil.getName(bestUnloader), bestScore, bestEte)
-        return bestUnloader, bestEte
+        return bestUnloader, bestStrategy, bestEte
     else
         self:debug('findUnloader: no idle unloader found')
     end
@@ -1336,10 +1335,10 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
     if self.turnContext:isHeadlandCorner() then
         if self.combineController:isPotatoOrSugarBeetHarvester() then
             self:debug('Headland turn but this harvester uses normal turn maneuvers.')
-            AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
+            AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
         elseif self.course:isOnConnectingTrack(ix) then
             self:debug('Headland turn but this a connecting track, use normal turn maneuvers.')
-            AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
+            AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
         elseif self.course:isOnOutermostHeadland(ix) and self:isTurnOnFieldActive() then
             self:debug('Creating a pocket in the corner so the combine stays on the field during the turn')
             self.aiTurn = CombinePocketHeadlandTurn(self.vehicle, self, self.ppc, self.proximityController, self.turnContext,
@@ -1363,7 +1362,7 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
             self.state = self.states.TURNING
             self.waypointIxToContinueOnFailedSelfUnload = ix
         else
-            AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
+            AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
         end
     end
 end
@@ -1544,7 +1543,7 @@ function AIDriveStrategyCombineCourse:startSelfUnload(unloadStateAfterPathfindin
                 self.fieldWorkCourse:getFieldPolygon(),
                 self.vehicle,
                 self:getFillType(),
-                self.pipeController,
+                self.pipeController:getPipeOffsetX(),
                 bestTrailer,
                 fillRootNode)
 
@@ -1601,7 +1600,7 @@ function AIDriveStrategyCombineCourse:onPathfindingDoneBeforeSelfUnload(path)
         elseif self.unloadStateAfterPathfindingDoneForSelfUnload == self.states.DRIVING_TO_SELF_UNLOAD_BEFORE_NEXT_ROW then
             -- continue turn as if nothing happened
             self:startCourse(self.fieldWorkCourse, self.waypointIxToContinueOnFailedSelfUnload)
-            AIDriveStrategyCombineCourse.superClass().startTurn(self, self.waypointIxToContinueOnFailedSelfUnload)
+            AIDriveStrategyFieldWorkCourse.startTurn(self, self.waypointIxToContinueOnFailedSelfUnload)
         elseif self.unloadStateAfterPathfindingDoneForSelfUnload == self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED then
             self.unloadState = self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED
         end
@@ -1713,7 +1712,7 @@ function AIDriveStrategyCombineCourse:startSelfUnloadBeforeNextRow()
     else
         -- giving up self unload, attempt to re-initialize the turn
         self:startCourse(self.fieldWorkCourse, self.waypointIxToContinueOnFailedSelfUnload)
-        AIDriveStrategyCombineCourse.superClass().startTurn(self, self.waypointIxToContinueOnFailedSelfUnload)
+        AIDriveStrategyFieldWorkCourse.startTurn(self, self.waypointIxToContinueOnFailedSelfUnload)
     end
 end
 

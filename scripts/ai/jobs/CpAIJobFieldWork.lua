@@ -1,3 +1,21 @@
+--[[
+This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
+Copyright (C) 2022 - 2023 Courseplay Dev Team
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+]]
+
 --- AI job derived of CpAIJob.
 ---@class CpAIJobFieldWork : CpAIJob
 CpAIJobFieldWork = {
@@ -23,11 +41,11 @@ function CpAIJobFieldWork:setupTasks(isServer)
     CpAIJobFieldWork:superClass().setupTasks(self, isServer)
     -- then we add our own driveTo task to drive from the target position to the waypoint where the
     -- fieldwork starts (first waypoint or the one we worked on last)
-    self.attachHeaderTask = CpAITaskAttachHeader.new(isServer, self)
+    self.attachHeaderTask = CpAITaskAttachHeader(isServer, self)
     self:addTask(self.attachHeaderTask)
-    self.driveToFieldWorkStartTask = CpAITaskDriveTo.new(isServer, self)
+    self.driveToFieldWorkStartTask = CpAITaskDriveTo(isServer, self)
     self:addTask(self.driveToFieldWorkStartTask)
-    self.fieldWorkTask = CpAITaskFieldWork.new(isServer, self)
+    self.fieldWorkTask = CpAITaskFieldWork(isServer, self)
     self:addTask(self.fieldWorkTask)
 end
 

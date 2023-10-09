@@ -1,6 +1,6 @@
 --[[
 This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
-Copyright (C) 2022 - 2023 Courseplay Dev Team
+Copyright (C) 2023 Courseplay Dev Team
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,23 +16,17 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
----@class CpAITaskAttachHeader : CpAITask
-CpAITaskAttachHeader = CpObject(CpAITask)
-
-function CpAITaskAttachHeader:start()
-    if self.isServer then
-        self:debug("Attach header task started")
-        local strategy = AIDriveStrategyAttachHeader(self)
-        strategy:setAIVehicle(self.vehicle, self.job:getCpJobParameters())
-        self.vehicle:startCpWithStrategy(strategy)
-    end
-	CpAITask.start(self)
+--- Interface for any unload strategy for combine, choppers and loaders(ropa maus, ...).
+---@class Interface_AIDriveStrategyUnloaderOfHarvesterOrLoader : AIDriveStrategyCourse
+Interface_AIDriveStrategyUnloaderOfHarvesterOrLoader = CpObject()
+function Interface_AIDriveStrategyUnloaderOfHarvesterOrLoader:init()
+	
 end
 
-function CpAITaskAttachHeader:stop(wasJobStopped)
-    if self.isServer then
-        self:debug("Attach header task stopped")
-        self.vehicle:stopCpDriver(wasJobStopped)
-    end
-    CpAITask.stop(self)
+--- Sets the unload target 
+---@param targetStrategy AIDriveStrategyCourse
+---@param targetVehicle table
+---@param targetPoint Waypoint|number|nil
+function Interface_AIDriveStrategyUnloaderOfHarvesterOrLoader:setTarget(targetVehicle, targetStrategy, targetPoint)
+	
 end
