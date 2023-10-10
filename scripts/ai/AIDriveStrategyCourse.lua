@@ -111,6 +111,9 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
     self:initializeImplementControllers(vehicle)
     self.ppc = PurePursuitController(vehicle)
     self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
+
+    self.pathfinderController = PathfinderController(vehicle)
+
     self.storage = vehicle.spec_cpAIWorker
 
     self.settings = vehicle:getCpSettings()
@@ -428,8 +431,9 @@ function AIDriveStrategyCourse:getCurrentCourse()
     return self.ppc:getCourse() or self.course
 end
 
-function AIDriveStrategyCourse:update()
+function AIDriveStrategyCourse:update(dt)
     self.ppc:update()
+    self.pathfinderController:update(dt)
     self:updatePathfinding()
     self:updateInfoTexts()
 end
