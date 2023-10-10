@@ -98,33 +98,34 @@ function CpAIJob:stop(aiMessage)
 		local vehicle = self.vehicleParameter:getVehicle()
 		vehicle:deleteAgent()
 		vehicle:aiJobFinished()
-		local driveStrategy = vehicle:getCpDriveStrategy()
-        if driveStrategy then
-			driveStrategy:onFinished()
-		end
-	end
-	CpAIJob:superClass().stop(self, aiMessage)
-	if not aiMessage then 
-		return
-	end
-	if self.isServer then
-		local vehicle = self.vehicleParameter:getVehicle()
+
 		vehicle:resetCpAllActiveInfoTexts()
-		local releaseMessage, hasFinished, event, isOnlyShownOnPlayerStart = g_infoTextManager:getInfoTextDataByAIMessage(aiMessage)
-		if releaseMessage then 
-			self:debug("Release message %s", tostring(releaseMessage))
+		local driveStrategy = vehicle:getCpDriveStrategy()
+		if not aiMessage then 
+			self:debug("No valid ai message given!")
+			if driveStrategy then
+				driveStrategy:onFinished()
+			end
+			return
 		end
-		if releaseMessage and not vehicle:getIsControlled() and not isOnlyShownOnPlayerStart  then
-			vehicle:setCpInfoTextActive(releaseMessage)
+		local releaseMessage, hasFinished, event, isOnlyShownOnPlayerStart = 
+			g_infoTextManager:getInfoTextDataByAIMessage(aiMessage)
+		if releaseMessage then 
+			self:debug("Stopped with release message %s", tostring(releaseMessage))
+		end
+		if driveStrategy then
+			driveStrategy:onFinished(hasFinished)
 		end
 		if event then
 			SpecializationUtil.raiseEvent(vehicle, event)
 		end
-		if hasFinished and vehicle:getCpSettings().foldImplementAtEnd:getValue() then
-			--- Folds implements at the end if the setting is active.
-			vehicle:prepareForAIDriving()
+		if releaseMessage and not vehicle:getIsControlled() and not isOnlyShownOnPlayerStart then
+			--- Only shows the info text, if the vehicle is not entered.
+			--- TODO: Add check if passing to ad is active maybe?
+			vehicle:setCpInfoTextActive(releaseMessage)
 		end
-	end	
+	end
+	CpAIJob:superClass().stop(self, aiMessage)
 end
 
 --- Updates the parameter values.

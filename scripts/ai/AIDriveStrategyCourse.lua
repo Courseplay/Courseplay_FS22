@@ -640,10 +640,15 @@ function AIDriveStrategyCourse:isCloseToCourseStart(distance)
     return self.course:getDistanceFromFirstWaypoint(self.ppc:getCurrentWaypointIx()) < distance
 end
 
---- Event raised when the driver has finished.
---- This gets called in the :stopCurrentAIJob(), as the giants code might stop the driver and not the active strategy.
-function AIDriveStrategyCourse:onFinished()
-    self:raiseControllerEvent(self.onFinishedEvent)
+--- Event raised when the driver was stopped.
+---@param hasFinished boolean|nil flag passed by the info text
+function AIDriveStrategyCourse:onFinished(hasFinished)
+    self:raiseControllerEvent(self.onFinishedEvent, hasFinished)
+    if hasFinished and self.settings.foldImplementAtEnd:getValue() then
+        --- Folds implements at the end if the setting is active.
+        self:debug("Finished with folding implements of the implements.")
+        self.vehicle:prepareForAIDriving()
+    end
 end
 
 --- This is to set the offsets on the course at start, or update those values

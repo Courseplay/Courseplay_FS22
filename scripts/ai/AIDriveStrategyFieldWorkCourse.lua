@@ -101,8 +101,8 @@ function AIDriveStrategyFieldWorkCourse:start(course, startIx, jobParameters)
 end
 
 --- Event raised when the driver has finished.
-function AIDriveStrategyFieldWorkCourse:onFinished()
-    AIDriveStrategyFieldWorkCourse:superClass().onFinished(self)
+function AIDriveStrategyFieldWorkCourse:onFinished(hasFinished)
+    AIDriveStrategyFieldWorkCourse:superClass().onFinished(self, hasFinished)
     self.remainingTime:reset()
 end
 
