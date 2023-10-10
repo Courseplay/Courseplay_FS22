@@ -15,11 +15,11 @@ function MotorController:init(vehicle, implement)
 end
 
 function MotorController:update()
-	if not self.isValid then 
+	if not self.isValid then
 		return
 	end
-	if not self.settings.fuelSave:getValue() then 
-		if not self.motorSpec.isMotorStarted then 
+	if not self.settings.fuelSave:getValue() then
+		if not self.motorSpec.isMotorStarted then
 			self:startMotor()
 			self.vehicle:raiseAIEvent("onAIFieldWorkerContinue", "onAIImplementContinue")
 		end
@@ -27,31 +27,29 @@ function MotorController:update()
 		return
 	end
 	if self:isFuelSaveDisabled() or self.driveStrategy:getMaxSpeed() > self.speedThreshold then
-		if not self.motorSpec.isMotorStarted then 
+		if not self.motorSpec.isMotorStarted then
 			self:startMotor()
 			self.vehicle:raiseAIEvent("onAIFieldWorkerContinue", "onAIImplementContinue")
 		end
 		self.timerSet = false
 	elseif self.vehicle:getLastSpeed() <= self.speedThreshold then
-		if not self.timerSet then 
+		if not self.timerSet then
 			--- Resets the timer
 			self.timer:set(false, self.delayMs)
 			self.timerSet = true
 		end
-		if self.timer:get() then 
+		if self.timer:get() then
 			if self.motorSpec.isMotorStarted then
 				self.vehicle:raiseAIEvent("onAIFieldWorkerBlock", "onAIImplementBlock")
 				self:stopMotor()
 			end
 		end
 	end
-	if self:isFuelLow(10) then -- 10% 
+	if self:isFuelLow(self.fuelThresholdSetting:getValue()) then
 		self:setInfoText(InfoTextManager.FUEL_IS_LOW)
-	else 
-		self:clearInfoText(InfoTextManager.FUEL_IS_LOW)
-	end
-	if self:isFuelLow(self.fuelThresholdSetting:getValue()) then 
 		self.vehicle:stopCurrentAIJob(AIMessageErrorOutOfFuel.new())
+	else
+		self:clearInfoText(InfoTextManager.FUEL_IS_LOW)
 	end
 end
 
@@ -63,7 +61,7 @@ end
 
 function MotorController:isFuelLow(threshold)
     for _, fillUnit in pairs(self.motorSpec.propellantFillUnitIndices) do
-        if self.implement:getFillUnitFillLevelPercentage(fillUnit)*100 < threshold then 
+        if self.implement:getFillUnitFillLevelPercentage(fillUnit)*100 < threshold then
             return true
         end
      end
