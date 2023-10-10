@@ -419,6 +419,7 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <text name="CP_infoTexts_drivingToSelfUnload" text="Guida al rimorchio"/>
     <text name="CP_infoTexts_outOfMoney" text="Senza soldi"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="In attesa che finisca la pioggia"/>
+    <text name="CP_infoTexts_waitForSnowToClear" text="Waits for snow to disappear"/>
     <text name="CP_infoTexts_waitForUnloader" text="Aspettando lo scaricatore"/>
     <text name="CP_infoTexts_errorStopped" text="Ha lasciato il percorso, si è fermato"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo di balla errato"/>

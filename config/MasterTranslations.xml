@@ -1508,6 +1508,10 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="de"><![CDATA[Warte auf besseres Wetter]]></Text>
 			<Text language="en"><![CDATA[Waiting for rain to finish]]></Text>
 		</Translation>
+		<Translation name="CP_infoTexts_waitForSnowToClear">
+			<Text language="de"><![CDATA[Warte solange Schnee liegt]]></Text>
+			<Text language="en"><![CDATA[Waits for snow to disappear]]></Text>
+		</Translation>
 		<Translation name="CP_infoTexts_waitForUnloader">
 			<Text language="de"><![CDATA[Warte auf Abfahrer]]></Text>
 			<Text language="en"><![CDATA[Waiting on unloader]]></Text>

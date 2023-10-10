@@ -419,6 +419,7 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_infoTexts_drivingToSelfUnload" text="Dirigir para a carreta"/>
     <text name="CP_infoTexts_outOfMoney" text="Sem dinheiro"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Esperando a chuva passar"/>
+    <text name="CP_infoTexts_waitForSnowToClear" text="Waits for snow to disappear"/>
     <text name="CP_infoTexts_waitForUnloader" text="Aguardando descarregar"/>
     <text name="CP_infoTexts_errorStopped" text="Deixou a rota, parou"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de fardo errado"/>

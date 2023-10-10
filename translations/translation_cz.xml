@@ -419,6 +419,7 @@ Trasa se automaticky uloží při zavření editoru a přepíše vybranou trasu.
     <text name="CP_infoTexts_drivingToSelfUnload" text="Jede k odvozci"/>
     <text name="CP_infoTexts_outOfMoney" text="Došly peníze"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Čeká na konec deště"/>
+    <text name="CP_infoTexts_waitForSnowToClear" text="Waits for snow to disappear"/>
     <text name="CP_infoTexts_waitForUnloader" text="Čeká na vykladač"/>
     <text name="CP_infoTexts_errorStopped" text="Opustil trasu, zastavil"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Špatný typ balíku"/>

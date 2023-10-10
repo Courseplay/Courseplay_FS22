@@ -419,6 +419,7 @@ La course est automatiquement sauvegardée à la fermeture de l'éditeur et remp
     <text name="CP_infoTexts_drivingToSelfUnload" text="en route vers la benne"/>
     <text name="CP_infoTexts_outOfMoney" text="Plus d'argent disponible"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Attend que la pluie s'arrête pour continuer"/>
+    <text name="CP_infoTexts_waitForSnowToClear" text="Waits for snow to disappear"/>
     <text name="CP_infoTexts_waitForUnloader" text="Attend d'être déchargé"/>
     <text name="CP_infoTexts_errorStopped" text="A quitté la course, arrêté"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Mauvais type de bottes"/>

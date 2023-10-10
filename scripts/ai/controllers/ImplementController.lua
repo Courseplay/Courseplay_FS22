@@ -52,11 +52,10 @@ end
 --- Drive strategies can instantiate controllers for implements and call getDriveData for each
 --- implement. If the implement wants to change any of the driving parameter, it'll return
 --- a non nil value for that parameter, most often a speed value to slow down or stop.
-
----@return number gx world x coordinate to drive to or nil
----@return number gz world z coordinate to drive to or nil
----@return boolean direction is forwards if true or nil
----@return number maximum speed or nil
+---@return number|nil gx world x coordinate to drive to or nil
+---@return number|nil gz world z coordinate to drive to or nil
+---@return boolean|nil direction is forwards if true or nil
+---@return number|nil maximum speed or nil
 function ImplementController:getDriveData()
     return nil, nil, nil, nil
 end

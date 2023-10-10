@@ -10,6 +10,17 @@ function MowerController:init(vehicle, mower)
     self:debug('Mower controller initialized')
 end
 
+function MowerController:getDriveData()
+    local maxSpeed = nil
+    if g_currentMission.snowSystem:getHeight() > 0 then 
+        self:setInfoText(InfoTextManager.WAITING_FOR_SNOW_TO_CLEAR)
+        maxSpeed = 0
+    else 
+        self:clearInfoText(InfoTextManager.WAITING_FOR_SNOW_TO_CLEAR)
+    end
+    return nil, nil, nil, maxSpeed
+end
+
 -- Override the limitToField parameter to false always. The Mower spec sets this to true when the AI is active, preventing
 -- the Giants helper to mow grass outside of a field. With this override, the Giants helper will also mow grass
 -- outside of the field, although it won't drive off the field, only when the mower is above a non-field grass area,

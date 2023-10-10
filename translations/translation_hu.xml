@@ -419,6 +419,7 @@ Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felü
     <text name="CP_infoTexts_drivingToSelfUnload" text="Pótkocsihoz vezetés"/>
     <text name="CP_infoTexts_outOfMoney" text="elfogyott a pénz"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Várja hogy elálljon az eső"/>
+    <text name="CP_infoTexts_waitForSnowToClear" text="Waits for snow to disappear"/>
     <text name="CP_infoTexts_waitForUnloader" text="Várakozás a kirakodóra"/>
     <text name="CP_infoTexts_errorStopped" text="letért az útvonalról, megállt"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Rossz bálatípus"/>

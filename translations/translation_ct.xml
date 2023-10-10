@@ -419,6 +419,7 @@
     <text name="CP_infoTexts_drivingToSelfUnload" text="駕車前往拖車"/>
     <text name="CP_infoTexts_outOfMoney" text="資金不足"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="等待雨停"/>
+    <text name="CP_infoTexts_waitForSnowToClear" text="Waits for snow to disappear"/>
     <text name="CP_infoTexts_waitForUnloader" text="等待卸載機"/>
     <text name="CP_infoTexts_errorStopped" text="已離開路線，將停止工作"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="錯誤的草垛類型"/>

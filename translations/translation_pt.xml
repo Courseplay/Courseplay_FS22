@@ -419,6 +419,7 @@ A rota é guardada automaticamente ao fechar o editor e sobrepõe-se a qualquer 
     <text name="CP_infoTexts_drivingToSelfUnload" text="A dirigir para o reboque"/>
     <text name="CP_infoTexts_outOfMoney" text="Acabou-se o dinheiro"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="À espera que acabe de chover"/>
+    <text name="CP_infoTexts_waitForSnowToClear" text="Waits for snow to disappear"/>
     <text name="CP_infoTexts_waitForUnloader" text="À espea para descarregar"/>
     <text name="CP_infoTexts_errorStopped" text="Está parado, saiu da rota"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de fardo errado"/>
