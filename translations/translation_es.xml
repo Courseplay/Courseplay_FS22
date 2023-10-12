@@ -419,7 +419,7 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <text name="CP_infoTexts_drivingToSelfUnload" text="Conduciendo hacia el remolque"/>
     <text name="CP_infoTexts_outOfMoney" text="Sin dinero"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Esperando que termine la lluvia"/>
-    <text name="CP_infoTexts_waitForSnowToClear" text="Waits for snow to disappear"/>
+    <text name="CP_infoTexts_waitForSnowToClear" text="Esperando a que desaparezca la nieve"/>
     <text name="CP_infoTexts_waitForUnloader" text="Esperando el descargador"/>
     <text name="CP_infoTexts_errorStopped" text="Dejó el curso, se detuvo"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de paca incorrecta"/>
