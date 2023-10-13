@@ -97,22 +97,36 @@ local context = PathfinderControllerContext():maxFruitPercent(100):useFieldNum(t
 ---@field _maxFruitPercent number
 ---@field _offFieldPenalty number
 ---@field _useFieldNum boolean
----@field _areaToAvoid PathfinderUtil.NodeArea
+---@field _areaToAvoid PathfinderUtil.NodeArea|nil
 ---@field _allowReverse boolean
----@field _vehiclesToIgnore table[]
+---@field _vehiclesToIgnore table[]|nil
 ---@field _mustBeAccurate boolean
 ---@field _areaToIgnoreFruit table[]
 PathfinderControllerContext = CpObject()
 PathfinderControllerContext.defaultNumRetries = 0
 PathfinderControllerContext.attributesToDefaultValue = {
+	-- If an 4 x 4 m area around a pathfinder node has more than this fruit, a penalty of 0.5 * actual fruit
+	-- percentage will be applied to that node.
+	-- TODO: check if the fruitValue returned by FSDensityMapUtil.getFruitArea() really is a percentage
 	["maxFruitPercent"] = 50,
-	["offFieldPenalty"] = 50,
-	["useFieldNum"] = false,
-	["areaToAvoid"] = {},
+	-- This penalty is added to the cost of each step, which is about 12% of the turning radius when using
+	-- the hybrid A* and 3 with the simple A*.
+	-- Simple A* is used for long-range pathfinding, in that case we are willing to drive about 3 times longer
+	-- to stay on the field. Hybrid A* is more restrictive, TODO: review if these should be balanced
+	-- If useFieldNum true, fields that are not owned have a 20% more penalty.
+	["offFieldPenalty"] = 7.5,
+ 	["useFieldNum"] = false,
+	-- Pathfinder nodes in this area have a prohibitive penalty (2000)
+	["areaToAvoid"] = nil,
 	["allowReverse"] = false,
-	["vehiclesToIgnore"] = {},
+	["vehiclesToIgnore"] = nil,
+	-- If false, as we reach the maximum iterations, we relax our criteria to reach the goal: allow for arriving at
+	-- bigger angle differences, trading off accuracy for speed. This usually results in a direction at the goal
+	-- being less then 30º off which in many cases isn't a problem.
+	-- Otherwise, for example when a combine self unloading must accurately find the trailer, set this to true.
 	["mustBeAccurate"] = false,
-	["areaToIgnoreFruit"] = {}
+	-- No fruit penalty in this area (e.g. when we know the goal is in fruit but want to avoid fruit all the way there)
+	["areaToIgnoreFruit"] = nil
 }
 
 function PathfinderControllerContext:init(vehicle, numRetries)
