@@ -138,11 +138,13 @@ end
 --- Disables the fruit avoidance
 function PathfinderControllerContext:ignoreFruit()
 	self._maxFruitPercent = math.huge
+	return self
 end
 
 --- Uses the field number of the vehicle to restrict path finding.
 function PathfinderControllerContext:useVehicleFieldNumber()
 	self._useFieldNum = CpFieldUtil.getFieldNumUnderVehicle(self._vehicle)
+	return self
 end
 
 function PathfinderControllerContext:getNumRetriesAllowed()
