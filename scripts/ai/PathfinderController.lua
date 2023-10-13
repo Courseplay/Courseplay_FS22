@@ -117,16 +117,16 @@ PathfinderControllerContext.attributesToDefaultValue = {
 	["offFieldPenalty"] = 7.5,
  	["useFieldNum"] = false,
 	-- Pathfinder nodes in this area have a prohibitive penalty (2000)
-	["areaToAvoid"] = nil,
+	["areaToAvoid"] = CpObjectUtil.BUILDER_API_NIL,
 	["allowReverse"] = false,
-	["vehiclesToIgnore"] = nil,
+	["vehiclesToIgnore"] = CpObjectUtil.BUILDER_API_NIL,
 	-- If false, as we reach the maximum iterations, we relax our criteria to reach the goal: allow for arriving at
 	-- bigger angle differences, trading off accuracy for speed. This usually results in a direction at the goal
 	-- being less then 30º off which in many cases isn't a problem.
 	-- Otherwise, for example when a combine self unloading must accurately find the trailer, set this to true.
 	["mustBeAccurate"] = false,
 	-- No fruit penalty in this area (e.g. when we know the goal is in fruit but want to avoid fruit all the way there)
-	["areaToIgnoreFruit"] = nil
+	["areaToIgnoreFruit"] = CpObjectUtil.BUILDER_API_NIL
 }
 
 function PathfinderControllerContext:init(vehicle, numRetries)

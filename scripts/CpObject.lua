@@ -74,15 +74,21 @@ function CpObject(base, init)
 end
 
 ---@class CpObjectUtil
-CpObjectUtil = {}
+CpObjectUtil = {
+	BUILDER_API_NIL = "nil"
+}
 
 --- Registers a builder api for a class.
 --- The attributes are set as private variables with "_" before the variable name 
 --- and the builder functions are named like the attribute.
+--- Nil values have to be replaced with CpObjectUtil.BUILDER_API_NIL !!
 ---@param class table
 ---@param attributesToDefault table<attributeName, any>
 function CpObjectUtil.registerBuilderAPI(class, attributesToDefault)
 	for attributeName, default in pairs(attributesToDefault) do 
+		if default == CpObjectUtil.BUILDER_API_NIL then 
+			default = nil
+		end
 		--- Applies the default value to the private variable
 		class["_" .. attributeName] = default
 		--- Creates the builder functions/ setters with the public variable name
