@@ -317,6 +317,8 @@ function CpAIJobFieldWork:getDescription()
 		desc = desc .. " - " .. g_i18n:getText("ai_taskDescriptionDriveToField")
 	elseif currentTask == self.fieldWorkTask then
 		desc = desc .. " - " .. g_i18n:getText("ai_taskDescriptionFieldWork")
+	elseif currentTask == self.attachHeaderTask then
+		desc = desc .. " - " .. g_i18n:getText("CP_ai_taskDescriptionAttachHeader")
 	end
 	return desc
 end

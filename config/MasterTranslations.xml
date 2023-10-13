@@ -382,6 +382,12 @@
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!]]></Text>
 		</Translation>
 	</Category>
+	<Category name="AI fieldwork task descriptions">	
+		<Translation name="CP_ai_taskDescriptionAttachHeader">
+			<Text language="de"><![CDATA[Kuppelt das Schneidwerk an]]></Text>
+			<Text language="en"><![CDATA[Picks the header up]]></Text>
+		</Translation>
+	</Category>
 	<Category name="AI bale finder task descriptions">	
 		<Translation name="CP_ai_taskDescriptionCollectsBales">
 			<Text language="de"><![CDATA[Sammelt Ballen auf dem Feld]]></Text>
