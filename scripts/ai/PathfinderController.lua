@@ -96,7 +96,7 @@ local context = PathfinderControllerContext():maxFruitPercent(100):useFieldNum(t
 ---@field areaToIgnoreFruit function
 ---@field _maxFruitPercent number
 ---@field _offFieldPenalty number
----@field _useFieldNum boolean
+---@field _useFieldNum number
 ---@field _areaToAvoid PathfinderUtil.NodeArea|nil
 ---@field _allowReverse boolean
 ---@field _vehiclesToIgnore table[]|nil
@@ -113,9 +113,9 @@ PathfinderControllerContext.attributesToDefaultValue = {
 	-- the hybrid A* and 3 with the simple A*.
 	-- Simple A* is used for long-range pathfinding, in that case we are willing to drive about 3 times longer
 	-- to stay on the field. Hybrid A* is more restrictive, TODO: review if these should be balanced
-	-- If useFieldNum true, fields that are not owned have a 20% more penalty.
 	["offFieldPenalty"] = 7.5,
- 	["useFieldNum"] = false,
+	-- If useFieldNum > 0, fields that are not owned have a 20% greater penalty.
+ 	["useFieldNum"] = 0,
 	-- Pathfinder nodes in this area have a prohibitive penalty (2000)
 	["areaToAvoid"] = CpObjectUtil.BUILDER_API_NIL,
 	["allowReverse"] = false,
@@ -138,6 +138,11 @@ end
 --- Disables the fruit avoidance
 function PathfinderControllerContext:ignoreFruit()
 	self._maxFruitPercent = math.huge
+end
+
+--- Uses the field number of the vehicle to restrict path finding.
+function PathfinderControllerContext:useVehicleFieldNumber()
+	self._useFieldNum = CpFieldUtil.getFieldNumUnderVehicle(self._vehicle)
 end
 
 function PathfinderControllerContext:getNumRetriesAllowed()
@@ -300,7 +305,7 @@ function PathfinderController:findPathToNode(context,
 		xOffset,
 		zOffset,
 		context._allowReverse, 
-		context.useFieldNum and CpFieldUtil.getFieldNumUnderVehicle(context._vehicle) or nil,
+		context._useFieldNum,
 		context._vehiclesToIgnore,
 		context._maxFruitPercent,
 		context._offFieldPenalty,
@@ -338,7 +343,7 @@ function PathfinderController:findPathToWaypoint(context,
 		xOffset,
 		zOffset,
 		context._allowReverse,
-		context._useFieldNum and CpFieldUtil.getFieldNumUnderVehicle(context._vehicle) or nil,
+		context._useFieldNum,
 		context._vehiclesToIgnore, 
 		context._maxFruitPercent,
 		context._offFieldPenalty, 
