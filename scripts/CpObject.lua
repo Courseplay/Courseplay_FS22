@@ -59,9 +59,40 @@ function CpObject(base, init)
 		end
 		return false
 	end
+	c.__tostring = function (self)
+		-- Default tostring function for printing all attributes and assigned functions.
+		local str = '[ '
+		for attribute, value in pairs(self) do
+			str = str .. string.format('%s: %s ', attribute, value)
+		end
+		str = str .. ']'
+		return str
+	end
+
 	setmetatable(c, mt)
 	return c
 end
+
+---@class CpObjectUtil
+CpObjectUtil = {}
+
+--- Registers a builder api for a class.
+--- The attributes are set as private variables with "_" before the variable name 
+--- and the builder functions are named like the attribute.
+---@param class table
+---@param attributesToDefault table<attributeName, any>
+function CpObjectUtil.registerBuilderAPI(class, attributesToDefault)
+	for attributeName, default in pairs(attributesToDefault) do 
+		--- Applies the default value to the private variable
+		class["_" .. attributeName] = default
+		--- Creates the builder functions/ setters with the public variable name
+		class[attributeName] = function(self, value)
+			self["_" .. attributeName] = value	
+			return self		
+		end
+	end
+end
+
 
 --- Object that holds a value temporarily. You can tell when to set the value and how long it should keep that
 --- value, in milliseconds. Great for timers.

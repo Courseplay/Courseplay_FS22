@@ -276,6 +276,7 @@ Changelog 7.1.0.0:
 
 		<sourceFile filename="scripts/ai/AIUtil.lua"/>
 		<sourceFile filename="scripts/ai/ImplementUtil.lua"/>
+		<sourceFile filename="scripts/ai/PathfinderController.lua"/>
 		<sourceFile filename="scripts/ai/ProximityController.lua"/>
 		<sourceFile filename="scripts/ai/FieldWorkerProximityController.lua"/>
 		<sourceFile filename="scripts/ai/CollisionAvoidanceController.lua"/>

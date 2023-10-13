@@ -14,6 +14,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
 --[[
+
+--------------------------------------------
+--- Pathfinder controller
+--------------------------------------------
+
 PathfinderController for easy access to the pathfinder.
 - Enables retrying with adjustable parameters compared to the last try, like fruit allowed and so..
 - Handles the pathfinder coroutines if needed.
@@ -23,11 +28,6 @@ PathfinderController for easy access to the pathfinder.
 	- Also gets triggered if no valid path was found and all retry attempts are used.
 - Every time the path finding failed a callback gets triggered, if there are retry attempts left over.
 	- Enabled the changing of the pathfinder context and restart with the new context.
-
-PathfinderControllerContext implements all pathfinder parameters and the number of retries allowed.
-- Other Context Classes could be derived for commonly used contexts. 
-
-
 
 Example implementations: 
 
@@ -44,10 +44,9 @@ function Strategy:startPathfindingToGoal()
 end
 
 function Strategy:onPathfingFinished(controller : PathfinderController, success : boolean, 
-	path : table, goalNodeInvalid : boolean|nil)
+	course : Course, goalNodeInvalid : boolean|nil)
 	if success then
 		// Path finding finished successfully
-		local course = self.pathfinderController:getTemporaryCourseFromPath(path)
 		...
 	else 
 		if goalNodeInvalid then 
@@ -70,77 +69,65 @@ function Strategy:onPathfindingFailed(controller : PathfinderController, lastCon
 	end
 end
 
+--------------------------------------------
+--- Pathfinder controller context
+--------------------------------------------
+
+
+PathfinderControllerContext implements all pathfinder parameters and the number of retries allowed.
+- Other Context Classes could be derived for commonly used contexts. 
+- Only the attributesToDefaultValue table has to be changed in the derived class.
+
+Example usage of the builder api:
+
+local context = PathfinderControllerContext():maxFruitPercent(100):useFieldNum(true):vehiclesToIgnore({vehicle})
+
+
 ]]
 
 ---@class PathfinderControllerContext
+---@field maxFruitPercent function
+---@field offFieldPenalty function
+---@field useFieldNum function
+---@field areaToAvoid function
+---@field allowReverse function
+---@field vehiclesToIgnore function
+---@field mustBeAccurate function
+---@field areaToIgnoreFruit function
+---@field _maxFruitPercent number
+---@field _offFieldPenalty number
+---@field _useFieldNum boolean
+---@field _areaToAvoid PathfinderUtil.NodeArea
+---@field _allowReverse boolean
+---@field _vehiclesToIgnore table[]
+---@field _mustBeAccurate boolean
+---@field _areaToIgnoreFruit table[]
 PathfinderControllerContext = CpObject()
 PathfinderControllerContext.defaultNumRetries = 0
-function PathfinderControllerContext:init(vehicle, numRetries)
-	self.vehicle = vehicle
-	self.numRetries = numRetries or self.defaultNumRetries
-	--- Percentage of fruit allowed, math.hug means no fruit avoidance
-	self.maxFruitPercent = nil
-	--- Penalty sticking on the field and avoiding outside of the field
-	self.offFieldPenalty = nil
-	--- Should none owned field be avoid?
-	self.useFieldNum = false
-	--- A given area that has to be avoided.
-	self.areaToAvoid = nil
-	--- Is reverse driving allowed?
-	self.allowReverse = false
-	--- Vehicle Collisions that are ignored.
-	self.vehiclesToIgnore = nil
-	--- Is a accurate pathfinder goal position needed?
-	self.mustBeAccurate = false
-	self.areaToIgnoreFruit = nil
-end
+PathfinderControllerContext.attributesToDefaultValue = {
+	["maxFruitPercent"] = 50,
+	["offFieldPenalty"] = 50,
+	["useFieldNum"] = false,
+	["areaToAvoid"] = {},
+	["allowReverse"] = false,
+	["vehiclesToIgnore"] = {},
+	["mustBeAccurate"] = false,
+	["areaToIgnoreFruit"] = {}
+}
 
---- Sets the Pathfinder context
----@param mustBeAccurate boolean|nil
----@param allowReverse boolean|nil
----@param maxFruitPercent number|nil
----@param offFieldPenalty number|nil
----@param useFieldNum boolean|nil
----@param areaToAvoid table|nil
----@param vehiclesToIgnore table|nil
----@param areaToIgnoreFruit table|nil
-function PathfinderControllerContext:set(
-	mustBeAccurate, allowReverse, 
-	maxFruitPercent, offFieldPenalty, useFieldNum, 
-	areaToAvoid, vehiclesToIgnore, areaToIgnoreFruit)
-	self.maxFruitPercent = maxFruitPercent
-	self.offFieldPenalty = offFieldPenalty
-	self.useFieldNum = useFieldNum
-	self.areaToAvoid = areaToAvoid
-	self.allowReverse = allowReverse
-	self.vehiclesToIgnore = vehiclesToIgnore
-	self.mustBeAccurate = mustBeAccurate
-	self.areaToIgnoreFruit = areaToIgnoreFruit
+function PathfinderControllerContext:init(vehicle, numRetries)
+	self._vehicle = vehicle
+	self._numRetries = numRetries or self.defaultNumRetries
+	CpObjectUtil.registerBuilderAPI(self, self.attributesToDefaultValue)
 end
 
 --- Disables the fruit avoidance
 function PathfinderControllerContext:ignoreFruit()
-	self.maxFruitPercent = math.huge
+	self._maxFruitPercent = math.huge
 end
 
 function PathfinderControllerContext:getNumRetriesAllowed()
-	return self.numRetries
-end
-
-function PathfinderControllerContext:__tostring()
-	local str = "PathfinderControllerContext(vehicle name=%s, maxFruitPercent=%s, "+ 
-		"offFieldPenalty=%s, useFieldNum=%s, areaToAvoid=%s, allowReverse=%s, "+
-		"vehiclesToIgnore=%s, mustBeAccurate=%s, areaToIgnoreFruit=%s)"
-	return string.format(str,
-		CpUtil.getName(self.vehicle),
-		tostring(self.maxFruitPercent),
-		tostring(self.offFieldPenalty),
-		tostring(self.useFieldNum),
-		tostring(self.areaToAvoid),
-		tostring(self.allowReverse),
-		tostring(self.vehiclesToIgnore),
-		tostring(self.mustBeAccurate),
-		tostring(self.areaToIgnoreFruit))
+	return self._numRetries
 end
 
 ---@class DefaultFieldPathfinderControllerContext : PathfinderControllerContext
@@ -175,9 +162,6 @@ function PathfinderController:reset()
 	self.failCount = 0
 	self.startedAt = 0
 	self.timeTakenMs = 0
-	self.callbackClass = nil
-	self.callbackSuccessFunction = nil 
-	self.callbackRetryFunction = nil
 	self.lastContext = nil
 end
 
@@ -186,9 +170,18 @@ function PathfinderController:update(dt)
 		--- Applies coroutine for path finding
 		local done, path, goalNodeInvalid = self.pathfinder:resume()
         if done then
-			self:finished(path, goalNodeInvalid)
+			self:onFinish(path, goalNodeInvalid)
         end
 	end
+end
+
+function PathfinderController:getDriveData()
+	local maxSpeed
+	if self:isActive() then 
+		--- Pathfinder is active, so we stop the driver.
+		maxSpeed = 0
+	end
+	return nil, nil, nil, maxSpeed
 end
 
 function PathfinderController:isActive()
@@ -200,37 +193,30 @@ function PathfinderController:getLastContext()
 	return self.lastContext
 end
 
---- Sets the callbacks which get called on the pathfinder finish.
----@param class table
----@param successFunc function func(PathfinderController, success, path, goalNodeInvalid)
+--- Registers listeners for pathfinder success and failures.
+--- TODO: Decide if multiple registered listeners are needed or not?
+---@param object table
+---@param successFunc function func(PathfinderController, success, Course, goalNodeInvalid)
 ---@param retryFunc function func(PathfinderController, last context, was last retry, retry attempt number)
-function PathfinderController:setCallbacks(class, successFunc, retryFunc)
-	self.callbackClass = class
+function PathfinderController:registerListeners(object, successFunc, retryFunc)
+	self.callbackObject = object
 	self.callbackSuccessFunction = successFunc 
 	self.callbackRetryFunction = retryFunc
 end
 
 --- Pathfinder was started
 ---@param context PathfinderControllerContext
-function PathfinderController:started(context)
+function PathfinderController:onStart(context)
 	self:debug("Started pathfinding with context: %s.", tostring(context))
 	self.startedAt = g_time
 	self.lastContext = context
 	self.numRetries = context:getNumRetriesAllowed()
 end
 
-function PathfinderController:callCallback(callbackFunc, ...)
-	if self.callbackClass then 
-		callbackFunc(self.callbackClass, self, ...)
-	else 
-		callbackFunc(self, ...)
-	end
-end
-
 --- Path finding has finished
 ---@param path table|nil
 ---@param goalNodeInvalid boolean|nil
-function PathfinderController:finished(path, goalNodeInvalid)
+function PathfinderController:onFinish(path, goalNodeInvalid)
 	self.pathfinder = nil
 	self.timeTakenMs = g_time - self.startedAt
 	local retValue = self:isValidPath(path, goalNodeInvalid)
@@ -241,12 +227,17 @@ function PathfinderController:finished(path, goalNodeInvalid)
 				self:debug("Failed with try %d of %d.", self.failCount, self.numRetries)
 				--- Retrying the path finding
 				self.failCount = self.failCount + 1
-				self:callCallback(self.callbackRetryFunction, self.lastContext, self.failCount == self.numRetries, self.failCount)
+				self:callCallback(self.callbackRetryFunction, 
+					self.lastContext, self.failCount == self.numRetries, self.failCount)
 				return
+			elseif self.numRetries > 0 then 
+				self:debug("Max number of retries already reached!")
 			end
 		end
 	end
-	self:callCallback(self.callbackSuccessFunction, retValue == self.SUCCESS_FOUND_VALID_PATH, path, goalNodeInvalid)
+	self:callCallback(self.callbackSuccessFunction, 
+		retValue == self.SUCCESS_FOUND_VALID_PATH, 
+		self:getTemporaryCourseFromPath(path), goalNodeInvalid)
 	self:reset()
 end
 
@@ -267,6 +258,14 @@ function PathfinderController:isValidPath(path, goalNodeInvalid)
 	return self.ERROR_NO_PATH_FOUND
 end
 
+function PathfinderController:callCallback(callbackFunc, ...)
+	if self.callbackObject then 
+		callbackFunc(self.callbackObject, self, ...)
+	else 
+		callbackFunc(self, ...)
+	end
+end
+
 --- Finds a path to given goal node
 ---@param context PathfinderControllerContext
 ---@param goalNode number
@@ -280,22 +279,22 @@ function PathfinderController:findPathToNode(context,
 		self:error("No valid success callback was given!") 
 		return false
 	end
-	self:started(context)
+	self:onStart(context)
 	local pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(
-		context.vehicle,
+		context._vehicle,
 		goalNode,
 		xOffset,
 		zOffset,
-		context.allowReverse, 
-		context.useFieldNum and 1,
-		context.vehiclesToIgnore,
-		context.maxFruitPercent,
-		context.offFieldPenalty,
-		context.areaToAvoid,
-		context.mustBeAccurate
+		context._allowReverse, 
+		context.useFieldNum and CpFieldUtil.getFieldNumUnderVehicle(context._vehicle) or nil,
+		context._vehiclesToIgnore,
+		context._maxFruitPercent,
+		context._offFieldPenalty,
+		context._areaToAvoid,
+		context._mustBeAccurate
 	)
 	if done then 
-		self:finished(path, goalNodeInvalid)
+		self:onFinish(path, goalNodeInvalid)
 	else 
 		self:debug("Continuing as coroutine...")
 		self.pathfinder = pathfinder
@@ -317,26 +316,27 @@ function PathfinderController:findPathToWaypoint(context,
 		self:error("No valid success callback was given!") 
 		return false
 	end
-	self:started(context)
+	self:onStart(context)
 	local pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
-		context.vehicle, 
+		context._vehicle, 
 		course, 
 		waypointIndex,
 		xOffset,
 		zOffset,
-		context.allowReverse,
-		context.useFieldNum and CpFieldUtil.getFieldNumUnderVehicle(context.vehicle),
-		context.vehiclesToIgnore, 
-		context.maxFruitPercent,
-		context.offFieldPenalty, 
-		context.areaToAvoid, 
-		context.areaToIgnoreFruit)
+		context._allowReverse,
+		context._useFieldNum and CpFieldUtil.getFieldNumUnderVehicle(context._vehicle) or nil,
+		context._vehiclesToIgnore, 
+		context._maxFruitPercent,
+		context._offFieldPenalty, 
+		context._areaToAvoid, 
+		context._areaToIgnoreFruit)
 	if done then 
-		self:finished(path, goalNodeInvalid)
+		self:onFinish(path, goalNodeInvalid)
 	else 
 		self:debug("Continuing as coroutine...")
 		self.pathfinder = pathfinder
 	end
+	return true
 end
 
 function PathfinderController:getTemporaryCourseFromPath(path)
