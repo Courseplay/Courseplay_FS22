@@ -25,8 +25,8 @@
     <text name="CP_error_vehicle_too_far_away_from_field" text="Le véhicule est trop éloigné du champ pour démarrer."/>
     <text name="CP_error_no_bunkerSilo_found" text="Aucun silo détecté."/>
     <text name="CP_error_no_heap_found" text="Aucun tas ou silo détecté."/>
-    <text name="CP_error_no_unload_trigger_found" text="No unloading point found."/>
-    <text name="CP_error_unload_target_to_far_away_from_silo" text="Chosen unloading point is to far away from the silo."/>
+    <text name="CP_error_no_unload_trigger_found" text="Aucun point de déchargement trouvé."/>
+    <text name="CP_error_unload_target_to_far_away_from_silo" text="Le point de déchargement choisi est trop loin du silo."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -95,9 +95,9 @@
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Position de chargement"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Position de chargement"/>
     <text name="CP_siloLoader_fillLevelProgress" text="Progression: "/>
-    <text name="CP_siloLoaderJobParameters_subTitle_unloading" text="Unloading at:"/>
-    <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="Trailer"/>
-    <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="Unload station"/>
+    <text name="CP_siloLoaderJobParameters_subTitle_unloading" text="Déchargement à:"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="Remorque"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="Station de déchargement"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -182,8 +182,8 @@
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Travail dans les silos"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Largeur de travail"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Largeur de travail de la lame ou du rouleau. Valeur: 0 - 50"/>
-    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Shovel loading offset. Value: -1 - 1"/>
-    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Shovel loading offset. Value: -1 - 1"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Décalage de la pelle de chargement. Valeur: -1 - 1"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Décalage de la pelle de chargement. Valeur: -1 - 1"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
@@ -419,7 +419,7 @@ La course est automatiquement sauvegardée à la fermeture de l'éditeur et remp
     <text name="CP_infoTexts_drivingToSelfUnload" text="en route vers la benne"/>
     <text name="CP_infoTexts_outOfMoney" text="Plus d'argent disponible"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Attend que la pluie s'arrête pour continuer"/>
-    <text name="CP_infoTexts_waitForSnowToClear" text="Waits for snow to disappear"/>
+    <text name="CP_infoTexts_waitForSnowToClear" text="Attend que la neige fonde"/>
     <text name="CP_infoTexts_waitForUnloader" text="Attend d'être déchargé"/>
     <text name="CP_infoTexts_errorStopped" text="A quitté la course, arrêté"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Mauvais type de bottes"/>
@@ -797,7 +797,7 @@ La chargeuse peut être vidée par une tâche de déchargement Courseplay.
 Placer le marqueur d'approvisionnement sur un tas ou un silo. Ils apparaissent en surbrillance sur la carte.
 Ensuite vous pouvez lancer la tâche.
 "/>
-    <text name="CP_help_page_shovelLoader_title" text="Wheelloader Driver"/>
+    <text name="CP_help_page_shovelLoader_title" text="Chargeuse sur roue"/>
     <text name="CP_help_page_shovelLoaderGeneral_text" text="
 WIP
 "/>
