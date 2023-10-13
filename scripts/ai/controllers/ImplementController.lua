@@ -82,7 +82,9 @@ function ImplementController:onStart()
     --- override
 end
 
-function ImplementController:onFinished()
+--- Event raised when the driver was stopped.
+---@param hasFinished boolean|nil flag passed by the info text.
+function ImplementController:onFinished(hasFinished)
     --- override
 end
 

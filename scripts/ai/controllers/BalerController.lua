@@ -118,9 +118,9 @@ function BalerController:onStart()
     end
 end
 
-function BalerController:onFinished()
+function BalerController:onFinished(hasFinished)
     -- TODO: not working, as this probably needs to be called, before the drive is released.
-    -- if not self.balerSpec.automaticDrop or not self.balerSpec.platformAutomaticDrop then
+    -- if hasFinished and not self.balerSpec.automaticDrop or not self.balerSpec.platformAutomaticDrop then
     --     Baler.actionEventUnloading(self.implement)
     -- end
 end
