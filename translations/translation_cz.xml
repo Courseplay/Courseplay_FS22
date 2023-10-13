@@ -119,6 +119,10 @@
     <text name="CP_ai_messageErrorCutterNotSupported" text="Pracovník AI %s neočekávaně zastavil práci - připojení lišty není možné!"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="Pracovník AI %s přestal neočekávaně pracovat - automatické připojení lišty deaktivováno!"/>
     <!---->
+    <!--AI fieldwork task descriptions-->
+    <!---->
+    <text name="CP_ai_taskDescriptionAttachHeader" text="Picks the header up"/>
+    <!---->
     <!--AI bale finder task descriptions-->
     <!---->
     <text name="CP_ai_taskDescriptionCollectsBales" text="Collects bales on the field"/>
@@ -141,7 +145,7 @@
     <!---->
     <!--AI silo loader task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Unloads to a trailer"/>
+    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Unloads into trailer"/>
     <text name="CP_ai_taskDescriptionWaitsForTrailer" text="Waits for a trailer"/>
     <text name="CP_ai_taskDescriptionUnloadingToTrigger" text="Unloads to an unload trigger"/>
     <!---->

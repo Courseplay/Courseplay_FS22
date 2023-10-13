@@ -119,6 +119,10 @@
     <text name="CP_ai_messageErrorCutterNotSupported" text="Trabalhador %s parou o serviço de repente - é impossível conectar a cabeça da ceifeira!"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="Trabalhador %s parou o serviço de repente - está desactivo, conectar automaticamente a cabeça da ceifeira!"/>
     <!---->
+    <!--AI fieldwork task descriptions-->
+    <!---->
+    <text name="CP_ai_taskDescriptionAttachHeader" text="Picks the header up"/>
+    <!---->
     <!--AI bale finder task descriptions-->
     <!---->
     <text name="CP_ai_taskDescriptionCollectsBales" text="Collects bales on the field"/>
@@ -141,7 +145,7 @@
     <!---->
     <!--AI silo loader task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Unloads to a trailer"/>
+    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Unloads into trailer"/>
     <text name="CP_ai_taskDescriptionWaitsForTrailer" text="Waits for a trailer"/>
     <text name="CP_ai_taskDescriptionUnloadingToTrigger" text="Unloads to an unload trigger"/>
     <!---->

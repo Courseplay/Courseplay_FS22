@@ -119,6 +119,10 @@
     <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!"/>
     <!---->
+    <!--AI fieldwork task descriptions-->
+    <!---->
+    <text name="CP_ai_taskDescriptionAttachHeader" text="Picks the header up"/>
+    <!---->
     <!--AI bale finder task descriptions-->
     <!---->
     <text name="CP_ai_taskDescriptionCollectsBales" text="Collects bales on the field"/>

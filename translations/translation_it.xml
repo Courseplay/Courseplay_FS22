@@ -119,6 +119,10 @@
     <text name="CP_ai_messageErrorCutterNotSupported" text="L'operatore IA %s ha smesso di funzionare in modo imprevisto: il collegamento in testa è impossibile!"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="L'operatore IA %s ha interrotto il lavoro in modo imprevisto: attacco taglierina automatico disattivato!"/>
     <!---->
+    <!--AI fieldwork task descriptions-->
+    <!---->
+    <text name="CP_ai_taskDescriptionAttachHeader" text="Picks the header up"/>
+    <!---->
     <!--AI bale finder task descriptions-->
     <!---->
     <text name="CP_ai_taskDescriptionCollectsBales" text="Collects bales on the field"/>
@@ -141,7 +145,7 @@
     <!---->
     <!--AI silo loader task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Unloads to a trailer"/>
+    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Unloads into trailer"/>
     <text name="CP_ai_taskDescriptionWaitsForTrailer" text="Waits for a trailer"/>
     <text name="CP_ai_taskDescriptionUnloadingToTrigger" text="Unloads to an unload trigger"/>
     <!---->

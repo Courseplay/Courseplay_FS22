@@ -119,6 +119,10 @@
     <text name="CP_ai_messageErrorCutterNotSupported" text="Helfer %s hat die Arbeit gestoppt - ankuppelen von dem Schneidwerk nicht möglich!"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="Helfer %s hat die Arbeit gestoppt - automatisches Scheidwerk ankuppeln deaktiviert!"/>
     <!---->
+    <!--AI fieldwork task descriptions-->
+    <!---->
+    <text name="CP_ai_taskDescriptionAttachHeader" text="Kuppelt das Schneidwerk an"/>
+    <!---->
     <!--AI bale finder task descriptions-->
     <!---->
     <text name="CP_ai_taskDescriptionCollectsBales" text="Sammelt Ballen auf dem Feld"/>
