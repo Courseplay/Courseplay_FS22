@@ -112,12 +112,13 @@ function PipeController:getFillType()
     return nil
 end
 
-
+---@return boolean true if there is a fillable trailer under the pipe
+---@return table|nil the trailer vehicle, if there is one
 function PipeController:isFillableTrailerUnderPipe()
     for trailer, value in pairs(self.pipeSpec.objectsInTriggers) do
         if value > 0 then
             if FillLevelManager.canLoadTrailer(trailer, self:getFillType()) then
-                return true
+                return true, trailer
             end
         end
     end

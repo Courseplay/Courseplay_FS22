@@ -1014,6 +1014,9 @@ function AIDriveStrategyUnloadCombine:isPathFound(path, goalNodeInvalid, goalDes
         end
     end
 end
+function AIDriveStrategyUnloadCombine:getCombineToUnload()
+    return self.combineToUnload
+end
 
 function AIDriveStrategyUnloadCombine:getCombineRootNode()
     -- for attached harvesters this gets the root node of the harvester as that is our reference point to the
