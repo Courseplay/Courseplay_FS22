@@ -365,3 +365,16 @@ function CpAIJobSiloLoader:getConvertedFillTypes()
 	end
 	return fillTypes
 end
+
+--- Gets the additional task description shown.
+--- TODO: Add the missing task descriptions
+function CpAIJobSiloLoader:getDescription()
+	local desc = CpAIJob:superClass().getDescription(self)
+	local currentTask = self:getTaskByIndex(self.currentTaskIndex)
+    if currentTask == self.driveToTask then
+		desc = desc .. " - " .. g_i18n:getText("ai_taskDescriptionDriveToField")
+	elseif currentTask == self.siloLoaderTask then
+		desc = desc .. " - " .. g_i18n:getText("CP_ai_taskDescriptionWorksInTheSilo")
+	end
+	return desc
+end

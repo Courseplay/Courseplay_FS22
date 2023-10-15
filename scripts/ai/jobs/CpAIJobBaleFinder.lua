@@ -113,3 +113,20 @@ end
 function CpAIJobBaleFinder:drawSelectedField(map)
 	self.selectedFieldPlot:draw(map)
 end
+
+--- Gets the additional task description shown.
+function CpAIJobBaleFinder:getDescription()
+	local desc = CpAIJob:superClass().getDescription(self)
+	local currentTask = self:getTaskByIndex(self.currentTaskIndex)
+    if currentTask == self.driveToTask then
+		desc = desc .. " - " .. g_i18n:getText("ai_taskDescriptionDriveToField")
+	elseif currentTask == self.baleFinderTask then
+		local vehicle = self:getVehicle()
+		if AIUtil.hasChildVehicleWithSpecialization(vehicle, BaleWrapper) then
+			desc = desc .. " - " .. g_i18n:getText("CP_ai_taskDescriptionWrapsBales")
+		else 
+			desc = desc .. " - " .. g_i18n:getText("CP_ai_taskDescriptionCollectsBales")
+		end
+	end
+	return desc
+end

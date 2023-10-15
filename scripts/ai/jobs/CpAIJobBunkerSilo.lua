@@ -130,3 +130,15 @@ function CpAIJobBunkerSilo:readStream(streamId, connection)
 	local dirX, dirZ = self.cpJobParameters.startPosition:getDirection()
 	self.bunkerSiloTask:setParkPosition(x, z, angle, dirX, dirZ)
 end
+
+--- Gets the additional task description shown.
+function CpAIJobBunkerSilo:getDescription()
+	local desc = CpAIJob:superClass().getDescription(self)
+	local currentTask = self:getTaskByIndex(self.currentTaskIndex)
+    if currentTask == self.driveToTask then
+		desc = desc .. " - " .. g_i18n:getText("ai_taskDescriptionDriveToField")
+	elseif currentTask == self.bunkerSiloTask then
+		desc = desc .. " - " .. g_i18n:getText("CP_ai_taskDescriptionWorksInTheSilo")
+	end
+	return desc
+end

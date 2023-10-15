@@ -34,14 +34,15 @@ function CpInfoTextElement:init(name, text, id, hasFinished, event, aiMessageCla
 	self.hasFinished = hasFinished
 	self.event = event
 	self.isOnlyShownOnPlayerStart = isOnlyShownOnPlayerStart
+	self.aiMessageClassName = aiMessageClass
 	if aiMessageClass then 
 		self.aiMessageClass = CpUtil.getClassObject(aiMessageClass)
 	end
 end
 
 function CpInfoTextElement:__tostring()
-	return string.format("name: %s, id: %d, text: %s \n  => hasFinished: %s, event: %s, hasClass: %s",
-									 self.name, self.id, self.text, tostring(self.hasFinished), tostring(self.event), tostring(self.aiMessageClass))
+	return string.format("name: %s, id: %d, text: %s => hasFinished: %s, event: %s, hasClass: %s",
+		self.name, self.id, self.text, tostring(self.hasFinished), tostring(self.event), tostring(self.aiMessageClassName))
 end
 
 --- Checks if the given message is assigned to this info text.

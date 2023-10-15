@@ -119,6 +119,36 @@
     <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!"/>
     <!---->
+    <!--AI fieldwork task descriptions-->
+    <!---->
+    <text name="CP_ai_taskDescriptionAttachHeader" text="Picks the header up"/>
+    <!---->
+    <!--AI bale finder task descriptions-->
+    <!---->
+    <text name="CP_ai_taskDescriptionCollectsBales" text="Collects bales on the field"/>
+    <text name="CP_ai_taskDescriptionWrapsBales" text="Wraps bales on the field"/>
+    <!---->
+    <!--AI combine unloader task descriptions-->
+    <!---->
+    <text name="CP_ai_taskDescriptionUnloadCombine" text="Unloads combine"/>
+    <text name="CP_ai_taskDescriptionWaitsForTargetCombine" text="Waits for combine"/>
+    <text name="CP_ai_taskDescriptionUnloadSiloLoader" text="Unloads loader"/>
+    <text name="CP_ai_taskDescriptionWaitsForTargetSiloLoader" text="Waits for loader"/>
+    <text name="CP_ai_taskDescriptionUnloadingToHeap" text="Unloads to a heap"/>
+    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Unloads into trailer"/>
+    <text name="CP_ai_taskDescriptionUnloadingWithGiants" text="Unloads with giants worker"/>
+    <!---->
+    <!--AI silo worker task descriptions-->
+    <!---->
+    <text name="CP_ai_taskDescriptionWorksInTheSilo" text="Works in the silo"/>
+    <text name="CP_ai_taskDescriptionWaitsForUnloaders" text="Waits for unloader"/>
+    <!---->
+    <!--AI silo loader task descriptions-->
+    <!---->
+    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Unloads into trailer"/>
+    <text name="CP_ai_taskDescriptionWaitsForTrailer" text="Waits for a trailer"/>
+    <text name="CP_ai_taskDescriptionUnloadingToTrigger" text="Unloads to an unload trigger"/>
+    <!---->
     <!--Vehicle settings-->
     <!---->
     <text name="CP_vehicle_setting_title" text="车辆设置(%s)"/>

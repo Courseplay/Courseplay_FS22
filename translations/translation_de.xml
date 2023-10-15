@@ -119,6 +119,36 @@
     <text name="CP_ai_messageErrorCutterNotSupported" text="Helfer %s hat die Arbeit gestoppt - ankuppelen von dem Schneidwerk nicht möglich!"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="Helfer %s hat die Arbeit gestoppt - automatisches Scheidwerk ankuppeln deaktiviert!"/>
     <!---->
+    <!--AI fieldwork task descriptions-->
+    <!---->
+    <text name="CP_ai_taskDescriptionAttachHeader" text="Kuppelt das Schneidwerk an"/>
+    <!---->
+    <!--AI bale finder task descriptions-->
+    <!---->
+    <text name="CP_ai_taskDescriptionCollectsBales" text="Sammelt Ballen auf dem Feld"/>
+    <text name="CP_ai_taskDescriptionWrapsBales" text="Wickelt Ballen auf dem Feld"/>
+    <!---->
+    <!--AI combine unloader task descriptions-->
+    <!---->
+    <text name="CP_ai_taskDescriptionUnloadCombine" text="Entlädt Drescher"/>
+    <text name="CP_ai_taskDescriptionWaitsForTargetCombine" text="Wartet auf Drescher"/>
+    <text name="CP_ai_taskDescriptionUnloadSiloLoader" text="Entlädt Lade Fahrzeug"/>
+    <text name="CP_ai_taskDescriptionWaitsForTargetSiloLoader" text="Wartet auf Lade Fahrzeug"/>
+    <text name="CP_ai_taskDescriptionUnloadingToHeap" text="Entlädt auf einem Haufen"/>
+    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Entlädt in ein Anhänger"/>
+    <text name="CP_ai_taskDescriptionUnloadingWithGiants" text="Entlädt mit Giants Helfer"/>
+    <!---->
+    <!--AI silo worker task descriptions-->
+    <!---->
+    <text name="CP_ai_taskDescriptionWorksInTheSilo" text="Arbeitet im Silo"/>
+    <text name="CP_ai_taskDescriptionWaitsForUnloaders" text="Wartet auf Ablader"/>
+    <!---->
+    <!--AI silo loader task descriptions-->
+    <!---->
+    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Entlädt zu einem Anhänger"/>
+    <text name="CP_ai_taskDescriptionWaitsForTrailer" text="Wartet auf einen Anhänger"/>
+    <text name="CP_ai_taskDescriptionUnloadingToTrigger" text="Entlädt zu einer Abladestation"/>
+    <!---->
     <!--Vehicle settings-->
     <!---->
     <text name="CP_vehicle_setting_title" text="Fahrzeugeinstellungen für (%s)"/>
