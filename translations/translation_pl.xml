@@ -121,33 +121,33 @@
     <!---->
     <!--AI fieldwork task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionAttachHeader" text="Picks the header up"/>
+    <text name="CP_ai_taskDescriptionAttachHeader" text="Podczepianie hederu"/>
     <!---->
     <!--AI bale finder task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionCollectsBales" text="Collects bales on the field"/>
-    <text name="CP_ai_taskDescriptionWrapsBales" text="Wraps bales on the field"/>
+    <text name="CP_ai_taskDescriptionCollectsBales" text="Zbieranie bel"/>
+    <text name="CP_ai_taskDescriptionWrapsBales" text="Owijanie bel"/>
     <!---->
     <!--AI combine unloader task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionUnloadCombine" text="Unloads combine"/>
-    <text name="CP_ai_taskDescriptionWaitsForTargetCombine" text="Waits for combine"/>
-    <text name="CP_ai_taskDescriptionUnloadSiloLoader" text="Unloads loader"/>
-    <text name="CP_ai_taskDescriptionWaitsForTargetSiloLoader" text="Waits for loader"/>
-    <text name="CP_ai_taskDescriptionUnloadingToHeap" text="Unloads to a heap"/>
-    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Unloads into trailer"/>
-    <text name="CP_ai_taskDescriptionUnloadingWithGiants" text="Unloads with giants worker"/>
+    <text name="CP_ai_taskDescriptionUnloadCombine" text="Rozładowywanie kombajnu"/>
+    <text name="CP_ai_taskDescriptionWaitsForTargetCombine" text="Oczekiwanie na kombajn"/>
+    <text name="CP_ai_taskDescriptionUnloadSiloLoader" text="Rozładowywanie ładowarki"/>
+    <text name="CP_ai_taskDescriptionWaitsForTargetSiloLoader" text="Oczekiwanie na rozładowującego"/>
+    <text name="CP_ai_taskDescriptionUnloadingToHeap" text="Wyładowywanie na pryzmę"/>
+    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Wyładowywanie na przyczepę"/>
+    <text name="CP_ai_taskDescriptionUnloadingWithGiants" text="Wyładowywanie przez pomocnika Giants"/>
     <!---->
     <!--AI silo worker task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionWorksInTheSilo" text="Works in the silo"/>
-    <text name="CP_ai_taskDescriptionWaitsForUnloaders" text="Waits for unloader"/>
+    <text name="CP_ai_taskDescriptionWorksInTheSilo" text="Praca w silosie"/>
+    <text name="CP_ai_taskDescriptionWaitsForUnloaders" text="Oczekiwanie na rozładunek"/>
     <!---->
     <!--AI silo loader task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Unloads into trailer"/>
-    <text name="CP_ai_taskDescriptionWaitsForTrailer" text="Waits for a trailer"/>
-    <text name="CP_ai_taskDescriptionUnloadingToTrigger" text="Unloads to an unload trigger"/>
+    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Wyładowywanie na przyczepę"/>
+    <text name="CP_ai_taskDescriptionWaitsForTrailer" text="Oczekiwanie na przyczepę"/>
+    <text name="CP_ai_taskDescriptionUnloadingToTrigger" text="Wyładowywanie do triggera"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
