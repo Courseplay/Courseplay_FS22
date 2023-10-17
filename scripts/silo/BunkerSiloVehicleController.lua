@@ -428,8 +428,10 @@ end
 function CpBunkerSiloLoaderController:isEndReached(node, margin)
 	if self.drivingTarget then
 		local dx, dz = unpack(self.drivingTarget[2])
-		local _, _, z = worldToLocal(node, dx, 0, dz)
-		return z < margin, MathUtil.clamp(z * 2, 5, math.huge)
+		local _, _, zOffset = localToLocal(node, AIUtil.getDirectionNode(self.vehicle), 0, 0, 0)
+		local _, _, z = worldToLocal(AIUtil.getDirectionNode(self.vehicle), dx, 0, dz)
+		self:debug("Silo/heap end offset %.1f", z-zOffset)
+		return z - zOffset < margin, MathUtil.clamp(z * 2, 5, math.huge)
 	end
 	return false, math.huge
 end
