@@ -95,7 +95,7 @@ function CpBunkerSiloVehicleController:getTarget(width)
 	widthCount = math.ceil(siloWidth/width)
 	local unitWidth = siloWidth/widthCount
 	self:debug('Bunker width: %.1f, working width: %.1f (passed in), unit width: %.1f', siloWidth, width, unitWidth)
-	self:setupMap(width, unitWidth, widthCount)
+	self:generateMaps(width, unitWidth, widthCount)
 
 	local targetLine = self:getNextLine(widthCount, width)
 	self:debug("target line: %d", targetLine)
@@ -174,18 +174,6 @@ function CpBunkerSiloVehicleController:getFirstLineApproach(numLines, width)
 	return MathUtil.clamp(line, 1, numLines)
 end
 
---- Setups a map with all lanes mostly for debugging for now.
----@param width number
----@param unitWidth number
----@param widthCount number
-function CpBunkerSiloVehicleController:setupMap(width, unitWidth, widthCount)
-	self.map = {}
-	local x, z, dx, dz
-	for i = 1, widthCount do 
-		x, z, dx, dz = self:getPositionsForLine(i, width, widthCount, unitWidth)
-		table.insert(self.map, {x, z, dx, dz})
-	end
-end
 
 function CpBunkerSiloVehicleController:debug(...)
 	CpUtil.debugVehicle(self.debugChannel, self.vehicle,  ...)	
@@ -199,11 +187,20 @@ end
 function CpBunkerSiloVehicleController:draw()
 	if self:isDebugEnabled() then
 		if self.map then
-			for _, line in pairs(self.map) do 
+			for i, lineData in ipairs(self.map) do 
+				local line = self.lineMap[i]
 				local x, z, dx, dz = unpack(line)
 				local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z)
 				local dy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, dx, 0, dz)
 				drawDebugLine(x, y + 2, z, 1, 0, 1, dx, dy + 2, dz, 0, 1, 1)
+				local numRows = #lineData
+				for j, data in ipairs(lineData) do
+					local x1, z1, x2, z2, x3, z3 = unpack(data)
+					DebugUtil.drawDebugAreaRectangle(x1, y + 3, z1, 
+						x2, y + 3, z2, 
+						x3, y + 3, z3,
+						false, 0.5 , 0.5, j/numRows, 0.2)
+				end
 			end
 		end
 	end
@@ -226,6 +223,35 @@ function CpBunkerSiloVehicleController:isEndReached(node, margin)
 		return not self.silo:isPointInSilo(x, z) and dist < 5, MathUtil.clamp(2 * dist, 5, math.huge)
 	end
 	return false, math.huge
+end
+
+--- Generates a silo map with lines and a map with rectangle tiles.
+---@param width number
+---@param unitWidth number
+---@param widthCount number
+function CpBunkerSiloVehicleController:generateMaps(width, unitWidth, widthCount)
+	self.lineMap = {}
+	self.map = {}
+	local x, z, dx, dz
+	local x1, z1, x2, z2, x3, z3
+	local lengthCount = math.ceil(self.silo:getLength() / unitWidth)
+	local unitLength = self.silo:getLength() / lengthCount
+	local lenDirX, lenDirZ = self.silo:getLengthDirection()
+	local widthDirX, widthDirZ = self.silo:getWidthDirection()
+	local sx, sz = self.silo:getStartPosition()
+	for i = 1, widthCount do 
+		x, z, dx, dz = self:getPositionsForLine(i, width, 
+			widthCount, unitWidth)
+		table.insert(self.lineMap, {x, z, dx, dz})
+		self.map[i] = {}
+		for j=0, lengthCount - 1 do 
+			x1 = sx + j * lenDirX * unitLength + (i - 1) * widthDirX * unitWidth
+			z1 = sz + j * lenDirZ * unitLength + (i - 1) * widthDirZ * unitWidth
+			x2, z2 = x1 + widthDirX * unitWidth,  z1 + widthDirZ * unitWidth
+			x3, z3 = x1 + lenDirX   * unitLength, z1 + lenDirZ * unitLength
+			table.insert(self.map[i], {x1, z1, x2, z2, x3, z3})
+		end
+	end
 end
 
 --- Silo controller for a Bunker silo leveler driver.
@@ -314,7 +340,6 @@ function CpBunkerSiloLoaderController:init(silo, vehicle, driveStrategy)
 	CpBunkerSiloVehicleController.init(self, silo, vehicle, 
 		driveStrategy, vehicle:getAIDirectionNode())
 
-
 	local sx, sz = self.silo:getStartPosition()
 	local hx, hz = self.silo:getHeightPosition()
 	local dx, _, dz = getWorldTranslation(vehicle:getAIDirectionNode())
@@ -334,28 +359,79 @@ function CpBunkerSiloLoaderController:init(silo, vehicle, driveStrategy)
 end
 
 --- Gets the next line with the most fill level.
+---@param width number
+---@return number next lane to take.
+function CpBunkerSiloLoaderController:getLineWithTheMostFillLevel(width)
+	local bestLine, mostFillLevel, fillType, fillLevel = 1, 0, nil, 0
+	local numLengthTiles = #self.map[1]
+	self.bestLoadTarget = nil
+	local bestRow = math.huge
+	local firstRow, lastRow, deltaRow = 1, numLengthTiles, 1
+	if self.isInverted then 
+		bestRow = 1
+		firstRow, lastRow, deltaRow = numLengthTiles, 1, -1
+	end
+	for row = firstRow, lastRow, deltaRow do 
+		for line, lineData in ipairs(self.map) do 
+			local sx, sz, wx, wz, hx, hz = unpack(lineData[row])
+			fillType = DensityMapHeightUtil.getFillTypeAtArea(sx, sz, wx, wz, hx, hz)
+			if fillType and fillType ~= 0 then 
+				fillLevel = DensityMapHeightUtil.getFillLevelAtArea(
+					fillType, sx, sz, wx, wz, hx, hz)
+				self:debug("Line(%d) and row(%d) has %.2f of %s", line, row, fillLevel, 
+					g_fillTypeManager:getFillTypeByIndex(fillType).title)
+				if fillLevel > mostFillLevel then
+					--- Searches for the closest row with the most fill level 
+					if self.isInverted then 
+						if row >= bestRow then 
+							self:debug("New best line %d with row %d", line, row)
+							mostFillLevel = fillLevel
+							bestLine = line
+							bestRow = row
+							fillType = fillType
+							self.bestLoadTarget = {
+								sx, sz, wx, wz, hx, hz
+							}
+						end
+					elseif row <= bestRow then
+						self:debug("New best line %d with row %d", line, row)
+						mostFillLevel = fillLevel
+						bestLine = line
+						bestRow = row
+						fillType = fillType
+						self.bestLoadTarget = {
+							sx, sz, wx, wz, hx, hz
+						}
+					end
+				end
+				
+			end
+		end
+	end
+	return bestLine
+end
+
+--- Gets the next line with the most fill level.
 ---@param numLines number
 ---@param width number
 ---@return number next lane to take.
 function CpBunkerSiloLoaderController:getNextLine(numLines, width)
-	local dirXWidth, dirZWidth = self.silo:getWidthDirection()
-	local bestLane, mostFillLevel, fillType = 1, 0
-	for i, line in ipairs(self.map) do 
+	return self:getLineWithTheMostFillLevel(width)
+end
 
-		local sx, sz = line[1] + dirXWidth * - width/2, line[2] + dirZWidth * - width/2
-		local wx, wz = line[1] + dirXWidth * width/2, line[2] + dirZWidth * width/2
-		local hx, hz = line[3] + dirXWidth * - width/2 , line[4] + dirZWidth * - width/2
-
-		local fillType = DensityMapHeightUtil.getFillTypeAtArea(sx, sz, wx, wz, hx, hz)
-		if fillType and fillType ~= 0 then 
-			local fillLevel = DensityMapHeightUtil.getFillLevelAtArea(fillType, sx, sz, wx, wz, hx, hz)
-			self:debug("Lane(%d) has %.2f of %s", i, fillLevel, g_fillTypeManager:getFillTypeByIndex(fillType).title)
-			if fillLevel > mostFillLevel then 
-				mostFillLevel = fillLevel
-				bestLane = i
-				fillType = fillType
-			end
+function CpBunkerSiloLoaderController:draw()
+	if self:isDebugEnabled() then
+		if self.bestLoadTarget then
+			local x1, z1, x2, z2, x3, z3 = unpack(self.bestLoadTarget)
+			local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x1, 0, z1)
+			DebugUtil.drawDebugAreaRectangle(x1, y + 3.5, z1, 
+				x2, y + 3.5, z2, 
+				x3, y + 3.5, z3,
+				false, 0 , 1, 0)
+			DebugUtil.drawDebugLine(x2, y + 3.5, z2, 
+				x3, y + 3.5, z3, 
+				0, 1, 0)
 		end
 	end
-	return bestLane
+	CpBunkerSiloVehicleController.draw(self)
 end
