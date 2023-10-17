@@ -419,6 +419,21 @@ function CpBunkerSiloLoaderController:getNextLine(numLines, width)
 	return self:getLineWithTheMostFillLevel(width)
 end
 
+
+--- Is the end of the silo reached.
+---@param node number
+---@param margin number
+---@return boolean end reached?
+---@return number distance to the end 
+function CpBunkerSiloLoaderController:isEndReached(node, margin)
+	if self.drivingTarget then
+		local dx, dz = unpack(self.drivingTarget[2])
+		local _, _, z = worldToLocal(node, dx, 0, dz)
+		return z < margin, MathUtil.clamp(z * 2, 5, math.huge)
+	end
+	return false, math.huge
+end
+
 function CpBunkerSiloLoaderController:draw()
 	if self:isDebugEnabled() then
 		if self.bestLoadTarget then

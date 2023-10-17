@@ -205,8 +205,9 @@ function CpSilo:getTotalFillLevel()
 	return 0
 end
 
-function CpSilo:isTheSameSilo()
+function CpSilo:isTheSameSilo(object)
 	--- override
+	return false
 end
 
 --- Heap Bunker Silo
@@ -339,6 +340,7 @@ function CpBunkerSilo:isTheSameSilo(object)
 			end
 		end
 	end
+	return false
 end
 
 function CpBunkerSilo:getFrontArea(length, sideOffset)
