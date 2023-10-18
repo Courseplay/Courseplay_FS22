@@ -113,6 +113,7 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
     self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
 
     self.pathfinderController = PathfinderController(vehicle)
+    self.pathfinderController:registerListeners(self, self.onPathfindingFinished, self.onPathfindingRetry)
 
     self.storage = vehicle.spec_cpAIWorker
 
@@ -581,6 +582,24 @@ function AIDriveStrategyCourse:onWaypointChange(ix, course)
 end
 
 function AIDriveStrategyCourse:onWaypointPassed(ix, course)
+end
+
+--- Pathfinding has finished
+---@param controller PathfinderController
+---@param success boolean
+---@param course Course|nil
+---@param goalNodeInvalid boolean|nil
+function AIDriveStrategyCourse:onPathfindingFinished(controller, success, course, goalNodeInvalid)
+    -- override
+end
+
+--- Pathfinding failed, but a retry attempt is leftover.
+---@param controller PathfinderController
+---@param lastContext PathfinderControllerContext
+---@param wasLastRetry boolean
+---@param currentRetryAttempt number
+function AIDriveStrategyCourse:onPathfindingRetry(controller, lastContext, wasLastRetry, currentRetryAttempt)
+    -- override
 end
 
 ------------------------------------------------------------------------------------------------------------------------
