@@ -22,7 +22,8 @@ function AIParameterSettingList:init(data, vehicle, class)
 		--- so we generate a series of float values and texts here.
 		self.data.values = {}
 		self.data.texts = {}
-		AIParameterSettingList.generateValues(self, self.data.values, self.data.texts, data.min, data.max, data.incremental, data.unit)
+		AIParameterSettingList.generateValues(self, self.data.values, self.data.texts,
+			data.min, data.max, data.incremental, data.unit, data.precision)
 		--- Same as above, make sure the values are copied.
 		self.values = table.copy(self.data.values)
 		if self.data.texts ~= nil then
@@ -73,18 +74,19 @@ function AIParameterSettingList:init(data, vehicle, class)
 
 end
 
-function AIParameterSettingList.getSpeedText(value)
+function AIParameterSettingList.getSpeedText(value, precision)
 	return string.format("%.1f %s", g_i18n:getSpeed(value), g_i18n:getSpeedMeasuringUnit())
 end
 
-function AIParameterSettingList.getDistanceText(value)
+function AIParameterSettingList.getDistanceText(value, precision)
+	precision = precision or 1
 	if g_Courseplay.globalSettings and g_Courseplay.globalSettings.distanceUnit:getValue() == g_Courseplay.globalSettings.IMPERIAL_UNIT  then 
 		return string.format("%.1f %s", value*AIParameterSettingList.FOOT_FACTOR, g_i18n:getText("CP_unit_foot"))
 	end
-	return string.format("%.1f %s", value, g_i18n:getText("CP_unit_meter"))
+	return string.format("%.".. tostring(precision) .. "f %s", value, g_i18n:getText("CP_unit_meter"))
 end
 
-function AIParameterSettingList.getAreaText(value)
+function AIParameterSettingList.getAreaText(value, precision)
 	return g_i18n:formatArea(value, 1, true)
 end
 
@@ -92,8 +94,8 @@ AIParameterSettingList.UNITS_TEXTS = {
 	AIParameterSettingList.getSpeedText, --- km/h
 	AIParameterSettingList.getDistanceText, --- m
 	AIParameterSettingList.getAreaText, --- ha/arcs
-	function (value) return string.format("%d", value) .. "%" end,			--- percent
-	function (value) return string.format("%d", value) .. "°" end			--- degrees
+	function (value, precision) return string.format("%d", value) .. "%" end,			--- percent
+	function (value, precision) return string.format("%d", value) .. "°" end			--- degrees
 }
 
 AIParameterSettingList.UNITS_CONVERSION = {
@@ -113,12 +115,13 @@ AIParameterSettingList.INPUT_VALUE_THRESHOLD = 2
 ---@param max number
 ---@param inc number
 ---@param unit number
-function AIParameterSettingList:generateValues(values, texts, min, max, inc, unit)
+function AIParameterSettingList:generateValues(values, texts, min, max, inc, unit, precision)
 	inc = inc or 1
+	precision = precision or 2
 	for i=min, max, inc do 
 		table.insert(values, i)
-		local value = MathUtil.round(i, 2)
-		local text = unit and AIParameterSettingList.UNITS_TEXTS[unit] and AIParameterSettingList.UNITS_TEXTS[unit](value) or tostring(value)
+		local value = MathUtil.round(i, precision)
+		local text = unit and AIParameterSettingList.UNITS_TEXTS[unit] and AIParameterSettingList.UNITS_TEXTS[unit](value, precision - 1) or tostring(value)
 		table.insert(texts, text)
 	end
 end
@@ -233,12 +236,13 @@ end
 --- For all units that are not an SI unit ...
 function AIParameterSettingList:validateTexts()
 	local unit = self.data.unit
+	local precision = self.data.precision or 2
 	if unit then 
 		local unitStrFunc = AIParameterSettingList.UNITS_TEXTS[unit]
 		local fixedTexts = {}
 		for ix, value in ipairs(self.values) do 
-			local value = MathUtil.round(value, 2)
-			local text = unitStrFunc(value)
+			local value = MathUtil.round(value, precision)
+			local text = unitStrFunc(value, precision - 1)
 			fixedTexts[ix] = text
 		end
 		self.texts = fixedTexts

@@ -184,7 +184,7 @@ function AIDriveStrategyShovelSiloLoader:setAllStaticParameters()
     Markers.setMarkerNodes(self.vehicle)
     self.frontMarkerNode, self.backMarkerNode, self.frontMarkerDistance, self.backMarkerDistance = 
         Markers.getMarkerNodes(self.vehicle)
-    self.siloEndProximitySensor = SingleForwardLookingProximitySensorPack(self.vehicle, self.shovelController:getShovelNode(), 5, 1)
+    self.siloEndProximitySensor = SingleForwardLookingProximitySensorPack(self.vehicle, self.shovelController:getShovelNode(), 1, 1)
     self.heapNode = CpUtil.createNode("heapNode", 0, 0, 0, nil)
     self.lastTrailerSearch = 0
     self.isStuckTimer = Timer.new(self.isStuckMs)
@@ -275,9 +275,13 @@ function AIDriveStrategyShovelSiloLoader:getDriveData(dt, vX, vY, vZ)
             self.isStuckTimer:startIfNotRunning()
         end
         local _, _, closestObject = self.siloEndProximitySensor:getClosestObjectDistanceAndRootVehicle()
-        local isEndReached, maxSpeed = self.siloController:isEndReached(self.shovelController:getShovelNode(), 0)
-        if self.silo:isTheSameSilo(closestObject) or isEndReached then
-            self:debug("End wall detected or bunker silo end is reached.")
+        local isEndReached, maxSpeed = self.siloController:isEndReached(self.shovelController:getShovelNode(), 2)
+        self:setMaxSpeed(maxSpeed)
+        if isEndReached then
+            self:debug("End of the silo or heap was detected.")
+            self:startDrivingOutOfSilo()
+        elseif self.silo:isTheSameSilo(closestObject) and self.silo:isNodeInSilo(self.shovelController:getShovelNode()) then
+            self:debug("End wall of the silo was detected.")
             self:startDrivingOutOfSilo()
         end
         if self.shovelController:isFull() then 

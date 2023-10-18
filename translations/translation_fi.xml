@@ -212,6 +212,8 @@
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_title" text="Shield height offset"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Offset of the shield form the ground. Value: 0 - 1"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Shovel loading offset. Value: -1 - 1"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Shovel loading offset. Value: -1 - 1"/>
     <!---->

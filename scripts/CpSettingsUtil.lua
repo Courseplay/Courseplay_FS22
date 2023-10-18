@@ -35,9 +35,10 @@ CpSettingsUtil = {}
 				- isExpertModeOnly(bool): is the setting visible in the expert version?, default = false
 
 				- generateValuesFunction(string): dynamically adds value, when the setting is created.
-				- min (int): min value
-				- max (int): max value
+				- min (float): min value
+				- max (float): max value
 				- incremental (float): increment (optional), default "1"
+				- precision (float): optional rounding precision
 				- text(string): string to format the setting value with in the gui element.
 				- unit (int) : 1 == km/h, 2 == meters, 3 == ha (optional), 4 = percent (%), 5 = degrees (°)
 
@@ -89,9 +90,10 @@ function CpSettingsUtil.init()
 	schema:register(XMLValueType.BOOL, key.."#isExpertModeOnly", "Is enabled in simple mode?", false) -- optional
 
 	schema:register(XMLValueType.STRING, key .. "#generateValuesFunction", "Function to generate values.")
-	schema:register(XMLValueType.INT, key.."#min", "Setting min value")
-	schema:register(XMLValueType.INT, key.."#max", "Setting max value")
+	schema:register(XMLValueType.FLOAT, key.."#min", "Setting min value")
+	schema:register(XMLValueType.FLOAT, key.."#max", "Setting max value")
 	schema:register(XMLValueType.FLOAT, key.."#incremental", "Setting incremental", 1) -- optional
+	schema:register(XMLValueType.FLOAT, key.."#precision", "Setting precision", 2) -- optional
 	schema:register(XMLValueType.STRING, key.."#text", "Setting text") -- optional
 	schema:register(XMLValueType.INT, key .. "#unit", "Setting value unit (km/h, m ...)") --optional
 
@@ -205,6 +207,7 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 			settingParameters.min = xmlFile:getValue(baseKey.."#min")
 			settingParameters.max = xmlFile:getValue(baseKey.."#max")
 			settingParameters.incremental = MathUtil.round(xmlFile:getValue(baseKey.."#incremental"), 3)
+			settingParameters.precision = xmlFile:getValue(baseKey.."#precision", 2)
 			settingParameters.textStr = xmlFile:getValue(baseKey.."#text")
 			settingParameters.unit = xmlFile:getValue(baseKey.."#unit")
 

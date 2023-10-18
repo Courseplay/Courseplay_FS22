@@ -23,6 +23,10 @@ function CpBunkerSiloWorkerHudPageElement:setupElements(baseHud, vehicle, lines,
 	}
 	self.driveDirectionBtn:setCallback(callback, callback)             			
     
+    --- Leveler height offset.
+    self.levelerHeightOffsetBtn = baseHud:addLineTextButton(self, 4, CpBaseHud.defaultFontSize, 
+        vehicle:getCpSettings().levelerHeightOffset) 
+
     --- Waiting at park position
 	local x, y = unpack(lines[1].left)
 	local xRight,_ = unpack(lines[1].right)
@@ -78,7 +82,12 @@ function CpBunkerSiloWorkerHudPageElement:updateContent(vehicle, status)
 	local driveDirection = vehicle:getCpBunkerSiloWorkerJobParameters().drivingForwardsIntoSilo
     self.driveDirectionBtn:setTextDetails(driveDirection:getTitle(), driveDirection:getString())
     self.driveDirectionBtn:setVisible(driveDirection:getIsVisible())
-    self.driveDirectionBtn:setDisabled(driveDirection:getIsDisabled())
+    self.driveDirectionBtn:setDisabled(not driveDirection:getIsVisible())
+
+    local heightOffset = vehicle:getCpSettings().levelerHeightOffset
+    self.levelerHeightOffsetBtn:setTextDetails(heightOffset:getTitle(), heightOffset:getString())
+    self.levelerHeightOffsetBtn:setVisible(heightOffset:getIsVisible())
+    self.levelerHeightOffsetBtn:setDisabled(heightOffset:getIsDisabled())
 
     local waitAt = vehicle:getCpBunkerSiloWorkerJobParameters().waitAtParkPosition
     self.waitAtBtn:setTextDetails(waitAt:getTitle(), waitAt:getString())

@@ -687,6 +687,14 @@
 			<Text language="de"><![CDATA[Arbeitsbreite. Wert: 0 - 50]]></Text>
 			<Text language="en"><![CDATA[Work width. Value: 0 - 50]]></Text>
 		</Translation>
+		<Translation name="CP_vehicle_setting_levelerHeightOffset_title">
+			<Text language="de"><![CDATA[Versatz Schildhöhe]]></Text>
+			<Text language="en"><![CDATA[Shield height offset]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_levelerHeightOffset_tooltip">
+			<Text language="de"><![CDATA[Höhenversatz vom Schild zum Boden. Wert: 0 - 1]]></Text>
+			<Text language="en"><![CDATA[Offset of the shield form the ground. Value: 0 - 1]]></Text>
+		</Translation>
 		<Translation name="CP_vehicle_setting_loadingShovelHeightOffset_title">
 			<Text language="de"><![CDATA[Versatz Schaufelhöhe.]]></Text>
 			<Text language="en"><![CDATA[Shovel hight offset.]]></Text>

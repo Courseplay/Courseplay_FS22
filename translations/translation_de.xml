@@ -212,6 +212,8 @@
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloarbeiter Einstellungen"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Arbeitsbreite"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Arbeitsbreite. Wert: 0 - 50"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_title" text="Versatz Schildhöhe"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Höhenversatz vom Schild zum Boden. Wert: 0 - 1"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Versatz Schaufelhöhe."/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Höhenversatz der Schaufel für die Ladeposition. Wert: -1 - 1"/>
     <!---->

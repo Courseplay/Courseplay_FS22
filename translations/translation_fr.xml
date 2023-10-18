@@ -212,6 +212,8 @@
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Travail dans les silos"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Largeur de travail"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Largeur de travail de la lame ou du rouleau. Valeur: 0 - 50"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_title" text="Shield height offset"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Offset of the shield form the ground. Value: 0 - 1"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Décalage de la pelle de chargement. Valeur: -1 - 1"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Décalage de la pelle de chargement. Valeur: -1 - 1"/>
     <!---->
