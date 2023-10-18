@@ -938,8 +938,8 @@ end
 --- Interface function to start the pathfinder in the game. The goal is a point at sideOffset meters from the goal node
 --- (sideOffset > 0 is left)
 ------------------------------------------------------------------------------------------------------------------------
----@param vehicle table, will be used as the start location/heading, turn radius and size
----@param goalNode table The goal node
+---@param vehicle table will be used as the start location/heading, turn radius and size
+---@param goalNode number The goal node
 ---@param xOffset number side offset of the goal from the goal node
 ---@param zOffset number length offset of the goal from the goal node
 ---@param allowReverse boolean allow reverse driving
