@@ -44,6 +44,13 @@ function LevelerController:getDriveData()
     return nil, nil, nil, maxSpeed
 end
 
+function LevelerController:getTargetTerrainHeight()
+	local x, y, z = getWorldTranslation(self.levelerNode)
+	local terrainHeight = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, y, z)
+	--- Applies the setting offset, so the leveler is not directly on the ground.
+	return terrainHeight + self.settings.levelerHeightOffset:getValue()
+end
+
 --- Used when a wheel loader or a snowcat is used.
 --- Finds the correct cylindered axis.
 function LevelerController:setupCylinderedHeight()
@@ -87,7 +94,7 @@ end
 --- Used when a wheel loader or a snowcat is used.
 function LevelerController:updateCylinderedHeight(dt)
 	local x, y, z = getWorldTranslation(self.levelerNode)
-	local terrainHeight = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, y, z)
+	local terrainHeight = self:getTargetTerrainHeight()
 	local nx, ny, nz = localToWorld(self.levelerNode, 0, 0, 1)
 	local nTerrainHeight = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, nx, ny, nz)
 	local targetHeight = self:getTargetShieldHeight()
@@ -149,7 +156,7 @@ function LevelerController:updateHeight(dt)
 	local jointDesc = spec.jointDesc
 	if self.driveStrategy:isLevelerLoweringAllowed() then 
 		local x, y, z = getWorldTranslation(self.levelerNode)
-		local terrainHeight = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, y, z)
+		local terrainHeight = self:getTargetTerrainHeight()
 		---target height of leveling, fill up is 0 by default
 		local targetHeight = self:getTargetShieldHeight()
 
@@ -225,7 +232,6 @@ end
 function LevelerController:updateShieldHeightOffset()
 	--- A small reduction to the offset, as the shield should be lifted after a only a bit silage.
 	local smallOffsetReduction = 0.3
-
 	--self.shieldHeightOffset = MathUtil.clamp(-self.levelerSpec.lastForce/self.levelerSpec.maxForce - smallOffsetReduction, 0, 1)
 end
 

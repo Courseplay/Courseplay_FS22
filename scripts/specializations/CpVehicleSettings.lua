@@ -393,7 +393,8 @@ function CpVehicleSettings:setAutomaticBaleCollectorOffset()
 end
 
 function CpVehicleSettings:isLoadingShovelOffsetSettingVisible()
-    return self:getCanStartCpSiloLoaderWorker() and not AIUtil.hasChildVehicleWithSpecialization(self, ConveyorBelt)
+    return self:getCanStartCpSiloLoaderWorker() and not AIUtil.hasChildVehicleWithSpecialization(self, ConveyorBelt) or
+        AIUtil.hasChildVehicleWithSpecialization(self, Leveler)
 end
 
 function CpVehicleSettings:isLoadingShovelOffsetSettingDisabled()
@@ -402,10 +403,18 @@ end
 
 function CpVehicleSettings:onCpLoadingShovelOffsetSettingChanged()
     local shovels, found = AIUtil.getAllChildVehiclesWithSpecialization(self, Shovel)
-	if not found then 
-		return false
-	end
-    shovels[1]:cpSetTemporaryLoadingShovelState()
+	if found then 
+        shovels[1]:cpSetTemporaryLoadingShovelState()
+	end    
+end
+
+function CpVehicleSettings:isLevelerHeightOffsetSettingDisabled()
+    return not AIUtil.isStopped(self)
+end
+
+function CpVehicleSettings:isLevelerHeightOffsetSettingVisible()
+    return AIUtil.hasChildVehicleWithSpecialization(self, Leveler) and not 
+        AIUtil.hasChildVehicleWithSpecialization(self, Shovel)
 end
 
 --- Saves the user value changed on the server.
