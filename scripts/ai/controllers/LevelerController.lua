@@ -112,13 +112,13 @@ function LevelerController:setCylinderedLevelerRotation(dt, offsetDeg)
 	local _, dy, _ = localToWorld(self.levelerTool.node, 0, 0, 0)
 	local dx, _, dz = localToWorld(self.levelerNode, 0, 0, 0)
 	local _, ny, _ = worldToLocal(self.levelerTool.node, dx, dy, dz)
-	self:debug("dist: %.2f, ny: %.2f", dist, ny)
+--	self:debug("dist: %.2f, ny: %.2f", dist, ny)
 	local targetRot = math.asin(ny/dist) + math.rad(offsetDeg)
 	if ny > 0 then 
 		targetRot = -math.asin(-ny/dist) + math.rad(offsetDeg)
 	end
-	self:debug("curRot: %.2f, targetRot: %.2f, offset: %.2f, rotMin: %.2f, rotMax: %.2f", 
-				angle, targetRot, math.rad(offsetDeg), self.levelerTool.rotMin, self.levelerTool.rotMax)
+--	self:debug("curRot: %.2f, targetRot: %.2f, offset: %.2f, rotMin: %.2f, rotMax: %.2f", 
+--				angle, targetRot, math.rad(offsetDeg), self.levelerTool.rotMin, self.levelerTool.rotMax)
 
 	return ImplementUtil.moveMovingToolToRotation(self.levelerToolVehicle, self.levelerTool, dt,
 										 MathUtil.clamp(angle - targetRot, self.levelerTool.rotMin, self.levelerTool.rotMax))

@@ -47,16 +47,11 @@ function AIDriveStrategyBunkerSilo.new(customMt)
     AIDriveStrategyCourse.initStates(self, AIDriveStrategyBunkerSilo.myStates)
     self.state = self.states.DRIVING_TO_SILO
 
-    -- course offsets dynamically set by the AI and added to all tool and other offsets
-    self.aiOffsetX, self.aiOffsetZ = 0, 0
     self.debugChannel = CpDebug.DBG_SILO
-    ---@type ImplementController[]
-    self.controllers = {}
 	self.silo = nil
     self.siloController = nil
     self.drivingForwardsIntoSilo = true
     self.turnNode = CpUtil.createNode("turnNode", 0, 0, 0)
-    
 
     self.isStuckTimer = Timer.new(self.isStuckMs)
     self.driveIntoSiloAttempts = 0
@@ -177,7 +172,7 @@ function AIDriveStrategyBunkerSilo:setAllStaticParameters()
                 else
                     self:startDrivingTemporaryOutOfSilo()
                 end
-            elseif self.siloController:hasNearbyUnloader() and self:isDrivingToParkPositionAllowed() then
+            elseif self.state == self.states.DRIVING_INTO_SILO and self.siloController:hasNearbyUnloader() and self:isDrivingToParkPositionAllowed() then
                 self:debug("Found an unloader nearby and is stuck, so immediately leave the silo.")
                 self:startDrivingOutOfSilo()
             end
@@ -292,15 +287,11 @@ end
 function AIDriveStrategyBunkerSilo:update(dt)
     AIDriveStrategyBunkerSilo:superClass().update(self, dt)
     self:updateImplementControllers(dt)
-
     if CpDebug:isChannelActive(self.debugChannel, self.vehicle) then
-        if self.course then
-            -- TODO_22 check user setting
-            if self.course:isTemporary() then
-                self.course:draw()
-            elseif self.ppc:getCourse():isTemporary() then
-                self.ppc:getCourse():draw()
-            end
+        if self.course and self.course:isTemporary() then
+            self.course:draw()
+        elseif self.ppc:getCourse():isTemporary() then
+            self.ppc:getCourse():draw()
         end
         if self.siloEndDetectionMarker ~= nil then
             DebugUtil.drawDebugNode(self.siloEndDetectionMarker, "siloEndDetectionMarker", false, 1)
