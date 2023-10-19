@@ -401,6 +401,25 @@ function ImplementUtil.stopMovingTool(implement, tool)
     local spec = implement.spec_cylindered
     implement:raiseDirtyFlags(tool.dirtyFlag)
     implement:raiseDirtyFlags(spec.cylinderedDirtyFlag)
+    local detachLock = spec.detachLockNodes and spec.detachLockNodes[tool]
+    if detachLock then
+        --- Fix shovel detach, as shovel might have angle requirements for detaching.
+        --- These limits are implemented without a hysteresis ...
+        --- So we need to force set the limit, if a difference of less than 1 degree was found.
+        local node = tool.node
+        local rot = {
+            getRotation(node)
+        }
+        if detachLock.detachingRotMinLimit ~=nil and 
+            math.abs(MathUtil.getAngleDifference(detachLock.detachingRotMinLimit, rot[tool.rotationAxis])) < math.pi/180 then 
+            Cylindered.setAbsoluteToolRotation(implement, tool, detachLock.detachingRotMinLimit)
+        end
+        if detachLock.detachingRotMaxLimit ~= nil and 
+            math.abs(MathUtil.getAngleDifference(detachLock.detachingRotMaxLimit, rot[tool.rotationAxis])) < math.pi/180 then 
+            Cylindered.setAbsoluteToolRotation(implement, tool, detachLock.detachingRotMaxLimit)
+        end
+    end
+
 end
 
 function ImplementUtil.getLevelerNode(object)
