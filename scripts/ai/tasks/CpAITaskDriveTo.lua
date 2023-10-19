@@ -1,34 +1,22 @@
-CpAITaskDriveTo = {}
-local AITaskDriveToCp_mt = Class(CpAITaskDriveTo, AITaskDriveTo)
 
-function CpAITaskDriveTo.new(isServer, job, customMt)
-    local self = AITaskDriveTo.new(isServer, job, customMt or AITaskDriveToCp_mt)
-    return self
-end
-
-function CpAITaskDriveTo:setVehicle(vehicle)
-    self.vehicle = vehicle
-end
+---@class CpAITaskDriveTo : CpAITask
+CpAITaskDriveTo = CpObject(CpAITask)
 
 function CpAITaskDriveTo:start()
     if self.isServer then
-        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self.vehicle, 'CP drive to task started')
+        self:debug('CP drive to task started')
+        local strategy = AIDriveStrategyDriveToFieldWorkStart(self, self.job)
+        strategy:setAIVehicle(self.vehicle, self.job:getCpJobParameters())
+        self.vehicle:startCpWithStrategy(strategy)
         self.vehicle:startCpDriveTo(self, self.job:getCpJobParameters())
     end
+    CpAITask.start(self)
 end
 
-function CpAITaskDriveTo:update()
-end
-
-function CpAITaskDriveTo:stop()
+function CpAITaskDriveTo:stop(wasJobStopped)
     if self.isServer then
-        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self.vehicle, 'CP drive to task stopped')
-        self.vehicle:stopCpDriveTo()
+        self:debug('CP drive to task stopped')
+        self.vehicle:stopCpDriver(wasJobStopped)
     end
-    AITask.stop(self)
-end
-
-function CpAITaskDriveTo:onTargetReached(startPosition)
-    self.isFinished = true
-    self.job:setStartPosition(startPosition)
+    CpAITask.stop(self)
 end

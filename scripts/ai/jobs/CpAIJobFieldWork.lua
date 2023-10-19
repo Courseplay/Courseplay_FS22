@@ -23,11 +23,11 @@ function CpAIJobFieldWork:setupTasks(isServer)
     CpAIJobFieldWork:superClass().setupTasks(self, isServer)
     -- then we add our own driveTo task to drive from the target position to the waypoint where the
     -- fieldwork starts (first waypoint or the one we worked on last)
-    self.attachHeaderTask = CpAITaskAttachHeader.new(isServer, self)
+    self.attachHeaderTask = CpAITaskAttachHeader(isServer, self)
     self:addTask(self.attachHeaderTask)
-    self.driveToFieldWorkStartTask = CpAITaskDriveTo.new(isServer, self)
+    self.driveToFieldWorkStartTask = CpAITaskDriveTo(isServer, self)
     self:addTask(self.driveToFieldWorkStartTask)
-    self.fieldWorkTask = CpAITaskFieldWork.new(isServer, self)
+    self.fieldWorkTask = CpAITaskFieldWork(isServer, self)
     self:addTask(self.fieldWorkTask)
 end
 
@@ -271,6 +271,23 @@ function CpAIJobFieldWork:setStartPosition(startPosition)
     end
 end
 
+function CpAIJobFieldWork:readStream(streamId, connection)
+	CpAIJob.readStream(self, streamId, connection)
+	if streamReadBool(streamId) then 
+		self.fieldPolygon = CustomField.readStreamVertices(streamId, connection)
+	end
+end
+
+function CpAIJobFieldWork:writeStream(streamId, connection)
+	CpAIJob.writeStream(self, streamId, connection)
+	if self.fieldPolygon then 
+		streamWriteBool(streamId, true)
+		CustomField.writeStreamVertices(self.fieldPolygon, streamId, connection)
+	else 
+		streamWriteBool(streamId, false)
+	end
+end
+
 function CpAIJobFieldWork:getNextTaskIndex(isSkipTask)
     local nextTaskIndex = CpAIJobFieldWork:superClass().getNextTaskIndex(self, isSkipTask)
     if self.currentTaskIndex == self.driveToTask.taskIndex then
@@ -302,11 +319,6 @@ function CpAIJobFieldWork:getStartTaskIndex()
         return 3
     end
     return 1
-end
-
-function CpAIJobFieldWork:onFinishAttachCutter()
-    --- Finished attaching a given header.
-    self.attachHeaderTask:skip()
 end
 
 --- Gets the additional task description shown.

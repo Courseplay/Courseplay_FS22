@@ -57,8 +57,6 @@ function CpAIFieldWorker.registerFunctions(vehicleType)
             CpAIFieldWorker.getIsCpHarvesterWaitingForUnloadAfterPulledBack)
     SpecializationUtil.registerFunction(vehicleType, "getIsCpHarvesterManeuvering", CpAIFieldWorker.getIsCpHarvesterManeuvering)
     SpecializationUtil.registerFunction(vehicleType, "holdCpHarvesterTemporarily", CpAIFieldWorker.holdCpHarvesterTemporarily)
-    SpecializationUtil.registerFunction(vehicleType, "startCpFieldWorker", CpAIFieldWorker.startCpFieldWorker)
-    SpecializationUtil.registerFunction(vehicleType, "stopCpFieldWorker", CpAIFieldWorker.stopCpFieldWorker)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpFieldWork", CpAIFieldWorker.getCanStartCpFieldWork)
 
     SpecializationUtil.registerFunction(vehicleType, "startCpAtFirstWp", CpAIFieldWorker.startCpAtFirstWp)
@@ -304,66 +302,6 @@ end
 function CpAIFieldWorker:getCpStartText(superFunc)
     local spec = self.spec_cpAIFieldWorker
 	return self:hasCpCourse() and spec.cpJob:getCpJobParameters().startAt:getString() or superFunc(self)
-end
-
-
---- Custom version of AIFieldWorker:startFieldWorker()
-function CpAIFieldWorker:startCpFieldWorker(jobParameters, startPosition)
-    --- Calls the giants startFieldWorker function.
-    self:startFieldWorker()
-    if self.isServer then 
-        --- Replaces drive strategies.
-        CpAIFieldWorker.replaceAIFieldWorkerDriveStrategies(self, jobParameters, startPosition)
-
-        --- Remembers the last lane offset setting value that was used.
-        local spec = self.spec_cpAIFieldWorker
-        spec.cpJobStartAtLastWp:getCpJobParameters().laneOffset:setValue(jobParameters.laneOffset:getValue())
-    end
-end
-
-function CpAIFieldWorker:stopCpFieldWorker()
-    self:stopFieldWorker()
-    self:cpBrakeToStop()
-end
-
--- We replace the Giants AIDriveStrategyStraight with our AIDriveStrategyFieldWorkCourse  to take care of
--- field work.
-function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters, startPosition)
-    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'This is a CP field work job, start the CP AI driver, setting up drive strategies...')
-    local spec = self.spec_aiFieldWorker
-    if spec.driveStrategies ~= nil then
-        for i = #spec.driveStrategies, 1, -1 do
-            spec.driveStrategies[i]:delete()
-            table.remove(spec.driveStrategies, i)
-        end
-
-        spec.driveStrategies = {}
-    end
-    local cpDriveStrategy
-    --- Checks if there are any vine nodes close to the starting point.
-    if startPosition and g_vineScanner:hasVineNodesCloseBy(startPosition.x, startPosition.z) then 
-        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Found a vine course, install CP vine fieldwork drive strategy for it')
-        cpDriveStrategy = AIDriveStrategyVineFieldWorkCourse.new()
-    elseif AIUtil.hasChildVehicleWithSpecialization(self, Plow) then
-        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Found a plow, install CP plow drive strategy for it')
-        cpDriveStrategy = AIDriveStrategyPlowCourse.new()
-    else
-        local combine = AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) 
-        local pipe = combine and SpecializationUtil.hasSpecialization(Pipe, combine.specializations)
-        if combine and pipe then -- Default harvesters with a pipe.
-            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Found a combine with pipe, install CP combine drive strategy for it')
-            cpDriveStrategy = AIDriveStrategyCombineCourse.new()
-            self.spec_cpAIFieldWorker.combineDriveStrategy = cpDriveStrategy
-        end
-        if not cpDriveStrategy then 
-            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Installing default CP fieldwork drive strategy')
-            cpDriveStrategy = AIDriveStrategyFieldWorkCourse.new()
-        end
-    end
-    CpUtil.try(cpDriveStrategy.setAIVehicle, cpDriveStrategy, self, jobParameters)
-    self.spec_cpAIFieldWorker.driveStrategy = cpDriveStrategy
-    --- Only the last driving strategy can stop the helper, while it is running.
-    table.insert(spec.driveStrategies, cpDriveStrategy)
 end
 
 --- Makes sure a callstack is printed, when an error appeared.

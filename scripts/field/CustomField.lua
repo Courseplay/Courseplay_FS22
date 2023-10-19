@@ -38,7 +38,7 @@ end
 
 function CustomField:setup(name, vertices)
 
-    self.name = name
+    self.name = name or ""
     self.fieldId = name --- used for external mods
     self.fieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
     self.fieldPlot:setVisible(true)
@@ -48,6 +48,10 @@ function CustomField:setup(name, vertices)
     self.area = CpMathUtil.getAreaOfPolygon(vertices)
     self.fieldArea = self.area/10000 -- area in ha
     self.fieldPlot:setWaypoints(vertices)
+end
+
+function CustomField:debug(str, ...)
+    CpUtil.debugFormat(CpDebug.DBG_COURSES, "Custom field" .. self.name .. ": " .. str, ...)
 end
 
 function CustomField:setVertices(vertices)
@@ -174,11 +178,16 @@ end
 
 function CustomField.createFromStream(streamId, connection)
     local name = streamReadString(streamId)
-    local serializedVertices = streamReadString(streamId)
+    local serializedVertices = CustomField.readStreamVertices(streamId, connection)
     local customField = CustomField()
     customField:setup(name, CustomField.deserializeVertices(serializedVertices))
-    CpUtil.debugFormat(CpDebug.DBG_COURSES,'Custom field with %d points loaded from stream.', #customField.vertices)
+    customField:debug("Custom field with %d points loaded from stream.", #serializedVertices)
     return customField
+end
+
+function CustomField:writeToStream(streamId, connection)
+    streamWriteString(streamId, self.name)
+    CustomField.writeStreamVertices(self.vertices, streamId, connection)
 end
 
 function CustomField.writeStreamVertices(vertices, streamId, connection)
@@ -190,10 +199,10 @@ function CustomField.writeStreamVertices(vertices, streamId, connection)
 end
 
 function CustomField.readStreamVertices(streamId, connection)
-    local numVertices =  streamReadInt32(streamId)
+    local numVertices = streamReadInt32(streamId)
     local vertices = {}
     local p = {}
-    for i=1, numVertices do 
+    for _=1, numVertices do 
         p = {
             x = streamReadFloat32(streamId),
             z = streamReadFloat32(streamId)

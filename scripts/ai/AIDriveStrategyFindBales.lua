@@ -21,8 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---       Might be a good idea to have the bale loader strategy derive from the find bales(only wrapper) strategy.
 
 ---@class AIDriveStrategyFindBales : AIDriveStrategyCourse
-AIDriveStrategyFindBales = {}
-local AIDriveStrategyFindBales_mt = Class(AIDriveStrategyFindBales, AIDriveStrategyCourse)
+AIDriveStrategyFindBales = CpObject(AIDriveStrategyCourse)
 
 AIDriveStrategyFindBales.myStates = {
     SEARCHING_FOR_NEXT_BALE = {},
@@ -33,21 +32,16 @@ AIDriveStrategyFindBales.myStates = {
     REVERSING_AFTER_PATHFINDER_FAILURE = {}
 }
 
-function AIDriveStrategyFindBales.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategyFindBales_mt
-    end
-    local self = AIDriveStrategyCourse.new(customMt)
+function AIDriveStrategyFindBales:init(task, job)
+    AIDriveStrategyCourse.init(self, task, job)
     AIDriveStrategyCourse.initStates(self, AIDriveStrategyFindBales.myStates)
     self.state = self.states.INITIAL
     self.debugChannel = CpDebug.DBG_FIND_BALES
     self.bales = {}
-
-    return self
 end
 
 function AIDriveStrategyFindBales:delete()
-    AIDriveStrategyFindBales:superClass().delete(self)
+    AIDriveStrategyCourse.delete(self)
     g_baleToCollectManager:unlockBalesByDriver(self)
 end
 
@@ -65,6 +59,7 @@ function AIDriveStrategyFindBales:startWithoutCourse()
     for _, implement in pairs(self.vehicle:getAttachedImplements()) do
         self:info(' - %s', CpUtil.getName(implement.object))
     end
+    self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
     self:lowerImplements()
 end
 
@@ -192,7 +187,8 @@ function AIDriveStrategyFindBales:setFieldPolygon(fieldPolygon)
 end
 
 --- Bale wrap type for the bale loader. 
-function AIDriveStrategyFindBales:setJobParameterValues(jobParameters)
+function AIDriveStrategyFindBales:setAIVehicle(vehicle, jobParameters)
+    AIDriveStrategyCourse.setAIVehicle(self, vehicle, jobParameters)
     self.baleWrapType = jobParameters.baleWrapType:getValue()
     self:debug("Bale type selected: %s", tostring(self.baleWrapType))
 end
@@ -555,7 +551,7 @@ function AIDriveStrategyFindBales:isStoppingAtWaitPointAllowed()
 end
 
 function AIDriveStrategyFindBales:update(dt)
-    AIDriveStrategyFindBales:superClass().update(self, dt)
+    AIDriveStrategyCourse.update(self, dt)
     self:updateImplementControllers(dt)
 
     if CpDebug:isChannelActive(self.debugChannel, self.vehicle) then

@@ -20,8 +20,7 @@ Drive strategy for driving a field work course
 ]]--
 
 ---@class AIDriveStrategyFieldWorkCourse : AIDriveStrategyCourse
-AIDriveStrategyFieldWorkCourse = {}
-local AIDriveStrategyFieldWorkCourse_mt = Class(AIDriveStrategyFieldWorkCourse, AIDriveStrategyCourse)
+AIDriveStrategyFieldWorkCourse = CpObject(AIDriveStrategyCourse)
 
 AIDriveStrategyFieldWorkCourse.myStates = {
     WORKING = {},
@@ -38,11 +37,8 @@ AIDriveStrategyFieldWorkCourse.myStates = {
 
 AIDriveStrategyFieldWorkCourse.normalFillLevelFullPercentage = 99.5
 
-function AIDriveStrategyFieldWorkCourse.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategyFieldWorkCourse_mt
-    end
-    local self = AIDriveStrategyCourse.new(customMt)
+function AIDriveStrategyFieldWorkCourse:init(task, job)
+    AIDriveStrategyCourse.init(self, task, job)
     AIDriveStrategyCourse.initStates(self, AIDriveStrategyFieldWorkCourse.myStates)
     self.state = self.states.INITIAL
     -- cache for the nodes created by TurnContext
@@ -51,11 +47,11 @@ function AIDriveStrategyFieldWorkCourse.new(customMt)
     self.aiOffsetX, self.aiOffsetZ = 0, 0
     self.debugChannel = CpDebug.DBG_FIELDWORK
     self.waitingForPrepare = CpTemporaryObject(false)
-    return self
+
 end
 
 function AIDriveStrategyFieldWorkCourse:delete()
-    AIDriveStrategyFieldWorkCourse:superClass().delete(self)
+    AIDriveStrategyCourse.delete(self)
     self:raiseImplements()
     TurnContext.deleteNodes(self.turnNodes)
     self:rememberWaypointToContinueFieldWork()
@@ -102,12 +98,12 @@ end
 
 --- Event raised when the driver has finished.
 function AIDriveStrategyFieldWorkCourse:onFinished(hasFinished)
-    AIDriveStrategyFieldWorkCourse:superClass().onFinished(self, hasFinished)
+    AIDriveStrategyCourse.onFinished(self, hasFinished)
     self.remainingTime:reset()
 end
 
 function AIDriveStrategyFieldWorkCourse:update(dt)
-    AIDriveStrategyFieldWorkCourse:superClass().update(self, dt)
+    AIDriveStrategyCourse.update(self, dt)
     if CpDebug:isChannelActive(CpDebug.DBG_TURN, self.vehicle) then
         if self.state == self.states.TURNING  then
             if self.aiTurn then
@@ -504,7 +500,7 @@ end
 
 -- switch back to fieldwork after the turn ended.
 ---@param ix number waypoint to resume fieldwork after
----@param forceIx boolean if true, fieldwork will resume exactly at ix. If false, we'll look for the next waypoint
+---@param forceIx boolean|nil if true, fieldwork will resume exactly at ix. If false, we'll look for the next waypoint
 --- in front of us.
 function AIDriveStrategyFieldWorkCourse:resumeFieldworkAfterTurn(ix, forceIx)
     self.ppc:setNormalLookaheadDistance()
@@ -656,6 +652,10 @@ function AIDriveStrategyFieldWorkCourse:setAllStaticParameters()
     self:setFrontAndBackMarkers()
     self.loweringDurationMs = AIUtil.findLoweringDurationMs(self.vehicle)
     self.fieldWorkerProximityController = FieldWorkerProximityController(self.vehicle, self.workWidth)
+end
+
+function AIDriveStrategyFieldWorkCourse:setFieldPolygon(polygon)
+    self.fieldPolygon = polygon    
 end
 
 -----------------------------------------------------------------------------------------------------------------------

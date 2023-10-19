@@ -1,39 +1,30 @@
-CpAITaskBaleFinder = {}
-local AITaskBaleFinderCp_mt = Class(CpAITaskBaleFinder, AITask)
 
-function CpAITaskBaleFinder.new(isServer, job, customMt)
-	local self = AITask.new(isServer, job, customMt or AITaskBaleFinderCp_mt)
-	self.vehicle = nil
-	return self
-end
+---@class CpAIJobBaleFinder : CpAITask
+CpAITaskBaleFinder = CpObject(CpAITask)
 
 function CpAITaskBaleFinder:reset()
-	self.vehicle = nil
-
-	CpAITaskBaleFinder:superClass().reset(self)
+	CpAITask.reset(self)
+	self.fieldPolygon = nil
 end
 
-function CpAITaskBaleFinder:update(dt)
+function CpAIJobBaleFinder:setFieldPolygon(polygon)
+	self.fieldPolygon = polygon	
 end
 
-function CpAITaskBaleFinder:setVehicle(vehicle)
-	self.vehicle = vehicle
-end
-
-function CpAITaskBaleFinder:start()
+function CpAITaskBaleFinder:start()	
 	if self.isServer then
-		local tx, tz = self.job:getCpJobParameters().fieldPosition:getPosition()
-		local fieldPolygon = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
-		self.vehicle:startCpBaleFinder(fieldPolygon, self.job:getCpJobParameters())
+		self:debug("CP bale finder task started.")
+		local strategy = AIDriveStrategyFindBales(self, self.job)
+		strategy:setFieldPolygon(self.job.fieldPolygon)
+		strategy:setAIVehicle(self.vehicle, self.job:getCpJobParameters())
 	end
-
-	CpAITaskBaleFinder:superClass().start(self)
+	CpAITask.start(self)
 end
 
-function CpAITaskBaleFinder:stop()
-	CpAITaskBaleFinder:superClass().stop(self)
-
+function CpAITaskBaleFinder:stop(wasJobStopped)
 	if self.isServer then
-		self.vehicle:stopCpBaleFinder()
+		self:debug("CP bale finder task stopped.")
+		self.vehicle:stopCpDriver(wasJobStopped)
 	end
+	CpAITask.stop(self)
 end

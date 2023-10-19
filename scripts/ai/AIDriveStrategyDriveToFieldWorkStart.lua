@@ -26,8 +26,8 @@ Drive strategy for driving to the waypoint where we want to start the fieldwork.
 ]]--
 
 ---@class AIDriveStrategyDriveToFieldWorkStart : AIDriveStrategyCourse
-AIDriveStrategyDriveToFieldWorkStart = {}
-local AIDriveStrategyDriveToFieldWorkStart_mt = Class(AIDriveStrategyDriveToFieldWorkStart, AIDriveStrategyCourse)
+---@field job CpAIJobFieldWork
+AIDriveStrategyDriveToFieldWorkStart = CpObject(AIDriveStrategyCourse)
 
 AIDriveStrategyDriveToFieldWorkStart.myStates = {
     PREPARE_TO_DRIVE = {},
@@ -40,22 +40,18 @@ AIDriveStrategyDriveToFieldWorkStart.minDistanceToDrive = 20
 
 AIDriveStrategyDriveToFieldWorkStart.normalFillLevelFullPercentage = 99.5
 
-function AIDriveStrategyDriveToFieldWorkStart.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategyDriveToFieldWorkStart_mt
-    end
-    local self = AIDriveStrategyCourse.new(customMt)
+function AIDriveStrategyDriveToFieldWorkStart:init(task, job)
+    AIDriveStrategyCourse.init(self, task, job)
     AIDriveStrategyCourse.initStates(self, AIDriveStrategyDriveToFieldWorkStart.myStates)
     self.state = self.states.INITIAL
     self.debugChannel = CpDebug.DBG_FIELDWORK
     self.prepareTimeout = 0
     self.emergencyBrake = CpTemporaryObject(true)
     self.multitoolOffset = 0
-    return self
 end
 
 function AIDriveStrategyDriveToFieldWorkStart:delete()
-    AIDriveStrategyDriveToFieldWorkStart:superClass().delete(self)
+    AIDriveStrategyCourse.delete(self)
 end
 
 function AIDriveStrategyDriveToFieldWorkStart:initializeImplementControllers(vehicle)
@@ -98,19 +94,11 @@ function AIDriveStrategyDriveToFieldWorkStart:start(course, startIx, jobParamete
 end
 
 function AIDriveStrategyDriveToFieldWorkStart:update(dt)
-    AIDriveStrategyDriveToFieldWorkStart:superClass().update(self, dt)
+    AIDriveStrategyCourse.update(self, dt)
     self:updateImplementControllers(dt)
     if self.ppc:getCourse():isTemporary() and CpDebug:isChannelActive(CpDebug.DBG_FIELDWORK, self.vehicle) then
         self.ppc:getCourse():draw()
     end
-end
-
-function AIDriveStrategyDriveToFieldWorkStart:isWorkStartReached()
-    return self.state == self.states.WORK_START_REACHED
-end
-
-function AIDriveStrategyDriveToFieldWorkStart:getStartPosition()
-    return self.startPosition
 end
 
 function AIDriveStrategyDriveToFieldWorkStart:getDriveData(dt, vX, vY, vZ)
@@ -232,7 +220,9 @@ function AIDriveStrategyDriveToFieldWorkStart:onWaypointChange(ix, course)
         self.emergencyBrake:set(false, 2000)
         self:debug('Almost at the work start waypoint, preparing for work')
         -- let the field work strategy know where to continue
-        self.vehicle:getJob():setStartFieldWorkCourse(course, ix)
+        self.job:setStartFieldWorkCourse(course, ix)
+        self.job:setStartPosition(self.startPosition)
+        self:setCurrentTaskFinished()
     end
 end
 

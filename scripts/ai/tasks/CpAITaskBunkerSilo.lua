@@ -1,50 +1,31 @@
---- Bunker silo task
----@class CpAITaskBunkerSilo
-CpAITaskBunkerSilo = {}
-local AITaskBaleFinderCp_mt = Class(CpAITaskBunkerSilo, AITask)
 
-function CpAITaskBunkerSilo.new(isServer, job, customMt)
-	local self = AITask.new(isServer, job, customMt or AITaskBaleFinderCp_mt)
-	self.vehicle = nil
-	self.silo = nil
-	self.parkPosition = nil
-	return self
-end
+---@class CpAITaskBunkerSilo : CpAITask
+CpAITaskBunkerSilo = CpObject(CpAITask)
 
 function CpAITaskBunkerSilo:reset()
-	self.vehicle = nil
 	self.silo = nil
-	self.parkPosition = nil
-	CpAITaskBunkerSilo:superClass().reset(self)
-end
-
-function CpAITaskBunkerSilo:update(dt)
-end
-
-function CpAITaskBunkerSilo:setVehicle(vehicle)
-	self.vehicle = vehicle
+	CpAITask.reset(self)
 end
 
 function CpAITaskBunkerSilo:setSilo(silo)
 	self.silo = silo	
 end
 
-function CpAITaskBunkerSilo:setParkPosition(x, z, angle, dirX, dirZ)
-	self.parkPosition =  {x = x, z = z, angle = angle, dirX = dirX, dirZ = dirZ}
-end
-
 function CpAITaskBunkerSilo:start()
 	if self.isServer then
-		self.vehicle:startCpBunkerSiloWorker(self.silo, self.job:getCpJobParameters(), self.parkPosition)
+		self:debug("CP bunker silo task started.")
+		self.vehicle:resetCpCoursesFromGui()
+		local strategy = AIDriveStrategyFindBales(self, self.job)
+		strategy:setAIVehicle(self.vehicle, self.job:getCpJobParameters())
+		strategy:setSilo(self.silo)
 	end
-
-	CpAITaskBunkerSilo:superClass().start(self)
+	CpAITask.start(self)
 end
 
-function CpAITaskBunkerSilo:stop()
-	CpAITaskBunkerSilo:superClass().stop(self)
-
+function CpAITaskBunkerSilo:stop(wasJobStopped)
 	if self.isServer then
-		self.vehicle:stopCpBunkerSiloWorker()
+		self:debug("CP bunker silo task stopped.")
+		self.vehicle:stopCpDriver(wasJobStopped)
 	end
+	CpAITask.stop(self)
 end

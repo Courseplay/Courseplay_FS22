@@ -28,8 +28,7 @@ which needs to be attached to the harvester.
 ]]--
 
 ---@class AIDriveStrategyAttachHeader : AIDriveStrategyCourse
-AIDriveStrategyAttachHeader = {}
-local AIDriveStrategyAttachHeader_mt = Class(AIDriveStrategyAttachHeader, AIDriveStrategyCourse)
+AIDriveStrategyAttachHeader = CpObject(AIDriveStrategyCourse)
 
 AIDriveStrategyAttachHeader.myStates = {
     WAITING_FOR_DETACH_TO_FINISH = {},
@@ -46,16 +45,12 @@ AIDriveStrategyAttachHeader.MODES = {
 }
 AIDriveStrategyAttachHeader.DRIVING_AWAY_FROM_HEADER_FORWARD_DISTANCE = 6
 
-function AIDriveStrategyAttachHeader.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategyAttachHeader_mt
-    end
-    local self = AIDriveStrategyCourse.new(customMt)
+function AIDriveStrategyAttachHeader:init(task, job)
+    AIDriveStrategyCourse.init(self, task, job)
     AIDriveStrategyCourse.initStates(self, AIDriveStrategyAttachHeader.myStates)
     self.state = self.states.INITIAL
     self.debugChannel = CpDebug.DBG_FIELDWORK
     self.mode = self.MODES.ATTACH_HEADER_FROM_ATTACHED_TRAILER
-    return self
 end
 
 --- The fieldwork course is not needed for this strategy.
@@ -67,7 +62,7 @@ function AIDriveStrategyAttachHeader:delete()
     if self.cutterNode then
         CpUtil.destroyNode(self.cutterNode)
     end
-    AIDriveStrategyAttachHeader:superClass().delete(self)
+    AIDriveStrategyCourse.delete(self)
 end
 
 function AIDriveStrategyAttachHeader:initializeImplementControllers(vehicle)
@@ -92,7 +87,7 @@ function AIDriveStrategyAttachHeader:initializeImplementControllers(vehicle)
 end
 
 function AIDriveStrategyAttachHeader:setAllStaticParameters()
-    AIDriveStrategyAttachHeader:superClass().setAllStaticParameters(self)
+    AIDriveStrategyCourse.setAllStaticParameters(self)
     -- make sure we have a good turning radius set
     self.turningRadius = AIUtil.getTurningRadius(self.vehicle)
     self.proximityController:registerIgnoreObjectCallback(self, self.ignoreProximityObject)
@@ -105,7 +100,7 @@ end
 
 function AIDriveStrategyAttachHeader:update(dt)
     -- to always have a valid course (for the traffic conflict detector mainly)
-    AIDriveStrategyAttachHeader:superClass().update(self, dt)
+    AIDriveStrategyCourse.update(self, dt)
     self:updateImplementControllers(dt)
     if CpDebug:isChannelActive(CpDebug.DBG_PATHFINDER, self.vehicle) then
         if self.pathfinder then
@@ -282,7 +277,7 @@ function AIDriveStrategyAttachHeader:attachHasFinished()
     else
         --- The header needs to be folded, as currently the wheels for transport are active.
         self.trailer:setFoldDirection(self.trailer.spec_foldable.turnOnFoldDirection or 1)
-        self.vehicle:getJob():onFinishAttachCutter()
+        self:setCurrentTaskFinished()
     end
 end
 
@@ -306,7 +301,7 @@ function AIDriveStrategyAttachHeader:onWaypointPassed(ix, course)
                 self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
             end
         elseif self.state == self.states.REVERSING_FROM_CUTTER then
-            self.vehicle:getJob():onFinishAttachCutter()
+            self:setCurrentTaskFinished()
         end
     end
 end

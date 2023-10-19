@@ -37,7 +37,7 @@ end
 
 function CpAIJobCombineUnloader:setupTasks(isServer)
 	CpAIJob.setupTasks(self, isServer)
-	self.combineUnloaderTask = CpAITaskCombineUnloader.new(isServer, self)
+	self.combineUnloaderTask = CpAITaskCombineUnloader(isServer, self)
 	self:addTask(self.combineUnloaderTask)
 
 	--- Giants unload
@@ -233,6 +233,23 @@ function CpAIJobCombineUnloader:drawSelectedField(map)
     self.heapPlot:draw(map)
 end
 
+function CpAIJobCombineUnloader:readStream(streamId, connection)
+	CpAIJob.readStream(self, streamId, connection)
+	if streamReadBool(streamId) then 
+		self.fieldPolygon = CustomField.readStreamVertices(streamId, connection)
+	end
+end
+
+function CpAIJobCombineUnloader:writeStream(streamId, connection)
+	CpAIJob.writeStream(self, streamId, connection)
+	if self.fieldPolygon then 
+		streamWriteBool(streamId, true)
+		CustomField.writeStreamVertices(self.fieldPolygon, streamId, connection)
+	else 
+		streamWriteBool(streamId, false)
+	end
+end
+
 ------------------------------------
 --- Giants unload 
 ------------------------------------
@@ -345,17 +362,6 @@ function CpAIJobCombineUnloader:getStartTaskIndex()
 		return self.driveToUnloadingTask.taskIndex
 	end
 	return startTask
-end
-
---- Callback by the drive strategy, when the trailer is full.
-function CpAIJobCombineUnloader:onTrailerFull(vehicle, driveStrategy)
-	if self.cpJobParameters.useGiantsUnload:getValue() then 
-		--- Giants unload
-		self.combineUnloaderTask:skip()
-		CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Trailer is full, giving control to giants!")
-	else 
-		vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
-	end
 end
 
 function CpAIJobCombineUnloader:getIsLooping()

@@ -17,8 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
 ---@class AIDriveStrategyCombineCourse : AIDriveStrategyFieldWorkCourse
-AIDriveStrategyCombineCourse = {}
-local AIDriveStrategyCombineCourse_mt = Class(AIDriveStrategyCombineCourse, AIDriveStrategyFieldWorkCourse)
+AIDriveStrategyCombineCourse = CpObject(AIDriveStrategyFieldWorkCourse)
 
 -- fill level when we start making a pocket to unload if we are on the outermost headland
 AIDriveStrategyCombineCourse.pocketFillLevelFullPercentage = 95
@@ -74,12 +73,9 @@ AIDriveStrategyCombineCourse.proximityStopThresholdSelfUnload = 0.1
 -- Therefore, use this instead, this is safe after a reload.
 AIDriveStrategyCombineCourse.isAAIDriveStrategyCombineCourse = true
 
-function AIDriveStrategyCombineCourse.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategyCombineCourse_mt
-    end
-    local self = AIDriveStrategyFieldWorkCourse.new(customMt)
-    AIDriveStrategyFieldWorkCourse.initStates(self, AIDriveStrategyCombineCourse.myStates)
+function AIDriveStrategyCombineCourse:init(task, job)
+    AIDriveStrategyFieldWorkCourse.init(self, task, job)
+    AIDriveStrategyCourse.initStates(self, AIDriveStrategyCombineCourse.myStates)
     self.fruitLeft, self.fruitRight = 0, 0
     self.litersPerMeter = 0
     self.litersPerSecond = 0
@@ -109,7 +105,6 @@ function AIDriveStrategyCombineCourse.new(customMt)
 
     -- TODO: move this to a setting
     self.callUnloaderAtFillLevelPercentage = 80
-    return self
 end
 
 function AIDriveStrategyCombineCourse:getStateAsString()
@@ -124,7 +119,7 @@ end
 --- Initialization
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyCombineCourse:setAllStaticParameters()
-    AIDriveStrategyCombineCourse.superClass().setAllStaticParameters(self)
+    AIDriveStrategyFieldWorkCourse.setAllStaticParameters(self)
     self:debug('AIDriveStrategyCombineCourse set')
 
     if self:isChopper() then
@@ -163,7 +158,7 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 end
 
 function AIDriveStrategyCombineCourse:initializeImplementControllers(vehicle)
-    AIDriveStrategyCombineCourse:superClass().initializeImplementControllers(self, vehicle)
+    AIDriveStrategyFieldWorkCourse.initializeImplementControllers(self, vehicle)
     local _
     self.implementWithPipe, self.pipeController = self:addImplementController(vehicle, 
         PipeController, Pipe, {}, nil)
@@ -1560,7 +1555,7 @@ function AIDriveStrategyCombineCourse:startSelfUnload(unloadStateAfterPathfindin
         self.waypointIxAfterPathfinding = nil
 
         local targetNode, alignLength, offsetX = SelfUnloadHelper:getTargetParameters(
-                self.fieldWorkCourse:getFieldPolygon(),
+                self.fieldPolygon,
                 self.vehicle,
                 self.implementWithPipe,
                 self.pipeController,
@@ -1704,7 +1699,7 @@ function AIDriveStrategyCombineCourse:shouldSelfUnloadBeforeNextRow()
     if self:isFull(AIDriveStrategyCombineCourse.selfUnloadBeforeNextRowFillLevelThreshold) then
         local distance
         self.selfUnloadBestTrailer, self.selfUnloadFillRootNode, distance = SelfUnloadHelper:findBestTrailer(
-                self.fieldWorkCourse:getFieldPolygon(),
+                self.fieldPolygon,
                 self.vehicle,
                 self.implementWithPipe,
                 self.pipeController.pipeOffsetX)

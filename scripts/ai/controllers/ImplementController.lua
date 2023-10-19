@@ -22,10 +22,10 @@ function ImplementController:setDriveStrategy(driveStrategy)
     self.driveStrategy = driveStrategy
 end
 
----@param currentState table current state of the drive strategy
+---@param currentState table|nil current state of the drive strategy
 ---@return boolean true if currentState is not one of the disabled states
 function ImplementController:isEnabled(currentState)
-    if self.disabledStates then
+    if self.disabledStates and currentState ~= nil then
         for _, state in pairs(self.disabledStates) do
             if currentState == state then
                 return false

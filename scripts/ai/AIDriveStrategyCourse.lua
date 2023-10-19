@@ -19,11 +19,8 @@ Base class for all Courseplay drive strategies
 
 ]]
 
----@class AIDriveStrategyCourse : AIDriveStrategy
----@field vehicle table
----@field controllers table
-AIDriveStrategyCourse = {}
-local AIDriveStrategyCourse_mt = Class(AIDriveStrategyCourse, AIDriveStrategy)
+---@class AIDriveStrategyCourse
+AIDriveStrategyCourse = CpObject()
 
 AIDriveStrategyCourse.myStates = {
     INITIAL = {},
@@ -43,11 +40,9 @@ AIDriveStrategyCourse.onFinishRowEvent = "onFinishRow"
 --- they reach the start of the row
 AIDriveStrategyCourse.onTurnEndProgressEvent = "onTurnEndProgress"
 
-function AIDriveStrategyCourse.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategyCourse_mt
-    end
-    local self = AIDriveStrategy.new(customMt)
+---@param task CpAITask
+---@param job CpAIJob
+function AIDriveStrategyCourse:init(task, job)
     self.debugChannel = CpDebug.DBG_AI_DRIVER
     self:initStates(AIDriveStrategyCourse.myStates)
     ---@type ImplementController[]
@@ -55,7 +50,13 @@ function AIDriveStrategyCourse.new(customMt)
     self.registeredInfoTexts = {}
     --- To temporary hold a vehicle (will force speed to 0)
     self.held = CpTemporaryObject()
-    return self
+
+    self.currentTask = task
+    self.job = job
+end
+
+function AIDriveStrategyCourse:setCurrentTaskFinished()
+    self.currentTask:skip()
 end
 
 --- Aggregation of states from this and all descendant classes
@@ -107,7 +108,8 @@ function AIDriveStrategyCourse:clearInfoText(text)
 end
 
 function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
-    AIDriveStrategyCourse:superClass().setAIVehicle(self, vehicle)
+    self.vehicle = vehicle
+    self.jobParameters = jobParameters
     self:initializeImplementControllers(vehicle)
     self.ppc = PurePursuitController(vehicle)
     self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
@@ -151,7 +153,6 @@ end
 
 function AIDriveStrategyCourse:delete()
     self:raiseControllerEvent(self.deleteEvent)
-    AIDriveStrategyCourse:superClass().delete(self)
 end
 
 function AIDriveStrategyCourse:getGeneratedCourse(jobParameters)

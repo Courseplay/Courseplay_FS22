@@ -21,7 +21,7 @@ end
 
 function CpAIJobBaleFinder:setupTasks(isServer)
 	CpAIJob.setupTasks(self, isServer)
-	self.baleFinderTask = CpAITaskBaleFinder.new(isServer, self)
+	self.baleFinderTask = CpAITaskBaleFinder(isServer, self)
 	self:addTask(self.baleFinderTask)
 end
 
@@ -129,4 +129,21 @@ function CpAIJobBaleFinder:getDescription()
 		end
 	end
 	return desc
+end
+
+function CpAIJobBaleFinder:readStream(streamId, connection)
+	CpAIJob.readStream(self, streamId, connection)
+	if streamReadBool(streamId) then 
+		self.fieldPolygon = CustomField.readStreamVertices(streamId, connection)
+	end
+end
+
+function CpAIJobBaleFinder:writeStream(streamId, connection)
+	CpAIJob.writeStream(self, streamId, connection)
+	if self.fieldPolygon then 
+		streamWriteBool(streamId, true)
+		CustomField.writeStreamVertices(self.fieldPolygon, streamId, connection)
+	else 
+		streamWriteBool(streamId, false)
+	end
 end
