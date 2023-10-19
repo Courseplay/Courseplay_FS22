@@ -78,6 +78,7 @@ function CpShovelPositions.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onDraw", CpShovelPositions)	
 	SpecializationUtil.registerEventListener(vehicleType, "onUpdateTick", CpShovelPositions)
 	SpecializationUtil.registerEventListener(vehicleType, "onPostAttach", CpShovelPositions)
+	SpecializationUtil.registerEventListener(vehicleType, "onPreDetach", CpShovelPositions)
 end
 
 function CpShovelPositions.registerFunctions(vehicleType)
@@ -110,6 +111,10 @@ function CpShovelPositions:onPostAttach()
 	if self.spec_cpShovelPositions then
 		CpShovelPositions.cpSetupShovelPositions(self)
 	end
+end
+
+function CpShovelPositions:onPreDetach()
+	self:cpResetShovelState()
 end
 
 function CpShovelPositions:onDraw()
