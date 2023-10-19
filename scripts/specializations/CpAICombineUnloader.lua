@@ -123,7 +123,6 @@ function CpAICombineUnloader.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, 'onLoadFinished', CpAICombineUnloader)
     SpecializationUtil.registerEventListener(vehicleType, 'onReadStream', CpAICombineUnloader)
     SpecializationUtil.registerEventListener(vehicleType, 'onWriteStream', CpAICombineUnloader)
-    SpecializationUtil.registerEventListener(vehicleType, 'onPreDelete', CpAICombineUnloader)
     SpecializationUtil.registerEventListener(vehicleType, 'onUpdate', CpAICombineUnloader)
 end
 
