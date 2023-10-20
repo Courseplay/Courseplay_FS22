@@ -145,7 +145,6 @@
     <!---->
     <!--AI silo loader task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Wyładowywanie na przyczepę"/>
     <text name="CP_ai_taskDescriptionWaitsForTrailer" text="Oczekiwanie na przyczepę"/>
     <text name="CP_ai_taskDescriptionUnloadingToTrigger" text="Wyładowywanie do triggera"/>
     <!---->

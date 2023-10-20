@@ -145,7 +145,6 @@
     <!---->
     <!--AI silo loader task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Scarica nel rimorchio"/>
     <text name="CP_ai_taskDescriptionWaitsForTrailer" text="Aspetta un rimorchio"/>
     <text name="CP_ai_taskDescriptionUnloadingToTrigger" text="Scarica su un punto di scarico"/>
     <!---->

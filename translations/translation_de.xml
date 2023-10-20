@@ -145,7 +145,6 @@
     <!---->
     <!--AI silo loader task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Entlädt zu einem Anhänger"/>
     <text name="CP_ai_taskDescriptionWaitsForTrailer" text="Wartet auf einen Anhänger"/>
     <text name="CP_ai_taskDescriptionUnloadingToTrigger" text="Entlädt zu einer Abladestation"/>
     <!---->

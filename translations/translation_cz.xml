@@ -145,7 +145,6 @@
     <!---->
     <!--AI silo loader task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Vykládání do vlečky"/>
     <text name="CP_ai_taskDescriptionWaitsForTrailer" text="Čeká na vlečku"/>
     <text name="CP_ai_taskDescriptionUnloadingToTrigger" text="Vykládání do trigeru"/>
     <!---->
