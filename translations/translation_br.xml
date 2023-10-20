@@ -95,9 +95,9 @@
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Posição para carregar"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Posição para carregar"/>
     <text name="CP_siloLoader_fillLevelProgress" text="Progressâo: "/>
-    <text name="CP_siloLoaderJobParameters_subTitle_unloading" text="Unloading at:"/>
-    <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="Trailer"/>
-    <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="Unload station"/>
+    <text name="CP_siloLoaderJobParameters_subTitle_unloading" text="Descarregar em:"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="Carreta"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="Estação para descarregar"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -125,28 +125,28 @@
     <!---->
     <!--AI bale finder task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionCollectsBales" text="Collects bales on the field"/>
-    <text name="CP_ai_taskDescriptionWrapsBales" text="Wraps bales on the field"/>
+    <text name="CP_ai_taskDescriptionCollectsBales" text="Coletar fardos no campo"/>
+    <text name="CP_ai_taskDescriptionWrapsBales" text="Embalar fardos no campo"/>
     <!---->
     <!--AI combine unloader task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionUnloadCombine" text="Unloads combine"/>
-    <text name="CP_ai_taskDescriptionWaitsForTargetCombine" text="Waits for combine"/>
-    <text name="CP_ai_taskDescriptionUnloadSiloLoader" text="Unloads loader"/>
-    <text name="CP_ai_taskDescriptionWaitsForTargetSiloLoader" text="Waits for loader"/>
-    <text name="CP_ai_taskDescriptionUnloadingToHeap" text="Unloads to a heap"/>
-    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Unloads into trailer"/>
-    <text name="CP_ai_taskDescriptionUnloadingWithGiants" text="Unloads with giants worker"/>
+    <text name="CP_ai_taskDescriptionUnloadCombine" text="Descarregar colheitadeira"/>
+    <text name="CP_ai_taskDescriptionWaitsForTargetCombine" text="Aguardando colheitadeira"/>
+    <text name="CP_ai_taskDescriptionUnloadSiloLoader" text="Descarregar"/>
+    <text name="CP_ai_taskDescriptionWaitsForTargetSiloLoader" text="Aguardando carregar"/>
+    <text name="CP_ai_taskDescriptionUnloadingToHeap" text="Descarrega em uma pilha"/>
+    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Descarregar na carreta"/>
+    <text name="CP_ai_taskDescriptionUnloadingWithGiants" text="Descarregar com trabalhador giants"/>
     <!---->
     <!--AI silo worker task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionWorksInTheSilo" text="Works in the silo"/>
-    <text name="CP_ai_taskDescriptionWaitsForUnloaders" text="Waits for unloader"/>
+    <text name="CP_ai_taskDescriptionWorksInTheSilo" text="Trabalhos no silo"/>
+    <text name="CP_ai_taskDescriptionWaitsForUnloaders" text="Aguardando descarregador"/>
     <!---->
     <!--AI silo loader task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionWaitsForTrailer" text="Waits for a trailer"/>
-    <text name="CP_ai_taskDescriptionUnloadingToTrigger" text="Unloads to an unload trigger"/>
+    <text name="CP_ai_taskDescriptionWaitsForTrailer" text="Aguardando carretas"/>
+    <text name="CP_ai_taskDescriptionUnloadingToTrigger" text="Descarregar no trigger"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -211,8 +211,8 @@
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Configuração trabalho no silo"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Largura de trabalho"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Largura de trabalho. Valor: 0 - 50"/>
-    <text name="CP_vehicle_setting_levelerHeightOffset_title" text="Shield height offset"/>
-    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Offset of the shield form the ground. Value: 0 - 1"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_title" text="Altura."/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Altura do solo. Value: 0 - 1"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Distãncia da pá carregadeira. Valor: -1 - 1"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Distãncia da pá carregadeira. Valor: -1 - 1"/>
     <!---->
