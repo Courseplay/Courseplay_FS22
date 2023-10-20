@@ -363,7 +363,7 @@ You can define the following custom settings:
              turnRadius = "12"
     />
     <vehicle name="torion1511.xml"
-             turnRadius = "12"
+             turnRadius = "9"
     />
 	<Vehicle name="wheelLoaderShovel.xml"
              shovelMovingToolIx = "1"
