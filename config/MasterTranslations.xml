@@ -439,10 +439,6 @@
 		</Translation>
 	</Category>
 	<Category name="AI silo loader task descriptions">	
-		<Translation name="CP_ai_taskDescriptionUnloadingToTrailer">
-			<Text language="de"><![CDATA[Entlädt zu einem Anhänger]]></Text>
-			<Text language="en"><![CDATA[Unloads to a trailer]]></Text>
-		</Translation>
 		<Translation name="CP_ai_taskDescriptionWaitsForTrailer">
 			<Text language="de"><![CDATA[Wartet auf einen Anhänger]]></Text>
 			<Text language="en"><![CDATA[Waits for a trailer]]></Text>
