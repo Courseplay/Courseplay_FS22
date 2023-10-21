@@ -96,9 +96,6 @@ end
 function CpAIJob:stop(aiMessage)
 	if self.isServer then
 		local vehicle = self.vehicleParameter:getVehicle()
-		vehicle:deleteAgent()
-		vehicle:aiJobFinished()
-
 		vehicle:resetCpAllActiveInfoTexts()
 		local driveStrategy = vehicle:getCpDriveStrategy()
 		if not aiMessage then 
@@ -116,14 +113,16 @@ function CpAIJob:stop(aiMessage)
 		if driveStrategy then
 			driveStrategy:onFinished(hasFinished)
 		end
-		if event then
-			SpecializationUtil.raiseEvent(vehicle, event)
-		end
 		if releaseMessage and not vehicle:getIsControlled() and not isOnlyShownOnPlayerStart then
 			--- Only shows the info text, if the vehicle is not entered.
 			--- TODO: Add check if passing to ad is active maybe?
 			vehicle:setCpInfoTextActive(releaseMessage)
 		end
+		if event then
+			SpecializationUtil.raiseEvent(vehicle, event)
+		end
+		vehicle:deleteAgent()
+		vehicle:aiJobFinished()
 	end
 	CpAIJob:superClass().stop(self, aiMessage)
 end

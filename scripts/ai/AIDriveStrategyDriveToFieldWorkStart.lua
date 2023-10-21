@@ -84,11 +84,11 @@ function AIDriveStrategyDriveToFieldWorkStart:start(course, startIx, jobParamete
                 nVehicles > 1 and jobParameters.laneOffset:getValue() or 0,
                 course:getWorkWidth() / nVehicles)
         local implement = AIUtil.getImplementWithSpecialization(self.vehicle, Cutter)
+        if self.settings.foldImplementAtEnd:getValue() then
+            self.vehicle:prepareForAIDriving()
+        end
         if self:giantsPreFoldHeaderWithWheelsFix(implement) then 
-            self.vehicle:prepareForAIDriving()
             self:giantsPostFoldHeaderWithWheelsFix(implement)
-        else 
-            self.vehicle:prepareForAIDriving()
         end
         self:startCourseWithPathfinding(course, startIx)
     end
@@ -130,7 +130,7 @@ function AIDriveStrategyDriveToFieldWorkStart:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.PREPARE_TO_DRIVE then
         self:setMaxSpeed(0)
         local isReadyToDrive, blockingVehicle = self.vehicle:getIsAIReadyToDrive()
-        if isReadyToDrive then
+        if isReadyToDrive or not self.settings.foldImplementAtEnd:getValue() then
             self.state = self.states.DRIVING_TO_WORK_START
             self:debug('Ready to drive to work start')
         else
