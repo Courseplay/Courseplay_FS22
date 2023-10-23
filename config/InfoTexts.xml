@@ -20,6 +20,8 @@
 	<InfoText name="ERROR_GROUND_UNLOAD_NOT_SUPPORTED"		text="errorGroundUnloadNotSupported" class="AIMessageErrorGroundUnloadNotSupported"/>
 	<InfoText name="ERROR_CUTTER_NOT_SUPPORTED"				text="errorCutterNotSupported" class="AIMessageErrorCutterNotSupported"/>
 	<InfoText name="ERROR_AUTOMATIC_CUTTER_ATTACH_DISABLED" text="errorAutomaticCutterAttachNotActive" class="AIMessageErrorAutomaticCutterAttachNotActive" isOnlyShownOnPlayerStart="true"/>
+	<InfoText name="ERROR_WRONG_SEASON"						text="errorWrongSeason" class="AIMessageErrorWrongSeason"/>
+	<InfoText name="ERROR_WRONG_MISSION_FRUIT_TYPE" 		text="errorWrongMissionFruitType" class="AIMessageErrorWrongMissionFruitType"/>
 
 	<InfoText name="IS_STUCK"								text="isStuck"/>
 	<InfoText name="BLOCKED_BY_OBJECT"  					text="blockedByObject" class="AIMessageErrorBlockedByObject"/>

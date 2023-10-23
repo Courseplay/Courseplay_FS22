@@ -381,6 +381,10 @@
 			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - automatisches Scheidwerk ankuppeln deaktiviert!]]></Text>
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!]]></Text>
 		</Translation>
+		<Translation name="CP_ai_messageErrorWrongMissionFruitType">
+			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - falsche Frucht für die Mission ausgewählt!]]></Text>
+			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - wrong fill type for mission selected!]]></Text>
+		</Translation>
 	</Category>
 	<Category name="AI fieldwork task descriptions">	
 		<Translation name="CP_ai_taskDescriptionAttachHeader">
@@ -1613,6 +1617,14 @@ The course is saved automatically on closing of the editor and overrides the sel
 		<Translation name="CP_infoTexts_errorAutomaticCutterAttachNotActive">
 			<Text language="de"><![CDATA[Schneidwerk ankuppeln deaktiviert]]></Text>
 			<Text language="en"><![CDATA[Cutter attaching deactivated]]></Text>
+		</Translation>
+		<Translation name="CP_infoTexts_errorWrongSeason">
+			<Text language="de"><![CDATA[Falsche Jahreszeit]]></Text>
+			<Text language="en"><![CDATA[Wrong season for fruit]]></Text>
+		</Translation>
+		<Translation name="CP_infoTexts_errorWrongMissionFruitType">
+			<Text language="de"><![CDATA[Falsche Frucht für Mission ausgewählt]]></Text>
+			<Text language="en"><![CDATA[Wrong fruit for mission selected]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Custom field manager">	
