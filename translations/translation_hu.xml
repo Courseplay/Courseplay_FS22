@@ -25,7 +25,7 @@
     <text name="CP_error_vehicle_too_far_away_from_field" text="A jármű túl messze van a táblától a kezdéshez."/>
     <text name="CP_error_no_bunkerSilo_found" text="Siló nem található."/>
     <text name="CP_error_no_heap_found" text="Siló nem található."/>
-    <text name="CP_error_no_unload_trigger_found" text="Kirakorási pont nem található."/>
+    <text name="CP_error_no_unload_trigger_found" text="Kirakodási pont nem található."/>
     <text name="CP_error_unload_target_to_far_away_from_silo" text="A választott kirakodási pont túl messze van a silótól."/>
     <!---->
     <!--AI job parameters-->
@@ -173,7 +173,7 @@
     <text name="CP_vehicle_setting_allowReversePathfinding_tooltip" text="Adott esetben engedje meg az útkeresőnek, hogy hátrameneti szakaszokat generáljon"/>
     <text name="CP_vehicle_setting_allowPathfinderTurns_title" text="Útkeresés fordulókban"/>
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Engedélyezi az útkereső használatát fordulókban, pl. akadályok ill. termény kikerüléséhez"/>
-    <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Hajtsa össze a munkagépet"/>
+    <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Munkagép összehajtása"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Engedélyezi/letiltja a munkagépek automatikus összecsukását a munka végén."/>
     <text name="CP_vehicle_setting_returnToStart_title" text="Visszatérés a kezdőpontra"/>
     <text name="CP_vehicle_setting_returnToStart_tooltip" text="Visszatérés a kezdőpontra a munka végeztével."/>
@@ -412,8 +412,8 @@ Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felü
     <!---->
     <text name="CP_editor_course_title" text="Útvonal szerkesztő"/>
     <text name="CP_editor_delete_title" text="Csomópontok törlése"/>
-    <text name="CP_editor_delete_primary_text" text="Következő pont törlése"/>
-    <text name="CP_editor_delete_secondary_text" text="Előző pont törlése"/>
+    <text name="CP_editor_delete_primary_text" text="Kijelölt pont törlése"/>
+    <text name="CP_editor_delete_secondary_text" text="Kijelölt pont törlése"/>
     <text name="CP_editor_delete_tertiary_text" text="Csomópontok törlése a kijelölt ponttól az utolsóig."/>
     <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Biztosan törölni akarsz minden csomópontot a kijelölt ponttól az utolsóig?"/>
     <text name="CP_editor_delete_err" text="Túl kevés csomópont maradt."/>
