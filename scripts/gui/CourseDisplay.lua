@@ -248,6 +248,9 @@ end
 
 --- Updates changes from ix or ix-1 onwards.
 function SimpleCourseDisplay:updateChanges(ix)
+	if not self.course then 
+		return
+	end
 	for i = #self.signs, self.course:getNumberOfWaypoints() + 1, -1 do 
 		self.signs[i]:delete()
 		table.remove(self.signs, i)

@@ -137,7 +137,10 @@ function CpAIJob:applyCurrentState(vehicle, mission, farmId, isDirectStart)
 	if not self.cpJobParameters or not self.cpJobParameters.startPosition then 
 		return
 	end
-
+	if not vehicle then 
+		CpUtil.error("Vehicle is null!")
+		return
+	end
 	local x, z, _ = self.cpJobParameters.startPosition:getPosition()
 	local angle = self.cpJobParameters.startPosition:getAngle()
 
