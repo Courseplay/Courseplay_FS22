@@ -118,6 +118,7 @@
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Helfer %s hat die Arbeit gestoppt - abladen auf dem Boden nicht möglich!"/>
     <text name="CP_ai_messageErrorCutterNotSupported" text="Helfer %s hat die Arbeit gestoppt - ankuppelen von dem Schneidwerk nicht möglich!"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="Helfer %s hat die Arbeit gestoppt - automatisches Scheidwerk ankuppeln deaktiviert!"/>
+    <text name="CP_ai_messageErrorWrongMissionFruitType" text="Helfer %s hat die Arbeit gestoppt - falsche Frucht für die Mission ausgewählt!"/>
     <!---->
     <!--AI fieldwork task descriptions-->
     <!---->
@@ -458,6 +459,8 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Abladen zum Boden nicht möglich"/>
     <text name="CP_infoTexts_errorCutterNotSupported" text="Schneidwerk nicht unterstützt"/>
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Schneidwerk ankuppeln deaktiviert"/>
+    <text name="CP_infoTexts_errorWrongSeason" text="Falsche Jahreszeit"/>
+    <text name="CP_infoTexts_errorWrongMissionFruitType" text="Falsche Frucht für Mission ausgewählt"/>
     <!---->
     <!--Custom field manager-->
     <!---->

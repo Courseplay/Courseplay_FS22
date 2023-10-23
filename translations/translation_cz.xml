@@ -118,6 +118,7 @@
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI pracovník %s přestal neočekávaně pracovat - vykládání na poli není možné!"/>
     <text name="CP_ai_messageErrorCutterNotSupported" text="Pracovník AI %s neočekávaně zastavil práci - připojení lišty není možné!"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="Pracovník AI %s přestal neočekávaně pracovat - automatické připojení lišty deaktivováno!"/>
+    <text name="CP_ai_messageErrorWrongMissionFruitType" text="AI worker %s has stopped work unexpectedly - wrong fill type for mission selected!"/>
     <!---->
     <!--AI fieldwork task descriptions-->
     <!---->
@@ -458,6 +459,8 @@ Trasa se automaticky uloží při zavření editoru a přepíše vybranou trasu.
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Vysypání na zem není možné"/>
     <text name="CP_infoTexts_errorCutterNotSupported" text="Sklízecí lišta není podporována"/>
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Připojování lišty deaktivováno"/>
+    <text name="CP_infoTexts_errorWrongSeason" text="Wrong season for fruit"/>
+    <text name="CP_infoTexts_errorWrongMissionFruitType" text="Wrong fruit for mission selected"/>
     <!---->
     <!--Custom field manager-->
     <!---->

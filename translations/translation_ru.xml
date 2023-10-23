@@ -118,6 +118,7 @@
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="ИИ-работник %s неожиданно прекратил работу - разгрузка на поле невозможна!"/>
     <text name="CP_ai_messageErrorCutterNotSupported" text="ИИ-работник %s неожиданно прекратил работу - присоединение жатки не возможно!"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="ИИ-работник %s неожиданно прекратил работу - автоприсоединение жатки отключено!"/>
+    <text name="CP_ai_messageErrorWrongMissionFruitType" text="AI worker %s has stopped work unexpectedly - wrong fill type for mission selected!"/>
     <!---->
     <!--AI fieldwork task descriptions-->
     <!---->
@@ -458,6 +459,8 @@
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Выгрузка на землю не возможна"/>
     <text name="CP_infoTexts_errorCutterNotSupported" text="Жатка не поддерживается"/>
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Присоединение жатки не активно"/>
+    <text name="CP_infoTexts_errorWrongSeason" text="Wrong season for fruit"/>
+    <text name="CP_infoTexts_errorWrongMissionFruitType" text="Wrong fruit for mission selected"/>
     <!---->
     <!--Custom field manager-->
     <!---->

@@ -118,6 +118,7 @@
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Trabajador CP %s ha dejado de trabajar inesperadamente: ¡No es posible descargar en el campo!"/>
     <text name="CP_ai_messageErrorCutterNotSupported" text="Trabajador CP %s ha dejado de trabajar inesperadamente: - ¡Acoplar el cabezal es imposible!"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="Trabajador CP %s ha dejado de trabajar inesperadamente: - ¡Acoplamiento automático del cabezal desabilitado!"/>
+    <text name="CP_ai_messageErrorWrongMissionFruitType" text="AI worker %s has stopped work unexpectedly - wrong fill type for mission selected!"/>
     <!---->
     <!--AI fieldwork task descriptions-->
     <!---->
@@ -458,6 +459,8 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="No es posible volcar al suelo"/>
     <text name="CP_infoTexts_errorCutterNotSupported" text="Cabezal no compatible"/>
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Acoplamiento automático del cabezal desactivado"/>
+    <text name="CP_infoTexts_errorWrongSeason" text="Wrong season for fruit"/>
+    <text name="CP_infoTexts_errorWrongMissionFruitType" text="Wrong fruit for mission selected"/>
     <!---->
     <!--Custom field manager-->
     <!---->

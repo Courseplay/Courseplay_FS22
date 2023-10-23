@@ -118,6 +118,7 @@
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="L'ouvrier %s a interrompu son travail - déchargement au champ impossible !"/>
     <text name="CP_ai_messageErrorCutterNotSupported" text="L'ouvrier %s a interrompu son travail - impossible d'attacher la barre de coupe !"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="L'ouvrier %s a interrompu son travail - l'attachement auto de la barre de coupe est désactivé !"/>
+    <text name="CP_ai_messageErrorWrongMissionFruitType" text="AI worker %s has stopped work unexpectedly - wrong fill type for mission selected!"/>
     <!---->
     <!--AI fieldwork task descriptions-->
     <!---->
@@ -458,6 +459,8 @@ La course est automatiquement sauvegardée à la fermeture de l'éditeur et remp
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Déchargement au sol impossible"/>
     <text name="CP_infoTexts_errorCutterNotSupported" text="Barre de coupe non supportée"/>
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Attachement auto de la barre de coupe désactivé"/>
+    <text name="CP_infoTexts_errorWrongSeason" text="Wrong season for fruit"/>
+    <text name="CP_infoTexts_errorWrongMissionFruitType" text="Wrong fruit for mission selected"/>
     <!---->
     <!--Custom field manager-->
     <!---->
