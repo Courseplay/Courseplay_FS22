@@ -25,8 +25,8 @@
     <text name="CP_error_vehicle_too_far_away_from_field" text="A jármű túl messze van a táblától a kezdéshez."/>
     <text name="CP_error_no_bunkerSilo_found" text="Siló nem található."/>
     <text name="CP_error_no_heap_found" text="Siló nem található."/>
-    <text name="CP_error_no_unload_trigger_found" text="No unloading point found."/>
-    <text name="CP_error_unload_target_to_far_away_from_silo" text="Chosen unloading point is to far away from the silo."/>
+    <text name="CP_error_no_unload_trigger_found" text="Kirakorási pont nem található."/>
+    <text name="CP_error_unload_target_to_far_away_from_silo" text="A választott kirakodási pont túl messze van a silótól."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -40,7 +40,7 @@
     <text name="CP_jobParameters_startAt_first" text="első pont"/>
     <text name="CP_jobParameters_startAt_last" text="utoljára használt pont"/>
     <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker siló mód"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Silo töltési mód"/>
+    <text name="CP_jobParameters_startAt_siloLoader" text="Siló töltési mód"/>
     <text name="CP_jobParameters_startAt_unload" text="kirakodó kombájn/aprító"/>
     <text name="CP_jobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
     <text name="CP_jobParameters_startAt_bales" text="bálák összegyűjtése/csomagolása"/>
@@ -95,9 +95,9 @@
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Rakodási pozíció"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Rakodási pozíció"/>
     <text name="CP_siloLoader_fillLevelProgress" text="Folyamat: "/>
-    <text name="CP_siloLoaderJobParameters_subTitle_unloading" text="Unloading at:"/>
-    <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="Trailer"/>
-    <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="Unload station"/>
+    <text name="CP_siloLoaderJobParameters_subTitle_unloading" text="Kirakodás ide:"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="pótkocsi"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="kirakodó állomás"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -121,32 +121,32 @@
     <!---->
     <!--AI fieldwork task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionAttachHeader" text="Picks the header up"/>
+    <text name="CP_ai_taskDescriptionAttachHeader" text="Felveszi a vágóasztalt"/>
     <!---->
     <!--AI bale finder task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionCollectsBales" text="Collects bales on the field"/>
-    <text name="CP_ai_taskDescriptionWrapsBales" text="Wraps bales on the field"/>
+    <text name="CP_ai_taskDescriptionCollectsBales" text="Bálákat gyűjt a mezőn"/>
+    <text name="CP_ai_taskDescriptionWrapsBales" text="Bálákat csomagol a mezőn"/>
     <!---->
     <!--AI combine unloader task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionUnloadCombine" text="Unloads combine"/>
-    <text name="CP_ai_taskDescriptionWaitsForTargetCombine" text="Waits for combine"/>
-    <text name="CP_ai_taskDescriptionUnloadSiloLoader" text="Unloads loader"/>
-    <text name="CP_ai_taskDescriptionWaitsForTargetSiloLoader" text="Waits for loader"/>
-    <text name="CP_ai_taskDescriptionUnloadingToHeap" text="Unloads to a heap"/>
-    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Unloads into trailer"/>
-    <text name="CP_ai_taskDescriptionUnloadingWithGiants" text="Unloads with giants worker"/>
+    <text name="CP_ai_taskDescriptionUnloadCombine" text="Kombájnt ürít"/>
+    <text name="CP_ai_taskDescriptionWaitsForTargetCombine" text="Kombájnra vár"/>
+    <text name="CP_ai_taskDescriptionUnloadSiloLoader" text="Rakodót ürít"/>
+    <text name="CP_ai_taskDescriptionWaitsForTargetSiloLoader" text="Rakodóra vár"/>
+    <text name="CP_ai_taskDescriptionUnloadingToHeap" text="Halomba ürít"/>
+    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Pótkocsiba ürít"/>
+    <text name="CP_ai_taskDescriptionUnloadingWithGiants" text="Giants munkással ürít"/>
     <!---->
     <!--AI silo worker task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionWorksInTheSilo" text="Works in the silo"/>
-    <text name="CP_ai_taskDescriptionWaitsForUnloaders" text="Waits for unloader"/>
+    <text name="CP_ai_taskDescriptionWorksInTheSilo" text="A silóban dolgozik"/>
+    <text name="CP_ai_taskDescriptionWaitsForUnloaders" text="Kirakodóra vár"/>
     <!---->
     <!--AI silo loader task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionWaitsForTrailer" text="Waits for a trailer"/>
-    <text name="CP_ai_taskDescriptionUnloadingToTrigger" text="Unloads to an unload trigger"/>
+    <text name="CP_ai_taskDescriptionWaitsForTrailer" text="Egy pótkocsira vár"/>
+    <text name="CP_ai_taskDescriptionUnloadingToTrigger" text="Kirakodó zónába ürít"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -161,11 +161,11 @@
     <text name="CP_vehicle_setting_showCourse_title" text="Útvonal megjelenítése"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Mutassa a jármű aktuális útvonalát"/>
     <text name="CP_vehicle_setting_showCourse_startStop" text="csak start/stop"/>
-    <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="Current waypoints"/>
+    <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="közeli útpontok"/>
     <text name="CP_vehicle_setting_showCourse_all" text="minden útpont"/>
     <text name="CP_vehicle_setting_openHudWithMouse_title" text="HUD nyitása egérrel"/>
     <text name="CP_vehicle_setting_openHudWithMouse_tooltip" text="Ha nem aktív, a HUD-ot csak a billentyűkombinációval lehet megnyitni."/>
-    <text name="CP_vehicle_setting_fuelSave_title" text="Űzemanyagtakarékos mód"/>
+    <text name="CP_vehicle_setting_fuelSave_title" text="Üzemanyagtakarékos mód"/>
     <text name="CP_vehicle_setting_fuelSave_tooltip" text="Leállítja a motort amíg a jármű várakozik"/>
     <text name="CP_vehicle_setting_stopAtEnd_title" text="Álljon meg a végén"/>
     <text name="CP_vehicle_setting_stopAtEnd_tooltip" text="Álljon meg az útvonal végén"/>
@@ -173,7 +173,7 @@
     <text name="CP_vehicle_setting_allowReversePathfinding_tooltip" text="Adott esetben engedje meg az útkeresőnek, hogy hátrameneti szakaszokat generáljon"/>
     <text name="CP_vehicle_setting_allowPathfinderTurns_title" text="Útkeresés fordulókban"/>
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Engedélyezi az útkereső használatát fordulókban, pl. akadályok ill. termény kikerüléséhez"/>
-    <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Hajtsa össze a munkagépet a munka végén"/>
+    <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Hajtsa össze a munkagépet"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Engedélyezi/letiltja a munkagépek automatikus összecsukását a munka végén."/>
     <text name="CP_vehicle_setting_returnToStart_title" text="Visszatérés a kezdőpontra"/>
     <text name="CP_vehicle_setting_returnToStart_tooltip" text="Visszatérés a kezdőpontra a munka végeztével."/>
@@ -208,20 +208,20 @@
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->
-    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
+    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Silómunkás beállítások"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Munkaszélesség"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Munkaszélesség. Értéke: 0 - 50"/>
-    <text name="CP_vehicle_setting_levelerHeightOffset_title" text="Shield height offset"/>
-    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Offset of the shield form the ground. Value: 0 - 1"/>
-    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Shovel loading offset. Value: -1 - 1"/>
-    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Shovel loading offset. Value: -1 - 1"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_title" text="Tolólap magasság eltolás"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Tolólap magasságának eltolása a talajtól. Érték: 0 - 1"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Kanáltöltés eltolása/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Kanáltöltés eltolása. Érték: -1 - 1"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
-    <text name="CP_vehicle_setting_fieldWorkSpeed_title" text="Terepmunka"/>
-    <text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" text="Maximális sebesség terepen végzett munka közben. 5 - 50 km/ó"/>
-    <text name="CP_vehicle_setting_fieldSpeed_title" text="Terület"/>
-    <text name="CP_vehicle_setting_fieldSpeed_tooltip" text="Maximális sebesség terepen történő vezetés közben. 5 - 50 km/ó"/>
+    <text name="CP_vehicle_setting_fieldWorkSpeed_title" text="Táblamunka"/>
+    <text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" text="Maximális sebesség táblán végzett munka közben. 5 - 50 km/ó"/>
+    <text name="CP_vehicle_setting_fieldSpeed_title" text="Táblán hajtás"/>
+    <text name="CP_vehicle_setting_fieldSpeed_tooltip" text="Maximális sebesség táblán történő vezetés közben. 5 - 50 km/ó"/>
     <text name="CP_vehicle_setting_turnSpeed_title" text="Forduláskor"/>
     <text name="CP_vehicle_setting_turnSpeed_tooltip" text="Maximális sebesség forduló közben. 2 - 25 km/ó"/>
     <text name="CP_vehicle_setting_reverseSpeed_title" text="Tolatás"/>
@@ -233,7 +233,7 @@
     <!---->
     <text name="CP_vehicle_setting_ridgeMarkersAutomatic_title" text="Barázdajelző"/>
     <text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" text="Barázdajelző automatika be/ki."/>
-    <text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" text="A vetőgépek műtrágyát használnak"/>
+    <text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" text="Vetőgépek műtrágya használata"/>
     <text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" text="Engedélyezi/letiltja a vetőgépek műtrágya használatát."/>
     <text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" text="Vetőgép engedélyezés"/>
     <text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" text="Engedélyezi az opcionális vetőgép funkciót"/>
@@ -252,7 +252,7 @@
     <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="A kombájn az első fordulóban hívja a kirakodót."/>
     <text name="CP_vehicle_setting_strawSwath_title" text="Szalma rendrakás"/>
     <text name="CP_vehicle_setting_strawSwath_tooltip" text="Engedélyezi/letiltja a szalma rendet, vagy csak a táblavégeken tiltja le."/>
-    <text name="CP_vehicle_setting_strawSwath_onlyCenter" text="Ki a fordulónál"/>
+    <text name="CP_vehicle_setting_strawSwath_onlyCenter" text="Tiltás a fordulósávon"/>
     <!---->
     <!--Course generator settings-->
     <!---->
@@ -263,7 +263,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced" text="Egyéb"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_title" text="Munkaszélesség"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip" text="Munkaszélesség. 0 - 50 m"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title" text="Fordulósáv szélessége"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title" text="Fordulósávok száma"/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip" text="Fordulósáv szélessége a munkaszélesség többszöröse: 0 - 40"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title" text="Átfedés a fordulósávban"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="A fordulósáv nyomvonalak átfedése a munkaszélesség százalékában. 0 - 25%"/>
@@ -276,7 +276,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_isClockwise_title" text="Körbejárás iránya"/>
     <text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip" text="Milyen irányban haladjon körbe a fordulósávon"/>
     <text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" text="óramutató járásával megegyező"/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" text="óramutató járásával ellentétes irányban"/>
+    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" text="óramutató járásával ellentétes"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Minta"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Milyen mintában művelje a tábla középső részét"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="fel/le"/>
@@ -412,8 +412,8 @@ Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felü
     <!---->
     <text name="CP_editor_course_title" text="Útvonal szerkesztő"/>
     <text name="CP_editor_delete_title" text="Csomópontok törlése"/>
-    <text name="CP_editor_delete_primary_text" text="elsődleges"/>
-    <text name="CP_editor_delete_secondary_text" text="másodlagos"/>
+    <text name="CP_editor_delete_primary_text" text="Következő pont törlése"/>
+    <text name="CP_editor_delete_secondary_text" text="Előző pont törlése"/>
     <text name="CP_editor_delete_tertiary_text" text="Csomópontok törlése a kijelölt ponttól az utolsóig."/>
     <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Biztosan törölni akarsz minden csomópontot a kijelölt ponttól az utolsóig?"/>
     <text name="CP_editor_delete_err" text="Túl kevés csomópont maradt."/>
@@ -421,19 +421,19 @@ Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felü
     <text name="CP_editor_course_basic_move_title" text="Csomópont mozgatása"/>
     <text name="CP_editor_course_basic_move_primary_text" text="elsődleges"/>
     <text name="CP_editor_course_basic_insert_title" text="Csomópontok beillesztése"/>
-    <text name="CP_editor_course_basic_insert_primary_text" text="elsődleges"/>
-    <text name="CP_editor_course_basic_insert_secondary_text" text="másodlagos"/>
-    <text name="CP_editor_course_basic_insert_err" text="Inserting between a turning point is not allowed."/>
+    <text name="CP_editor_course_basic_insert_primary_text" text="Beszúrás a kijelölt pont elé"/>
+    <text name="CP_editor_course_basic_insert_secondary_text" text="Beszúrás a kijelölt pont mögé"/>
+    <text name="CP_editor_course_basic_insert_err" text="Fordulási pontok közé a beszúrás nem lehetséges."/>
     <text name="CP_editor_course_advanced_title" text="Haladó"/>
     <text name="CP_editor_course_advanced_changeTurn_title" text="Csomópont jelölése fordulóként."/>
     <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Forduló pontot ad hozzá vagy töröl. (A kiválasztott csomópont lesz a fordulás kezdete.)"/>
     <text name="CP_editor_course_advanced_changeTurn_err" text="Túl közel van egy másik forduló ponthoz."/>
     <text name="CP_editor_course_advanced_moveExtended_title" text="Több csomópont mozgatása"/>
-    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="elsődleges"/>
-    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="másodlagos"/>
-    <text name="CP_editor_course_advanced_curveInsert_title" text="Inserts waypoints as curve"/>
-    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="elsődleges"/>
-    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="másodlagos"/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="Kezdeti és végpont kijelölése"/>
+    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="Kijelölés törlése"/>
+    <text name="CP_editor_course_advanced_curveInsert_title" text="Csomópontok beszúrása ív mentén"/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="Ív kezdő/végpont kijelölése"/>
+    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="Kijelölés törlése"/>
     <text name="CP_editor_course_advanced_curveInsert_err" text="Forduló pont kiválasztása nem megengedett."/>
     <!---->
     <!--Info texts-->
@@ -450,7 +450,7 @@ Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felü
     <text name="CP_infoTexts_drivingToSelfUnload" text="Pótkocsihoz vezetés"/>
     <text name="CP_infoTexts_outOfMoney" text="elfogyott a pénz"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Várja hogy elálljon az eső"/>
-    <text name="CP_infoTexts_waitForSnowToClear" text="Waits for snow to disappear"/>
+    <text name="CP_infoTexts_waitForSnowToClear" text="Várja hogy elolvadjon a hó"/>
     <text name="CP_infoTexts_waitForUnloader" text="Várakozás a kirakodóra"/>
     <text name="CP_infoTexts_errorStopped" text="letért az útvonalról, megállt"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Rossz bálatípus"/>
