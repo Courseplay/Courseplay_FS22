@@ -118,7 +118,7 @@
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI munkás %s váratlanul abbahagyta a munkát - kirakodás a táblán nem lehetséges!"/>
     <text name="CP_ai_messageErrorCutterNotSupported" text="AI munkás %s váratlanul abbahagyta a munkát - vágóasztal felcsatolása lehetetlen!"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI munkás %s váratlanul abbahagyta a munkát - automatikus vágóasztal felcsatolás kikapcsolva!"/>
-    <text name="CP_ai_messageErrorWrongMissionFruitType" text="AI worker %s has stopped work unexpectedly - wrong fill type for mission selected!"/>
+    <text name="CP_ai_messageErrorWrongMissionFruitType" text="AI munkás %s váratlanul abbahagyta a munkát - Helytelen vetőmag ehhez a megbízáshoz!"/>
     <!---->
     <!--AI fieldwork task descriptions-->
     <!---->
@@ -459,8 +459,8 @@ Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felü
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Talajra billentés nem lehetséges"/>
     <text name="CP_infoTexts_errorCutterNotSupported" text="A vágóasztal nem támogatott"/>
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Vágóasztal felcsatolás kikapcsolva"/>
-    <text name="CP_infoTexts_errorWrongSeason" text="Wrong season for fruit"/>
-    <text name="CP_infoTexts_errorWrongMissionFruitType" text="Wrong fruit for mission selected"/>
+    <text name="CP_infoTexts_errorWrongSeason" text="Nem megfelelő évszak ehhez a terményhez"/>
+    <text name="CP_infoTexts_errorWrongMissionFruitType" text="Helytelen vetőmag kiválasztva a megbízáshoz"/>
     <!---->
     <!--Custom field manager-->
     <!---->
