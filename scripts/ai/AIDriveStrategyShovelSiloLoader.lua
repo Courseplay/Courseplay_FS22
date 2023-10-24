@@ -62,6 +62,26 @@ AIDriveStrategyShovelSiloLoader.searchForTrailerDelaySec = 10
 AIDriveStrategyShovelSiloLoader.distShovelTrailerPreUnload = 7
 AIDriveStrategyShovelSiloLoader.distShovelUnloadStationPreUnload = 8
 AIDriveStrategyShovelSiloLoader.isStuckMs = 1000 * 15
+
+--- Silo area to avoid for heap
+AIDriveStrategyShovelSiloLoader.siloAreaToAvoidForHeapOffsets = 
+{
+    --- The Silo area to avoid gets extended on the front and back.
+    length = 3,
+    --- The Silo area to avoid gets extended on the left and right.
+    width = 3
+}
+
+--- Silo area to avoid for bunker silo
+--- Slightly increased to avoid hitting the side walls of the silo
+AIDriveStrategyShovelSiloLoader.siloAreaToAvoidForBunkerSiloOffsets = 
+{
+    --- The Silo area to avoid gets extended on the front and back.
+    length = 6, 
+    --- The Silo area to avoid gets extended on the left and right.
+    width = 4
+}
+
 function AIDriveStrategyShovelSiloLoader.new(customMt)
     if customMt == nil then
         customMt = AIDriveStrategyShovelSiloLoader_mt
@@ -136,22 +156,26 @@ function AIDriveStrategyShovelSiloLoader:startWithoutCourse(jobParameters)
         _, self.trailerSearchArea = CpAIJobSiloLoader.getTrailerUnloadArea(position)
 
     end
+    local siloAreaOffset
     if self.bunkerSilo ~= nil then 
         self:debug("Bunker silo was found.")
         self.silo = self.bunkerSilo
+        siloAreaOffset = self.siloAreaToAvoidForBunkerSiloOffsets
     else 
         self:debug("Heap was found.")
         self.silo = self.heapSilo
+        siloAreaOffset = self.siloAreaToAvoidForHeapOffsets
     end
-    --- fill level, when the driver is started
-    self.fillLevelLeftOverSinceStart = self.silo:getTotalFillLevel()
-
     local cx, cz = self.silo:getFrontCenter()
     local dirX, dirZ = self.silo:getLengthDirection()
     local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
     self.siloFrontNode = CpUtil.createNode("siloFrontNode", cx, cz, yRot)
-    self.siloAreaToAvoid = PathfinderUtil.NodeArea(self.siloFrontNode, -self.silo:getWidth()/2 - 3, 
-        -3, self.silo:getWidth() + 6, self.silo:getLength() + 6)
+    
+    self.siloAreaToAvoid = PathfinderUtil.NodeArea(self.siloFrontNode, -self.silo:getWidth()/2 - siloAreaOffset.width, 
+        -siloAreaOffset.length, self.silo:getWidth() + 2 * siloAreaOffset.width, 
+        self.silo:getLength() + 2 * siloAreaOffset.length)
+    --- fill level, when the driver is started
+    self.fillLevelLeftOverSinceStart = self.silo:getTotalFillLevel()
 
     self.siloController = CpBunkerSiloLoaderController(self.silo, self.vehicle, self)
 
@@ -636,7 +660,7 @@ function AIDriveStrategyShovelSiloLoader:startDrivingToSilo(target)
     local x, z = unpack(startPos)
     local dx, dz = unpack(endPos)
     local siloCourse = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 
-        0, 0, 3, 3, false)
+        0, -5, 3, 3, false)
     local distance = siloCourse:getDistanceBetweenVehicleAndWaypoint(self.vehicle, 1)
     if distance > self.turningRadius then
         self:debug("Start driving to silo with pathfinder.")
