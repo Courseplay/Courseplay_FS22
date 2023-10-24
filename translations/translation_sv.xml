@@ -118,6 +118,7 @@
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI-arbetaren %s har slutat arbeta oväntat - avlastning på fältet är inte möjligt!"/>
     <text name="CP_ai_messageErrorCutterNotSupported" text="AI-arbetaren %s har slutat arbeta oväntat - påkoppling av skärbord är inte möjligt!"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI-arbetaren %s har slutat arbeta oväntat - automatiskt påkoppling av skärbord är Inaktiverad!"/>
+    <text name="CP_ai_messageErrorWrongMissionFruitType" text="AI worker %s has stopped work unexpectedly - wrong fill type for mission selected!"/>
     <!---->
     <!--AI fieldwork task descriptions-->
     <!---->
@@ -458,6 +459,8 @@ Banan sparas automatiskt vid stängning av editorn och åsidosätter den valda b
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tippning på marken är inte möjlig"/>
     <text name="CP_infoTexts_errorCutterNotSupported" text="Skärbordet stödjs ej"/>
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Automatisk skärbords koppling är avaktiverad"/>
+    <text name="CP_infoTexts_errorWrongSeason" text="Wrong season for fruit"/>
+    <text name="CP_infoTexts_errorWrongMissionFruitType" text="Wrong fruit for mission selected"/>
     <!---->
     <!--Custom field manager-->
     <!---->

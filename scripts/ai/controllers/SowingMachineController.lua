@@ -21,6 +21,18 @@ function SowingMachineController:update()
 			end
 		end
 	end
+	if self.sowingMachineSpec.showWrongFruitForMissionWarning then 
+		self:debug("Wrong fruit type for mission selected!")
+		self.vehicle:stopCurrentAIJob(AIMessageErrorWrongMissionFruitType.new())
+	end
+	if not self.implement:getCanPlantOutsideSeason() then
+		local fruitType = self.sowingMachineSpec.workAreaParameters.seedsFruitType
+		if fruitType ~= nil and not g_currentMission.growthSystem:canFruitBePlanted(fruitType) then
+			self:debug("Fruit can't be planted in this season!")
+			self.vehicle:stopCurrentAIJob(AIMessageErrorWrongSeason.new())
+		end
+	end
+
 end
 
 function SowingMachineController:onFinished()

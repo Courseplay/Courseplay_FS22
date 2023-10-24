@@ -105,6 +105,21 @@ function AIMessageErrorAutomaticCutterAttachNotActive:getMessage()
 	return g_i18n:getText("CP_ai_messageErrorAutomaticCutterAttachNotActive")
 end
 
+AIMessageErrorWrongMissionFruitType = {
+	name = "CP_ERROR_WRONG_MISSION_FRUIT_TYPE"
+}
+local AIMessageErrorWrongMissionFruitType_mt = Class(AIMessageErrorWrongMissionFruitType, AIMessage)
+
+function AIMessageErrorWrongMissionFruitType.new(customMt)
+	local self = AIMessage.new(customMt or AIMessageErrorWrongMissionFruitType_mt)
+
+	return self
+end
+
+function AIMessageErrorWrongMissionFruitType:getMessage()
+	return g_i18n:getText("CP_ai_messageErrorWrongMissionFruitType")
+end
+
 CpAIMessages = {}
 
 function CpAIMessages.register()
@@ -118,6 +133,7 @@ function CpAIMessages.register()
 	register(AIMessageErrorGroundUnloadNotSupported)
 	register(AIMessageErrorCutterNotSupported)
 	register(AIMessageErrorAutomaticCutterAttachNotActive)
+	register(AIMessageErrorWrongMissionFruitType)
 end
 
 --- Another ugly hack, as the giants code to get the message index in mp isn't working ..

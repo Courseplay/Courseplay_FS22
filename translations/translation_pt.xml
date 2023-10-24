@@ -118,6 +118,7 @@
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Trabalhador %s parou o serviço de repente - não é possível descarregar no campo!"/>
     <text name="CP_ai_messageErrorCutterNotSupported" text="Trabalhador %s parou o serviço de repente - é impossível conectar a cabeça da ceifeira!"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="Trabalhador %s parou o serviço de repente - está desactivo, conectar automaticamente a cabeça da ceifeira!"/>
+    <text name="CP_ai_messageErrorWrongMissionFruitType" text="AI worker %s has stopped work unexpectedly - wrong fill type for mission selected!"/>
     <!---->
     <!--AI fieldwork task descriptions-->
     <!---->
@@ -458,6 +459,8 @@ A rota é guardada automaticamente ao fechar o editor e sobrepõe-se a qualquer 
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Não é possível descarregar para o chão"/>
     <text name="CP_infoTexts_errorCutterNotSupported" text="Cabeça de corte não é suportada"/>
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Conectar a cabeça de corte desactivo"/>
+    <text name="CP_infoTexts_errorWrongSeason" text="Wrong season for fruit"/>
+    <text name="CP_infoTexts_errorWrongMissionFruitType" text="Wrong fruit for mission selected"/>
     <!---->
     <!--Custom field manager-->
     <!---->
