@@ -660,7 +660,7 @@ function AIDriveStrategyShovelSiloLoader:startDrivingToSilo(target)
     local x, z = unpack(startPos)
     local dx, dz = unpack(endPos)
     local siloCourse = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 
-        0, 0, 3, 3, false)
+        0, -5, 3, 3, false)
     local distance = siloCourse:getDistanceBetweenVehicleAndWaypoint(self.vehicle, 1)
     if distance > self.turningRadius then
         self:debug("Start driving to silo with pathfinder.")
