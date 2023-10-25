@@ -40,13 +40,7 @@ function AIDriveStrategyFindBales.new(customMt)
     local self = AIDriveStrategyCourse.new(customMt)
     AIDriveStrategyCourse.initStates(self, AIDriveStrategyFindBales.myStates)
     self.state = self.states.INITIAL
-    -- cache for the nodes created by TurnContext
-    self.turnNodes = {}
-    -- course offsets dynamically set by the AI and added to all tool and other offsets
-    self.aiOffsetX, self.aiOffsetZ = 0, 0
     self.debugChannel = CpDebug.DBG_FIND_BALES
-    ---@type ImplementController[]
-    self.controllers = {}
     self.bales = {}
 
     return self
@@ -54,7 +48,7 @@ end
 
 function AIDriveStrategyFindBales:delete()
     AIDriveStrategyFindBales:superClass().delete(self)
-    TurnContext.deleteNodes(self.turnNodes)
+    g_baleToCollectManager:unlockBalesByDriver(self)
 end
 
 function AIDriveStrategyFindBales:getGeneratedCourse(jobParameters)
@@ -215,10 +209,10 @@ end
 ---@return BaleToCollect[] list of bales found
 function AIDriveStrategyFindBales:findBales()
     local balesFound, baleWithWrongWrapType = {}, false
-    for _, object in pairs(BaleToCollect.getAllBales()) do
+    for _, object in pairs(g_baleToCollectManager:getBales()) do
         local isValid, wrongWrapType = BaleToCollect.isValidBale(object, 
                 self.baleWrapper, self.baleLoader, self.baleWrapType)
-        if isValid then
+        if isValid and g_baleToCollectManager:isValidBale(object) then
             local bale = BaleToCollect(object)
             -- if the bale has a mountObject it is already on the loader so ignore it
             if not object.mountObject and object:getOwnerFarmId() == self.vehicle:getOwnerFarmId() and
@@ -228,13 +222,6 @@ function AIDriveStrategyFindBales:findBales()
             end
         end
         baleWithWrongWrapType = baleWithWrongWrapType or wrongWrapType
-    end
-    --- Ignores the loaded auto loader bales.
-    local loadedBales = self:getBalesToIgnore()
-    for _, bale in pairs(loadedBales) do 
-        if balesFound[bale.id] then 
-            balesFound[bale.id] = nil
-        end
     end
     local bales = {}
     for _, bale in pairs(balesFound) do
@@ -246,9 +233,15 @@ function AIDriveStrategyFindBales:findBales()
     return bales, baleWithWrongWrapType
 end
 
----@return BaleToCollect, number closest bale and its distance
+---@param bales table[]
+---@return BaleToCollect|nil closest bale
+---@return number|nil distance to the closest bale
+---@return number|nil index of the bale
 function AIDriveStrategyFindBales:findClosestBale(bales)
-    local closestBale, minDistance, ix = nil, math.huge
+    if not bales then 
+        return
+    end
+    local closestBale, minDistance, ix = nil, math.huge, 1
     local invalidBales = 0
     for i, bale in ipairs(bales) do
         if bale:isStillValid() then
@@ -288,11 +281,8 @@ function AIDriveStrategyFindBales:getDubinsPathLengthToBale(bale)
 end
 
 function AIDriveStrategyFindBales:findPathToNextBale()
-    if not self.bales then
-        return
-    end
     local bale, d, ix = self:findClosestBale(self.bales)
-    if ix then
+    if bale then
         if bale:isLoaded() then
             self:debug('Bale %d is already loaded, skipping', bale:getId())
             table.remove(self.bales, ix)
@@ -318,65 +308,88 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 --- Pathfinding
 -----------------------------------------------------------------------------------------------------------------------
----@param bale BaleToCollect
-function AIDriveStrategyFindBales:startPathfindingToBale(bale)
-    if not self.pathfinder or not self.pathfinder:isActive() then
-        self.pathfindingStartedAt = g_currentMission.time
-        local safeDistanceFromBale = bale:getSafeDistance()
-        local halfVehicleWidth = AIUtil.getWidth(self.vehicle) / 2
-        local goal = self:getBaleTarget(bale)
-        local configuredOffset = self:getConfiguredOffset()
-        local offset = Vector(0, safeDistanceFromBale + configuredOffset)
-        goal:add(offset:rotate(goal.t))
-        self:debug('Start pathfinding to next bale (%d), safe distance from bale %.1f, half vehicle width %.1f, configured offset %s',
-                bale:getId(), safeDistanceFromBale, halfVehicleWidth,
-                configuredOffset and string.format('%.1f', configuredOffset) or 'n/a')
-        local done, path, goalNodeInvalid
-        -- use no off-field penalty if we are on a custom field
-        self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToGoal(self.vehicle, goal, false, nil,
-                {}, self:getBalesToIgnore(), nil, nil)
-        if done then
-            return self:onPathfindingDoneToNextBale(path, goalNodeInvalid)
+
+--- Pathfinding has finished
+---@param controller PathfinderController
+---@param success boolean
+---@param course Course|nil
+---@param goalNodeInvalid boolean|nil
+function AIDriveStrategyFindBales:onPathfindingFinished(controller, 
+    success, course, goalNodeInvalid)
+    if self.state == self.states.DRIVING_TO_NEXT_BALE then 
+        if success then 
+            self:startCourse(course, 1)
         else
-            self.state = self.states.WAITING_FOR_PATHFINDER
-            self:setPathfindingDoneCallback(self, self.onPathfindingDoneToNextBale)
-            return true
+            self:info('Pathfinding failed, giving up!')
+            self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
         end
-    else
-        self:debug('Pathfinder already active')
     end
 end
 
-function AIDriveStrategyFindBales:onPathfindingDoneToNextBale(path, goalNodeInvalid)
-    if path and #path > 2 then
-        self.pathfinderFailureCount = 0
-        self:debug('Found path (%d waypoints, %d ms)', #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
-        self.fieldIdworkCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-        self:startCourse(self.fieldIdworkCourse, 1)
-        self:debug('Driving to next bale')
-        self.state = self.states.DRIVING_TO_NEXT_BALE
-        return true
-    else
-        self.pathfinderFailureCount = self.pathfinderFailureCount + 1
-        if self.pathfinderFailureCount == 1 then
-            self:debug('Finding path to next bale failed, trying next bale')
-            self.state = self.states.SEARCHING_FOR_NEXT_BALE
-        elseif self.pathfinderFailureCount == 2 then
+--- Pathfinding failed, but a retry attempt is leftover.
+---@param controller PathfinderController
+---@param lastContext PathfinderControllerContext
+---@param wasLastRetry boolean
+---@param currentRetryAttempt number
+function AIDriveStrategyFindBales:onPathfindingRetry(controller, 
+    lastContext, wasLastRetry, currentRetryAttempt)
+    if self.state == self.states.DRIVING_TO_NEXT_BALE then 
+        g_baleToCollectManager:unlockBalesByDriver(self)
+        if currentRetryAttempt == 1 then 
+            if self.lastPathfinderBaleTarget 
+                and g_baleToCollectManager:isValidBale(self.lastPathfinderBaleTarget) then 
+                self:debug("Retrying the same bale again.")
+                self:startPathfindingToBale(self.lastPathfinderBaleTarget)
+            else 
+                self:debug("Retrying with another bale.")
+                local bale, d, ix = self:findClosestBale(self.bales)
+                if bale then 
+                    self:startPathfindingToBale(bale)
+                else 
+                    self:debug("No valid bale found on retry: %d!", currentRetryAttempt)
+                    self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
+                end
+            end
+        else 
             if self:isNearFieldEdge() then
-                self.pathfinderFailureCount = 0
                 self:debug('Finding path to next bale failed twice, we are close to the field edge, back up a bit and then try again')
+                controller:reset()
                 self:startReversing()
             else
                 self:debug('Finding path to next bale failed twice, but we are not too close to the field edge, trying another bale')
-                self.state = self.states.SEARCHING_FOR_NEXT_BALE
+                local bale, d, ix = self:findClosestBale(self.bales)
+                if bale then 
+                    self:startPathfindingToBale(bale)
+                else 
+                    self:debug("No valid bale found on retry: %d!", currentRetryAttempt)
+                    self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
+                end
             end
-        else
-            self:info('Pathfinding failed three times, giving up')
-            self.pathfinderFailureCount = 0
-            self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
         end
-        return false
     end
+end
+
+function AIDriveStrategyFindBales:getPathfinderBaleTargetAsGoalNode(bale)
+    local safeDistanceFromBale = bale:getSafeDistance()
+    local halfVehicleWidth = AIUtil.getWidth(self.vehicle) / 2
+    local goal = self:getBaleTarget(bale)
+    local configuredOffset = self:getConfiguredOffset()
+    local offset = Vector(0, safeDistanceFromBale + configuredOffset)
+    goal:add(offset:rotate(goal.t))
+    self:debug('Start pathfinding to next bale (%d), safe distance from bale %.1f, half vehicle width %.1f, configured offset %s',
+        bale:getId(), safeDistanceFromBale, halfVehicleWidth,
+        configuredOffset and string.format('%.1f', configuredOffset) or 'n/a')
+    return goal
+end
+
+---@param bale BaleToCollect
+function AIDriveStrategyFindBales:startPathfindingToBale(bale)
+    self.state = self.states.DRIVING_TO_NEXT_BALE
+    g_baleToCollectManager:lockBale(bale:getBaleObject(), self)
+    local context = PathfinderControllerContext(self.vehicle, 3):objectsToIgnore(self:getBalesToIgnore()):allowReverse(false)
+    self.pathfinderController:findPathToGoal(context, 
+	    self:getPathfinderBaleTargetAsGoalNode(bale))
+    self.lastPathfinderBaleTarget = bale
 end
 
 function AIDriveStrategyFindBales:startReversing()
@@ -449,7 +462,7 @@ end
 --- implements are started/lowered etc.
 function AIDriveStrategyFindBales:getDriveData(dt, vX, vY, vZ)
     self:updateLowFrequencyImplementControllers()
-    
+    self:updateLowFrequencyPathfinder()
     if self.state == self.states.INITIAL then
         if self:getCanContinueWork() then 
             self.state = self.states.SEARCHING_FOR_NEXT_BALE
@@ -547,9 +560,24 @@ function AIDriveStrategyFindBales:update(dt)
     AIDriveStrategyFindBales:superClass().update(self, dt)
     self:updateImplementControllers(dt)
 
+    if CpDebug:isChannelActive(self.debugChannel, self.vehicle) then
+        if self.course then
+            self.course:draw()
+        elseif self.ppc:getCourse() then
+            self.ppc:getCourse():draw()
+        end
+    end
+
     if self:areBaleLoadersFull() and self:isReadyToFoldImplements() then
         self:debug('Bale loader is full, stopping job.')
         self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
+    end
+
+    --- Ignores the loaded auto loader bales.
+    --- TODO: Maybe add a delay?
+    local loadedBales = self:getBalesToIgnore()
+    for _, bale in pairs(loadedBales) do 
+        g_baleToCollectManager:lockBaleTemporary(bale)
     end
 end
 

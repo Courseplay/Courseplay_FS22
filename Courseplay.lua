@@ -195,6 +195,7 @@ function Courseplay:update(dt)
     g_devHelper:update()
     g_bunkerSiloManager:update(dt)
     g_triggerManager:update(dt)
+	g_baleToCollectManager:update(dt)
     if not self.postInit then 
         -- Doubles the map zoom for 4x Maps. Mainly to make it easier to set targets for unload triggers.
         self.postInit = true
@@ -214,6 +215,7 @@ function Courseplay:draw()
 		g_vineScanner:draw()
 		g_bunkerSiloManager:draw()
 		g_triggerManager:draw()
+		g_baleToCollectManager:draw()
 	end
 	g_devHelper:draw()
 	CpDebug:draw()

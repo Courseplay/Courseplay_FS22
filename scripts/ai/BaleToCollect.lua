@@ -136,6 +136,59 @@ function BaleToCollect:getSafeDistance()
 	return math.sqrt(length * length + self.bale.width * self.bale.width) / 2 + 0.2
 end
 
-function BaleToCollect.getAllBales()
+---@class BaleToCollectManager
+BaleToCollectManager = CpObject()
+BaleToCollectManager.lockTimeOutMs = 500 -- 500 ms
+
+function BaleToCollectManager:init()
+	self.temporaryLockedBales = {}
+	self.lockedBales = {}
+end
+
+function BaleToCollectManager:update(dt)
+	for bale, time in pairs(self.temporaryLockedBales) do 
+		if time < (g_time + self.lockTimeOutMs) then 
+			self.temporaryLockedBales[bale] = nil
+		end
+	end
+end
+
+function BaleToCollectManager:draw()
+	
+end
+
+---@param bale table
+function BaleToCollectManager:lockBaleTemporary(bale)
+	self.temporaryLockedBales[bale] = g_time
+end
+
+---@param bale table
+function BaleToCollectManager:lockBale(bale, driver)
+	self.lockedBales[bale] = driver
+end
+
+---@param bale table
+function BaleToCollectManager:unlockBale(bale)
+	self.lockedBales[bale] = nil
+end
+
+---@param driver table
+function BaleToCollectManager:unlockBalesByDriver(driver)
+	for bale, d in pairs(self.lockedBales) do 
+		if driver == d then 
+			self.lockedBales[bale] = nil
+		end
+	end
+end
+
+
+---@param bale table
+function BaleToCollectManager:isValidBale(bale)
+	return not self.temporaryLockedBales[bale] and not self.lockedBales[bale]
+end
+
+function BaleToCollectManager:getBales()
 	return g_currentMission.slotSystem.objectLimits[SlotSystem.LIMITED_OBJECT_BALE].objects
 end
+
+g_baleToCollectManager = BaleToCollectManager()

@@ -100,6 +100,7 @@ local context = PathfinderControllerContext():maxFruitPercent(100):useFieldNum(t
 ---@field _areaToAvoid PathfinderUtil.NodeArea|nil
 ---@field _allowReverse boolean
 ---@field _vehiclesToIgnore table[]|nil
+---@field _objectsToIgnore table[]|nil
 ---@field _mustBeAccurate boolean
 ---@field _areaToIgnoreFruit table[]
 PathfinderControllerContext = CpObject()
@@ -120,6 +121,7 @@ PathfinderControllerContext.attributesToDefaultValue = {
 	["areaToAvoid"] = CpObjectUtil.BUILDER_API_NIL,
 	["allowReverse"] = false,
 	["vehiclesToIgnore"] = CpObjectUtil.BUILDER_API_NIL,
+	["objectsToIgnore"] = CpObjectUtil.BUILDER_API_NIL,
 	-- If false, as we reach the maximum iterations, we relax our criteria to reach the goal: allow for arriving at
 	-- bigger angle differences, trading off accuracy for speed. This usually results in a direction at the goal
 	-- being less then 30º off which in many cases isn't a problem.
@@ -258,7 +260,8 @@ function PathfinderController:onFinish(path, goalNodeInvalid)
 	end
 	self:callCallback(self.callbackSuccessFunction, 
 		retValue == self.SUCCESS_FOUND_VALID_PATH, 
-		self:getTemporaryCourseFromPath(path), goalNodeInvalid)
+		retValue == self.SUCCESS_FOUND_VALID_PATH and self:getTemporaryCourseFromPath(path), 
+		goalNodeInvalid)
 	self:reset()
 end
 
@@ -350,6 +353,38 @@ function PathfinderController:findPathToWaypoint(context,
 		context._maxFruitPercent,
 		context._offFieldPenalty, 
 		context._areaToAvoid, 
+		context._areaToIgnoreFruit)
+	if done then 
+		self:onFinish(path, goalNodeInvalid)
+	else 
+		self:debug("Continuing as coroutine...")
+		self.pathfinder = pathfinder
+	end
+	return true
+end
+
+--- Finds a path to a waypoint of a course.
+---@param context PathfinderControllerContext
+---@param goal State3D
+---@return boolean Was path finding started?
+function PathfinderController:findPathToGoal(context, goal)
+
+	if not self.callbackSuccessFunction then 
+		self:error("No valid success callback was given!") 
+		return false
+	end
+	self:onStart(context)
+	local pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToGoal(
+		context._vehicle, 
+		goal, 
+		context._allowReverse,
+		context._useFieldNum,
+		context._vehiclesToIgnore,
+		context._objectsToIgnore, 
+		context._maxFruitPercent,
+		context._offFieldPenalty, 
+		context._areaToAvoid,
+		context._mustBeAccurate, 
 		context._areaToIgnoreFruit)
 	if done then 
 		self:onFinish(path, goalNodeInvalid)
