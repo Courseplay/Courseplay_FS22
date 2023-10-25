@@ -310,6 +310,13 @@ function AIDriveStrategyCourse:updateLowFrequencyImplementControllers()
     end
 end
 
+function AIDriveStrategyCourse:updateLowFrequencyPathfinder()
+    local _, _, _, maxSpeed = self.pathfinderController:getDriveData()
+    if maxSpeed then
+        self:setMaxSpeed(maxSpeed)
+    end
+end
+
 --- Raises a event for the controllers.
 function AIDriveStrategyCourse:raiseControllerEvent(eventName, ...)
     for _, controller in pairs(self.controllers) do
@@ -442,6 +449,7 @@ function AIDriveStrategyCourse:update(dt)
     self:updatePathfinding()
     self:updateInfoTexts()
 end
+
 
 function AIDriveStrategyCourse:getDriveData(dt, vX, vY, vZ)
     local moveForwards = not self.ppc:isReversing()
