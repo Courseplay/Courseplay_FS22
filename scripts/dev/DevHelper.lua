@@ -223,6 +223,8 @@ function DevHelper:showFillNodes()
             for i = 1, #fillUnits do
                 local fillRootNode = vehicle:getFillUnitExactFillRootNode(i)
                 if fillRootNode then DebugUtil.drawDebugNode(fillRootNode, 'Fill node ' .. tostring(i)) end
+                local autoAimNode = vehicle:getFillUnitAutoAimTargetNode(i)
+                if autoAimNode then DebugUtil.drawDebugNode(autoAimNode, 'Auto aim node ' .. tostring(i)) end
             end
         end
     end
