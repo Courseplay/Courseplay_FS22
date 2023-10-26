@@ -118,7 +118,7 @@
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Il lavoratore IA %s ha interrotto il lavoro in modo imprevisto - lo scarico sul campo non è possibile!"/>
     <text name="CP_ai_messageErrorCutterNotSupported" text="L'operatore IA %s ha smesso di funzionare in modo imprevisto: il collegamento in testa è impossibile!"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="L'operatore IA %s ha interrotto il lavoro in modo imprevisto: attacco taglierina automatico disattivato!"/>
-    <text name="CP_ai_messageErrorWrongMissionFruitType" text="AI worker %s has stopped work unexpectedly - wrong fill type for mission selected!"/>
+    <text name="CP_ai_messageErrorWrongMissionFruitType" text="Il lavoratore IA %s ha interrotto il lavoro in modo imprevisto: tipo di riempimento errato per la missione selezionata!"/>
     <!---->
     <!--AI fieldwork task descriptions-->
     <!---->
@@ -459,8 +459,8 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Scarico a terra non supportato"/>
     <text name="CP_infoTexts_errorCutterNotSupported" text="Taglierina non supportata"/>
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Attacco taglierina disattivato"/>
-    <text name="CP_infoTexts_errorWrongSeason" text="Wrong season for fruit"/>
-    <text name="CP_infoTexts_errorWrongMissionFruitType" text="Wrong fruit for mission selected"/>
+    <text name="CP_infoTexts_errorWrongSeason" text="Stagione sbagliata per il prodotto"/>
+    <text name="CP_infoTexts_errorWrongMissionFruitType" text="Raccolto sbagliato per la missione selezionata"/>
     <!---->
     <!--Custom field manager-->
     <!---->
