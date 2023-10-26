@@ -2614,7 +2614,7 @@ Now it's possible to start the helper.
 			<Text language="de"><![CDATA[Radlader/Frontlader]]></Text>
 			<Text language="en"><![CDATA[Wheel loader/Front loader]]></Text>
 		</Translation>
-<!-- 		
+		
 		<Translation name="CP_help_page_shovelLoaderGeneral_text">
 			<Text language="de"><![CDATA[
 Mit einem Radlader oder Traktor mit Frontlader und Schaufel lassen sich Haufen vom Boden oder aus einem Bunker Silo automatisch aufnehmen und in einen Anhänger oder Lager abladen.
@@ -2689,7 +2689,7 @@ To select one place the middle of the round marker on the middle of the cross.
 The driection of the arrow tells the helper from which direction he will approach the trigger for unloading.
 Now your selection should look similar to the image.
 ]]></Text>
-		</Translation> -->
+		</Translation>
 	<!--
 	<Translation name="CP_help_page_shovelLoaderTpsExtension_text">
 		<Text language="de"><![CDATA[
