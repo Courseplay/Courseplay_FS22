@@ -164,3 +164,37 @@ function SelfUnloadHelper:isInvalidAutoDriveTarget(myVehicle, otherVehicle)
         return false
     end
 end
+
+
+--- Gets fill nodes of all fill units.
+---@return table[]|nil Fill root nodes found 
+---@return number Number of nodes found
+function SelfUnloadHelper:getTrailersTargetNodes(vehicleWithTrailers)
+    local targetNodes = {}
+    local trailers = AIUtil.getAllChildVehiclesWithSpecialization(vehicleWithTrailers, Trailer)
+    if not trailers then 
+        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicleWithTrailers,'Can\'t find any trailers')
+        return {}, 0
+    end
+    for _, trailer in pairs(trailers) do 
+        for ix, _ in pairs(trailer:getFillUnits()) do 
+            local node = trailer:getFillUnitExactFillRootNode(ix)
+            local _, _, trailerOffset = localToLocal(node, trailer.rootNode, 0, 0, 0)
+            local _, _, vehicleOffset = localToLocal(vehicleWithTrailers.rootNode, trailer.rootNode, 0, 0, 0)
+            if node then 
+                table.insert(targetNodes, {
+                    node = node,
+                    fillUnitIx = ix,
+                    trailer = trailer,
+                    trailerOffset = trailerOffset,
+                    vehicleOffset = -vehicleOffset,
+                })
+            end
+        end
+    end
+    table.sort(targetNodes, function (a, b)
+        --- Sorts these nodes to make sure the front most node is the first.
+        return b.vehicleOffset < a.vehicleOffset or b.vehicleOffset == a.vehicleOffset and b.trailerOffset < a.trailerOffset
+    end)
+    return targetNodes, #targetNodes
+end

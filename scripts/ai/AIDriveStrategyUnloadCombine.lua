@@ -299,6 +299,9 @@ function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
     -- remove any course already loaded (for instance to not to interfere with the fieldworker proximity controller)
     vehicle:resetCpCourses()
     self:resetPathfinder()
+    --- Target nodes for unloading into the trailer.
+    self.trailerNodes = SelfUnloadHelper:getTrailersTargetNodes(vehicle)
+
 end
 
 function AIDriveStrategyUnloadCombine:initializeImplementControllers(vehicle)
@@ -511,12 +514,40 @@ function AIDriveStrategyUnloadCombine:startWaitingForSomethingToDo()
 end
 
 function AIDriveStrategyUnloadCombine:driveBesideCombine()
-    -- we don't want a moving target
-    self:fixAutoAimNode()
-    local targetNode = self:getTrailersTargetNode()
+    local function isValidNode(targetNode)
+        local fillType = self.combineToUnload:getCpDriveStrategy():getFillType()
+        if not targetNode.trailer:getFillUnitAllowsFillType(targetNode.fillUnitIx, fillType) then
+            self:debugSparse("Fill node %d of trailer %s doesn't accept fillType %s!",
+                targetNode.fillUnitIx, targetNode.trailer, g_fillTypeManager:getFillTypeNameByIndex(fillType))
+            return false
+        end
+        if targetNode.trailer:getFillUnitFreeCapacity(targetNode.fillUnitIx) <= 0 then 
+            self:debugSparse("Fill node %d of trailer %s is completely filled!",
+                targetNode.fillUnitIx, targetNode.trailer)
+            return false
+        end
+        return true
+    end
+    if not self.trailerNodes then
+       self:debugSparse("Warning no valid trailer nodes found!")
+       return
+    end
+
+    local bestTargetNode
+    for i, targetNode in pairs(self.trailerNodes) do 
+        if isValidNode(targetNode) then
+            bestTargetNode = targetNode
+            break
+        end
+    end
+    if not bestTargetNode then 
+        --- TODO: Check if the driver is released correctly form the combine?
+        return
+    end
     local _, offsetZ = self:getPipeOffset(self.combineToUnload)
     -- TODO: this - 1 is a workaround the fact that we use a simple P controller instead of a PI
-    local _, _, dz = localToLocal(targetNode, self.combineToUnload:getAIDirectionNode(), 0, 0, -offsetZ - 2)
+    local dx, _, dz = localToLocal(bestTargetNode.trailer.rootNode, 
+        self.combineToUnload:getAIDirectionNode(), 0, 0, -offsetZ + bestTargetNode.trailerOffset )
     -- use a factor to make sure we reach the pipe fast, but be more gentle while discharging
     local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
     local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(-dz * factor, -10, 15)
@@ -526,11 +557,13 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
         speed = (math.min(speed, self.combineToUnload:getLastSpeed() + 2))
     end
 
-    self:renderText(0, 0.02, "%s: driveBesideCombine: dz = %.1f, speed = %.1f, factor = %.1f",
-            CpUtil.getName(self.vehicle), dz, speed, factor)
+    self:renderText(0, 0.02, "%s: driveBesideCombine: tZ = %.1f, dz = %.1f, speed = %.1f, factor = %.1f",
+        CpUtil.getName(self.vehicle), bestTargetNode.trailerOffset, dz, speed, factor)
 
     if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
-        DebugUtil.drawDebugNode(targetNode, 'target')
+        DebugUtil.drawDebugNode(bestTargetNode.node, 'target')
+        local x, y, z = localToWorld(self.combineToUnload:getAIDirectionNode(), dx, 0, dz)
+        DebugUtil.drawSimpleDebugCube(x, y + 4, z, 1, 0, 0, 1)
     end
     self:setMaxSpeed(math.max(0, speed))
 end
@@ -619,26 +652,6 @@ function AIDriveStrategyUnloadCombine:getCourseToAlignTo(vehicle, offset)
     return tempCourse
 end
 
-function AIDriveStrategyUnloadCombine:getTrailersTargetNode()
-    local trailer = AIUtil.getImplementOrVehicleWithSpecialization(self.vehicle, Trailer)
-    if trailer then
-        if self.combineToUnload:getCpDriveStrategy():canLoadTrailer(trailer) then
-            local targetNode = trailer:getFillUnitAutoAimTargetNode(1)
-            if targetNode then
-                return targetNode
-            else
-                self:debugSparse('Can\'t find trailer target node')
-            end
-        else
-            self:debugSparse('Combine says it can\'t load trailer')
-            --TODO: maybe then send the unloader away if activated?
-        end
-    else
-        self:debugSparse('Can\'t find trailer')
-    end
-    return trailer.rootNode
-end
-
 function AIDriveStrategyUnloadCombine:getPipesBaseNode(combine)
     return g_combineUnloadManager:getPipesBaseNode(combine)
 end
@@ -710,40 +723,6 @@ end
 
 function AIDriveStrategyUnloadCombine:isMoveablePipeDisabled()
     return self.state.properties.moveablePipeDisabled
-end
-
-------------------------------------------------------------------------------------------------------------------------
--- Fill node handling
-------------------------------------------------------------------------------------------------------------------------
--- Make sure the autoAimTargetNode is not moving with the fill level
-function AIDriveStrategyUnloadCombine:fixAutoAimNode()
-    self.autoAimNodeFixed = true
-end
-
--- Release the auto aim target to restore default behaviour
-function AIDriveStrategyUnloadCombine:releaseAutoAimNode()
-    self.autoAimNodeFixed = false
-end
-
-function AIDriveStrategyUnloadCombine:isAutoAimNodeFixed()
-    return self.autoAimNodeFixed
-end
-
--- Make sure the autoAimTargetNode is not moving with the fill level (which adds realism trying to
--- distribute the load more evenly in the trailer but makes life difficult for us)
--- TODO: instead of turning it off completely, could try to reduce the range it is adjusted
-function AIDriveStrategyUnloadCombine:updateFillUnitAutoAimTarget(superFunc, fillUnit)
-    local tractor = self.getAttacherVehicle and self:getAttacherVehicle() or nil
-    if tractor and tractor.cp.driver and tractor.cp.driver.isAutoAimNodeFixed and tractor.cp.driver:isAutoAimNodeFixed() then
-        local autoAimTarget = fillUnit.autoAimTarget
-        if autoAimTarget.node ~= nil then
-            if autoAimTarget.startZ ~= nil and autoAimTarget.endZ ~= nil then
-                setTranslation(autoAimTarget.node, autoAimTarget.baseTrans[1], autoAimTarget.baseTrans[2], autoAimTarget.startZ)
-            end
-        end
-    else
-        superFunc(self, fillUnit)
-    end
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -2459,6 +2438,11 @@ function AIDriveStrategyUnloadCombine:update(dt)
         end
         if self.state == self.states.DRIVING_BACK_TO_START_POSITION_WHEN_FULL and self.invertedStartPositionMarkerNode then
             CpUtil.drawDebugNode(self.invertedStartPositionMarkerNode, true, 3);
+        end
+        for i, nodeData in pairs(self.trailerNodes) do 
+            CpUtil.drawDebugNode(nodeData.node, false, 
+                0, string.format("%s -> Fill node %d", 
+                CpUtil.getName(nodeData.trailer), i))
         end
     end
     self:updateImplementControllers(dt)
