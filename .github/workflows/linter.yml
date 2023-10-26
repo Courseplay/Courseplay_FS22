@@ -12,9 +12,14 @@ name: Lint Code Base
 on:
   push:
     branches-ignore: [master, main]
+    paths:
+      - '**.xml'
     # Remove the line above to run when pushing to master or main
   pull_request:
     branches: [master, main]
+    paths:
+      - '**.xml'
+  workflow_dispatch:
 
 ###############
 # Set the Job #
