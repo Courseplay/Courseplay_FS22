@@ -202,7 +202,7 @@ function CpAICombineUnloader:isOnlyOneTrailerAttached()
             numTrailers = numTrailers + 1
         end
     end
-    return numTrailers == 1 or vehicleHasTrailer and numTrailers == 2
+    return numTrailers == 1 or vehicleHasTrailer and numTrailers <= 2
 end
 
 --- If we have a trailer which can be emptied, we can unload a combine
