@@ -7,7 +7,7 @@
 	text : is the tooltip shown in the hud.
 -->
 <DebugChannels>
-	<DebugChannel active="true"  name="DBG_FIELDWORK"      	text="field work">
+	<DebugChannel active="true"  name="DBG_FIELDWORK"      	text="field work"/>
 	<DebugChannel active="true"  name="DBG_FIND_BALES" 		text="bale collector"/>
 	<DebugChannel active="true"  name="DBG_UNLOAD_COMBINE" 	text="unload combine"/>
 	<DebugChannel active="false" name="DBG_MODE_8" 			text="field supply"/>
