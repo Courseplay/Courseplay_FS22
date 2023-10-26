@@ -7,7 +7,7 @@
 	
  	Dependencies: lxml with pip install.
 '''
-import os
+import os, sys
 from lxml import etree as ET
 import re
 seperator = "/"
@@ -70,19 +70,26 @@ def loadTranslationFiles(categories):
 	for filename in os.listdir(translationDir):
 		f = translationDir + filename
 		if os.path.isfile(f):
-			string = open(translationDir + filename, encoding="utf-8").read()
-			#string = string.replace("\n"," &#xA; ")
-			string = filter(string)			
-			subRoot = ET.fromstring(string)[0]
-			# Cuts the name from the filename: "translation_en.xml" -> "en"
-			language = filename.split("_")[1][:-4]
-			for entry in subRoot.iter('text'):
-				for item in categories.values(): 
-					if entry.attrib['name'] in item:
-						# If the translation is not defined in the master translation under "<Text language=name>...<\\Text>", then add it here.
-						if not language in item[entry.attrib['name']]:
-							item[entry.attrib['name']][language] = entry.attrib['text']
-			allLanguages.append(language)
+			print("Loading file: " + f)
+			try:
+				string = open(translationDir + filename, encoding="utf-8").read()
+				#string = string.replace("\n"," &#xA; ")
+				string = filter(string)			
+				subRoot = ET.fromstring(string)[0]
+				# Cuts the name from the filename: "translation_en.xml" -> "en"
+				language = filename.split("_")[1][:-4]
+				for entry in subRoot.iter('text'):
+					for item in categories.values(): 
+						if entry.attrib['name'] in item:
+							# If the translation is not defined in the master translation under "<Text language=name>...<\\Text>", then add it here.
+							if not language in item[entry.attrib['name']]:
+								item[entry.attrib['name']][language] = entry.attrib['text']
+				allLanguages.append(language)
+			except Exception as e:
+				print("Failed to load translation file: " + f)
+				print(e)
+				sys.exit(0)
+	
 	return categories, allLanguages
 
 # Generated the new translation files for all languages, based on the translation setup by the master file and the user translations in the translation_xx.xml files.

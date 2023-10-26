@@ -214,7 +214,7 @@
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Munkaszélesség. Értéke: 0 - 50"/>
     <text name="CP_vehicle_setting_levelerHeightOffset_title" text="Tolólap magasság eltolás"/>
     <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Tolólap magasságának eltolása a talajtól. Érték: 0 - 1"/>
-    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Kanáltöltés eltolása/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Kanáltöltés eltolása"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Kanáltöltés eltolása. Érték: -1 - 1"/>
     <!---->
     <!--Vehicle settings speed-->
