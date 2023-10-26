@@ -193,17 +193,16 @@ end
 function CpAICombineUnloader:isOnlyOneTrailerAttached()
     --- Checks if at least one fill unit to unload into is there
     --- and only max one trailer attached.
-    local vehicles = AIUtil.getAllChildVehiclesWithSpecialization(self, Trailer, nil)
+    local vehicles = AIUtil.getAllChildVehiclesWithSpecialization(self, Trailer)
     local numTrailers = 0
+    local vehicleHasTrailer =false
     for _,v in pairs(vehicles) do 
+        vehicleHasTrailer = vehicleHasTrailer or v == self and CpAICombineUnloader.isValidTrailer(self, self)
         if v ~= self and CpAICombineUnloader.isValidTrailer(self, v) then
             numTrailers = numTrailers + 1
         end
     end
-    return numTrailers == 1
-
-    ---TODO: Checks if the vehicle has a valid trailer unit.
-    -- return SpecializationUtil.hasSpecialization(Trailer, self.specializations) and self.spec_trailer.tipSideCount > 0
+    return numTrailers == 1 or vehicleHasTrailer and numTrailers == 2
 end
 
 --- If we have a trailer which can be emptied, we can unload a combine

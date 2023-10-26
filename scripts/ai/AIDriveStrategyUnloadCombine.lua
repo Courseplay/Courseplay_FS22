@@ -300,7 +300,7 @@ function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
     vehicle:resetCpCourses()
     self:resetPathfinder()
     --- Target nodes for unloading into the trailer.
-    self.trailerNodes = self:getTrailersTargetNodes()
+    self.trailerNodes = SelfUnloadHelper:getTrailersTargetNodes(vehicle)
 
 end
 
@@ -650,39 +650,6 @@ function AIDriveStrategyUnloadCombine:getCourseToAlignTo(vehicle, offset)
     end
     local tempCourse = Course(self.vehicle, waypoints)
     return tempCourse
-end
-
---- Gets fill nodes of all fill units.
----@return table|nil
-function AIDriveStrategyUnloadCombine:getTrailersTargetNodes()
-    local targetNodes = {}
-    local trailers = AIUtil.getAllChildVehiclesWithSpecialization(self.vehicle, Trailer)
-    if not trailers then 
-        self:debugSparse('Can\'t find any trailers')
-        return
-    end
-    for _, trailer in pairs(trailers) do 
-        for ix, _ in pairs(trailer:getFillUnits()) do 
-            local node = trailer:getFillUnitExactFillRootNode(ix)
-            local _, _, trailerOffset = localToLocal(node, trailer.rootNode, 0, 0, 0)
-            local _, _, vehicleOffset = localToLocal(trailer.rootNode, self.vehicle.rootNode, 0, 0, 0)
-            if node then 
-                table.insert(targetNodes, {
-                    node = node,
-                    fillUnitIx = ix,
-                    trailer = trailer,
-                    trailerOffset = trailerOffset,
-                    vehicleOffset = vehicleOffset,
-                })
-            end
-        end
-    end
-    table.sort(targetNodes, function (a, b)
-        --- Sorts these nodes to make sure the front most node is the first.
-        return b.vehicleOffset < a.vehicleOffset or b.vehicleOffset == a.vehicleOffset and b.trailerOffset < a.trailerOffset
-    end)
-
-    return targetNodes
 end
 
 function AIDriveStrategyUnloadCombine:getPipesBaseNode(combine)
@@ -2471,6 +2438,11 @@ function AIDriveStrategyUnloadCombine:update(dt)
         end
         if self.state == self.states.DRIVING_BACK_TO_START_POSITION_WHEN_FULL and self.invertedStartPositionMarkerNode then
             CpUtil.drawDebugNode(self.invertedStartPositionMarkerNode, true, 3);
+        end
+        for i, nodeData in pairs(self.trailerNodes) do 
+            CpUtil.drawDebugNode(nodeData.node, false, 
+                0, string.format("%s -> Fill node %d", 
+                CpUtil.getName(nodeData.trailer), i))
         end
     end
     self:updateImplementControllers(dt)
