@@ -195,14 +195,28 @@ function CpAICombineUnloader:isOnlyOneTrailerAttached()
     --- and only max one trailer attached.
     local vehicles = AIUtil.getAllChildVehiclesWithSpecialization(self, Trailer)
     local numTrailers = 0
-    local vehicleHasTrailer =false
-    for _,v in pairs(vehicles) do 
+    local numTrailersWithoutWheels = 0
+    local vehicleHasTrailer = false
+    for _, v in pairs(vehicles) do 
         vehicleHasTrailer = vehicleHasTrailer or v == self and CpAICombineUnloader.isValidTrailer(self, self)
         if v ~= self and CpAICombineUnloader.isValidTrailer(self, v) then
-            numTrailers = numTrailers + 1
+            if v.getWheels and #v:getWheels() > 0 and not v.spec_hookLiftContainer then 
+                numTrailers = numTrailers + 1
+            else 
+                numTrailersWithoutWheels = numTrailersWithoutWheels + 1
+            end
         end
     end
-    return numTrailers == 1 or vehicleHasTrailer and numTrailers <= 2
+    if vehicleHasTrailer and numTrailers > 2 then 
+        -- Vehicle has a trailer unit and more than one wheeled trailer is attached.
+        return false
+    end
+    if not vehicleHasTrailer and numTrailers > 1 then 
+         -- Vehicle has no trailer unit and more than one wheeled trailer is attached.
+        return false
+    end 
+    --- Checks if at least one trailer is attached 
+    return numTrailers > 0 or numTrailersWithoutWheels > 0
 end
 
 --- If we have a trailer which can be emptied, we can unload a combine
