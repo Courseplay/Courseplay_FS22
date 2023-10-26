@@ -118,36 +118,36 @@
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Trabajador CP %s ha dejado de trabajar inesperadamente: ¡No es posible descargar en el campo!"/>
     <text name="CP_ai_messageErrorCutterNotSupported" text="Trabajador CP %s ha dejado de trabajar inesperadamente: - ¡Acoplar el cabezal es imposible!"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="Trabajador CP %s ha dejado de trabajar inesperadamente: - ¡Acoplamiento automático del cabezal desabilitado!"/>
-    <text name="CP_ai_messageErrorWrongMissionFruitType" text="AI worker %s has stopped work unexpectedly - wrong fill type for mission selected!"/>
+    <text name="CP_ai_messageErrorWrongMissionFruitType" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡Tipo de relleno incorrecto para la misión seleccionada!"/>
     <!---->
     <!--AI fieldwork task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionAttachHeader" text="Picks the header up"/>
+    <text name="CP_ai_taskDescriptionAttachHeader" text="Levanta el cabezal"/>
     <!---->
     <!--AI bale finder task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionCollectsBales" text="Collects bales on the field"/>
-    <text name="CP_ai_taskDescriptionWrapsBales" text="Wraps bales on the field"/>
+    <text name="CP_ai_taskDescriptionCollectsBales" text="Recoge fardos en el campo"/>
+    <text name="CP_ai_taskDescriptionWrapsBales" text="Envuelve fardos en el campo"/>
     <!---->
     <!--AI combine unloader task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionUnloadCombine" text="Unloads combine"/>
-    <text name="CP_ai_taskDescriptionWaitsForTargetCombine" text="Waits for combine"/>
-    <text name="CP_ai_taskDescriptionUnloadSiloLoader" text="Unloads loader"/>
-    <text name="CP_ai_taskDescriptionWaitsForTargetSiloLoader" text="Waits for loader"/>
-    <text name="CP_ai_taskDescriptionUnloadingToHeap" text="Unloads to a heap"/>
-    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Unloads into trailer"/>
-    <text name="CP_ai_taskDescriptionUnloadingWithGiants" text="Unloads with giants worker"/>
+    <text name="CP_ai_taskDescriptionUnloadCombine" text="Descarga la cosechadora"/>
+    <text name="CP_ai_taskDescriptionWaitsForTargetCombine" text="Espera por la cosechadora"/>
+    <text name="CP_ai_taskDescriptionUnloadSiloLoader" text="Descarga el cargador del silo"/>
+    <text name="CP_ai_taskDescriptionWaitsForTargetSiloLoader" text="Espera por el cargador del silo"/>
+    <text name="CP_ai_taskDescriptionUnloadingToHeap" text="Descarga a un montón"/>
+    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Descarga en un remolque"/>
+    <text name="CP_ai_taskDescriptionUnloadingWithGiants" text="Descarga con un trabajador de Giants"/>
     <!---->
     <!--AI silo worker task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionWorksInTheSilo" text="Works in the silo"/>
-    <text name="CP_ai_taskDescriptionWaitsForUnloaders" text="Waits for unloader"/>
+    <text name="CP_ai_taskDescriptionWorksInTheSilo" text="Trabaja en el silo"/>
+    <text name="CP_ai_taskDescriptionWaitsForUnloaders" text="Espera por un descargador"/>
     <!---->
     <!--AI silo loader task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionWaitsForTrailer" text="Waits for a trailer"/>
-    <text name="CP_ai_taskDescriptionUnloadingToTrigger" text="Unloads to an unload trigger"/>
+    <text name="CP_ai_taskDescriptionWaitsForTrailer" text="Espera por un remolque"/>
+    <text name="CP_ai_taskDescriptionUnloadingToTrigger" text="Descarga a un disparador de descarga"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -210,12 +210,12 @@
     <!--Vehicle bunker silo settings-->
     <!---->
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Ajustes de Trabajo en Silo"/>
-    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Ancho de trabajo"/>
-    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Ancho de trabajo. Valor: 0 - 50"/>
-    <text name="CP_vehicle_setting_levelerHeightOffset_title" text="Shield height offset"/>
-    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Offset of the shield form the ground. Value: 0 - 1"/>
-    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Compensación de carga de la pala.  Valor: -1 - 1"/>
-    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Compensación de carga de pala. Valor: -1 - 1"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Ancho de trabajo en el silo"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Ajusta el ancho de trabajo en el silo. Valor: 0 - 50"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_title" text="Conpensación de altura del nivelador"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Compensa la altura del nivelador respecto al suelo. Value: 0 - 1"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Compensación de altura de la pala.  Valor: -1 - 1"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Compensa la altura de pala respecto al suelo. Valor: -1 - 1"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
@@ -459,8 +459,8 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="No es posible volcar al suelo"/>
     <text name="CP_infoTexts_errorCutterNotSupported" text="Cabezal no compatible"/>
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Acoplamiento automático del cabezal desactivado"/>
-    <text name="CP_infoTexts_errorWrongSeason" text="Wrong season for fruit"/>
-    <text name="CP_infoTexts_errorWrongMissionFruitType" text="Wrong fruit for mission selected"/>
+    <text name="CP_infoTexts_errorWrongSeason" text="Temporada incorrecta para este cultivo"/>
+    <text name="CP_infoTexts_errorWrongMissionFruitType" text="Tipo de relleno incorrecto para la misión seleccionada"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -481,7 +481,7 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <!--Help menu-->
     <!---->
     <text name="CP_help_title" text="Courseplay"/>
-    <text name="CP_help_subTitle" text="Una Modificación para Farming Simulator 22 "/>
+    <text name="CP_help_subTitle" text="Una Modificación para Farming Simulator 22"/>
     <text name="CP_help_page_blank" text=""/>
     <text name="CP_help_page_General_title" text="Información General"/>
     <text name="CP_help_page_GeneralBase_text" text="
@@ -851,7 +851,7 @@ Para iniciar el marcador de carga, en el menú AI debe configurarse.
 El marcador detecta montones o silos y los resalta en el mapa.
 Ahora es posible iniciar el ayudante.
 "/>
-    <text name="CP_help_page_shovelLoader_title" text="Wheelloader Driver"/>
+    <text name="CP_help_page_shovelLoader_title" text="Conductor de Cargador con Pala"/>
     <text name="CP_help_page_shovelLoaderGeneral_text" text="
 WIP
 "/>
