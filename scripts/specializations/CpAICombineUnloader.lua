@@ -216,7 +216,7 @@ function CpAICombineUnloader:isOnlyOneTrailerAttached()
         return false
     end 
     --- Checks if at least one trailer is attached 
-    return numTrailers > 0 or numTrailersWithoutWheels > 0
+    return numTrailers > 0 or numTrailersWithoutWheels > 0 or vehicleHasTrailer
 end
 
 --- If we have a trailer which can be emptied, we can unload a combine
