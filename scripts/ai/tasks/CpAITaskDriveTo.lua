@@ -8,7 +8,6 @@ function CpAITaskDriveTo:start()
         local strategy = AIDriveStrategyDriveToFieldWorkStart(self, self.job)
         strategy:setAIVehicle(self.vehicle, self.job:getCpJobParameters())
         self.vehicle:startCpWithStrategy(strategy)
-        self.vehicle:startCpDriveTo(self, self.job:getCpJobParameters())
     end
     CpAITask.start(self)
 end
