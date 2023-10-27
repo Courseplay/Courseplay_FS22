@@ -1795,7 +1795,7 @@ function Course:writeStream(vehicle,streamId, connection)
 	streamWriteInt32(streamId, self.numHeadlands or 0 )
 	streamWriteInt32(streamId, self.multiTools or 1)
 	streamWriteInt32(streamId, self.multiToolsPosition or 0)
-	streamWriteInt32(streamId, self.multiToolsSameTurnWidth)
+	streamWriteBool(streamId, self.multiToolsSameTurnWidth or false)
 	streamWriteInt32(streamId, #self.waypoints or 0)
 	streamWriteBool(streamId, self.editedByCourseEditor)
 	for i,p in ipairs(self.waypoints) do 
