@@ -118,7 +118,7 @@
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - não é possível descarregar no campo!"/>
     <text name="CP_ai_messageErrorCutterNotSupported" text="O trabalhador AI %s parou inesperadamente - impossível conectar o equipamento!"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="O trabalhador AI %s parou inesperadamente - conexão automática do cortador desativada!"/>
-    <text name="CP_ai_messageErrorWrongMissionFruitType" text="AI worker %s has stopped work unexpectedly - wrong fill type for mission selected!"/>
+    <text name="CP_ai_messageErrorWrongMissionFruitType" text="AI %s parou de trabalhar inesperadamente - tipo de preenchimento errado para a missão selecionada!"/>
     <!---->
     <!--AI fieldwork task descriptions-->
     <!---->
@@ -194,10 +194,10 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Distancia horizontal do implemento"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Distância lateral para coleta de fardos"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Distância lateral para coleta de fardos"/>
-    <text name="CP_vehicle_setting_combineOffsetX_title" text="Offset forwards/backwards"/>
-    <text name="CP_vehicle_setting_combineOffsetX_tooltip" text="Offset for harvester pipe with forwards(+) and backwards(-)"/>
-    <text name="CP_vehicle_setting_combineOffsetZ_title" text="Offset forwards/backwards"/>
-    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Offset for harvester pipe with forwards(+) and backwards(-)"/>
+    <text name="CP_vehicle_setting_combineOffsetX_title" text="Distância para frente/para trás"/>
+    <text name="CP_vehicle_setting_combineOffsetX_tooltip" text="Distância do tubo da colheitadeira para frente(+) e para trás(-)"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_title" text="Distância para frente/para trás"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Distância do tubo da colheitadeira para frente(+) e para trás(-)"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Esvaziar quando acabar:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Verifique se há aditivo de silagem."/>
@@ -388,7 +388,7 @@
     <text name="CP_courseManager_change_mode" text="Mudar modo"/>
     <text name="CP_courseManager_load_courses" text="Carregar rota"/>
     <text name="CP_courseManager_save_courses" text="Salvar rota"/>
-    <text name="CP_courseManager_edit_course" text="Open course editor"/>
+    <text name="CP_courseManager_edit_course" text="Abrir editor de rotas"/>
     <text name="CP_courseManager_clear_current_courses" text="Limpar rota atual"/>
     <text name="CP_courseManager_create_directory" text="Criar nova pasta"/>
     <text name="CP_courseManager_move_entry" text="Mover entrada"/>
@@ -453,7 +453,7 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_infoTexts_drivingToSelfUnload" text="Dirigir para a carreta"/>
     <text name="CP_infoTexts_outOfMoney" text="Sem dinheiro"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Esperando a chuva passar"/>
-    <text name="CP_infoTexts_waitForSnowToClear" text="Waits for snow to disappear"/>
+    <text name="CP_infoTexts_waitForSnowToClear" text="Espera a neve desaparecer"/>
     <text name="CP_infoTexts_waitForUnloader" text="Aguardando descarregar"/>
     <text name="CP_infoTexts_errorStopped" text="Deixou a rota, parou"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de fardo errado"/>
@@ -461,8 +461,8 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Inclinação para o solo não é possível"/>
     <text name="CP_infoTexts_errorCutterNotSupported" text="Cortador não suportado"/>
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Conexão do cortador desativado"/>
-    <text name="CP_infoTexts_errorWrongSeason" text="Wrong season for fruit"/>
-    <text name="CP_infoTexts_errorWrongMissionFruitType" text="Wrong fruit for mission selected"/>
+    <text name="CP_infoTexts_errorWrongSeason" text="Época errada para frutas"/>
+    <text name="CP_infoTexts_errorWrongMissionFruitType" text="Fruta errada para a missão selecionada"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -863,40 +863,40 @@ Agora é possível iniciar o auxiliar.
 "/>
     <text name="CP_help_page_shovelLoader_title" text="Wheelloader Driver"/>
     <text name="CP_help_page_shovelLoaderGeneral_text" text="
-This mode enables wheel loader and tractors with a front loader. 
-With a shovel attached a heap can be picked up from the ground or loading from a bunker silo can be accomplished.
-The picked up fill level can be unloaded automatically into a nearby trailer or a selected unloading station like a BGA.
-The shovel will automatically be moved to the correct positions for loading, unloading and so on.
-In case the mode is not directly visable on the hud, you can toggle the &quot;start position&quot; until the shovel mode appears.
+Este modo habilita carregadeiras de rodas e tratores com carregador frontal.
+Com uma pá acoplada, uma pilha pode ser retirada do solo ou o carregamento de um silo pode ser realizado.
+O nível de enchimento recolhido pode ser descarregado automaticamente em uma carreta próximo ou em uma estação de descarga selecionada, como um BGA.
+A escavadeira será movida automaticamente para as posições corretas para carga, descarga e assim por diante.
+Caso o modo não esteja diretamente visível no hud, você pode alternar a &quot;posição inicial&quot; até que o modo pá apareça.
 
-The target icon on the hud can be used to open the AI map to select the loading and the unloading targets.
-The hud also shows the leftover fill level of the heap or silo, while the helper is working.
-If the loading target is a bunker silo, then the work width might need to be adjusted to avoid hitting the side walls of the silo.
+O ícone de alvo no hud pode ser usado para abrir o mapa de IA para selecionar os alvos de carga e descarga.
+O hud também mostra o nível de preenchimento restante da pilha ou silo, enquanto o auxiliar está trabalhando.
+Se o alvo de carregamento for um silo, então a largura de trabalho poderá precisar ser ajustada para evitar bater nas paredes laterais do silo.
 
-The hight offset setting is used to adjust the hight above the ground, as not all shovel can calculated correctly. 
-This should be checked, if the shovel is to low for loading and the driver can't turn anymore or the shovel is to high and fill level is missed to the ground.
-If the value gets changed, the shovel will automatically move to the loading position to show the impact of the offset.
-To reset the offset you need to click on the settings text in the hud. The value can be adjusted from +1 to -1 in 0.1 setps.
+A configuração da distância de altura é usada para ajustar a altura acima do solo, pois nem todas as escavadeiras podem ser calculadas corretamente.
+Isso deve ser verificado se a escavadeira estiver muito baixa para carregar e o motorista não puder mais virar ou se a escavadeira estiver muito alta e o nível de enchimento não atingir o solo.
+Se o valor for alterado, a escavadeira se moverá automaticamente para a posição de carregamento para mostrar o impacto da distância.
+Para redefinir o deslocamento você precisa clicar no texto de configurações no hud. O valor pode ser ajustado de +1 a -1 em 0,1 setps.
 
-Shovels with a silage grab will open and close automatically for loading and unloading.
-The shovel to shred sugar beets is completly functional as well.
+As pás com garra de silagem abrem e fecham automaticamente para carga e descarga.
+A pá para triturar beterraba sacarina também é totalmente funcional.
 "/>
     <text name="CP_help_page_shovelLoaderBasic_text" text="
-To start a wheel loader helper, you need to set the load and unload positions by clicking the target icon on the hud.
-The loading position works the same like the one from the loader mode. A blue square will be created arround the heap.
+Para iniciar um auxiliar de carregadeira de rodas, você precisa definir as posições de carga e descarga clicando no ícone de destino no hud.
+A posição de carregamento funciona da mesma forma que no modo carregador. Um quadrado azul será criado ao redor da pilha.
 
-The unloading position depends if you want to unload into a trailer or into an unloading station.
-If unloading into the trailer is selected, then the area where the trailer will be parked needs to be selected on the AI Menu.
-The helper will drive to any parked trailer in the area. The direction of the marker has no real meaning.
-If you want to unload into an unloading station, you need to switch the target and then mark the trigger with the unloading position.
+A posição de descarga depende se você deseja descarregar em uma arreta ou em uma estação de descarga.
+Se descarregar no trailer estiver selecionado, a área onde o carreta será estacionado precisa ser selecionada no menu AI.
+O ajudante irá dirigir até qualquer carreta estacionado na área. A direção do marcador não tem significado real.
+Se quiser descarregar em uma estação de descarga, você precisa mudar o alvo e marcar o trigger com a posição de descarga.
 "/>
     <text name="CP_help_page_shovelLoaderTrigger_text" text="
-Selecting a trigger does look a bit complicated at first, but in reality it is really easy.
-Every building can have more then one trigger so you have to choose the one you want to unload to.
-All available triggers will be shown with an orange cross on the AI Map.
-To select one place the middle of the round marker on the middle of the cross.
-The driection of the arrow tells the helper from which direction he will approach the trigger for unloading.
-Now your selection should look similar to the image.
+Selecionar um trigger parece um pouco complicado no início, mas na realidade é muito fácil.
+Cada edifício pode ter mais de um trigger, então você deve escolher aquele em que deseja descarregar.
+Todos os trigger disponíveis serão mostrados com uma cruz laranja no Mapa AI.
+Para selecionar um coloque o meio do marcador redondo no meio da cruz.
+A direção da flecha informa ao figurante de que direção ele se aproximará do trigger para descarregar.
+Agora sua seleção deve ser semelhante à imagem.
 "/>
     <!---->
     <!--Input bindings-->
