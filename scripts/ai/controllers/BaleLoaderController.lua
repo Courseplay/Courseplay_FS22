@@ -79,13 +79,10 @@ function BaleLoaderController:getDriveData()
     if self.baleLoaderSpec.emptyState == BaleLoader.EMPTY_WAIT_TO_SINK then
         maxSpeed = 1
     end
-    if not self:isBaleFinderMode() then 
-        if self:isGrabbingBale() then 
-            self:debugSparse("Waiting until the bale pickup has finished.")
-            maxSpeed = 0
-        end
+    if self:isGrabbingBale() then 
+        self:debugSparse("Slowing down as another bale was found on the way.")
+        maxSpeed = 2
     end
-
     return nil, nil, nil, maxSpeed
 end
 
