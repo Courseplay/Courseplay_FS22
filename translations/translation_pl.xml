@@ -118,7 +118,7 @@
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Pomocnik SI  %s niespodziewanie przerwał pracę - rozładunek na polu niemożliwy!"/>
     <text name="CP_ai_messageErrorCutterNotSupported" text="Pomocnik SI %s niespodziewanie przerwał pracę - podczepienie hederu niemożliwe!"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="Pomocnik SI %s niespodziewanie przerwał pracę - automatyczne podczepienie hederu wyłączone!"/>
-    <text name="CP_ai_messageErrorWrongMissionFruitType" text="AI worker %s has stopped work unexpectedly - wrong fill type for mission selected!"/>
+    <text name="CP_ai_messageErrorWrongMissionFruitType" text="Pomocnik SI %s niespodziewanie przerwał pracę - wybrano zły typ ładunku!"/>
     <!---->
     <!--AI fieldwork task descriptions-->
     <!---->
@@ -133,7 +133,7 @@
     <!---->
     <text name="CP_ai_taskDescriptionUnloadCombine" text="Rozładowywanie kombajnu"/>
     <text name="CP_ai_taskDescriptionWaitsForTargetCombine" text="Oczekiwanie na kombajn"/>
-    <text name="CP_ai_taskDescriptionUnloadSiloLoader" text="Rozładowywanie ładowarki"/>
+    <text name="CP_ai_taskDescriptionUnloadSiloLoader" text="Rozładowywanie łyżki"/>
     <text name="CP_ai_taskDescriptionWaitsForTargetSiloLoader" text="Oczekiwanie na rozładowującego"/>
     <text name="CP_ai_taskDescriptionUnloadingToHeap" text="Wyładowywanie na pryzmę"/>
     <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Wyładowywanie na przyczepę"/>
@@ -194,10 +194,10 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Przesunięcie horyzontalne (poziome) dla narzędzi."/>
     <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Przes. podbieracza bel"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Przesunięcie dla podbieracza bel."/>
-    <text name="CP_vehicle_setting_combineOffsetX_title" text="Offset forwards/backwards"/>
-    <text name="CP_vehicle_setting_combineOffsetX_tooltip" text="Offset for harvester pipe with forwards(+) and backwards(-)"/>
-    <text name="CP_vehicle_setting_combineOffsetZ_title" text="Offset forwards/backwards"/>
-    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Offset for harvester pipe with forwards(+) and backwards(-)"/>
+    <text name="CP_vehicle_setting_combineOffsetX_title" text="Przes. prawo/lewo"/>
+    <text name="CP_vehicle_setting_combineOffsetX_tooltip" text="Przesunięcie dla rury kombajnu w prawo (+) i w lewo(-)"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_title" text="Przes. przód/tył"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Przesunięcie dla rury kombajnu w przód (+) i w tył(-)"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Opróżnij, gdy ponad:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="Ustala po osiągnięciu jakiego poziomu wypełnienia pomocnik ma rozładować przyczepę."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Sprawdź dodatek do kiszenia"/>
@@ -214,8 +214,8 @@
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Ustawienia pracownika silosu"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Szerokość robocza"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Szerokość robocza. Zakres: 0 - 50"/>
-    <text name="CP_vehicle_setting_levelerHeightOffset_title" text="Shield height offset"/>
-    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Offset of the shield form the ground. Value: 0 - 1"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_title" text="Przes. wys. lemiesza"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Przesunięcie odległości lemiesza od ziemi. Zakres: 0 - 1"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Przes. załadunku łyżki. Zakres: -1 - 1"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Przesunięcie załadunku łyżki. Zakres: -1 - 1"/>
     <!---->
@@ -461,8 +461,8 @@ Kurs jest automatycznie zapisywany po zamknięciu edytora i nadpisuje wybrany ku
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Kiprowanie na ziemię niemożliwe"/>
     <text name="CP_infoTexts_errorCutterNotSupported" text="Nieobsługiwany heder"/>
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Podczepianie hederu nieaktywne"/>
-    <text name="CP_infoTexts_errorWrongSeason" text="Wrong season for fruit"/>
-    <text name="CP_infoTexts_errorWrongMissionFruitType" text="Wrong fruit for mission selected"/>
+    <text name="CP_infoTexts_errorWrongSeason" text="Zła pora roku dla tej uprawy"/>
+    <text name="CP_infoTexts_errorWrongMissionFruitType" text="Zły rodzaj uprawy dla tej pracy"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -849,42 +849,42 @@ Aby rozpocząć załadunek, punkt załadunkowy musi zostać ustawiony w menu SI.
 Znacznik wykrywa pryzmę lub silos i podświetla to na mapie.
 Terze możesz rozpocząć pracę pomocnika.
 "/>
-    <text name="CP_help_page_shovelLoader_title" text="Kierowca ładowarki"/>
+    <text name="CP_help_page_shovelLoader_title" text="Ładowarka"/>
     <text name="CP_help_page_shovelLoaderGeneral_text" text="
-This mode enables wheel loader and tractors with a front loader. 
-With a shovel attached a heap can be picked up from the ground or loading from a bunker silo can be accomplished.
-The picked up fill level can be unloaded automatically into a nearby trailer or a selected unloading station like a BGA.
-The shovel will automatically be moved to the correct positions for loading, unloading and so on.
-In case the mode is not directly visable on the hud, you can toggle the &quot;start position&quot; until the shovel mode appears.
+W tym trybie można pracować ładowarką kołową oraz ciągnikami z ładowaczem czołowym.
+Za pomocą podczepionej łyżki można zebrać ładunek z ziemi lub silosu bunkrowego.
+Zebrany ładunek może zostać automatycznie wyładowany na pobliską przyczepę lub wybrany punkt rozładunku, np. BGA.
+Łyżka zostanie automatycznie ustawiona we właściwe pozycje do załadunku, rozładunku itd.
+W przypadku, gdy tryb nie jest bezpośrednio widoczny na HUDzie, możesz przełączyć &quot;Pozycję początkową&quot; aż tryb ładowarki się pojawi.
 
-The target icon on the hud can be used to open the AI map to select the loading and the unloading targets.
-The hud also shows the leftover fill level of the heap or silo, while the helper is working.
-If the loading target is a bunker silo, then the work width might need to be adjusted to avoid hitting the side walls of the silo.
+Ikony celu na HUDzie można użyć do otwarcia mapy AI w celu wybrania celów ładowania i rozładowywania.
+HUD pokazuje również pozostałą zawartość pryzmy lub silosu, gdy pracownik pracuje.
+Jeśli celem załadunku jest silos bunkrowy, może być konieczne dostosowanie szerokości roboczej, aby uniknąć uderzenia w boczne ściany silosu.
 
-The hight offset setting is used to adjust the hight above the ground, as not all shovel can calculated correctly. 
-This should be checked, if the shovel is to low for loading and the driver can't turn anymore or the shovel is to high and fill level is missed to the ground.
-If the value gets changed, the shovel will automatically move to the loading position to show the impact of the offset.
-To reset the offset you need to click on the settings text in the hud. The value can be adjusted from +1 to -1 in 0.1 setps.
+Ustawienie przesunięcia wysokości służy do regulacji wysokości nad poziomem gruntu, ponieważ nie dla wszystkich łyżek można obliczyć to poprawnie.
+Należy sprawdzić, czy jeśli łyżka jest w pozycji do załadunku, kierowca może swobodnie skręcać oraz czy łyżka jest zbyt wysoko co uniemożliwia podebrania ładunku z gruntu.
+Jeśli zmienisz wartość przesunięcia, łyżka automatycznie ustawi się w pozycji załadunku, aby zobrazować wpływ wprowadzonej zmiany.
+Aby zresetować przesunięcie, kliknij tekst ustawień w HUD. Wartość można regulować w zakresie od +1 do -1 z dokładnością do kroku co 0,1.
 
-Shovels with a silage grab will open and close automatically for loading and unloading.
-The shovel to shred sugar beets is completly functional as well.
+Łyżki z chwytakiem do kiszonki otwierają się i zamykają automatycznie podczas załadunku i rozładunku.
+Łyżka do rozdrabniania buraków cukrowych również jest w pełni obsługiwana.
 "/>
     <text name="CP_help_page_shovelLoaderBasic_text" text="
-To start a wheel loader helper, you need to set the load and unload positions by clicking the target icon on the hud.
-The loading position works the same like the one from the loader mode. A blue square will be created arround the heap.
+Aby uruchomić kierowcę ładowarki kołowej, musisz ustawić pozycje załadunku i rozładunku, klikając ikonę celu na HUDzie.
+Pozycja ładowania działa identycznie jak ta z trybu &quot;Załadunek pryzmy&quot;. Wokół pryzmy zostanie utworzony niebieski kwadrat.
 
-The unloading position depends if you want to unload into a trailer or into an unloading station.
-If unloading into the trailer is selected, then the area where the trailer will be parked needs to be selected on the AI Menu.
-The helper will drive to any parked trailer in the area. The direction of the marker has no real meaning.
-If you want to unload into an unloading station, you need to switch the target and then mark the trigger with the unloading position.
+Pozycja rozładunku zależy od tego, czy chcesz rozładować towar na przyczepę, czy w punkcie rozładunku.
+W przypadku wybrania rozładunku do przyczepy należy w menu AI wybrać obszar, w którym przyczepa będzie zaparkowana.
+Pomocnik podjedzie do dowolnej zaparkowanej przyczepy w okolicy. Kierunek znacznika nie ma w tym przypadku znaczenia.
+Jeśli chcesz rozładować do punktu rozładunku, musisz przełączyć cel, a następnie oznaczyć trigger pozycją rozładunku.
 "/>
     <text name="CP_help_page_shovelLoaderTrigger_text" text="
-Selecting a trigger does look a bit complicated at first, but in reality it is really easy.
-Every building can have more then one trigger so you have to choose the one you want to unload to.
-All available triggers will be shown with an orange cross on the AI Map.
-To select one place the middle of the round marker on the middle of the cross.
-The driection of the arrow tells the helper from which direction he will approach the trigger for unloading.
-Now your selection should look similar to the image.
+Wybór triggeru na pierwszy rzut oka wydaje się nieco skomplikowany, ale w rzeczywistości jest naprawdę łatwy.
+Każdy budynek może mieć więcej niż jeden trigger, więc musisz wybrać ten, do którego chcesz się rozładować.
+Wszystkie dostępne triggery zostaną pokazane z pomarańczowym krzyżykiem na mapie AI.
+Aby wybrać jedno, umieść środek okrągłego znacznika na środku krzyża.
+Kierunek strzałki mówi pomocnikowi, z której strony podejdzie do triggera w celu rozładunku.
+Twój wybór powinien wyglądać podobnie do tego zdjęcia.
 "/>
     <!---->
     <!--Input bindings-->
