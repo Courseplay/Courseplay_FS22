@@ -194,8 +194,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Ajuste da alfaia horizontal"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Ajuste do juntador de fardos"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Ajuste do juntador de fardos"/>
-    <text name="CP_vehicle_setting_combineOffsetZ_title" text="Ajuste da alfaia vertical"/>
-    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Ajuste da alfaia vertical"/>
+    <text name="CP_vehicle_setting_combineOffsetX_title" text="Offset forwards/backwards"/>
+    <text name="CP_vehicle_setting_combineOffsetX_tooltip" text="Offset for harvester pipe with forwards(+) and backwards(-)"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Despeja quando termina:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Verifica o aditivo de silagem."/>
