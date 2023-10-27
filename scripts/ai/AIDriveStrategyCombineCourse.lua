@@ -249,7 +249,7 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
             self:setMaxSpeed(0)
         end
     end
-    return AIDriveStrategyCombineCourse.superClass().getDriveData(self, dt, vX, vY, vZ)
+    return AIDriveStrategyFieldWorkCourse.getDriveData(self, dt, vX, vY, vZ)
 end
 
 function AIDriveStrategyCombineCourse:updateFieldworkOffset(course)
@@ -338,7 +338,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
         local fillLevel = self.combineController:getFillLevel()
         if fillLevel < 0.01 then
             self:debug('Unloading finished after fieldwork ended, end course')
-            AIDriveStrategyCombineCourse.superClass().finishFieldWork(self)
+            AIDriveStrategyFieldWorkCourse.finishFieldWork(self)
         else
             self:setMaxSpeed(0)
         end
@@ -411,7 +411,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
         if self:isUnloadFinished() then
             if not self:continueSelfUnloadToNextTrailer() then
                 self:debug('Self unloading finished after fieldwork ended, finishing fieldwork')
-                AIDriveStrategyCombineCourse.superClass().finishFieldWork(self)
+                AIDriveStrategyFieldWorkCourse.finishFieldWork(self)
             end
         end
     elseif self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD then
@@ -520,7 +520,7 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
             self.unloadState = self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED
         end
     else
-        AIDriveStrategyCombineCourse.superClass().onLastWaypointPassed(self)
+        AIDriveStrategyFieldWorkCourse.onLastWaypointPassed(self)
     end
 end
 
@@ -531,7 +531,7 @@ end
 --- Some of our turns need a short look ahead distance, make sure we restore the normal after the turn
 function AIDriveStrategyCombineCourse:resumeFieldworkAfterTurn(ix)
     self.ppc:setNormalLookaheadDistance()
-    AIDriveStrategyCombineCourse.superClass().resumeFieldworkAfterTurn(self, ix)
+    AIDriveStrategyFieldWorkCourse.resumeFieldworkAfterTurn(self, ix)
 end
 
 --- Stop, raise the header (if needed) and then, and only then change to the new states. This is to avoid leaving
@@ -1336,10 +1336,10 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
         -- and disable when such a turn does not make sense for the vehicle.
         elseif self.combineController:isPotatoOrSugarBeetHarvester() then
             self:debug('Headland turn but this harvester uses normal turn maneuvers.')
-            AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
+            AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
         elseif self.course:isOnConnectingTrack(ix) then
             self:debug('Headland turn but this a connecting track, use normal turn maneuvers.')
-            AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
+            AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
         elseif self.course:isOnOutermostHeadland(ix) and self:isTurnOnFieldActive() then
             self:debug('Creating a pocket in the corner so the combine stays on the field during the turn')
             self.aiTurn = CombinePocketHeadlandTurn(self.vehicle, self, self.ppc, self.proximityController, self.turnContext,
@@ -1363,7 +1363,7 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
             self.state = self.states.TURNING
             self.waypointIxToContinueOnFailedSelfUnload = ix
         else
-            AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
+            AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
         end
     end
 end
@@ -1615,7 +1615,7 @@ function AIDriveStrategyCombineCourse:onPathfindingDoneBeforeSelfUnload(path)
         elseif self.unloadStateAfterPathfindingDoneForSelfUnload == self.states.DRIVING_TO_SELF_UNLOAD_BEFORE_NEXT_ROW then
             -- continue turn as if nothing happened
             self:startCourse(self.fieldWorkCourse, self.waypointIxToContinueOnFailedSelfUnload)
-            AIDriveStrategyCombineCourse.superClass().startTurn(self, self.waypointIxToContinueOnFailedSelfUnload)
+            AIDriveStrategyFieldWorkCourse.startTurn(self, self.waypointIxToContinueOnFailedSelfUnload)
         elseif self.unloadStateAfterPathfindingDoneForSelfUnload == self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED then
             self.unloadState = self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED
         end
@@ -1728,7 +1728,7 @@ function AIDriveStrategyCombineCourse:startSelfUnloadBeforeNextRow()
     else
         -- giving up self unload, attempt to re-initialize the turn
         self:startCourse(self.fieldWorkCourse, self.waypointIxToContinueOnFailedSelfUnload)
-        AIDriveStrategyCombineCourse.superClass().startTurn(self, self.waypointIxToContinueOnFailedSelfUnload)
+        AIDriveStrategyFieldWorkCourse.startTurn(self, self.waypointIxToContinueOnFailedSelfUnload)
     end
 end
 
