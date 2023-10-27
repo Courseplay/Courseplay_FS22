@@ -67,7 +67,6 @@
 				 setDefault="setAutomaticBaleCollectorOffset" vehicleConfiguration="baleCollectorOffset"/>
 		<!--Combine Offset X-->
 		<Setting classType="AIParameterSettingList" name="combineOffsetX" min="-10" max="10" incremental="0.1" default="0" unit="2"
-				 title="CP_vehicle_setting_toolOffsetX_title" tooltip="CP_vehicle_setting_toolOffsetX_tooltip"
 				 onChangeCallback="cpShowWorkWidth" isVisible="areCombineUnloaderSettingsVisible"/>
 		<!--Combine Offset Z-->
 		<Setting classType="AIParameterSettingList" name="combineOffsetZ" min="-10" max="10" incremental="0.1" default="0" unit="2"
