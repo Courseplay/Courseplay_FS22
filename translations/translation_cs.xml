@@ -196,6 +196,8 @@
     <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
     <text name="CP_vehicle_setting_combineOffsetX_title" text="Offset forwards/backwards"/>
     <text name="CP_vehicle_setting_combineOffsetX_tooltip" text="Offset for harvester pipe with forwards(+) and backwards(-)"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_title" text="Offset forwards/backwards"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Offset for harvester pipe with forwards(+) and backwards(-)"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="检查青贮添加剂"/>
