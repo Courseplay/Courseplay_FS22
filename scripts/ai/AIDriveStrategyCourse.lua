@@ -167,15 +167,19 @@ function AIDriveStrategyCourse:getGeneratedCourse(jobParameters)
         self.vehicle:setOffsetFieldWorkCourse(nil)
         return course
     else
-        self:debug('Multitool course, non-center vehicle, generating offset course for lane number %d', position)
         --- only one vehicle can have position zero (center)
-        local offsetCourse, previousPosition = self.vehicle:getOffsetFieldWorkCourse()
-        if offsetCourse == nil or position ~= previousPosition then
+        local symmetricLaneChange = self.settings.symmetricLaneChange:getValue()
+        local offsetCourse = self.vehicle:getOffsetFieldWorkCourse()
+        if offsetCourse == nil or not offsetCourse:hasSameMultiToolSettings(numMultiTools, position, symmetricLaneChange) then
+            self:debug('Multitool course, non-center vehicle, generating offset course for lane number %d, symmetric lane change %s',
+                    position, tostring(symmetricLaneChange))
             --- Work width of a single vehicle.
             local width = course:getWorkWidth() / numMultiTools
-            offsetCourse = course:calculateOffsetCourse(numMultiTools, position, width,
-                    self.settings.symmetricLaneChange:getValue())
+            offsetCourse = course:calculateOffsetCourse(numMultiTools, position, width, symmetricLaneChange)
             self.vehicle:setOffsetFieldWorkCourse(offsetCourse, position)
+        else
+            self:debug('Multitool course, non-center vehicle, offset course for lane number %d, symmetric lane change %s already exists, reusing',
+                    position, tostring(symmetricLaneChange))
         end
         return offsetCourse
     end
@@ -248,8 +252,8 @@ end
 ---@return table all found implement controllers
 function AIDriveStrategyCourse:getRegisteredImplementControllersByClass(controllerClass)
     local foundControllers = {}
-    for _, controller in pairs(self.controllers) do 
-        if controller:is_a(controllerClass) then 
+    for _, controller in pairs(self.controllers) do
+        if controller:is_a(controllerClass) then
             table.insert(foundControllers, controller)
         end
     end
@@ -262,7 +266,7 @@ end
 ---@return table|nil found implement
 function AIDriveStrategyCourse:getFirstRegisteredImplementControllerByClass(controllerClass)
     local found, controllers = self:getRegisteredImplementControllersByClass(controllerClass)
-    if found then 
+    if found then
         return controllers[1], controllers[1]:getImplement()
     end
 end

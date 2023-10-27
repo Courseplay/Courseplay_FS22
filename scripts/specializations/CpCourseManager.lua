@@ -251,20 +251,17 @@ end
 --- We store this here as we have to generate the offset course at the start to see how far we need to drive to start working
 --- and if we need a drive to task to that point. Now, since we already generated the offset course, we don't want to
 --- do that again when the fieldwork task starts.
---- We also store the position, so the caller can decide if it needs to be regenerated as the position changed
 ---@param course Course
----@param position number as in Course:calculateOffsetCourse()
-function CpCourseManager:setOffsetFieldWorkCourse(course, position)
+function CpCourseManager:setOffsetFieldWorkCourse(course)
     local spec = self.spec_cpCourseManager
     spec.offsetFieldWorkCourse = course
-    spec.offsetFieldWorkPosition = position
 end
 
 --- If the offset course has been calculated for a multitool config, return here
----@return Course, number course, position, as in Course:calculateOffsetCourse()
+---@return Course offset course
 function CpCourseManager:getOffsetFieldWorkCourse()
     local spec = self.spec_cpCourseManager
-    return spec.offsetFieldWorkCourse, spec.offsetFieldWorkPosition
+    return spec.offsetFieldWorkCourse
 end
 
 function CpCourseManager:getCourses()

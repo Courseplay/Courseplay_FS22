@@ -180,6 +180,15 @@ function Course:getMultiTools()
 	return self.multiTools or 1
 end
 
+---
+---@param multiTools number of tools
+---@param multiToolsPosition number which tool is this, same as position in calculateOffsetCourse()
+---@param multiToolsSameTurnWidth boolean turns are of the same width, ame as position in calculateOffsetCourse()
+function Course:hasSameMultiToolSettings(multiTools, multiToolsPosition, multiToolsSameTurnWidth)
+	return self.multiTools == multiTools and self.multiToolsPosition == multiToolsPosition and
+			self.multiToolsSameTurnWidth == multiToolsSameTurnWidth
+end
+
 --- Is this a temporary course? Can be used to differentiate between recorded and dynamically generated courses
 -- The Course() object does not use this attribute for anything
 function Course:isTemporary()
@@ -920,6 +929,8 @@ function Course:copy(vehicle, first, last)
 	local newCourse = Course(vehicle or self.vehicle, self.waypoints, self:isTemporary(), first, last)
 	newCourse:setName(self:getName())
 	newCourse.multiTools = self.multiTools
+	newCourse.multiToolsPosition = self.multiToolsPosition
+	newCourse.multiToolsSameTurnWidth = self.multiToolsSameTurnWidth
 	newCourse.workWidth = self.workWidth
 	newCourse.numHeadlands = self.numHeadlands
 	return newCourse
@@ -1431,6 +1442,10 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
 	local offset = Course.calculateOffsetForMultitools(nVehicles, position, width)
 	local offsetCourse = Course(self.vehicle, {})
 	offsetCourse.multiTools = nVehicles
+	-- We set these on the course so we know for what settings was it generated, but do not persist, as
+	-- we never save multitool offset courses
+	offsetCourse.multiToolsPosition = position
+	offsetCourse.multiToolsSameTurnWidth = useSameTurnWidth
 	offsetCourse.name = self.name
 	local ix, sIx = 1, 1
 	while ix and (ix < #self.waypoints) do
@@ -1779,6 +1794,8 @@ function Course:writeStream(vehicle,streamId, connection)
 	streamWriteFloat32(streamId, self.workWidth or 0)
 	streamWriteInt32(streamId, self.numHeadlands or 0 )
 	streamWriteInt32(streamId, self.multiTools or 1)
+	streamWriteInt32(streamId, self.multiToolsPosition or 0)
+	streamWriteInt32(streamId, self.multiToolsSameTurnWidth)
 	streamWriteInt32(streamId, #self.waypoints or 0)
 	streamWriteBool(streamId, self.editedByCourseEditor)
 	for i,p in ipairs(self.waypoints) do 
@@ -1809,7 +1826,7 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
 		waypoints = Course.deserializeWaypoints(serializedWaypoints)
 	end
 
-	local course = Course(vehicle,waypoints)
+	local course = Course(vehicle, waypoints)
 	course.name = name
 	course.workWidth = workWidth
 	course.numHeadlands = numHeadlands
@@ -1827,6 +1844,8 @@ function Course.createFromStream(vehicle,streamId, connection)
 	local workWidth = streamReadFloat32(streamId)
 	local numHeadlands = streamReadInt32(streamId)
 	local multiTools = streamReadInt32(streamId)
+	local multiToolsPosition = streamReadInt32(streamId)
+	local multiToolsSameTurnWidth = streamReadBool(streamId)
 	local numWaypoints = streamReadInt32(streamId)
 	local wasEdited = streamReadBool(streamId)
 	local waypoints = {}
@@ -1839,6 +1858,8 @@ function Course.createFromStream(vehicle,streamId, connection)
 	course.workWidth = workWidth
 	course.numHeadlands = numHeadlands
 	course.multiTools = multiTools
+	course.multiToolsPosition = multiToolsPosition
+	course.multiToolsSameTurnWidth = multiToolsSameTurnWidth
 	course.editedByCourseEditor = wasEdited
 	CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
 	return course
@@ -1853,6 +1874,10 @@ function Course.createFromGeneratedCourse(vehicle, generatedCourse, workWidth, n
 	course.workWidth = workWidth
 	course.numHeadlands = numHeadlands
 	course.multiTools = multiTools
+	-- we always generate course for the middle position, other positions and symmetric lane change
+	-- are set in calculateOffsetCourse()
+	course.multiToolsPosition = 0
+	course.multiToolsSameTurnWidth = false
 	return course
 end
 
