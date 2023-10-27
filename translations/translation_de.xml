@@ -194,8 +194,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Geräteversatz horizontal"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Ballen Aufnahme Versatz"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Versatz für den Ballensammler"/>
-    <text name="CP_vehicle_setting_toolOffsetZ_title" text="Geräteversatz vertikal"/>
-    <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Geräteversatz vertikal"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_title" text="Geräteversatz vertikal"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Geräteversatz vertikal"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Entleeren wenn über:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="Wenn der Füllstand des Abfahrers über diesem Wert liegt, wird er nicht auf den Drescher warten."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Siliermittel überwachen"/>

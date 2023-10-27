@@ -316,6 +316,10 @@ function CpVehicleSettings:isToolOffsetDisabled()
     return AIUtil.hasChildVehicleWithSpecialization(self, Plow)
 end
 
+function CpVehicleSettings:isToolOffsetVisible()
+    return not self:getCanStartCpCombineUnloader()
+end
+
 --- Only shows the setting if a valid tool with ridge markers is attached.
 function CpVehicleSettings:isRidgeMarkerSettingVisible()
     local vehicles, found = AIUtil.getAllChildVehiclesWithSpecialization(self, RidgeMarker)

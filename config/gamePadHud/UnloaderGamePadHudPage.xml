@@ -9,6 +9,6 @@
 	<Setting type="combineUnloaderJobParameters" name = "useGiantsUnload" />
 	<Setting type="combineUnloaderJobParameters" name = "unloadingStation" />
 	<Setting type="vehicleSettings" name = "fullThreshold" />
-	<Setting type="vehicleSettings" name = "toolOffsetX" />
-	<Setting type="vehicleSettings" name = "toolOffsetZ" />
+	<Setting type="vehicleSettings" name = "combineOffsetX" />
+	<Setting type="vehicleSettings" name = "combineOffsetZ" />
 </Settings>

@@ -194,8 +194,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Szerszámeltolás balra/jobbra"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bála felszedés eltolása"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Eltolás a bálagyűjtőkhöz"/>
-    <text name="CP_vehicle_setting_toolOffsetZ_title" text="Szerszámeltolás hosszirányban"/>
-    <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Szerszámeltolás előre/hátra"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_title" text="Szerszámeltolás hosszirányban"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Szerszámeltolás előre/hátra"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Kiürítési határérték:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="A segítő kiüríti a pótkocsit, ha a töltési szint meghaladja a beállított értéket"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Szilázsadalék ellenőrzés"/>

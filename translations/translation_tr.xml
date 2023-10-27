@@ -194,8 +194,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Takım ofseti yatay"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
-    <text name="CP_vehicle_setting_toolOffsetZ_title" text="Takım ofseti dikey"/>
-    <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Takım ofseti dikey"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_title" text="Takım ofseti dikey"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Takım ofseti dikey"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Bittiğinde boş:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="YAPILACAKLAR"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Silaj katkısı olup olmadığını kontrol edin."/>

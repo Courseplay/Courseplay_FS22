@@ -194,8 +194,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Werktuig horizontale offset"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
-    <text name="CP_vehicle_setting_toolOffsetZ_title" text="Werktuig verticale offset"/>
-    <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Werktuig verticale offset"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_title" text="Werktuig verticale offset"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Werktuig verticale offset"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Check for silage additive."/>

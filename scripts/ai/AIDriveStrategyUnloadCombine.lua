@@ -664,7 +664,7 @@ end
 ---(x > 0 left, z > 0 forward) corrected with the manual offset settings
 function AIDriveStrategyUnloadCombine:getPipeOffset(combine)
     -- TODO: unloader offset
-    return combine:getCpDriveStrategy():getPipeOffset(-self.settings.toolOffsetX:getValue(), self.settings.toolOffsetZ:getValue())
+    return combine:getCpDriveStrategy():getPipeOffset(-self.settings.combineOffsetX:getValue(), self.settings.combineOffsetZ:getValue())
 end
 
 function AIDriveStrategyUnloadCombine:getCombinesMeasuredBackDistance()

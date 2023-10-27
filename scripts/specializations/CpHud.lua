@@ -258,8 +258,8 @@ end
 function CpHud:showCpCombineUnloaderWorkWidth()
 	WorkWidthUtil.showWorkWidth(self,
 										self:getCourseGeneratorSettings().workWidth:getValue(),
-											self:getCpSettings().toolOffsetX:getValue(),
-											self:getCpSettings().toolOffsetZ:getValue())
+											self:getCpSettings().combineOffsetX:getValue(),
+											self:getCpSettings().combineOffsetZ:getValue())
 end
 
 function CpHud:showCpCourseWorkWidth()

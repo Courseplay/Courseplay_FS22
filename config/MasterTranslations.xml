@@ -625,11 +625,11 @@
 			<Text language="de"><![CDATA[Versatz für den Ballensammler]]></Text>
 			<Text language="en"><![CDATA[Offset for the bale collector]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_setting_toolOffsetZ_title">
+		<Translation name="CP_vehicle_setting_combineOffsetZ_title">
 			<Text language="de"><![CDATA[Geräteversatz vertikal]]></Text>
 			<Text language="en"><![CDATA[Tool offset vertical]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_setting_toolOffsetZ_tooltip">
+		<Translation name="CP_vehicle_setting_combineOffsetZ_tooltip">
 			<Text language="de"><![CDATA[Geräteversatz vertikal]]></Text>
 			<Text language="en"><![CDATA[Tool offset vertical]]></Text>
 		</Translation>

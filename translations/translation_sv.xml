@@ -194,8 +194,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Redskapsskjutning horisontellt"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Baluppsamlare sidledsförskjutning"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Sidledsförskjutning för Baluppsamlare"/>
-    <text name="CP_vehicle_setting_toolOffsetZ_title" text="Redskapsskjutning vertikalt"/>
-    <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Redskapsskjutning vertikalt"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_title" text="Redskapsskjutning vertikalt"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Redskapsskjutning vertikalt"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Tom när den är över:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="ATTGÖRA"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Kontrollerar om där finns ensilage tillsatts."/>

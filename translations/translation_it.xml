@@ -194,8 +194,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Correzione oriz."/>
     <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Compensazione raccolta balle"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Compensazione per il raccoglitore di balle"/>
-    <text name="CP_vehicle_setting_toolOffsetZ_title" text="Correzione vert."/>
-    <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Correzione vert."/>
+    <text name="CP_vehicle_setting_combineOffsetZ_title" text="Correzione vert."/>
+    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Correzione vert."/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Vuota quando è al:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="Se il livello di riempimento dello scaricatore è superiore a questo valore, non attenderà la mietitrebbia"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Controllare l'additivo per insilato."/>

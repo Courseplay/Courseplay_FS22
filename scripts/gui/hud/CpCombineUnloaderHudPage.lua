@@ -18,12 +18,12 @@ end
 function CpCombineUnloaderHudPageElement:setupElements(baseHud, vehicle, lines, wMargin, hMargin)
     
     --- Tool offset x
-	self.toolOffsetXBtn = baseHud:addLineTextButton(self, 3, CpBaseHud.defaultFontSize, 
-												vehicle:getCpSettings().toolOffsetX)
+	self.combineOffsetXBtn = baseHud:addLineTextButton(self, 3, CpBaseHud.defaultFontSize, 
+												vehicle:getCpSettings().combineOffsetX)
 
     --- Tool offset z
-    self.toolOffsetZBtn = baseHud:addLineTextButton(self, 2, CpBaseHud.defaultFontSize, 
-                                                vehicle:getCpSettings().toolOffsetZ)
+    self.combineOffsetZBtn = baseHud:addLineTextButton(self, 2, CpBaseHud.defaultFontSize, 
+                                                vehicle:getCpSettings().combineOffsetZ)
 
     --- Full threshold 
     self.fullThresholdBtn = baseHud:addLineTextButton(self, 4, CpBaseHud.defaultFontSize, 
@@ -129,14 +129,13 @@ function CpCombineUnloaderHudPageElement:updateContent(vehicle, status)
     local text = vehicle:getCpCombineUnloaderJobParameters().unloadTarget:getString()
     self.unloadModeBtn:setTextDetails(text)
 
-    local toolOffsetX = vehicle:getCpSettings().toolOffsetX
-    local text = toolOffsetX:getIsDisabled() and CpBaseHud.automaticText or toolOffsetX:getString()
-    self.toolOffsetXBtn:setTextDetails(toolOffsetX:getTitle(), text)
-    self.toolOffsetXBtn:setDisabled(toolOffsetX:getIsDisabled())
+    local combineOffsetX = vehicle:getCpSettings().combineOffsetX
+    self.combineOffsetXBtn:setTextDetails(combineOffsetX:getTitle(), combineOffsetX:getString())
+    self.combineOffsetXBtn:setDisabled(combineOffsetX:getIsDisabled())
 
-    local toolOffsetZ = vehicle:getCpSettings().toolOffsetZ
-    self.toolOffsetZBtn:setTextDetails(toolOffsetZ:getTitle(), toolOffsetZ:getString())
-    self.toolOffsetZBtn:setDisabled(toolOffsetZ:getIsDisabled())
+    local combineOffsetZ = vehicle:getCpSettings().combineOffsetZ
+    self.combineOffsetZBtn:setTextDetails(combineOffsetZ:getTitle(), combineOffsetZ:getString())
+    self.combineOffsetZBtn:setDisabled(combineOffsetZ:getIsDisabled())
 
     local fullThreshold = vehicle:getCpSettings().fullThreshold
     self.fullThresholdBtn:setTextDetails(fullThreshold:getTitle(), fullThreshold:getString())
