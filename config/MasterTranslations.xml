@@ -625,19 +625,19 @@
 			<Text language="de"><![CDATA[Versatz für den Ballensammler]]></Text>
 			<Text language="en"><![CDATA[Offset for the bale collector]]></Text>
 		</Translation>
-		<!-- <Translation name="CP_vehicle_setting_combineOffsetZ_title">
-			<Text language="de"><![CDATA[Geräteversatz vertikal]]></Text>
-			<Text language="en"><![CDATA[Tool offset vertical]]></Text>
-		</Translation>
-		<Translation name="CP_vehicle_setting_combineOffsetZ_tooltip">
-			<Text language="de"><![CDATA[Geräteversatz vertikal]]></Text>
-			<Text language="en"><![CDATA[Tool offset vertical]]></Text>
-		</Translation> -->
 		<Translation name="CP_vehicle_setting_combineOffsetX_title">
+			<Text language="de"><![CDATA[Versatz links/rechts]]></Text>
+			<Text language="en"><![CDATA[Offset left/right]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_combineOffsetX_tooltip">
+			<Text language="de"><![CDATA[Versatz zum Drescher Rohr Rechts(+) und Links(-)]]></Text>
+			<Text language="en"><![CDATA[Offset for harvester pipe right(+) and left(-)]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_combineOffsetZ_title">
 			<Text language="de"><![CDATA[Versatz vorne/hinten]]></Text>
 			<Text language="en"><![CDATA[Offset forwards/backwards]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_setting_combineOffsetX_tooltip">
+		<Translation name="CP_vehicle_setting_combineOffsetZ_tooltip">
 			<Text language="de"><![CDATA[Versatz zum Drescher Rohr Vorne(+) und Hinten(-)]]></Text>
 			<Text language="en"><![CDATA[Offset for harvester pipe with forwards(+) and backwards(-)]]></Text>
 		</Translation>
