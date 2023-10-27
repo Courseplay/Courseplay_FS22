@@ -194,8 +194,10 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Tool offset horizontal"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
-    <text name="CP_vehicle_setting_toolOffsetZ_title" text="Tool offset vertical"/>
-    <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Tool offset vertical"/>
+    <text name="CP_vehicle_setting_combineOffsetX_title" text="Offset left/right"/>
+    <text name="CP_vehicle_setting_combineOffsetX_tooltip" text="Offset for harvester pipe right(+) and left(-)"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_title" text="Offset forwards/backwards"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Offset for harvester pipe with forwards(+) and backwards(-)"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="If the unloader's fill level is over this value, it won't wait for the combine."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Check for silage additive"/>
