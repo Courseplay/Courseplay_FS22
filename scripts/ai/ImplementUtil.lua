@@ -396,6 +396,10 @@ end
 ---@param implement table
 ---@param tool table moving tool
 function ImplementUtil.stopMovingTool(implement, tool)
+    if tool.move == nil then 
+        CpUtil.error("Invalid tool called this function!")
+        return
+    end
     tool.move = 0
     Cylindered.setDirty(implement, tool)
     local spec = implement.spec_cylindered

@@ -105,10 +105,13 @@ function CpShovelPositions:onLoad(savegame)
 	spec.minimalShovelUnloadHeight = 4
 	spec.highDumpMovingToolIx = g_vehicleConfigurations:get(self, "shovelMovingToolIx")
 	spec.isHighDumpShovel = spec.highDumpMovingToolIx ~= nil
+	spec.hasValidShovel = false
 end
 
 function CpShovelPositions:onPostAttach()
-	if self.spec_cpShovelPositions then
+	local shovelSpec = self.spec_shovel
+	if self.spec_cpShovelPositions and #shovelSpec.shovelNodes>0 then
+
 		CpShovelPositions.cpSetupShovelPositions(self)
 	end
 end
@@ -123,6 +126,9 @@ end
 
 function CpShovelPositions:onUpdateTick(dt)
 	local spec = self.spec_cpShovelPositions
+	if not spec.hasValidShovel then 
+		return
+	end
 	if spec.shovelToolIx == nil or spec.armToolIx == nil or self.rootVehicle == nil then 
 		return
 	end
@@ -158,11 +164,18 @@ end
 function CpShovelPositions:cpSetTemporaryShovelState(state)
 	if not self.isServer then return end
 	local spec = self.spec_cpShovelPositions
+	if not spec.hasValidShovel then 
+		return
+	end
 	self:cpSetShovelState(state)
 	spec.resetStateWhenReached = true
 end
 
 function CpShovelPositions:cpSetTemporaryLoadingShovelState()
+	local spec = self.spec_cpShovelPositions
+	if not spec.hasValidShovel then 
+		return
+	end
 	self:cpSetTemporaryShovelState(CpShovelPositions.LOADING)
 end
 
@@ -185,6 +198,7 @@ end
 --- Sets the relevant moving tools.
 function CpShovelPositions:cpSetupShovelPositions()
 	local spec = self.spec_cpShovelPositions
+	spec.hasValidShovel = true
 	spec.shovelToolIx = nil
 	spec.armToolIx = nil
 	spec.shovelTool = nil
@@ -226,6 +240,9 @@ end
 ---@return boolean isDirty
 function CpShovelPositions:controlShovelPosition(dt, targetAngle)
 	local spec = self.spec_cpShovelPositions
+	if not spec.hasValidShovel then 
+		return
+	end
 	local shovelData = ImplementUtil.getShovelNode(self)
 	local isDirty = false
 	if shovelData.movingToolActivation and not spec.isHighDumpShovel then
