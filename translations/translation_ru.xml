@@ -214,10 +214,10 @@
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Настройки работника в силосной яме"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Рабочая ширина"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Рабочая ширина. Значение: 0 - 50"/>
-    <text name="CP_vehicle_setting_levelerHeightOffset_title" text="Высота смещения отвала"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_title" text="Смещение высоты отвала"/>
     <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Предустановленный подъём отвала от земли. Значение: 0 - 1"/>
-    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Смещение загрузки ковша. Значение: -1 - 1"/>
-    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Смещение загрузки ковша. Значение: -1 - 1"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Смещение высоты ковша"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Изменение высоты загрузки ковша. Значение: -1 - 1"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
@@ -832,7 +832,7 @@ R: Удаляет скопированный курс из буфера обме
 Если маркер указывает на уже существующую кучу,
 тогда эта куча используется для разгрузки.
 Направление маркера используется для направления выгрузки.
-Кроме того, для прицепов необходимо выбрать сторону вынрузки.
+Кроме того, для прицепов необходимо выбрать сторону выгрузки.
 "/>
     <text name="CP_help_page_bunker_title" text="Работник в силосной яме"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
@@ -861,42 +861,42 @@ Courseplay способен прессовать или распределять
 Маркер обнаруживает кучи или бункеры и выделяет их на карте.
 Теперь можно запускать помощника.
 "/>
-    <text name="CP_help_page_shovelLoader_title" text="Wheelloader Driver"/>
+    <text name="CP_help_page_shovelLoader_title" text="Погрузчики"/>
     <text name="CP_help_page_shovelLoaderGeneral_text" text="
-This mode enables wheel loader and tractors with a front loader. 
-With a shovel attached a heap can be picked up from the ground or loading from a bunker silo can be accomplished.
-The picked up fill level can be unloaded automatically into a nearby trailer or a selected unloading station like a BGA.
-The shovel will automatically be moved to the correct positions for loading, unloading and so on.
-In case the mode is not directly visable on the hud, you can toggle the &quot;start position&quot; until the shovel mode appears.
+Этот режим включает в себя колёсные и фронтальные погрузчики. 
+С помощью прикреплённого ковша можно подобрать с земли кучу или же загрузиться из бункера и 
+разгрузить в ближайший прицеп или выбранную станцию разгрузки, такую как BGA.
+Ковш будет автоматически устанавливаться в правильные положения загрузки, разгрузки и так далее.
+В случае, если режим не виден напрямую на HUD, вы можете переключать &quot;Стартовая позиция&quot; пока не появится режим лопаты.
 
-The target icon on the hud can be used to open the AI map to select the loading and the unloading targets.
-The hud also shows the leftover fill level of the heap or silo, while the helper is working.
-If the loading target is a bunker silo, then the work width might need to be adjusted to avoid hitting the side walls of the silo.
+Значок цели на HUD может использоваться для открытия карты ИИ, чтобы указать место загрузки и разгрузки.
+HUD также показывает оставшийся уровень заполнения кучи или бункера, в то время как работает помощник.
+Если точкой загрузки является силосная яма, тогда, возможно, придётся отрегулировать рабочую ширину, чтобы избежать удара по боковым стенам ямы.
 
-The hight offset setting is used to adjust the hight above the ground, as not all shovel can calculated correctly. 
-This should be checked, if the shovel is to low for loading and the driver can't turn anymore or the shovel is to high and fill level is missed to the ground.
-If the value gets changed, the shovel will automatically move to the loading position to show the impact of the offset.
-To reset the offset you need to click on the settings text in the hud. The value can be adjusted from +1 to -1 in 0.1 setps.
+Настройка смещения высоты используется для регулировки высоты лопаты над землёй, так как не все лопаты могут быть рассчитаны правильно.
+Это следует проверить, если лопата находится слишком низко для загрузки и водитель не может поворачивать, или лопата поднята слишком высоко и её содержимое высыпается на землю.
+Если значение будет изменено, лопата автоматически перейдёт в положение загрузки, чтобы отобразить влияние смещения.
+Чтобы сбросить смещение, вам нужно нажать на текст настроек в HUD. Значение может быть скорректировано от +1 до -1 с шагом 0.1.
 
-Shovels with a silage grab will open and close automatically for loading and unloading.
-The shovel to shred sugar beets is completly functional as well.
+Ковш с силосными вилами откроется и автоматически закрывается для загрузки и разгрузки.
+Ковш для измельчения сахарной свёклы также полностью работает.
 "/>
     <text name="CP_help_page_shovelLoaderBasic_text" text="
-To start a wheel loader helper, you need to set the load and unload positions by clicking the target icon on the hud.
-The loading position works the same like the one from the loader mode. A blue square will be created arround the heap.
+Чтобы запустить помощника на погрузчике, вам нужно установить позиции загрузки и выгрузки, нажав на целевой значок на HUD.
+Положение загрузки работает так же, как и в режиме загрузчика. Будет создан синий квадрат.
 
-The unloading position depends if you want to unload into a trailer or into an unloading station.
-If unloading into the trailer is selected, then the area where the trailer will be parked needs to be selected on the AI Menu.
-The helper will drive to any parked trailer in the area. The direction of the marker has no real meaning.
-If you want to unload into an unloading station, you need to switch the target and then mark the trigger with the unloading position.
+От того, куда вы хотите разгружать, в прицеп или на станцию разгрузки, будет зависеть положение разгрузки.
+Если выбрана выгрузка в прицеп, то в меню ИИ необходимо выбрать область, где будет припаркован прицеп.
+Помощник поедет к любому припаркованному прицепу в этом районе. Направление маркера не имеет реального смысла.
+Если вы хотите разгрузить в станцию разгрузки, вам нужно переключить цель, а затем отметить триггер с положением разгрузки.
 "/>
     <text name="CP_help_page_shovelLoaderTrigger_text" text="
-Selecting a trigger does look a bit complicated at first, but in reality it is really easy.
-Every building can have more then one trigger so you have to choose the one you want to unload to.
-All available triggers will be shown with an orange cross on the AI Map.
-To select one place the middle of the round marker on the middle of the cross.
-The driection of the arrow tells the helper from which direction he will approach the trigger for unloading.
-Now your selection should look similar to the image.
+Поначалу выбор триггера выглядит немного сложным, но на самом деле это действительно легко.
+В каждом здании может быть больше одного триггера, поэтому вам нужно выбрать именно тот, на который вы хотите разгрузить.
+Все доступные триггеры будут показаны с оранжевым крестиком на карте ИИ.
+Чтобы выбрать один из них, поместите середину круглого маркера в середине крестика.
+Направление стрелки сообщает помощнику, с какой стороны он приблизится к триггеру для разгрузки.
+Теперь ваш выбор должен выглядеть похожим на изображение.
 "/>
     <!---->
     <!--Input bindings-->
