@@ -118,36 +118,36 @@
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="L'ouvrier %s a interrompu son travail - déchargement au champ impossible !"/>
     <text name="CP_ai_messageErrorCutterNotSupported" text="L'ouvrier %s a interrompu son travail - impossible d'attacher la barre de coupe !"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="L'ouvrier %s a interrompu son travail - l'attachement auto de la barre de coupe est désactivé !"/>
-    <text name="CP_ai_messageErrorWrongMissionFruitType" text="AI worker %s has stopped work unexpectedly - wrong fill type for mission selected!"/>
+    <text name="CP_ai_messageErrorWrongMissionFruitType" text="L'ouvrier %s a interrompu son travail - mauvais type de contenu pour ce type de travail !"/>
     <!---->
     <!--AI fieldwork task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionAttachHeader" text="Picks the header up"/>
+    <text name="CP_ai_taskDescriptionAttachHeader" text="Attache la barre de coupe"/>
     <!---->
     <!--AI bale finder task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionCollectsBales" text="Collects bales on the field"/>
-    <text name="CP_ai_taskDescriptionWrapsBales" text="Wraps bales on the field"/>
+    <text name="CP_ai_taskDescriptionCollectsBales" text="Collecte les bottes au champ"/>
+    <text name="CP_ai_taskDescriptionWrapsBales" text="Enrubanne les bottes au champ"/>
     <!---->
     <!--AI combine unloader task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionUnloadCombine" text="Unloads combine"/>
-    <text name="CP_ai_taskDescriptionWaitsForTargetCombine" text="Waits for combine"/>
-    <text name="CP_ai_taskDescriptionUnloadSiloLoader" text="Unloads loader"/>
-    <text name="CP_ai_taskDescriptionWaitsForTargetSiloLoader" text="Waits for loader"/>
-    <text name="CP_ai_taskDescriptionUnloadingToHeap" text="Unloads to a heap"/>
-    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Unloads into trailer"/>
-    <text name="CP_ai_taskDescriptionUnloadingWithGiants" text="Unloads with giants worker"/>
+    <text name="CP_ai_taskDescriptionUnloadCombine" text="Vide la moissonneuse"/>
+    <text name="CP_ai_taskDescriptionWaitsForTargetCombine" text="Attend la moissonneuse"/>
+    <text name="CP_ai_taskDescriptionUnloadSiloLoader" text="Vide un silo ou un tas"/>
+    <text name="CP_ai_taskDescriptionWaitsForTargetSiloLoader" text="Attend une chargeuse"/>
+    <text name="CP_ai_taskDescriptionUnloadingToHeap" text="Se décharge en tas"/>
+    <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Se décharge dans une remorque"/>
+    <text name="CP_ai_taskDescriptionUnloadingWithGiants" text="Se décharge avec un ouvrier Giants"/>
     <!---->
     <!--AI silo worker task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionWorksInTheSilo" text="Works in the silo"/>
-    <text name="CP_ai_taskDescriptionWaitsForUnloaders" text="Waits for unloader"/>
+    <text name="CP_ai_taskDescriptionWorksInTheSilo" text="Travaille dans un silo"/>
+    <text name="CP_ai_taskDescriptionWaitsForUnloaders" text="Attend une chargeuse"/>
     <!---->
     <!--AI silo loader task descriptions-->
     <!---->
-    <text name="CP_ai_taskDescriptionWaitsForTrailer" text="Waits for a trailer"/>
-    <text name="CP_ai_taskDescriptionUnloadingToTrigger" text="Unloads to an unload trigger"/>
+    <text name="CP_ai_taskDescriptionWaitsForTrailer" text="Attend une remorque"/>
+    <text name="CP_ai_taskDescriptionUnloadingToTrigger" text="Se décharge sur une zone de déchargement"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -194,10 +194,10 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Décalage horizontal de l'outil."/>
     <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Décalage du pickup de balle"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Décalage pour le collecteur de balles."/>
-    <text name="CP_vehicle_setting_combineOffsetX_title" text="Offset forwards/backwards"/>
-    <text name="CP_vehicle_setting_combineOffsetX_tooltip" text="Offset for harvester pipe with forwards(+) and backwards(-)"/>
-    <text name="CP_vehicle_setting_combineOffsetZ_title" text="Offset forwards/backwards"/>
-    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Offset for harvester pipe with forwards(+) and backwards(-)"/>
+    <text name="CP_vehicle_setting_combineOffsetX_title" text="Décalage proche/éloigné"/>
+    <text name="CP_vehicle_setting_combineOffsetX_tooltip" text="Décalage pour la goulotte de la moissoneuse plus loin(+) plus proche(-)"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_title" text="Décalage avant/arrière"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Décalage pour la goulotte de la moissoneuse en avant(+) en arrière(-)"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Vider si supérieur à"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="Permet de tenir compte d'un seuil de remplissage plus faible pour considéder le contenant comme rempli."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Arrêt si additif d'ensilage vide"/>
@@ -214,8 +214,8 @@
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Travail dans les silos"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Largeur de travail"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Largeur de travail de la lame ou du rouleau. Valeur: 0 - 50"/>
-    <text name="CP_vehicle_setting_levelerHeightOffset_title" text="Shield height offset"/>
-    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Offset of the shield form the ground. Value: 0 - 1"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_title" text="Décalage de la hauteur de lame"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Décalage de la hauteur de lame depuis le sol. Valeur: 0 - 1"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Décalage de la pelle de chargement. Valeur: -1 - 1"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Décalage de la pelle de chargement. Valeur: -1 - 1"/>
     <!---->
@@ -461,8 +461,8 @@ La course est automatiquement sauvegardée à la fermeture de l'éditeur et remp
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Déchargement au sol impossible"/>
     <text name="CP_infoTexts_errorCutterNotSupported" text="Barre de coupe non supportée"/>
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Attachement auto de la barre de coupe désactivé"/>
-    <text name="CP_infoTexts_errorWrongSeason" text="Wrong season for fruit"/>
-    <text name="CP_infoTexts_errorWrongMissionFruitType" text="Wrong fruit for mission selected"/>
+    <text name="CP_infoTexts_errorWrongSeason" text="Mauvaise saison pour cette culture"/>
+    <text name="CP_infoTexts_errorWrongMissionFruitType" text="Culture incompatible avec le travail demandé"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -835,40 +835,40 @@ Ensuite vous pouvez lancer la tâche.
 "/>
     <text name="CP_help_page_shovelLoader_title" text="Chargeuse sur roue"/>
     <text name="CP_help_page_shovelLoaderGeneral_text" text="
-This mode enables wheel loader and tractors with a front loader. 
-With a shovel attached a heap can be picked up from the ground or loading from a bunker silo can be accomplished.
-The picked up fill level can be unloaded automatically into a nearby trailer or a selected unloading station like a BGA.
-The shovel will automatically be moved to the correct positions for loading, unloading and so on.
-In case the mode is not directly visable on the hud, you can toggle the &quot;start position&quot; until the shovel mode appears.
+Ce mode permet l'utilisation de chargeurs sur roues et de tracteurs équipés d'un chargeur frontal. 
+Avec une pelle attachée, un tas peut être ramassé sur le sol ou depuis un silo bunker.
+Le contenu de la pelle peut être déchargé automatiquement dans une remorque proche ou dans une station de déchargement sélectionnée comme par exemple un BGA.
+L'ouvrier courseplay se déplacera automatiquement vers les bonnes positions pour le chargement, le déchargement, etc.
+Si le mode n'est pas directement visible sur le hud, vous pouvez cycler entre les différentes positions de départ jusqu'à ce que le mode pelle apparaisse (chargeuse tas/silo).
 
-The target icon on the hud can be used to open the AI map to select the loading and the unloading targets.
-The hud also shows the leftover fill level of the heap or silo, while the helper is working.
-If the loading target is a bunker silo, then the work width might need to be adjusted to avoid hitting the side walls of the silo.
+L'icône de cible sur le hud peut être utilisée pour ouvrir la carte des ouvriers afin de sélectionner les cibles de chargement et de déchargement.
+Le hud indique également le niveau de remplissage du tas ou du silo pendant que l'ouvrier travaille.
+Si la cible de chargement est un silo bunker, la largeur de travail peut devoir être ajustée pour éviter de heurter les parois latérales du silo.
 
-The hight offset setting is used to adjust the hight above the ground, as not all shovel can calculated correctly. 
-This should be checked, if the shovel is to low for loading and the driver can't turn anymore or the shovel is to high and fill level is missed to the ground.
-If the value gets changed, the shovel will automatically move to the loading position to show the impact of the offset.
-To reset the offset you need to click on the settings text in the hud. The value can be adjusted from +1 to -1 in 0.1 setps.
+Le paramètre de décalage de la hauteur est utilisé pour ajuster la hauteur au-dessus du sol, car certaines pelles peuvent nécessiter une adaptation. 
+Ce paramètre doit être vérifié si la pelle est trop basse pour le chargement et que le conducteur ne peut plus tourner ou si la pelle est trop haute et que le niveau de remplissage n'atteint pas le sol.
+Si la valeur est modifiée, la pelle se mettra automatiquement en position de chargement pour montrer l'impact du décalage.
+Pour réinitialiser le décalage, vous devez cliquer sur le texte des paramètres dans le hud. La valeur peut être ajustée de +1 à -1 par pas de 0,1.
 
-Shovels with a silage grab will open and close automatically for loading and unloading.
-The shovel to shred sugar beets is completly functional as well.
+Les pelles équipées d'une pince à ensilage s'ouvrent et se ferment automatiquement pour le chargement et le déchargement.
+La pelle pour déchiqueter les betteraves sucrières est également entièrement fonctionnelle.
 "/>
     <text name="CP_help_page_shovelLoaderBasic_text" text="
-To start a wheel loader helper, you need to set the load and unload positions by clicking the target icon on the hud.
-The loading position works the same like the one from the loader mode. A blue square will be created arround the heap.
+Pour démarrer un travail de chargement, vous devez définir les positions de chargement et de déchargement en cliquant sur l'icône de la cible dans le hud.
+La position de chargement fonctionne de la même manière que celle du mode tassage de silo. Un carré bleu sera créé autour du tas.
 
-The unloading position depends if you want to unload into a trailer or into an unloading station.
-If unloading into the trailer is selected, then the area where the trailer will be parked needs to be selected on the AI Menu.
-The helper will drive to any parked trailer in the area. The direction of the marker has no real meaning.
-If you want to unload into an unloading station, you need to switch the target and then mark the trigger with the unloading position.
+La position de déchargement peut soit cibler une remorque ou une station de déchargement.
+Si le déchargement dans la remorque est sélectionné, la zone où la remorque sera garée doit être sélectionnée depuis la carte des ouvriers.
+L'ouvrier se rendra à n'importe quelle remorque stationnée dans la zone. La direction du marqueur n'a pas de signification réelle.
+Si vous souhaitez décharger dans une station de déchargement, vous devez sélectionner la zone interactive de déchargement de l'emplacement.
 "/>
     <text name="CP_help_page_shovelLoaderTrigger_text" text="
-Selecting a trigger does look a bit complicated at first, but in reality it is really easy.
-Every building can have more then one trigger so you have to choose the one you want to unload to.
-All available triggers will be shown with an orange cross on the AI Map.
-To select one place the middle of the round marker on the middle of the cross.
-The driection of the arrow tells the helper from which direction he will approach the trigger for unloading.
-Now your selection should look similar to the image.
+La sélection d'une zone interactive (ZI) peut sembler un peu compliquée à première vue, mais en réalité, c'est très simple.
+Chaque bâtiment peut avoir plus d'une ZI, vous devez donc choisir celle vers laquelle vous voulez décharger.
+Toutes les ZI disponibles sont représentées par une croix orange sur la carte des ouvriers.
+Pour en sélectionner une, placez le milieu du marqueur rond sur le milieu de la croix.
+La direction de la flèche indique à l'ouvrier dans quelle direction il doit s'approcher de la ZI pour le déchargement.
+Votre sélection devrait ressembler à l'illustration ci-contre.
 "/>
     <!---->
     <!--Input bindings-->
