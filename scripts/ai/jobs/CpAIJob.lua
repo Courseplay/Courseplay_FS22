@@ -288,6 +288,12 @@ function CpAIJob:writeStream(streamId, connection)
 
 	streamWriteUInt8(streamId, self.currentTaskIndex)
 
+	if self.fieldPolygon then 
+		streamWriteBool(streamId, true)
+		CustomField.writeStreamVertices(self.fieldPolygon, streamId, connection)
+	else 
+		streamWriteBool(streamId, false)
+	end
 	if self.cpJobParameters then
 		self.cpJobParameters:writeStream(streamId, connection)
 	end
@@ -306,6 +312,10 @@ function CpAIJob:readStream(streamId, connection)
 
 	self.currentTaskIndex = streamReadUInt8(streamId)
 
+	
+	if streamReadBool(streamId) then 
+		self.fieldPolygon = CustomField.readStreamVertices(streamId, connection)
+	end
 	if self.cpJobParameters then
 		self.cpJobParameters:validateSettings()
 		self.cpJobParameters:readStream(streamId, connection)
@@ -333,6 +343,14 @@ end
 
 function CpAIJob:getCpJobParameters()
 	return self.cpJobParameters
+end
+
+function CpAIJob:getFieldPolygon()
+	return self.fieldPolygon
+end
+
+function CpAIJob:setFieldPolygon(polygon)
+	self.fieldPolygon = polygon
 end
 
 --- Can the job be started?

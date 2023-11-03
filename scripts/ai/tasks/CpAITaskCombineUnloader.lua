@@ -2,20 +2,11 @@
 ---@class CpAITaskCombineUnloader : CpAITask
 CpAITaskCombineUnloader = CpObject(CpAITask)
 
-function CpAITaskCombineUnloader:reset()
-	CpAITask.reset(self)
-	self.fieldPolygon = nil
-end
-
-function CpAITaskCombineUnloader:setFieldPolygon(polygon)
-	self.fieldPolygon = polygon	
-end
-
 function CpAITaskCombineUnloader:start()
 	if self.isServer then
 		self:debug("CP combine unloader task started.")
 		local strategy = AIDriveStrategyUnloadCombine(self, self.job)
-		strategy:setFieldPolygon(self.fieldPolygon)
+		strategy:setFieldPolygon(self.job:getFieldPolygon())
 		strategy:setAIVehicle(self.vehicle, self.job:getCpJobParameters())
 		self.vehicle:startCpWithStrategy(strategy)
 	end

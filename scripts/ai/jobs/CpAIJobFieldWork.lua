@@ -36,7 +36,7 @@ function CpAIJobFieldWork:setupJobParameters()
     self:setupCpJobParameters(CpJobParameters(self))
 end
 
----@param vehicle Vehicle
+---@param vehicle table
 ---@param mission Mission
 ---@param farmId number
 ---@param isDirectStart boolean disables the drive to by giants
@@ -81,18 +81,17 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
     end
     self.hasValidPosition = false
     self.foundVines = nil
-    local isCustomField
-    self.fieldPolygon, isCustomField = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
-
-    if self.fieldPolygon then
+    local fieldPolygon, isCustomField = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
+    self:setFieldPolygon(fieldPolygon)
+    if fieldPolygon then
         self.hasValidPosition = true
-        self.foundVines = g_vineScanner:findVineNodesInField(self.fieldPolygon, tx, tz, self.customField ~= nil)
+        self.foundVines = g_vineScanner:findVineNodesInField(fieldPolygon, tx, tz, self.customField ~= nil)
         if self.foundVines then
             CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Found vine nodes, generating a vine field border.")
             self.fieldPolygon = g_vineScanner:getCourseGeneratorVertices(0, tx, tz)
         end
 
-        self.selectedFieldPlot:setWaypoints(self.fieldPolygon)
+        self.selectedFieldPlot:setWaypoints(fieldPolygon)
         self.selectedFieldPlot:setVisible(true)
         self.selectedFieldPlot:setBrightColor(true)
         if isCustomField then
@@ -177,6 +176,7 @@ end
 --- Button callback to generate a field work course.
 function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
     local vehicle = self.vehicleParameter:getVehicle()
+    local fieldPolygon = self:getFieldPolygon()
     local settings = vehicle:getCourseGeneratorSettings()
     local tx, tz = self.cpJobParameters.fieldPosition:getPosition()
     local ok, course
@@ -196,7 +196,7 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
         )
     else
 
-        ok, course = CourseGeneratorInterface.generate(self.fieldPolygon,
+        ok, course = CourseGeneratorInterface.generate(fieldPolygon,
                 { x = tx, z = tz },
                 settings.isClockwise:getValue(),
                 settings.workWidth:getValue(),

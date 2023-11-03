@@ -4,12 +4,7 @@ CpAITaskFieldWork = CpObject(CpAITask)
 
 function CpAITaskFieldWork:reset()
 	self.startPosition = nil
-	self.fieldPolygon = nil
 	CpAITask.reset(self)
-end
-
-function CpAITaskFieldWork:setFieldPolygon(polygon)
-	self.fieldPolygon = polygon	
 end
 
 function CpAITaskFieldWork:setStartPosition(startPosition)
@@ -54,7 +49,7 @@ function CpAITaskFieldWork:start()
 				cpDriveStrategy = AIDriveStrategyFieldWorkCourse(self, self.job)
 			end
 		end
-		cpDriveStrategy:setFieldPolygon(self.fieldPolygon)
+		cpDriveStrategy:setFieldPolygon(self.job:getFieldPolygon())
 		cpDriveStrategy:setAIVehicle(self.vehicle, self.job:getCpJobParameters())
 		cpSpec.driveStrategy = cpDriveStrategy
 		--- Only the last driving strategy can stop the helper, while it is running.

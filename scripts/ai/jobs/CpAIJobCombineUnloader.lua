@@ -65,7 +65,7 @@ function CpAIJobCombineUnloader:getCanStartJob()
 	return self.hasValidPosition
 end
 
----@param vehicle Vehicle
+---@param vehicle table
 ---@param mission Mission
 ---@param farmId number
 ---@param isDirectStart boolean disables the drive to by giants
@@ -124,10 +124,11 @@ function CpAIJobCombineUnloader:validateFieldPosition(isValid, errorMessage)
 		return false, g_i18n:getText("CP_error_not_on_field")
 	end
 	local _
-	self.fieldPolygon, _ = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
-	self.hasValidPosition = self.fieldPolygon ~= nil
+	local fieldPolygon, _ = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
+	self:setFieldPolygon(fieldPolygon)
+	self.hasValidPosition = fieldPolygon ~= nil
 	if self.hasValidPosition then 
-		self.selectedFieldPlot:setWaypoints(self.fieldPolygon)
+		self.selectedFieldPlot:setWaypoints(fieldPolygon)
         self.selectedFieldPlot:setVisible(true)
 	else
 		return false, g_i18n:getText("CP_error_not_on_field")
@@ -156,6 +157,7 @@ function CpAIJobCombineUnloader:validate(farmId)
 	if not isValid then
 		return isValid, errorMessage
 	end
+	local fieldPolygon = self:getFieldPolygon()
 	------------------------------------
 	--- Validate start distance to field
 	-------------------------------------
@@ -167,13 +169,13 @@ function CpAIJobCombineUnloader:validate(farmId)
 		--- Checks the distance for starting with the hud, as a safety check.
 		--- Firstly check, if the vehicle is near the field.
 		local x, _, z = getWorldTranslation(vehicle.rootNode)
-		isValid = CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
-				  CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < self.minStartDistanceToField
+		isValid = CpMathUtil.isPointInPolygon(fieldPolygon, x, z) or 
+				  CpMathUtil.getClosestDistanceToPolygonEdge(fieldPolygon, x, z) < self.minStartDistanceToField
 		if not isValid and useGiantsUnload then 
 			--- Alternatively check, if the start marker is close to the field and giants unload is active.
 			local x, z = self.cpJobParameters.startPosition:getPosition()
-			isValid = CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
-				  CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < self.minStartDistanceToField
+			isValid = CpMathUtil.isPointInPolygon(fieldPolygon, x, z) or 
+				  CpMathUtil.getClosestDistanceToPolygonEdge(fieldPolygon, x, z) < self.minStartDistanceToField
 			if not isValid then
 				return false, g_i18n:getText("CP_error_start_position_to_far_away_from_field")
 			end 
@@ -209,8 +211,8 @@ function CpAIJobCombineUnloader:validate(farmId)
 	if useFieldUnload then 
 		
 		local x, z = self.cpJobParameters.fieldUnloadPosition:getPosition()
-		isValid = CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
-				  CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < self.minFieldUnloadDistanceToField
+		isValid = CpMathUtil.isPointInPolygon(fieldPolygon, x, z) or 
+				  CpMathUtil.getClosestDistanceToPolygonEdge(fieldPolygon, x, z) < self.minFieldUnloadDistanceToField
 		if not isValid then
 			return false, g_i18n:getText("CP_error_fieldUnloadPosition_too_far_away_from_field")
 		end
@@ -231,23 +233,6 @@ end
 function CpAIJobCombineUnloader:drawSelectedField(map)
 	self.selectedFieldPlot:draw(map)
     self.heapPlot:draw(map)
-end
-
-function CpAIJobCombineUnloader:readStream(streamId, connection)
-	CpAIJob.readStream(self, streamId, connection)
-	if streamReadBool(streamId) then 
-		self.fieldPolygon = CustomField.readStreamVertices(streamId, connection)
-	end
-end
-
-function CpAIJobCombineUnloader:writeStream(streamId, connection)
-	CpAIJob.writeStream(self, streamId, connection)
-	if self.fieldPolygon then 
-		streamWriteBool(streamId, true)
-		CustomField.writeStreamVertices(self.fieldPolygon, streamId, connection)
-	else 
-		streamWriteBool(streamId, false)
-	end
 end
 
 ------------------------------------
@@ -344,9 +329,10 @@ function CpAIJobCombineUnloader:getStartTaskIndex()
 		return startTask
 	end
 	local vehicle = self:getVehicle()
+	local fieldPolygon = self:getFieldPolygon()
 	local x, _, z = getWorldTranslation(vehicle.rootNode)
-	if CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
-		CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < 2*self.minStartDistanceToField then
+	if CpMathUtil.isPointInPolygon(fieldPolygon, x, z) or 
+		CpMathUtil.getClosestDistanceToPolygonEdge(fieldPolygon, x, z) < 2*self.minStartDistanceToField then
 		CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Close to the field, start cp drive strategy.")
 		return startTask
 	end

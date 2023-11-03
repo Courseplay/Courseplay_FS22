@@ -74,7 +74,7 @@ function CpAIJobBaleFinder:validate(farmId)
 	--------------------------------------------------------------
 	
 	isValid, errorMessage = self:validateFieldPosition(isValid, errorMessage)	
-
+	local fieldPolygon = self:getFieldPolygon()
 	--------------------------------------------------------------
 	--- Validate start distance to field, if started with the hud
 	--------------------------------------------------------------
@@ -82,8 +82,8 @@ function CpAIJobBaleFinder:validate(farmId)
 		--- Checks the distance for starting with the hud, as a safety check.
 		--- Firstly check, if the vehicle is near the field.
 		local x, _, z = getWorldTranslation(vehicle.rootNode)
-		isValid = CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
-				  CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < self.minStartDistanceToField
+		isValid = CpMathUtil.isPointInPolygon(fieldPolygon, x, z) or 
+				  CpMathUtil.getClosestDistanceToPolygonEdge(fieldPolygon, x, z) < self.minStartDistanceToField
 		if not isValid then
 			return false, g_i18n:getText("CP_error_vehicle_too_far_away_from_field")
 		end
@@ -98,11 +98,11 @@ function CpAIJobBaleFinder:validateFieldPosition(isValid, errorMessage)
 	if tx == nil or tz == nil then 
 		return false, g_i18n:getText("CP_error_not_on_field")
 	end
-	local _
-	self.fieldPolygon, _ = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
-	self.hasValidPosition = self.fieldPolygon ~= nil
+	local fieldPolygon, _ = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
+	self:setFieldPolygon(fieldPolygon)
+	self.hasValidPosition = fieldPolygon ~= nil
 	if self.hasValidPosition then 
-		self.selectedFieldPlot:setWaypoints(self.fieldPolygon)
+		self.selectedFieldPlot:setWaypoints(fieldPolygon)
         self.selectedFieldPlot:setVisible(true)
 	else
 		return false, g_i18n:getText("CP_error_not_on_field")
@@ -129,21 +129,4 @@ function CpAIJobBaleFinder:getDescription()
 		end
 	end
 	return desc
-end
-
-function CpAIJobBaleFinder:readStream(streamId, connection)
-	CpAIJob.readStream(self, streamId, connection)
-	if streamReadBool(streamId) then 
-		self.fieldPolygon = CustomField.readStreamVertices(streamId, connection)
-	end
-end
-
-function CpAIJobBaleFinder:writeStream(streamId, connection)
-	CpAIJob.writeStream(self, streamId, connection)
-	if self.fieldPolygon then 
-		streamWriteBool(streamId, true)
-		CustomField.writeStreamVertices(self.fieldPolygon, streamId, connection)
-	else 
-		streamWriteBool(streamId, false)
-	end
 end
