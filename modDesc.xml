@@ -155,13 +155,13 @@ Changelog 7.4.0.0:
 - Forstmulcher und Handmäher können jetzt für die Feldarbeit verwendet werden.
 - Automatische Anzeige für das Info Panel hinzugefügt.
 - Verbesserung für Pflüge beim Wenden, es werden jetzt weniger Vorgewende benötigt.
-- Verbesserung für das rückwärts fahren mit Tools die einen Versatz haben.
-- Schaufel Modus hinzugefügt, bitte lest die Ingame Hilfe durch, wie dieser Modus funktioniert.
+- Verbesserung für das Rückwärtsfahren mit Tools, die einen Versatz haben.
+- Schaufel Modus hinzugefügt. Bitte lest die Ingame Hilfe durch, wie dieser Modus funktioniert.
 - Beschreibung für Drescher im ersten Vorgewende abtanken geändert, um die Funktion besser zu beschreiben.
-- Schildhöhe beim Silo schieben ist im HUD jetzt einstellbar.
-- Beim ansäen wird jetzt die Fruchtsorte überprüft, ob die Frucht in der aktuellen Jahreszeit angesät werden kann und ob sie dem Auftrag entsprechen.
+- Schildhöhe beim Siloschieben ist im HUD jetzt einstellbar.
+- Beim Ansäen wird jetzt die Fruchtsorte überprüft, ob die Frucht in der aktuellen Jahreszeit angesät werden kann und ob sie dem Auftrag entspricht.
 - Verbesserungen beim Drescher abtanken Modus.
-- Es kann jetzt ein LKW und ein Trailer in Kombination verwendet werden um Drescher ab zu tanken.
+- Es kann jetzt ein LKW und ein Trailer in Kombination verwendet werden, um Drescher ab zu tanken.
 - Ein paar MP und SP bugfixes.
 
 Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release Seite</a> auf GitHub vorbei.
