@@ -35,6 +35,21 @@ or go directly to our <a href="https://github.com/Courseplay/Courseplay_FS22">Gi
 
 Many thanks to our translators and to our community for reporting bugs, giving us feedback and great ideas.
 
+Changelog 7.4.0.0:
+- Enable Fieldwork for Forstmulcher and Handmower
+- Added auto display option for info panel.
+- Plow handling improvement in turns, now less headlands are needed.
+- Improvement for reverse driving with offset tools.
+- Added shovel mode driver, please read ingame help menu for how it works.
+- Changed description for combine unload on 1st headland to be more clear.
+- Added leveler height offset to the ground setting.
+- Added fruit type check for mission and season.
+- Combine unloading improvements.
+- Can now use a truck and a trailer to unload a combine.
+- More MP and SP bugfixes.
+
+For a complete changelog please visit our <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release page</a> on GitHub.
+
 Changelog 7.3.0.0:
 - Bale collector/wrapper now works the same way as the combine unloader in terms of markers:
 The field position is now saved into the vehicle and will not be reset to the vehicle position, when started by the hud!
@@ -65,8 +80,6 @@ Remember, the combine needs enough space to park the trailer, pick the header up
 - Removed most default debugs (kept some info prints for now)
 - Increased modDesc Version to 76 (Game Version 1.11.0.0 or higher)
 - New website with an exact copy of the in-game help <a href="https://courseplay.dev/">Courseplay Website</a>
-
-For a complete changelog please visit our <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release page</a> on GitHub.
 
 Changelog 7.2.0.5:
 - Goeweil pack bug fix for the stationary baler with the Courseplay hud.
@@ -138,6 +151,21 @@ oder du gehst direkt auf unsere <a href="https://github.com/Courseplay/Coursepla
 
 Vielen Dank an unsere Community für die zahlreichen Übersetzungen, Bug Reports, Feedback und Vorschläge zur Verbesserung.
 
+Changelog 7.4.0.0:
+- Forstmulcher und Handmäher können jetzt für die Feldarbeit verwendet werden.
+- Automatische Anzeige für das Info Panel hinzugefügt.
+- Verbesserung für Pflüge beim Wenden, es werden jetzt weniger Vorgewende benötigt.
+- Verbesserung für das rückwärts fahren mit Tools die einen Versatz haben.
+- Schaufel Modus hinzugefügt, bitte lest die Ingame Hilfe durch, wie dieser Modus funktioniert.
+- Beschreibung für Drescher im ersten Vorgewende abtanken geändert, um die Funktion besser zu beschreiben.
+- Schildhöhe beim Silo schieben ist im HUD jetzt einstellbar.
+- Beim ansäen wird jetzt die Fruchtsorte überprüft, ob die Frucht in der aktuellen Jahreszeit angesät werden kann und ob sie dem Auftrag entsprechen.
+- Verbesserungen beim Drescher abtanken Modus.
+- Es kann jetzt ein LKW und ein Trailer in Kombination verwendet werden um Drescher ab zu tanken.
+- Ein paar MP und SP bugfixes.
+
+Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release Seite</a> auf GitHub vorbei.
+
 Changelog 7.3.0.0:
 - Die Feldauswahl im Ballen sammeln und wickeln Modus funktioniert jetzt genauso wie beim Drescher abtanken.
 Für jedes neue Feld muss diese Position im Menu jetzt neu gesetzt werden und wird somit nicht mehr durch das Öffnen über das Hud automatisch neu gesetzt!
@@ -169,8 +197,6 @@ Wenn der Drescher mit Anhänger und Schneidwerk von Giants oder Autodrive zum Fe
 - Die meisten debugs wurden standartmäßig deaktiviert (einige Infos werden vorerst aktiv gelassen)
 - ModDesc Version auf 76 (Spielversion 1.11.0.0 oder höher)
 - Neue Webseite mit einer exakten Kopie der Hilfe aus dem Spiel: <a href="https://courseplay.dev/">Courseplay Webseite</a>
-
-Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release Seite</a> auf GitHub vorbei.
 
 Changelog 7.2.0.5:
 - Göweil Pack Fehler gefixt, wenn das Courseplay HUD im Fahrzeug aktiv ist.
