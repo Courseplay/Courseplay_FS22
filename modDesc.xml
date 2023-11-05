@@ -24,7 +24,7 @@ Courseplay takes the AI worker to the next level. Sow, harvest and plow smarter:
 - let up to 5 helpers work on the same field in a group
 - combines find a trailer to self-unload when full
 - unload combines with trailer or auger wagon
-- use loaders to pick up heaps on the field or to empty bunker silos
+- use loaders or vehicles with a shovel to pick up heaps on the field or to empty bunker silos
 - set up your own fields wherever you like
 - works great together with AutoDrive, let Courseplay do the fieldwork and AutoDrive to refill a sower or unload a forage wagon
 - customize the automatically created fieldwork courses to your liking with the course editor
@@ -37,7 +37,7 @@ Many thanks to our translators and to our community for reporting bugs, giving u
 
 Changelog 7.4.0.0:
 - Enable forestry mulchers and lawnmowers for fieldwork
-- Added auto display option for info panel.
+- Added option to show the info panel only, when at least one message is active.
 - Plow handling improvement in turns, now less headlands are needed.
 - Improvement for reverse driving with offset tools.
 - Added shovel mode driver, please read ingame help menu for how it works.
@@ -139,7 +139,7 @@ Courseplay hebt den Helfer auf ein ganz neues Level. Säen, ernten und pflügen 
 - Erstelle deine eigenen Felder, wo immer du möchtest
 - Im Bunkersilo schieben und verdichten.
 - Erstelle Haufen auf einem Feld, für z.B. eine Rübenmiete, durch den Drescher Abtank Modus.
-- Stelle eine Haufen Lader, wie z.b. den Ropa Maus 5, ein und Lade damit eine Rübenmiete auf und nutze eine Abfahrer zum Weg bringen.
+- Nutze einen Lader wie den Ropa Maus 5 oder ein Fahrzeug mit einer Schaufel um Haufen auf dem Feld auf zu nehmen oder um einen Bunker zu leeren.
 - Arbeitet super mit AutoDrive zusammen, lasse Courseplay die Feldarbeit erledigen und
 AutoDrive erledigt das Abtanken eines Ladewagens oder Auffüllen einer Sämaschine.
 - Verändere die generierten Kurse mit dem Kurseditor.
@@ -153,7 +153,7 @@ Vielen Dank an unsere Community für die zahlreichen Übersetzungen, Bug Reports
 
 Changelog 7.4.0.0:
 - Forstmulcher und Handmäher können jetzt für die Feldarbeit verwendet werden.
-- Automatische Anzeige für das Info Panel hinzugefügt.
+- Option hinzugefügt, welches das Info Panel nur einblendet, wenn eine Nachricht vorhanden ist.
 - Verbesserung für Pflüge beim Wenden, es werden jetzt weniger Vorgewende benötigt.
 - Verbesserung für das Rückwärtsfahren mit Tools, die einen Versatz haben.
 - Schaufel Modus hinzugefügt. Bitte lest die Ingame Hilfe durch, wie dieser Modus funktioniert.
