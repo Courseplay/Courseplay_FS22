@@ -326,6 +326,10 @@ end
 --- Combine unloader interface functions
 ---------------------------------------------
 
+function AIDriveStrategySiloLoader:getFillType()
+    return self.shovelController:getDischargeFillType()
+end
+
 function AIDriveStrategySiloLoader:isPipeOnLeft()
     return self.conveyorController:isPipeOnTheLeftSide()
 end
