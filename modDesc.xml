@@ -36,17 +36,17 @@ or go directly to our <a href="https://github.com/Courseplay/Courseplay_FS22">Gi
 Many thanks to our translators and to our community for reporting bugs, giving us feedback and great ideas.
 
 Changelog 7.4.0.0:
-- Enable Fieldwork for Forstmulcher and Handmower
+- Enable forestry mulchers and lawnmowers for fieldwork
 - Added auto display option for info panel.
 - Plow handling improvement in turns, now less headlands are needed.
 - Improvement for reverse driving with offset tools.
 - Added shovel mode driver, please read ingame help menu for how it works.
-- Changed description for combine unload on 1st headland to be more clear.
+- Changed description for combine unload on first headland to be more clear.
 - Added leveler height offset to the ground setting.
 - Added fruit type check for mission and season.
 - Combine unloading improvements.
 - Can now use a truck and a trailer to unload a combine.
-- More MP and SP bugfixes.
+- More bugfixes.
 
 For a complete changelog please visit our <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release page</a> on GitHub.
 
@@ -162,7 +162,7 @@ Changelog 7.4.0.0:
 - Beim Ansäen wird jetzt die Fruchtsorte überprüft, ob die Frucht in der aktuellen Jahreszeit angesät werden kann und ob sie dem Auftrag entspricht.
 - Verbesserungen beim Drescher abtanken Modus.
 - Es kann jetzt ein LKW und ein Trailer in Kombination verwendet werden, um Drescher ab zu tanken.
-- Ein paar MP und SP bugfixes.
+- Mehrere bugfixes.
 
 Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release Seite</a> auf GitHub vorbei.
 
