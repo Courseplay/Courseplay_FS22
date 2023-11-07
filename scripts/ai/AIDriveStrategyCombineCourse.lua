@@ -1646,6 +1646,9 @@ function AIDriveStrategyCombineCourse:onPathfindingDoneAfterSelfUnload(path)
     -- TODO: for some reason, the combine lowers the header while unloading, that should be fixed, for now, raise it here
     self:raiseImplements()
     local course, ix = self:getRememberedCourseAndIx()
+    local fm, bm = self:getFrontAndBackMarkers()
+    self.turnContext = RowStartOrFinishContext(self.vehicle, course, ix, ix, self.turnNodes, self:getWorkWidth(),
+            fm, bm, 0, 0)
     if path and #path > 2 then
         self.state = self.states.UNLOADING_ON_FIELD
         self.unloadState = self.states.RETURNING_FROM_SELF_UNLOAD
@@ -1654,9 +1657,6 @@ function AIDriveStrategyCombineCourse:onPathfindingDoneAfterSelfUnload(path)
                 #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
         local returnCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
         returnCourse:adjustForTowedImplements(2)
-        local fm, bm = self:getFrontAndBackMarkers()
-        self.turnContext = RowStartOrFinishContext(self.vehicle, course, ix, ix, self.turnNodes, self:getWorkWidth(),
-                fm, bm, 0, 0)
         self.workStarter = StartRowOnly(self.vehicle, self, self.ppc, self.turnContext, returnCourse)
         self:startCourse(self.workStarter:getCourse(), 1)
         return true
@@ -1670,7 +1670,8 @@ function AIDriveStrategyCombineCourse:onPathfindingDoneAfterSelfUnload(path)
             self.unloadState = self.states.RETURNING_FROM_SELF_UNLOAD
             self.ppc:setShortLookaheadDistance()
             self:debug('Start an alignment course to fieldwork waypoint %d', ix)
-            self:startCourse(returnCourse, 1)
+            self.workStarter = StartRowOnly(self.vehicle, self, self.ppc, self.turnContext, returnCourse)
+            self:startCourse(self.workStarter:getCourse(), 1)
         else
             self.state = self.states.WORKING
             self:debug('Could not generate alignment course to fieldwork waypoint %d, starting course directly', ix)
