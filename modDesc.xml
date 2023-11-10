@@ -332,6 +332,7 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/ai/controllers/StumpCutterController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/FoldableController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/PlowController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/PalletFillerController.lua"/>
 
 		<sourceFile filename="scripts/ai/AIDriveStrategyCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyDriveToFieldWorkStart.lua"/>

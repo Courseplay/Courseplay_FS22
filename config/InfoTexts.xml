@@ -22,8 +22,8 @@
 	<InfoText name="ERROR_AUTOMATIC_CUTTER_ATTACH_DISABLED" text="errorAutomaticCutterAttachNotActive" class="AIMessageErrorAutomaticCutterAttachNotActive" isOnlyShownOnPlayerStart="true"/>
 	<InfoText name="ERROR_WRONG_SEASON"						text="errorWrongSeason" class="AIMessageErrorWrongSeason"/>
 	<InfoText name="ERROR_WRONG_MISSION_FRUIT_TYPE" 		text="errorWrongMissionFruitType" class="AIMessageErrorWrongMissionFruitType"/>
-	<InfoText name="ERROR_PALLETS_ARE_FULL" 				text="errorPalletsAreFull" class="AIMessageErrorPalletsFull"/>
-	<InfoText name="ERROR_PALLETS_ARE_EMPTY" 				text="errorPalletsAreEmpty" class="AIMessageErrorNoPalletsLoaded"/>
+	<InfoText name="ERROR_PALLETS_ARE_FULL" 				text="errorPalletsAreFull" class="pdlc_premiumExpansion.AIMessageErrorPalletsFull"/>
+	<InfoText name="ERROR_PALLETS_ARE_EMPTY" 				text="errorPalletsAreEmpty" class="pdlc_premiumExpansion.AIMessageErrorNoPalletsLoaded"/>
 
 	<InfoText name="IS_STUCK"								text="isStuck"/>
 	<InfoText name="BLOCKED_BY_OBJECT"  					text="blockedByObject" class="AIMessageErrorBlockedByObject"/>

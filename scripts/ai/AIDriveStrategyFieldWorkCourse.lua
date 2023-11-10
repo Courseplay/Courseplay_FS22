@@ -266,6 +266,7 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
     self:addImplementController(vehicle, MotorController, Motorized, {})
     self:addImplementController(vehicle, WearableController, Wearable, {})
     self:addImplementController(vehicle, VineCutterController, VineCutter, defaultDisabledStates)
+    self:addImplementController(vehicle, PalletFillerController, nil, defaultDisabledStates, "spec_pdlc_premiumExpansion.palletFiller")
 
     self:addImplementController(vehicle, SoilSamplerController, nil, defaultDisabledStates, "spec_soilSampler")
     self:addImplementController(vehicle, StumpCutterController, StumpCutter, defaultDisabledStates)
