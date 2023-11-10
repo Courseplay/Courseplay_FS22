@@ -463,6 +463,8 @@
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Присоединение жатки не активно"/>
     <text name="CP_infoTexts_errorWrongSeason" text="Неправильный сезон для культуры"/>
     <text name="CP_infoTexts_errorWrongMissionFruitType" text="Неправильная культура для выбранной миссии"/>
+    <text name="CP_infoTexts_errorPalletsAreFull" text="Pallets are full"/>
+    <text name="CP_infoTexts_errorPalletsAreEmpty" text="No pallets"/>
     <!---->
     <!--Custom field manager-->
     <!---->

@@ -463,6 +463,8 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Conexão do cortador desativado"/>
     <text name="CP_infoTexts_errorWrongSeason" text="Época errada para frutas"/>
     <text name="CP_infoTexts_errorWrongMissionFruitType" text="Fruta errada para a missão selecionada"/>
+    <text name="CP_infoTexts_errorPalletsAreFull" text="Pallets are full"/>
+    <text name="CP_infoTexts_errorPalletsAreEmpty" text="No pallets"/>
     <!---->
     <!--Custom field manager-->
     <!---->
