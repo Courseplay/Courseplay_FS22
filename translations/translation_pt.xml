@@ -463,6 +463,8 @@ A rota é guardada automaticamente ao fechar o editor e sobrepõe-se a qualquer 
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Conectar a cabeça de corte desactivo"/>
     <text name="CP_infoTexts_errorWrongSeason" text="Wrong season for fruit"/>
     <text name="CP_infoTexts_errorWrongMissionFruitType" text="Wrong fruit for mission selected"/>
+    <text name="CP_infoTexts_errorPalletsAreFull" text="Pallets are full"/>
+    <text name="CP_infoTexts_errorPalletsAreEmpty" text="No pallets"/>
     <!---->
     <!--Custom field manager-->
     <!---->
