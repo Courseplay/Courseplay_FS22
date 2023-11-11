@@ -181,12 +181,19 @@ end
 
 --- Deactivates the shovel position control.
 function CpShovelPositions:cpResetShovelState()
-	if not self.isServer then return end
+	if not self.isServer then 
+		return 
+	end
+
 	CpShovelPositions.debug(self, "Reset shovelPositionState.")
 	local spec = self.spec_cpShovelPositions
 	spec.state = CpShovelPositions.DEACTIVATED
-	ImplementUtil.stopMovingTool(spec.armVehicle, spec.armTool)
-	ImplementUtil.stopMovingTool(spec.shovelVehicle, spec.shovelTool)
+	if spec.armTool then
+		ImplementUtil.stopMovingTool(spec.armVehicle, spec.armTool)
+	end
+	if spec.shovelTool then
+		ImplementUtil.stopMovingTool(spec.shovelVehicle, spec.shovelTool)
+	end
 end
 
 --- Is the current target shovel position not yet reached?
