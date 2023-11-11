@@ -230,7 +230,7 @@
     <text name="CP_vehicle_setting_reverseSpeed_title" text="Retromarcia"/>
     <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="Velocità massima in retromarcia. Intervallo: 2 - 25"/>
     <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silos"/>
-    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Velocità massima durante la guida in un silos. Value: 2 - 25"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Velocità massima durante la guida in un silos. Intervallo: 2 - 25"/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
@@ -463,8 +463,8 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Attacco taglierina disattivato"/>
     <text name="CP_infoTexts_errorWrongSeason" text="Stagione sbagliata per il prodotto"/>
     <text name="CP_infoTexts_errorWrongMissionFruitType" text="Raccolto sbagliato per la missione selezionata"/>
-    <text name="CP_infoTexts_errorPalletsAreFull" text="Pallets are full"/>
-    <text name="CP_infoTexts_errorPalletsAreEmpty" text="No pallets"/>
+    <text name="CP_infoTexts_errorPalletsAreFull" text="I pallet sono pieni"/>
+    <text name="CP_infoTexts_errorPalletsAreEmpty" text="Nessun pallet"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -844,7 +844,7 @@ Per i silos a cuneo, viene utilizzato uno scudo per spingere la pula sul retro d
 Se il veicolo ha un distributore o uno scudo collegato, la modalità Silos è preselezionata. Con solo un peso o un rullo attaccato
 si passa dal punto di partenza finché non viene visualizzata la modalità.
 Oltre alla larghezza di lavoro, è possibile selezionare anche la direzione in cui il conducente deve entrare nel silos. Con uno scudo attaccato, la direzione viene selezionata automaticamente.
-Usa l'icona del bersaglio sull'HUD per selezionare il silos sulla mappa AI. Se verrà mostrato con linee blu e si illuminerà di bianco se è selezionato.
+Usa l'icona del bersaglio sull'HUD per selezionare il silos sulla mappa IA. Se verrà mostrato con linee blu e si illuminerà di bianco se è selezionato.
 La posizione di parcheggio viene impostata con l'indicatore &quot;posizione di parcheggio&quot; che può essere utilizzato anche per guidare lì con l'aiutante della Giants
 prima di iniziare il lavoro vero e proprio.
 "/>
@@ -855,46 +855,46 @@ Inoltre è possibile caricare da un silos bunker.
 Il caricatore può essere scaricato con uno scaricatore Courseplay.
 "/>
     <text name="CP_help_page_siloLoaderBasic_text" text="
-Per avviare l'indicatore di caricamento nel menu AI è necessario impostare.
+Per avviare l'indicatore di caricamento nel menu IA è necessario impostare.
 Il marcatore rileva cumuli o silos e li evidenzia sulla mappa.
-Ora è possibile avviare l'helper.
+Ora è possibile avviare l'aiutante.
 "/>
     <text name="CP_help_page_shovelLoader_title" text="Autista di pale gommate"/>
     <text name="CP_help_page_shovelLoaderGeneral_text" text="
-This mode enables wheel loader and tractors with a front loader. 
-With a shovel attached a heap can be picked up from the ground or loading from a bunker silo can be accomplished.
-The picked up fill level can be unloaded automatically into a nearby trailer or a selected unloading station like a BGA.
-The shovel will automatically be moved to the correct positions for loading, unloading and so on.
-In case the mode is not directly visable on the hud, you can toggle the &quot;start position&quot; until the shovel mode appears.
+Questa modalità consente l'utilizzo di pale gommate e trattori con caricatore frontale.
+Con una pala attaccata è possibile raccogliere un mucchio da terra o eseguire il caricamento da un silo bunker.
+Il livello di riempimento prelevato può essere scaricato automaticamente in un rimorchio vicino o in una stazione di scarico selezionata come un BGA.
+La pala verrà automaticamente spostata nelle posizioni corrette per il carico, lo scarico e così via.
+Nel caso in cui la modalità non sia direttamente visibile sull'hud, puoi attivare o disattivare la &quot;posizione di partenza&quot; finché non viene visualizzata la modalità pala.
 
-The target icon on the hud can be used to open the AI map to select the loading and the unloading targets.
-The hud also shows the leftover fill level of the heap or silo, while the helper is working.
-If the loading target is a bunker silo, then the work width might need to be adjusted to avoid hitting the side walls of the silo.
+L'icona del bersaglio sull'hud può essere utilizzata per aprire la mappa IA per selezionare i bersagli di carico e scarico.
+L'hud mostra anche il livello di riempimento rimanente del mucchio o del silo, mentre l'aiutante sta lavorando.
+Se l'obiettivo di caricamento è un silo bunker, potrebbe essere necessario regolare la larghezza di lavoro per evitare di colpire le pareti laterali del silo.
+      
+L'impostazione della compensazione dell'altezza viene utilizzata per regolare l'altezza dal suolo, poiché non tutte le pale possono essere calcolate correttamente.
+Questo dovrebbe essere controllato, se la pala è troppo bassa per il caricamento e il conducente non può più girare o la pala è troppo alta e il livello di riempimento non raggiunge il suolo.
+Se il valore viene modificato, la pala si sposterà automaticamente nella posizione di carico per mostrare l'impatto dell'offset.
+Per ripristinare la compensazione è necessario fare clic sul testo delle impostazioni nell'hud. Il valore può essere regolato da +1 a -1 passo in 0,1.
 
-The hight offset setting is used to adjust the hight above the ground, as not all shovel can calculated correctly. 
-This should be checked, if the shovel is to low for loading and the driver can't turn anymore or the shovel is to high and fill level is missed to the ground.
-If the value gets changed, the shovel will automatically move to the loading position to show the impact of the offset.
-To reset the offset you need to click on the settings text in the hud. The value can be adjusted from +1 to -1 in 0.1 setps.
-
-Shovels with a silage grab will open and close automatically for loading and unloading.
-The shovel to shred sugar beets is completly functional as well.
+Le pale con pinza per insilato si aprono e si chiudono automaticamente per il carico e lo scarico.
+Anche la pala per sminuzzare le barbabietole da zucchero è completamente funzionale.
 "/>
     <text name="CP_help_page_shovelLoaderBasic_text" text="
-To start a wheel loader helper, you need to set the load and unload positions by clicking the target icon on the hud.
-The loading position works the same like the one from the loader mode. A blue square will be created arround the heap.
+Per avviare un assistente per pale gommate, è necessario impostare le posizioni di carico e scarico facendo clic sull'icona di destinazione sull'hud.
+La posizione di caricamento funziona allo stesso modo di quella della modalità caricatore. Verrà creato un quadrato blu attorno al mucchio.
 
-The unloading position depends if you want to unload into a trailer or into an unloading station.
-If unloading into the trailer is selected, then the area where the trailer will be parked needs to be selected on the AI Menu.
-The helper will drive to any parked trailer in the area. The direction of the marker has no real meaning.
-If you want to unload into an unloading station, you need to switch the target and then mark the trigger with the unloading position.
+La posizione di scarico dipende se si desidera scaricare su un rimorchio o su una stazione di scarico.
+Se viene selezionato lo scarico nel rimorchio, è necessario selezionare l'area in cui verrà parcheggiato il rimorchio nel menu IA.
+L'aiutante si dirigerà verso qualsiasi rimorchio parcheggiato nella zona. La direzione del marcatore non ha alcun significato reale.
+Se si desidera scaricare in una stazione di scarico, è necessario cambiare il target e quindi contrassegnare il grilletto con la posizione di scarico.
 "/>
     <text name="CP_help_page_shovelLoaderTrigger_text" text="
-Selecting a trigger does look a bit complicated at first, but in reality it is really easy.
-Every building can have more then one trigger so you have to choose the one you want to unload to.
-All available triggers will be shown with an orange cross on the AI Map.
-To select one place the middle of the round marker on the middle of the cross.
-The driection of the arrow tells the helper from which direction he will approach the trigger for unloading.
-Now your selection should look similar to the image.
+La selezione di un trigger all'inizio sembra un po' complicata, ma in realtà è davvero semplice.
+Ogni edificio può avere più di un trigger, quindi devi scegliere quello su cui vuoi scaricare.
+Tutti i trigger disponibili verranno visualizzati con una croce arancione sulla mappa AI.
+Per selezionarne uno posizionare il centro del contrassegno rotondo al centro della croce.
+La direzione della freccia indica al figurante da quale direzione si avvicinerà al grilletto per lo scarico.
+Ora la tua selezione dovrebbe essere simile all'immagine.
 "/>
     <!---->
     <!--Input bindings-->
