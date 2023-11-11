@@ -463,6 +463,8 @@ Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felü
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Vágóasztal felcsatolás kikapcsolva"/>
     <text name="CP_infoTexts_errorWrongSeason" text="Nem megfelelő évszak ehhez a terményhez"/>
     <text name="CP_infoTexts_errorWrongMissionFruitType" text="Helytelen vetőmag kiválasztva a megbízáshoz"/>
+    <text name="CP_infoTexts_errorPalletsAreFull" text="Pallets are full"/>
+    <text name="CP_infoTexts_errorPalletsAreEmpty" text="No pallets"/>
     <!---->
     <!--Custom field manager-->
     <!---->

@@ -1634,6 +1634,14 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="de"><![CDATA[Falsche Frucht für Mission ausgewählt]]></Text>
 			<Text language="en"><![CDATA[Wrong fruit for mission selected]]></Text>
 		</Translation>
+		<Translation name="CP_infoTexts_errorPalletsAreFull">
+			<Text language="de"><![CDATA[Paletten sind voll.]]></Text>
+			<Text language="en"><![CDATA[Pallets are full]]></Text>
+		</Translation>
+		<Translation name="CP_infoTexts_errorPalletsAreEmpty">
+			<Text language="de"><![CDATA[Keine Palette]]></Text>
+			<Text language="en"><![CDATA[No pallets]]></Text>
+		</Translation>
 	</Category>
 	<Category name="Custom field manager">	
 		<Translation name="CP_customFieldManager_confirm_save">

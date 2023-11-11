@@ -463,6 +463,8 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Schneidwerk ankuppeln deaktiviert"/>
     <text name="CP_infoTexts_errorWrongSeason" text="Falsche Jahreszeit"/>
     <text name="CP_infoTexts_errorWrongMissionFruitType" text="Falsche Frucht für Mission ausgewählt"/>
+    <text name="CP_infoTexts_errorPalletsAreFull" text="Paletten sind voll."/>
+    <text name="CP_infoTexts_errorPalletsAreEmpty" text="Keine Palette"/>
     <!---->
     <!--Custom field manager-->
     <!---->

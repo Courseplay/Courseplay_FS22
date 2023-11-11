@@ -463,6 +463,8 @@ Editör kapatıldığında kurs otomatik olarak kaydedilir ve seçilen kursu ge�
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Cutter attaching deactivated"/>
     <text name="CP_infoTexts_errorWrongSeason" text="Wrong season for fruit"/>
     <text name="CP_infoTexts_errorWrongMissionFruitType" text="Wrong fruit for mission selected"/>
+    <text name="CP_infoTexts_errorPalletsAreFull" text="Pallets are full"/>
+    <text name="CP_infoTexts_errorPalletsAreEmpty" text="No pallets"/>
     <!---->
     <!--Custom field manager-->
     <!---->

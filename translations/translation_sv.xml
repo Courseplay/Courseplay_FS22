@@ -463,6 +463,8 @@ Banan sparas automatiskt vid stängning av editorn och åsidosätter den valda b
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Automatisk skärbords koppling är avaktiverad"/>
     <text name="CP_infoTexts_errorWrongSeason" text="Wrong season for fruit"/>
     <text name="CP_infoTexts_errorWrongMissionFruitType" text="Wrong fruit for mission selected"/>
+    <text name="CP_infoTexts_errorPalletsAreFull" text="Pallets are full"/>
+    <text name="CP_infoTexts_errorPalletsAreEmpty" text="No pallets"/>
     <!---->
     <!--Custom field manager-->
     <!---->

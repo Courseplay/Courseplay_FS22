@@ -463,6 +463,8 @@ Kurs jest automatycznie zapisywany po zamknięciu edytora i nadpisuje wybrany ku
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Podczepianie hederu nieaktywne"/>
     <text name="CP_infoTexts_errorWrongSeason" text="Zła pora roku dla tej uprawy"/>
     <text name="CP_infoTexts_errorWrongMissionFruitType" text="Zły rodzaj uprawy dla tej pracy"/>
+    <text name="CP_infoTexts_errorPalletsAreFull" text="Pallets are full"/>
+    <text name="CP_infoTexts_errorPalletsAreEmpty" text="No pallets"/>
     <!---->
     <!--Custom field manager-->
     <!---->

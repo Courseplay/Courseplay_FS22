@@ -463,6 +463,8 @@ Trasa se automaticky uloží při zavření editoru a přepíše vybranou trasu.
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Připojování lišty deaktivováno"/>
     <text name="CP_infoTexts_errorWrongSeason" text="Wrong season for fruit"/>
     <text name="CP_infoTexts_errorWrongMissionFruitType" text="Wrong fruit for mission selected"/>
+    <text name="CP_infoTexts_errorPalletsAreFull" text="Pallets are full"/>
+    <text name="CP_infoTexts_errorPalletsAreEmpty" text="No pallets"/>
     <!---->
     <!--Custom field manager-->
     <!---->

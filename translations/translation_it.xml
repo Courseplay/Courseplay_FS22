@@ -463,6 +463,8 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Attacco taglierina disattivato"/>
     <text name="CP_infoTexts_errorWrongSeason" text="Stagione sbagliata per il prodotto"/>
     <text name="CP_infoTexts_errorWrongMissionFruitType" text="Raccolto sbagliato per la missione selezionata"/>
+    <text name="CP_infoTexts_errorPalletsAreFull" text="Pallets are full"/>
+    <text name="CP_infoTexts_errorPalletsAreEmpty" text="No pallets"/>
     <!---->
     <!--Custom field manager-->
     <!---->
