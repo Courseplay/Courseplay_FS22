@@ -33,17 +33,4 @@ function PalletFillerController:update()
 			self.vehicle:stopCurrentAIJob(stopReason)
 		end
 	end
-	--- TODO: WIP
-	-- local type = self.settings.unloadAndRefillPallets:get()
-	-- if type == CpVehicleSettings.PALLETS_UNLOAD_AND_REFILL_DISABLED then
-	-- 	if not canContinue then 
-	-- 		self.vehicle:stopCurrentAIJob(stopReason or AIMessageErrorUnknown.new())
-	-- 	end
-	-- elseif type == CpVehicleSettings.PALLETS_ONLY_UNLOAD then
-	
-	-- else
-	-- 	if not canContinue and stopAI then 
-	-- 		self.vehicle:stopCurrentAIJob(stopReason or AIMessageErrorUnknown.new())
-	-- 	end
-	-- end
 end
