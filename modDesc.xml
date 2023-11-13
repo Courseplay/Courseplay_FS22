@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="76">
+<modDesc descVersion="79">
     <version>7.3.1.5</version>
 	<author><![CDATA[Courseplay.devTeam]]></author>
 	<title>
@@ -47,6 +47,8 @@ Changelog 7.4.0.0:
 - Combine unloading improvements.
 - Can now use a truck and a trailer to unload a combine.
 - More bugfixes.
+- Added Info texts for vegetable harvester with pallets.
+- Increased desc Version to 79 (Patch 1.13.1.0)
 
 For a complete changelog please visit our <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release page</a> on GitHub.
 
@@ -163,6 +165,8 @@ Changelog 7.4.0.0:
 - Verbesserungen beim Drescher abtanken Modus.
 - Es kann jetzt ein LKW und ein Trailer in Kombination verwendet werden, um Drescher ab zu tanken.
 - Mehrere bugfixes.
+- Infotext für Gemüseernter mit Paletten hinzugefügt.
+- Desc Version auf 79 erhöht (Patch 1.13.1.0)
 
 Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release Seite</a> auf GitHub vorbei.
 
