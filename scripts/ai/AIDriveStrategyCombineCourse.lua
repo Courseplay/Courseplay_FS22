@@ -643,6 +643,9 @@ function AIDriveStrategyCombineCourse:isFull(fillLevelFullPercentage)
 end
 
 function AIDriveStrategyCombineCourse:shouldMakePocket()
+    if self:isChopper() then
+        return false
+    end
     if self.fruitLeft > 0.75 and self.fruitRight > 0.75 then
         -- fruit both sides
         return true

@@ -108,6 +108,18 @@
 				<Text>onlyCenter</Text>
 			</Texts>
 		</Setting>
+		<Setting classType="AIParameterSettingList" name="unloadAndRefillPallets" default="1">
+			<Values>
+				<Value name="PALLETS_UNLOAD_AND_REFILL_DISABLED">1</Value>
+				<Value name="PALLETS_ONLY_UNLOAD">2</Value>
+				<Value name="PALLETS_UNLOAD_AND_REFILL">3</Value>
+			</Values>
+			<Texts>
+				<Text prefix="false">CP_deactivated</Text>
+				<Text>onlyUnload</Text>
+				<Text>unloadAndRefill</Text>
+			</Texts>
+		</Setting>
 	</SettingSubTitle>
 
 	<SettingSubTitle title="seeder" isVisible="areSowingMachineSettingsVisible">

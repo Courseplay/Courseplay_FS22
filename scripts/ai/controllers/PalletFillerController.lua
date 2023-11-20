@@ -24,13 +24,38 @@ function PalletFillerController:init(vehicle, implement)
 
 end
 
+function PalletFillerController:handlePallets(stopReason)
+	local unloadAndRefill = self.settings.unloadAndRefillPallets:get()
+	if stopReason:isa(pdlc_premiumExpansion.AIMessageErrorPalletsFull) and unloadAndRefill >= CpVehicleSettings.PALLETS_ONLY_UNLOAD then 
+		if self.palletFillerSpec.state == PalletFiller.STATE.IDLE then 
+			if self.implement:getCanChangePalletFillerState(PalletFiller.STATE.UNLOADING) then 
+				self.implement:setPalletFillerState(PalletFiller.STATE.UNLOADING)
+				self:debug("Pallet filler starting to unload.")
+				return
+			end
+		else 
+			self:debugSparse("Pallet filler is unloading.")
+			return
+		end
+	elseif stopReason:isa(pdlc_premiumExpansion.AIMessageErrorNoPalletsLoaded) and unloadAndRefill >= CpVehicleSettings.PALLETS_UNLOAD_AND_REFILL then 
+		if self.implement:getCanBuyPalletFillerPallets() then
+			self.implement:buyPalletFillerPallets()
+			self:debug("Buying new pallets.")
+			return
+		end
+	end
+	self.vehicle:stopCurrentAIJob(stopReason)
+end
+
 function PalletFillerController:update()
 	local canContinue, stopAI, stopReason = self.implement:getCanAIImplementContinueWork()
 	if not canContinue then
-		if stopAI and pdlc_premiumExpansion and 
-			(stopReason:isa(pdlc_premiumExpansion.AIMessageErrorPalletsFull) or 
-			stopReason:isa(pdlc_premiumExpansion.AIMessageErrorNoPalletsLoaded)) then
-			self.vehicle:stopCurrentAIJob(stopReason)
+		if stopAI then 
+			if pdlc_premiumExpansion then
+				self:handlePallets()
+			else
+				self.vehicle:stopCurrentAIJob(stopReason)
+			end
 		end
 	end
 end
