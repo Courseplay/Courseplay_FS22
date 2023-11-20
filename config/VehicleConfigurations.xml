@@ -378,6 +378,27 @@ You can define the following custom settings:
 
     <!--Implements-->
 
+    <!--Premium-->
+    <Vehicle name="p3CLProfi.xml"
+             toolOffsetX = "-1.8"
+    />
+
+    <Vehicle name="p3Profi.xml"
+             toolOffsetX = "-1.8"
+    />
+
+    <Vehicle name="gbc.xml"
+             toolOffsetX = "-2.2"
+    />
+
+    <Vehicle name="gkiis.xml"
+             toolOffsetX = "-2.2"
+    />
+
+    <Vehicle name="gcciGii.xml"
+             toolOffsetX = "-1.9"
+    />
+
     <!--Platinum-->
     <Vehicle name="semiLowloader3A.xml"
              disableUnfolding = "true"
