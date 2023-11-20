@@ -29,14 +29,14 @@ SelfUnloadHelper.maxDistanceFromField = 20
 --- Find a trailer we can use for self unloading
 ---@param fieldPolygon Polygon the field boundary. We'll look for targets on this field, or close to the boundary.
 ---@param myVehicle table to find the target closest to myVehicle, for logging, to exclude targets attached to this vehicle
----@param fillType number one of the FillType.* constants
+---@param implementWithPipe table trailer or combine with the pipe
 ---@param pipeOffsetX number pipe side offset (distance from combine centerline, >0 left, <0 right
----@return table|nil, table, number trailer object (nil if no trailer found), best fill node of trailer, distance of
----                                 trailer from myVehicle
-function SelfUnloadHelper:findBestTrailer(fieldPolygon, myVehicle, fillType, pipeOffsetX)
-    local bestTrailer, bestFillUnitIndex
+---@return table|nil trailer object (nil if no trailer found
+---@return table|nil best fill node of trailer
+---@return number|nil distance of trailer from myVehicle
+function SelfUnloadHelper:findBestTrailer(fieldPolygon, myVehicle, implementWithPipe, pipeOffsetX)
+    local bestTrailer, bestFillUnitIndex, bestFillType
     local minDistance = math.huge
-    local maxCapacity = 0
     for _, otherVehicle in pairs(g_currentMission.vehicles) do
         if SpecializationUtil.hasSpecialization(Trailer, otherVehicle.specializations) then
             local rootVehicle = otherVehicle:getRootVehicle()
@@ -62,12 +62,20 @@ function SelfUnloadHelper:findBestTrailer(fieldPolygon, myVehicle, fillType, pip
             if rootVehicle ~= myVehicle and not isCpActive and lastSpeed < 0.1 and isOnField and
                     not self:isInvalidAutoDriveTarget(myVehicle, rootVehicle) then
                 local d = calcDistanceFrom(myVehicle:getAIDirectionNode(), otherVehicle.rootNode or otherVehicle.nodeId)
-                local canLoad, freeCapacity, fillUnitIndex = FillLevelManager.canLoadTrailer(otherVehicle, fillType)
+
+                local canLoad, fillUnitIndex, fillType = ImplementUtil.getCanLoadTo(
+                    otherVehicle, 
+                    implementWithPipe, 
+                    nil,
+                    function(...)
+                        CpUtil.debugVehicle(self.debugChannel, myVehicle, "%s attached to: %s => %s", CpUtil.getName(otherVehicle), 
+                        otherVehicle.rootVehicle and CpUtil.getName(otherVehicle.rootVehicle) or "no root vehicle", string.format(...))
+                    end )
                 if d < minDistance and canLoad then
                     bestTrailer = otherVehicle
                     bestFillUnitIndex = fillUnitIndex
+                    bestFillType = fillType
                     minDistance = d
-                    maxCapacity = freeCapacity
                 end
             end
         end
@@ -76,8 +84,9 @@ function SelfUnloadHelper:findBestTrailer(fieldPolygon, myVehicle, fillType, pip
     if bestTrailer then
         fillRootNode = bestTrailer:getFillUnitExactFillRootNode(bestFillUnitIndex)
         CpUtil.debugVehicle(self.debugChannel, myVehicle,
-                'Best trailer is %s at %.1f meters, free capacity %d, fill node %s',
-                bestTrailer:getName(), minDistance, maxCapacity, bestFillUnitIndex)
+                'Best trailer is %s at %.1f meters, fill type %s, free capacity %d, fill unit index %s',
+                bestTrailer:getName(), minDistance, g_fillTypeManager:getFillTypeNameByIndex(bestFillType), 
+                bestTrailer:getFillUnitFreeCapacity(bestFillUnitIndex), bestFillUnitIndex)
         local bestFillNode = self:findBestFillNode(myVehicle, fillRootNode, pipeOffsetX)
         return bestTrailer, bestFillNode, minDistance
     else
@@ -111,17 +120,18 @@ end
 
 ---@param fieldPolygon Polygon the field boundary. We'll look for targets on this field, or close to the boundary.
 ---@param myVehicle table to find the target closest to myVehicle, for logging, to exclude targets attached to this vehicle
----@param fillType number one of the FillType.* constants
+---@param implementWithPipe table
 ---@param objectWithPipeAttributes PipeController any object, usually a PipeController which has pipe offset attributes
 ---@param bestTrailer table|nil optional trailer object to use, will find one if nil
 ---@param fillRootNode number|nil optional fill node for the trailer, must not be nil if bestTrailer is not nil
-function SelfUnloadHelper:getTargetParameters(fieldPolygon, myVehicle, fillType, objectWithPipeAttributes,
+function SelfUnloadHelper:getTargetParameters(fieldPolygon, myVehicle, implementWithPipe, objectWithPipeAttributes,
                                               bestTrailer, fillRootNode)
 
     if not bestTrailer then
         -- no trailer passed in, let's find one
-        bestTrailer, fillRootNode = SelfUnloadHelper:findBestTrailer(fieldPolygon, myVehicle, fillType,
-                objectWithPipeAttributes.pipeOffsetX)
+        bestTrailer, fillRootNode = SelfUnloadHelper:findBestTrailer(fieldPolygon, 
+            myVehicle, implementWithPipe,
+            objectWithPipeAttributes.pipeOffsetX)
         if not bestTrailer then
             return nil
         end

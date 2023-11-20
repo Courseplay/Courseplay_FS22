@@ -164,7 +164,7 @@ end
 function AIDriveStrategyCombineCourse:initializeImplementControllers(vehicle)
     AIDriveStrategyCombineCourse:superClass().initializeImplementControllers(self, vehicle)
     local _
-    _, self.pipeController = self:addImplementController(vehicle, 
+    self.implementWithPipe, self.pipeController = self:addImplementController(vehicle, 
         PipeController, Pipe, {}, nil)
     self.combineController, self.combine = self:getFirstRegisteredImplementControllerByClass(CombineController)
 end
@@ -1554,7 +1554,7 @@ function AIDriveStrategyCombineCourse:startSelfUnload(unloadStateAfterPathfindin
         local targetNode, alignLength, offsetX = SelfUnloadHelper:getTargetParameters(
                 self.fieldWorkCourse:getFieldPolygon(),
                 self.vehicle,
-                self:getFillType(),
+                self.implementWithPipe,
                 self.pipeController,
                 bestTrailer,
                 fillRootNode)
@@ -1698,7 +1698,7 @@ function AIDriveStrategyCombineCourse:shouldSelfUnloadBeforeNextRow()
         self.selfUnloadBestTrailer, self.selfUnloadFillRootNode, distance = SelfUnloadHelper:findBestTrailer(
                 self.fieldWorkCourse:getFieldPolygon(),
                 self.vehicle,
-                self:getFillType(),
+                self.implementWithPipe,
                 self.pipeController.pipeOffsetX)
         local dx, _, dz = localToLocal(AIUtil.getDirectionNode(self.vehicle),
                 AIUtil.getDirectionNode(self.selfUnloadBestTrailer), 0, 0, 0)
