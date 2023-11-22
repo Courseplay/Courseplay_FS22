@@ -30,6 +30,8 @@ function CpAICombineUnloader.initSpecialization()
         "Debug for foldable pipes", "consoleCommandDebugFoldablePipe", CpAICombineUnloader)
     g_devHelper.consoleCommands:registerConsoleCommand("cpPipeControllerSetFoldTime", 
         "Debug for setting foldable pipe time", "consoleCommandSetFoldTime", CpAICombineUnloader)
+    g_devHelper.consoleCommands:registerConsoleCommand("cpPipeControllerToggleMoveablePipe", 
+        "Enables the moveable pipe feature", "consoleCommandToggleMoveablePipe", CpAICombineUnloader)
 end
 
 local function executePipeControllerCommand(lambdaFunc, ...)
@@ -43,9 +45,15 @@ local function executePipeControllerCommand(lambdaFunc, ...)
         CpUtil.info("Could not measure pipe properties, as no valid vehicle/implement with pipe was found!")
         return
     end
-    local controller = PipeController(vehicle, pipeObject, true)
-    lambdaFunc(controller, ...)
-    controller:delete()
+    local controller
+    if vehicle.spec_cpAICombineUnloader and vehicle.spec_cpAICombineUnloader.pipeController then 
+        controller = vehicle.spec_cpAICombineUnloader.pipeController
+    else 
+        controller = PipeController(vehicle, pipeObject, true)
+    end
+    if not lambdaFunc(controller, vehicle, ...) then
+        controller:delete()
+    end
 end
 
 --- Helper command to test the pipe measurement.
@@ -89,6 +97,16 @@ function CpAICombineUnloader:consoleCommandSetFoldTime(time, placeComponents)
     end)
 end
 
+function CpAICombineUnloader:consoleCommandToggleMoveablePipe()
+    executePipeControllerCommand(function(controller, vehicle)
+        if vehicle.spec_cpAICombineUnloader and vehicle.spec_cpAICombineUnloader.pipeController then 
+            vehicle.spec_cpAICombineUnloader.pipeController = nil
+            return
+        end
+        vehicle.spec_cpAICombineUnloader.pipeController = controller
+        return true
+    end)
+end
 
 function CpAICombineUnloader.prerequisitesPresent(specializations)
     return SpecializationUtil.hasSpecialization(CpAIWorker, specializations) 
@@ -106,6 +124,7 @@ function CpAICombineUnloader.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, 'onReadStream', CpAICombineUnloader)
     SpecializationUtil.registerEventListener(vehicleType, 'onWriteStream', CpAICombineUnloader)
     SpecializationUtil.registerEventListener(vehicleType, 'onPreDelete', CpAICombineUnloader)
+    SpecializationUtil.registerEventListener(vehicleType, 'onUpdate', CpAICombineUnloader)
 end
 
 function CpAICombineUnloader.registerFunctions(vehicleType)
@@ -147,6 +166,13 @@ function CpAICombineUnloader:onLoadFinished(savegame)
     local spec = self.spec_cpAICombineUnloader
     if savegame ~= nil then 
         spec.cpJob:loadFromXMLFile(savegame.xmlFile, savegame.key.. CpAICombineUnloader.KEY..".cpJob")
+    end
+end
+
+function CpAICombineUnloader:onUpdate(dt)
+    local spec = self.spec_cpAICombineUnloader
+    if spec.pipeController then 
+        spec.pipeController:update(dt)
     end
 end
 
