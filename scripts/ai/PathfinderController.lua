@@ -32,18 +32,18 @@ PathfinderController for easy access to the pathfinder.
 Example implementations: 
 
 function Strategy:startPathfindingToGoal()
-	local numRetries = 2
-	local context = PathfinderControllerContext(self.vehicle, numRetries)
+	local context = PathfinderContext(self.vehicle)
 	context:set(
-		... 
+		...
 	)
-	self.pathfinderController:setCallbacks(self, self.onPathfingFinished, self.onPathfindingFailed)
+	self.pathfinderController:setCallbacks(self, self.onPathfindingFinished, self.onPathfindingFailed)
 
-	self.pathfinderController:findPathToNode(context, ...)
+	local numRetries = 2
+	self.pathfinderController:findPathToNode(context, ..., numRetries)
 
 end
 
-function Strategy:onPathfingFinished(controller : PathfinderController, success : boolean, 
+function Strategy:onPathfindingFinished(controller : PathfinderController, success : boolean,
 	course : Course, goalNodeInvalid : boolean|nil)
 	if success then
 		// Path finding finished successfully
@@ -57,7 +57,7 @@ function Strategy:onPathfingFinished(controller : PathfinderController, success 
 	end
 end
 
-function Strategy:onPathfindingFailed(controller : PathfinderController, lastContext : PathfinderControllerContext, 
+function Strategy:onPathfindingFailed(controller : PathfinderController, lastContext : PathfinderContext,
 	wasLastRetry : boolean, currentRetryAttempt : number)
 	if currentRetryAttempt == 1 then 
 		// Reduced fruit impact:
@@ -68,101 +68,19 @@ function Strategy:onPathfindingFailed(controller : PathfinderController, lastCon
 		self.pathfinderController:findPathToNode(lastContext, ...)
 	end
 end
-
---------------------------------------------
---- Pathfinder controller context
---------------------------------------------
-
-
-PathfinderControllerContext implements all pathfinder parameters and the number of retries allowed.
-- Other Context Classes could be derived for commonly used contexts. 
-- Only the attributesToDefaultValue table has to be changed in the derived class.
-
-Example usage of the builder api:
-
-local context = PathfinderControllerContext():maxFruitPercent(100):useFieldNum(true):vehiclesToIgnore({vehicle})
-
-
 ]]
 
----@class PathfinderControllerContext
----@field maxFruitPercent function
----@field offFieldPenalty function
----@field useFieldNum function
----@field areaToAvoid function
----@field allowReverse function
----@field vehiclesToIgnore function
----@field mustBeAccurate function
----@field areaToIgnoreFruit function
----@field _maxFruitPercent number
----@field _offFieldPenalty number
----@field _useFieldNum number
----@field _areaToAvoid PathfinderUtil.NodeArea|nil
----@field _allowReverse boolean
----@field _vehiclesToIgnore table[]|nil
----@field _objectsToIgnore table[]|nil
----@field _mustBeAccurate boolean
----@field _areaToIgnoreFruit table[]
-PathfinderControllerContext = CpObject()
-PathfinderControllerContext.defaultNumRetries = 0
-PathfinderControllerContext.attributesToDefaultValue = {
-	-- If an 4 x 4 m area around a pathfinder node has more than this fruit, a penalty of 0.5 * actual fruit
-	-- percentage will be applied to that node.
-	-- TODO: check if the fruitValue returned by FSDensityMapUtil.getFruitArea() really is a percentage
-	["maxFruitPercent"] = 50,
-	-- This penalty is added to the cost of each step, which is about 12% of the turning radius when using
-	-- the hybrid A* and 3 with the simple A*.
-	-- Simple A* is used for long-range pathfinding, in that case we are willing to drive about 3 times longer
-	-- to stay on the field. Hybrid A* is more restrictive, TODO: review if these should be balanced
-	["offFieldPenalty"] = 7.5,
-	-- If useFieldNum > 0, fields that are not owned have a 20% greater penalty.
- 	["useFieldNum"] = 0,
-	-- Pathfinder nodes in this area have a prohibitive penalty (2000)
-	["areaToAvoid"] = CpObjectUtil.BUILDER_API_NIL,
-	["allowReverse"] = false,
-	["vehiclesToIgnore"] = CpObjectUtil.BUILDER_API_NIL,
-	["objectsToIgnore"] = CpObjectUtil.BUILDER_API_NIL,
-	-- If false, as we reach the maximum iterations, we relax our criteria to reach the goal: allow for arriving at
-	-- bigger angle differences, trading off accuracy for speed. This usually results in a direction at the goal
-	-- being less then 30º off which in many cases isn't a problem.
-	-- Otherwise, for example when a combine self unloading must accurately find the trailer, set this to true.
-	["mustBeAccurate"] = false,
-	-- No fruit penalty in this area (e.g. when we know the goal is in fruit but want to avoid fruit all the way there)
-	["areaToIgnoreFruit"] = CpObjectUtil.BUILDER_API_NIL
-}
-
-function PathfinderControllerContext:init(vehicle, numRetries)
-	self._vehicle = vehicle
-	self._numRetries = numRetries or self.defaultNumRetries
-	CpObjectUtil.registerBuilderAPI(self, self.attributesToDefaultValue)
-end
-
---- Disables the fruit avoidance
-function PathfinderControllerContext:ignoreFruit()
-	self._maxFruitPercent = math.huge
-	return self
-end
-
---- Uses the field number of the vehicle to restrict path finding.
-function PathfinderControllerContext:useVehicleFieldNumber()
-	self._useFieldNum = CpFieldUtil.getFieldNumUnderVehicle(self._vehicle)
-	return self
-end
-
-function PathfinderControllerContext:getNumRetriesAllowed()
-	return self._numRetries
-end
-
----@class DefaultFieldPathfinderControllerContext : PathfinderControllerContext
-DefaultFieldPathfinderControllerContext = CpObject(PathfinderControllerContext)
+---@class DefaultFieldPathfinderControllerContext : PathfinderContext
+DefaultFieldPathfinderControllerContext = CpObject(PathfinderContext)
 
 function DefaultFieldPathfinderControllerContext:init(...)
-	PathfinderControllerContext.init(self, ...)
+	PathfinderContext.init(self, ...)
 end
 
 ---@class PathfinderController 
 PathfinderController= CpObject()
 
+PathfinderController.defaultNumRetries = 0
 PathfinderController.SUCCESS_FOUND_VALID_PATH = 0
 PathfinderController.ERROR_NO_PATH_FOUND = 1
 PathfinderController.ERROR_INVALID_GOAL_NODE = 2
@@ -170,7 +88,7 @@ function PathfinderController:init(vehicle)
 	self.vehicle = vehicle
 	---@type PathfinderInterface
 	self.pathfinder = nil
-	---@type PathfinderControllerContext
+	---@type PathfinderContext
 	self.lastContext = nil
 	self:reset()
 end
@@ -211,7 +129,7 @@ function PathfinderController:isActive()
 	return self.pathfinder and self.pathfinder:isActive()
 end
 
----@return PathfinderControllerContext
+---@return PathfinderContext
 function PathfinderController:getLastContext()
 	return self.lastContext
 end
@@ -228,12 +146,12 @@ function PathfinderController:registerListeners(object, successFunc, retryFunc)
 end
 
 --- Pathfinder was started
----@param context PathfinderControllerContext
-function PathfinderController:onStart(context)
-	self:debug("Started pathfinding with context: %s.", tostring(context))
+---@param context PathfinderContext
+function PathfinderController:onStart(context, numRetries)
+	self.numRetries = numRetries or self.defaultNumRetries
+	self:debug("Started pathfinding with context: %s, retries: %d.", tostring(context), numRetries)
 	self.startedAt = g_time
 	self.lastContext = context
-	self.numRetries = context:getNumRetriesAllowed()
 end
 
 --- Path finding has finished
@@ -291,19 +209,19 @@ function PathfinderController:callCallback(callbackFunc, ...)
 end
 
 --- Finds a path to given goal node
----@param context PathfinderControllerContext
+---@param context PathfinderContext
 ---@param goalNode number
 ---@param xOffset number
 ---@param zOffset number
+---@param numRetries number|nil how many times to retry, default 0
 ---@return boolean Was path finding started?
-function PathfinderController:findPathToNode(context, 
-	goalNode, xOffset, zOffset)
+function PathfinderController:findPathToNode(context, goalNode, xOffset, zOffset, numRetries)
 
 	if not self.callbackSuccessFunction then
 		self:error("No valid success callback was given!") 
 		return false
 	end
-	self:onStart(context)
+	self:onStart(context, numRetries)
 	local pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(
 		context._vehicle,
 		goalNode,
@@ -327,20 +245,20 @@ function PathfinderController:findPathToNode(context,
 end
 
 --- Finds a path to a waypoint of a course.
----@param context PathfinderControllerContext
+---@param context PathfinderContext
 ---@param course Course
 ---@param waypointIndex number
 ---@param xOffset number
 ---@param zOffset number
+---@param numRetries number|nil how many times to retry, default 0
 ---@return boolean Was path finding started?
-function PathfinderController:findPathToWaypoint(context, 
-	course, waypointIndex, xOffset, zOffset)
+function PathfinderController:findPathToWaypoint(context, course, waypointIndex, xOffset, zOffset, numRetries)
 
 	if not self.callbackSuccessFunction then 
 		self:error("No valid success callback was given!") 
 		return false
 	end
-	self:onStart(context)
+	self:onStart(context, numRetries)
 	local pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
 		context._vehicle, 
 		course, 
@@ -364,16 +282,17 @@ function PathfinderController:findPathToWaypoint(context,
 end
 
 --- Finds a path to a waypoint of a course.
----@param context PathfinderControllerContext
+---@param context PathfinderContext
 ---@param goal State3D
+---@param numRetries number|nil how many times to retry, default 0
 ---@return boolean Was path finding started?
-function PathfinderController:findPathToGoal(context, goal)
+function PathfinderController:findPathToGoal(context, goal, numRetries)
 
 	if not self.callbackSuccessFunction then 
 		self:error("No valid success callback was given!") 
 		return false
 	end
-	self:onStart(context)
+	self:onStart(context, numRetries)
 	local pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToGoal(
 		context._vehicle, 
 		goal, 

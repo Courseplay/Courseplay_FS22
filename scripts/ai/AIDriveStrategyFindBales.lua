@@ -328,7 +328,7 @@ end
 
 --- Pathfinding failed, but a retry attempt is leftover.
 ---@param controller PathfinderController
----@param lastContext PathfinderControllerContext
+---@param lastContext PathfinderContext
 ---@param wasLastRetry boolean
 ---@param currentRetryAttempt number
 function AIDriveStrategyFindBales:onPathfindingRetry(controller, 
@@ -386,9 +386,8 @@ end
 function AIDriveStrategyFindBales:startPathfindingToBale(bale)
     self.state = self.states.DRIVING_TO_NEXT_BALE
     g_baleToCollectManager:lockBale(bale:getBaleObject(), self)
-    local context = PathfinderControllerContext(self.vehicle, 3):objectsToIgnore(self:getBalesToIgnore()):allowReverse(false)
-    self.pathfinderController:findPathToGoal(context, 
-	    self:getPathfinderBaleTargetAsGoalNode(bale))
+    local context = PathfinderContext(self.vehicle):objectsToIgnore(self:getBalesToIgnore()):allowReverse(false)
+    self.pathfinderController:findPathToGoal(context, self:getPathfinderBaleTargetAsGoalNode(bale), 3)
     self.lastPathfinderBaleTarget = bale
 end
 
