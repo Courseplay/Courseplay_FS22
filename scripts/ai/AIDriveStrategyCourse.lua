@@ -607,7 +607,7 @@ end
 
 --- Pathfinding failed, but a retry attempt is leftover.
 ---@param controller PathfinderController
----@param lastContext PathfinderControllerContext
+---@param lastContext PathfinderContext
 ---@param wasLastRetry boolean
 ---@param currentRetryAttempt number
 function AIDriveStrategyCourse:onPathfindingRetry(controller, lastContext, wasLastRetry, currentRetryAttempt)
