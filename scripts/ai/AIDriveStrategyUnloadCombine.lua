@@ -1860,8 +1860,6 @@ function AIDriveStrategyUnloadCombine:getSelfUnloadTargetParameters()
             self.fieldPolygon,
             self.vehicle,
             self.augerWagon,
-    -- TODO: this is just a shot in the dark there should be a better way to find out what we have in
-    -- the trailer
             self.pipeController)
 end
 
