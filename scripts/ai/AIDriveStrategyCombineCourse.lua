@@ -1570,13 +1570,13 @@ function AIDriveStrategyCombineCourse:startSelfUnload(unloadStateAfterPathfindin
         self.unloadStateAfterPathfindingDoneForSelfUnload = unloadStateAfterPathfindingDoneForSelfUnload
 
         local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
+        local context = PathfinderContext(self.vehicle):mustBeAccurate(true)
+        -- use a low field penalty to encourage the pathfinder to bridge that gap between the field and the trailer
+        context:allowReverse(self:getAllowReversePathfinding()):offFieldPenalty(0.1):useFieldNum(fieldNum)
         local done, path
         -- require full accuracy from pathfinder as we must exactly line up with the trailer
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(
-                self.vehicle, targetNode, offsetX, -alignLength,
-                self:getAllowReversePathfinding(),
-        -- use a low field penalty to encourage the pathfinder to bridge that gap between the field and the trailer
-                fieldNum, {}, nil, 0.1, nil, true)
+                self.vehicle, targetNode, offsetX, -alignLength, context)
         if done then
             return self:onPathfindingDoneBeforeSelfUnload(path)
         else
@@ -1626,10 +1626,10 @@ function AIDriveStrategyCombineCourse:returnToFieldworkAfterSelfUnload()
         self.pathfindingStartedAt = g_currentMission.time
         local fieldWorkCourse, ix = self:getRememberedCourseAndIx()
         self:debug('Return to fieldwork after self unload at waypoint %d', ix)
+        local context = PathfinderContext(self.vehicle):allowReverse(self:getAllowReversePathfinding())
         local done, path
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
-                self.vehicle, fieldWorkCourse, ix, 0, 0,
-                self:getAllowReversePathfinding(), nil)
+                self.vehicle, fieldWorkCourse, ix, 0, 0, context)
         if done then
             return self:onPathfindingDoneAfterSelfUnload(path)
         else

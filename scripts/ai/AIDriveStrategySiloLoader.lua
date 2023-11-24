@@ -262,9 +262,9 @@ function AIDriveStrategySiloLoader:startPathfindingToStart(course)
         self.pathfindingStartedAt = g_currentMission.time
         local done, path
         local fm = self:getFrontAndBackMarkers()
+        local context = PathfinderContext(self.vehicle):allowReverse(false)
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
-            self.vehicle, course, 1, 0, -1.5 *(fm + 4),
-            false, nil)
+            self.vehicle, course, 1, 0, -1.5 *(fm + 4), context)
         if done then
             return self:onPathfindingDoneToStart(path)
         else
