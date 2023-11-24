@@ -190,7 +190,7 @@ function AIDriveStrategyDriveToFieldWorkStart:startCourseWithPathfinding(course,
         local context = PathfinderContext(self.vehicle):allowReverse(self:getAllowReversePathfinding())
         context:useFieldNum(fieldNum):maxFruitPercent(ix < 3 and math.huge)
         context:areaToAvoid(fruitAtTarget and PathfinderUtil.Area(x, z, 2 * self.workWidth))
-        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(self.vehicle, course, ix,
+        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(course, ix,
                 self.multitoolOffset, self.zOffset, context)
         if done then
             return self:onPathfindingDoneToCourseStart(path)

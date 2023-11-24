@@ -620,7 +620,7 @@ function AIDriveStrategyFieldWorkCourse:returnToStartAfterDone()
         local context = PathfinderContext(self.vehicle):allowReverse(self:getAllowReversePathfinding())
         local done, path
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
-                self.vehicle, self.fieldWorkCourse, 1, 0, 0, context)
+                self.fieldWorkCourse, 1, 0, 0, context)
         if done then
             return self:onPathfindingDoneToReturnToStart(path)
         else

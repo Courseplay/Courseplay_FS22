@@ -247,8 +247,7 @@ function AIDriveStrategyAttachHeader:startPathfindingToCutter()
         context:maxFruitPercent(math.huge)
         local done, path, goalNodeInvalid
         self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(
-                self.vehicle, self.cutterNode, 0, -math.max(1.5 * length, 1.5 * self.turningRadius),
-                context)
+                self.cutterNode, 0, -math.max(1.5 * length, 1.5 * self.turningRadius), context)
         if done then
             return self:onPathfindingDoneToCutter(path, goalNodeInvalid)
         else

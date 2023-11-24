@@ -1258,11 +1258,10 @@ function AIDriveStrategyUnloadCombine:startPathfinding(
             -- the Giants coordinate system and the waypoint uses the course's conventions. This is confusing, should use
             -- the same reference everywhere
             local goal = PathfinderUtil.getWaypointAsState3D(target, -xOffset or 0, zOffset or 0)
-            self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToGoal(
-                    self.vehicle, goal, context)
+            self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToGoal(goal, context)
         else
             self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(
-                    self.vehicle, target, xOffset or 0, zOffset or 0, context)
+                    target, xOffset or 0, zOffset or 0, context)
         end
         if done then
             return pathfindingCallbackFunc(self, path, goalNodeInvalid)
@@ -1896,7 +1895,7 @@ function AIDriveStrategyUnloadCombine:startSelfUnload(ignoreFruit)
         context:useFieldNum(fieldNum):allowReverse(self:getAllowReversePathfinding())
         local done, path
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(
-                self.vehicle, self.selfUnloadTargetNode, offsetX, -alignLength, context)
+                self.selfUnloadTargetNode, offsetX, -alignLength, context)
         if done then
             return self:onPathfindingDoneBeforeSelfUnload(path)
         else
