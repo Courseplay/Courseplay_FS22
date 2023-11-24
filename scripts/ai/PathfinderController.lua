@@ -223,7 +223,6 @@ function PathfinderController:findPathToNode(context, goalNode, xOffset, zOffset
     end
     self:onStart(context, numRetries)
     local pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(
-            context._vehicle,
             goalNode,
             xOffset,
             zOffset,
@@ -254,7 +253,6 @@ function PathfinderController:findPathToWaypoint(context, course, waypointIndex,
     end
     self:onStart(context, numRetries)
     local pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
-            context._vehicle,
             course,
             waypointIndex,
             xOffset,
@@ -282,7 +280,7 @@ function PathfinderController:findPathToGoal(context, goal, numRetries)
     end
     self:onStart(context, numRetries)
     local pathfinder, done, path, goalNodeInvalid =
-        PathfinderUtil.startPathfindingFromVehicleToGoal(context._vehicle, goal, context)
+        PathfinderUtil.startPathfindingFromVehicleToGoal(goal, context)
     if done then
         self:onFinish(path, goalNodeInvalid)
     else

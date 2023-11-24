@@ -543,7 +543,7 @@ function AIDriveStrategyShovelSiloLoader:startPathfindingToStart(course)
         local fm = self:getFrontAndBackMarkers()
         local context = PathfinderContext(self.vehicle):allowReverse(true):areaToAvoid(self.siloAreaToAvoid)
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
-                self.vehicle, course, 1, 0, -(fm + 4), context)
+                course, 1, 0, -(fm + 4), context)
         if done then
             return self:onPathfindingDoneToStart(path)
         else
@@ -577,7 +577,7 @@ function AIDriveStrategyShovelSiloLoader:startPathfindingToUnloadPosition()
         context:mustBeAccurate(false):allowReverse(true):offFieldPenalty(0)
         local done, path, goalNodeInvalid
         self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(
-                self.vehicle, self.unloadPositionNode, context)
+                self.unloadPositionNode, context)
         if done then
             return self:onPathfindingDoneToUnloadPosition(path, goalNodeInvalid)
         else
@@ -611,8 +611,7 @@ function AIDriveStrategyShovelSiloLoader:startPathfindingToTrailer()
 
         local done, path, goalNodeInvalid
         self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(
-                self.vehicle, self.unloadPositionNode,
-                0, 0, context)
+                self.unloadPositionNode, 0, 0, context)
         if done then
             return self:onPathfindingDoneToTrailer(path, goalNodeInvalid)
         else

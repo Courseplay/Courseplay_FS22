@@ -653,22 +653,6 @@ function PathfinderUtil.initializeTrailerHeading(start, vehicleData)
     end
 end
 
----@param vehicle table
----@param goal State3D
----@param context PathfinderContext
----@return PathfinderInterface pathfinder
----@return boolean done finished pathfinding?
----@return table|nil path that was found?
----@return boolean|nil goalNodeInvalid
-function PathfinderUtil.startPathfindingFromVehicleToGoal(vehicle, goal, context)
-
-    local start = PathfinderUtil.getVehiclePositionAsState3D(vehicle)
-    local constraints = PathfinderConstraints(context)
-    PathfinderUtil.initializeTrailerHeading(start, constraints.vehicleData)
-
-    return PathfinderUtil.startPathfinding(vehicle, start, goal, constraints, context._allowReverse, context._mustBeAccurate)
-end
-
 ---@param course Course
 ---@param n number number of headland to get, 1 -> number of headlands, 1 is the outermost
 ---@return Polygon headland as a polygon (x, y)
@@ -873,7 +857,25 @@ function PathfinderUtil.getWaypointAsState3D(waypoint, xOffset, zOffset)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
---- Interface function to start the pathfinder in the game
+--- Interface function to start the pathfinder in the game, using a State3D pose as the goal
+------------------------------------------------------------------------------------------------------------------------
+---@param goal State3D
+---@param context PathfinderContext
+---@return PathfinderInterface pathfinder
+---@return boolean done finished pathfinding?
+---@return table|nil path that was found?
+---@return boolean|nil goalNodeInvalid
+function PathfinderUtil.startPathfindingFromVehicleToGoal(goal, context)
+
+    local start = PathfinderUtil.getVehiclePositionAsState3D(context.vehicle)
+    local constraints = PathfinderConstraints(context)
+    PathfinderUtil.initializeTrailerHeading(start, constraints.vehicleData)
+
+    return PathfinderUtil.startPathfinding(context.vehicle, start, goal, constraints, context._allowReverse, context._mustBeAccurate)
+end
+
+------------------------------------------------------------------------------------------------------------------------
+--- Interface function to start the pathfinder in the game, using a waypoint as the goal
 ------------------------------------------------------------------------------------------------------------------------
 ---@param vehicle table, will be used as the start location/heading, turn radius and size
 ---@param course Course the course with the destination waypoint
@@ -885,17 +887,16 @@ end
 ---@return boolean done finished pathfinding?
 ---@return table|nil path that was found?
 ---@return boolean|nil goalNodeInvalid
-function PathfinderUtil.startPathfindingFromVehicleToWaypoint(vehicle, course, goalWaypointIx, xOffset, zOffset, context)
+function PathfinderUtil.startPathfindingFromVehicleToWaypoint(course, goalWaypointIx, xOffset, zOffset, context)
     local goal = PathfinderUtil.getWaypointAsState3D(course:getWaypoint(goalWaypointIx), xOffset, zOffset)
     -- TODO: this was forced to true here before refactoring, but is false in the context by default
     context:mustBeAccurate(true)
-    return PathfinderUtil.startPathfindingFromVehicleToGoal(vehicle, goal, context)
+    return PathfinderUtil.startPathfindingFromVehicleToGoal(goal, context)
 end
 ------------------------------------------------------------------------------------------------------------------------
 --- Interface function to start the pathfinder in the game. The goal is a point at sideOffset meters from the goal node
 --- (sideOffset > 0 is left)
 ------------------------------------------------------------------------------------------------------------------------
----@param vehicle table will be used as the start location/heading, turn radius and size
 ---@param goalNode number The goal node
 ---@param xOffset number side offset of the goal from the goal node
 ---@param zOffset number length offset of the goal from the goal node
@@ -904,17 +905,15 @@ end
 ---@return boolean done finished pathfinding?
 ---@return table|nil path that was found?
 ---@return boolean|nil goalNodeInvalid
-function PathfinderUtil.startPathfindingFromVehicleToNode(vehicle, goalNode,
-                                                          xOffset, zOffset, context)
+function PathfinderUtil.startPathfindingFromVehicleToNode(goalNode, xOffset, zOffset, context)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalNode, xOffset, zOffset)
     local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
-    return PathfinderUtil.startPathfindingFromVehicleToGoal(vehicle, goal, context)
+    return PathfinderUtil.startPathfindingFromVehicleToGoal(goal, context)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
 --- Interface function to start a simple A* pathfinder in the game. The goal is a node
 ------------------------------------------------------------------------------------------------------------------------
----@param vehicle table, will be used as the start location/heading, turn radius and size
 ---@param goalNode table The goal node
 ---@param xOffset number side offset of the goal from the goal node (> 0 is left)
 ---@param zOffset number length offset of the goal from the goal node (> 0 is front)
@@ -923,8 +922,8 @@ end
 ---@return boolean done finished pathfinding?
 ---@return table|nil path that was found?
 ---@return boolean|nil goalNodeInvalid
-function PathfinderUtil.startAStarPathfindingFromVehicleToNode(vehicle, goalNode, xOffset, zOffset, context)
-    local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(vehicle:getAIDirectionNode())
+function PathfinderUtil.startAStarPathfindingFromVehicleToNode(goalNode, xOffset, zOffset, context)
+    local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(context.vehicle:getAIDirectionNode())
     local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
     x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalNode, xOffset, zOffset)
     local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
@@ -932,7 +931,7 @@ function PathfinderUtil.startAStarPathfindingFromVehicleToNode(vehicle, goalNode
     local constraints = PathfinderConstraints(context)
     PathfinderUtil.initializeTrailerHeading(start, constraints.vehicleData)
 
-    local pathfinder = AStar(vehicle, 100, 10000)
+    local pathfinder = AStar(context.vehicle, 100, 10000)
     local done, path, goalNodeInvalid =
         pathfinder:start(start, goal, constraints.turnRadius, false, constraints, constraints.trailerHitchLength)
     return pathfinder, done, path, goalNodeInvalid

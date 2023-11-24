@@ -1576,7 +1576,7 @@ function AIDriveStrategyCombineCourse:startSelfUnload(unloadStateAfterPathfindin
         local done, path
         -- require full accuracy from pathfinder as we must exactly line up with the trailer
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(
-                self.vehicle, targetNode, offsetX, -alignLength, context)
+                targetNode, offsetX, -alignLength, context)
         if done then
             return self:onPathfindingDoneBeforeSelfUnload(path)
         else
@@ -1629,7 +1629,7 @@ function AIDriveStrategyCombineCourse:returnToFieldworkAfterSelfUnload()
         local context = PathfinderContext(self.vehicle):allowReverse(self:getAllowReversePathfinding())
         local done, path
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
-                self.vehicle, fieldWorkCourse, ix, 0, 0, context)
+                fieldWorkCourse, ix, 0, 0, context)
         if done then
             return self:onPathfindingDoneAfterSelfUnload(path)
         else
