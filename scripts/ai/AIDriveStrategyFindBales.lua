@@ -574,10 +574,12 @@ function AIDriveStrategyFindBales:update(dt)
     end
 
     --- Ignores the loaded auto loader bales.
-    --- TODO: Maybe add a delay?
+    --- TODO: Maybe add a delay here?
     local loadedBales = self:getBalesToIgnore()
     for _, bale in pairs(loadedBales) do 
-        g_baleToCollectManager:lockBaleTemporary(bale)
+        --- Makes sure these loaded bales from an autoload trailer,
+        --- can't be selected as a target by another bale loader.
+        g_baleToCollectManager:temporarilyLeaseBale(bale)
     end
 end
 
