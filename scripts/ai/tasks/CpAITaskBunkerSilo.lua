@@ -15,9 +15,10 @@ function CpAITaskBunkerSilo:start()
 	if self.isServer then
 		self:debug("CP bunker silo task started.")
 		self.vehicle:resetCpCoursesFromGui()
-		local strategy = AIDriveStrategyFindBales(self, self.job)
-		strategy:setAIVehicle(self.vehicle, self.job:getCpJobParameters())
+		local strategy = AIDriveStrategyBunkerSilo(self, self.job)
 		strategy:setSilo(self.silo)
+		strategy:setAIVehicle(self.vehicle, self.job:getCpJobParameters())
+		self.vehicle:startCpWithStrategy(strategy)
 	end
 	CpAITask.start(self)
 end

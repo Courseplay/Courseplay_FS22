@@ -105,7 +105,7 @@ end
 
 function AIDriveStrategyDriveToFieldWorkStart:getDriveData(dt, vX, vY, vZ)
     local moveForwards = not self.ppc:isReversing()
-    local gx, gz
+    local gx, gz, _
 
     if not moveForwards then
         local maxSpeed
