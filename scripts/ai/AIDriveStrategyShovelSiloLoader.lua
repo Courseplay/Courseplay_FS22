@@ -653,14 +653,27 @@ function AIDriveStrategyShovelSiloLoader:startDrivingToSilo(target)
     local dx, dz = unpack(endPos)
     local siloCourse = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz,
             0, -5, 3, 3, false)
-    local distance = siloCourse:getDistanceBetweenVehicleAndWaypoint(self.vehicle, 1)
-    if distance > self.turningRadius then
-        self:debug("Start driving to silo with pathfinder.")
-        self:startPathfindingToStart(siloCourse)
-    else
+    local vx, _, vz = getWorldTranslation(AIUtil.getDirectionNode(self.vehicle))
+    local dx, _, dz = siloCourse:waypointLocalToWorld(1, vx, 0, vz)
+    if dz < 0 and dz > -20 and math.abs(dx) <= math.abs(dz) and 
+        math.abs(dx) < 20 * math.sqrt(2)/2  then 
+        --[[
+            |...|
+            |...|   <- Silo
+            -----
+              x     <- Target waypoint
+            ooooo
+           ooooooo  <- Circle, where the pathfinding is skipped.
+            ooooo
+              o
+        ]]--  
+        -- TODO: Beautify the math above :) 
         self:debug("Start driving into the silo directly.")
         self:startCourse(siloCourse, 1)
         self:setNewState(self.states.DRIVING_INTO_SILO)
+    else
+        self:debug("Start driving to silo with pathfinder.")
+        self:startPathfindingToStart(siloCourse)
     end
 end
 
