@@ -187,9 +187,11 @@ function AIDriveStrategyDriveToFieldWorkStart:startCourseWithPathfinding(course,
         self.zOffset = math.min(-self.frontMarkerDistance, -steeringLength)
         self:debug('Pathfinding to waypoint %d, with zOffset %.1f = min(%.1f, %.1f)', ix, self.zOffset,
                 -self.frontMarkerDistance, -steeringLength)
+        local context = PathfinderContext(self.vehicle):allowReverse(self:getAllowReversePathfinding())
+        context:useFieldNum(fieldNum):maxFruitPercent(ix < 3 and math.huge)
+        context:areaToAvoid(fruitAtTarget and PathfinderUtil.Area(x, z, 2 * self.workWidth))
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(self.vehicle, course, ix,
-                self.multitoolOffset, self.zOffset, self:getAllowReversePathfinding(), fieldNum, nil, ix < 3 and math.huge, nil, nil,
-                fruitAtTarget and PathfinderUtil.Area(x, z, 2 * self.workWidth))
+                self.multitoolOffset, self.zOffset, context)
         if done then
             return self:onPathfindingDoneToCourseStart(path)
         else

@@ -25,7 +25,7 @@ PathfinderContext implements all pathfinder parameters.
 
 Example usage of the builder api:
 
-local context = PathfinderContext():maxFruitPercent(100):useFieldNum(true):vehiclesToIgnore({vehicle})
+local context = PathfinderContext():maxFruitPercent(100):useFieldNum(10):vehiclesToIgnore({vehicle})
 
 ]]
 
@@ -63,8 +63,8 @@ PathfinderContext.attributesToDefaultValue = {
     -- Pathfinder nodes in this area have a prohibitive penalty (2000)
     ["areaToAvoid"] = CpObjectUtil.BUILDER_API_NIL,
     ["allowReverse"] = false,
-    ["vehiclesToIgnore"] = CpObjectUtil.BUILDER_API_NIL,
-    ["objectsToIgnore"] = CpObjectUtil.BUILDER_API_NIL,
+    ["vehiclesToIgnore"] = {},
+    ["objectsToIgnore"] = {},
     -- If false, as we reach the maximum iterations, we relax our criteria to reach the goal: allow for arriving at
     -- bigger angle differences, trading off accuracy for speed. This usually results in a direction at the goal
     -- being less then 30º off which in many cases isn't a problem.
