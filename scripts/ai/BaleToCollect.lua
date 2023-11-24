@@ -136,19 +136,24 @@ function BaleToCollect:getSafeDistance()
 	return math.sqrt(length * length + self.bale.width * self.bale.width) / 2 + 0.2
 end
 
+--- This Manager makes sure that bale finders on the same field
+--- are not picking the same target bales or trying to load bales 
+--- from another autoload trailer, 
+--- as these bale are not automatically locked, 
+--- like the base game bale collector wagons.  
 ---@class BaleToCollectManager
 BaleToCollectManager = CpObject()
 BaleToCollectManager.lockTimeOutMs = 500 -- 500 ms
 
 function BaleToCollectManager:init()
-	self.temporaryLockedBales = {}
+	self.temporarilyLeasedBales = {}
 	self.lockedBales = {}
 end
 
 function BaleToCollectManager:update(dt)
-	for bale, time in pairs(self.temporaryLockedBales) do 
+	for bale, time in pairs(self.temporarilyLeasedBales) do 
 		if time < (g_time + self.lockTimeOutMs) then 
-			self.temporaryLockedBales[bale] = nil
+			self.temporarilyLeasedBales[bale] = nil
 		end
 	end
 end
@@ -157,11 +162,13 @@ function BaleToCollectManager:draw()
 	
 end
 
+--- Disables the bale object temporarily.
 ---@param bale table
-function BaleToCollectManager:lockBaleTemporary(bale)
-	self.temporaryLockedBales[bale] = g_time
+function BaleToCollectManager:temporarilyLeaseBale(bale)
+	self.temporarilyLeasedBales[bale] = g_time
 end
 
+--- Disables the bale until it is released.
 ---@param bale table
 function BaleToCollectManager:lockBale(bale, driver)
 	self.lockedBales[bale] = driver
@@ -181,10 +188,10 @@ function BaleToCollectManager:unlockBalesByDriver(driver)
 	end
 end
 
-
+--- Is the bale not leased or locked by another driver? 
 ---@param bale table
 function BaleToCollectManager:isValidBale(bale)
-	return not self.temporaryLockedBales[bale] and not self.lockedBales[bale]
+	return not self.temporarilyLeasedBales[bale] and not self.lockedBales[bale]
 end
 
 function BaleToCollectManager:getBales()
