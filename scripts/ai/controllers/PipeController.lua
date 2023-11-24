@@ -461,7 +461,10 @@ function PipeController:updateMoveablePipe(dt)
             if self.baseMovingTool and self.baseMovingToolChild then 
                 self:movePipeUp( self.baseMovingTool, self.baseMovingToolChild.node, dt)
                 self:moveDependedPipePart(self.baseMovingToolChild, dt)
-            else
+            elseif self.baseMovingTool then
+                if self.isConsoleCommand then 
+                    self:debugSparse("Only a base moving tool was found!")
+                end
                 local _, y, _ = localToWorld(self.baseMovingTool.node, 0, 0, 0)
                 local _, ny, _ = localToWorld(self.implement.rootNode, 0, 0, 0)
                 if math.abs(y-ny) < 2 then 
@@ -488,6 +491,7 @@ function PipeController:moveDependedPipePart(tool, dt)
     local dischargeNode = self.dischargeNode.node
     local toolDischargeDist = calcDistanceFrom(toolNode, dischargeNode)
     local exactFillRootNode, autoAimNode = self:getClosestExactFillRootNode()
+
     local tx, ty, tz = localToWorld(dischargeNode, 0, 0, 0)
     local _, gy, _ = localToWorld(toolNode, 0, 0, 0)
     setTranslation(self.tempDependedNode, tx, gy, tz)
@@ -520,6 +524,8 @@ function PipeController:moveDependedPipePart(tool, dt)
             --- So we make sure to check an additional auto aim node 
             local _, agyT, _ = localToWorld(autoAimNode, 0, 0, 0)
             gyT = math.max(gyT, agyT) + 1
+        else 
+            gyT = gyT + 1
         end
         if gyT > gy then
             local d = gyT - gy
@@ -530,6 +536,14 @@ function PipeController:moveDependedPipePart(tool, dt)
                 targetRot  = targetRot - beta
             end
         end
+        local lDirX, _, lDirZ = localDirectionToWorld(self.implement.rootNode, self.pipeOnLeftSide and -1 or 1, 0, 0)
+        local lX1, _, lZ1 = localToLocal(toolNode, self.implement.rootNode, 0, 0, 0)
+        local x1, _, z1 = localToWorld(self.implement.rootNode, lX1, 0, lZ1)
+        DebugUtil.drawDebugLine(x1, gyT, z1, 
+            x1 + lDirX * 5, gyT, z1 + lDirZ * 5, 
+            1, 0, 0, 0, false)
+    
+    
     end
     ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, MathUtil.clamp(targetRot, tool.rotMin, tool.rotMax))
 end
@@ -544,7 +558,7 @@ function PipeController:movePipeUp(tool, childToolNode, dt)
 
     local toolNode = tool.node   
     local toolChildToolDist = calcDistanceFrom(toolNode, childToolNode)
-
+  
     local exactFillRootNode, autoAimNode = self:getClosestExactFillRootNode()
    
     local tx, ty, tz = localToWorld(childToolNode, 0, 0, 0)
