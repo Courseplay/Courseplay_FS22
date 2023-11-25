@@ -263,6 +263,7 @@ function AIParameterSettingList:loadFromXMLFile(xmlFile, key)
 	local value = rawValue and tonumber(rawValue) 
 	if value then 
 		self:debug("loaded value: %.2f", value)
+		self.loadedValue = value
 		--- Applies a small epsilon, as otherwise floating point problems might happen.
 		self:setFloatValue(value, 0.001)
 	else 
@@ -376,7 +377,7 @@ end
 
 --- Sets a float value relative to the incremental.
 ---@param value number
----@param epsilon number optional
+---@param epsilon number|nil optional
 ---@return boolean value is not valid and could not be set.
 function AIParameterSettingList:setFloatValue(value, epsilon)
 	return setValueInternal(self, value, function(a, b)
@@ -450,6 +451,14 @@ function AIParameterSettingList:setDefault(noEventSend)
 	end
 	self:setToIx(1)
 	if (noEventSend == nil or noEventSend==false) and current ~= self.current then
+		self:raiseDirtyFlag()
+	end
+end
+
+--- Resets the setting value back to the loaded value, if it's possible.
+function AIParameterSettingList:resetToLoadedValue()
+	if self.loadedValue ~= nil then 
+		self:setFloatValue(self.loadedValue)
 		self:raiseDirtyFlag()
 	end
 end

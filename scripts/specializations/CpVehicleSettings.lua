@@ -52,7 +52,7 @@ end
 function CpVehicleSettings.registerEventListeners(vehicleType)	
 --	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpVehicleSettings)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpVehicleSettings)
-    SpecializationUtil.registerEventListener(vehicleType, "onLoadFinished", CpVehicleSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onCpUnitChanged", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onReadStream", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onWriteStream", CpVehicleSettings)
@@ -92,11 +92,20 @@ function CpVehicleSettings:onLoad(savegame)
     CpVehicleSettings.loadSettings(self, savegame)
 end
 
-function CpVehicleSettings:onLoadFinished()
-    local spec = self.spec_cpVehicleSettings
-    spec.wasLoaded = nil
+--- Resets the tool offset to a saved value after all implements are loaded and attached.
+function CpVehicleSettings:onUpdate()
+    if not self.finishedFirstUpdate then
+        --- TODO: Maybe consider a more generic approach in the future.
+        local spec = self.spec_cpVehicleSettings
+        spec.toolOffsetX:resetToLoadedValue()
+        spec.bunkerSiloWorkWidth:resetToLoadedValue()
+        spec.baleCollectorOffset:resetToLoadedValue()
+        spec.raiseImplementLate:resetToLoadedValue()
+        spec.lowerImplementEarly:resetToLoadedValue()
+        spec.bunkerSiloWorkWidth:resetToLoadedValue()
+        spec.loadingShovelHeightOffset:resetToLoadedValue()
+    end
 end
-
 
 --- Changes the sprayer work width on fill type change, as it might depend on the loaded fill type.
 --- For example Lime and Fertilizer might have a different work width.
