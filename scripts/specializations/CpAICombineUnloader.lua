@@ -52,6 +52,7 @@ local function executePipeControllerCommand(lambdaFunc, ...)
         controller = PipeController(vehicle, pipeObject, true)
     end
     if not lambdaFunc(controller, vehicle, ...) then
+        vehicle.spec_cpAICombineUnloader.pipeController = nil
         controller:delete()
     end
 end
@@ -104,6 +105,7 @@ function CpAICombineUnloader:consoleCommandToggleMoveablePipe()
             vehicle.spec_cpAICombineUnloader.pipeController = nil
             return
         end
+        controller:measurePipeProperties()
         vehicle.spec_cpAICombineUnloader.pipeController = controller
         return true
     end)

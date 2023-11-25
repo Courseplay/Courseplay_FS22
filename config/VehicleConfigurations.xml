@@ -133,6 +133,14 @@ You can define the following custom settings:
 	and only use one part.
 	An example is the premium expansion Dewulf P3K Profi.
 
+- basePipeMovingToolIndex: int
+	Moving tool index for the pipe controller to control the pipe height.
+	This index is for the pipe part that is directly connected to the vehicle.
+
+- childPipeMovingToolIndex: int
+	Moving tool index for the pipe controller to control the pipe height.
+	This index is for the pipe part that is directly connected to the discharge node.
+
 -->
 <VehicleConfigurations>
 	<Configurations>
@@ -158,6 +166,8 @@ You can define the following custom settings:
 		<Configuration type="BOOL">articulatedAxisReverseNodeInverted</Configuration>
 		<Configuration type="BOOL">disablePipeMovingToolCorrection</Configuration>
 		<Configuration type="INT">ignorePipeMovingToolIndex</Configuration>
+		<Configuration type="INT">basePipeMovingToolIndex</Configuration>
+		<Configuration type="INT">childPipeMovingToolIndex</Configuration>
 		<Configuration type="FLOAT">unloadOffsetX</Configuration>
 	</Configurations>
     <!--[GIANTS]-->
@@ -406,6 +416,11 @@ You can define the following custom settings:
     <Vehicle name="gcciGii.xml"
              toolOffsetX = "-1.9"
     />
+	<Vehicle name="zkivSe.xml"
+			 basePipeMovingToolIndex = "1"
+			 childPipeMovingToolIndex = "2"
+	/>
+
 
     <!--Platinum-->
     <Vehicle name="semiLowloader3A.xml"
