@@ -353,7 +353,6 @@ function AIDriveStrategyFindBales:onPathfindingRetry(controller,
         else 
             if self:isNearFieldEdge() then
                 self:debug('Finding path to next bale failed twice, we are close to the field edge, back up a bit and then try again')
-                controller:reset()
                 self:startReversing()
             else
                 self:debug('Finding path to next bale failed twice, but we are not too close to the field edge, trying another bale')

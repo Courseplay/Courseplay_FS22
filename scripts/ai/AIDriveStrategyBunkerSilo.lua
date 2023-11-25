@@ -579,7 +579,8 @@ function AIDriveStrategyBunkerSilo:startCourseWithPathfinding(course, ix, isReve
             setRotation(self.pathfinderNode.node, 0, yRot + math.pi, 0)
         end
 
-        local context = PathfinderContext(self.vehicle):allowReverse(true):offFieldPenalty(0) context:maxFruitPercent(math.huge)
+        local context = PathfinderContext(self.vehicle):allowReverse(true)
+        context:offFieldPenalty(0):ignoreFruit()
 
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(self.pathfinderNode.node,
             0, 0, context)
@@ -631,7 +632,8 @@ function AIDriveStrategyBunkerSilo:startDrivingToParkPositionWithPathfinding()
     
         self:debug('Pathfinding to park position, with zOffset min(%.1f, %.1f)', -self.frontMarkerDistance, -steeringLength)
 
-        local context = PathfinderContext(self.vehicle):allowReverse(true):offFieldPenalty(0) context:maxFruitPercent(math.huge)
+        local context = PathfinderContext(self.vehicle):allowReverse(true)
+        context:offFieldPenalty(0):ignoreFruit()
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(self.parkNode,
             0, 0, context)
 
