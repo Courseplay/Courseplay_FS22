@@ -434,20 +434,26 @@ function PipeController:setupMoveablePipe()
         self.dischargeNode = self.dischargeSpec.dischargeNodes[self.dischargeNodeIndex]
     end
     for i, m in ipairs(self.validMovingTools) do
-        local validBaseTool = true
-        for i, mm in ipairs(self.validMovingTools) do
-            if m ~= mm and getParent(m.node) == mm.node then 
-                validBaseTool = false
+        if i ~= g_vehicleConfigurations:get(self.implement, "ignorePipeMovingToolIndex") then
+            local validBaseTool = true
+            for i, mm in ipairs(self.validMovingTools) do
+                if m ~= mm and getParent(m.node) == mm.node then 
+                    validBaseTool = false
+                end
             end
-        end
-        if validBaseTool then 
-            self.baseMovingTool = m
-            break
+            if validBaseTool then 
+                self.baseMovingTool = m
+                self.baseMovingToolIndex = i
+                break
+            end
         end
     end
     for i, m in ipairs(self.validMovingTools) do 
-        if m ~= self.baseMovingTool then 
-            self.baseMovingToolChild = m
+        if i ~= g_vehicleConfigurations:get(self.implement, "ignorePipeMovingToolIndex") then
+            if m ~= self.baseMovingTool then 
+                self.baseMovingToolChild = m
+                self.baseMovingToolChildIndex = i
+            end
         end
     end
 
@@ -664,18 +670,20 @@ function PipeController:printMoveablePipeDebug()
     self:debug("--Moveable Pipe Debug--")
     self:debug("Num of moveable tools: %d", #self.validMovingTools)
     self:debug("Base moving tool")
-    self:printMovingToolDebug(self.baseMovingTool)
+    self:printMovingToolDebug(self.baseMovingToolIndex, self.baseMovingTool)
     self:debug("Base moving tool child")
-    self:printMovingToolDebug(self.baseMovingToolChild)
+    self:printMovingToolDebug(self.baseMovingToolChildIndex, self.baseMovingToolChild)
     self:debug("--Moveable Pipe Debug finished--")
 end
 
-function PipeController:printMovingToolDebug(tool)
+function PipeController:printMovingToolDebug(index, tool)
     if tool == nil then 
         self:debug("Tool not found.")
         return
     end
-    self:debug("RotMin: %s, RotMax: %s, RotSpeed", tostring(tool.rotMin), tostring(tool.rotMax), tostring(tool.rotSpeed))
+    self:debug("Index: %d, RotMin: %s, RotMax: %s, RotSpeed", 
+        index, tostring(tool.rotMin), 
+        tostring(tool.rotMax), tostring(tool.rotSpeed))
 end
 
 
