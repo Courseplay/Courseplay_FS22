@@ -241,7 +241,7 @@ function AIDriveStrategyAttachHeader:startPathfindingToCutter()
         end
         local length = AIUtil.getLength(self.vehicle)
 
-        local context = PathfinderContext(self.vehicle):areaToAvoid(self.siloAreaToAvoid)
+        local context = PathfinderContext(self.vehicle)
         context:mustBeAccurate(false):allowReverse(true):offFieldPenalty(0)
         context:vehiclesToIgnore({ self.vehicle }):areaToAvoid(self.trailerAreaToAvoid)
         context:maxFruitPercent(math.huge)
