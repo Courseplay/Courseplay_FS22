@@ -127,6 +127,12 @@ You can define the following custom settings:
 - disablePipeMovingToolCorrection: boolean
 	Disables the pipe height adjustment for trailers of a few pipe implements/vehicles.
 
+- ignorePipeMovingToolIndex: int
+	Ignores the given pipe moving tool by it's index.
+	This can be used to ignore a pipe moving part 
+	and only use one part.
+	An example is the premium expansion Dewulf P3K Profi.
+
 -->
 <VehicleConfigurations>
 	<Configurations>
@@ -151,6 +157,7 @@ You can define the following custom settings:
 		<Configuration type="INT">fixWheelLoaderDirectionNodeByMovingToolIx</Configuration>
 		<Configuration type="BOOL">articulatedAxisReverseNodeInverted</Configuration>
 		<Configuration type="BOOL">disablePipeMovingToolCorrection</Configuration>
+		<Configuration type="INT">ignorePipeMovingToolIndex</Configuration>
 		<Configuration type="FLOAT">unloadOffsetX</Configuration>
 	</Configurations>
     <!--[GIANTS]-->
@@ -385,6 +392,7 @@ You can define the following custom settings:
 
     <Vehicle name="p3Profi.xml"
              toolOffsetX = "-1.8"
+			 ignorePipeMovingToolIndex = "2"
     />
 
     <Vehicle name="gbc.xml"

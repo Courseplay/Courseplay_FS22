@@ -99,6 +99,7 @@ end
 
 function CpAICombineUnloader:consoleCommandToggleMoveablePipe()
     executePipeControllerCommand(function(controller, vehicle)
+        controller:printMoveablePipeDebug()
         if vehicle.spec_cpAICombineUnloader and vehicle.spec_cpAICombineUnloader.pipeController then 
             vehicle.spec_cpAICombineUnloader.pipeController = nil
             return
