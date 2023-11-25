@@ -8,6 +8,7 @@ PipeController.MIN_ROT_SPEED = 0.1
 PipeController.PIPE_STATE_MOVING = 0
 PipeController.PIPE_STATE_CLOSED = 1
 PipeController.PIPE_STATE_OPEN = 2
+PipeController.moveablePipeHeightOffset = 1 --- Offset to the calculated pipe height.
 
 function PipeController:init(vehicle, implement, isConsoleCommand)
     self.isConsoleCommand = isConsoleCommand
@@ -528,9 +529,9 @@ function PipeController:moveDependedPipePart(tool, dt)
             --- For some reason the exactFillRootNode might be at the bottom of the trailer ...
             --- So we make sure to check an additional auto aim node 
             local _, agyT, _ = localToWorld(autoAimNode, 0, 0, 0)
-            gyT = math.max(gyT, agyT) + 1
+            gyT = math.max(gyT, agyT) + self.moveablePipeHeightOffset
         else 
-            gyT = gyT + 1
+            gyT = gyT + self.moveablePipeHeightOffset
         end
         if gyT > gy then
             local d = gyT - gy
@@ -595,7 +596,7 @@ function PipeController:movePipeUp(tool, childToolNode, dt)
             --- For some reason the exactFillRootNode might be at the bottom of the trailer ...
             --- So we make sure to check an additional auto aim node 
             local _, agyT, _ = localToWorld(autoAimNode, 0, 0, 0)
-            gyT = math.max(gyT, agyT) + 2
+            gyT = math.max(gyT, agyT) + self.moveablePipeHeightOffset
         end
         local terrainHeight = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, gxT, 0, gzT) + 4
         gyT = math.max(gyT, terrainHeight)
