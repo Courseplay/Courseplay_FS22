@@ -90,3 +90,13 @@ function PathfinderContext:useVehicleFieldNumber()
     self._useFieldNum = CpFieldUtil.getFieldNumUnderVehicle(self._vehicle)
     return self
 end
+
+function PathfinderContext:__tostring()
+    local str = string.format('[ %s: ', CpUtil.getName(self._vehicle))
+    for attributeName, _ in pairs(PathfinderContext.attributesToDefaultValue) do
+        local variableName = '_' .. attributeName
+        str = str .. string.format('%s: %s ', variableName, self[variableName])
+    end
+    str = str .. ']'
+    return str
+end
