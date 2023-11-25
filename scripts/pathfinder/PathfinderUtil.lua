@@ -69,7 +69,7 @@ function PathfinderUtil.VehicleData:init(vehicle, withImplements, buffer)
         }
         local inputAttacherJoint = self.trailer:getActiveInputAttacherJoint()
         if inputAttacherJoint then
-            local _, _, dz = localToLocal(inputAttacherJoint.node,  AIUtil.getDirectionNode(vehicle), 0, 0, 0)
+            local _, _, dz = localToLocal(inputAttacherJoint.node, AIUtil.getDirectionNode(vehicle), 0, 0, 0)
             self.trailerHitchOffset = dz
         else
             self.trailerHitchOffset = self.dRear
@@ -130,7 +130,7 @@ end
 function PathfinderUtil.VehicleData:calculateSizeOfObjectList(vehicle, implements, buffer, rectangles)
     for _, implement in ipairs(implements) do
         --print(implement.object:getName())
-        local referenceNode =  AIUtil.getDirectionNode(vehicle) --vehicle.rootNode
+        local referenceNode = AIUtil.getDirectionNode(vehicle) --vehicle.rootNode
         if implement.object ~= self.trailer then
             -- everything else is attached to the root vehicle and calculated as it was moving with it (having
             -- the same heading)
@@ -445,8 +445,8 @@ end
 ---@param vehicle table
 ---@return PathfinderUtil.NodeArea
 function PathfinderUtil.NodeArea.createVehicleArea(vehicle)
-    return PathfinderUtil.NodeArea(vehicle.rootNode, -vehicle.size.width/2 + vehicle.size.widthOffset, 
-        -vehicle.size.length/2 + vehicle.size.lengthOffset, vehicle.size.width, vehicle.size.length)
+    return PathfinderUtil.NodeArea(vehicle.rootNode, -vehicle.size.width / 2 + vehicle.size.widthOffset,
+            -vehicle.size.length / 2 + vehicle.size.lengthOffset, vehicle.size.width, vehicle.size.length)
 end
 
 --[[
@@ -759,6 +759,9 @@ local function findShortestPathOnHeadland(start, goal, course, turnRadius, worki
     CpUtil.debugVehicle(CpDebug.DBG_PATHFINDER, course:getVehicle(),
             'headland width %.1f, distance from row end %.1f, usable headland width %.1f closest headland %d with %d points',
             headlandWidth, distanceFromRowEnd, usableHeadlandWidth, closestHeadland, #headland)
+    if #headland == 0 then
+        return
+    end
     headland:calculateData()
     local path = {}
     for _, p in ipairs(headland:getSectionBetweenPoints(start, goal, 2)) do
@@ -824,16 +827,19 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
     if courseWithHeadland and courseWithHeadland:getNumberOfHeadlands() > 0 then
         -- if there's a headland, we want to drive on the headland to the next row
         local headlandPath = findShortestPathOnHeadland(start, goal, courseWithHeadland, turnRadius, workingWidth, backMarkerDistance)
-        -- is the first wp of the headland in front of us?
-        local _, y, _ = getWorldTranslation(vehicle:getAIDirectionNode())
-        local dx, _, dz = worldToLocal(vehicle:getAIDirectionNode(), headlandPath[1].x, y, -headlandPath[1].y)
-        local dirDeg = math.deg(math.abs(math.atan2(dx, dz)))
-        if dirDeg > 45 or true then
-            CourseGenerator.debug('First headland waypoint isn\'t in front of us (%.1f), remove first few waypoints to avoid making a circle %.1f %.1f', dirDeg, dx, dz)
+        if headlandPath ~= nil then
+            -- is the first wp of the headland in front of us?
+            local _, y, _ = getWorldTranslation(vehicle:getAIDirectionNode())
+            local dx, _, dz = worldToLocal(vehicle:getAIDirectionNode(), headlandPath[1].x, y, -headlandPath[1].y)
+            local dirDeg = math.deg(math.abs(math.atan2(dx, dz)))
+            if dirDeg > 45 or true then
+                CourseGenerator.debug('First headland waypoint isn\'t in front of us (%.1f), remove first few waypoints to avoid making a circle %.1f %.1f', dirDeg, dx, dz)
+            end
+            pathfinder = HybridAStarWithPathInTheMiddle(vehicle, turnRadius * 3, 200, headlandPath, true, analyticSolver)
         end
-        pathfinder = HybridAStarWithPathInTheMiddle(vehicle, turnRadius * 3, 200, headlandPath, true, analyticSolver)
-    else
-        -- only use a middle section when the target is really far away
+    end
+    if pathfinder == nil then
+        CourseGenerator.debug('No headland, or there is a headland but wasn\'t able to get the shortest path on the headland to the next row, falling back to hybrid A*')
         pathfinder = HybridAStarWithAStarInTheMiddle(vehicle, turnRadius * 6, 200, 10000, true, analyticSolver)
     end
 
@@ -894,7 +900,7 @@ end
 ---@param zOffset number|nil
 ---@return State3D position/heading of vehicle
 function PathfinderUtil.getVehiclePositionAsState3D(vehicle, xOffset, zOffset)
-    local x, z, yRot = PathfinderUtil.getNodePositionAndDirection( AIUtil.getDirectionNode(vehicle), xOffset, zOffset)
+    local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(AIUtil.getDirectionNode(vehicle), xOffset, zOffset)
     return State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
 end
 
@@ -1030,7 +1036,7 @@ function PathfinderUtil.checkForObstaclesAhead(vehicle, turnRadius, objectsToIgn
         local yRot = MathUtil.getYRotationFromDirection(dx, dz)
         setRotation(PathfinderUtil.helperNode, 0, yRot, 0)
         local path, len = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver,
-            AIUtil.getDirectionNode(vehicle), 0, PathfinderUtil.helperNode, 0, 0, turnRadius)
+                AIUtil.getDirectionNode(vehicle), 0, PathfinderUtil.helperNode, 0, 0, turnRadius)
         -- making sure we continue with the correct trailer heading
         path[1]:setTrailerHeading(start:getTrailerHeading())
         State3D.calculateTrailerHeadings(path, hitchLength)
