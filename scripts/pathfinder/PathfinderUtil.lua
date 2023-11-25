@@ -873,11 +873,11 @@ end
 ---@return boolean|nil goalNodeInvalid
 function PathfinderUtil.startPathfindingFromVehicleToGoal(goal, context)
 
-    local start = PathfinderUtil.getVehiclePositionAsState3D(context.vehicle)
+    local start = PathfinderUtil.getVehiclePositionAsState3D(context._vehicle)
     local constraints = PathfinderConstraints(context)
     PathfinderUtil.initializeTrailerHeading(start, constraints.vehicleData)
 
-    return PathfinderUtil.startPathfinding(context.vehicle, start, goal, constraints, context._allowReverse, context._mustBeAccurate)
+    return PathfinderUtil.startPathfinding(context._vehicle, start, goal, constraints, context._allowReverse, context._mustBeAccurate)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -929,7 +929,7 @@ end
 ---@return table|nil path that was found?
 ---@return boolean|nil goalNodeInvalid
 function PathfinderUtil.startAStarPathfindingFromVehicleToNode(goalNode, xOffset, zOffset, context)
-    local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(context.vehicle:getAIDirectionNode())
+    local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(context._vehicle:getAIDirectionNode())
     local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
     x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalNode, xOffset, zOffset)
     local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
@@ -937,7 +937,7 @@ function PathfinderUtil.startAStarPathfindingFromVehicleToNode(goalNode, xOffset
     local constraints = PathfinderConstraints(context)
     PathfinderUtil.initializeTrailerHeading(start, constraints.vehicleData)
 
-    local pathfinder = AStar(context.vehicle, 100, 10000)
+    local pathfinder = AStar(context._vehicle, 100, 10000)
     local done, path, goalNodeInvalid =
         pathfinder:start(start, goal, constraints.turnRadius, false, constraints, constraints.trailerHitchLength)
     return pathfinder, done, path, goalNodeInvalid
