@@ -63,6 +63,8 @@ AIDriveStrategyShovelSiloLoader.distShovelTrailerPreUnload = 7
 AIDriveStrategyShovelSiloLoader.distShovelUnloadStationPreUnload = 8
 AIDriveStrategyShovelSiloLoader.isStuckMs = 1000 * 15
 
+AIDriveStrategyShovelSiloLoader.maxDistanceWithoutPathfinding = 10
+
 --- Silo area to avoid for heap
 AIDriveStrategyShovelSiloLoader.siloAreaToAvoidForHeapOffsets = {
     --- The Silo area to avoid gets extended on the front and back.
@@ -655,8 +657,9 @@ function AIDriveStrategyShovelSiloLoader:startDrivingToSilo(target)
             0, -5, 3, 3, false)
     local vx, _, vz = getWorldTranslation(AIUtil.getDirectionNode(self.vehicle))
     local dx, _, dz = siloCourse:waypointLocalToWorld(1, vx, 0, vz)
-    if dz < 0 and dz > -20 and math.abs(dx) <= math.abs(dz) and 
-        math.abs(dx) < 20 * math.sqrt(2)/2  then 
+    if dz < 0 and dz > -self.maxDistanceWithoutPathfinding and 
+        math.abs(dx) <= math.abs(dz) and 
+        math.abs(dx) < self.maxDistanceWithoutPathfinding * math.sqrt(2)/2 then 
         --[[
             |...|
             |...|   <- Silo
