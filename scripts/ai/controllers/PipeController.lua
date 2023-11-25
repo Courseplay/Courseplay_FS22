@@ -405,9 +405,12 @@ function PipeController:resetFold(isFolded, currentFoldDirection, foldAnimTime, 
 end
 
 --------------------------------------------------------------------
---- Moveable pipe
+--- Moveable pipe 
 --------------------------------------------------------------------
 
+--- Checks if the pipe has moving tools and applies the correct setup for those.
+--- TODO: Reevaluate the complete logic for the next Farming simulator, 
+---       as correctly this logic mostly works... 
 function PipeController:setupMoveablePipe()
     self.validMovingTools = {}
     self.hasPipeMovingTools = false
@@ -419,11 +422,14 @@ function PipeController:setupMoveablePipe()
     end
     if self.cylinderedSpec and self.pipeSpec.numAutoAimingStates <= 0 then
         for i, m in ipairs(self.cylinderedSpec.movingTools) do
-            -- Gets only the pipe moving tools.
-            if m.freezingPipeStates ~= nil and next(m.freezingPipeStates) ~= nil then
-                --- Only control pipe elements, that are controlled with the rot speed for now.
-                if m.rotSpeed ~= nil then 
-                    table.insert(self.validMovingTools, m)
+            --- Makes sure the moving tool can be used.
+            if i ~= g_vehicleConfigurations:get(self.implement, "ignorePipeMovingToolIndex") then
+                -- Gets only the pipe moving tools.
+                if m.freezingPipeStates ~= nil and next(m.freezingPipeStates) ~= nil then
+                    --- Only control pipe elements, that are controlled with the rot speed for now.
+                    if m.rotSpeed ~= nil then 
+                        table.insert(self.validMovingTools, m)
+                    end
                 end
             end
         end
@@ -434,31 +440,27 @@ function PipeController:setupMoveablePipe()
         self.dischargeNode = self.dischargeSpec.dischargeNodes[self.dischargeNodeIndex]
     end
     for i, m in ipairs(self.validMovingTools) do
-        if i ~= g_vehicleConfigurations:get(self.implement, "ignorePipeMovingToolIndex") then
-            local validBaseTool = true
-            for i, mm in ipairs(self.validMovingTools) do
-                if m ~= mm and getParent(m.node) == mm.node then 
-                    validBaseTool = false
-                end
+        local validBaseTool = true
+        for i, mm in ipairs(self.validMovingTools) do
+            if m ~= mm and getParent(m.node) == mm.node then 
+                -- The moving tool has a valid parent moving tool, 
+                -- so it can't be the base moving tool.
+                validBaseTool = false
             end
-            if validBaseTool then 
-                self.baseMovingTool = m
-                self.baseMovingToolIndex = i
-                break
-            end
+        end
+        if validBaseTool then 
+            self.baseMovingTool = m
+            self.baseMovingToolIndex = i
+            break
         end
     end
     for i, m in ipairs(self.validMovingTools) do 
-        if i ~= g_vehicleConfigurations:get(self.implement, "ignorePipeMovingToolIndex") then
-            if m ~= self.baseMovingTool then 
-                self.baseMovingToolChild = m
-                self.baseMovingToolChildIndex = i
-            end
+        if m ~= self.baseMovingTool then 
+            self.baseMovingToolChild = m
+            self.baseMovingToolChildIndex = i
         end
     end
-
     self:debug("Number of moveable pipe elements found: %d", #self.validMovingTools)
-
 end
 
 function PipeController:updateMoveablePipe(dt)
@@ -476,15 +478,12 @@ function PipeController:updateMoveablePipe(dt)
                 if math.abs(y-ny) < 2 then 
                     self:movePipeUp( self.baseMovingTool, self.dischargeNode.node, dt)
                 else 
-               --     DebugUtil.drawDebugNode(self.baseMovingTool.node, "baseMovingTool")
                     self:moveDependedPipePart( self.baseMovingTool, dt)
                 end
             end
         end
     end
 end
-
-
 
 function PipeController:moveDependedPipePart(tool, dt)
 
@@ -548,8 +547,6 @@ function PipeController:moveDependedPipePart(tool, dt)
         DebugUtil.drawDebugLine(x1, gyT, z1, 
             x1 + lDirX * 5, gyT, z1 + lDirZ * 5, 
             1, 0, 0, 0, false)
-    
-    
     end
     ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, MathUtil.clamp(targetRot, tool.rotMin, tool.rotMax))
 end
