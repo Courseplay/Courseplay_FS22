@@ -318,7 +318,7 @@ function AIDriveStrategyUnloadCombine:resetPathfinder()
     self.maxFruitPercent = 10
     -- prefer driving on field, don't do this too aggressively until we take into account the field owner
     -- otherwise we'll be driving through others' fields
-    self.offFieldPenalty = PathfinderUtil.defaultOffFieldPenalty
+    self.offFieldPenalty = PathfinderContext.defaultOffFieldPenalty
     self.pathfinderFailureCount = 0
 end
 
@@ -1173,12 +1173,12 @@ function AIDriveStrategyUnloadCombine:getOffFieldPenalty(combineToUnload)
         if combineToUnload:getCpDriveStrategy():isOnHeadland(1) then
             -- when the combine is on the first headland, chances are that we have to drive off-field to it,
             -- so make the life easier for the pathfinder
-            offFieldPenalty = PathfinderUtil.defaultOffFieldPenalty / 5
+            offFieldPenalty = PathfinderContext.defaultOffFieldPenalty / 5
             self:debug('Combine is on first headland, reducing off-field penalty for pathfinder to %.1f', offFieldPenalty)
         elseif combineToUnload:getCpDriveStrategy():isOnHeadland(2) then
             -- reduce less when on the second headland, there's more chance we'll be able to get to the combine
             -- on the headland
-            offFieldPenalty = PathfinderUtil.defaultOffFieldPenalty / 3
+            offFieldPenalty = PathfinderContext.defaultOffFieldPenalty / 3
             self:debug('Combine is on second headland, reducing off-field penalty for pathfinder to %.1f', offFieldPenalty)
         end
     end

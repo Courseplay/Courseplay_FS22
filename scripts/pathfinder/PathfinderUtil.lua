@@ -883,7 +883,6 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 --- Interface function to start the pathfinder in the game, using a waypoint as the goal
 ------------------------------------------------------------------------------------------------------------------------
----@param vehicle table, will be used as the start location/heading, turn radius and size
 ---@param course Course the course with the destination waypoint
 ---@param goalWaypointIx number index of the waypoint
 ---@param xOffset number side offset of the goal from the goalWaypoint

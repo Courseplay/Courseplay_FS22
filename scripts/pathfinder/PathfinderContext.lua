@@ -48,6 +48,7 @@ local context = PathfinderContext():maxFruitPercent(100):useFieldNum(10):vehicle
 ---@field _mustBeAccurate boolean
 ---@field _areaToIgnoreFruit table[]
 PathfinderContext = CpObject()
+PathfinderContext.defaultOffFieldPenalty = 7.5
 PathfinderContext.attributesToDefaultValue = {
     -- If an 4 x 4 m area around a pathfinder node has more than this fruit, a penalty of 0.5 * actual fruit
     -- percentage will be applied to that node.
@@ -57,7 +58,7 @@ PathfinderContext.attributesToDefaultValue = {
     -- the hybrid A* and 3 with the simple A*.
     -- Simple A* is used for long-range pathfinding, in that case we are willing to drive about 3 times longer
     -- to stay on the field. Hybrid A* is more restrictive, TODO: review if these should be balanced
-    ["offFieldPenalty"] = 7.5,
+    ["offFieldPenalty"] = PathfinderContext.defaultOffFieldPenalty,
     -- If useFieldNum > 0, fields that are not owned have a 20% greater penalty.
     ["useFieldNum"] = 0,
     -- Pathfinder nodes in this area have a prohibitive penalty (2000)
