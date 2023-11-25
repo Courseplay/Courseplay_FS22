@@ -535,109 +535,83 @@ end
 --- Pathfinding
 ----------------------------------------------------------------
 
+--- Pathfinding has finished
+---@param controller PathfinderController
+---@param success boolean
+---@param course Course|nil
+---@param goalNodeInvalid boolean|nil
+function AIDriveStrategyShovelSiloLoader:onPathfindingFinished(controller, 
+    success, course, goalNodeInvalid)
+    if not success then
+        self:debug('Pathfinding failed, giving up!')
+        self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
+        return
+    end
+    if self.state == self.states.DRIVING_ALIGNMENT_COURSE then 
+        course:adjustForTowedImplements(2)
+        self:startCourse(course, 1)
+    elseif self.state == self.states.DRIVING_TO_UNLOAD_POSITION then 
+        course:adjustForTowedImplements(2)
+        self:startCourse(course, 1)
+    elseif self.state == self.states.DRIVING_TO_UNLOAD_TRAILER then 
+        course:adjustForTowedImplements(2)
+        self:startCourse(course, 1)
+    end
+end
+
+--- Pathfinding failed, but a retry attempt is leftover.
+---@param controller PathfinderController
+---@param lastContext PathfinderContext
+---@param wasLastRetry boolean
+---@param currentRetryAttempt number
+function AIDriveStrategyShovelSiloLoader:onPathfindingRetry(controller, 
+    lastContext, wasLastRetry, currentRetryAttempt)
+    --- TODO: Think of possible points of failures, that could be adjusted here.
+    ---       Maybe a small reverse course might help to avoid a deadlock
+    ---       after one pathfinder failure based on proximity sensor data and so on ..
+    if self.state == self.states.DRIVING_ALIGNMENT_COURSE then 
+        local course = self:getRememberedCourseAndIx()
+        local fm = self:getFrontAndBackMarkers()
+        lastContext:ignoreFruit()
+        controller:findPathToWaypoint(lastContext, course, 
+            1, 0, -(fm + 4), 1)
+    elseif self.state == self.states.DRIVING_TO_UNLOAD_POSITION then 
+        self:startPathfindingToUnloadPosition()
+    elseif self.state == self.states.DRIVING_TO_UNLOAD_TRAILER then 
+        self:startPathfindingToTrailer()
+    end
+end
+
 --- Find an alignment path to the silo lane course.
 ---@param course table silo lane course
 function AIDriveStrategyShovelSiloLoader:startPathfindingToStart(course)
-    if not self.pathfinder or not self.pathfinder:isActive() then
-        self:setNewState(self.states.WAITING_FOR_PATHFINDER)
-        self:rememberCourse(course, 1)
-        local done, path
-        local fm = self:getFrontAndBackMarkers()
-        local context = PathfinderContext(self.vehicle):allowReverse(true):areaToAvoid(self.siloAreaToAvoid)
-        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
-                course, 1, 0, -(fm + 4), context)
-        if done then
-            return self:onPathfindingDoneToStart(path)
-        else
-            self:setPathfindingDoneCallback(self, self.onPathfindingDoneToStart)
-        end
-    else
-        self:debug('Pathfinder already active')
-    end
-    return true
-end
-
-function AIDriveStrategyShovelSiloLoader:onPathfindingDoneToStart(path)
-    if path and #path > 2 then
-        self:debug("Found alignment path to the course for the silo.")
-        local alignmentCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-        alignmentCourse:adjustForTowedImplements(2)
-        self:startCourse(alignmentCourse, 1)
-        self:setNewState(self.states.DRIVING_ALIGNMENT_COURSE)
-    else
-        self:debug("No path to the silo found!")
-        self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
-        --- TODO: Might need to consider a retry to another silo lane
-    end
+    self:setNewState(self.states.DRIVING_ALIGNMENT_COURSE)
+    self:rememberCourse(course, 1)
+    local fm = self:getFrontAndBackMarkers()
+    local context = PathfinderContext(self.vehicle):allowReverse(true):areaToAvoid(self.siloAreaToAvoid)
+    self.pathfinderController:findPathToWaypoint(context, course, 
+        1, 0, -(fm + 4), 1)
 end
 
 --- Starts Pathfinding to the position node in front of a unload trigger.
 function AIDriveStrategyShovelSiloLoader:startPathfindingToUnloadPosition()
-    if not self.pathfinder or not self.pathfinder:isActive() then
-        self:setNewState(self.states.WAITING_FOR_PATHFINDER)
-        local context = PathfinderContext(self.vehicle):areaToAvoid(self.siloAreaToAvoid)
+    self:setNewState(self.states.DRIVING_TO_UNLOAD_POSITION)
+    local context = PathfinderContext(self.vehicle):areaToAvoid(self.siloAreaToAvoid)
         context:mustBeAccurate(false):allowReverse(true):offFieldPenalty(0)
-        local done, path, goalNodeInvalid
-        self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(
-                self.unloadPositionNode, context)
-        if done then
-            return self:onPathfindingDoneToUnloadPosition(path, goalNodeInvalid)
-        else
-            self:setPathfindingDoneCallback(self, self.onPathfindingDoneToUnloadPosition)
-        end
-    else
-        self:debug('Pathfinder already active')
-    end
-    return true
+    self.pathfinderController:findPathToNode(context, self.unloadPositionNode, 
+        0, 0, 1)
 end
 
-function AIDriveStrategyShovelSiloLoader:onPathfindingDoneToUnloadPosition(path, goalNodeInvalid)
-    if path and #path > 2 then
-        self:debug("Found path to unloading station.")
-        local course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-        course:adjustForTowedImplements(2)
-        self:startCourse(course, 1)
-        self:setNewState(self.states.DRIVING_TO_UNLOAD_POSITION)
-    else
-        self:debug("Failed to drive close to unload position.")
-        self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
-    end
-end
 
 --- Starts Pathfinding to the position node in front of the trailer side.  
 function AIDriveStrategyShovelSiloLoader:startPathfindingToTrailer()
-    if not self.pathfinder or not self.pathfinder:isActive() then
-        self:setNewState(self.states.WAITING_FOR_PATHFINDER)
-        local context = PathfinderContext(self.vehicle):areaToAvoid(self.siloAreaToAvoid)
+    self:setNewState(self.states.DRIVING_TO_UNLOAD_TRAILER)
+    local context = PathfinderContext(self.vehicle):areaToAvoid(self.siloAreaToAvoid)
         context:mustBeAccurate(false):allowReverse(true):offFieldPenalty(0)
-
-        local done, path, goalNodeInvalid
-        self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(
-                self.unloadPositionNode, 0, 0, context)
-        if done then
-            return self:onPathfindingDoneToTrailer(path, goalNodeInvalid)
-        else
-            self:setPathfindingDoneCallback(self, self.onPathfindingDoneToTrailer)
-        end
-    else
-        self:debug('Pathfinder already active')
-    end
-    return true
+    self.pathfinderController:findPathToNode(context, self.unloadPositionNode, 
+        0, 0, 1)
 end
 
-function AIDriveStrategyShovelSiloLoader:onPathfindingDoneToTrailer(path, goalNodeInvalid)
-    if path and #path > 2 then
-        self:debug("Found path to trailer %s.", CpUtil.getName(self.targetTrailer.trailer))
-        local course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-        self:startCourse(course, 1)
-        self:setNewState(self.states.DRIVING_TO_UNLOAD_TRAILER)
-    else
-        self:debug("Failed to find path to trailer!")
-        ---self:setNewState(self.states.WAITING_FOR_TRAILER)
-        --- Later on we might try another approach?
-        self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
-    end
-end
 ----------------------------------------------------------------
 --- Silo work
 ----------------------------------------------------------------
