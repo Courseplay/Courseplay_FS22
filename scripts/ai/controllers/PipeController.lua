@@ -8,6 +8,7 @@ PipeController.MIN_ROT_SPEED = 0.1
 PipeController.PIPE_STATE_MOVING = 0
 PipeController.PIPE_STATE_CLOSED = 1
 PipeController.PIPE_STATE_OPEN = 2
+PipeController.moveablePipeHeightOffset = 1 --- Offset to the calculated pipe height.
 
 function PipeController:init(vehicle, implement, isConsoleCommand)
     self.isConsoleCommand = isConsoleCommand
@@ -405,9 +406,12 @@ function PipeController:resetFold(isFolded, currentFoldDirection, foldAnimTime, 
 end
 
 --------------------------------------------------------------------
---- Moveable pipe
+--- Moveable pipe 
 --------------------------------------------------------------------
 
+--- Checks if the pipe has moving tools and applies the correct setup for those.
+--- TODO: Reevaluate the complete logic for the next Farming simulator, 
+---       as correctly this logic mostly works... 
 function PipeController:setupMoveablePipe()
     self.validMovingTools = {}
     self.hasPipeMovingTools = false
@@ -419,11 +423,14 @@ function PipeController:setupMoveablePipe()
     end
     if self.cylinderedSpec and self.pipeSpec.numAutoAimingStates <= 0 then
         for i, m in ipairs(self.cylinderedSpec.movingTools) do
-            -- Gets only the pipe moving tools.
-            if m.freezingPipeStates ~= nil and next(m.freezingPipeStates) ~= nil then
-                --- Only control pipe elements, that are controlled with the rot speed for now.
-                if m.rotSpeed ~= nil then 
-                    table.insert(self.validMovingTools, m)
+            --- Makes sure the moving tool can be used.
+            if i ~= g_vehicleConfigurations:get(self.implement, "ignorePipeMovingToolIndex") then
+                -- Gets only the pipe moving tools.
+                if m.freezingPipeStates ~= nil and next(m.freezingPipeStates) ~= nil then
+                    --- Only control pipe elements, that are controlled with the rot speed for now.
+                    if m.rotSpeed ~= nil then 
+                        table.insert(self.validMovingTools, m)
+                    end
                 end
             end
         end
@@ -437,22 +444,24 @@ function PipeController:setupMoveablePipe()
         local validBaseTool = true
         for i, mm in ipairs(self.validMovingTools) do
             if m ~= mm and getParent(m.node) == mm.node then 
+                -- The moving tool has a valid parent moving tool, 
+                -- so it can't be the base moving tool.
                 validBaseTool = false
             end
         end
         if validBaseTool then 
             self.baseMovingTool = m
+            self.baseMovingToolIndex = i
             break
         end
     end
     for i, m in ipairs(self.validMovingTools) do 
         if m ~= self.baseMovingTool then 
             self.baseMovingToolChild = m
+            self.baseMovingToolChildIndex = i
         end
     end
-
     self:debug("Number of moveable pipe elements found: %d", #self.validMovingTools)
-
 end
 
 function PipeController:updateMoveablePipe(dt)
@@ -461,21 +470,21 @@ function PipeController:updateMoveablePipe(dt)
             if self.baseMovingTool and self.baseMovingToolChild then 
                 self:movePipeUp( self.baseMovingTool, self.baseMovingToolChild.node, dt)
                 self:moveDependedPipePart(self.baseMovingToolChild, dt)
-            else
+            elseif self.baseMovingTool then
+                if self.isConsoleCommand then 
+                    self:debugSparse("Only a base moving tool was found!")
+                end
                 local _, y, _ = localToWorld(self.baseMovingTool.node, 0, 0, 0)
                 local _, ny, _ = localToWorld(self.implement.rootNode, 0, 0, 0)
                 if math.abs(y-ny) < 2 then 
                     self:movePipeUp( self.baseMovingTool, self.dischargeNode.node, dt)
                 else 
-               --     DebugUtil.drawDebugNode(self.baseMovingTool.node, "baseMovingTool")
                     self:moveDependedPipePart( self.baseMovingTool, dt)
                 end
             end
         end
     end
 end
-
-
 
 function PipeController:moveDependedPipePart(tool, dt)
 
@@ -488,6 +497,7 @@ function PipeController:moveDependedPipePart(tool, dt)
     local dischargeNode = self.dischargeNode.node
     local toolDischargeDist = calcDistanceFrom(toolNode, dischargeNode)
     local exactFillRootNode, autoAimNode = self:getClosestExactFillRootNode()
+
     local tx, ty, tz = localToWorld(dischargeNode, 0, 0, 0)
     local _, gy, _ = localToWorld(toolNode, 0, 0, 0)
     setTranslation(self.tempDependedNode, tx, gy, tz)
@@ -519,7 +529,9 @@ function PipeController:moveDependedPipePart(tool, dt)
             --- For some reason the exactFillRootNode might be at the bottom of the trailer ...
             --- So we make sure to check an additional auto aim node 
             local _, agyT, _ = localToWorld(autoAimNode, 0, 0, 0)
-            gyT = math.max(gyT, agyT) + 1
+            gyT = math.max(gyT, agyT) + self.moveablePipeHeightOffset
+        else 
+            gyT = gyT + self.moveablePipeHeightOffset
         end
         if gyT > gy then
             local d = gyT - gy
@@ -530,6 +542,12 @@ function PipeController:moveDependedPipePart(tool, dt)
                 targetRot  = targetRot - beta
             end
         end
+        local lDirX, _, lDirZ = localDirectionToWorld(self.implement.rootNode, self.pipeOnLeftSide and -1 or 1, 0, 0)
+        local lX1, _, lZ1 = localToLocal(toolNode, self.implement.rootNode, 0, 0, 0)
+        local x1, _, z1 = localToWorld(self.implement.rootNode, lX1, 0, lZ1)
+        DebugUtil.drawDebugLine(x1, gyT, z1, 
+            x1 + lDirX * 5, gyT, z1 + lDirZ * 5, 
+            1, 0, 0, 0, false)
     end
     ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, MathUtil.clamp(targetRot, tool.rotMin, tool.rotMax))
 end
@@ -544,7 +562,7 @@ function PipeController:movePipeUp(tool, childToolNode, dt)
 
     local toolNode = tool.node   
     local toolChildToolDist = calcDistanceFrom(toolNode, childToolNode)
-
+  
     local exactFillRootNode, autoAimNode = self:getClosestExactFillRootNode()
    
     local tx, ty, tz = localToWorld(childToolNode, 0, 0, 0)
@@ -578,10 +596,10 @@ function PipeController:movePipeUp(tool, childToolNode, dt)
             --- For some reason the exactFillRootNode might be at the bottom of the trailer ...
             --- So we make sure to check an additional auto aim node 
             local _, agyT, _ = localToWorld(autoAimNode, 0, 0, 0)
-            gyT = math.max(gyT, agyT) + 2
+            gyT = math.max(gyT, agyT)
         end
         local terrainHeight = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, gxT, 0, gzT) + 4
-        gyT = math.max(gyT, terrainHeight)
+        gyT = math.max(gyT + 1 + self.moveablePipeHeightOffset, terrainHeight)
         local offset = gyT - gy
         if gyT < ty then
             local d = math.abs(gyT - gy + offset)
@@ -650,18 +668,20 @@ function PipeController:printMoveablePipeDebug()
     self:debug("--Moveable Pipe Debug--")
     self:debug("Num of moveable tools: %d", #self.validMovingTools)
     self:debug("Base moving tool")
-    self:printMovingToolDebug(self.baseMovingTool)
+    self:printMovingToolDebug(self.baseMovingToolIndex, self.baseMovingTool)
     self:debug("Base moving tool child")
-    self:printMovingToolDebug(self.baseMovingToolChild)
+    self:printMovingToolDebug(self.baseMovingToolChildIndex, self.baseMovingToolChild)
     self:debug("--Moveable Pipe Debug finished--")
 end
 
-function PipeController:printMovingToolDebug(tool)
+function PipeController:printMovingToolDebug(index, tool)
     if tool == nil then 
         self:debug("Tool not found.")
         return
     end
-    self:debug("RotMin: %s, RotMax: %s, RotSpeed", tostring(tool.rotMin), tostring(tool.rotMax), tostring(tool.rotSpeed))
+    self:debug("Index: %d, RotMin: %s, RotMax: %s, RotSpeed", 
+        index, tostring(tool.rotMin), 
+        tostring(tool.rotMax), tostring(tool.rotSpeed))
 end
 
 
