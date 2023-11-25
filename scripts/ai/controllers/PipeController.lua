@@ -596,10 +596,10 @@ function PipeController:movePipeUp(tool, childToolNode, dt)
             --- For some reason the exactFillRootNode might be at the bottom of the trailer ...
             --- So we make sure to check an additional auto aim node 
             local _, agyT, _ = localToWorld(autoAimNode, 0, 0, 0)
-            gyT = math.max(gyT, agyT) + self.moveablePipeHeightOffset
+            gyT = math.max(gyT, agyT)
         end
         local terrainHeight = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, gxT, 0, gzT) + 4
-        gyT = math.max(gyT, terrainHeight)
+        gyT = math.max(gyT + 1 + self.moveablePipeHeightOffset, terrainHeight)
         local offset = gyT - gy
         if gyT < ty then
             local d = math.abs(gyT - gy + offset)
