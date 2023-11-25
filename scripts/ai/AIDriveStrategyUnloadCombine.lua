@@ -1858,9 +1858,7 @@ function AIDriveStrategyUnloadCombine:getSelfUnloadTargetParameters()
     return SelfUnloadHelper:getTargetParameters(
             self.fieldPolygon,
             self.vehicle,
-    -- TODO: this is just a shot in the dark there should be a better way to find out what we have in
-    -- the trailer
-            self.augerWagon:getFillUnitFirstSupportedFillType(1),
+            self.augerWagon,
             self.pipeController)
 end
 
