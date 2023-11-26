@@ -82,15 +82,14 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
     self.hasValidPosition = false
     self.foundVines = nil
     local fieldPolygon, isCustomField = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
-    self:setFieldPolygon(fieldPolygon)
     if fieldPolygon then
         self.hasValidPosition = true
         self.foundVines = g_vineScanner:findVineNodesInField(fieldPolygon, tx, tz, self.customField ~= nil)
         if self.foundVines then
             CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Found vine nodes, generating a vine field border.")
-            self.fieldPolygon = g_vineScanner:getCourseGeneratorVertices(0, tx, tz)
+            fieldPolygon = g_vineScanner:getCourseGeneratorVertices(0, tx, tz)
         end
-
+        self:setFieldPolygon(fieldPolygon)
         self.selectedFieldPlot:setWaypoints(fieldPolygon)
         self.selectedFieldPlot:setVisible(true)
         self.selectedFieldPlot:setBrightColor(true)
@@ -269,23 +268,6 @@ function CpAIJobFieldWork:setStartPosition(startPosition)
     if self.fieldWorkTask then
         self.fieldWorkTask:setStartPosition(startPosition)
     end
-end
-
-function CpAIJobFieldWork:readStream(streamId, connection)
-	CpAIJob.readStream(self, streamId, connection)
-	if streamReadBool(streamId) then 
-		self.fieldPolygon = CustomField.readStreamVertices(streamId, connection)
-	end
-end
-
-function CpAIJobFieldWork:writeStream(streamId, connection)
-	CpAIJob.writeStream(self, streamId, connection)
-	if self.fieldPolygon then 
-		streamWriteBool(streamId, true)
-		CustomField.writeStreamVertices(self.fieldPolygon, streamId, connection)
-	else 
-		streamWriteBool(streamId, false)
-	end
 end
 
 function CpAIJobFieldWork:getNextTaskIndex(isSkipTask)
