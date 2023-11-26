@@ -611,7 +611,6 @@ function PipeController:movePipeUp(tool, childToolNode, dt)
     end
 
     if exactFillRootNode then 
-        DebugUtil.drawDebugNode(exactFillRootNode, "exactFillRootNode")
         local gxT, gyT, gzT = localToWorld(exactFillRootNode, 0, 0, 0)
         if autoAimNode then 
             --- For some reason the exactFillRootNode might be at the bottom of the trailer ...
