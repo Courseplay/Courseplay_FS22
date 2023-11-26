@@ -1891,7 +1891,7 @@ function AIDriveStrategyUnloadCombine:startSelfUnload(ignoreFruit)
         local context = PathfinderContext(self.vehicle)
         -- use a low field penalty to encourage the pathfinder to bridge that gap between the field and the trailer
         -- require full accuracy from pathfinder as we must exactly line up with the trailer
-        context:maxFruitPercent(ignoreFruit and math.huge or nil):offFieldPenalty(0.1):mustBeAccurate(true)
+        context:maxFruitPercent(ignoreFruit and math.huge or 50):offFieldPenalty(0.1):mustBeAccurate(true)
         context:useFieldNum(fieldNum):allowReverse(self:getAllowReversePathfinding())
         local done, path
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(

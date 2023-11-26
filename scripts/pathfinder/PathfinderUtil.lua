@@ -976,7 +976,7 @@ function PathfinderUtil.checkForObstaclesAhead(vehicle, turnRadius, objectsToIgn
 
     PathfinderUtil.overlapBoxes = {}
     local context = PathfinderContext(vehicle):objectsToIgnore(objectsToIgnore)
-    context:maxFruitPercent(math.huge):offFieldPenalty(0)
+    context:ignoreFruit():offFieldPenalty(0)
     local constraints = PathfinderConstraints(context)
     local start = PathfinderUtil.getVehiclePositionAsState3D(vehicle)
     PathfinderUtil.initializeTrailerHeading(start, constraints.vehicleData)

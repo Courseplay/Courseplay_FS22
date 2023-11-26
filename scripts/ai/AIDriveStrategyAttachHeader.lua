@@ -244,7 +244,7 @@ function AIDriveStrategyAttachHeader:startPathfindingToCutter()
         local context = PathfinderContext(self.vehicle)
         context:mustBeAccurate(false):allowReverse(true):offFieldPenalty(0)
         context:vehiclesToIgnore({ self.vehicle }):areaToAvoid(self.trailerAreaToAvoid)
-        context:maxFruitPercent(math.huge)
+        context:ignoreFruit()
         local done, path, goalNodeInvalid
         self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(
                 self.cutterNode, 0, -math.max(1.5 * length, 1.5 * self.turningRadius), context)
