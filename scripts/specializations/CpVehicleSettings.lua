@@ -94,9 +94,9 @@ end
 
 --- Resets the tool offset to a saved value after all implements are loaded and attached.
 function CpVehicleSettings:onUpdate()
-    if not self.finishedFirstUpdate then
+    local spec = self.spec_cpVehicleSettings
+    if not spec.finishedFirstUpdate then
         --- TODO: Maybe consider a more generic approach in the future.
-        local spec = self.spec_cpVehicleSettings
         spec.toolOffsetX:resetToLoadedValue()
         spec.bunkerSiloWorkWidth:resetToLoadedValue()
         spec.baleCollectorOffset:resetToLoadedValue()
@@ -105,6 +105,7 @@ function CpVehicleSettings:onUpdate()
         spec.bunkerSiloWorkWidth:resetToLoadedValue()
         spec.loadingShovelHeightOffset:resetToLoadedValue()
     end
+    spec.finishedFirstUpdate = true
 end
 
 --- Changes the sprayer work width on fill type change, as it might depend on the loaded fill type.

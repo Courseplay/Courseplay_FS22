@@ -108,10 +108,11 @@ end
 
 --- Resets the work width to a saved value after all implements are loaded and attached.
 function CpCourseGeneratorSettings:onUpdate(savegame)
-    if not self.finishedFirstUpdate then
-        local spec = self.spec_cpCourseGeneratorSettings
+    local spec = self.spec_cpCourseGeneratorSettings
+    if not spec.finishedFirstUpdate then
         spec.workWidth:resetToLoadedValue()
     end
+    spec.finishedFirstUpdate = true
 end
 
 --- Makes sure the automatic work width gets recalculated after the variable work width was changed by the user.
