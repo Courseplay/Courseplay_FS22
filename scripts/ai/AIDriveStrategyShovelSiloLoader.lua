@@ -262,6 +262,7 @@ end
 --- implements are started/lowered etc.
 function AIDriveStrategyShovelSiloLoader:getDriveData(dt, vX, vY, vZ)
     self:updateLowFrequencyImplementControllers()
+    self:updateLowFrequencyPathfinder()
     local moveForwards = not self.ppc:isReversing()
     local gx, gz, _
     if not moveForwards then
