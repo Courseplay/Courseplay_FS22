@@ -36,6 +36,8 @@ AIDriveStrategySiloLoader.myStates = {
 AIDriveStrategySiloLoader.distanceOverFieldEdgeAllowed = 25
 AIDriveStrategySiloLoader.siloAreaOffsetFieldUnload = 10
 
+AIDriveStrategySiloLoader.maxDistanceWithoutPathfinding = 10
+
 function AIDriveStrategySiloLoader.new(customMt)
     if customMt == nil then
         customMt = AIDriveStrategySiloLoader_mt
@@ -89,27 +91,38 @@ function AIDriveStrategySiloLoader:startWithoutCourse(jobParameters)
         --self:updateLoadPositionByHeapSilo()
         x, z = self.silo:getFrontCenter()
         dx, dz = self.silo:getBackCenter()
-  --      x, z = localToWorld(self.heapNode, 0, 0, 0)
-   --     dx, dz = localToWorld(self.heapNode, 0, 0, self.silo:getLength())
     end
-
-    self.siloCourse = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 
-        0, 0, 3, 3, false)
 
     --- fill level, when the driver is started
     self.fillLevelLeftOverSinceStart = self.silo:getTotalFillLevel()
 
-    local distance = self.siloCourse:getDistanceBetweenVehicleAndWaypoint(self.vehicle, 1)
 
-    if distance > 1.5 * self.turningRadius then
-        --- Alignment needed
-        self:startPathfindingToStart(self.siloCourse)
-    else
-        self:startCourse(self.siloCourse, 1)
+    local siloCourse = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 
+        0, 0, 3, 3, false)
+
+    local vx, _, vz = getWorldTranslation(AIUtil.getDirectionNode(self.vehicle))
+    local dx, _, dz = siloCourse:worldToWaypointLocal(1, vx, 0, vz)
+    if dz < 5 and dz > -self.maxDistanceWithoutPathfinding and 
+        math.abs(dx) <= math.abs(dz) and 
+        math.abs(dx) < self.maxDistanceWithoutPathfinding * math.sqrt(2)/2 then 
+        --[[
+            |...|
+            |...|   <- Silo
+            --x--   <- Target waypoint
+            ooooo
+           ooooooo  <- Circle, where the pathfinding is skipped.
+            ooooo
+              o
+        ]]--  
+        -- TODO: Beautify the math above :) 
+        self:debug("Start driving into the silo directly.")
+        self:startCourse(siloCourse, 1)
         self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
         self:lowerImplements()
+    else
+        self:debug("Start driving to silo with pathfinder.")
+        self:startPathfindingToStart(siloCourse)
     end
-
 end
 
  
@@ -203,7 +216,7 @@ end
 --- implements are started/lowered etc.
 function AIDriveStrategySiloLoader:getDriveData(dt, vX, vY, vZ)
     self:updateLowFrequencyImplementControllers()
-
+    self:updateLowFrequencyPathfinder()
     local moveForwards = not self.ppc:isReversing()
     local gx, gz
 
@@ -252,44 +265,50 @@ function AIDriveStrategySiloLoader:getDriveData(dt, vX, vY, vZ)
     return gx, gz, moveForwards, self.maxSpeed, 100
 end
 
---- Find an alignment path to the heap course.
----@param course table heap course
----@return nil
-function AIDriveStrategySiloLoader:startPathfindingToStart(course)
-    if not self.pathfinder or not self.pathfinder:isActive() then
-        self:rememberCourse(course, 1)
-
-        self.pathfindingStartedAt = g_currentMission.time
-        local done, path
-        local fm = self:getFrontAndBackMarkers()
-        local context = PathfinderContext(self.vehicle):allowReverse(false)
-        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
-            course, 1, 0, -1.5 *(fm + 4), context)
-        if done then
-            return self:onPathfindingDoneToStart(path)
-        else
-            self:setPathfindingDoneCallback(self, self.onPathfindingDoneToStart)
-        end
-    else
-        self:debug('Pathfinder already active')
+--- Pathfinding has finished
+---@param controller PathfinderController
+---@param success boolean
+---@param course Course|nil
+---@param goalNodeInvalid boolean|nil
+function AIDriveStrategySiloLoader:onPathfindingFinished(controller, 
+    success, course, goalNodeInvalid)
+    if not success then
+        self:debug('Pathfinding failed, giving up!')
+        self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
+        return
     end
-    return true
+    if self.state == self.states.DRIVING_ALIGNMENT_COURSE then 
+        self:startCourse(course, 1)
+    end
 end
 
-function AIDriveStrategySiloLoader:onPathfindingDoneToStart(path)
-    if path and #path > 2 then
-        self:debug("Found alignment path to the course for the heap.")
-        local alignmentCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-        self:startCourse(alignmentCourse, 1)
-        self.state = self.states.DRIVING_ALIGNMENT_COURSE
-    else 
+--- Pathfinding failed, but a retry attempt is leftover.
+---@param controller PathfinderController
+---@param lastContext PathfinderContext
+---@param wasLastRetry boolean
+---@param currentRetryAttempt number
+function AIDriveStrategySiloLoader:onPathfindingRetry(controller, 
+    lastContext, wasLastRetry, currentRetryAttempt)
+    --- TODO: Think of possible points of failures, that could be adjusted here.
+    ---       Maybe a small reverse course might help to avoid a deadlock
+    ---       after one pathfinder failure based on proximity sensor data and so on ..
+    if self.state == self.states.DRIVING_ALIGNMENT_COURSE then 
         local course = self:getRememberedCourseAndIx()
-        self:debug("No alignment path found!")
-        self:startCourse(course, 1)
-        self.state = self.states.WAITING_FOR_PREPARING
-        self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
-        self:lowerImplements()
+        local fm = self:getFrontAndBackMarkers()
+        controller:findPathToWaypoint(lastContext, course, 
+            1, 0, -1.5*(fm + 4), 1)
     end
+end
+
+--- Find an alignment path to the silo/heap course.
+---@param course Course silo/heap course
+function AIDriveStrategySiloLoader:startPathfindingToStart(course)
+    self.state = self.states.DRIVING_ALIGNMENT_COURSE
+    self:rememberCourse(course, 1)
+    local fm = self:getFrontAndBackMarkers()
+    local context = PathfinderContext(self.vehicle):allowReverse(true):ignoreFruit()
+    self.pathfinderController:findPathToWaypoint(context, course, 
+        1, 0, -1.5*(fm + 4), 1)
 end
 
 function AIDriveStrategySiloLoader:prepareForStart()
