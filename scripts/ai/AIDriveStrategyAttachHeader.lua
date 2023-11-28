@@ -46,7 +46,6 @@ AIDriveStrategyAttachHeader.MODES = {
 }
 AIDriveStrategyAttachHeader.DRIVING_AWAY_FROM_HEADER_FORWARD_DISTANCE = 6
 
-
 function AIDriveStrategyAttachHeader.new(customMt)
     if customMt == nil then
         customMt = AIDriveStrategyAttachHeader_mt
@@ -65,7 +64,7 @@ function AIDriveStrategyAttachHeader:isGeneratedCourseNeeded()
 end
 
 function AIDriveStrategyAttachHeader:delete()
-    if self.cutterNode then 
+    if self.cutterNode then
         CpUtil.destroyNode(self.cutterNode)
     end
     AIDriveStrategyAttachHeader:superClass().delete(self)
@@ -73,11 +72,11 @@ end
 
 function AIDriveStrategyAttachHeader:initializeImplementControllers(vehicle)
 
-    if AIUtil.hasCutterAsTrailerAttached(vehicle) then 
+    if AIUtil.hasCutterAsTrailerAttached(vehicle) then
         self.mode = self.MODES.ATTACH_HEADER_WITH_WHEELS_ATTACHED
         self:debug("A cutter/header with foldable wheels is attached at the back.")
         self.trailer = AIUtil.getImplementWithSpecialization(self.vehicle, Cutter)
-    else 
+    else
         self.mode = self.MODES.ATTACH_HEADER_FROM_ATTACHED_TRAILER
         self:debug("A cutter/header on a separate trailer is attached on the back.")
         self.trailer = AIUtil.getImplementWithSpecialization(self.vehicle, DynamicMountAttacher)
@@ -118,12 +117,12 @@ function AIDriveStrategyAttachHeader:update(dt)
         end
     end
     if CpDebug:isChannelActive(CpDebug.DBG_FIELDWORK, self.vehicle) then
-        if self.course and  self.course:isTemporary() then
+        if self.course and self.course:isTemporary() then
             self.course:draw()
         elseif self.ppc:getCourse() and self.ppc:getCourse():isTemporary() then
             self.ppc:getCourse():draw()
         end
-        if self.cutterNode then 
+        if self.cutterNode then
             CpUtil.drawDebugNode(self.cutterNode, false, 3)
         end
     end
@@ -131,7 +130,7 @@ end
 
 function AIDriveStrategyAttachHeader:getDriveData(dt, vX, vY, vZ)
     self:updateLowFrequencyImplementControllers()
-    
+
     local moveForwards = not self.ppc:isReversing()
     local gx, gz
     if not moveForwards then
@@ -146,15 +145,15 @@ function AIDriveStrategyAttachHeader:getDriveData(dt, vX, vY, vZ)
         self:setMaxSpeed(0)
     elseif self.state == self.states.INITIAL then
         self:setMaxSpeed(0)
-        if not self.settings.automaticCutterAttach:getValue() then 
+        if not self.settings.automaticCutterAttach:getValue() then
             self.vehicle:stopCurrentAIJob(AIMessageErrorAutomaticCutterAttachNotActive.new())
-        else 
+        else
             self.attachableController:detach()
             self.state = self.states.WAITING_FOR_DETACH_TO_FINISH
         end
     elseif self.state == self.states.WAITING_FOR_DETACH_TO_FINISH then
         self:setMaxSpeed(0)
-        if not self.attachableController:isDetachActive() then 
+        if not self.attachableController:isDetachActive() then
             Markers.setMarkerNodes(self.vehicle)
             self:setFrontAndBackMarkers()
             --- Detach has finished, so need make sure the reverse driver gets updated.
@@ -169,11 +168,11 @@ function AIDriveStrategyAttachHeader:getDriveData(dt, vX, vY, vZ)
         self:setMaxSpeed(self.settings.fieldSpeed:getValue())
     elseif self.state == self.states.DRIVING_TO_ATTACH_CUTTER then
         --- Slowdown near the header, to allow smooth attach timing.
-        local _,_,z = localToLocal(self.attacherJointController:getCutterJointPositionNode(), 
-            self.cutterNode, 0, 0, 0)
-        local speed = MathUtil.clamp( -2*z, 1, self.settings.reverseSpeed:getValue() )
+        local _, _, z = localToLocal(self.attacherJointController:getCutterJointPositionNode(),
+                self.cutterNode, 0, 0, 0)
+        local speed = MathUtil.clamp(-2 * z, 1, self.settings.reverseSpeed:getValue())
         self:setMaxSpeed(speed)
-        if self.attacherJointController:canAttachCutter() then      
+        if self.attacherJointController:canAttachCutter() then
             Timer.createOneshot(120, function()
                 --- Wait a small time, until the harvester stands still.
                 self.state = self.states.WAITING_FOR_ATTACH_TO_START
@@ -181,7 +180,7 @@ function AIDriveStrategyAttachHeader:getDriveData(dt, vX, vY, vZ)
         end
     elseif self.state == self.states.WAITING_FOR_ATTACH_TO_START then
         self:setMaxSpeed(0)
-        if self.attacherJointController:attach() or self.attacherJointController:isAttachActive() then 
+        if self.attacherJointController:attach() or self.attacherJointController:isAttachActive() then
             self.state = self.states.WAITING_FOR_ATTACH_TO_FINISH
         else
             self.vehicle:stopCurrentAIJob(AIMessageErrorCutterNotSupported.new())
@@ -205,12 +204,12 @@ end
 ---@param moveForwards any
 ---@return boolean
 function AIDriveStrategyAttachHeader:ignoreProximityObject(object, vehicle, moveForwards)
-    if self.state == self.states.DRIVING_TO_ATTACH_CUTTER or self.state == self.states.DRIVING_TO_HEADER then 
-        if vehicle == self.trailer then 
+    if self.state == self.states.DRIVING_TO_ATTACH_CUTTER or self.state == self.states.DRIVING_TO_HEADER then
+        if vehicle == self.trailer then
             return true
         end
         if self.dynamicMountAttacherController then
-            if vehicle == self.dynamicMountAttacherController:getMountedImplement() then 
+            if vehicle == self.dynamicMountAttacherController:getMountedImplement() then
                 return true
             end
         end
@@ -224,10 +223,10 @@ function AIDriveStrategyAttachHeader:startPathfindingToCutter()
     if not self.pathfinder or not self.pathfinder:isActive() then
         self.state = self.states.WAITING_FOR_PATHFINDER
         local goalNode, rootNode
-        if self.mode == self.MODES.ATTACH_HEADER_FROM_ATTACHED_TRAILER then 
+        if self.mode == self.MODES.ATTACH_HEADER_FROM_ATTACHED_TRAILER then
             goalNode = self.dynamicMountAttacherController:getCutterJointPositionNode()
             rootNode = self.dynamicMountAttacherController:getMountedImplement().rootNode
-        else 
+        else
             goalNode = self.attachableController:getCutterJointPositionNode()
             rootNode = self.trailer.rootNode
         end
@@ -236,18 +235,19 @@ function AIDriveStrategyAttachHeader:startPathfindingToCutter()
         local rotY = MathUtil.getYRotationFromDirection(dirX, dirZ)
         if not self.cutterNode then
             self.cutterNode = CpUtil.createNode("cutterNode", x, z, rotY)
-        else 
+        else
             setTranslation(self.cutterNode, x, 0, z)
             setRotation(self.cutterNode, 0, rotY, 0)
         end
         local length = AIUtil.getLength(self.vehicle)
-        
+
+        local context = PathfinderContext(self.vehicle)
+        context:mustBeAccurate(false):allowReverse(true):offFieldPenalty(0)
+        context:vehiclesToIgnore({ self.vehicle }):areaToAvoid(self.trailerAreaToAvoid)
+        context:ignoreFruit()
         local done, path, goalNodeInvalid
         self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(
-            self.vehicle, self.cutterNode, 0, -math.max(1.5*length, 1.5*self.turningRadius),
-            true, nil, {self.vehicle},
-            math.huge, 0,
-            self.trailerAreaToAvoid )
+                self.cutterNode, 0, -math.max(1.5 * length, 1.5 * self.turningRadius), context)
         if done then
             return self:onPathfindingDoneToCutter(path, goalNodeInvalid)
         else
@@ -273,13 +273,13 @@ function AIDriveStrategyAttachHeader:onPathfindingDoneToCutter(path, goalNodeInv
 end
 
 function AIDriveStrategyAttachHeader:attachHasFinished()
-    if self.mode == self.MODES.ATTACH_HEADER_FROM_ATTACHED_TRAILER then 
+    if self.mode == self.MODES.ATTACH_HEADER_FROM_ATTACHED_TRAILER then
         Markers.setMarkerNodes(self.vehicle)
         --distance could be reduced, but leads into some combine driving back- and forwards for small distances to get arround the header wagon
         local course = Course.createStraightReverseCourse(self.vehicle, self.workWidth + self.turningRadius * 1.1, 0)
         self:startCourse(course, 1)
         self.state = self.states.REVERSING_FROM_CUTTER
-    else 
+    else
         --- The header needs to be folded, as currently the wheels for transport are active.
         self.trailer:setFoldDirection(self.trailer.spec_foldable.turnOnFoldDirection or 1)
         self.vehicle:getJob():onFinishAttachCutter()
@@ -294,14 +294,14 @@ function AIDriveStrategyAttachHeader:onWaypointPassed(ix, course)
         if self.state == self.states.DRIVING_AWAY_FROM_HEADER then
             self:startPathfindingToCutter()
         elseif self.state == self.states.DRIVING_TO_HEADER then
-            local course = Course.createFromNodeToNode(self.vehicle, self.vehicle:getAIDirectionNode(), 
-                self.cutterNode, 0, 0, 0, 3, false)
+            local course = Course.createFromNodeToNode(self.vehicle, self.vehicle:getAIDirectionNode(),
+                    self.cutterNode, 0, 0, 0, 3, false)
             self:startCourse(course, 1)
             self.state = self.states.DRIVING_TO_ATTACH_CUTTER
         elseif self.state == self.states.DRIVING_TO_ATTACH_CUTTER then
-            if AIUtil.hasImplementWithSpecialization(self.vehicle, Cutter) then 
+            if AIUtil.hasImplementWithSpecialization(self.vehicle, Cutter) then
                 self:attachHasFinished()
-            else 
+            else
                 self:info("Attaching didn't work!")
                 self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
             end

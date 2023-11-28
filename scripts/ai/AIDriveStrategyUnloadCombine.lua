@@ -318,7 +318,7 @@ function AIDriveStrategyUnloadCombine:resetPathfinder()
     self.maxFruitPercent = 10
     -- prefer driving on field, don't do this too aggressively until we take into account the field owner
     -- otherwise we'll be driving through others' fields
-    self.offFieldPenalty = PathfinderUtil.defaultOffFieldPenalty
+    self.offFieldPenalty = PathfinderContext.defaultOffFieldPenalty
     self.pathfinderFailureCount = 0
 end
 
@@ -1173,12 +1173,12 @@ function AIDriveStrategyUnloadCombine:getOffFieldPenalty(combineToUnload)
         if combineToUnload:getCpDriveStrategy():isOnHeadland(1) then
             -- when the combine is on the first headland, chances are that we have to drive off-field to it,
             -- so make the life easier for the pathfinder
-            offFieldPenalty = PathfinderUtil.defaultOffFieldPenalty / 5
+            offFieldPenalty = PathfinderContext.defaultOffFieldPenalty / 5
             self:debug('Combine is on first headland, reducing off-field penalty for pathfinder to %.1f', offFieldPenalty)
         elseif combineToUnload:getCpDriveStrategy():isOnHeadland(2) then
             -- reduce less when on the second headland, there's more chance we'll be able to get to the combine
             -- on the headland
-            offFieldPenalty = PathfinderUtil.defaultOffFieldPenalty / 3
+            offFieldPenalty = PathfinderContext.defaultOffFieldPenalty / 3
             self:debug('Combine is on second headland, reducing off-field penalty for pathfinder to %.1f', offFieldPenalty)
         end
     end
@@ -1247,20 +1247,21 @@ function AIDriveStrategyUnloadCombine:startPathfinding(
         local done, path, goalNodeInvalid
         self.pathfindingStartedAt = g_time
 
-        local areaToAvoid = areaToAvoid ~= nil and areaToAvoid or self.combineToUnload and self.combineToUnload:getCpDriveStrategy():getAreaToAvoid()
+        areaToAvoid = areaToAvoid ~= nil and areaToAvoid or self.combineToUnload and self.combineToUnload:getCpDriveStrategy():getAreaToAvoid()
+
+        local context = PathfinderContext(self.vehicle):vehiclesToIgnore(vehiclesToIgnore)
+        context:maxFruitPercent(maxFruitPercent):offFieldPenalty(self.offFieldPenalty)
+        context:useFieldNum(fieldNum):areaToAvoid(areaToAvoid):allowReverse(self:getAllowReversePathfinding())
+
         if type(target) ~= 'number' then
             -- TODO: clarify this xOffset thing, it looks like the course interprets the xOffset differently (left < 0) than
             -- the Giants coordinate system and the waypoint uses the course's conventions. This is confusing, should use
             -- the same reference everywhere
             local goal = PathfinderUtil.getWaypointAsState3D(target, -xOffset or 0, zOffset or 0)
-            self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToGoal(
-                    self.vehicle, goal, allowReverse or false, fieldNum, vehiclesToIgnore, {},
-                    maxFruitPercent, self.offFieldPenalty, areaToAvoid)
+            self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToGoal(goal, context)
         else
             self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(
-                    self.vehicle, target, xOffset or 0, zOffset or 0, false,
-                    fieldNum, vehiclesToIgnore, maxFruitPercent,
-                    self.offFieldPenalty, areaToAvoid)
+                    target, xOffset or 0, zOffset or 0, context)
         end
         if done then
             return pathfindingCallbackFunc(self, path, goalNodeInvalid)
@@ -1887,13 +1888,14 @@ function AIDriveStrategyUnloadCombine:startSelfUnload(ignoreFruit)
 
         self:setNewState(self.states.WAITING_FOR_PATHFINDER)
         local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
-        local done, path
-        -- require full accuracy from pathfinder as we must exactly line up with the trailer
-        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(
-                self.vehicle, self.selfUnloadTargetNode, offsetX, -alignLength,
-                self:getAllowReversePathfinding(),
+        local context = PathfinderContext(self.vehicle)
         -- use a low field penalty to encourage the pathfinder to bridge that gap between the field and the trailer
-                fieldNum, {}, ignoreFruit and math.huge or nil, 0.1, nil, true)
+        -- require full accuracy from pathfinder as we must exactly line up with the trailer
+        context:maxFruitPercent(ignoreFruit and math.huge or 50):offFieldPenalty(0.1):mustBeAccurate(true)
+        context:useFieldNum(fieldNum):allowReverse(self:getAllowReversePathfinding())
+        local done, path
+        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(
+                self.selfUnloadTargetNode, offsetX, -alignLength, context)
         if done then
             return self:onPathfindingDoneBeforeSelfUnload(path)
         else
