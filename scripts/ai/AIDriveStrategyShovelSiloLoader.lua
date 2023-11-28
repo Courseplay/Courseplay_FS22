@@ -631,7 +631,7 @@ function AIDriveStrategyShovelSiloLoader:startDrivingToSilo(target)
     local siloCourse = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz,
             0, -5, 3, 3, false)
     local vx, _, vz = getWorldTranslation(AIUtil.getDirectionNode(self.vehicle))
-    local dx, _, dz = siloCourse:waypointLocalToWorld(1, vx, 0, vz)
+    local dx, _, dz = siloCourse:worldToWaypointLocal(1, vx, 0, vz)
     if dz < 0 and dz > -self.maxDistanceWithoutPathfinding and 
         math.abs(dx) <= math.abs(dz) and 
         math.abs(dx) < self.maxDistanceWithoutPathfinding * math.sqrt(2)/2 then 
