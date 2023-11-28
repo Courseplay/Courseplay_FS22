@@ -41,10 +41,12 @@ function CpAIJobCombineUnloader:setupTasks(isServer)
 	self:addTask(self.combineUnloaderTask)
 
 	--- Giants unload
+	self.waitForFillingTask = self.combineUnloaderTask
 	self.driveToUnloadingTask = AITaskDriveTo.new(isServer, self)
 	self.dischargeTask = AITaskDischarge.new(isServer, self)
 	self:addTask(self.driveToUnloadingTask)
 	self:addTask(self.dischargeTask)
+	
 end
 
 function CpAIJobCombineUnloader:setupJobParameters()
