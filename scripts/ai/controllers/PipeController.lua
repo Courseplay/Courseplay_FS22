@@ -434,33 +434,49 @@ function PipeController:setupMoveablePipe()
                 end
             end
         end
+        self.hasPipeMovingTools = #self.validMovingTools > 0
+        self.baseMovingToolIndex = g_vehicleConfigurations:get(self.implement, "basePipeMovingToolIndex")
+        if self.baseMovingToolIndex then 
+            self.baseMovingTool = self.cylinderedSpec.movingTools[self.baseMovingToolIndex]
+            self.hasPipeMovingTools = true
+        end
+        self.baseMovingToolChildIndex = g_vehicleConfigurations:get(self.implement, "childPipeMovingToolIndex")
+        if self.baseMovingToolChildIndex then 
+            self.baseMovingToolChild = self.cylinderedSpec.movingTools[self.baseMovingToolChildIndex]
+            self.hasPipeMovingTools = true
+        end
     end
-    self.hasPipeMovingTools = #self.validMovingTools > 0
+   
     if self.dischargeSpec then
         self.dischargeNodeIndex = self.implement:getPipeDischargeNodeIndex()
         self.dischargeNode = self.dischargeSpec.dischargeNodes[self.dischargeNodeIndex]
     end
-    for i, m in ipairs(self.validMovingTools) do
-        local validBaseTool = true
-        for i, mm in ipairs(self.validMovingTools) do
-            if m ~= mm and getParent(m.node) == mm.node then 
-                -- The moving tool has a valid parent moving tool, 
-                -- so it can't be the base moving tool.
-                validBaseTool = false
+    if not self.baseMovingTool then
+        for i, m in ipairs(self.validMovingTools) do
+            local validBaseTool = true
+            for i, mm in ipairs(self.validMovingTools) do
+                if m ~= mm and getParent(m.node) == mm.node then 
+                    -- The moving tool has a valid parent moving tool, 
+                    -- so it can't be the base moving tool.
+                    validBaseTool = false
+                end
+            end
+            if validBaseTool then 
+                self.baseMovingTool = m
+                self.baseMovingToolIndex = i
+                break
             end
         end
-        if validBaseTool then 
-            self.baseMovingTool = m
-            self.baseMovingToolIndex = i
-            break
+    end
+    if not self.baseMovingToolChild then
+        for i, m in ipairs(self.validMovingTools) do 
+            if m ~= self.baseMovingTool then 
+                self.baseMovingToolChild = m
+                self.baseMovingToolChildIndex = i
+            end
         end
     end
-    for i, m in ipairs(self.validMovingTools) do 
-        if m ~= self.baseMovingTool then 
-            self.baseMovingToolChild = m
-            self.baseMovingToolChildIndex = i
-        end
-    end
+
     self:debug("Number of moveable pipe elements found: %d", #self.validMovingTools)
 end
 
@@ -512,13 +528,15 @@ function PipeController:moveDependedPipePart(tool, dt)
     local targetRot = 0
     if ty < gy then 
         --- Discharge node is below the tool node
-        targetRot = oldRot + alpha
-        if not self.pipeOnLeftSide then
+        if self.pipeOnLeftSide then
+            targetRot = oldRot + alpha
+        else
             targetRot = oldRot - alpha
         end
     else 
-        targetRot = oldRot - alpha
-        if not self.pipeOnLeftSide then
+        if self.pipeOnLeftSide then
+            targetRot = oldRot - alpha
+        else
             targetRot = oldRot + alpha
         end
     end
@@ -554,12 +572,13 @@ end
 
 function PipeController:movePipeUp(tool, childToolNode, dt)
 
-    if self:isDischarging() or self.driveStrategy and self.driveStrategy.isMoveablePipeDisabled and self.driveStrategy:isMoveablePipeDisabled() then 
+    if self.implement:getDischargeState() == Dischargeable.DISCHARGE_STATE_OBJECT or 
+        self.driveStrategy and self.driveStrategy.isMoveablePipeDisabled and self.driveStrategy:isMoveablePipeDisabled() then 
         --- Stops this moving tool, while discharging.
         ImplementUtil.stopMovingTool(self.implement, tool)
         return
     end
-
+    
     local toolNode = tool.node   
     local toolChildToolDist = calcDistanceFrom(toolNode, childToolNode)
   
@@ -578,19 +597,20 @@ function PipeController:movePipeUp(tool, childToolNode, dt)
     local targetRot = 0
     if ty > gy then 
         --- Discharge node is below the tool node
-        targetRot = oldRot + alpha
-        if not self.pipeOnLeftSide then
+        if self.pipeOnLeftSide then
+            targetRot = oldRot + alpha
+        else 
             targetRot = oldRot - alpha
         end
     else 
-        targetRot = oldRot - alpha
-        if not self.pipeOnLeftSide then
+        if self.pipeOnLeftSide then
+            targetRot = oldRot - alpha
+        else
             targetRot = oldRot + alpha
         end
     end
 
     if exactFillRootNode then 
-        DebugUtil.drawDebugNode(exactFillRootNode, "exactFillRootNode")
         local gxT, gyT, gzT = localToWorld(exactFillRootNode, 0, 0, 0)
         if autoAimNode then 
             --- For some reason the exactFillRootNode might be at the bottom of the trailer ...
@@ -604,8 +624,9 @@ function PipeController:movePipeUp(tool, childToolNode, dt)
         if gyT < ty then
             local d = math.abs(gyT - gy + offset)
             local beta = math.asin(d/toolChildToolDist)
-            targetRot = oldRot - beta
-            if not self.pipeOnLeftSide then
+            if self.pipeOnLeftSide then
+                targetRot = oldRot - beta
+            else
                 targetRot = oldRot + beta
             end
         end
