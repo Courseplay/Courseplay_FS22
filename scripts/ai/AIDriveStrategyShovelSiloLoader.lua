@@ -297,6 +297,8 @@ function AIDriveStrategyShovelSiloLoader:getDriveData(dt, vX, vY, vZ)
         if AIUtil.isStopped(self.vehicle) and not self.proximityController:isStopped() then
             --- Updates the is stuck timer
             self.isStuckTimer:startIfNotRunning()
+        else 
+            self.isStuckTimer:stop()
         end
         local _, _, closestObject = self.siloEndProximitySensor:getClosestObjectDistanceAndRootVehicle()
         local isEndReached, maxSpeed = self.siloController:isEndReached(self.shovelController:getShovelNode(), 2)
@@ -668,6 +670,7 @@ function AIDriveStrategyShovelSiloLoader:startDrivingOutOfSilo()
     end
     self:startCourse(reverseCourse, ix)
     self:setNewState(self.states.DRIVING_OUT_OF_SILO)
+    self.isStuckTimer:stop()
 end
 
 --- Drives from the position node in front of the trailer to the trailer, so the unloading can begin after that.
