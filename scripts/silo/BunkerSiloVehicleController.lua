@@ -18,59 +18,58 @@ function CpBunkerSiloVehicleController:init(silo, vehicle, driveStrategy, direct
 	local _, _, dsz = worldToLocal(directionNode, sx, 0, sz)
 	local _, _, dhz = worldToLocal(directionNode, hx, 0, hz)
 
-	-- if self.silo.siloMode == CpBunkerSilo.SIDE_MODES.ONE_SIDED then
-		
-		
-	-- elseif self.silo.siloMode == 
-
-	if dsz > 0 and dhz > 0 then 
-		self:debug("Start distance: dsz: %.2f, dhz: %.2f", dsz, dhz)
-		--- In front of the silo
-		--[[
-				hx
-			|	|
-			wx	sx
-			  
+	if self.silo.siloMode == CpBunkerSilo.SIDE_MODES.ONE_SIDED_INVERTED then
+		self.isInverted = true
+	elseif self.silo.silo ~= CpBunkerSilo.SIDE_MODES.ONE_SIDED then
+		if dsz > 0 and dhz > 0 then 
+			self:debug("Start distance: dsz: %.2f, dhz: %.2f", dsz, dhz)
+			--- In front of the silo
+			--[[
+					hx
+				|	|
+				wx	sx
+				  
+				  ^
+				  |
+			]]
+			if dsz > dhz then 
+				self:debug("Silo needs to be inverted.")
+				self.isInverted = true
+			end
+		elseif dsz > 0 and dhz < 0 then 
+			self:debug("Start distance: dsz: %.2f, dhz: %.2f", dsz, dhz)
+			--- Is in the silo but in the wrong direction.
+			--[[
+					hx
+				| |	|
+				| v	|
+				wx	sx  
+			]]
+			self.isInverted = true
+		elseif dsz < 0 and dhz > 0 then 
+			self:debug("Start distance: dsz: %.2f, dhz: %.2f", dsz, dhz)
+			--- Is in the silo and in the correct direction.
+			--[[
+					hx
+				| ^	|
+				| |	|
+				wx	sx  
+			]]
+		elseif dsz < 0 and dhz < 0 then 
+			self:debug("Start distance: dsz: %.2f, dhz: %.2f", dsz, dhz)
+			--- Exited the silo
+			--[[
 			  ^
 			  |
-		]]
-		if dsz > dhz then 
-			self:debug("Silo needs to be inverted.")
-			self.isInverted = true
-		end
-	elseif dsz > 0 and dhz < 0 then 
-		self:debug("Start distance: dsz: %.2f, dhz: %.2f", dsz, dhz)
-		--- Is in the silo but in the wrong direction.
-		--[[
 				hx
-			| |	|
-			| v	|
+			| 	|
+			| 	|
 			wx	sx  
-		]]
-		self.isInverted = true
-	elseif dsz < 0 and dhz > 0 then 
-		self:debug("Start distance: dsz: %.2f, dhz: %.2f", dsz, dhz)
-		--- Is in the silo and in the correct direction.
-		--[[
-				hx
-			| ^	|
-			| |	|
-			wx	sx  
-		]]
-	elseif dsz < 0 and dhz < 0 then 
-		self:debug("Start distance: dsz: %.2f, dhz: %.2f", dsz, dhz)
-		--- Exited the silo
-		--[[
-		  ^
-		  |
-			hx
-		| 	|
-		| 	|
-		wx	sx  
-		]]
-		if dsz < dhz then 
-			self:debug("Silo needs to be inverted.")
-			self.isInverted = true
+			]]
+			if dsz < dhz then 
+				self:debug("Silo needs to be inverted.")
+				self.isInverted = true
+			end
 		end
 	end
 end
