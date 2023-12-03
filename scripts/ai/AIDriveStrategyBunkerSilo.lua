@@ -124,7 +124,7 @@ function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
         self:startDrivingIntoSilo()
     else 
         local course, firstWpIx = self:getDriveIntoSiloCourse()
-        self:startCourseWithPathfinding( course, firstWpIx, self:isDriveDirectionReverse())
+        self:startPathfindingToSiloCourse( course, firstWpIx, self:isDriveDirectionReverse())
     end
 end
 
@@ -235,7 +235,7 @@ function AIDriveStrategyBunkerSilo:getDriveData(dt, vX, vY, vZ)
 
     local moveForwards = not self.ppc:isReversing()
     self:updateLowFrequencyImplementControllers()
-    self:drive()
+    self:drive(dt)
     AIDriveStrategyFieldWorkCourse.setAITarget(self)
 
 	self:setMaxSpeed(self.settings.bunkerSiloSpeed:getValue())
@@ -288,9 +288,9 @@ function AIDriveStrategyBunkerSilo:update(dt)
     AIDriveStrategyBunkerSilo:superClass().update(self, dt)
     self:updateImplementControllers(dt)
     if CpDebug:isChannelActive(self.debugChannel, self.vehicle) then
-        if self.course and self.course:isTemporary() then
-            self.course:draw()
-        elseif self.ppc:getCourse():isTemporary() then
+
+        self.pathfinderController:drawNodes()
+        if self.ppc:getCourse() then
             self.ppc:getCourse():draw()
         end
         if self.siloEndDetectionMarker ~= nil then
@@ -312,7 +312,7 @@ end
 --- Bunker silo interactions
 -----------------------------------------------------------------------------------------------------------------------
 
-function AIDriveStrategyBunkerSilo:drive()
+function AIDriveStrategyBunkerSilo:drive(dt)
     if self.state == self.states.DRIVING_INTO_SILO then
 
         local _, _, closestObject = self.siloEndProximitySensor:getClosestObjectDistanceAndRootVehicle()
@@ -348,7 +348,7 @@ function AIDriveStrategyBunkerSilo:drive()
         self:setInfoText(InfoTextManager.WAITING_FOR_UNLOADER)
         if not self.siloController:hasNearbyUnloader() then
             local course, firstWpIx = self:getDriveIntoSiloCourse()
-            self:startCourseWithPathfinding( course, firstWpIx, self:isDriveDirectionReverse())
+            self:startPathfindingToSiloCourse( course, firstWpIx, self:isDriveDirectionReverse())
             self:clearInfoText(InfoTextManager.WAITING_FOR_UNLOADER)
         end
     elseif self.state == self.states.DRIVING_TURN then 
@@ -403,8 +403,11 @@ function AIDriveStrategyBunkerSilo:getWorkWidth()
 end
 
 function AIDriveStrategyBunkerSilo:startTransitionToNextLane()
-    local course, _ = self:getDriveIntoSiloCourse()
-        
+    self.state = self.states.DRIVING_TURN
+    self.ppc:setShortLookaheadDistance()
+    local course, ix = self:getDriveIntoSiloCourse()
+    self:rememberCourse(course, ix)
+
     local x, y, z = course:getWaypointPosition(1)
     local yRot = course:getWaypointYRotation(1)
     setTranslation(self.turnNode, x, y, z)
@@ -414,15 +417,13 @@ function AIDriveStrategyBunkerSilo:startTransitionToNextLane()
         setRotation(self.turnNode, 0, yRot + math.pi, 0)
     end
 
-    local path = PathfinderUtil.findAnalyticPath(ReedsSheppSolver(), self.vehicle:getAIDirectionNode(), 0, self.turnNode,
-    0, 0, self.turningRadius)
+    local path = PathfinderUtil.findAnalyticPath(ReedsSheppSolver(), self.vehicle:getAIDirectionNode(), 
+        0, self.turnNode, 0, 0, self.turningRadius)
     if not path or #path == 0 then
-        self:debug('Could not find ReedsShepp path, skipping turn!')
-        self:startDrivingIntoSilo(course)
+        self:debug("No valid turn was found!")
+        self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
     else 
-        self:rememberCourse(course, 1)
-        self:debug('Found ReedsShepp turn path and prepended it.')
-        local turnCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        local turnCourse =  Course.createFromAnalyticPath(self.vehicle, path, true)
         self:startCourse(turnCourse, 1)
         self.state = self.states.DRIVING_TURN
         self:debug("Started driving turn to next lane.")
@@ -431,14 +432,14 @@ end
 
 --- Starts driving into the silo.
 function AIDriveStrategyBunkerSilo:startDrivingIntoSilo(oldCourse)
-    local firstWpIx
+    local firstWpIx, course
     if not oldCourse then 
-        self.course, firstWpIx = self:getDriveIntoSiloCourse()
+        course, firstWpIx = self:getDriveIntoSiloCourse()
     else 
-        self.course = oldCourse
+        course = oldCourse
         firstWpIx = self:getNearestWaypoints(oldCourse, self:isDriveDirectionReverse())
     end
-    self:startCourse(self.course, firstWpIx)
+    self:startCourse(course, firstWpIx)
     self.state = self.states.DRIVING_INTO_SILO
     self:lowerImplements()
     self:debug("Started driving into the silo.")
@@ -446,9 +447,8 @@ end
 
 --- Start driving out of silo.
 function AIDriveStrategyBunkerSilo:startDrivingOutOfSilo()
-    local firstWpIx
-    self.course, firstWpIx = self:getDriveOutOfSiloCourse(self.course)
-    self:startCourse(self.course, firstWpIx)
+    local course, firstWpIx = self:getDriveOutOfSiloCourse(self.course)
+    self:startCourse(course, firstWpIx)
     self.state = self.states.DRIVING_OUT_OF_SILO
     self:raiseImplements()
     self:debug("Started driving out of the silo.")
@@ -458,12 +458,13 @@ end
 function AIDriveStrategyBunkerSilo:startDrivingTemporaryOutOfSilo()
     self:rememberCourse(self.course, 1)
     local driveDirection = self:isDriveDirectionReverse()
+    local course 
     if driveDirection then
-		self.course = Course.createStraightForwardCourse(self.vehicle, self:getTemporaryBackCourseLength(), 0, self.vehicle:getAIDirectionNode())
+		course = Course.createStraightForwardCourse(self.vehicle, self:getTemporaryBackCourseLength(), 0, self.vehicle:getAIDirectionNode())
 	else 
-        self.course = Course.createStraightReverseCourse(self.vehicle, self:getTemporaryBackCourseLength(), 0, self.vehicle:getAIDirectionNode())
+        course = Course.createStraightReverseCourse(self.vehicle, self:getTemporaryBackCourseLength(), 0, self.vehicle:getAIDirectionNode())
 	end
-    self:startCourse(self.course, 1)
+    self:startCourse(course, 1)
     self.state = self.states.DRIVING_TEMPORARY_OUT_OF_SILO
     self:raiseImplements()
     self.driveIntoSiloAttempts = self.driveIntoSiloAttempts + 1
@@ -550,117 +551,79 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 --- Pathfinding
 ---------------------------------------------------------------------------------------------------------------------------
----@param course Course
+
+--- Pathfinding has finished
+---@param controller PathfinderController
+---@param success boolean
+---@param course Course|nil
+---@param goalNodeInvalid boolean|nil
+function AIDriveStrategyBunkerSilo:onPathfindingFinished(controller, 
+    success, course, goalNodeInvalid)
+    if not success then
+        self:debug('Pathfinding failed, giving up!')
+        self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
+        return
+    end
+    if self.state == self.states.DRIVING_TO_SILO then 
+        self:startCourse(course, 1)
+    elseif self.state == self.states.DRIVING_TO_PARK_POSITION then
+        self:startCourse(course, 1)
+    end
+end
+
+--- Pathfinding failed, but a retry attempt is leftover.
+---@param controller PathfinderController
+---@param lastContext PathfinderContext
+---@param wasLastRetry boolean
+---@param currentRetryAttempt number
+function AIDriveStrategyBunkerSilo:onPathfindingRetry(controller, 
+    lastContext, wasLastRetry, currentRetryAttempt)
+    --- TODO: Think of possible points of failures, that could be adjusted here.
+    ---       Maybe a small reverse course might help to avoid a deadlock
+    ---       after one pathfinder failure based on proximity sensor data and so on ..
+    if self.state == self.states.DRIVING_TO_SILO then 
+        local course = self:getRememberedCourseAndIx()
+        controller:findPathToWaypoint(lastContext, course, 
+            1, 0, 0, 1)
+    elseif self.state == self.states.DRIVING_TO_PARK_POSITION then
+        self.pathfinderController:findPathToNode(lastContext, self.parkNode, 
+            0, 0, 1)
+    end
+end
+
+--- Find an alignment path to the silo/heap course.
+---@param course Course silo/heap course  
 ---@param ix number
-function AIDriveStrategyBunkerSilo:startCourseWithPathfinding(course, ix, isReverse)
-    if not self.pathfinder or not self.pathfinder:isActive() then
-        -- set a course so the PPC is able to do its updates.
-        self.course = course
-        self.ppc:setCourse(self.course)
-        self.ppc:initialize(ix)
-        self:rememberCourse(course, ix)
-        local x, _, z = course:getWaypointPosition(ix)
-        self:debug('offsetx %.1f, x %.1f, z %.1f', course.offsetX, x, z)
-        self.state = self.states.WAITING_FOR_PATHFINDER    
-        self.pathfindingStartedAt = g_currentMission.time
-        local done, path
-        local _, steeringLength = AIUtil.getSteeringParameters(self.vehicle)
-        -- always drive a behind the target waypoint so there's room to straighten out towed implements
-        -- a bit before start working
-        self:debug('Pathfinding to waypoint %d, with zOffset min(%.1f, %.1f)', ix, -self.frontMarkerDistance, -steeringLength)
-
-        if not self.pathfinderNode then 
-            self.pathfinderNode = WaypointNode('pathfinderNode')
-        end
-        self.pathfinderNode:setToWaypoint(course, 1)
-        if isReverse then
-            --- Enables reverse path finding.
-            local _, yRot, _ = getRotation(self.pathfinderNode.node)
-            setRotation(self.pathfinderNode.node, 0, yRot + math.pi, 0)
-        end
-
-        local context = PathfinderContext(self.vehicle):allowReverse(true)
-        context:offFieldPenalty(0):ignoreFruit()
-
-        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(self.pathfinderNode.node,
-            0, 0, context)
-
-        if done then
-            return self:onPathfindingDoneToCourseStart(path)
-        else
-            self:setPathfindingDoneCallback(self, self.onPathfindingDoneToCourseStart)
-            return true
-        end
-    else
-        self:info('Pathfinder already active!')
-        self.state = self.states.DRIVING_TO_SILO
-        return false
+---@param isReverse boolean
+function AIDriveStrategyBunkerSilo:startPathfindingToSiloCourse(course, ix, isReverse)
+    self.state = self.states.DRIVING_TO_SILO
+    self:rememberCourse(course, ix)
+    local context = PathfinderContext(self.vehicle):allowReverse(true):offFieldPenalty(0)
+    if not self.pathfinderNode then 
+        self.pathfinderNode = WaypointNode('pathfinderNode')
     end
+    self.pathfinderNode:setToWaypoint(course, ix)
+    if isReverse then
+        --- Enables reverse path finding.
+        local _, yRot, _ = getRotation(self.pathfinderNode.node)
+        setRotation(self.pathfinderNode.node, 0, yRot + math.pi, 0)
+    end
+    self.pathfinderController:findPathToNode(context, self.pathfinderNode.node, 
+        0, 0, 1)
+    -- self.pathfinderController:findPathToWaypoint(context, course, 
+    --     1, 0, -1.5*(fm + 4), 1)
 end
 
-function AIDriveStrategyBunkerSilo:onPathfindingDoneToCourseStart(path)
-    local course, ix = self:getRememberedCourseAndIx()
-    if path and #path > 2 then
-        self:debug('Pathfinding to silo finished with %d waypoints (%d ms)',
-                #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
-        course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-        ix = 1
-        self.state = self.states.DRIVING_TO_SILO
-        self:startCourse(course, ix)
-    else
-        self:debug('Pathfinding to silo failed, directly start.')
-        self:startDrivingIntoSilo(course)
-        self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
-    end
-end
-
-
-function AIDriveStrategyBunkerSilo:startDrivingToParkPositionWithPathfinding()
+function AIDriveStrategyBunkerSilo:startPathfindingToParkPosition()
     if not self:isDrivingToParkPositionAllowed() then 
         self:debug("Driving to park position is not allowed!")
         return 
     end
+    self.state = self.states.DRIVING_TO_PARK_POSITION
     self.vehicle:prepareForAIDriving()
-
-
-
-    if not self.pathfinder or not self.pathfinder:isActive() then
-        self.state = self.states.WAITING_FOR_PATHFINDER    
-        self.pathfindingStartedAt = g_currentMission.time
-        local done, path
-        local _, steeringLength = AIUtil.getSteeringParameters(self.vehicle)
-    
-        self:debug('Pathfinding to park position, with zOffset min(%.1f, %.1f)', -self.frontMarkerDistance, -steeringLength)
-
-        local context = PathfinderContext(self.vehicle):allowReverse(true)
-        context:offFieldPenalty(0):ignoreFruit()
-        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(self.parkNode,
-            0, 0, context)
-
-        if done then
-            return self:onPathfindingDoneToParkPosition(path)
-        else
-            self:setPathfindingDoneCallback(self, self.onPathfindingDoneToParkPosition)
-            return true
-        end
-    else
-        self:info('Pathfinder already active!')
-        self.state = self.states.DRIVING_TO_PARK_POSITION
-        return false
-    end
-end
-
-function AIDriveStrategyBunkerSilo:onPathfindingDoneToParkPosition(path)
-    if path and #path > 2 then
-        self:debug('Pathfinding to park position finished with %d waypoints (%d ms)',
-                #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
-        local course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-        self.state = self.states.DRIVING_TO_PARK_POSITION
-        self:startCourse(course, 1)
-    else
-        self:debug('Pathfinding park position failed, directly start.')
-        self:startDrivingIntoSilo()
-    end
+    local context = PathfinderContext(self.vehicle):allowReverse(true):offFieldPenalty(0)
+    self.pathfinderController:findPathToNode(context, self.parkNode, 
+        0, 0, 1)
 end
 
 ---@param status CpStatus

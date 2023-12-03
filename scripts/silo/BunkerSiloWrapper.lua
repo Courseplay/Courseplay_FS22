@@ -279,6 +279,10 @@ function CpBunkerSilo:init(silo)
 	self.initialized = false
 
 	self.plot = BunkerSiloPlot()
+
+	--- Small delay to make sure the bunker silo back wall is detected correctly.
+	self.initDelay = CpTemporaryObject(true)
+	self.initDelay:set(false, 30)
 end
 
 --- Checks if the silo has a back wall and sets the plot area afterwards. 
@@ -298,14 +302,13 @@ function CpBunkerSilo:initialize()
 	self.initialized = true
 end
 
-
-function CpBunkerSilo.readStreamSilo(silo, ...)
-	local wrapper = g_bunkerSiloManager:getSiloWrapperByNode(silo.interactionTriggerNode)
-	if wrapper then 
-		wrapper:initialize()
-	end
-end
-BunkerSilo.readStream = Utils.appendedFunction(BunkerSilo.readStream, CpBunkerSilo.readStreamSilo)
+BunkerSilo.readStream = Utils.appendedFunction(BunkerSilo.readStream,
+	function(silo)
+		local wrapper = g_bunkerSiloManager:getSiloWrapperByNode(silo.interactionTriggerNode)
+		if wrapper then 
+			wrapper:initialize()
+		end
+	end)
 
 function CpBunkerSilo:rayCastCallbackOneSidedSilo(hitObjectId, x, y, z, distance, nx, ny, nz, subShapeIndex, shapeId, isLast)
 	if hitObjectId then 
@@ -441,7 +444,7 @@ function CpBunkerSilo:delete()
 end
 
 function CpBunkerSilo:update(dt)
-	if not self.initialized then 
+	if not self.initialized and self.initDelay:get() then 
 		self:initialize()
 	end
 
