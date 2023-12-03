@@ -792,10 +792,14 @@ function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(debugEnabled)
         self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: dz > 0')
         return false
     end
+    -- allow more offset when further away from the pipe, this is +- 25 cm at the pipe and grows
+    -- 25 cm with every meter, which is about 30 degrees (15 left and 15 right)
+    local tolerance = 0.25 + 0.25 * math.abs(dz)
     -- TODO: this does not take the pipe's side into account, and will return true when we are at the
-    -- wrong side of the combine. That happens rarely as we
-    if not self:isLinedUpWithPipe(dx, pipeOffset, 0.5) then
-        self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: dx > 1.5 pipe offset (%.1f > 1.5 * %.1f)', dx, pipeOffset)
+    -- wrong side of the combine.
+    if not self:isLinedUpWithPipe(dx, pipeOffset, tolerance) then
+        self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: dx > pipe offset + tolerance (%.1f > %.1f + %.1f) at dz: %.1f',
+                dx, pipeOffset, tolerance, dz)
         return false
     end
     local d = MathUtil.vector2Length(dx, dz)
@@ -1048,6 +1052,7 @@ end
 function AIDriveStrategyUnloadCombine:onPathfindingDoneToCombine(path, goalNodeInvalid)
     if self:isPathFound(path, goalNodeInvalid, CpUtil.getName(self.combineToUnload)) and self.state == self.states.WAITING_FOR_PATHFINDER then
         local driveToCombineCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        driveToCombineCourse:adjustForReversing(math.max(1, - AIUtil.getDirectionNodeToReverserNodeOffset(self.vehicle)))
         self:startCourse(driveToCombineCourse, 1)
         self:setNewState(self.states.DRIVING_TO_COMBINE)
         return true
