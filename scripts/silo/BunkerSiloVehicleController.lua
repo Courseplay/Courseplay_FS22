@@ -20,7 +20,7 @@ function CpBunkerSiloVehicleController:init(silo, vehicle, driveStrategy, direct
 
 	if self.silo.siloMode == CpBunkerSilo.SIDE_MODES.ONE_SIDED_INVERTED then
 		self.isInverted = true
-	elseif self.silo.silo ~= CpBunkerSilo.SIDE_MODES.ONE_SIDED then
+	elseif self.silo.siloMode ~= CpBunkerSilo.SIDE_MODES.ONE_SIDED then
 		if dsz > 0 and dhz > 0 then 
 			self:debug("Start distance: dsz: %.2f, dhz: %.2f", dsz, dhz)
 			--- In front of the silo
