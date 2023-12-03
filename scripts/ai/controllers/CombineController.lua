@@ -11,6 +11,7 @@ function CombineController:init(vehicle, combine)
     if self.hasPipe then
         self:fixDischargeDistanceForChopper()
     end
+    self.isWheeledImplement = ImplementUtil.isWheeledImplement(combine)
 end
 
 function CombineController:update()
@@ -136,6 +137,11 @@ function CombineController:isPotatoOrSugarBeetHarvester()
         end
     end
     return false
+end
+
+--- Is this a towed harvester? We don't want these to make combine headland turns (or make pockets?)
+function CombineController:isTowed()
+    return self.isWheeledImplement
 end
 
 -------------------------------------------------------------

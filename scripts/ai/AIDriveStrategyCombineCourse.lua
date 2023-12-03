@@ -1332,7 +1332,10 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
 
     -- Combines drive special headland corner maneuvers, except potato and sugarbeet harvesters
     if self.turnContext:isHeadlandCorner() then
-        if self.combineController:isPotatoOrSugarBeetHarvester() then
+        if self.combineController:isTowed() then
+            self:debug('Headland turn but this is a towed harvester using normal turn maneuvers.')
+            AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
+        elseif self.combineController:isPotatoOrSugarBeetHarvester() then
             self:debug('Headland turn but this harvester uses normal turn maneuvers.')
             AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
         elseif self.course:isOnConnectingTrack(ix) then
