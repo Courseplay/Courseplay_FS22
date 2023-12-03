@@ -146,7 +146,7 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
     self.pullBackDistanceEnd = self.pullBackDistanceStart + 5
     -- when making a pocket, how far to back up before changing to forward
     -- for very long vehicles, like potato/sugar beet harvesters the 20 meters may not be enough
-    self.pocketReverseDistance = math.max(1.8 * AIUtil.getVehicleAndImplementsTotalLength(self.vehicle), 20)
+    self.pocketReverseDistance = math.max(1.9 * AIUtil.getVehicleAndImplementsTotalLength(self.vehicle), 20)
     -- register ourselves at our boss
     -- TODO_22 g_combineUnloadManager:addCombineToList(self.vehicle, self)
     self.waitingForUnloaderAtEndOfRow = CpTemporaryObject()
