@@ -45,7 +45,7 @@ function AIDriveStrategyBunkerSilo.new(customMt)
     ---@type AIDriveStrategyBunkerSilo
     local self = AIDriveStrategyCourse.new(customMt)
     AIDriveStrategyCourse.initStates(self, AIDriveStrategyBunkerSilo.myStates)
-    self.state = self.states.DRIVING_TO_SILO
+    self.state = self.states.INITIAL
 
     self.debugChannel = CpDebug.DBG_SILO
 	self.silo = nil
@@ -76,7 +76,9 @@ end
 
 function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
     self:info('Starting bunker silo mode.')
-
+    -- to always have a valid course (for the traffic conflict detector mainly)
+    self.course = Course.createStraightForwardCourse(self.vehicle, 25)
+    self:startCourse(self.course, 1)
     if self.silo == nil then 
         self:info("Bunker silo is nil!")
         self.vehicle:stopCurrentAIJob(AIMessageErrorUnknown.new())
@@ -117,12 +119,6 @@ function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
     --- Setup the silo controller, that handles the driving conditions and coordinations.
 	self.siloController = self.silo:setupLevelerTarget(self.vehicle, self, self.siloEndDetectionMarker)
 
-    if self.silo:isVehicleInSilo(self.vehicle) then 
-        self:startDrivingIntoSilo()
-    else 
-        local course, _ = self:getDriveIntoSiloCourse()
-        self:startPathfindingToSiloCourse( course, 1, self:isDriveDirectionReverse())
-    end
 end
 
 function AIDriveStrategyBunkerSilo:getGeneratedCourse()
@@ -311,7 +307,15 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 
 function AIDriveStrategyBunkerSilo:drive(dt)
-    if self.state == self.states.DRIVING_INTO_SILO then
+    if self.state == self.states.INITIAL then
+        self:setMaxSpeed(0)
+        if self.silo:isVehicleInSilo(self.vehicle) then 
+            self:startDrivingIntoSilo()
+        else 
+            local course, _ = self:getDriveIntoSiloCourse()
+            self:startPathfindingToSiloCourse( course, 1, self:isDriveDirectionReverse())
+        end
+    elseif self.state == self.states.DRIVING_INTO_SILO then
 
         local _, _, closestObject = self.siloEndProximitySensor:getClosestObjectDistanceAndRootVehicle()
         if self.silo:isTheSameSilo(closestObject) then

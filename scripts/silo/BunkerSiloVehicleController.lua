@@ -18,6 +18,11 @@ function CpBunkerSiloVehicleController:init(silo, vehicle, driveStrategy, direct
 	local _, _, dsz = worldToLocal(directionNode, sx, 0, sz)
 	local _, _, dhz = worldToLocal(directionNode, hx, 0, hz)
 
+	-- if self.silo.siloMode == CpBunkerSilo.SIDE_MODES.ONE_SIDED then
+		
+		
+	-- elseif self.silo.siloMode == 
+
 	if dsz > 0 and dhz > 0 then 
 		self:debug("Start distance: dsz: %.2f, dhz: %.2f", dsz, dhz)
 		--- In front of the silo
