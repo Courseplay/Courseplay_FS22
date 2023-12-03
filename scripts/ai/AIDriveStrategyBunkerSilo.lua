@@ -62,9 +62,6 @@ end
 function AIDriveStrategyBunkerSilo:delete()
     self.silo:resetTarget(self.vehicle)
     self.isStuckTimer:delete()
-    if self.pathfinderNode then
-       self.pathfinderNode:destroy()
-    end
     if self.parkNode then 
         CpUtil.destroyNode(self.parkNode)
         self.parkNode = nil
@@ -599,19 +596,8 @@ function AIDriveStrategyBunkerSilo:startPathfindingToSiloCourse(course, ix, isRe
     self.state = self.states.DRIVING_TO_SILO
     self:rememberCourse(course, ix)
     local context = PathfinderContext(self.vehicle):allowReverse(true):offFieldPenalty(0)
-    if not self.pathfinderNode then 
-        self.pathfinderNode = WaypointNode('pathfinderNode')
-    end
-    self.pathfinderNode:setToWaypoint(course, ix)
-    if isReverse then
-        --- Enables reverse path finding.
-        local _, yRot, _ = getRotation(self.pathfinderNode.node)
-        setRotation(self.pathfinderNode.node, 0, yRot + math.pi, 0)
-    end
-    self.pathfinderController:findPathToNode(context, self.pathfinderNode.node, 
-        0, 0, 1)
-    -- self.pathfinderController:findPathToWaypoint(context, course, 
-    --     1, 0, -1.5*(fm + 4), 1)
+    self.pathfinderController:findPathToWaypoint(context, course, 
+        ix, 0, 0, 1)
 end
 
 function AIDriveStrategyBunkerSilo:startPathfindingToParkPosition()
