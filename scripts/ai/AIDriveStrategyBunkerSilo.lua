@@ -123,8 +123,8 @@ function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
     if self.silo:isVehicleInSilo(self.vehicle) then 
         self:startDrivingIntoSilo()
     else 
-        local course, firstWpIx = self:getDriveIntoSiloCourse()
-        self:startPathfindingToSiloCourse( course, firstWpIx, self:isDriveDirectionReverse())
+        local course, _ = self:getDriveIntoSiloCourse()
+        self:startPathfindingToSiloCourse( course, 1, self:isDriveDirectionReverse())
     end
 end
 
@@ -202,7 +202,7 @@ function AIDriveStrategyBunkerSilo:onWaypointPassed(ix, course)
         elseif self.state == self.states.DRIVING_OUT_OF_SILO then 
             if self:isDrivingToParkPositionAllowed() and self.siloController:hasNearbyUnloader() then
                 --- Only allow driving to park position here for now, as the silo interferes with the pathfinder.
-                self:startDrivingToParkPositionWithPathfinding()
+                self:startPathfindingToParkPosition()
             else 
                 self:startTransitionToNextLane()
             end
@@ -347,8 +347,8 @@ function AIDriveStrategyBunkerSilo:drive(dt)
         self:setMaxSpeed(0)
         self:setInfoText(InfoTextManager.WAITING_FOR_UNLOADER)
         if not self.siloController:hasNearbyUnloader() then
-            local course, firstWpIx = self:getDriveIntoSiloCourse()
-            self:startPathfindingToSiloCourse( course, firstWpIx, self:isDriveDirectionReverse())
+            local course, _ = self:getDriveIntoSiloCourse()
+            self:startPathfindingToSiloCourse( course, 1, self:isDriveDirectionReverse())
             self:clearInfoText(InfoTextManager.WAITING_FOR_UNLOADER)
         end
     elseif self.state == self.states.DRIVING_TURN then 
