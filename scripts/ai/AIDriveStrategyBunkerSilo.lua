@@ -204,6 +204,7 @@ function AIDriveStrategyBunkerSilo:onWaypointPassed(ix, course)
                 self:startTransitionToNextLane()
             end
         elseif self.state == self.states.DRIVING_TURN then 
+            self.ppc:setNormalLookaheadDistance()
             local course = self:getRememberedCourseAndIx()
             self:startDrivingIntoSilo(course)
         elseif self.state == self.states.DRIVING_TO_SILO then
@@ -401,9 +402,9 @@ end
 
 function AIDriveStrategyBunkerSilo:startTransitionToNextLane()
     self.state = self.states.DRIVING_TURN
-    self.ppc:setShortLookaheadDistance()
     local course, ix = self:getDriveIntoSiloCourse()
     self:rememberCourse(course, ix)
+    self.ppc:setShortLookaheadDistance()
 
     local x, y, z = course:getWaypointPosition(1)
     local yRot = course:getWaypointYRotation(1)
