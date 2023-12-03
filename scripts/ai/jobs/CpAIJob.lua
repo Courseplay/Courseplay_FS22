@@ -1,6 +1,7 @@
 --- Basic cp job.
 --- Every cp job should be derived from this job.
 ---@class CpAIJob : AIJob
+---@field namedParameters table
 ---@field jobTypeIndex number
 ---@field getTaskByIndex function
 ---@field currentTaskIndex number
@@ -244,17 +245,41 @@ end
 
 
 function CpAIJob:writeStream(streamId, connection)
-	CpAIJob:superClass().writeStream(self, streamId, connection)
+	streamWriteBool(streamId, self.isDirectStart)
+
+	if streamWriteBool(streamId, self.jobId ~= nil) then
+		streamWriteInt32(streamId, self.jobId)
+	end
+
+	for _, namedParameter in ipairs(self.namedParameters) do
+		namedParameter.parameter:writeStream(streamId, connection)
+	end
+
+	streamWriteUInt8(streamId, self.currentTaskIndex)
+
 	if self.cpJobParameters then
 		self.cpJobParameters:writeStream(streamId, connection)
 	end
 end
 
 function CpAIJob:readStream(streamId, connection)
-	CpAIJob:superClass().readStream(self, streamId, connection)
+	self.isDirectStart = streamReadBool(streamId)
+
+	if streamReadBool(streamId) then
+		self.jobId = streamReadInt32(streamId)
+	end
+
+	for _, namedParameter in ipairs(self.namedParameters) do
+		namedParameter.parameter:readStream(streamId, connection)
+	end
+
+	self.currentTaskIndex = streamReadUInt8(streamId)
+
 	if self.cpJobParameters then
 		self.cpJobParameters:validateSettings()
 		self.cpJobParameters:readStream(streamId, connection)
+	end
+	if not self:getIsHudJob() then
 		self:setValues()
 	end
 end
