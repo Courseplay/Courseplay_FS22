@@ -1603,20 +1603,6 @@ function AIDriveStrategyUnloadCombine:createMoveAwayCourse(blockingVehicle, isAh
 end
 
 ------------------------------------------------------------------------------------------------------------------------
--- Is the blocking vehicle in front of us?
-------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyUnloadCombine:isBlockingVehicleAheadOfUs(blockingVehicle)
-    -- if we look straight left or right out of the window, is blockingVehicle in front of us or behind us?
-    -- if in front, move back, if behind, move forward
-    -- but since we have a trailer, don't use the tractor's direction node directly, instead, a point behind it
-    -- about the half length of the rig.
-    local _, frontMarkerOffset = Markers.getFrontMarkerNode(self.vehicle)
-    local _, backMarkerOffset = Markers.getBackMarkerNode(self.vehicle)
-    local _, _, dz = localToLocal(blockingVehicle.rootNode, self.vehicle:getAIDirectionNode(), 0, 0, 0)
-    return dz > (frontMarkerOffset + backMarkerOffset) / 2
-end
-
-------------------------------------------------------------------------------------------------------------------------
 -- Is there another vehicle blocking us?
 ------------------------------------------------------------------------------------------------------------------------
 --- If the other vehicle is a combine driven by CP, we will try get out of its way. Otherwise, if we are not being
@@ -1636,7 +1622,7 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
             not self:isBeingHeld() then
         self:debug('%s has been blocking us for a while, move a bit', CpUtil.getName(blockingVehicle))
         local course
-        local isBlockingVehicleAheadOfUs = self:isBlockingVehicleAheadOfUs(blockingVehicle)
+        local isBlockingVehicleAheadOfUs = AIUtil.isOtherVehicleAhead(self.vehicle, blockingVehicle)
         local trailer = AIUtil.getImplementOrVehicleWithSpecialization(self.vehicle, Trailer)
         if AIDriveStrategyCombineCourse.isActiveCpCombine(blockingVehicle) then
             -- except we are blocking our buddy, so set up a course parallel to the combine's direction,
