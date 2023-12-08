@@ -36,7 +36,10 @@ end
 ---@param object table
 ---@param referenceNode number the node for calculating the work width, if not supplied, use the object's root node
 ---@param ignoreObject table ignore this object when calculating the width (as it is being detached, for instance)
----@return number, number, number, number
+---@return number width
+---@return number offset
+---@return number|nil left
+---@return number|nil right
 function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ignoreObject)
     -- when first called for the vehicle, referenceNode is empty, so use the vehicle root node
     referenceNode = referenceNode or object.rootNode
@@ -117,8 +120,10 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
         for _, implement in ipairs(implements) do
             if implement.object ~= ignoreObject then
                 local _, _, thisLeft, thisRight = WorkWidthUtil.getAutomaticWorkWidthAndOffset(implement.object)
-                left = math.max(thisLeft or 0, left or -math.huge)
-                right = math.min(thisRight or 0, right or math.huge)
+                if thisLeft ~= nil and thisRight ~= nil then
+                    left = math.max(thisLeft, left or -math.huge)
+                    right = math.min(thisRight, right or math.huge)
+                end
             end
         end
     end
@@ -138,6 +143,8 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
         WorkWidthUtil.debug(object, 'working width is %.1f, left %.1f, right %.1f.', width, left, right)
     elseif not width then
         width = 0
+        left = nil
+        right = nil
         WorkWidthUtil.debug(object, 'could not determine working width')
     end
 
