@@ -589,10 +589,10 @@ Folders can simply be created by the button at the bottom of the screen and ente
 Courses are only saved locally for now.
 "/>
     <text name="CP_help_page_courseManagerBaseFunctions_text" text="
-When you have a course loaded, you can save it by clicking on the save course button and then on the folder. Then a pop up window will appear where you can enter the name of your course.
+When you have a course loaded, you can save it by selecting a folder and then clicking on the save course button. Then a pop up window will appear where you can enter the name of your course.
 The name and location can be changed later.
 To remove the course from your vehicle, click on 'Clear current course' button.
-For loading a course you would have to select the folder first, click on the load course button and then simply clicking on the course you want to load.
+For loading a course you would have to select the folder first, then select the course and then simply clicking on the load course button.
 Clicking on change mode activates the edit mode of the course manager.
 "/>
     <text name="CP_help_page_courseManagerEdit_text" text="
