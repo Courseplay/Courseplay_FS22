@@ -56,15 +56,13 @@ CpCourseManagerFrame.maxMode = 2
 
 CpCourseManagerFrame.actionStates = {
 	disabled = 0,
-	saveCourse = 1,
-	loadCourse = 2,
-	createDirectory = 3,
-	moveEntrySelect = 4,
-	moveEntryDestination = 5,
-	deleteEntry = 6,
-	renameEntry = 7,
-	copyEntrySelect = 8,
-	copyEntryDestination = 9,
+	createDirectory = 1,
+	moveEntrySelect = 2,
+	moveEntryDestination = 3,
+	deleteEntry = 4,
+	renameEntry = 5,
+	copyEntrySelect = 6,
+	copyEntryDestination = 7,
 }
 
 CpCourseManagerFrame.colors = {
@@ -360,26 +358,6 @@ function CpCourseManagerFrame:onClickItem(layout, element)
 		if viewEntry:isDirectory() and layout == self.leftList and layout:getSelectedElement() == element then 
 			self.courseStorage:iterateForwards(element.viewEntry)
 		end
-	-- elseif self.actionState == self.actionStates.loadCourse then 
-	-- 	--- If a file/course was select then allow loading of the course.
-	-- 	if not viewEntry:isDirectory() then
-	-- 		self.currentVehicle:appendLoadedCpCourse(viewEntry:getEntity())
-	-- 	else
-	-- 		self.showInfoDialog(
-	-- 			self.translations.targetIsNoCourse, viewEntry)
-	-- 	end
-	-- 	self.actionState = self.actionStates.disabled
-	elseif self.actionState == self.actionStates.saveCourse then 
-		--- Saves the course under a selected directory.
-		if viewEntry:isDirectory() then 
-			self.showInputTextDialog(
-				self, self.translations.courseDialogTitle,
-				self.onClickSaveEntryDialog, viewEntry)
-		else 
-			self.showInfoDialog(
-				self.translations.targetIsNoFolder, viewEntry)
-		end
-		self.actionState = self.actionStates.disabled
 	elseif self.actionState == self.actionStates.createDirectory then
 		--- Creates a new sub directory under a selected directory.
 		if viewEntry:isDirectory() then 
