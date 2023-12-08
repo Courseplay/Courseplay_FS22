@@ -1372,7 +1372,7 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Target location is not a course (%s)!]]></Text>
 		</Translation>
 		<Translation name="CP_courseManager_invalidNameError">
-			<Text language="de"><![CDATA[Kursname (%s) is ungültig!]]></Text>
+			<Text language="de"><![CDATA[Kursname (%s) ist ungültig!]]></Text>
 			<Text language="en"><![CDATA[Course name (%s) is invalid!]]></Text>
 		</Translation>
 		<Translation name="CP_courseManager_basicSettings">
@@ -1951,18 +1951,18 @@ Courses are only saved locally for now.
 		</Translation>
 		<Translation name="CP_help_page_courseManagerBaseFunctions_text">
 			<Text language="de"><![CDATA[
-Wenn du einen Kurs geladen hast, kannst du diesen speichern, indem du auf "Kurs speichern" klickst und anschließend auf den Ordner in dem du diesen speichern willst.
+Wenn du einen Kurs geladen hast, kannst du diesen speichern, indem du einen Ordner wählst in dem du den Kurs speichern möchtest und anschließen auf "Kurs speichern" klickst.
 Ein Fenster erscheint, wo du den Namen des Kurses eintragen kannst.
 Der Name des Kurses kann später auch geändert werden.
 Um einen Kurs aus dem Fahrzeug zu entfernen, reicht ein Klick auf "Kurs aus Fahrzeug entfernen".
-Um einen Kurs zu laden, musst du erst den Ordner auswählen, wo sich dein Kurs befindet. Klicke dann auf "Kurs laden" und wähle den Kurs aus, den du laden willst.
+Um einen Kurs zu laden, musst du erst den Ordner auswählen, dann den Kurs und anschließend auf "Kurs laden".
 Durch Betätigen des "Modus wechseln"-Buttons, wird der Editiermodus des Kursmanagers aktiviert.
 ]]></Text>
 			<Text language="en"><![CDATA[
-When you have a course loaded, you can save it by clicking on the save course button and then on the folder. Then a pop up window will appear where you can enter the name of your course.
+When you have a course loaded, you can save it by selecting a folder and then clicking on the save course button. Then a pop up window will appear where you can enter the name of your course.
 The name and location can be changed later.
 To remove the course from your vehicle, click on 'Clear current course' button.
-For loading a course you would have to select the folder first, click on the load course button and then simply clicking on the course you want to load.
+For loading a course you would have to select the folder first, then select the course and then simply clicking on the load course button.
 Clicking on change mode activates the edit mode of the course manager.
 ]]></Text>
 		</Translation>
