@@ -42,6 +42,7 @@ CpCourseManagerFrame.translations = {
 
 	deleteError = "CP_courseManager_deleteError",
 	entryExistAlreadyError = "CP_courseManager_entryExistAlreadyError",
+	invalidNameError = "CP_courseManager_invalidNameError",
 	noAccessError = "CP_courseManager_noAccessError",
 	targetIsNoFolder = "CP_courseManager_targetIsNoFolderError",
 	targetIsNoCourse = "CP_courseManager_targetIsNoCourseError",
@@ -80,6 +81,14 @@ function CpCourseManagerFrame.new(courseStorage, target, custom_mt)
 	return self
 end
 
+function CpCourseManagerFrame:getCurrentEntry()
+	local layout = FocusManager:getFocusedElement()
+	if not layout then 
+		return
+	end
+	local element = layout:getSelectedElement()
+	return element.viewEntry
+end
 
 function CpCourseManagerFrame:onGuiSetupFinished()
 	CpCourseManagerFrame:superClass().onGuiSetupFinished(self)
@@ -116,8 +125,16 @@ function CpCourseManagerFrame:onGuiSetupFinished()
 				inputAction = InputAction.MENU_EXTRA_1,
 				text = g_i18n:getText(self.translations.loadCourse),
 				callback = function ()
-					self.actionState = self.actionStates.loadCourse
-					self:updateMenuButtons()
+					local viewEntry = self:getCurrentEntry()
+					if viewEntry then
+						if not viewEntry:isDirectory() then 
+							self.currentVehicle:appendLoadedCpCourse(viewEntry:getEntity())
+						else 
+							self.showInfoDialog(
+								self.translations.targetIsNoCourse, viewEntry)
+						end
+						self:updateMenuButtons()
+					end
 				end,
 				callbackDisabled = self.loadCourseDisabled,
 			},
@@ -149,8 +166,18 @@ function CpCourseManagerFrame:onGuiSetupFinished()
 				inputAction = InputAction.MENU_EXTRA_1,
 				text = g_i18n:getText(self.translations.saveCourse),
 				callback = function ()
-					self.actionState = self.actionStates.saveCourse
-					self:updateMenuButtons()
+					local viewEntry = self:getCurrentEntry()
+					if viewEntry then
+						if viewEntry:isDirectory() then 
+							self.showInputTextDialog(
+								self, self.translations.courseDialogTitle,
+								self.onClickSaveEntryDialog, viewEntry)
+						else 
+							self.showInfoDialog(
+								self.translations.targetIsNoFolder, viewEntry)
+						end
+						self:updateMenuButtons()
+					end
 				end,
 				callbackDisabled = self.saveCourseDisabled,
 			},
@@ -333,15 +360,15 @@ function CpCourseManagerFrame:onClickItem(layout, element)
 		if viewEntry:isDirectory() and layout == self.leftList and layout:getSelectedElement() == element then 
 			self.courseStorage:iterateForwards(element.viewEntry)
 		end
-	elseif self.actionState == self.actionStates.loadCourse then 
-		--- If a file/course was select then allow loading of the course.
-		if not viewEntry:isDirectory() then
-			self.currentVehicle:appendLoadedCpCourse(viewEntry:getEntity())
-		else
-			self.showInfoDialog(
-				self.translations.targetIsNoCourse, viewEntry)
-		end
-		self.actionState = self.actionStates.disabled
+	-- elseif self.actionState == self.actionStates.loadCourse then 
+	-- 	--- If a file/course was select then allow loading of the course.
+	-- 	if not viewEntry:isDirectory() then
+	-- 		self.currentVehicle:appendLoadedCpCourse(viewEntry:getEntity())
+	-- 	else
+	-- 		self.showInfoDialog(
+	-- 			self.translations.targetIsNoCourse, viewEntry)
+	-- 	end
+	-- 	self.actionState = self.actionStates.disabled
 	elseif self.actionState == self.actionStates.saveCourse then 
 		--- Saves the course under a selected directory.
 		if viewEntry:isDirectory() then 
@@ -527,7 +554,12 @@ function CpCourseManagerFrame:onClickSaveEntryDialog(text, clickOk, viewEntry)
 				self.translations.entryExistAlreadyError, viewEntry)
 			return 
 		end
-		self.currentVehicle:saveCpCourses(file, text)
+		if not self.currentVehicle:saveCpCourses(file, text) then 
+			g_gui:showInfoDialog({
+				text = string.format(g_i18n:getText(self.translations.invalidNameError), 
+					text)
+			})
+		end
 	end
 end
 

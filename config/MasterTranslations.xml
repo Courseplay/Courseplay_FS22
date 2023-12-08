@@ -1371,6 +1371,10 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="de"><![CDATA[Ziel ist kein Kurs (%s)!]]></Text>
 			<Text language="en"><![CDATA[Target location is not a course (%s)!]]></Text>
 		</Translation>
+		<Translation name="CP_courseManager_targetIsNoCourseError">
+			<Text language="de"><![CDATA[Kursname (%s) is ungültig!]]></Text>
+			<Text language="en"><![CDATA[Course name (%s) is invalid!]]></Text>
+		</Translation>
 		<Translation name="CP_courseManager_basicSettings">
 			<Text language="de"><![CDATA[Kurse speichern/laden.]]></Text>
 			<Text language="en"><![CDATA[Course interaction.]]></Text>
