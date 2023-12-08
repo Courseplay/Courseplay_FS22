@@ -406,7 +406,8 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_courseManager_entryExistAlreadyError" text="File already exist in target folder (%s)!"/>
     <text name="CP_courseManager_noAccessError" text="No access to the folder (%s)!"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="Target location is not a folder (%s)!"/>
-    <text name="CP_courseManager_targetIsNoCourseError" text="Course name (%s) is invalid!"/>
+    <text name="CP_courseManager_targetIsNoCourseError" text="Target location is not a course (%s)!"/>
+    <text name="CP_courseManager_invalidNameError" text="Course name (%s) is invalid!"/>
     <text name="CP_courseManager_basicSettings" text="Course interaction."/>
     <text name="CP_courseManager_advancedSettings" text="Edit files."/>
     <text name="CP_courseManager_activate" text="Activate"/>

@@ -407,6 +407,7 @@ Editör kapatıldığında kurs otomatik olarak kaydedilir ve seçilen kursu ge�
     <text name="CP_courseManager_noAccessError" text="Klasöre (%s) erişim yok!"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="Hedef konum bir klasör (%s) değil!"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="Hedef konum bir rota (%s) değildir!"/>
+    <text name="CP_courseManager_invalidNameError" text="Course name (%s) is invalid!"/>
     <text name="CP_courseManager_basicSettings" text="Kurs etkileşimi."/>
     <text name="CP_courseManager_advancedSettings" text="Dosyaları düzenleyin."/>
     <text name="CP_courseManager_activate" text="Etkinleştirmek"/>

@@ -407,6 +407,7 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_courseManager_noAccessError" text="%sにアクセスできません"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="%sを移動するフォルダが選択されていません"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="%sを保存するコースが選択されていません"/>
+    <text name="CP_courseManager_invalidNameError" text="Course name (%s) is invalid!"/>
     <text name="CP_courseManager_basicSettings" text="保存したコース設定"/>
     <text name="CP_courseManager_advancedSettings" text="コース設定"/>
     <text name="CP_courseManager_activate" text="実行"/>

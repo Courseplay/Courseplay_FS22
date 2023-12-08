@@ -407,6 +407,7 @@ Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felü
     <text name="CP_courseManager_noAccessError" text="Nincs hozzáférés a mappához (%s)!"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="A célhely nem mappa (%s)!"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="A célhely nem útvonal (%s)!"/>
+    <text name="CP_courseManager_invalidNameError" text="Course name (%s) is invalid!"/>
     <text name="CP_courseManager_basicSettings" text="Útvonal kezelés"/>
     <text name="CP_courseManager_advancedSettings" text="Fájlok szerkesztése"/>
     <text name="CP_courseManager_activate" text="Aktiválás"/>

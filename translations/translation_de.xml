@@ -406,7 +406,8 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_courseManager_entryExistAlreadyError" text="Kurs im Ordner (%s) bereits vorhanden!"/>
     <text name="CP_courseManager_noAccessError" text="Kein Zugriff auf Ordner (%s)!"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="Ziel ist kein Ordner (%s)!"/>
-    <text name="CP_courseManager_targetIsNoCourseError" text="Kursname (%s) is ungültig!"/>
+    <text name="CP_courseManager_targetIsNoCourseError" text="Ziel ist kein Kurs (%s)!"/>
+    <text name="CP_courseManager_invalidNameError" text="Kursname (%s) is ungültig!"/>
     <text name="CP_courseManager_basicSettings" text="Kurse speichern/laden."/>
     <text name="CP_courseManager_advancedSettings" text="Kurse/Ordner editieren."/>
     <text name="CP_courseManager_activate" text="aktivieren"/>
