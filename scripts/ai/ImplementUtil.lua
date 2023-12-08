@@ -114,7 +114,7 @@ function ImplementUtil.isWheeledImplement(implement)
         end
     end
 
-    local activeInputAttacherJoint = implement:getActiveInputAttacherJoint()
+    local activeInputAttacherJoint = implement.getActiveInputAttacherJoint and implement:getActiveInputAttacherJoint()
     if activeInputAttacherJoint and allowedJointTypes[activeInputAttacherJoint.jointType] and
             implement.spec_wheels and implement.spec_wheels.wheels and #implement.spec_wheels.wheels > 0 then
         -- Attempt to find the pivot node.

@@ -145,7 +145,8 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
     -- and back up another bit
     self.pullBackDistanceEnd = self.pullBackDistanceStart + 5
     -- when making a pocket, how far to back up before changing to forward
-    self.pocketReverseDistance = 20
+    -- for very long vehicles, like potato/sugar beet harvesters the 20 meters may not be enough
+    self.pocketReverseDistance = math.max(1.9 * AIUtil.getVehicleAndImplementsTotalLength(self.vehicle), 20)
     -- register ourselves at our boss
     -- TODO_22 g_combineUnloadManager:addCombineToList(self.vehicle, self)
     self.waitingForUnloaderAtEndOfRow = CpTemporaryObject()
@@ -1331,7 +1332,14 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
 
     -- Combines drive special headland corner maneuvers, except potato and sugarbeet harvesters
     if self.turnContext:isHeadlandCorner() then
-        if self.combineController:isPotatoOrSugarBeetHarvester() then
+        if self.combineController:isTowed() then
+            self:debug('Headland turn but this is a towed harvester using normal turn maneuvers.')
+            AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
+        -- The type of fruit being harvested isn't really the indicator if we can make a headland turn
+        -- TODO: either make disabling combine headland turns configurable, or
+        -- TODO: decide automatically based on the vehicle's properties, like turn radius, work width, etc.
+        -- and disable when such a turn does not make sense for the vehicle.
+        elseif self.combineController:isPotatoOrSugarBeetHarvester() then
             self:debug('Headland turn but this harvester uses normal turn maneuvers.')
             AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
         elseif self.course:isOnConnectingTrack(ix) then

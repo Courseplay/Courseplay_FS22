@@ -712,3 +712,18 @@ end
 function AIUtil.hasArticulatedAxis(vehicle)
 	return vehicle.spec_articulatedAxis and vehicle.spec_articulatedAxis.componentJoint
 end
+
+------------------------------------------------------------------------------------------------------------------------
+-- Is the other vehicle in front of us?
+------------------------------------------------------------------------------------------------------------------------
+function AIUtil.isOtherVehicleAhead(vehicle, otherVehicle)
+	-- if we look straight left or right out of the window, is blockingVehicle in front of us or behind us?
+	-- but since we may have a trailer or other implement, don't use the tractor's direction node directly, instead,
+	-- a point behind it about the half length of the rig.
+	-- (using the front and back markers are probably better than getVehicleAndImplementsTotalLength() as that
+	-- assumes that there is no overlap between the vehicle and the implements)
+	local _, frontMarkerOffset = Markers.getFrontMarkerNode(vehicle)
+	local _, backMarkerOffset = Markers.getBackMarkerNode(vehicle)
+	local _, _, dz = localToLocal(otherVehicle.rootNode, vehicle:getAIDirectionNode(), 0, 0, 0)
+	return dz > (frontMarkerOffset + backMarkerOffset) / 2
+end

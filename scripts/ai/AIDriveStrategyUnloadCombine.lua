@@ -792,10 +792,14 @@ function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(debugEnabled)
         self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: dz > 0')
         return false
     end
+    -- allow more offset when further away from the pipe, this is +- 25 cm at the pipe and grows
+    -- 25 cm with every meter, which is about 30 degrees (15 left and 15 right)
+    local tolerance = 0.25 + 0.25 * math.abs(dz)
     -- TODO: this does not take the pipe's side into account, and will return true when we are at the
-    -- wrong side of the combine. That happens rarely as we
-    if not self:isLinedUpWithPipe(dx, pipeOffset, 0.5) then
-        self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: dx > 1.5 pipe offset (%.1f > 1.5 * %.1f)', dx, pipeOffset)
+    -- wrong side of the combine.
+    if not self:isLinedUpWithPipe(dx, pipeOffset, tolerance) then
+        self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: dx > pipe offset + tolerance (%.1f > %.1f + %.1f) at dz: %.1f',
+                dx, pipeOffset, tolerance, dz)
         return false
     end
     local d = MathUtil.vector2Length(dx, dz)
@@ -1048,6 +1052,7 @@ end
 function AIDriveStrategyUnloadCombine:onPathfindingDoneToCombine(path, goalNodeInvalid)
     if self:isPathFound(path, goalNodeInvalid, CpUtil.getName(self.combineToUnload)) and self.state == self.states.WAITING_FOR_PATHFINDER then
         local driveToCombineCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        driveToCombineCourse:adjustForReversing(math.max(1, - AIUtil.getDirectionNodeToReverserNodeOffset(self.vehicle)))
         self:startCourse(driveToCombineCourse, 1)
         self:setNewState(self.states.DRIVING_TO_COMBINE)
         return true
@@ -1583,29 +1588,19 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 -- Set up a course to move out of the way of a blocking vehicle
 ------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyUnloadCombine:createMoveAwayCourse(blockingVehicle)
-    local trailer = AIUtil.getImplementOrVehicleWithSpecialization(self.vehicle, Trailer)
-    -- if we look straight left or right out of the window, is blockingVehicle in front of us or behind us?
-    -- if in front, move back, if behind, move forward
-    -- but since we have a trailer, don't use the tractor's direction node directly, instead, a point behind it
-    -- about the half length of the rig.
-    local _, frontMarkerOffset = Markers.getFrontMarkerNode(self.vehicle)
-    local _, backMarkerOffset = Markers.getBackMarkerNode(self.vehicle)
-    local _, _, dz = localToLocal(blockingVehicle.rootNode, self.vehicle:getAIDirectionNode(), 0, 0, 0)
-    if dz > (frontMarkerOffset + backMarkerOffset) / 2 then
-        self:debug('%s is in front, moving back (dz %.1f, front %.1f, back %.1f)', CpUtil.getName(blockingVehicle),
-                dz, frontMarkerOffset, backMarkerOffset)
+function AIDriveStrategyUnloadCombine:createMoveAwayCourse(blockingVehicle, isAheadOfUs, trailer)
+    if isAheadOfUs then
+        self:debug('%s is in front, moving back', CpUtil.getName(blockingVehicle))
         -- blocking vehicle in front of us, move back, calculate course from the trailer's root node
         return Course.createFromNode(self.vehicle, trailer.rootNode, 0, -2, -27, -5, true)
     else
         -- blocking vehicle behind, move forward
-        self:debug('%s is behind us, moving forward (dz: %.1f, front %.1f, back %.1f)', CpUtil.getName(blockingVehicle),
-                dz, frontMarkerOffset, backMarkerOffset)
+        local _, frontMarkerOffset = Markers.getFrontMarkerNode(self.vehicle)
+        self:debug('%s is behind us, moving forward', CpUtil.getName(blockingVehicle))
         return Course.createFromNode(self.vehicle, self.vehicle:getAIDirectionNode(), 0,
                 frontMarkerOffset, frontMarkerOffset + self.maxDistanceWhenMovingOutOfWay, 5, false)
     end
 end
-
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Is there another vehicle blocking us?
@@ -1627,18 +1622,20 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
             not self:isBeingHeld() then
         self:debug('%s has been blocking us for a while, move a bit', CpUtil.getName(blockingVehicle))
         local course
+        local isBlockingVehicleAheadOfUs = AIUtil.isOtherVehicleAhead(self.vehicle, blockingVehicle)
+        local trailer = AIUtil.getImplementOrVehicleWithSpecialization(self.vehicle, Trailer)
         if AIDriveStrategyCombineCourse.isActiveCpCombine(blockingVehicle) then
             -- except we are blocking our buddy, so set up a course parallel to the combine's direction,
             -- with an offset from the combine that makes sure we are clear. Use the trailer's root node (and not
             -- the tractor's) as when we reversing, it is easier when the trailer remains on the same side of the combine
-            local trailer = AIUtil.getImplementOrVehicleWithSpecialization(self.vehicle, Trailer)
             local dx, _, _ = localToLocal(trailer.rootNode, blockingVehicle:getAIDirectionNode(), 0, 0, 0)
             local xOffset = self.vehicle.size.width / 2 + blockingVehicle:getCpDriveStrategy():getWorkWidth() / 2 + 2
             xOffset = dx > 0 and xOffset or -xOffset
             self:setNewState(self.states.MOVING_AWAY_FROM_OTHER_VEHICLE)
             self.state.properties.vehicle = blockingVehicle
             self.state.properties.dx = nil
-            if CpMathUtil.isOppositeDirection(self.vehicle:getAIDirectionNode(), blockingVehicle:getAIDirectionNode(), 30) then
+            if isBlockingVehicleAheadOfUs and
+                    CpMathUtil.isOppositeDirection(self.vehicle:getAIDirectionNode(), blockingVehicle:getAIDirectionNode(), 30) then
                 -- we are head on with the combine, so reverse
                 -- we will generate a straight reverse course relative to the blocking vehicle, but we want the course start
                 -- approximately where our back marker is, as we will be reversing
@@ -1649,7 +1646,8 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
                         from + self.maxDistanceWhenMovingOutOfWay, 5, true)
                 -- we will stop reversing when we are far enough from the combine's path
                 self.state.properties.dx = xOffset
-            elseif CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), blockingVehicle:getAIDirectionNode(), 30) then
+            elseif not isBlockingVehicleAheadOfUs and
+                    CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), blockingVehicle:getAIDirectionNode(), 30) then
                 -- we are in front of the combine, same direction
                 -- we will generate a straight forward course relative to the blocking vehicle, but we want the course start
                 -- approximately where our front marker is
@@ -1663,7 +1661,7 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
             else
                 self:debug('%s is a CP combine, not head on, not same direction', CpUtil.getName(blockingVehicle))
                 self.state.properties.dx = nil
-                course = self:createMoveAwayCourse(blockingVehicle)
+                course = self:createMoveAwayCourse(blockingVehicle, isBlockingVehicleAheadOfUs, trailer)
             end
         elseif (AIDriveStrategyUnloadCombine.isActiveCpCombineUnloader(blockingVehicle) or
                 AIDriveStrategyUnloadCombine.isActiveCpSiloLoader(blockingVehicle)) and
@@ -1673,8 +1671,9 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
             -- no state change, wait for the other unloader to move
             return
         else
+            self:debug('%s is not a combine and not an idle unloader, moving out of their way.', CpUtil.getName(blockingVehicle))
             -- straight back or forward
-            course = self:createMoveAwayCourse(blockingVehicle)
+            course = self:createMoveAwayCourse(blockingVehicle, isBlockingVehicleAheadOfUs, trailer)
             self:setNewState(self.states.MOVING_AWAY_FROM_OTHER_VEHICLE)
             self.state.properties.vehicle = blockingVehicle
             self.state.properties.dx = nil
