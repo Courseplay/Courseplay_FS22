@@ -407,6 +407,7 @@ Ruten gemmes automatisk ved lukning af editoren og tilsidesætter den valgte rut
     <text name="CP_courseManager_noAccessError" text="Ingen adgang til mappe (%s)!"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="Dette er ikke en mappe (%s)!"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="Dette er ikke en rute (%s)!"/>
+    <text name="CP_courseManager_invalidNameError" text="Course name (%s) is invalid!"/>
     <text name="CP_courseManager_basicSettings" text="Gem/indlæs rute."/>
     <text name="CP_courseManager_advancedSettings" text="Rediger Rute/Mappe."/>
     <text name="CP_courseManager_activate" text="Aktiveret"/>

@@ -407,6 +407,7 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_courseManager_noAccessError" text="无法访问该文件夹 (%s)!"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="目标位置不是一个文件夹 (%s)!"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="目标位置不是任务 (%s)!"/>
+    <text name="CP_courseManager_invalidNameError" text="Course name (%s) is invalid!"/>
     <text name="CP_courseManager_basicSettings" text="任务交互。 "/>
     <text name="CP_courseManager_advancedSettings" text="编辑文件。"/>
     <text name="CP_courseManager_activate" text="激活"/>

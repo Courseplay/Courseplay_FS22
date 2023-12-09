@@ -407,6 +407,7 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <text name="CP_courseManager_noAccessError" text="Nessun accesso alla cartella (%s)!"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="La posizione di destinazione non è una cartella (%s)!"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="La località di destinazione non è un percorso (%s)!"/>
+    <text name="CP_courseManager_invalidNameError" text="Course name (%s) is invalid!"/>
     <text name="CP_courseManager_basicSettings" text="Interazione percorso"/>
     <text name="CP_courseManager_advancedSettings" text="Modifica file"/>
     <text name="CP_courseManager_activate" text="Attiva"/>

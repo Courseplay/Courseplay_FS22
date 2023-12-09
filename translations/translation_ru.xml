@@ -407,6 +407,7 @@
     <text name="CP_courseManager_noAccessError" text="Нет доступа к папке (%s)!"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="Выбранный пункт (%s) не является папкой!"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="Выбранный пункт (%s) не является курсом!"/>
+    <text name="CP_courseManager_invalidNameError" text="Course name (%s) is invalid!"/>
     <text name="CP_courseManager_basicSettings" text="Управление курсами"/>
     <text name="CP_courseManager_advancedSettings" text="Управление файлами"/>
     <text name="CP_courseManager_activate" text="Активировать"/>

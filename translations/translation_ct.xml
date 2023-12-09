@@ -407,6 +407,7 @@
     <text name="CP_courseManager_noAccessError" text="無法訪問該資料夾 (%s)!"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="目標位置不是一個資料夾 (%s)!"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="目標位置不是任務 (%s)!"/>
+    <text name="CP_courseManager_invalidNameError" text="Course name (%s) is invalid!"/>
     <text name="CP_courseManager_basicSettings" text="任務交互。 "/>
     <text name="CP_courseManager_advancedSettings" text="編輯文件。"/>
     <text name="CP_courseManager_activate" text="啟用"/>

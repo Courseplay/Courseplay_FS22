@@ -407,6 +407,7 @@ A rota é guardada automaticamente ao fechar o editor e sobrepõe-se a qualquer 
     <text name="CP_courseManager_noAccessError" text="Sem acesso à pasta (%s)!"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="A localização pretendida não é uma pasta (%s)!"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="A localização pretendida não é uma rota (%s)!"/>
+    <text name="CP_courseManager_invalidNameError" text="Course name (%s) is invalid!"/>
     <text name="CP_courseManager_basicSettings" text="Interacção com rota."/>
     <text name="CP_courseManager_advancedSettings" text="Editar ficheiro."/>
     <text name="CP_courseManager_activate" text="Activar"/>

@@ -407,6 +407,7 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_courseManager_noAccessError" text="Kein Zugriff auf Ordner (%s)!"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="Ziel ist kein Ordner (%s)!"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="Ziel ist kein Kurs (%s)!"/>
+    <text name="CP_courseManager_invalidNameError" text="Kursname (%s) ist ungültig!"/>
     <text name="CP_courseManager_basicSettings" text="Kurse speichern/laden."/>
     <text name="CP_courseManager_advancedSettings" text="Kurse/Ordner editieren."/>
     <text name="CP_courseManager_activate" text="aktivieren"/>
@@ -591,11 +592,11 @@ Kurse werden immer in Ordnern gespeichert, welche auf der linken Seite angezeigt
 Ordner können ganz leicht durch den Button unten am Bildschirmrand erstellt werden.
 "/>
     <text name="CP_help_page_courseManagerBaseFunctions_text" text="
-Wenn du einen Kurs geladen hast, kannst du diesen speichern, indem du auf &quot;Kurs speichern&quot; klickst und anschließend auf den Ordner in dem du diesen speichern willst.
+Wenn du einen Kurs geladen hast, kannst du diesen speichern, indem du einen Ordner wählst in dem du den Kurs speichern möchtest und anschließen auf &quot;Kurs speichern&quot; klickst.
 Ein Fenster erscheint, wo du den Namen des Kurses eintragen kannst.
 Der Name des Kurses kann später auch geändert werden.
 Um einen Kurs aus dem Fahrzeug zu entfernen, reicht ein Klick auf &quot;Kurs aus Fahrzeug entfernen&quot;.
-Um einen Kurs zu laden, musst du erst den Ordner auswählen, wo sich dein Kurs befindet. Klicke dann auf &quot;Kurs laden&quot; und wähle den Kurs aus, den du laden willst.
+Um einen Kurs zu laden, musst du erst den Ordner auswählen, dann den Kurs und anschließend auf &quot;Kurs laden&quot;.
 Durch Betätigen des &quot;Modus wechseln&quot;-Buttons, wird der Editiermodus des Kursmanagers aktiviert.
 "/>
     <text name="CP_help_page_courseManagerEdit_text" text="

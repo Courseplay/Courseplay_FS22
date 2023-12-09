@@ -407,6 +407,7 @@ Banan sparas automatiskt vid stängning av editorn och åsidosätter den valda b
     <text name="CP_courseManager_noAccessError" text="Du har ingen tillåtelse till denna mapp (%s)!"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="Målplatsen är inte en mapp (%s)!"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="Målplatsen är inte en kurs (%s)!"/>
+    <text name="CP_courseManager_invalidNameError" text="Course name (%s) is invalid!"/>
     <text name="CP_courseManager_basicSettings" text="Kursinteraktion."/>
     <text name="CP_courseManager_advancedSettings" text="Redigera filen."/>
     <text name="CP_courseManager_activate" text="Aktivera"/>

@@ -95,7 +95,6 @@ end
 ---@param lambda function
 ---@param class table
 ---@return boolean
----@return any
 function File:save(xmlRootName,xmlSchema,xmlBaseKey,lambda,class,...)
 	local xmlFile = XMLFile.create("tempXmlFile",self.fullPath,xmlRootName,xmlSchema)
 	if xmlFile ~= nil then
@@ -104,9 +103,9 @@ function File:save(xmlRootName,xmlSchema,xmlBaseKey,lambda,class,...)
 		else
 			lambda(xmlFile,xmlBaseKey,...)
 		end
-		xmlFile:save()
+		local wasSaved = xmlFile:save()
 		xmlFile:delete()
-		return true
+		return wasSaved
 	end
 	CpUtil.debugFormat(CpDebug.DBG_COURSES,"couldn't create xml file: %s",self.fullPath)
 	return false

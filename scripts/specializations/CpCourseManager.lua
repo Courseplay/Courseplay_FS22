@@ -420,11 +420,14 @@ function CpCourseManager:appendLoadedCourse(file)
 end
 
 function CpCourseManager:saveCourses(file,text)
-    file:save(CpCourseManager.rootKeyFileManager,CpCourseManager.xmlSchema,
-    CpCourseManager.xmlKeyFileManager,CpCourseManager.saveAssignedCourses,self,text)
-    --- Updates the course name, so multi tool courses are working correctly.
-    CourseSaveNameEvent.sendEvent(self, text)
-    self:setCpCourseName(text)
+    if file:save(CpCourseManager.rootKeyFileManager,CpCourseManager.xmlSchema,
+        CpCourseManager.xmlKeyFileManager,CpCourseManager.saveAssignedCourses,self,text) then
+        --- Updates the course name, so multi tool courses are working correctly.
+        CourseSaveNameEvent.sendEvent(self, text)
+        self:setCpCourseName(text)
+        return true
+    end
+    return false
 end
 
 function CpCourseManager:setCpCourseName(name)

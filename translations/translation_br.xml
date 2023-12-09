@@ -407,6 +407,7 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_courseManager_noAccessError" text="Sem acesso na pasta (%s)!"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="Destino não é uma pasta (%s)!"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="Destino não é uma rota (%s)!"/>
+    <text name="CP_courseManager_invalidNameError" text="Course name (%s) is invalid!"/>
     <text name="CP_courseManager_basicSettings" text="Interação com rota."/>
     <text name="CP_courseManager_advancedSettings" text="Editar arquivos."/>
     <text name="CP_courseManager_activate" text="Ativado"/>
