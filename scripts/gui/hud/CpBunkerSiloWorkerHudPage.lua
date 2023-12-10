@@ -86,8 +86,8 @@ function CpBunkerSiloWorkerHudPageElement:updateContent(vehicle, status)
 
     local heightOffset = vehicle:getCpSettings().levelerHeightOffset
     self.levelerHeightOffsetBtn:setTextDetails(heightOffset:getTitle(), heightOffset:getString())
-    self.levelerHeightOffsetBtn:setVisible(heightOffset:getIsVisible())
     self.levelerHeightOffsetBtn:setDisabled(heightOffset:getIsDisabled())
+    self.levelerHeightOffsetBtn:setVisible(heightOffset:getIsVisible())
 
     local waitAt = vehicle:getCpBunkerSiloWorkerJobParameters().waitAtParkPosition
     self.waitAtBtn:setTextDetails(waitAt:getTitle(), waitAt:getString())

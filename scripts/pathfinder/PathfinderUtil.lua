@@ -855,8 +855,17 @@ function PathfinderUtil.getVehiclePositionAsState3D(vehicle, xOffset, zOffset)
     return State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
 end
 
+--- Creates a State3D Vector from a given Waypoint.
+---@param waypoint Waypoint
+---@param xOffset number
+---@param zOffset number
+---@return State3D
 function PathfinderUtil.getWaypointAsState3D(waypoint, xOffset, zOffset)
     local result = State3D(waypoint.x, -waypoint.z, CourseGenerator.fromCpAngleDeg(waypoint.angle))
+    if waypoint:getIsReverse() then
+        --- If it's a reverse driven waypoint, then the target heading needs to be inverted. 
+        result:reverseHeading()
+    end
     local offset = Vector(zOffset, -xOffset)
     result:add(offset:rotate(result.t))
     return result

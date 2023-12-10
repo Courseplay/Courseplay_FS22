@@ -223,6 +223,10 @@ function Waypoint:clone()
 	return Waypoint(self)
 end
 
+function Waypoint:getIsReverse()
+	return self.rev
+end
+
 function Waypoint:getIsTurnStart()
 	return self.turnStart
 end

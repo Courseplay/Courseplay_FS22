@@ -294,6 +294,12 @@ function PathfinderController:getTemporaryCourseFromPath(path)
     return Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
 end
 
+function PathfinderController:drawNodes()
+    if self.pathfinder then 
+        PathfinderUtil.showNodes(self.pathfinder) 
+    end
+end
+
 --------------------------------------------
 --- Debug functions
 --------------------------------------------
