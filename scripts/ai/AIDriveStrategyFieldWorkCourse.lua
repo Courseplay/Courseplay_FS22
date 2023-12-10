@@ -656,6 +656,10 @@ end
 
 function AIDriveStrategyFieldWorkCourse:setFieldPolygon(polygon)
     self.fieldPolygon = polygon    
+    if self.fieldPolygon == nil then 
+        self:debug("No field polygon received, so regenerate it by the course.")
+        self.fieldPolygon = self.fieldWorkCourse:getFieldPolygon()
+    end
 end
 
 -----------------------------------------------------------------------------------------------------------------------

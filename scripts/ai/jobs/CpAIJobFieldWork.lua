@@ -82,6 +82,7 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
     self.hasValidPosition = false
     self.foundVines = nil
     local fieldPolygon, isCustomField = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
+    self:setFieldPolygon(fieldPolygon)
     if fieldPolygon then
         self.hasValidPosition = true
         self.foundVines = g_vineScanner:findVineNodesInField(fieldPolygon, tx, tz, self.customField ~= nil)
@@ -89,7 +90,6 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
             CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Found vine nodes, generating a vine field border.")
             fieldPolygon = g_vineScanner:getCourseGeneratorVertices(0, tx, tz)
         end
-        self:setFieldPolygon(fieldPolygon)
         self.selectedFieldPlot:setWaypoints(fieldPolygon)
         self.selectedFieldPlot:setVisible(true)
         self.selectedFieldPlot:setBrightColor(true)
