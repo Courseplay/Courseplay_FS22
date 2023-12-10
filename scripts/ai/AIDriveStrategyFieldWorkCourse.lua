@@ -94,6 +94,11 @@ function AIDriveStrategyFieldWorkCourse:start(course, startIx, jobParameters)
     end
     --- Store a reference to the original generated course
     self.originalGeneratedFieldWorkCourse = self.vehicle:getFieldWorkCourse()
+
+    if self.fieldPolygon == nil then 
+        self:debug("No field polygon received, so regenerate it by the course.")
+        self.fieldPolygon = self.fieldWorkCourse:getFieldPolygon()
+    end
 end
 
 --- Event raised when the driver has finished.
@@ -656,10 +661,6 @@ end
 
 function AIDriveStrategyFieldWorkCourse:setFieldPolygon(polygon)
     self.fieldPolygon = polygon    
-    if self.fieldPolygon == nil then 
-        self:debug("No field polygon received, so regenerate it by the course.")
-        self.fieldPolygon = self.fieldWorkCourse:getFieldPolygon()
-    end
 end
 
 -----------------------------------------------------------------------------------------------------------------------
