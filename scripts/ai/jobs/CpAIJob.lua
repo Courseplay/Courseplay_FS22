@@ -288,14 +288,15 @@ function CpAIJob:writeStream(streamId, connection)
 
 	streamWriteUInt8(streamId, self.currentTaskIndex)
 
+	if self.cpJobParameters then
+		self.cpJobParameters:writeStream(streamId, connection)
+	end
+
 	if self.fieldPolygon then 
 		streamWriteBool(streamId, true)
 		CustomField.writeStreamVertices(self.fieldPolygon, streamId, connection)
 	else 
 		streamWriteBool(streamId, false)
-	end
-	if self.cpJobParameters then
-		self.cpJobParameters:writeStream(streamId, connection)
 	end
 end
 
@@ -311,14 +312,12 @@ function CpAIJob:readStream(streamId, connection)
 	end
 
 	self.currentTaskIndex = streamReadUInt8(streamId)
-
-	
-	if streamReadBool(streamId) then 
-		self.fieldPolygon = CustomField.readStreamVertices(streamId, connection)
-	end
 	if self.cpJobParameters then
 		self.cpJobParameters:validateSettings()
 		self.cpJobParameters:readStream(streamId, connection)
+	end
+	if streamReadBool(streamId) then 
+		self.fieldPolygon = CustomField.readStreamVertices(streamId, connection)
 	end
 	if not self:getIsHudJob() then
 		self:setValues()
