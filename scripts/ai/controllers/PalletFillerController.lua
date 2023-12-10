@@ -34,3 +34,34 @@ function PalletFillerController:update()
 		end
 	end
 end
+
+---@param pallet table
+---@return boolean
+function PalletFillerController:isPalletLoaded(pallet)
+	for i, palletSlot in ipairs(self.palletFillerSpec.palletRow.palletSlots) do
+		if palletSlot.object ~= nil and palletSlot.object == pallet then 
+			return true
+		end
+	end
+end
+
+--- Ignore loaded pallets when moving backwards
+---@param object table
+---@param vehicle table
+---@param moveForwards boolean
+---@return boolean
+function PalletFillerController:ignoreProximityObject(object, vehicle, moveForwards)
+    if object and not moveForwards and object.isa and object:isa(Pallet) then
+        if self:isPalletLoaded(object) then
+            self:debugSparse('ignoring loaded pallet')
+            return true
+        end
+    end
+end
+
+--- Ask the proximity controller to check with us if an object is blocking, we don't want to block
+--- on pallets, that are loaded
+---@param proximityController ProximityController
+function PalletFillerController:registerIgnoreProximityObjectCallback(proximityController)
+    proximityController:registerIgnoreObjectCallback(self, self.ignoreProximityObject)
+end
