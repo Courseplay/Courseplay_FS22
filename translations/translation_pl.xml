@@ -407,7 +407,7 @@ Kurs jest automatycznie zapisywany po zamknięciu edytora i nadpisuje wybrany ku
     <text name="CP_courseManager_noAccessError" text="Brak dostępu do folderu (%s)!"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="Docelowa lokalizacja nie jest folderem (%s)!"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="Docelowa lokalizacja nie jest kursem (%s)!"/>
-    <text name="CP_courseManager_invalidNameError" text="Course name (%s) is invalid!"/>
+    <text name="CP_courseManager_invalidNameError" text="Nazwa kursu (%s) jest nieprawidłowa!"/>
     <text name="CP_courseManager_basicSettings" text="Interakcja kursu"/>
     <text name="CP_courseManager_advancedSettings" text="Edycja plików"/>
     <text name="CP_courseManager_activate" text="Potwierdź"/>
