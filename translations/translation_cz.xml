@@ -194,10 +194,10 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Nastaví horizontální odsazení nástroje."/>
     <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Odsazení pro nakládání balíků"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Odsazení pro sběrač balíků."/>
-    <text name="CP_vehicle_setting_combineOffsetX_title" text="Offset forwards/backwards"/>
-    <text name="CP_vehicle_setting_combineOffsetX_tooltip" text="Offset for harvester pipe with forwards(+) and backwards(-)"/>
-    <text name="CP_vehicle_setting_combineOffsetZ_title" text="Offset forwards/backwards"/>
-    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Offset for harvester pipe with forwards(+) and backwards(-)"/>
+    <text name="CP_vehicle_setting_combineOffsetX_title" text="Odsazení dopředu/dozadu"/>
+    <text name="CP_vehicle_setting_combineOffsetX_tooltip" text="Odsazení pro rouru kombajnu dopředu(+) a dozadu(-)"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_title" text="Odsazení dopředu/dozadu"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Odsazení pro rouru kombajnu dopředu(+) a dozadu(-)"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Vyprázdnit po naplnění:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="CO DĚLAT"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Kontrola silážních aditiv"/>
@@ -407,7 +407,7 @@ Trasa se automaticky uloží při zavření editoru a přepíše vybranou trasu.
     <text name="CP_courseManager_noAccessError" text="Ke složce není přístup (%s)!"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="Cílové umístění není složka (%s)!"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="Cílová poloha není trasa (%s)!"/>
-    <text name="CP_courseManager_invalidNameError" text="Course name (%s) is invalid!"/>
+    <text name="CP_courseManager_invalidNameError" text="Název trasy (%s) je neplatný!"/>
     <text name="CP_courseManager_basicSettings" text="Interakce trasy"/>
     <text name="CP_courseManager_advancedSettings" text="Upravit soubory"/>
     <text name="CP_courseManager_activate" text="Aktivovat"/>
