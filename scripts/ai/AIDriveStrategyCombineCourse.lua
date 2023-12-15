@@ -1703,6 +1703,9 @@ function AIDriveStrategyCombineCourse:shouldSelfUnloadBeforeNextRow()
                 self.vehicle,
                 self.implementWithPipe,
                 self.pipeController.pipeOffsetX)
+        if not self.selfUnloadBestTrailer then
+            return false
+        end
         local dx, _, dz = localToLocal(AIUtil.getDirectionNode(self.vehicle),
                 AIUtil.getDirectionNode(self.selfUnloadBestTrailer), 0, 0, 0)
         self:debug('Best trailer dx: %.1f, dz: %.1f', dx, dz)
