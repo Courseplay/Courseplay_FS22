@@ -1825,6 +1825,7 @@ function AIDriveStrategyCombineCourse:initUnloadStates()
         self.states.SELF_UNLOADING,
         self.states.SELF_UNLOADING_WAITING_FOR_DISCHARGE,
         self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED,
+        self.states.DRIVING_TO_SELF_UNLOAD_BEFORE_NEXT_ROW,
         self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED,
         self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED_WAITING_FOR_DISCHARGE,
         self.states.RETURNING_FROM_SELF_UNLOAD
