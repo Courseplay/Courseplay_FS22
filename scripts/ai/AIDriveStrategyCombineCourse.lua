@@ -1361,7 +1361,8 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
             self.aiTurn = FinishRowOnly(self.vehicle, self, self.ppc, self.proximityController, self.turnContext,
                     self, AIDriveStrategyCombineCourse.startSelfUnloadBeforeNextRow)
             self.state = self.states.TURNING
-            self.waypointIxToContinueOnFailedSelfUnload = ix
+            -- continue at the turn end waypoint on failed pathfinding
+            self.waypointIxToContinueOnFailedSelfUnload = ix + 1
         else
             AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
         end
