@@ -691,17 +691,9 @@ function AIDriveStrategyFieldWorkCourse:getBestWaypointToContinueFieldWork()
     local bestKnownCurrentWpIx = self.fieldWorkCourse:getLastPassedWaypointIx() or self.fieldWorkCourse:getCurrentWaypointIx()
     -- after we return from a refill/unload, continue a bit before the point where we left to
     -- make sure not leaving any unworked patches
-    local bestWpIx = self.fieldWorkCourse:getPreviousWaypointIxWithinDistance(bestKnownCurrentWpIx, 10)
-    if bestWpIx then
-        -- anything other than a turn start wp will work fine
-        if self.fieldWorkCourse:isTurnStartAtIx(bestWpIx) then
-            bestWpIx = bestWpIx - 1
-        end
-    else
-        bestWpIx = bestKnownCurrentWpIx
-    end
-    self:debug('Best return to fieldwork waypoint is %d', bestWpIx)
-    return bestWpIx
+    local bestWpIx = self.fieldWorkCourse:getPreviousWaypointIxWithinDistanceOrToTurnEnd(bestKnownCurrentWpIx, 10)
+    self:debug('Best return to fieldwork waypoint is %s (back from %d)', bestWpIx, bestKnownCurrentWpIx)
+    return bestWpIx or bestKnownCurrentWpIx
 end
 
 function AIDriveStrategyFieldWorkCourse:setOffsetX()
