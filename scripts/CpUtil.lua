@@ -392,7 +392,7 @@ function CpUtil.getAllEarthFruits()
         -- check if fruit is needs herb removement to be harvested
         if minPreparingGrowthState ~= -1 and preparedGrowthState ~= -1 and name ~= "SUGARCANE" then
             if g_fruitTypeManager:getFruitTypeByName(name) ~= nil then
-                earthFruits:insert(name)
+                table.insert(earthFruits, name)
             end
         end
     end
