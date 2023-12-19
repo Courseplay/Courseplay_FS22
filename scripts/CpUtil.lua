@@ -377,3 +377,25 @@ function CpUtil.isStateOneOf(myState, states)
     end
     return false
 end
+
+-- Return all fruitTypeIndexes where a fruitType needs preparation. 
+--
+-- Preparation marks an earth fruit since this is the only factor that diversifies them from normal fruit types
+-- SUGARCANE is an exception and ignored
+function CpUtil.getAllEarthFruits()
+    local earthFruits = {}
+    for _, fruitTypeData in pairs(g_fruitTypeManager.fruitTypes) do
+        local minPreparingGrowthState = fruitTypeData.minPreparingGrowthState
+        local preparedGrowthState = fruitTypeData.preparedGrowthState
+        local name = fruitTypeData.name
+
+        -- check if fruit is needs herb removement to be harvested
+        if minPreparingGrowthState ~= -1 and preparedGrowthState ~= -1 and name ~= "SUGARCANE" then
+            if g_fruitTypeManager:getFruitTypeByName(name) ~= nil then
+                earthFruits:insert(name)
+            end
+        end
+    end
+
+    return earthFruits
+end
