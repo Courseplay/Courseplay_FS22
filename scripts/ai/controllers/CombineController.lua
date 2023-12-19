@@ -131,6 +131,7 @@ end
 function CombineController:isEarthFruitHarvester()
     for _, fruitTypeIndex in pairs(CpUtil.getAllEarthFruits()) do
         local fillUnitIndex = g_fruitTypeManager:getFillTypeIndexByFruitTypeIndex(fruitTypeIndex)
+        self:debug(string.format("check if fruitType %s is supported", g_fillTypeManager:getFillTypeNameByIndex(fillUnitIndex)))
         for i, _ in ipairs(self.implement:getFillUnits()) do
             if self.implement:getFillUnitSupportsFillType(i, fillUnitIndex) then
                 self:debug('This is a earth fruit harvester.')
