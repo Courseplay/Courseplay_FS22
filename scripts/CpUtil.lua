@@ -380,7 +380,7 @@ end
 
 -- Return all fruitTypeIndexes where a fruitType needs preparation. 
 --
--- Preparation marks an earth fruit since this is the only factor that diversifies them from normal fruit types
+-- Preparation marks an root vegetable since this is the only factor that diversifies them from normal fruit types
 -- SUGARCANE is an exception and ignored
 function CpUtil.getAllRootVegetables()
     local earthFruits = {}
