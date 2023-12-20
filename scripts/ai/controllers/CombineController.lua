@@ -129,7 +129,7 @@ function CombineController:isDroppingStrawSwath()
 end
 
 function CombineController:isEarthFruitHarvester()
-    for _, fruitTypeIndex in pairs(CpUtil.getAllEarthFruits()) do
+    for _, fruitTypeIndex in pairs(CpUtil.getAllRootVegetables()) do
         local fillUnitIndex = g_fruitTypeManager:getFillTypeIndexByFruitTypeIndex(fruitTypeIndex)
         self:debug("check if fruitType %s is supported", g_fillTypeManager:getFillTypeNameByIndex(fillUnitIndex))
         for i, _ in ipairs(self.implement:getFillUnits()) do

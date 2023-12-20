@@ -382,7 +382,7 @@ end
 --
 -- Preparation marks an earth fruit since this is the only factor that diversifies them from normal fruit types
 -- SUGARCANE is an exception and ignored
-function CpUtil.getAllEarthFruits()
+function CpUtil.getAllRootVegetables()
     local earthFruits = {}
     for _, fruitTypeData in pairs(g_fruitTypeManager.fruitTypes) do
         local minPreparingGrowthState = fruitTypeData.minPreparingGrowthState
