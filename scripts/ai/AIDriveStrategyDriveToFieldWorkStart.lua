@@ -67,6 +67,9 @@ end
 
 function AIDriveStrategyDriveToFieldWorkStart:start(course, startIx, jobParameters)
     self:updateFieldworkOffset(course)
+    --- Saves the course start position, so it can be given to the job instance.
+    local x, _, z = course:getWaypointPosition(startIx)
+    self.startPosition = {x = x, z = z}
     local distance = course:getDistanceBetweenVehicleAndWaypoint(self.vehicle, startIx)
     if distance < AIDriveStrategyDriveToFieldWorkStart.minDistanceToDrive then
         self:debug('Closer than %.0f m to start waypoint (%d), start fieldwork directly',
@@ -90,9 +93,6 @@ function AIDriveStrategyDriveToFieldWorkStart:start(course, startIx, jobParamete
         end
         self:startCourseWithPathfinding(course, startIx)
     end
-    --- Saves the course start position, so it can be given to the job instance.
-    local x, _, z = course:getWaypointPosition(startIx)
-    self.startPosition = {x = x, z = z}
 end
 
 function AIDriveStrategyDriveToFieldWorkStart:update(dt)
