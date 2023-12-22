@@ -14,7 +14,6 @@ function CpAIJobCombineUnloader.new(isServer, customMt)
 	local self = CpAIJob.new(isServer, customMt or AIJobCombineUnloaderCp_mt)
 
 	self.lastPositionX, self.lastPositionZ = math.huge, math.huge
-    self.hasValidPosition = false
 
     self.selectedFieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
     self.selectedFieldPlot:setVisible(false)
@@ -64,7 +63,7 @@ function CpAIJobCombineUnloader:getIsAvailableForVehicle(vehicle)
 end
 
 function CpAIJobCombineUnloader:getCanStartJob()
-	return self.hasValidPosition
+	return self:getFieldPolygon()
 end
 
 ---@param vehicle table
@@ -116,7 +115,6 @@ function CpAIJobCombineUnloader:setValues()
 	CpAIJob.setValues(self)
 	local vehicle = self.vehicleParameter:getVehicle()
 	self.combineUnloaderTask:setVehicle(vehicle)
-	self:validateFieldPosition()
 	self:setupGiantsUnloaderData(vehicle)
 end
 
@@ -128,8 +126,7 @@ function CpAIJobCombineUnloader:validateFieldPosition(isValid, errorMessage)
 	local _
 	local fieldPolygon, _ = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
 	self:setFieldPolygon(fieldPolygon)
-	self.hasValidPosition = fieldPolygon ~= nil
-	if self.hasValidPosition then 
+	if fieldPolygon then 
 		self.selectedFieldPlot:setWaypoints(fieldPolygon)
         self.selectedFieldPlot:setVisible(true)
 	else
@@ -140,7 +137,6 @@ end
 
 --- Called when parameters change, scan field
 function CpAIJobCombineUnloader:validate(farmId)
-	self.hasValidPosition = false
 	self.selectedFieldPlot:setVisible(false)
 	self.heapPlot:setVisible(false)
 	local isValid, errorMessage = CpAIJob.validate(self, farmId)

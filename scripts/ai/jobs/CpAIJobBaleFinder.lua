@@ -11,7 +11,6 @@ local AIJobBaleFinderCp_mt = Class(CpAIJobBaleFinder, CpAIJob)
 
 function CpAIJobBaleFinder.new(isServer, customMt)
 	local self = CpAIJob.new(isServer, customMt or AIJobBaleFinderCp_mt)
-	self.hasValidPosition = false
 	self.selectedFieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
     self.selectedFieldPlot:setVisible(false)
 	self.selectedFieldPlot:setBrightColor(true)
@@ -35,7 +34,7 @@ function CpAIJobBaleFinder:getIsAvailableForVehicle(vehicle)
 end
 
 function CpAIJobBaleFinder:getCanStartJob()
-	return self.hasValidPosition
+	return self:getFieldPolygon() ~= nil
 end
 
 
@@ -56,7 +55,6 @@ function CpAIJobBaleFinder:setValues()
 	CpAIJob.setValues(self)
 	local vehicle = self.vehicleParameter:getVehicle()
 	self.baleFinderTask:setVehicle(vehicle)
-	self:validateFieldPosition()
 end
 
 --- Called when parameters change, scan field
@@ -78,7 +76,7 @@ function CpAIJobBaleFinder:validate(farmId)
 	--------------------------------------------------------------
 	--- Validate start distance to field, if started with the hud
 	--------------------------------------------------------------
-	if isValid and self.isDirectStart then 
+	if isValid and self.isDirectStart and fieldPolygon then 
 		--- Checks the distance for starting with the hud, as a safety check.
 		--- Firstly check, if the vehicle is near the field.
 		local x, _, z = getWorldTranslation(vehicle.rootNode)
@@ -100,8 +98,7 @@ function CpAIJobBaleFinder:validateFieldPosition(isValid, errorMessage)
 	end
 	local fieldPolygon, _ = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
 	self:setFieldPolygon(fieldPolygon)
-	self.hasValidPosition = fieldPolygon ~= nil
-	if self.hasValidPosition then 
+	if fieldPolygon then 
 		self.selectedFieldPlot:setWaypoints(fieldPolygon)
         self.selectedFieldPlot:setVisible(true)
 	else
