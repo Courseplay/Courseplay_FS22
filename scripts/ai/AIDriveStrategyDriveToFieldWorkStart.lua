@@ -72,6 +72,7 @@ function AIDriveStrategyDriveToFieldWorkStart:start(course, startIx, jobParamete
         self:debug('Closer than %.0f m to start waypoint (%d), start fieldwork directly',
                 AIDriveStrategyDriveToFieldWorkStart.minDistanceToDrive, startIx)
         self.state = self.states.WORK_START_REACHED
+        self.job:setStartPosition(self.startPosition)
         self:setCurrentTaskFinished()
     else
         self:debug('Start driving to work start waypoint')
