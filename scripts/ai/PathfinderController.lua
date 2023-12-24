@@ -149,7 +149,7 @@ end
 ---@param context PathfinderContext
 function PathfinderController:onStart(context, numRetries)
     self.numRetries = numRetries or self.defaultNumRetries
-    self:debug("Started pathfinding with context: %s, retries: %d.", tostring(context), numRetries)
+    self:debug("Started pathfinding with context: %s, retries: %d.", tostring(context), self.numRetries)
     self.startedAt = g_time
     self.lastContext = context
 end
