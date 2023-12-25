@@ -598,8 +598,8 @@
 			<Text language="en"><![CDATA[Only turning on the field]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_turnOnField_tooltip">
-			<Text language="de"><![CDATA[Versucht beim Wendemanöver auf dem Feld zu bleiben. Nicht mit allen Geräten möglich.]]></Text>
-			<Text language="en"><![CDATA[Only turning on the field. Not possible with all tools.]]></Text>
+			<Text language="de"><![CDATA[Versucht beim Wendemanöver auf dem Feld zu bleiben. Nicht mit allen Geräten möglich. Wenn ausgeschaltet, wird das Gerät nicht rückwärts fahren.]]></Text>
+			<Text language="en"><![CDATA[Only turning on the field. Not possible with all tools. If turned off, the tool won't drive in reverse.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_avoidFruit_title">
 			<Text language="de"><![CDATA[Fruchtumfahrung]]></Text>
