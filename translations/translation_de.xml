@@ -187,7 +187,7 @@
     <text name="CP_vehicle_setting_lowerImplementEarly_early" text="früh"/>
     <text name="CP_vehicle_setting_lowerImplementEarly_late" text="spät"/>
     <text name="CP_vehicle_setting_turnOnField_title" text="Wenden auf dem Feld"/>
-    <text name="CP_vehicle_setting_turnOnField_tooltip" text="Versucht beim Wendemanöver auf dem Feld zu bleiben. Nicht mit allen Geräten möglich."/>
+    <text name="CP_vehicle_setting_turnOnField_tooltip" text="Versucht beim Wendemanöver auf dem Feld zu bleiben. Nicht mit allen Geräten möglich. Wenn ausgeschaltet, wird das Gerät nicht rückwärts fahren."/>
     <text name="CP_vehicle_setting_avoidFruit_title" text="Fruchtumfahrung"/>
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="Versucht nach Möglichkeit, nicht in der Frucht zu fahren."/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Geräteversatz horizontal"/>

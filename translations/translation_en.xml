@@ -187,7 +187,7 @@
     <text name="CP_vehicle_setting_lowerImplementEarly_early" text="early"/>
     <text name="CP_vehicle_setting_lowerImplementEarly_late" text="late"/>
     <text name="CP_vehicle_setting_turnOnField_title" text="Only turning on the field"/>
-    <text name="CP_vehicle_setting_turnOnField_tooltip" text="Only turning on the field. Not possible with all tools."/>
+    <text name="CP_vehicle_setting_turnOnField_tooltip" text="Only turning on the field. Not possible with all tools. If turned off, the tool won't drive in reverse."/>
     <text name="CP_vehicle_setting_avoidFruit_title" text="Avoid driving in fruit"/>
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="The AI will try to avoid driving in the fruit."/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Tool offset horizontal"/>
