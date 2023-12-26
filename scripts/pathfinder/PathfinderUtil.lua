@@ -857,7 +857,7 @@ end
 
 --- Creates a State3D Vector from a given Waypoint.
 ---@param waypoint Waypoint
----@param xOffset number
+---@param xOffset number the offset in the waypoint coordinate system (left < 0 < right)
 ---@param zOffset number
 ---@return State3D
 function PathfinderUtil.getWaypointAsState3D(waypoint, xOffset, zOffset)
@@ -894,7 +894,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 ---@param course Course the course with the destination waypoint
 ---@param goalWaypointIx number index of the waypoint
----@param xOffset number side offset of the goal from the goalWaypoint
+---@param xOffset number side offset of the goal from the goalWaypoint (left < 0 < right)
 ---@param zOffset number length offset of the goal from the goalWaypoint
 ---@param context PathfinderContext
 ---@return PathfinderInterface pathfinder

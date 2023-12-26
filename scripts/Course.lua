@@ -1403,6 +1403,7 @@ end
 --- there are at least 4 vehicles in the group), a 0 means the vehicle in the middle, for which obviously no offset
 --- headland is required as it it driving on the original headland.
 --- @param width number working width of one vehicle
+--- @return number the offset in the waypoint coordinate system (left < 0 < right)
 function Course.calculateOffsetForMultitools(nVehicles, position, width)
 	local offset
 	if nVehicles % 2 == 0 then

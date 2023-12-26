@@ -36,7 +36,7 @@ function Strategy:startPathfindingToGoal()
 	context:set(
 		...
 	)
-	self.pathfinderController:setCallbacks(self, self.onPathfindingFinished, self.onPathfindingFailed)
+	self.pathfinderController:registerListeners(self, self.onPathfindingFinished, self.onPathfindingRetry)
 
 	local numRetries = 2
 	self.pathfinderController:findPathToNode(context, ..., numRetries)
@@ -57,7 +57,7 @@ function Strategy:onPathfindingFinished(controller : PathfinderController, succe
 	end
 end
 
-function Strategy:onPathfindingFailed(controller : PathfinderController, lastContext : PathfinderContext,
+function Strategy:onPathfindingRetry(controller : PathfinderController, lastContext : PathfinderContext,
 	wasLastRetry : boolean, currentRetryAttempt : number)
 	if currentRetryAttempt == 1 then 
 		// Reduced fruit impact:
