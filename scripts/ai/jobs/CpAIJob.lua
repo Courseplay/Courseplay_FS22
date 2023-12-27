@@ -3,9 +3,18 @@
 ---@class CpAIJob : AIJob
 ---@field namedParameters table
 ---@field jobTypeIndex number
+---@field isDirectStart boolean
 ---@field getTaskByIndex function
+---@field addNamedParameter function
+---@field addTask function
 ---@field currentTaskIndex number
 ---@field superClass function
+---@field getIsLooping function
+---@field resetTasks function
+---@field tasks table
+---@field groupedParameters table
+---@field isServer boolean
+---@field helperIndex number
 CpAIJob = {
 	name = "",
 	jobName = "",
@@ -19,19 +28,28 @@ function CpAIJob.new(isServer, customMt)
 		CpUtil.info("Job: %s", g_currentMission.aiJobTypeManager:getJobTypeByIndex(_self.jobTypeIndex).name)
 		return string.format("%d Job parameters", tostring(_self.cpJobParameters))
 	end
-
 	local self = AIJob.new(isServer, mt)
 	self.isDirectStart = false
-	self:setupTasks(isServer)
-	
+	self.debugChannel = CpDebug.DBG_FIELDWORK
+
 	--- Small translation fix, needs to be removed once giants fixes it.
 	local ai = g_currentMission.aiJobTypeManager
 	ai:getJobTypeByIndex(ai:getJobTypeIndexByName(self.name)).title = g_i18n:getText(self.jobName)
 
 	self:setupJobParameters()
-
-	self.debugChannel = CpDebug.DBG_FIELDWORK
+	self:setupTasks(isServer)
 	return self
+end
+
+---@param task CpAITask
+function CpAIJob:removeTask(task)
+	if task.taskIndex then
+		table.remove(self.tasks, task.taskIndex)
+		for i = #self.tasks, task.taskIndex, -1 do 
+			self.tasks[i].taskIndex = self.tasks[i].taskIndex - 1
+		end
+	end
+	task.taskIndex = nil
 end
 
 --- Setup all tasks.
@@ -59,12 +77,20 @@ end
 
 --- Gets the first task to start with.
 function CpAIJob:getStartTaskIndex()
-	if self.isDirectStart or self:isTargetReached() then
+	if self.currentTaskIndex ~= 0 or self.isDirectStart or self:isTargetReached() then
 		-- skip Giants driveTo
 		-- TODO: this isn't very nice as we rely here on the derived classes to add more tasks
 		return 2
 	end
 	return 1
+end
+
+function CpAIJob:getNextTaskIndex()
+	if self:getIsLooping() and self.currentTaskIndex >= #self.tasks then 
+		--- Makes sure the giants task is skipped
+		return self:getStartTaskIndex()
+	end
+	return AIJob.getNextTaskIndex(self)
 end
 
 --- Should the giants path finder job be skipped?
@@ -83,7 +109,12 @@ function CpAIJob:isTargetReached()
 	return targetReached
 end
 
+function CpAIJob:onPreStart()
+	--- override
+end
+
 function CpAIJob:start(farmId)
+	self:onPreStart()
 	CpAIJob:superClass().start(self, farmId)
 
 	if self.isServer then
@@ -260,6 +291,13 @@ function CpAIJob:writeStream(streamId, connection)
 	if self.cpJobParameters then
 		self.cpJobParameters:writeStream(streamId, connection)
 	end
+
+	if self.fieldPolygon then 
+		streamWriteBool(streamId, true)
+		CustomField.writeStreamVertices(self.fieldPolygon, streamId, connection)
+	else 
+		streamWriteBool(streamId, false)
+	end
 end
 
 function CpAIJob:readStream(streamId, connection)
@@ -274,10 +312,12 @@ function CpAIJob:readStream(streamId, connection)
 	end
 
 	self.currentTaskIndex = streamReadUInt8(streamId)
-
 	if self.cpJobParameters then
 		self.cpJobParameters:validateSettings()
 		self.cpJobParameters:readStream(streamId, connection)
+	end
+	if streamReadBool(streamId) then 
+		self.fieldPolygon = CustomField.readStreamVertices(streamId, connection)
 	end
 	if not self:getIsHudJob() then
 		self:setValues()
@@ -302,6 +342,14 @@ end
 
 function CpAIJob:getCpJobParameters()
 	return self.cpJobParameters
+end
+
+function CpAIJob:getFieldPolygon()
+	return self.fieldPolygon
+end
+
+function CpAIJob:setFieldPolygon(polygon)
+	self.fieldPolygon = polygon
 end
 
 --- Can the job be started?

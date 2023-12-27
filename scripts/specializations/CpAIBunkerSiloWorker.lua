@@ -36,9 +36,6 @@ function CpAIBunkerSiloWorker.registerEventListeners(vehicleType)
 end
 
 function CpAIBunkerSiloWorker.registerFunctions(vehicleType)
-    SpecializationUtil.registerFunction(vehicleType, "startCpBunkerSiloWorker", CpAIBunkerSiloWorker.startCpBunkerSiloWorker)
-    SpecializationUtil.registerFunction(vehicleType, "stopCpBunkerSiloWorker", CpAIBunkerSiloWorker.stopCpBunkerSiloWorker)
-
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpBunkerSiloWorker", CpAIBunkerSiloWorker.getCanStartCpBunkerSiloWorker)
     SpecializationUtil.registerFunction(vehicleType, "getCpBunkerSiloWorkerJobParameters", CpAIBunkerSiloWorker.getCpBunkerSiloWorkerJobParameters)
     
@@ -173,22 +170,4 @@ function CpAIBunkerSiloWorker:startCpAtLastWp(superFunc, ...)
     else 
         return true
     end
-end
-
-function CpAIBunkerSiloWorker:startCpBunkerSiloWorker(silo, jobParameters, parkPosition)
-    if self.isServer then 
-        self:resetCpCoursesFromGui()
-        
-        local strategy =  AIDriveStrategyBunkerSilo.new()
-        strategy:setSilo(silo)
-        strategy:setParkPosition(parkPosition)
-        -- this also starts the strategy
-        strategy:setAIVehicle(self, jobParameters)
-        CpUtil.debugVehicle(CpDebug.DBG_SILO, self, "Starting with bunker silo strategy.")
-        self:startCpWithStrategy(strategy)
-    end
-end
-
-function CpAIBunkerSiloWorker:stopCpBunkerSiloWorker()
-    self:stopCpDriver()
 end

@@ -770,6 +770,19 @@ function Course:getPreviousWaypointIxWithinDistance(ix, distance)
 	return nil
 end
 
+--- Get the index of the first waypoint from ix which is at least distance meters away (search backwards)
+--- or the index of the last turn end waypoint, whichever comes first
+function Course:getPreviousWaypointIxWithinDistanceOrToTurnEnd(ix, distance)
+	local d = 0
+	if self:isTurnEndAtIx(ix) then return ix end
+	for i = math.max(1, ix - 1), 1, -1 do
+		d = d + self.waypoints[i].dToNext
+		if self:isTurnEndAtIx(i) or d > distance then return i end
+	end
+	return nil
+end
+
+
 --- Collect a nSteps number of positions on the course, starting at startIx, one position for every second,
 --- or every dStep meters, whichever is less
 ---@param startIx number start at this waypoint

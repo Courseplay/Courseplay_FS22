@@ -1,30 +1,21 @@
-CpAITaskAttachHeader = {}
-local AITaskDriveToCp_mt = Class(CpAITaskAttachHeader, AITaskDriveTo)
 
-function CpAITaskAttachHeader.new(isServer, job, customMt)
-    local self = AITask.new(isServer, job, customMt or AITaskDriveToCp_mt)
-    return self
-end
-
-function CpAITaskAttachHeader:setVehicle(vehicle)
-    self.vehicle = vehicle
-end
+---@class CpAITaskAttachHeader : CpAITask
+CpAITaskAttachHeader = CpObject(CpAITask)
 
 function CpAITaskAttachHeader:start()
     if self.isServer then
-        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self.vehicle, 'CP Attach header task started')
-        self.vehicle:startCpAttachHeader(self, self.job:getCpJobParameters())
+        self:debug('CP Attach header task started')
+        local strategy = AIDriveStrategyAttachHeader(self, self.job)
+        strategy:setAIVehicle(self.vehicle, self.job:getCpJobParameters())
+        self.vehicle:startCpWithStrategy(strategy)
     end
-	AITask.start(self)
+	CpAITask.start(self)
 end
 
-function CpAITaskAttachHeader:update()
-end
-
-function CpAITaskAttachHeader:stop()
+function CpAITaskAttachHeader:stop(wasJobStopped)
     if self.isServer then
-        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self.vehicle, 'CP Attach header task stopped')
-        self.vehicle:stopCpAttachHeader()
+        self:debug('CP Attach header task stopped')
+        self.vehicle:stopCpDriver(wasJobStopped)
     end
-    AITask.stop(self)
+    CpAITask.stop(self)
 end

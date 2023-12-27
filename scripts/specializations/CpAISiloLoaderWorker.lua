@@ -38,9 +38,6 @@ function CpAISiloLoaderWorker.registerEventListeners(vehicleType)
 end
 
 function CpAISiloLoaderWorker.registerFunctions(vehicleType)
-    SpecializationUtil.registerFunction(vehicleType, "startCpSiloLoaderWorker", CpAISiloLoaderWorker.startCpSiloLoaderWorker)
-    SpecializationUtil.registerFunction(vehicleType, "stopCpSiloLoaderWorker", CpAISiloLoaderWorker.stopCpSiloLoaderWorker)
-
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpSiloLoaderWorker", CpAISiloLoaderWorker.getCanStartCpSiloLoaderWorker)
     SpecializationUtil.registerFunction(vehicleType, "getCpSiloLoaderWorkerJobParameters", CpAISiloLoaderWorker.getCpSiloLoaderWorkerJobParameters)
     
@@ -170,25 +167,4 @@ function CpAISiloLoaderWorker:startCpAtLastWp(superFunc, ...)
     else 
         return true
     end
-end
-
-function CpAISiloLoaderWorker:startCpSiloLoaderWorker(jobParameters, bunkerSilo, heap, unloadTrigger, unloadStation)
-    if self.isServer then 
-        local strategy
-        if SpecializationUtil.hasSpecialization(ConveyorBelt, self.specializations) then 
-            CpUtil.debugVehicle(CpDebug.DBG_SILO, self, "Starting a silo loader strategy.")
-            strategy = AIDriveStrategySiloLoader.new()
-        else 
-            CpUtil.debugVehicle(CpDebug.DBG_SILO, self, "Starting a shovel silo loader strategy.")
-            strategy = AIDriveStrategyShovelSiloLoader.new()
-            strategy:setUnloadTriggerAndStation(unloadTrigger, unloadStation)
-        end
-        strategy:setSiloAndHeap(bunkerSilo, heap)
-        strategy:setAIVehicle(self, jobParameters)
-        self:startCpWithStrategy(strategy)
-    end
-end
-
-function CpAISiloLoaderWorker:stopCpSiloLoaderWorker()
-    self:stopCpDriver()
 end

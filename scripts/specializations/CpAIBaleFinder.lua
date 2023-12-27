@@ -38,9 +38,6 @@ function CpAIBaleFinder.registerEventListeners(vehicleType)
 end
 
 function CpAIBaleFinder.registerFunctions(vehicleType)
-    SpecializationUtil.registerFunction(vehicleType, "startCpBaleFinder", CpAIBaleFinder.startCpBaleFinder)
-    SpecializationUtil.registerFunction(vehicleType, "stopCpBaleFinder", CpAIBaleFinder.stopCpBaleFinder)
-
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpBaleFinder", CpAIBaleFinder.getCanStartCpBaleFinder)
     SpecializationUtil.registerFunction(vehicleType, "getCpBaleFinderJobParameters", CpAIBaleFinder.getCpBaleFinderJobParameters)
     SpecializationUtil.registerFunction(vehicleType, "getCpBaleFinderJob", CpAIBaleFinder.getCpBaleFinderJob)
@@ -202,23 +199,4 @@ function CpAIBaleFinder:onCpWrapTypeSettingChanged()
         strategy:findBales()
     end
    
-end
-
---- Custom version of AIFieldWorker:startFieldWorker()
-function CpAIBaleFinder:startCpBaleFinder(fieldPolygon, jobParameters)
-    --- Calls the giants startFieldWorker function.
-    if self.isServer then 
-        local strategy = AIDriveStrategyFindBales.new()
-        -- this also starts the strategy
-        strategy:setFieldPolygon(fieldPolygon)
-        strategy:setAIVehicle(self, jobParameters)
-        strategy:setJobParameterValues(jobParameters)
-        self:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
-        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Starting bale finder job.")
-        self:startCpWithStrategy(strategy)
-    end
-end
-
-function CpAIBaleFinder:stopCpBaleFinder()
-    self:stopCpDriver()
 end

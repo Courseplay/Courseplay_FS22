@@ -40,7 +40,7 @@ end
 
 function CpAIJobSiloLoader:setupTasks(isServer)
 	CpAIJob.setupTasks(self, isServer)
-	self.siloLoaderTask = CpAITaskSiloLoader.new(isServer, self)
+	self.siloLoaderTask = CpAITaskSiloLoader(isServer, self)
 	self:addTask(self.siloLoaderTask)
 end
 

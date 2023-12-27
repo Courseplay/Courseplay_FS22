@@ -24,8 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---@field heapNode number
 ---@field shovelController ShovelController
 ---@field conveyorController ConveyorController
-AIDriveStrategySiloLoader = {}
-local AIDriveStrategySiloLoader_mt = Class(AIDriveStrategySiloLoader, AIDriveStrategyCourse)
+AIDriveStrategySiloLoader = CpObject(AIDriveStrategyCourse)
 
 AIDriveStrategySiloLoader.myStates = {
     DRIVING_ALIGNMENT_COURSE = {},
@@ -38,19 +37,15 @@ AIDriveStrategySiloLoader.siloAreaOffsetFieldUnload = 10
 
 AIDriveStrategySiloLoader.maxDistanceWithoutPathfinding = 10
 
-function AIDriveStrategySiloLoader.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategySiloLoader_mt
-    end
-    local self = AIDriveStrategyCourse.new(customMt)
+function AIDriveStrategySiloLoader:init(task, job)
+    AIDriveStrategyCourse.init(self, task, job)
     AIDriveStrategyCourse.initStates(self, AIDriveStrategySiloLoader.myStates)
     self.state = self.states.WAITING_FOR_PREPARING
     self.heapNode = CpUtil.createNode("heapNode", 0, 0, 0, nil)
-    return self
 end
 
 function AIDriveStrategySiloLoader:delete()
-    AIDriveStrategySiloLoader:superClass().delete(self)
+    AIDriveStrategyCourse.delete(self)
     if self.bunkerSiloController then 
         self.bunkerSiloController:delete()
         self.bunkerSiloController = nil
@@ -165,7 +160,7 @@ end
 --- Static parameters (won't change while driving)
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategySiloLoader:setAllStaticParameters()
-    AIDriveStrategySiloLoader:superClass().setAllStaticParameters(self)
+    AIDriveStrategyCourse.setAllStaticParameters(self)
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
     self.proximityController = ProximityController(self.vehicle, self:getWorkWidth())
 

@@ -61,10 +61,6 @@ function CpAIWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "getCpStartText", CpAIWorker.getCpStartText)
     SpecializationUtil.registerFunction(vehicleType, "cpStartStopDriver", CpAIWorker.cpStartStopDriver)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCp", CpAIWorker.getCanStartCp)
-    SpecializationUtil.registerFunction(vehicleType, "startCpDriveTo", CpAIWorker.startCpDriveTo)
-    SpecializationUtil.registerFunction(vehicleType, "stopCpDriveTo", CpAIWorker.stopCpDriveTo)
-    SpecializationUtil.registerFunction(vehicleType, "startCpAttachHeader", CpAIWorker.startCpAttachHeader)
-    SpecializationUtil.registerFunction(vehicleType, "stopCpAttachHeader", CpAIWorker.stopCpAttachHeader)
     SpecializationUtil.registerFunction(vehicleType, "freezeCp", CpAIWorker.freezeCp)
     SpecializationUtil.registerFunction(vehicleType, "unfreezeCp", CpAIWorker.unfreezeCp)
     SpecializationUtil.registerFunction(vehicleType, "startCpWithStrategy", CpAIWorker.startCpWithStrategy)
@@ -332,38 +328,6 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
     superFunc(self, message,...)
 end
 
-function CpAIWorker:startCpDriveTo(task, jobParameters)
-    local spec = self.spec_cpAIWorker
-    spec.driveToTask = task
-    ---@type AIDriveStrategyDriveToFieldWorkStart
-    local strategy = AIDriveStrategyDriveToFieldWorkStart.new()
-    strategy:setAIVehicle(self, jobParameters)
-    self:startCpWithStrategy(strategy)
-end
-
-function CpAIWorker:stopCpDriveTo()
-    local spec = self.spec_cpAIWorker
-    spec.driveToTask = nil
-    if spec.driveStrategy then
-        spec.driveStrategy:delete()
-        spec.driveStrategy = nil
-    end
-end
-
-function CpAIWorker:startCpAttachHeader(jobParameters)
-    local strategy = AIDriveStrategyAttachHeader.new()
-    strategy:setAIVehicle(self, jobParameters)
-    self:startCpWithStrategy(strategy)
-end
-
-function CpAIWorker:stopCpAttachHeader()
-    local spec = self.spec_cpAIWorker
-    if spec.driveStrategy then
-        spec.driveStrategy:delete()
-        spec.driveStrategy = nil
-    end
-end
-
 --- Sets a stop flag to make the driver stop after the worker finished.
 function CpAIWorker:cpBrakeToStop()
     local spec = self.spec_cpAIWorker
@@ -374,13 +338,6 @@ function CpAIWorker:onUpdate(dt)
     local spec = self.spec_cpAIWorker
     --- TODO: Check if a tick delay should be used for performance similar to AIFieldWorker or not.
     if spec.driveStrategy and self.isServer then
-        if spec.driveToTask and spec.driveStrategy.isWorkStartReached then
-            if spec.driveStrategy:isWorkStartReached() then
-                CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Work start location reached')
-                spec.driveToTask:onTargetReached(spec.driveStrategy:getStartPosition())
-                return
-            end
-        end
         --- Should drive all CP modes, except fieldwork here.
         spec.driveStrategy:update(dt)
         SpecializationUtil.raiseEvent(self, "onAIFieldWorkerActive")
@@ -457,13 +414,19 @@ function CpAIWorker:startCpWithStrategy(strategy)
 end
 
 --- Called to stop the driver after stopping of a vehicle.
-function CpAIWorker:stopCpDriver()
+function CpAIWorker:stopCpDriver(isJobFinished)
     --- Reset the flag.
     local spec = self.spec_cpAIWorker
     spec.motorDisabled = false
     if spec.driveStrategy then
         spec.driveStrategy:delete()
         spec.driveStrategy = nil
+    end
+    if not isJobFinished then
+        --- Job is not yet finished, 
+        --- so no need to stop the 
+        --- driver and fold and so on .. 
+        return
     end
     if self.isServer then
         WheelsUtil.updateWheelsPhysics(self, 0, 0, 0, true, true)

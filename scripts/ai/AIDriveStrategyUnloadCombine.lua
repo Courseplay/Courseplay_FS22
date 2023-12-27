@@ -75,8 +75,7 @@ This is currently screwed up...
 ---@field combineUnloadStates table
 ---@field trailerUnloadStates table
 ---@field fieldUnloadStates table
-AIDriveStrategyUnloadCombine = {}
-local AIDriveStrategyUnloadCombine_mt = Class(AIDriveStrategyUnloadCombine, AIDriveStrategyCourse)
+AIDriveStrategyUnloadCombine = CpObject(AIDriveStrategyCourse)
 
 -- when moving out of way of another vehicle, move at least so many meters
 AIDriveStrategyUnloadCombine.minDistanceWhenMovingOutOfWay = 5
@@ -177,12 +176,11 @@ AIDriveStrategyUnloadCombine.myFieldUnloadStates = {
     DRIVE_TO_FIELD_UNLOAD_PARK_POSITION = {},
 }
 
-function AIDriveStrategyUnloadCombine.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategyUnloadCombine_mt
-    end
-    local self = AIDriveStrategyCourse.new(customMt)
+--- Register all active unloaders here to access them fast.
+AIDriveStrategyUnloadCombine.activeUnloaders = {}
 
+function AIDriveStrategyUnloadCombine:init(task, job)
+    AIDriveStrategyCourse.init(self, task, job)
     self.combineUnloadStates = CpUtil.initStates(self.combineUnloadStates, AIDriveStrategyUnloadCombine.myCombineUnloadStates)
     self.trailerUnloadStates = CpUtil.initStates(self.trailerUnloadStates, AIDriveStrategyUnloadCombine.myTrailerUnloadStates)
     self.fieldUnloadStates = CpUtil.initStates(self.fieldUnloadStates, AIDriveStrategyUnloadCombine.myFieldUnloadStates)
@@ -210,7 +208,9 @@ function AIDriveStrategyUnloadCombine.new(customMt)
     self.checkForTrailerToUnloadTo = CpTemporaryObject(true)
     self:resetPathfinder()
     self.unloadTargetType = self.UNLOAD_TYPES.COMBINE
-    return self
+
+    --- Register all active unloaders here to access them fast.
+    AIDriveStrategyUnloadCombine.activeUnloaders[self] = self.vehicle
 end
 
 function AIDriveStrategyUnloadCombine:delete()
@@ -220,7 +220,8 @@ function AIDriveStrategyUnloadCombine:delete()
         CpUtil.destroyNode(self.fieldUnloadTurnEndNode)
     end
     self:releaseCombine()
-    AIDriveStrategyUnloadCombine:superClass().delete(self)
+    AIDriveStrategyUnloadCombine.activeUnloaders[self] = nil
+    AIDriveStrategyCourse.delete(self)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -243,10 +244,13 @@ function AIDriveStrategyUnloadCombine:getGeneratedCourse(jobParameters)
     return nil
 end
 
+function AIDriveStrategyUnloadCombine:setFieldPolygon(fieldPolygon)
+    self.fieldPolygon = fieldPolygon
+end
+
 function AIDriveStrategyUnloadCombine:setJobParameterValues(jobParameters)
     self.jobParameters = jobParameters
     local x, z = jobParameters.fieldPosition:getPosition()
-    self.fieldPolygon = CpFieldUtil.getFieldPolygonAtWorldPosition(x, z)
     x, z = jobParameters.startPosition:getPosition()
     local angle = jobParameters.startPosition:getAngle()
     if x ~= nil and z ~= nil and angle ~= nil then
@@ -281,6 +285,9 @@ function AIDriveStrategyUnloadCombine:setJobParameterValues(jobParameters)
         self.unloadTargetType = self.UNLOAD_TYPES.SILO_LOADER
         self:debug("Unload target is a silo loader.")
     end
+
+    self.useUnloadOnField = jobParameters.useFieldUnload:getValue() and not jobParameters.useFieldUnload:getIsDisabled()
+    self.useGiantsUnload = jobParameters.useGiantsUnload:getValue() and not jobParameters.useGiantsUnload:getIsDisabled()
 end
 
 --- Gets the unload target drive strategy target.
@@ -289,7 +296,8 @@ function AIDriveStrategyUnloadCombine:getUnloadTargetType()
 end
 
 function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
-    AIDriveStrategyUnloadCombine:superClass().setAIVehicle(self, vehicle)
+    AIDriveStrategyCourse.setAIVehicle(self, vehicle)
+    self:setJobParameterValues(jobParameters)
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
     self.collisionAvoidanceController = CollisionAvoidanceController(self.vehicle, self)
     self.proximityController = ProximityController(self.vehicle, self:getProximitySensorWidth())
@@ -595,7 +603,7 @@ function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
         self:startWaitingForSomethingToDo()
     elseif self.state == self.states.DRIVING_BACK_TO_START_POSITION_WHEN_FULL then
         self:debug('Inverted goal position reached, so give control back to the job.')
-        self.vehicle:getJob():onTrailerFull(self.vehicle, self)
+        self:onTrailerFull()
         ---------------------------------------------
         --- Self unload
         ---------------------------------------------
@@ -896,8 +904,16 @@ function AIDriveStrategyUnloadCombine:startUnloadingTrailers()
         else
             --- No valid start position was set, so release the driver and give control to giants or AD.
             self:debug('Full and have no auger wagon, stop, so eventually AD can take over.')
-            self.vehicle:getJob():onTrailerFull(self.vehicle, self)
+            self:onTrailerFull()
         end
+    end
+end
+
+function AIDriveStrategyUnloadCombine:onTrailerFull()
+    if self.useGiantsUnload then 
+        self:setCurrentTaskFinished()
+    else 
+        self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
     end
 end
 
@@ -1846,7 +1862,7 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneToInvertedGoalPositionMar
         self:startCourse(course, 1)
     else
         self:debug("Could not find a path to the start position marker, pass over to the job!")
-        self.vehicle:getJob():onTrailerFull(self.vehicle, self)
+        self:onTrailerFull()
     end
 end
 
@@ -2214,16 +2230,12 @@ end
 --- Checks if the silo is clear for unloading and not another unloader is currently unloading there.
 function AIDriveStrategyUnloadCombine:waitingUntilFieldUnloadIsAllowed()
     self:setMaxSpeed(0)
-    for _, unloader in pairs(CpAICombineUnloader.activeUnloaders) do
-        if unloader ~= self.vehicle then
-            ---@type AIDriveStrategyUnloadCombine
-            local strategy = unloader:getCpDriveStrategy()
-            if strategy then
-                if strategy:isUnloadingOnTheField(true) then
-                    if self.fieldUnloadData.heapSilo and self.fieldUnloadData.heapSilo:isOverlappingWith(strategy:getFieldUnloadHeap()) then
-                        self:debug("Is waiting for unloader: %s", CpUtil.getName(unloader))
-                        return
-                    end
+    for strategy, unloader in pairs(self.activeUnloaders) do
+        if strategy ~= self then
+            if strategy:isUnloadingOnTheField(true) then
+                if self.fieldUnloadData.heapSilo and self.fieldUnloadData.heapSilo:isOverlappingWith(strategy:getFieldUnloadHeap()) then
+                    self:debug("Is waiting for unloader: %s", CpUtil.getName(unloader))
+                    return
                 end
             end
         end
@@ -2418,7 +2430,7 @@ function AIDriveStrategyUnloadCombine:debug(...)
 end
 
 function AIDriveStrategyUnloadCombine:update(dt)
-    AIDriveStrategyUnloadCombine:superClass().update(self)
+    AIDriveStrategyCourse.update(self)
     if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
         if self.course then
             self.course:draw()

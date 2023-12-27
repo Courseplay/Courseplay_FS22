@@ -29,8 +29,7 @@ This drive strategy implements:
 
 ---@class AIDriveStrategyShovelSiloLoader : AIDriveStrategyCourse
 ---@field shovelController ShovelController
-AIDriveStrategyShovelSiloLoader = {}
-local AIDriveStrategyShovelSiloLoader_mt = Class(AIDriveStrategyShovelSiloLoader, AIDriveStrategyCourse)
+AIDriveStrategyShovelSiloLoader = CpObject(AIDriveStrategyCourse)
 
 ----------------------------------------------------------------
 --- State properties
@@ -82,11 +81,8 @@ AIDriveStrategyShovelSiloLoader.siloAreaToAvoidForBunkerSiloOffsets = {
     width = 4
 }
 
-function AIDriveStrategyShovelSiloLoader.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategyShovelSiloLoader_mt
-    end
-    local self = AIDriveStrategyCourse.new(customMt)
+function AIDriveStrategyShovelSiloLoader:init(task, job)
+    AIDriveStrategyCourse.init(self, task, job)
     AIDriveStrategyCourse.initStates(self, AIDriveStrategyShovelSiloLoader.myStates)
     self.state = self.states.INITIAL
     self.debugChannel = CpDebug.DBG_SILO
@@ -94,8 +90,8 @@ function AIDriveStrategyShovelSiloLoader.new(customMt)
 end
 
 function AIDriveStrategyShovelSiloLoader:delete()
-    AIDriveStrategyShovelSiloLoader:superClass().delete(self)
-    if self.siloController then
+    AIDriveStrategyCourse.delete(self)
+    if self.siloController then 
         self.siloController:delete()
         self.siloController = nil
     end

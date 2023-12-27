@@ -20,20 +20,7 @@ Drive strategy for driving a vine field work course
 ]]--
 
 ---@class AIDriveStrategyVineFieldWorkCourse : AIDriveStrategyFieldWorkCourse
-AIDriveStrategyVineFieldWorkCourse = {}
-local AIDriveStrategyVineFieldWorkCourse_mt = Class(AIDriveStrategyVineFieldWorkCourse, AIDriveStrategyFieldWorkCourse)
-
-function AIDriveStrategyVineFieldWorkCourse.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategyVineFieldWorkCourse_mt
-    end
-    local self = AIDriveStrategyFieldWorkCourse.new(customMt)
-    return self
-end
-
-function AIDriveStrategyVineFieldWorkCourse:setAIVehicle(...)
-    AIDriveStrategyVineFieldWorkCourse:superClass().setAIVehicle(self, ...)
-end
+AIDriveStrategyVineFieldWorkCourse = CpObject(AIDriveStrategyFieldWorkCourse)
 
 --- Always disables turn on field.
 function AIDriveStrategyVineFieldWorkCourse:isTurnOnFieldActive()
