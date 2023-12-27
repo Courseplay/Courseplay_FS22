@@ -128,12 +128,15 @@ function CombineController:isDroppingStrawSwath()
     return self.combineSpec.strawPSenabled
 end
 
-function CombineController:isPotatoOrSugarBeetHarvester()
-    for i, fillUnit in ipairs(self.implement:getFillUnits()) do
-        if self.implement:getFillUnitSupportsFillType(i, FillType.POTATO) or
-                self.implement:getFillUnitSupportsFillType(i, FillType.SUGARBEET) then
-            self:debug('This is a potato or sugar beet harvester.')
-            return true
+function CombineController:isEarthFruitHarvester()
+    for _, fruitTypeIndex in pairs(CpUtil.getAllRootVegetables()) do
+        local fillUnitIndex = g_fruitTypeManager:getFillTypeIndexByFruitTypeIndex(fruitTypeIndex)
+        self:debug("check if fruitType %s is supported", g_fillTypeManager:getFillTypeNameByIndex(fillUnitIndex))
+        for i, _ in ipairs(self.implement:getFillUnits()) do
+            if self.implement:getFillUnitSupportsFillType(i, fillUnitIndex) then
+                self:debug('This is a earth fruit harvester.')
+                return true
+            end
         end
     end
     return false
