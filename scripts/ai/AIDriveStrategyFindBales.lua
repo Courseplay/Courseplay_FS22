@@ -240,7 +240,7 @@ function AIDriveStrategyFindBales:findClosestBale(bales)
     local closestBale, minDistance, ix = nil, math.huge, 1
     local invalidBales = 0
     for i, bale in ipairs(bales) do
-        if bale:isStillValid() then
+        if bale:isStillValid() and bale ~= self.lastPathfinderBaleTarget then
             local _, _, _, d = bale:getPositionInfoFromNode(self.vehicle:getAIDirectionNode())
             self:debug('%d. bale (%d, %s) in %.1f m', i, bale:getId(), bale:getBaleObject(), d)
             if d < self.turningRadius * 4 then

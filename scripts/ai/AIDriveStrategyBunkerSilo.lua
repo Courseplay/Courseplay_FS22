@@ -173,7 +173,7 @@ end
 
 function AIDriveStrategyBunkerSilo:setAIVehicle(vehicle, jobParameters)
     AIDriveStrategyCourse.setAIVehicle(self, vehicle, jobParameters)
-    local parkPosition = jobParameters.parkPosition
+    local parkPosition = jobParameters.startPosition
     if parkPosition ~= nil and parkPosition.x ~= nil and parkPosition.z ~= nil and parkPosition.angle ~= nil then
         self.parkNode = CpUtil.createNode("parkNode", parkPosition.x, parkPosition.z, parkPosition.angle)
         self:debug("Valid park position set.")
