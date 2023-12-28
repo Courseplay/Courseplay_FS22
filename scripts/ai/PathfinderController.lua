@@ -57,15 +57,15 @@ function Strategy:onPathfindingFinished(controller : PathfinderController, succe
 	end
 end
 
-function Strategy:onPathfindingRetry(controller : PathfinderController, lastContext : PathfinderContext,
+function Strategy:onPathfindingRetry(controller : PathfinderController, currentContext : PathfinderContext,
 	wasLastRetry : boolean, currentRetryAttempt : number)
 	if currentRetryAttempt == 1 then 
 		// Reduced fruit impact:
-		lastContext:ignoreFruit()
-		self.pathfinderController:findPathToNode(lastContext, ...)
+		currentContext:ignoreFruit()
+		self.pathfinderController:findPathToNode(currentContext, ...)
 	else 
 		// Something else ...
-		self.pathfinderController:findPathToNode(lastContext, ...)
+		self.pathfinderController:findPathToNode(currentContext, ...)
 	end
 end
 ]]
@@ -89,7 +89,7 @@ function PathfinderController:init(vehicle)
     ---@type PathfinderInterface
     self.pathfinder = nil
     ---@type PathfinderContext
-    self.lastContext = nil
+    self.currentContext = nil
     self:reset()
 end
 
@@ -103,7 +103,7 @@ function PathfinderController:reset()
     self.failCount = 0
     self.startedAt = 0
     self.timeTakenMs = 0
-    self.lastContext = nil
+    self.currentContext = nil
 end
 
 function PathfinderController:update(dt)
@@ -130,8 +130,8 @@ function PathfinderController:isActive()
 end
 
 ---@return PathfinderContext
-function PathfinderController:getLastContext()
-    return self.lastContext
+function PathfinderController:getCurrentContext()
+    return self.currentContext
 end
 
 --- Registers listeners for pathfinder success and failures.
@@ -147,11 +147,20 @@ end
 
 --- Pathfinder was started
 ---@param context PathfinderContext
-function PathfinderController:onStart(context, numRetries)
+function PathfinderController:start(context, numRetries, pathfinderCall)
     self.numRetries = numRetries or self.defaultNumRetries
     self:debug("Started pathfinding with context: %s, retries: %d.", tostring(context), self.numRetries)
     self.startedAt = g_time
-    self.lastContext = context
+    self.currentContext = context
+    self.currentPathfinderCall = pathfinderCall
+    local pathfinder, done, path, goalNodeInvalid = self.currentPathfinderCall()
+    if done then
+        self:onFinish(path, goalNodeInvalid)
+    else
+        self:debug("Continuing as coroutine...")
+        self.pathfinder = pathfinder
+    end
+    return true
 end
 
 --- Path finding has finished
@@ -169,7 +178,7 @@ function PathfinderController:onFinish(path, goalNodeInvalid)
                 --- Retrying the path finding
                 self.failCount = self.failCount + 1
                 self:callCallback(self.callbackRetryFunction,
-                        self.lastContext, self.failCount == self.numRetries, self.failCount)
+                        self.currentContext, self.failCount == self.numRetries, self.failCount)
                 return
             elseif self.numRetries > 0 then
                 self:debug("Max number of retries already reached!")
@@ -181,6 +190,20 @@ function PathfinderController:onFinish(path, goalNodeInvalid)
             retValue == self.SUCCESS_FOUND_VALID_PATH and self:getTemporaryCourseFromPath(path),
             goalNodeInvalid)
     self:reset()
+end
+
+--- Retry the last pathfinder call with context
+---@param context PathfinderContext
+---@return boolean true if retry successfully started
+function PathfinderController:retry(context)
+    if self.currentPathfinderCall then
+        self:debug("Retrying pathfinding with context: %s, retries: %d.", tostring(context), self.numRetries)
+        self:start(context, self.numRetries, self.currentPathfinderCall)
+        return true
+    else
+        self:error('Pathfinder has not been called before, can\'t retry')
+        return false
+    end
 end
 
 --- Is the path found and valid?
@@ -221,19 +244,16 @@ function PathfinderController:findPathToNode(context, goalNode, xOffset, zOffset
         self:error("No valid success callback was given!")
         return false
     end
-    self:onStart(context, numRetries)
-    local pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(
-            goalNode,
-            xOffset,
-            zOffset,
-            context
+    self:start(context, numRetries,
+            function()
+                return PathfinderUtil.startPathfindingFromVehicleToNode(
+                        goalNode,
+                        xOffset,
+                        zOffset,
+                        self.currentContext
+                )
+            end
     )
-    if done then
-        self:onFinish(path, goalNodeInvalid)
-    else
-        self:debug("Continuing as coroutine...")
-        self.pathfinder = pathfinder
-    end
     return true
 end
 
@@ -251,19 +271,17 @@ function PathfinderController:findPathToWaypoint(context, course, waypointIndex,
         self:error("No valid success callback was given!")
         return false
     end
-    self:onStart(context, numRetries)
-    local pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
-            course,
-            waypointIndex,
-            xOffset,
-            zOffset,
-            context)
-    if done then
-        self:onFinish(path, goalNodeInvalid)
-    else
-        self:debug("Continuing as coroutine...")
-        self.pathfinder = pathfinder
-    end
+    self:start(context, numRetries,
+            function()
+                return PathfinderUtil.startPathfindingFromVehicleToWaypoint(
+                        course,
+                        waypointIndex,
+                        xOffset,
+                        zOffset,
+                        self.currentContext
+                )
+            end
+    )
     return true
 end
 
@@ -278,15 +296,11 @@ function PathfinderController:findPathToGoal(context, goal, numRetries)
         self:error("No valid success callback was given!")
         return false
     end
-    self:onStart(context, numRetries)
-    local pathfinder, done, path, goalNodeInvalid =
-        PathfinderUtil.startPathfindingFromVehicleToGoal(goal, context)
-    if done then
-        self:onFinish(path, goalNodeInvalid)
-    else
-        self:debug("Continuing as coroutine...")
-        self.pathfinder = pathfinder
-    end
+    self:start(context, numRetries,
+            function()
+                return PathfinderUtil.startPathfindingFromVehicleToGoal(goal, self.currentContext)
+            end
+    )
     return true
 end
 
@@ -295,8 +309,8 @@ function PathfinderController:getTemporaryCourseFromPath(path)
 end
 
 function PathfinderController:drawNodes()
-    if self.pathfinder then 
-        PathfinderUtil.showNodes(self.pathfinder) 
+    if self.pathfinder then
+        PathfinderUtil.showNodes(self.pathfinder)
     end
 end
 

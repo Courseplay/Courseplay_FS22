@@ -1053,7 +1053,7 @@ function AIDriveStrategyUnloadCombine:startPathfindingToMovingCombine(waypoint, 
     -- TODO: consider creating a variation of findPathToWaypoint() which accepts a Waypoint instead of Course/ix
     self.pathfinderController:findPathToGoal(
             self.combinePathfinderContext,
-            -- getWaypointAsState3D expects the offset in waypoint coordinate system
+    -- getWaypointAsState3D expects the offset in waypoint coordinate system
             PathfinderUtil.getWaypointAsState3D(waypoint, -xOffset, zOffset))
 end
 
@@ -1319,16 +1319,7 @@ function AIDriveStrategyUnloadCombine:startPathfinding(
     context:maxFruitPercent(maxFruitPercent):offFieldPenalty(self.offFieldPenalty)
     context:useFieldNum(fieldNum):areaToAvoid(areaToAvoid):allowReverse(self:getAllowReversePathfinding())
     self.pathfinderController:registerListeners(self, pathfindingCallbackFunc)
-    if type(target) ~= 'number' then
-        -- TODO: clarify this xOffset thing, it looks like the course interprets the xOffset differently (left < 0) than
-        -- the Giants coordinate system and the waypoint uses the course's conventions. This is confusing, should use
-        -- the same reference everywhere
-        local goal = PathfinderUtil.getWaypointAsState3D(target, -xOffset or 0, zOffset or 0)
-        self.pathfinderController:findPathToGoal(context, goal)
-
-    else
-        self.pathfinderController:findPathToNode(context, target, xOffset or 0, zOffset or 0)
-    end
+    self.pathfinderController:findPathToNode(context, target, xOffset or 0, zOffset or 0)
     return false
 end
 
@@ -1874,9 +1865,20 @@ end
 function AIDriveStrategyUnloadCombine:startPathfindingToInvertedGoalPositionMarker()
     self:setNewState(self.states.WAITING_FOR_PATHFINDER)
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
-    self:startPathfinding(self.invertedStartPositionMarkerNode, self.invertedGoalPositionOffset,
-            -1.5 * AIUtil.getLength(self.vehicle), fieldNum, nil,
-            self.onPathfindingDoneToInvertedGoalPositionMarker)
+
+    local context = PathfinderContext(self.vehicle)
+    context:maxFruitPercent(self:getMaxFruitPercent()):offFieldPenalty(self.offFieldPenalty)
+    context:useFieldNum(fieldNum):allowReverse(self:getAllowReversePathfinding())
+    self.pathfinderController:registerListeners(self, self.onPathfindingDoneToInvertedGoalPositionMarker,
+            self.onPathfindingFailedToInvertedGoalPositionMarker)
+    self.pathfinderController:findPathToNode(context, self.invertedStartPositionMarkerNode,
+            self.invertedGoalPositionOffset, -1.5 * AIUtil.getLength(self.vehicle))
+end
+
+function AIDriveStrategyUnloadCombine:onPathfindingFailedToInvertedGoalPositionMarker(controller, lastContext,
+                                                                                      wasLastRetry, currentRetryAttempt)
+    lastContext:maxFruitPercent(self.offFieldPenalty / 2)
+    controller:retry(lastContext)
 end
 
 --- Path to the start position was found.
