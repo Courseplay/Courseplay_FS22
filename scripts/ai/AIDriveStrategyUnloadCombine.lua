@@ -1293,37 +1293,6 @@ function AIDriveStrategyUnloadCombine:isFruitAt(target, xOffset, zOffset)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
--- Generic pathfinder wrapper
-------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyUnloadCombine:startPathfinding(
-        target, xOffset, zOffset, fieldNum, vehiclesToIgnore,
-        pathfindingCallbackFunc, areaToAvoid)
-    if self:isFruitAt(target, xOffset, zOffset) then
-        self:info('There is fruit at the target, disabling fruit avoidance')
-        self.maxFruitPercent = math.huge
-    end
-
-    self.offFieldPenalty = self:getOffFieldPenalty(self.combineToUnload)
-    local maxFruitPercent
-    if self.settings.avoidFruit:getValue() then
-        maxFruitPercent = self.maxFruitPercent
-    else
-        maxFruitPercent = math.huge
-    end
-    self:debug('Start pathfinding, fieldNum %d, maxFruitPercent %.1f, offFieldPenalty %.1f, xOffset %.1f, zOffset %.1f',
-            fieldNum, maxFruitPercent, self.offFieldPenalty, xOffset, zOffset)
-
-    areaToAvoid = areaToAvoid ~= nil and areaToAvoid or self.combineToUnload and self.combineToUnload:getCpDriveStrategy():getAreaToAvoid()
-
-    local context = PathfinderContext(self.vehicle):vehiclesToIgnore(vehiclesToIgnore)
-    context:maxFruitPercent(maxFruitPercent):offFieldPenalty(self.offFieldPenalty)
-    context:useFieldNum(fieldNum):areaToAvoid(areaToAvoid):allowReverse(self:getAllowReversePathfinding())
-    self.pathfinderController:registerListeners(self, pathfindingCallbackFunc)
-    self.pathfinderController:findPathToNode(context, target, xOffset or 0, zOffset or 0)
-    return false
-end
-
-------------------------------------------------------------------------------------------------------------------------
 -- Where are we related to the combine?
 ------------------------------------------------------------------------------------------------------------------------
 ---@return number, number, number distance between the tractor's front and the combine's back (always positive),
@@ -1860,6 +1829,7 @@ function AIDriveStrategyUnloadCombine:findOtherUnloaderAroundCombine(combine, co
         end
     end
 end
+
 -----------------------------------------------------------------------------------------------------------------------
 --- Find a path to the start position marker, but in the opposite direction of the marker and an offset of 4.5 m to the side.
 -----------------------------------------------------------------------------------------------------------------------
@@ -1912,7 +1882,6 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 --- Self unload
 -----------------------------------------------------------------------------------------------------------------------
----
 function AIDriveStrategyUnloadCombine:getSelfUnloadTargetParameters()
     return SelfUnloadHelper:getTargetParameters(
             self.fieldPolygon,
@@ -1948,49 +1917,38 @@ function AIDriveStrategyUnloadCombine:startSelfUnload(ignoreFruit)
         local context = PathfinderContext(self.vehicle)
         -- use a low field penalty to encourage the pathfinder to bridge that gap between the field and the trailer
         -- require full accuracy from pathfinder as we must exactly line up with the trailer
-        local maxFruitPercent
-        if not ignoreFruit and self.settings.avoidFruit:getValue() then
-            maxFruitPercent = self.maxFruitPercent
-        else
-            maxFruitPercent = math.huge
-        end
-        context:maxFruitPercent(maxFruitPercent):offFieldPenalty(0.1):mustBeAccurate(true)
+        context:maxFruitPercent(self:getMaxFruitPercent()):offFieldPenalty(0.1):mustBeAccurate(true)
         context:useFieldNum(fieldNum):allowReverse(self:getAllowReversePathfinding())
-        local done, path
-        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(
-                self.selfUnloadTargetNode, offsetX, -alignLength, context)
-        if done then
-            return self:onPathfindingDoneBeforeSelfUnload(path)
-        else
-            self:setPathfindingDoneCallback(self, self.onPathfindingDoneBeforeSelfUnload)
-        end
+        self.pathfinderController:registerListeners(self,
+                self.onPathfindingDoneBeforeSelfUnload,
+                self.onPathfindingFailedBeforeSelfUnload)
+        self.pathfinderController:findPathToNode(context, self.selfUnloadTargetNode, offsetX, -alignLength, 1)
     else
         self:debug('Pathfinder already active')
     end
     return true
 end
 
-function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeSelfUnload(path)
-    if path and #path > 2 then
-        self.retryingSelfUnloadPathfinding = false
+function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeSelfUnload(controller, lastContext,
+                                                                        wasLastRetry, currentRetryAttempt)
+    if currentRetryAttempt == 1 then
+        self:debug('Pathfinding to self unload failed once, retry with fruit avoidance disabled')
+        lastContext:maxFruitPercent(math.huge)
+        controller:retry(lastContext)
+    end
+end
+
+
+function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeSelfUnload(controller, success, course, goalNodeInvalid)
+    if success then
         self:debug('Pathfinding to self unload finished with %d waypoints (%d ms)',
                 #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
-        local selfUnloadCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-        if self.selfUnloadAlignCourse then
-            selfUnloadCourse:append(self.selfUnloadAlignCourse)
-            self.selfUnloadAlignCourse = nil
-        end
+        course:append(self.selfUnloadAlignCourse)
         self:setNewState(self.states.DRIVING_TO_SELF_UNLOAD)
-        self:startCourse(selfUnloadCourse, 1)
+        self:startCourse(course, 1)
         return true
-    elseif not self.retryingSelfUnloadPathfinding then
-        self.retryingSelfUnloadPathfinding = true
-        self:info('No path found to self unload in %d ms, retrying once with fruit avoidance disabled',
-                g_currentMission.time - (self.pathfindingStartedAt or 0))
-        self:startSelfUnload(true)
     else
-        self.retryingSelfUnloadPathfinding = false
-        self:debug('No path found to self unload in %d ms', g_currentMission.time - (self.pathfindingStartedAt or 0))
+        self:debug('No path found to self unload, stopping job.')
         self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
         return false
     end
@@ -2225,10 +2183,13 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
     --- Callback when the unloading has finished.
     self.fieldUnloadData.controller:setFinishDischargeCallback(self.onFieldUnloadingFinished)
     self:setNewState(self.states.WAITING_FOR_PATHFINDER)
-    local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
-    self:startPathfinding(self.fieldUnloadPositionNode, -self.fieldUnloadData.xOffset,
-            -AIUtil.getLength(self.vehicle) * 1.3, fieldNum, nil,
-            self.onPathfindingDoneBeforeUnloadingOnField)
+    local context = PathfinderContext(self.vehicle)
+    context:maxFruitPercent(self:getMaxFruitPercent()):offFieldPenalty(self.offFieldPenalty)
+    context:useFieldNum(CpFieldUtil.getFieldNumUnderVehicle(self.vehicle))
+    context:allowReverse(self:getAllowReversePathfinding())
+    self.pathfinderController:registerListeners(self, self.onPathfindingDoneBeforeUnloadingOnField)
+    self.pathfinderController:findPathToNode(context, self.fieldUnloadPositionNode,
+            -self.fieldUnloadData.xOffset, -AIUtil.getLength(self.vehicle) * 1.3)
 end
 
 --- Moves the field unload position to the center front of the heap.
@@ -2245,13 +2206,9 @@ function AIDriveStrategyUnloadCombine:updateFieldPositionByHeapSilo(heapSilo)
 end
 
 --- Path to the field unloading position was found.
----@param path table
----@param goalNodeInvalid boolean
-function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeUnloadingOnField(path, goalNodeInvalid)
-    if self:isPathFound(path, goalNodeInvalid, "Field unload position", false) and self.state == self.states.WAITING_FOR_PATHFINDER then
+function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeUnloadingOnField(controller, success, course, goalNodeInvalid)
+    if success and self.state == self.states.WAITING_FOR_PATHFINDER then
         self:setNewState(self.states.DRIVE_TO_FIELD_UNLOAD_POSITION)
-        local course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-
         --- Append straight alignment segment
         local x, _, z = course:getWaypointPosition(course:getNumberOfWaypoints())
         local _, _, dz = worldToLocal(self.fieldUnloadPositionNode, x, 0, z)
@@ -2401,7 +2358,9 @@ function AIDriveStrategyUnloadCombine:prepareForFieldUnload()
     end
 end
 
+------------------------------------------------------------------------------------------------------------------------
 --- Finished unloading and search for a park course that is on the opposite xOffset from the heap.
+------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:onFieldUnloadingFinished()
     local x, _, z = localToWorld(self.fieldUnloadPositionNode, 0, 0, 0)
     setTranslation(self.fieldUnloadTurnEndNode, x, 0, z)
@@ -2433,20 +2392,20 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadingFinished()
     end
 
     self:setNewState(self.states.WAITING_FOR_PATHFINDER)
-    local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
     self:debug("Disabling off-field penalty for driving to the park position.")
-    self.offFieldPenalty = 0
-    self:startPathfinding(self.fieldUnloadTurnEndNode, -self.fieldUnloadData.xOffset * 1.5,
-            -AIUtil.getLength(self.vehicle), fieldNum, nil,
-            self.onPathfindingDoneBeforeDrivingToFieldUnloadParkPosition)
+    local context = PathfinderContext(self.vehicle)
+    context:maxFruitPercent(self:getMaxFruitPercent()):offFieldPenalty(0)
+    context:useFieldNum(CpFieldUtil.getFieldNumUnderVehicle(self.vehicle))
+    context:allowReverse(self:getAllowReversePathfinding())
+    self.pathfinderController:registerListeners(self, self.onPathfindingDoneBeforeDrivingToFieldUnloadParkPosition)
+    self.pathfinderController:findPathToNode(context, self.fieldUnloadTurnEndNode,
+            -self.fieldUnloadData.xOffset * 1.5, -AIUtil.getLength(self.vehicle))
 end
 
 --- Course to the park position found.
-function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeDrivingToFieldUnloadParkPosition(path, goalNodeInvalid)
-    if self:isPathFound(path, goalNodeInvalid, "Field unload position park position", false) and self.state == self.states.WAITING_FOR_PATHFINDER then
+function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeDrivingToFieldUnloadParkPosition(controller, success, course, goalNodeInvalid)
+    if success and self.state == self.states.WAITING_FOR_PATHFINDER then
         self:setNewState(self.states.DRIVE_TO_FIELD_UNLOAD_PARK_POSITION)
-        local course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-
         --- Append straight alignment segment
         local x, _, z = course:getWaypointPosition(course:getNumberOfWaypoints())
         local _, _, dz = worldToLocal(self.fieldUnloadTurnEndNode, x, 0, z)
