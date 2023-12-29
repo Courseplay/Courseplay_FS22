@@ -1860,8 +1860,9 @@ function AIDriveStrategyUnloadCombine:findOtherUnloaderAroundCombine(combine, co
         end
     end
 end
-
+-----------------------------------------------------------------------------------------------------------------------
 --- Find a path to the start position marker, but in the opposite direction of the marker and an offset of 4.5 m to the side.
+-----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:startPathfindingToInvertedGoalPositionMarker()
     self:setNewState(self.states.WAITING_FOR_PATHFINDER)
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
@@ -1872,24 +1873,29 @@ function AIDriveStrategyUnloadCombine:startPathfindingToInvertedGoalPositionMark
     self.pathfinderController:registerListeners(self, self.onPathfindingDoneToInvertedGoalPositionMarker,
             self.onPathfindingFailedToInvertedGoalPositionMarker)
     self.pathfinderController:findPathToNode(context, self.invertedStartPositionMarkerNode,
-            self.invertedGoalPositionOffset, -1.5 * AIUtil.getLength(self.vehicle))
+            self.invertedGoalPositionOffset, -1.5 * AIUtil.getLength(self.vehicle), 2)
 end
 
 function AIDriveStrategyUnloadCombine:onPathfindingFailedToInvertedGoalPositionMarker(controller, lastContext,
                                                                                       wasLastRetry, currentRetryAttempt)
-    lastContext:maxFruitPercent(self.offFieldPenalty / 2)
-    controller:retry(lastContext)
+    if currentRetryAttempt == 1 then
+        self:debug('First attempt to find path to the start position failed, trying with reduced off-field penalty')
+        lastContext:offFieldPenalty(self.offFieldPenalty / 2)
+        controller:retry(lastContext)
+    elseif currentRetryAttempt == 2 then
+        self:debug('Second attempt to find path to the start position failed, trying with reduced off-field penalty and fruit percent')
+        lastContext:maxFruitPercent(self:getMaxFruitPercent() / 2):offFieldPenalty(self.offFieldPenalty / 2)
+        controller:retry(lastContext)
+    end
 end
 
 --- Path to the start position was found.
 ---@param path table
 ---@param goalNodeInvalid boolean
-function AIDriveStrategyUnloadCombine:onPathfindingDoneToInvertedGoalPositionMarker(path, goalNodeInvalid)
-    if self:isPathFound(path, goalNodeInvalid, "Inverted start position", false) and self.state == self.states.WAITING_FOR_PATHFINDER then
+function AIDriveStrategyUnloadCombine:onPathfindingDoneToInvertedGoalPositionMarker(controller, success, course, goalNodeInvalid)
+    if success and self.state == self.states.WAITING_FOR_PATHFINDER then
         self:debug("Found a path to the inverted goal position marker. Appending the missing straight segment.")
         self:setNewState(self.states.DRIVING_BACK_TO_START_POSITION_WHEN_FULL)
-        local course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-
         --- Append a straight alignment segment
         local x, _, z = course:getWaypointPosition(course:getNumberOfWaypoints())
         local dx, _, dz = localToWorld(self.invertedStartPositionMarkerNode, self.invertedGoalPositionOffset, 0, 0)

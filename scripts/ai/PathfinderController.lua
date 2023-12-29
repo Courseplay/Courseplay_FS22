@@ -192,7 +192,8 @@ function PathfinderController:onFinish(path, goalNodeInvalid)
     self:reset()
 end
 
---- Retry the last pathfinder call with context
+--- Retry the last pathfinder call with context. Will use the exact same call with the same target parameters,
+--- but the context passed in here, so constraints like off-field penalty or max fruit percent can be relaxed on retry.
 ---@param context PathfinderContext
 ---@return boolean true if retry successfully started
 function PathfinderController:retry(context)
