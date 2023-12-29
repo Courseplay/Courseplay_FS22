@@ -351,6 +351,14 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, height
 	local ax, ay, az = localToLocal(armTool.node, armVehicle.rootNode, 0, 0, 0)
 	local wx, _, wz = getWorldTranslation(armVehicle.rootNode)
 
+
+	local function draw(x1, y1, z1, x2, y2, z2, r, g, b)
+		if g_currentMission.controlledVehicle == shovelVehicle.rootVehicle and 
+			CpDebug:isChannelActive(CpDebug.DBG_SILO, shovelVehicle.rootVehicle) then 
+				DebugUtil.drawDebugLine(x1, y1, z1, x2, y2, z2, r, g, b)
+		end
+	end
+
 	local by = shovelY
 	if self.spec_foliageBending and self.spec_foliageBending.bendingNodes[1] then 
 		--- The foliage bending area can be used to get relatively exact dimensions of the shovel.
@@ -361,19 +369,19 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, height
 			local sx, _, sz = localToWorld(shovelTool.node, 0, 0, 0)
 			local bx1, by1, bz1 = localToWorld(bending.node, 0, 0, bending.minZ)
 			local bx2, by2, bz2 = localToWorld(bending.node, 0, 0, bending.maxZ)
-			DebugUtil.drawDebugLine(bx1, by1, bz1, bx2, by2, bz2, 0, 0, 1)
+			draw(bx1, by1, bz1, bx2, by2, bz2, 0, 0, 1)
 			if by1 < by2 then 
 				_, by, _ = worldToLocal(shovelTool.node, sx, by1, sz)
-				DebugUtil.drawDebugLine(sx, by1, sz, sx, by1 - by, sz, 0, 0, 1)
+				draw(sx, by1, sz, sx, by1 - by, sz, 0, 0, 1)
 			else 
 				_, by, _ = worldToLocal(shovelTool.node, sx, by2, sz)
-				DebugUtil.drawDebugLine(sx, by2, sz, sx, by2 - by, sz, 0, 0, 1)
+				draw(sx, by2, sz, sx, by2 - by, sz, 0, 0, 1)
 			end
 		end
 	else 
 		local bx1, by1, bz1 = localToWorld(self.rootNode, 0, 0, self.size.lengthOffset + self.size.length/2)
 		local bx2, by2, bz2 = localToWorld(self.rootNode, 0, 0, self.size.lengthOffset - self.size.length/2)
-		DebugUtil.drawDebugLine(bx1, by1, bz1, bx2, by2, bz2, 0, 0, 1)
+		draw(bx1, by1, bz1, bx2, by2, bz2, 0, 0, 1)
 		local sx, _, sz = localToWorld(shovelTool.node, 0, 0, 0)
 		if by1 < by2 then 
 			_, by, _ = worldToLocal(shovelTool.node, sx, by1, sz)
