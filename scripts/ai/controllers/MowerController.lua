@@ -12,7 +12,7 @@ end
 
 function MowerController:getDriveData()
     local maxSpeed = nil
-    if g_currentMission.snowSystem:getHeight() > 0 then 
+    if g_currentMission.snowSystem:getHeight() > 0 and g_currentMission.isSnowEnabled then 
         self:setInfoText(InfoTextManager.WAITING_FOR_SNOW_TO_CLEAR)
         maxSpeed = 0
     else 
