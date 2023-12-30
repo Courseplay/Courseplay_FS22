@@ -435,8 +435,8 @@ function AIDriveStrategyShovelSiloLoader:hasTrailerValidSpecializations(trailer)
         --- All normal trailers
         return true
     end
-    if SpecializationUtil.hasSpecialization(Sprayer, trailer.specializations)
-            and trailer.spec_sprayer.isManureSpreader then
+    if SpecializationUtil.hasSpecialization(Sprayer, trailer.specializations) then
+       --     and trailer.spec_sprayer.isManureSpreader then
         --- Manure spreader
         return true
     end
