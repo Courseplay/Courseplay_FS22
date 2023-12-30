@@ -440,6 +440,10 @@ function AIDriveStrategyShovelSiloLoader:hasTrailerValidSpecializations(trailer)
         --- Manure spreader
         return true
     end
+    if SpecializationUtil.hasSpecialization(MixerWagon, trailer.specializations) then
+        --- mixer wagon
+        return true
+    end
     return false
 end
 
