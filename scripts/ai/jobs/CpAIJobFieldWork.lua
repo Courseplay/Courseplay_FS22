@@ -33,7 +33,7 @@ function CpAIJobFieldWork:onPreStart()
     self:removeTask(self.attachHeaderTask)
     self:removeTask(self.driveToFieldWorkStartTask)
     self:removeTask(self.fieldWorkTask)
-    local vehicle
+    local vehicle = self:getVehicle()
     if vehicle and (AIUtil.hasCutterOnTrailerAttached(vehicle) 
         or AIUtil.hasCutterAsTrailerAttached(vehicle)) then 
         --- Only add the attach header task, if needed.
