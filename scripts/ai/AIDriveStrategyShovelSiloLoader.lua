@@ -743,6 +743,16 @@ function AIDriveStrategyShovelSiloLoader:startReversingAwayFromUnloading()
     self:setNewState(self.states.REVERSING_AWAY_FROM_UNLOAD)
 end
 
+--- The hud trigger of an mixer wagon has the same collision flag as an vehicle,
+--- so we need to explicitly ignore this trigger for the pathfinder. 
+local function addMixerWagonTriggers(mixerWagon)
+    local spec = mixerWagon.spec_mixerWagon
+    if spec.hudTrigger then 
+        PathfinderUtil.CollisionDetector.addNodeToIgnore(spec.hudTrigger)
+    end
+end
+MixerWagon.onLoad = Utils.appendedFunction(MixerWagon.onLoad, addMixerWagonTriggers)
+
 local function deleteMixerWagonTrigger(mixerWagon)
     local spec = mixerWagon.spec_mixerWagon
     if spec.hudTrigger then 
@@ -750,14 +760,3 @@ local function deleteMixerWagonTrigger(mixerWagon)
     end
 end
 MixerWagon.onDelete = Utils.prependedFunction(MixerWagon.onDelete, deleteMixerWagonTrigger)
-
-
---- Mixerwagon triggers need to be ignored ...
-local function addMixerWagonTriggers(mixerWagon)
-    local spec = mixerWagon.spec_mixerWagon
-    if spec.hudTrigger then 
-        PathfinderUtil.CollisionDetector.addNodeToIgnore(spec.hudTrigger)
-    end
-end
-
-MixerWagon.onLoad = Utils.appendedFunction(MixerWagon.onLoad, addMixerWagonTriggers)
