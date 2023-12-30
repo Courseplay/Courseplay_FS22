@@ -694,7 +694,12 @@ function AIDriveStrategyShovelSiloLoader:approachTrailerForUnloading()
     local firstWpIx = course:getNearestWaypoints(self.vehicle:getAIDirectionNode())
     self:startCourse(course, firstWpIx)
     self:setNewState(self.states.DRIVING_TO_UNLOAD)
-    self.shovelController:calculateMinimalUnloadingHeight(self.targetTrailer.exactFillRootNode)
+    if self.targetTrailer.trailer["spec_pdlc_goeweilPack.balerStationary"] then
+        --- Minimal height calculation is not working for Goeweil balers
+        self.shovelController:setMinimalUnloadingHeight(2.5)
+    else
+        self.shovelController:calculateMinimalUnloadingHeight(self.targetTrailer.exactFillRootNode)
+    end
 end
 
 --- Drives from the position node in front of the trigger to the unload trigger, so the unloading can begin after that.
