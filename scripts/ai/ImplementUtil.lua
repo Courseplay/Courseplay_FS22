@@ -518,7 +518,12 @@ function ImplementUtil.getCanLoadTo(loadTargetImplement, implementToLoadFrom, di
                 fillUnitIndex, loadTargetImplement:getOwnerFarmId(), implementToLoadFrom:getActiveFarm())
             return false
         end
-        return true, fillUnitIndex, loadTargetImplement:getFillUnitExactFillRootNode(fillUnitIndex)
+        local exactFillRootNode = loadTargetImplement:getFillUnitExactFillRootNode(fillUnitIndex)
+        if not exactFillRootNode then 
+            debug("Fill unit(%d) has no valid exact fill root node!", fillUnitIndex)
+            return false
+        end
+        return true, fillUnitIndex, exactFillRootNode
     end
 
     local validTarget, targetFillUnitIndex, exactFillRootNode
