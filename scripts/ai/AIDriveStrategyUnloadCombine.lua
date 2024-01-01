@@ -980,57 +980,6 @@ function AIDriveStrategyUnloadCombine:startCourseFollowingCombine()
     self:setNewState(self.states.UNLOADING_MOVING_COMBINE)
 end
 
-function AIDriveStrategyUnloadCombine:onPathfindingError(goalNodeInvalid, goalDescriptor, dontRelax)
-    if goalNodeInvalid then
-        -- no point in relaxing the constraints here
-        self:error('No path found to %s, goal occupied by a vehicle, waiting...', goalDescriptor)
-        return false
-    elseif not dontRelax then
-        self.pathfinderFailureCount = self.pathfinderFailureCount + 1
-        if self.pathfinderFailureCount > 1 then
-            self:error('No path found to %s in %d ms, pathfinder failed at least twice, trying a path through crop and relaxing pathfinder field constraint...',
-                    goalDescriptor,
-                    g_time - (self.pathfindingStartedAt or 0))
-            self.maxFruitPercent = math.huge
-        elseif self.pathfinderFailureCount == 1 then
-            self.offFieldPenalty = self.offFieldPenalty / 2
-            self:error('No path found to %s in %d ms, pathfinder failed once, relaxing pathfinder field constraint (%.1f)...',
-                    goalDescriptor,
-                    g_time - (self.pathfindingStartedAt or 0),
-                    self.offFieldPenalty)
-        end
-        return false
-    end
-end
-
----@param dontRelax boolean do not relax pathfinder constraint on failure
-function AIDriveStrategyUnloadCombine:isPathFound(path, goalNodeInvalid, goalDescriptor, dontRelax)
-    if path and #path > 2 then
-        self:debug('Found path (%d waypoints, %d ms)', #path, g_time - (self.pathfindingStartedAt or 0))
-        self:resetPathfinder()
-        return true
-    else
-        if goalNodeInvalid then
-            self:error('No path found to %s, goal occupied by a vehicle, waiting...', goalDescriptor)
-            return false
-        elseif not dontRelax then
-            self.pathfinderFailureCount = self.pathfinderFailureCount + 1
-            if self.pathfinderFailureCount > 1 then
-                self:error('No path found to %s in %d ms, pathfinder failed at least twice, trying a path through crop and relaxing pathfinder field constraint...',
-                        goalDescriptor,
-                        g_time - (self.pathfindingStartedAt or 0))
-                self.maxFruitPercent = math.huge
-            elseif self.pathfinderFailureCount == 1 then
-                self.offFieldPenalty = self.offFieldPenalty / 2
-                self:error('No path found to %s in %d ms, pathfinder failed once, relaxing pathfinder field constraint (%.1f)...',
-                        goalDescriptor,
-                        g_time - (self.pathfindingStartedAt or 0),
-                        self.offFieldPenalty)
-            end
-            return false
-        end
-    end
-end
 function AIDriveStrategyUnloadCombine:getCombineToUnload()
     return self.combineToUnload
 end
@@ -1059,6 +1008,7 @@ end
 
 function AIDriveStrategyUnloadCombine:onPathfindingDoneToMovingCombine(controller, success, course, goalNodeInvalid)
     if success and self.state == self.states.WAITING_FOR_PATHFINDER then
+        self:debug('Pathfinding to moving combine successful.')
         -- add a short straight section to align in case we get there before the combine
         -- pathfinding does not guarantee the last section points into the target direction so we may
         -- end up not parallel to the combine's course when we extend the pathfinder course in the direction of the
@@ -1070,7 +1020,7 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneToMovingCombine(controlle
         self:setNewState(self.states.DRIVING_TO_MOVING_COMBINE)
         return true
     else
-        self:onPathfindingError(goalNodeInvalid, CpUtil.getName(self.combineToUnload))
+        self:debug('Pathfinding to moving combine failed.')
         self:startWaitingForSomethingToDo()
         return false
     end
@@ -1092,13 +1042,14 @@ end
 
 function AIDriveStrategyUnloadCombine:onPathfindingDoneToWaitingCombine(controller, success, course, goalNodeInvalid)
     if success and self.state == self.states.WAITING_FOR_PATHFINDER then
+        self:debug('Pathfinding to waiting combine successful')
         self:resetCombinePathfinderContext()
         course:adjustForReversing(math.max(1, -AIUtil.getDirectionNodeToReverserNodeOffset(self.vehicle)))
         self:startCourse(course, 1)
         self:setNewState(self.states.DRIVING_TO_COMBINE)
         return true
     else
-        self:onPathfindingError(goalNodeInvalid, CpUtil.getName(self.combineToUnload))
+        self:debug('Pathfinding to waiting combine failed')
         self:startWaitingForSomethingToDo()
         return false
     end
@@ -1941,8 +1892,6 @@ end
 
 function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeSelfUnload(controller, success, course, goalNodeInvalid)
     if success then
-        self:debug('Pathfinding to self unload finished with %d waypoints (%d ms)',
-                #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
         course:append(self.selfUnloadAlignCourse)
         self:setNewState(self.states.DRIVING_TO_SELF_UNLOAD)
         self:startCourse(course, 1)
