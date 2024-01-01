@@ -1,29 +1,13 @@
---- Bunker silo task
----@class CpAITaskSiloLoader
----@field job table
-CpAITaskSiloLoader = {}
-local CpAITaskSiloLoader_mt = Class(CpAITaskSiloLoader, AITask)
 
-function CpAITaskSiloLoader.new(isServer, job, customMt)
-	local self = AITask.new(isServer, job, customMt or CpAITaskSiloLoader_mt)
-	self.vehicle = nil
-	self.silo = nil
-	self.heap = nil
-	return self
-end
+
+---@class CpAITaskSiloLoader : CpAITask
+---@field job CpAIJobSiloLoader
+CpAITaskSiloLoader = CpObject(CpAITask)
 
 function CpAITaskSiloLoader:reset()
-	self.vehicle = nil
 	self.silo = nil
 	self.heap = nil
-	CpAITaskSiloLoader:superClass().reset(self)
-end
-
-function CpAITaskSiloLoader:update(dt)
-end
-
-function CpAITaskSiloLoader:setVehicle(vehicle)
-	self.vehicle = vehicle
+	CpAITask.reset(self)
 end
 
 function CpAITaskSiloLoader:setSiloAndHeap(silo, heap)
@@ -33,17 +17,26 @@ end
 
 function CpAITaskSiloLoader:start()
 	if self.isServer then
-		local _, unloadTrigger, unloadStation = self.job:getUnloadTriggerAt(self.job:getCpJobParameters().unloadPosition)
-		self.vehicle:startCpSiloLoaderWorker(self.job:getCpJobParameters(), self.silo, self.heap, unloadTrigger, unloadStation)
+		local strategy
+        if SpecializationUtil.hasSpecialization(ConveyorBelt, self.vehicle.specializations) then 
+            self:debug("Starting a silo loader strategy.")
+            strategy = AIDriveStrategySiloLoader(self, self.job)
+        else 
+            self:debug("Starting a shovel silo loader strategy.")
+            strategy = AIDriveStrategyShovelSiloLoader(self, self.job)
+			local _, unloadTrigger, unloadStation = self.job:getUnloadTriggerAt(self.job:getCpJobParameters().unloadPosition)
+            strategy:setUnloadTriggerAndStation(unloadTrigger, unloadStation)
+        end
+        strategy:setSiloAndHeap(self.silo, self.heap)
+        strategy:setAIVehicle(self.vehicle, self.job:getCpJobParameters())
+        self.vehicle:startCpWithStrategy(strategy)
 	end
-
-	CpAITaskSiloLoader:superClass().start(self)
+	CpAITask.start(self)
 end
 
-function CpAITaskSiloLoader:stop()
-	CpAITaskSiloLoader:superClass().stop(self)
-
+function CpAITaskSiloLoader:stop(wasJobStopped)
 	if self.isServer then
-		self.vehicle:stopCpSiloLoaderWorker()
+		self.vehicle:stopCpDriver(wasJobStopped)
 	end
+	CpAITask.stop(self)
 end

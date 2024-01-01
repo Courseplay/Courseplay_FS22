@@ -407,7 +407,7 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <text name="CP_courseManager_noAccessError" text="¡Sin acceso a la carpeta (%s)!"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="El destino no es una carpeta (%s)!"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="El destino no es una ruta (%s)!"/>
-    <text name="CP_courseManager_invalidNameError" text="Course name (%s) is invalid!"/>
+    <text name="CP_courseManager_invalidNameError" text="El nombre del curso (%s) no es válido!"/>
     <text name="CP_courseManager_basicSettings" text="Interacción con rutas."/>
     <text name="CP_courseManager_advancedSettings" text="Editar archivos."/>
     <text name="CP_courseManager_activate" text="Activar"/>

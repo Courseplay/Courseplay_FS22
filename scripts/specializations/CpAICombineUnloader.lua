@@ -11,9 +11,6 @@ CpAICombineUnloader.NAME = ".cpAICombineUnloader"
 CpAICombineUnloader.SPEC_NAME = CpAICombineUnloader.MOD_NAME .. CpAICombineUnloader.NAME
 CpAICombineUnloader.KEY = "."..CpAICombineUnloader.MOD_NAME..CpAICombineUnloader.NAME
 
---- Register all active unloaders here to access them fast.
-CpAICombineUnloader.activeUnloaders = {}
-
 function CpAICombineUnloader.initSpecialization()
     local schema = Vehicle.xmlSchemaSavegame
     local key = "vehicles.vehicle(?)" .. CpAICombineUnloader.KEY
@@ -126,14 +123,10 @@ function CpAICombineUnloader.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, 'onLoadFinished', CpAICombineUnloader)
     SpecializationUtil.registerEventListener(vehicleType, 'onReadStream', CpAICombineUnloader)
     SpecializationUtil.registerEventListener(vehicleType, 'onWriteStream', CpAICombineUnloader)
-    SpecializationUtil.registerEventListener(vehicleType, 'onPreDelete', CpAICombineUnloader)
     SpecializationUtil.registerEventListener(vehicleType, 'onUpdate', CpAICombineUnloader)
 end
 
 function CpAICombineUnloader.registerFunctions(vehicleType)
-    SpecializationUtil.registerFunction(vehicleType, "startCpCombineUnloader", CpAICombineUnloader.startCpCombineUnloader)
-    SpecializationUtil.registerFunction(vehicleType, "stopCpCombineUnloader", CpAICombineUnloader.stopCpCombineUnloader)
-
     SpecializationUtil.registerFunction(vehicleType, "startCpCombineUnloaderUnloading", CpAICombineUnloader.startCpCombineUnloaderUnloading)
 
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpCombineUnloader", CpAICombineUnloader.getCanStartCpCombineUnloader)
@@ -194,9 +187,6 @@ function CpAICombineUnloader:onWriteStream(streamId, connection)
     spec.cpJob:writeStream(streamId, connection)
 end
 
-function CpAICombineUnloader:onPreDelete()
-    CpAICombineUnloader.activeUnloaders[self.id] = nil
-end
 
 function CpAICombineUnloader:getCpCombineUnloaderJobParameters()
     local spec = self.spec_cpAICombineUnloader
@@ -302,19 +292,6 @@ function CpAICombineUnloader:startCpAtLastWp(superFunc)
     else 
         return true
     end
-end
-
-function CpAICombineUnloader:startCpCombineUnloader(jobParameters)
-    local strategy = AIDriveStrategyUnloadCombine.new()
-    strategy:setAIVehicle(self)
-    strategy:setJobParameterValues(jobParameters)
-    self:startCpWithStrategy(strategy)
-    CpAICombineUnloader.activeUnloaders[self.id] = self
-end
-
-function CpAICombineUnloader:stopCpCombineUnloader()
-    CpAICombineUnloader.activeUnloaders[self.id] = nil
-    self:stopCpDriver()
 end
 
 --- Forces the driver to unload now.

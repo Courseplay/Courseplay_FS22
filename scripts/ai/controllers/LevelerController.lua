@@ -34,7 +34,7 @@ end
 function LevelerController:update(dt)
 	if self.attacherJointControlSpec and self.attacherJointControlSpec.jointDesc ~= nil then 
 		self:updateHeight(dt)	
-	else 
+	elseif self.levelerTool then 
 		self:updateCylinderedHeight(dt)
 	end
 end

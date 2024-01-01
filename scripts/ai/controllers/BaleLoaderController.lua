@@ -112,5 +112,5 @@ function BaleLoaderController:isBaleFinderMode()
     --- and needs to stop when the full.
     --- TODO: this is a more a hack and the fieldwork strategy 
     ---       or another instance should handle the is full check
-    return self.driveStrategy:isa(AIDriveStrategyFindBales)
+    return self.driveStrategy:is_a(AIDriveStrategyFindBales)
 end

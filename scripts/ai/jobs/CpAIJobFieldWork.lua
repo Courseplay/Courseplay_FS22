@@ -23,11 +23,23 @@ function CpAIJobFieldWork:setupTasks(isServer)
     CpAIJobFieldWork:superClass().setupTasks(self, isServer)
     -- then we add our own driveTo task to drive from the target position to the waypoint where the
     -- fieldwork starts (first waypoint or the one we worked on last)
-    self.attachHeaderTask = CpAITaskAttachHeader.new(isServer, self)
-    self:addTask(self.attachHeaderTask)
-    self.driveToFieldWorkStartTask = CpAITaskDriveTo.new(isServer, self)
+    self.attachHeaderTask = CpAITaskAttachHeader(isServer, self)
+    self.driveToFieldWorkStartTask = CpAITaskDriveTo(isServer, self)
+    self.fieldWorkTask = CpAITaskFieldWork(isServer, self)
+end
+
+function CpAIJobFieldWork:onPreStart()
+    CpAIJob.onPreStart(self)
+    self:removeTask(self.attachHeaderTask)
+    self:removeTask(self.driveToFieldWorkStartTask)
+    self:removeTask(self.fieldWorkTask)
+    local vehicle = self:getVehicle()
+    if vehicle and (AIUtil.hasCutterOnTrailerAttached(vehicle) 
+        or AIUtil.hasCutterAsTrailerAttached(vehicle)) then 
+        --- Only add the attach header task, if needed.
+        self:addTask(self.attachHeaderTask)
+    end
     self:addTask(self.driveToFieldWorkStartTask)
-    self.fieldWorkTask = CpAITaskFieldWork.new(isServer, self)
     self:addTask(self.fieldWorkTask)
 end
 
@@ -36,7 +48,7 @@ function CpAIJobFieldWork:setupJobParameters()
     self:setupCpJobParameters(CpJobParameters(self))
 end
 
----@param vehicle Vehicle
+---@param vehicle table
 ---@param mission Mission
 ---@param farmId number
 ---@param isDirectStart boolean disables the drive to by giants
@@ -81,18 +93,16 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
     end
     self.hasValidPosition = false
     self.foundVines = nil
-    local isCustomField
-    self.fieldPolygon, isCustomField = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
-
-    if self.fieldPolygon then
+    local fieldPolygon, isCustomField = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
+    self:setFieldPolygon(fieldPolygon)
+    if fieldPolygon then
         self.hasValidPosition = true
-        self.foundVines = g_vineScanner:findVineNodesInField(self.fieldPolygon, tx, tz, self.customField ~= nil)
+        self.foundVines = g_vineScanner:findVineNodesInField(fieldPolygon, tx, tz, self.customField ~= nil)
         if self.foundVines then
             CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Found vine nodes, generating a vine field border.")
-            self.fieldPolygon = g_vineScanner:getCourseGeneratorVertices(0, tx, tz)
+            fieldPolygon = g_vineScanner:getCourseGeneratorVertices(0, tx, tz)
         end
-
-        self.selectedFieldPlot:setWaypoints(self.fieldPolygon)
+        self.selectedFieldPlot:setWaypoints(fieldPolygon)
         self.selectedFieldPlot:setVisible(true)
         self.selectedFieldPlot:setBrightColor(true)
         if isCustomField then
@@ -114,7 +124,6 @@ function CpAIJobFieldWork:setValues()
     self.driveToFieldWorkStartTask:setVehicle(vehicle)
     self.attachHeaderTask:setVehicle(vehicle)
     self.fieldWorkTask:setVehicle(vehicle)
-    self:validateFieldSetup()
 end
 
 --- Called when parameters change, scan field
@@ -177,6 +186,7 @@ end
 --- Button callback to generate a field work course.
 function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
     local vehicle = self.vehicleParameter:getVehicle()
+    local fieldPolygon = self:getFieldPolygon()
     local settings = vehicle:getCourseGeneratorSettings()
     local tx, tz = self.cpJobParameters.fieldPosition:getPosition()
     local ok, course
@@ -196,7 +206,7 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
         )
     else
 
-        ok, course = CourseGeneratorInterface.generate(self.fieldPolygon,
+        ok, course = CourseGeneratorInterface.generate(fieldPolygon,
                 { x = tx, z = tz },
                 settings.isClockwise:getValue(),
                 settings.workWidth:getValue(),
@@ -269,44 +279,6 @@ function CpAIJobFieldWork:setStartPosition(startPosition)
     if self.fieldWorkTask then
         self.fieldWorkTask:setStartPosition(startPosition)
     end
-end
-
-function CpAIJobFieldWork:getNextTaskIndex(isSkipTask)
-    local nextTaskIndex = CpAIJobFieldWork:superClass().getNextTaskIndex(self, isSkipTask)
-    if self.currentTaskIndex == self.driveToTask.taskIndex then
-        --- Checks if a cutter is attached on the back, 
-        --- so the attach header strategy needs to be used.
-        local vehicle = self.vehicleParameter:getVehicle()
-        if vehicle and (AIUtil.hasCutterOnTrailerAttached(vehicle) 
-            or AIUtil.hasCutterAsTrailerAttached(vehicle)) then 
-            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Cutter on trailer attached.")
-            return nextTaskIndex
-        else 
-            --- Header Attach strategy is not needed.
-            return nextTaskIndex + 1
-        end
-	end
-
-	return nextTaskIndex
-end
-
-function CpAIJobFieldWork:getStartTaskIndex()
-    if self.isDirectStart or self:isTargetReached() then 
-        local vehicle = self.vehicleParameter:getVehicle()
-        if AIUtil.hasCutterOnTrailerAttached(vehicle) or 
-            AIUtil.hasCutterAsTrailerAttached(vehicle) then 
-            --- Makes sure the direct start from the hud, starts with the attach header strategy.
-            return 2
-        end
-        --- Skips the attach header strategy.
-        return 3
-    end
-    return 1
-end
-
-function CpAIJobFieldWork:onFinishAttachCutter()
-    --- Finished attaching a given header.
-    self.attachHeaderTask:skip()
 end
 
 --- Gets the additional task description shown.

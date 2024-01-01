@@ -21,7 +21,7 @@ function CpAIJobBunkerSilo:setupTasks(isServer)
 	-- this will add a standard driveTo task to drive to the target position selected by the user
 	CpAIJob.setupTasks(self, isServer)
 	
-	self.bunkerSiloTask = CpAITaskBunkerSilo.new(isServer, self)
+	self.bunkerSiloTask = CpAITaskBunkerSilo(isServer, self)
 	self:addTask(self.bunkerSiloTask)
 end
 
@@ -80,11 +80,6 @@ function CpAIJobBunkerSilo:validateBunkerSiloSetup(isValid, errorMessage)
 	]]--
 	self.bunkerSiloTask:setSilo(self.bunkerSilo)
 	
-	local x, z = self.cpJobParameters.startPosition:getPosition()
-	local angle = self.cpJobParameters.startPosition:getAngle()
-	local dirX, dirZ = self.cpJobParameters.startPosition:getDirection()
-	self.bunkerSiloTask:setParkPosition(x, z, angle, dirX, dirZ)
-
 	if not self.hasValidPosition or self.bunkerSilo == nil then 
 		return false, g_i18n:getText("CP_error_no_bunkerSilo_found")
 	end
@@ -124,11 +119,6 @@ function CpAIJobBunkerSilo:readStream(streamId, connection)
 	local x, z = self.cpJobParameters.siloPosition:getPosition()
 	self.hasValidPosition, self.bunkerSilo =  g_bunkerSiloManager:getBunkerSiloAtPosition(x, z)
 	self.bunkerSiloTask:setSilo(self.bunkerSilo)
-
-	local x, z = self.cpJobParameters.startPosition:getPosition()
-	local angle = self.cpJobParameters.startPosition:getAngle()
-	local dirX, dirZ = self.cpJobParameters.startPosition:getDirection()
-	self.bunkerSiloTask:setParkPosition(x, z, angle, dirX, dirZ)
 end
 
 --- Gets the additional task description shown.

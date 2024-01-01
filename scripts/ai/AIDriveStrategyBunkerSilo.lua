@@ -18,8 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 --- Drive strategy for bunker silos.
 ---@class AIDriveStrategyBunkerSilo : AIDriveStrategyCourse
-AIDriveStrategyBunkerSilo = {}
-local AIDriveStrategyBunkerSilo_mt = Class(AIDriveStrategyBunkerSilo, AIDriveStrategyCourse)
+AIDriveStrategyBunkerSilo = CpObject(AIDriveStrategyCourse)
 
 AIDriveStrategyBunkerSilo.myStates = {
     DRIVING_TO_SILO = {},
@@ -38,12 +37,8 @@ AIDriveStrategyBunkerSilo.isStuckBackOffset = 12
 AIDriveStrategyBunkerSilo.maxDriveIntoTheSiloAttempts = 2
 AIDriveStrategyBunkerSilo.endReachedOffset = 3
 
-function AIDriveStrategyBunkerSilo.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategyBunkerSilo_mt
-    end
-    ---@type AIDriveStrategyBunkerSilo
-    local self = AIDriveStrategyCourse.new(customMt)
+function AIDriveStrategyBunkerSilo:init(task, job)
+    AIDriveStrategyCourse.init(self, task, job)
     AIDriveStrategyCourse.initStates(self, AIDriveStrategyBunkerSilo.myStates)
     self.state = self.states.INITIAL
 
@@ -55,8 +50,6 @@ function AIDriveStrategyBunkerSilo.new(customMt)
 
     self.isStuckTimer = Timer.new(self.isStuckMs)
     self.driveIntoSiloAttempts = 0
-
-    return self
 end
 
 function AIDriveStrategyBunkerSilo:delete()
@@ -71,7 +64,7 @@ function AIDriveStrategyBunkerSilo:delete()
         self.turnNode = nil
     end
 
-    AIDriveStrategyBunkerSilo:superClass().delete(self)
+    AIDriveStrategyCourse.delete(self)
 end
 
 function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
@@ -178,7 +171,9 @@ function AIDriveStrategyBunkerSilo:setSilo(silo)
 	self.silo = silo	
 end
 
-function AIDriveStrategyBunkerSilo:setParkPosition(parkPosition) 
+function AIDriveStrategyBunkerSilo:setAIVehicle(vehicle, jobParameters)
+    AIDriveStrategyCourse.setAIVehicle(self, vehicle, jobParameters)
+    local parkPosition = jobParameters.startPosition
     if parkPosition ~= nil and parkPosition.x ~= nil and parkPosition.z ~= nil and parkPosition.angle ~= nil then
         self.parkNode = CpUtil.createNode("parkNode", parkPosition.x, parkPosition.z, parkPosition.angle)
         self:debug("Valid park position set.")
@@ -274,12 +269,12 @@ function AIDriveStrategyBunkerSilo:isTemporaryOutOfSiloDrivingAllowed()
 end
 
 function AIDriveStrategyBunkerSilo:checkProximitySensors(moveForwards)
-    AIDriveStrategyBunkerSilo:superClass().checkProximitySensors(self, moveForwards)
+    AIDriveStrategyCourse.checkProximitySensors(self, moveForwards)
   
 end
 
 function AIDriveStrategyBunkerSilo:update(dt)
-    AIDriveStrategyBunkerSilo:superClass().update(self, dt)
+    AIDriveStrategyCourse.update(self, dt)
     self:updateImplementControllers(dt)
     if CpDebug:isChannelActive(self.debugChannel, self.vehicle) then
 

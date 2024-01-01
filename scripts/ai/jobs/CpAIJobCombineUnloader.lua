@@ -14,7 +14,6 @@ function CpAIJobCombineUnloader.new(isServer, customMt)
 	local self = CpAIJob.new(isServer, customMt or AIJobCombineUnloaderCp_mt)
 
 	self.lastPositionX, self.lastPositionZ = math.huge, math.huge
-    self.hasValidPosition = false
 
     self.selectedFieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
     self.selectedFieldPlot:setVisible(false)
@@ -37,14 +36,16 @@ end
 
 function CpAIJobCombineUnloader:setupTasks(isServer)
 	CpAIJob.setupTasks(self, isServer)
-	self.combineUnloaderTask = CpAITaskCombineUnloader.new(isServer, self)
+	self.combineUnloaderTask = CpAITaskCombineUnloader(isServer, self)
 	self:addTask(self.combineUnloaderTask)
 
 	--- Giants unload
+	self.waitForFillingTask = self.combineUnloaderTask
 	self.driveToUnloadingTask = AITaskDriveTo.new(isServer, self)
 	self.dischargeTask = AITaskDischarge.new(isServer, self)
 	self:addTask(self.driveToUnloadingTask)
 	self:addTask(self.dischargeTask)
+	
 end
 
 function CpAIJobCombineUnloader:setupJobParameters()
@@ -62,10 +63,10 @@ function CpAIJobCombineUnloader:getIsAvailableForVehicle(vehicle)
 end
 
 function CpAIJobCombineUnloader:getCanStartJob()
-	return self.hasValidPosition
+	return self:getFieldPolygon()
 end
 
----@param vehicle Vehicle
+---@param vehicle table
 ---@param mission Mission
 ---@param farmId number
 ---@param isDirectStart boolean disables the drive to by giants
@@ -114,7 +115,6 @@ function CpAIJobCombineUnloader:setValues()
 	CpAIJob.setValues(self)
 	local vehicle = self.vehicleParameter:getVehicle()
 	self.combineUnloaderTask:setVehicle(vehicle)
-	self:validateFieldPosition()
 	self:setupGiantsUnloaderData(vehicle)
 end
 
@@ -124,10 +124,10 @@ function CpAIJobCombineUnloader:validateFieldPosition(isValid, errorMessage)
 		return false, g_i18n:getText("CP_error_not_on_field")
 	end
 	local _
-	self.fieldPolygon, _ = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
-	self.hasValidPosition = self.fieldPolygon ~= nil
-	if self.hasValidPosition then 
-		self.selectedFieldPlot:setWaypoints(self.fieldPolygon)
+	local fieldPolygon, _ = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
+	self:setFieldPolygon(fieldPolygon)
+	if fieldPolygon then 
+		self.selectedFieldPlot:setWaypoints(fieldPolygon)
         self.selectedFieldPlot:setVisible(true)
 	else
 		return false, g_i18n:getText("CP_error_not_on_field")
@@ -137,7 +137,6 @@ end
 
 --- Called when parameters change, scan field
 function CpAIJobCombineUnloader:validate(farmId)
-	self.hasValidPosition = false
 	self.selectedFieldPlot:setVisible(false)
 	self.heapPlot:setVisible(false)
 	local isValid, errorMessage = CpAIJob.validate(self, farmId)
@@ -156,6 +155,7 @@ function CpAIJobCombineUnloader:validate(farmId)
 	if not isValid then
 		return isValid, errorMessage
 	end
+	local fieldPolygon = self:getFieldPolygon()
 	------------------------------------
 	--- Validate start distance to field
 	-------------------------------------
@@ -167,13 +167,13 @@ function CpAIJobCombineUnloader:validate(farmId)
 		--- Checks the distance for starting with the hud, as a safety check.
 		--- Firstly check, if the vehicle is near the field.
 		local x, _, z = getWorldTranslation(vehicle.rootNode)
-		isValid = CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
-				  CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < self.minStartDistanceToField
+		isValid = CpMathUtil.isPointInPolygon(fieldPolygon, x, z) or 
+				  CpMathUtil.getClosestDistanceToPolygonEdge(fieldPolygon, x, z) < self.minStartDistanceToField
 		if not isValid and useGiantsUnload then 
 			--- Alternatively check, if the start marker is close to the field and giants unload is active.
 			local x, z = self.cpJobParameters.startPosition:getPosition()
-			isValid = CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
-				  CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < self.minStartDistanceToField
+			isValid = CpMathUtil.isPointInPolygon(fieldPolygon, x, z) or 
+				  CpMathUtil.getClosestDistanceToPolygonEdge(fieldPolygon, x, z) < self.minStartDistanceToField
 			if not isValid then
 				return false, g_i18n:getText("CP_error_start_position_to_far_away_from_field")
 			end 
@@ -209,8 +209,8 @@ function CpAIJobCombineUnloader:validate(farmId)
 	if useFieldUnload then 
 		
 		local x, z = self.cpJobParameters.fieldUnloadPosition:getPosition()
-		isValid = CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
-				  CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < self.minFieldUnloadDistanceToField
+		isValid = CpMathUtil.isPointInPolygon(fieldPolygon, x, z) or 
+				  CpMathUtil.getClosestDistanceToPolygonEdge(fieldPolygon, x, z) < self.minFieldUnloadDistanceToField
 		if not isValid then
 			return false, g_i18n:getText("CP_error_fieldUnloadPosition_too_far_away_from_field")
 		end
@@ -327,9 +327,10 @@ function CpAIJobCombineUnloader:getStartTaskIndex()
 		return startTask
 	end
 	local vehicle = self:getVehicle()
+	local fieldPolygon = self:getFieldPolygon()
 	local x, _, z = getWorldTranslation(vehicle.rootNode)
-	if CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
-		CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < 2*self.minStartDistanceToField then
+	if CpMathUtil.isPointInPolygon(fieldPolygon, x, z) or 
+		CpMathUtil.getClosestDistanceToPolygonEdge(fieldPolygon, x, z) < 2*self.minStartDistanceToField then
 		CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Close to the field, start cp drive strategy.")
 		return startTask
 	end
@@ -345,17 +346,6 @@ function CpAIJobCombineUnloader:getStartTaskIndex()
 		return self.driveToUnloadingTask.taskIndex
 	end
 	return startTask
-end
-
---- Callback by the drive strategy, when the trailer is full.
-function CpAIJobCombineUnloader:onTrailerFull(vehicle, driveStrategy)
-	if self.cpJobParameters.useGiantsUnload:getValue() then 
-		--- Giants unload
-		self.combineUnloaderTask:skip()
-		CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Trailer is full, giving control to giants!")
-	else 
-		vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
-	end
 end
 
 function CpAIJobCombineUnloader:getIsLooping()
