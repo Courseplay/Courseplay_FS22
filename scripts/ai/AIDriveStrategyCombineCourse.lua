@@ -1559,7 +1559,7 @@ function AIDriveStrategyCombineCourse:startSelfUnload(unloadStateAfterPathfindin
         self.courseAfterPathfinding = nil
         self.waypointIxAfterPathfinding = nil
 
-        local targetNode, alignLength, offsetX = SelfUnloadHelper:getTargetParameters(
+        local targetNode, alignLength, offsetX, trailer = SelfUnloadHelper:getTargetParameters(
                 self.fieldWorkCourse:getFieldPolygon(),
                 self.vehicle,
                 self.implementWithPipe,
@@ -1583,7 +1583,7 @@ function AIDriveStrategyCombineCourse:startSelfUnload(unloadStateAfterPathfindin
         -- use no field penalty around the trailer to encourage the pathfinder to bridge that gap between the field
         -- and the trailer
         context:areaToIgnoreOffFieldPenalty(
-                PathfinderUtil.NodeArea.createVehicleArea(bestTrailer, 1.5 * SelfUnloadHelper.maxDistanceFromField))
+                PathfinderUtil.NodeArea.createVehicleArea(trailer, 1.5 * SelfUnloadHelper.maxDistanceFromField))
         local done, path
         -- require full accuracy from pathfinder as we must exactly line up with the trailer
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(
