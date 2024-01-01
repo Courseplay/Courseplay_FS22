@@ -1854,7 +1854,8 @@ function AIDriveStrategyUnloadCombine:startSelfUnload(ignoreFruit)
         context:useFieldNum(fieldNum):allowReverse(self:getAllowReversePathfinding())
         -- ignore off-field penalty around the trailer to encourage the pathfinder to bridge that gap between the
         -- field and the trailer
-        context:areaToIgnoreOffFieldPenalty(self.unloadTrailer, 1.5 * SelfUnloadHelper.maxDistanceFromField)
+        context:areaToIgnoreOffFieldPenalty(
+                PathfinderUtil.NodeArea.createVehicleArea(self.unloadTrailer, 1.5 * SelfUnloadHelper.maxDistanceFromField))
         self.pathfinderController:registerListeners(self,
                 self.onPathfindingDoneBeforeSelfUnload,
                 self.onPathfindingFailedBeforeSelfUnload)
