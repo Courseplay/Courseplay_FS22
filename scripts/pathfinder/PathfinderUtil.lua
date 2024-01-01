@@ -240,12 +240,32 @@ end
 ---@class PathfinderUtil.CollisionDetector
 PathfinderUtil.CollisionDetector = CpObject()
 
+--- Nodes of a trigger for example, that will be ignored as collision.
+PathfinderUtil.CollisionDetector.NODES_TO_IGNORE = {}
+
 function PathfinderUtil.CollisionDetector:init()
     self.vehiclesToIgnore = {}
     self.collidingShapes = 0
 end
 
+--- Adds a node which collision will be ignored global for every pathfinder.
+---@param node number
+function PathfinderUtil.CollisionDetector.addNodeToIgnore(node)
+    PathfinderUtil.CollisionDetector.NODES_TO_IGNORE[node] = true
+end
+
+--- Removes a node, so it's collision is no longer applied.
+---@param node number
+function PathfinderUtil.CollisionDetector.removeNodeToIgnore(node)
+    PathfinderUtil.CollisionDetector.NODES_TO_IGNORE[node] = nil
+end
+
 function PathfinderUtil.CollisionDetector:overlapBoxCallback(transformId)
+    if PathfinderUtil.CollisionDetector.NODES_TO_IGNORE[transformId] then 
+        --- Global node, that needs to be ignored
+        return
+    end
+
     local collidingObject = g_currentMission.nodeToObject[transformId]
     if collidingObject and PathfinderUtil.elementOf(self.objectsToIgnore, collidingObject) then
         -- an object we want to ignore

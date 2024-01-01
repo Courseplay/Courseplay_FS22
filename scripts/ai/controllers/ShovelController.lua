@@ -165,6 +165,10 @@ function ShovelController:isHighDumpShovel()
     return g_vehicleConfigurations:get(self.implement, "shovelMovingToolIx") ~= nil
 end
 
+function ShovelController:setMinimalUnloadingHeight(height)
+    self.implement:setCpShovelMinimalUnloadHeight(height)
+end
+
 --- Calculates the minimal unloading height for the trigger.
 ---@param triggerNode number|nil
 ---@return boolean
