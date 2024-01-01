@@ -38,6 +38,7 @@ local context = PathfinderContext():maxFruitPercent(100):useFieldNum(10):vehicle
 ---@field vehiclesToIgnore function
 ---@field mustBeAccurate function
 ---@field areaToIgnoreFruit function
+---@field areaToIgnoreOffFieldPenalty function
 ---@field _maxFruitPercent number
 ---@field _offFieldPenalty number
 ---@field _useFieldNum number
@@ -46,7 +47,8 @@ local context = PathfinderContext():maxFruitPercent(100):useFieldNum(10):vehicle
 ---@field _vehiclesToIgnore table[]|nil
 ---@field _objectsToIgnore table[]|nil
 ---@field _mustBeAccurate boolean
----@field _areaToIgnoreFruit table[]
+---@field _areaToIgnoreFruit PathfinderUtil.Area|nil
+---@field _areaToIgnoreOffFieldPenalty PathfinderUtil.NodeArea|nil
 PathfinderContext = CpObject()
 PathfinderContext.defaultOffFieldPenalty = 7.5
 PathfinderContext.attributesToDefaultValue = {
@@ -72,7 +74,11 @@ PathfinderContext.attributesToDefaultValue = {
     -- Otherwise, for example when a combine self unloading must accurately find the trailer, set this to true.
     ["mustBeAccurate"] = false,
     -- No fruit penalty in this area (e.g. when we know the goal is in fruit but want to avoid fruit all the way there)
-    ["areaToIgnoreFruit"] = CpObjectUtil.BUILDER_API_NIL
+    ["areaToIgnoreFruit"] = CpObjectUtil.BUILDER_API_NIL,
+    -- No off-field penalty in this area (for instance when need to approach another vehicle, such as a trailer
+    -- to unload to, regardless of it is on the field or not, but we do want to have normal off-field penalty for
+    -- the rest of the path
+    ["areaToIgnoreOffFieldPenalty"] = CpObjectUtil.BUILDER_API_NIL
 }
 
 function PathfinderContext:init(vehicle)

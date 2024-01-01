@@ -165,8 +165,8 @@ end
 function AIDriveStrategyCombineCourse:initializeImplementControllers(vehicle)
     AIDriveStrategyCombineCourse:superClass().initializeImplementControllers(self, vehicle)
     local _
-    self.implementWithPipe, self.pipeController = self:addImplementController(vehicle, 
-        PipeController, Pipe, {}, nil)
+    self.implementWithPipe, self.pipeController = self:addImplementController(vehicle,
+            PipeController, Pipe, {}, nil)
     self.combineController, self.combine = self:getFirstRegisteredImplementControllerByClass(CombineController)
 end
 
@@ -1306,7 +1306,7 @@ end
 function AIDriveStrategyCombineCourse:getCanCutterBeTurnedOff()
     return self:isWaitingForUnload() or
             (self.state == self.states.UNLOADING_ON_FIELD and self:isUnloadStateOneOf(self.selfUnloadStates) and
-            -- we want that cutter to be turned on when returning to fieldwork after self unload
+                    -- we want that cutter to be turned on when returning to fieldwork after self unload
                     self.unloadState ~= self.states.RETURNING_FROM_SELF_UNLOAD)
 end
 
@@ -1335,10 +1335,10 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
         if self.combineController:isTowed() then
             self:debug('Headland turn but this is a towed harvester using normal turn maneuvers.')
             AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
-        -- The type of fruit being harvested isn't really the indicator if we can make a headland turn
-        -- TODO: either make disabling combine headland turns configurable, or
-        -- TODO: decide automatically based on the vehicle's properties, like turn radius, work width, etc.
-        -- and disable when such a turn does not make sense for the vehicle.
+            -- The type of fruit being harvested isn't really the indicator if we can make a headland turn
+            -- TODO: either make disabling combine headland turns configurable, or
+            -- TODO: decide automatically based on the vehicle's properties, like turn radius, work width, etc.
+            -- and disable when such a turn does not make sense for the vehicle.
         elseif self.combineController:isPotatoOrSugarBeetHarvester() then
             self:debug('Headland turn but this harvester uses normal turn maneuvers.')
             AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
@@ -1579,8 +1579,10 @@ function AIDriveStrategyCombineCourse:startSelfUnload(unloadStateAfterPathfindin
 
         local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
         local context = PathfinderContext(self.vehicle):mustBeAccurate(true)
-        -- use a low field penalty to encourage the pathfinder to bridge that gap between the field and the trailer
-        context:allowReverse(self:getAllowReversePathfinding()):offFieldPenalty(0.1):useFieldNum(fieldNum)
+        context:allowReverse(self:getAllowReversePathfinding()):useFieldNum(fieldNum)
+        -- use no field penalty around the trailer to encourage the pathfinder to bridge that gap between the field
+        -- and the trailer
+        context:areaToIgnoreOffFieldPenalty(bestTrailer, 1.5 * SelfUnloadHelper.maxDistanceFromField)
         local done, path
         -- require full accuracy from pathfinder as we must exactly line up with the trailer
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(
