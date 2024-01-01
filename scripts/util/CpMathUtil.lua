@@ -40,6 +40,7 @@ end
 ---@param thresholdDeg number defines what 'approximately' means, by default if the difference is less than 5 degrees
 function CpMathUtil.isSameDirection(node1, node2, thresholdDeg)
 	local lx, _, lz = localDirectionToLocal(node1, node2, 0, 0, 1)
+	-- TODO: double check this abs, this may return true also when the difference is around 180
 	return math.abs(math.atan2(lx, lz)) < math.rad(thresholdDeg or 5)
 end
 
@@ -47,6 +48,7 @@ end
 ---@param thresholdDeg number defines what 'approximately' means, by default if the difference is less than 5 degrees
 function CpMathUtil.isOppositeDirection(node1, node2, thresholdDeg)
 	local lx, _, lz = localDirectionToLocal(node1, node2, 0, 0, -1)
+	-- TODO: double check this abs, this may return true also when the difference is around 180
 	return math.abs(math.atan2(lx, lz)) < math.rad(thresholdDeg or 5)
 end
 

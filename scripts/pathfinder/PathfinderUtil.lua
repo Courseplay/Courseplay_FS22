@@ -403,6 +403,8 @@ end
 --- @class PathfinderUtil.NodeArea
 PathfinderUtil.NodeArea = CpObject()
 
+--- The area is a length x width rectangle, the rectangle's bottom right corner (when looking from node) is
+--- at xOffset/zOffset from node.
 function PathfinderUtil.NodeArea:init(node, xOffset, zOffset, width, length)
     self.node = node
     self.xOffset, self.zOffset = xOffset, zOffset
@@ -422,17 +424,26 @@ function PathfinderUtil.NodeArea:contains(x, z)
     end
 end
 
+function PathfinderUtil.NodeArea:__tostring()
+    return string.format('area from node %s, %.1f x %.1f m', self.node, self.width, self.length)
+end
+
 function PathfinderUtil.NodeArea:drawDebug()
     DebugUtil.drawDebugRectangle(self.node, self.xOffset, self.xOffset + self.width,
             self.zOffset, self.zOffset + self.length, 5, 1, 1, 0, 1, false)
 end
 
---- Creates an area to avoid for a vehicle based on it's defined dimensions.
+--- Creates an area to avoid for a vehicle based on its defined dimensions.
 ---@param vehicle table
+---@param buffer number|nil buffer around the vehicle
 ---@return PathfinderUtil.NodeArea
-function PathfinderUtil.NodeArea.createVehicleArea(vehicle)
-    return PathfinderUtil.NodeArea(vehicle.rootNode, -vehicle.size.width / 2 + vehicle.size.widthOffset,
-            -vehicle.size.length / 2 + vehicle.size.lengthOffset, vehicle.size.width, vehicle.size.length)
+function PathfinderUtil.NodeArea.createVehicleArea(vehicle, buffer)
+    buffer = buffer or 0
+    return PathfinderUtil.NodeArea(vehicle.rootNode,
+            -vehicle.size.width / 2 + vehicle.size.widthOffset - buffer,
+            -vehicle.size.length / 2 + vehicle.size.lengthOffset - buffer,
+            vehicle.size.width + 2 * buffer,
+            vehicle.size.length + 2 * buffer)
 end
 
 --[[
@@ -484,14 +495,16 @@ function PathfinderConstraints:init(context)
     self.fieldNum = context._useFieldNum
     self.areaToAvoid = context._areaToAvoid
     self.areaToIgnoreFruit = context._areaToIgnoreFruit
+    self.areaToIgnoreOffFieldPenalty = context._areaToIgnoreOffFieldPenalty
     self.initialMaxFruitPercent = self.maxFruitPercent
     self.initialOffFieldPenalty = self.offFieldPenalty
     self.strictMode = false
     self:resetCounts()
     local areaToAvoidText = self.areaToAvoid and
             string.format('are to avoid %.1f x %.1f m', self.areaToAvoid.length, self.areaToAvoid.width) or 'none'
-    self:debug('Pathfinder constraints: off field penalty %.1f, max fruit percent: %.1f, field number %d, %s, ignore fruit %s',
-            self.offFieldPenalty, self.maxFruitPercent, self.fieldNum, areaToAvoidText, self.areaToIgnoreFruit or 'none')
+    self:debug('Pathfinder constraints: off field penalty %.1f, max fruit percent: %.1f, field number %d, %s, ignore fruit %s, ignore off-field penalty %s',
+            self.offFieldPenalty, self.maxFruitPercent, self.fieldNum, areaToAvoidText,
+            self.areaToIgnoreFruit or 'none', self.areaToIgnoreOffFieldPenalty or 'none')
 end
 
 function PathfinderConstraints:resetCounts()
@@ -518,7 +531,8 @@ function PathfinderConstraints:getNodePenalty(node)
             offFieldPenalty = self.offFieldPenalty * 1.2
         end
     end
-    if offField then
+    if offField and self.areaToIgnoreOffFieldPenalty and
+            not self.areaToIgnoreOffFieldPenalty:contains(node.x, -node.y) then
         penalty = penalty + offFieldPenalty
         self.offFieldPenaltyNodeCount = self.offFieldPenaltyNodeCount + 1
         node.offField = true
@@ -857,7 +871,7 @@ end
 
 --- Creates a State3D Vector from a given Waypoint.
 ---@param waypoint Waypoint
----@param xOffset number
+---@param xOffset number the offset in the waypoint coordinate system (left < 0 < right)
 ---@param zOffset number
 ---@return State3D
 function PathfinderUtil.getWaypointAsState3D(waypoint, xOffset, zOffset)
@@ -894,7 +908,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 ---@param course Course the course with the destination waypoint
 ---@param goalWaypointIx number index of the waypoint
----@param xOffset number side offset of the goal from the goalWaypoint
+---@param xOffset number side offset of the goal from the goalWaypoint (left < 0 < right)
 ---@param zOffset number length offset of the goal from the goalWaypoint
 ---@param context PathfinderContext
 ---@return PathfinderInterface pathfinder
