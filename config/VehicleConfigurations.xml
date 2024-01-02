@@ -625,4 +625,11 @@ You can define the following custom settings:
 			shovelMovingToolIx = "1"
 	/>
 
+    <!--Tractors-->
+
+    <!--Mod: FS22_CLAAS_Xerion_3000_series-->
+    <Vehicle name="xerion_tracvc.xml"
+             turnRadius = "8"
+    />
+
 </VehicleConfigurations>
