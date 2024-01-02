@@ -1329,7 +1329,7 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
     if self.turnContext:isHeadlandCorner() then
         if self.combineController:isTowed() then
             self:debug('Headland turn but this is a towed harvester using normal turn maneuvers.')
-            AIDriveStrategyCombineCourse.superClass().startTurn(self, 
+            AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
         -- The type of fruit being harvested isn't really the indicator if we can make a headland turn
         -- TODO: either make disabling combine headland turns configurable, or
         -- TODO: decide automatically based on the vehicle's properties, like turn radius, work width, etc.
