@@ -551,13 +551,12 @@ function PathfinderConstraints:getNodePenalty(node)
             offFieldPenalty = self.offFieldPenalty * 1.2
         end
     end
-    if offField and self.areaToIgnoreOffFieldPenalty and
-            not self.areaToIgnoreOffFieldPenalty:contains(node.x, -node.y) then
+    if offField and (self.areaToIgnoreOffFieldPenalty == nil or (self.areaToIgnoreOffFieldPenalty ~= nil and
+            not self.areaToIgnoreOffFieldPenalty:contains(node.x, -node.y))) then
         penalty = penalty + offFieldPenalty
         self.offFieldPenaltyNodeCount = self.offFieldPenaltyNodeCount + 1
         node.offField = true
     end
-    --local fieldId = CpFieldUtil.getFieldIdAtWorldPosition(node.x, -node.y)
     if not offField then
         local hasFruit, fruitValue = PathfinderUtil.hasFruit(node.x, -node.y, 4, 4, self.areaToIgnoreFruit)
         if hasFruit and fruitValue > self.maxFruitPercent then
