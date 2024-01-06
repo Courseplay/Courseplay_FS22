@@ -1501,9 +1501,17 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
         return
     end
 
-    -- when the combine is turning just don't move
     if self.combineToUnload:getCpDriveStrategy():isManeuvering() then
+        -- when the combine is turning just don't move
         self:setMaxSpeed(0)
+    elseif self.followCourse:isTurnStartAtIx(self.followCourse:getCurrentWaypointIx()) then
+        -- big rigs may reach the turn before the combine, add a small straight course here so we have
+        -- something to follow until the combine reaches the turn (so we don't try to make the turn
+        -- also apply an offset as the followCourse is assumed to be the combine's course
+        -- TODO: #3029
+        self.followCourse = Course.createStraightForwardCourse(self.vehicle, 20, -self.combineOffset)
+        self.followCourse:setOffset(-self.combineOffset, 0)
+        self:startCourse(self.followCourse, 1)
     elseif not self:isBehindAndAlignedToCombine() and not self:isInFrontAndAlignedToMovingCombine() then
         -- call these again just to log the reason
         self:isBehindAndAlignedToCombine(true)
