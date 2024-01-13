@@ -201,7 +201,7 @@ function AIDriveStrategyCombineCourse:hold(periodMs)
 end
 
 function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
-    self:handlePipe(dt)
+    self:handleCombinePipe(dt)
     if self.temporaryHold:get() then
         self:setMaxSpeed(0)
     end
@@ -211,6 +211,9 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
         self:checkBlockingUnloader()
 
         if self:isFull() then
+            self:changeToUnloadOnField()
+        elseif self:alwaysNeedsUnloader() and not self.pipeController:isFillableTrailerUnderPipe() then
+            self:debug('Need an unloader to work but have no fillable trailer under the pipe')
             self:changeToUnloadOnField()
         elseif self:shouldWaitAtEndOfRow() then
             self:startWaitingForUnloadBeforeNextRow()
@@ -312,8 +315,11 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
     elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_ON_FIELD then
         if g_updateLoopIndex % 5 == 0 then
             --small delay, to make sure no more fillLevel change is happening
-            if not self:isFull() and not self:shouldStopForUnloading() then
+            if not self:isFull() and not self:shouldStopForUnloading() and not self:alwaysNeedsUnloader() then
                 self:debug('not full anymore, can continue working')
+                self:changeToFieldWork()
+            elseif self:alwaysNeedsUnloader() and self.pipeController:isFillableTrailerUnderPipe() then
+                self:debug('Need an unloader to work, now have a trailer under the pipe, can continue working')
                 self:changeToFieldWork()
             end
         end
@@ -639,6 +645,10 @@ function AIDriveStrategyCombineCourse:isFull(fillLevelFullPercentage)
 end
 
 function AIDriveStrategyCombineCourse:shouldMakePocket()
+    if self:alwaysNeedsUnloader() then
+        self:debug('Always need unloader so not making a pocket')
+        return false
+    end
     if self.fruitLeft > 0.75 and self.fruitRight > 0.75 then
         -- fruit both sides
         return true
@@ -652,7 +662,12 @@ function AIDriveStrategyCombineCourse:shouldMakePocket()
 end
 
 function AIDriveStrategyCombineCourse:shouldPullBack()
-    return self:isPipeInFruit()
+    if self:alwaysNeedsUnloader() then
+        self:debug('Always need unloader so not making a pocket')
+        return false
+    else
+        return self:isPipeInFruit()
+    end
 end
 
 function AIDriveStrategyCombineCourse:isPipeOnLeft()
@@ -808,8 +823,8 @@ function AIDriveStrategyCombineCourse:callUnloaderWhenNeeded()
 
     local bestUnloader, bestEte
     if self:isWaitingForUnload() then
-        bestUnloader, _ = self:findUnloader(self.vehicle, nil)
         self:debug('callUnloaderWhenNeeded: stopped, need unloader here')
+        bestUnloader, _ = self:findUnloader(self.vehicle, nil)
         if bestUnloader then
             bestUnloader:getCpDriveStrategy():call(self.vehicle, nil)
         end
@@ -899,7 +914,9 @@ function AIDriveStrategyCombineCourse:findUnloader(combine, waypoint)
             local x, _, z = getWorldTranslation(self.vehicle.rootNode)
             ---@type AIDriveStrategyUnloadCombine
             local driveStrategy = vehicle:getCpDriveStrategy()
-            if driveStrategy:isServingPosition(x, z, 0) then
+            -- look a bit outside of the field as the harvester's root node may be just off the field (like in a turn,
+            -- or when starting.
+            if driveStrategy:isServingPosition(x, z, 10) then
                 local unloaderFillLevelPercentage = driveStrategy:getFillLevelPercentage()
                 if driveStrategy:isIdle() and unloaderFillLevelPercentage < 99 then
                     local unloaderDistance, unloaderEte
@@ -1396,6 +1413,10 @@ end
 
 function AIDriveStrategyCombineCourse:getFieldworkCourse()
     return self.course
+end
+
+function AIDriveStrategyCombineCourse:alwaysNeedsUnloader()
+    return self.combineController:alwaysNeedsUnloader()
 end
 
 function AIDriveStrategyCombineCourse:isChopper()

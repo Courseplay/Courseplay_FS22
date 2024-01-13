@@ -517,7 +517,8 @@ end
 function AIDriveStrategyUnloadCombine:driveBesideCombine()
     local function isValidNode(targetNode)
         local fillType = self.combineToUnload:getCpDriveStrategy():getFillType()
-        if not targetNode.trailer:getFillUnitAllowsFillType(targetNode.fillUnitIx, fillType) then
+        -- for some harvesters (DeWulf), fill type is unknown until they start working
+        if fillType ~= FillType.UNKNOWN and not targetNode.trailer:getFillUnitAllowsFillType(targetNode.fillUnitIx, fillType) then
             self:debugSparse("Fill node %d of trailer %s doesn't accept fillType %s!",
                     targetNode.fillUnitIx, targetNode.trailer, g_fillTypeManager:getFillTypeNameByIndex(fillType))
             return false
@@ -547,24 +548,21 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
     end
     local _, offsetZ = self:getPipeOffset(self.combineToUnload)
     -- TODO: this - 1 is a workaround the fact that we use a simple P controller instead of a PI
-    local dx, _, dz = localToLocal(bestTargetNode.trailer.rootNode,
-            self.combineToUnload:getAIDirectionNode(), 0, 0, -offsetZ + bestTargetNode.trailerOffset)
+    local dx, _, dz = localToLocal(self.combineToUnload:getAIDirectionNode(), bestTargetNode.node, 0, 0, offsetZ)
     -- use a factor to make sure we reach the pipe fast, but be more gentle while discharging
     local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
-    local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(-dz * factor, -10, 15)
+    local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(dz * factor, -10, 15)
 
     -- slow down while the pipe is unfolding to avoid crashing onto it
     if self.combineToUnload:getCpDriveStrategy():isPipeMoving() then
         speed = (math.min(speed, self.combineToUnload:getLastSpeed() + 2))
     end
 
-    self:renderText(0, 0.02, "%s: driveBesideCombine: tZ = %.1f, dz = %.1f, speed = %.1f, factor = %.1f",
-            CpUtil.getName(self.vehicle), bestTargetNode.trailerOffset, dz, speed, factor)
+    self:renderText(0, 0.02, "%s: driveBesideCombine: dz = %.1f, speed = %.1f, factor = %.1f",
+            CpUtil.getName(self.vehicle), dz, speed, factor)
 
     if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
         DebugUtil.drawDebugNode(bestTargetNode.node, 'target')
-        local x, y, z = localToWorld(self.combineToUnload:getAIDirectionNode(), dx, 0, dz)
-        DebugUtil.drawSimpleDebugCube(x, y + 4, z, 1, 0, 0, 1)
     end
     self:setMaxSpeed(math.max(0, speed))
 end
@@ -776,14 +774,16 @@ end
 
 --- Is the vehicle lined up with the pipes, based on the two offset values and a tolerance
 ---@param dx number side offset of the vehicle from the combine's centerline, left > 0 > right
+---@param dz number front/back (+/-) offset of the vehicle from the combine's root node
 ---@param pipeOffset number side offset of the pipe from the combine's centerline
----@param tolerance number +- tolerance in relation of the pipe offset
-function AIDriveStrategyUnloadCombine:isLinedUpWithPipe(dx, pipeOffset, tolerance)
-    -- if the pipe is on the right side (has a negative offset), turn it over to the left side
-    -- so we are always comparing positive numbers
-    local myDx = pipeOffset > 0 and dx or -dx
-    local myPipeOffset = pipeOffset > 0 and pipeOffset or -pipeOffset
-    return myDx > myPipeOffset * (1 - tolerance) and myDx < myPipeOffset * (1 + tolerance)
+---@param debugEnabled boolean
+function AIDriveStrategyUnloadCombine:isLinedUpWithPipe(dx, dz, pipeOffset, debugEnabled)
+    -- allow more offset when further away from the pipe, this is +- 25 cm at the pipe and grows
+    -- 25 cm with every meter, which is about 30 degrees (15 left and 15 right)
+    local tolerance = 0.25 + 0.25 * math.abs(dz)
+    self:debugIf(debugEnabled, 'isLinedUpWithPipe: dx > pipe offset +- tolerance (%.1f > %.1f +- %.1f) at dz: %.1f',
+            dx, pipeOffset, tolerance, dz)
+    return dx > pipeOffset - tolerance and dx < pipeOffset + tolerance
 end
 
 function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(debugEnabled)
@@ -793,14 +793,7 @@ function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(debugEnabled)
         self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: dz > 0')
         return false
     end
-    -- allow more offset when further away from the pipe, this is +- 25 cm at the pipe and grows
-    -- 25 cm with every meter, which is about 30 degrees (15 left and 15 right)
-    local tolerance = 0.25 + 0.25 * math.abs(dz)
-    -- TODO: this does not take the pipe's side into account, and will return true when we are at the
-    -- wrong side of the combine.
-    if not self:isLinedUpWithPipe(dx, pipeOffset, tolerance) then
-        self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: dx > pipe offset + tolerance (%.1f > %.1f + %.1f) at dz: %.1f',
-                dx, pipeOffset, tolerance, dz)
+    if not self:isLinedUpWithPipe(dx, dz, pipeOffset, debugEnabled) then
         return false
     end
     local d = MathUtil.vector2Length(dx, dz)
@@ -831,9 +824,7 @@ function AIDriveStrategyUnloadCombine:isInFrontAndAlignedToMovingCombine(debugEn
         self:debugIf(debugEnabled, 'isInFrontAndAlignedToMovingCombine: more than 30 m from combine')
         return false
     end
-    if not self:isLinedUpWithPipe(dx, pipeOffset, 0.5) then
-        self:debugIf(debugEnabled,
-                'isInFrontAndAlignedToMovingCombine: dx (%.1f) not between 0.5 and 1.5 pipe offset (%.1f)', dx, pipeOffset)
+    if not self:isLinedUpWithPipe(dx, dz, pipeOffset, debugEnabled) then
         return false
     end
     if not CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(),
@@ -853,7 +844,13 @@ end
 
 function AIDriveStrategyUnloadCombine:isOkToStartUnloadingCombine()
     if self.combineToUnload:getCpDriveStrategy():isReadyToUnload(true) then
-        return self:isBehindAndAlignedToCombine() or self:isInFrontAndAlignedToMovingCombine()
+        local ok = self:isBehindAndAlignedToCombine() or self:isInFrontAndAlignedToMovingCombine()
+        if not ok then
+            -- force logging when not ok
+            self:isBehindAndAlignedToCombine(true)
+            self:isInFrontAndAlignedToMovingCombine(true)
+        end
+        return ok
     else
         self:debugSparse('combine not ready to unload, waiting')
         return false
@@ -1467,8 +1464,9 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
 
     self:driveBesideCombine()
 
-    --when the combine is empty, stop and wait for next combine
-    if self.combineToUnload:getCpDriveStrategy():getFillLevelPercentage() <= 0.1 then
+    --when the combine is empty, stop and wait for next combine (unless this can't work without an unloader nearby)
+    if self.combineToUnload:getCpDriveStrategy():getFillLevelPercentage() <= 0.1 and
+            not self.combineToUnload:getCpDriveStrategy():alwaysNeedsUnloader() then
         --when the combine is in a pocket, make room to get back to course
         if self.combineToUnload:getCpDriveStrategy():isWaitingInPocket() then
             self:debug('combine empty and in pocket, drive back')

@@ -147,6 +147,13 @@ function CombineController:isTowed()
     return self.isWheeledImplement
 end
 
+--- This harvester always needs an unloader to work, such as a chopper or some ground vegetable harvesters. They
+--- don't have a tank, so whatever they harvest, must unload immediately.
+function CombineController:alwaysNeedsUnloader()
+    return self:getCapacity() > 10000000
+end
+
+
 -------------------------------------------------------------
 --- Chopper
 -------------------------------------------------------------
@@ -164,6 +171,7 @@ function CombineController:fixDischargeDistanceForChopper()
 end
 
 function CombineController:isChopper()
+    -- TODO: not just choppers have infinite capacity, see alwaysNeedsUnloader()
     return self:getCapacity() > 10000000
 end
 
