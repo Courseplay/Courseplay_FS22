@@ -407,7 +407,7 @@ La course est automatiquement sauvegardée à la fermeture de l'éditeur et remp
     <text name="CP_courseManager_noAccessError" text="Impossible d'accéder au dossier (%s)!"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="L'emplacement choisi n'est pas un dossier (%s)!"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="L'emplacement choisi n'est pas une course (%s)!"/>
-    <text name="CP_courseManager_invalidNameError" text="Course name (%s) is invalid!"/>
+    <text name="CP_courseManager_invalidNameError" text="Le nom de la course (%s) est invalide !"/>
     <text name="CP_courseManager_basicSettings" text="Basculer en mode édition"/>
     <text name="CP_courseManager_advancedSettings" text="Basculer en mode affichage"/>
     <text name="CP_courseManager_activate" text="Activer"/>
