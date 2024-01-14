@@ -547,7 +547,6 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
         return
     end
     local _, offsetZ = self:getPipeOffset(self.combineToUnload)
-    -- TODO: this - 1 is a workaround the fact that we use a simple P controller instead of a PI
     local dx, _, dz = localToLocal(self.combineToUnload:getAIDirectionNode(), bestTargetNode.node, 0, 0, offsetZ)
     -- use a factor to make sure we reach the pipe fast, but be more gentle while discharging
     local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
@@ -778,9 +777,9 @@ end
 ---@param pipeOffset number side offset of the pipe from the combine's centerline
 ---@param debugEnabled boolean
 function AIDriveStrategyUnloadCombine:isLinedUpWithPipe(dx, dz, pipeOffset, debugEnabled)
-    -- allow more offset when further away from the pipe, this is +- 25 cm at the pipe and grows
+    -- allow more offset when further away from the pipe, this is +- 50 cm at the pipe and grows
     -- 25 cm with every meter, which is about 30 degrees (15 left and 15 right)
-    local tolerance = 0.25 + 0.25 * math.abs(dz)
+    local tolerance = 0.25 + 0.5 * math.abs(dz)
     self:debugIf(debugEnabled, 'isLinedUpWithPipe: dx > pipe offset +- tolerance (%.1f > %.1f +- %.1f) at dz: %.1f',
             dx, pipeOffset, tolerance, dz)
     return dx > pipeOffset - tolerance and dx < pipeOffset + tolerance
@@ -844,13 +843,7 @@ end
 
 function AIDriveStrategyUnloadCombine:isOkToStartUnloadingCombine()
     if self.combineToUnload:getCpDriveStrategy():isReadyToUnload(true) then
-        local ok = self:isBehindAndAlignedToCombine() or self:isInFrontAndAlignedToMovingCombine()
-        if not ok then
-            -- force logging when not ok
-            self:isBehindAndAlignedToCombine(true)
-            self:isInFrontAndAlignedToMovingCombine(true)
-        end
-        return ok
+        return self:isBehindAndAlignedToCombine() or self:isInFrontAndAlignedToMovingCombine()
     else
         self:debugSparse('combine not ready to unload, waiting')
         return false
@@ -900,9 +893,9 @@ function AIDriveStrategyUnloadCombine:startUnloadingTrailers()
 end
 
 function AIDriveStrategyUnloadCombine:onTrailerFull()
-    if self.useGiantsUnload then 
+    if self.useGiantsUnload then
         self:setCurrentTaskFinished()
-    else 
+    else
         self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
     end
 end
@@ -964,9 +957,12 @@ function AIDriveStrategyUnloadCombine:startCourseFollowingCombine()
     -- which may be far away and if that's our target, PPC will be slow to bring us back on the course
     -- and we may end up between the end of the pipe and the combine
     -- use a higher look ahead as we may be in front of the combine
-    local startSearchAt = startIx - 5
-    local nextFwdIx, found = self.followCourse:getNextFwdWaypointIxFromVehiclePosition(startSearchAt > 0 and startSearchAt or 1,
-            self.vehicle:getAIDirectionNode(), self.combineToUnload:getCpDriveStrategy():getWorkWidth(), 20)
+    local startSearchAt = math.max(1, startIx - 5)
+    local _, _, dz = self.followCourse:getWaypointLocalPosition(self.vehicle:getAIDirectionNode(), startIx)
+    local nextFwdIx, found = self.followCourse:getNextFwdWaypointIxFromVehiclePosition(startSearchAt,
+            self.vehicle:getAIDirectionNode(),
+            -- allow for more deviation when further from the target
+            (1 + 0.25 * math.abs(dz)) * self.combineToUnload:getCpDriveStrategy():getWorkWidth(), 20)
     if found then
         startIx = nextFwdIx
     end
@@ -1896,7 +1892,6 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeSelfUnload(controll
         controller:retry(lastContext)
     end
 end
-
 
 function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeSelfUnload(controller, success, course, goalNodeInvalid)
     if success then
