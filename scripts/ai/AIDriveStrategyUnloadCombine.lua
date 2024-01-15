@@ -551,7 +551,12 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
     -- use a factor to make sure we reach the pipe fast, but be more gentle while discharging
     local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
     local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(dz * factor, -10, 15)
-
+    if math.abs(dz) > 0.5 and speed < 2 then
+        -- Giants does not like speeds under 2, it just stops. So if we calculated a small speed
+        -- like when the combine is stopped, but not there yet, make sure we set a speed which
+        -- actually keeps the unloader moving, otherwise we will never get there.
+        speed = 2
+    end
     -- slow down while the pipe is unfolding to avoid crashing onto it
     if self.combineToUnload:getCpDriveStrategy():isPipeMoving() then
         speed = (math.min(speed, self.combineToUnload:getLastSpeed() + 2))
@@ -1495,7 +1500,8 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
         return
     end
 
-    if self.combineToUnload:getCpDriveStrategy():isManeuvering() then
+    if self.combineToUnload:getCpDriveStrategy():isManeuvering() and
+            not self.combineToUnload:getCpDriveStrategy():isFinishingRow() then
         -- when the combine is turning just don't move
         self:setMaxSpeed(0)
     elseif self.followCourse:isTurnStartAtIx(self.followCourse:getCurrentWaypointIx()) then
