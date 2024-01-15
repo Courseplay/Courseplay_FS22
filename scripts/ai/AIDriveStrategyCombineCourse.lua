@@ -212,9 +212,11 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 
         if self:isFull() then
             self:changeToUnloadOnField()
-        elseif self:alwaysNeedsUnloader() and not self.pipeController:isFillableTrailerUnderPipe() then
-            self:debug('Need an unloader to work but have no fillable trailer under the pipe')
-            self:changeToUnloadOnField()
+        elseif self:alwaysNeedsUnloader() then
+            if not self.pipeController:isFillableTrailerUnderPipe() then
+                self:debug('Need an unloader to work but have no fillable trailer under the pipe')
+                self:changeToUnloadOnField()
+            end
         elseif self:shouldWaitAtEndOfRow() then
             self:startWaitingForUnloadBeforeNextRow()
         end
@@ -318,7 +320,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
             if not self:isFull() and not self:shouldStopForUnloading() and not self:alwaysNeedsUnloader() then
                 self:debug('not full anymore, can continue working')
                 self:changeToFieldWork()
-            elseif self:alwaysNeedsUnloader() and self.pipeController:isFillableTrailerUnderPipe() then
+            elseif self:alwaysNeedsUnloader() and self:isFillableTrailerUnderPipe() then
                 self:debug('Need an unloader to work, now have a trailer under the pipe, can continue working')
                 self:changeToFieldWork()
             end
@@ -1242,7 +1244,7 @@ end
 
 --- Only allow fuel save, if no trailer is under the pipe and we are waiting for unloading.
 function AIDriveStrategyCombineCourse:isFuelSaveAllowed()
-    if self.pipeController:isFillableTrailerUnderPipe() then
+    if self.pipeController:isFillableTrailerInRange() then
         -- Disables Fuel save, when a trailer is under the pipe.
         return false
     end
@@ -1347,10 +1349,10 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
         if self.combineController:isTowed() then
             self:debug('Headland turn but this is a towed harvester using normal turn maneuvers.')
             AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
-        -- The type of fruit being harvested isn't really the indicator if we can make a headland turn
-        -- TODO: either make disabling combine headland turns configurable, or
-        -- TODO: decide automatically based on the vehicle's properties, like turn radius, work width, etc.
-        -- and disable when such a turn does not make sense for the vehicle.
+            -- The type of fruit being harvested isn't really the indicator if we can make a headland turn
+            -- TODO: either make disabling combine headland turns configurable, or
+            -- TODO: decide automatically based on the vehicle's properties, like turn radius, work width, etc.
+            -- and disable when such a turn does not make sense for the vehicle.
         elseif self.combineController:isEarthFruitHarvester() then
             self:debug('Headland turn but this harvester uses normal turn maneuvers.')
             AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
@@ -1419,6 +1421,10 @@ function AIDriveStrategyCombineCourse:alwaysNeedsUnloader()
     return self.combineController:alwaysNeedsUnloader()
 end
 
+function AIDriveStrategyCombineCourse:isFillableTrailerUnderPipe()
+    return self.pipeController:isFillableTrailerUnderPipe()
+end
+
 function AIDriveStrategyCombineCourse:isChopper()
     return self.combineController:isChopper()
 end
@@ -1443,7 +1449,7 @@ function AIDriveStrategyCombineCourse:handleCombinePipe(dt)
 end
 
 function AIDriveStrategyCombineCourse:isAGoodTrailerInRange()
-    local _, trailer = self.pipeController:isFillableTrailerUnderPipe()
+    local _, trailer = self.pipeController:isFillableTrailerInRange()
     local unloaderVehicle = trailer and trailer:getRootVehicle()
 
     if unloaderVehicle == nil then
@@ -1467,7 +1473,7 @@ end
 
 -- TODO: move this to the PipeController?
 function AIDriveStrategyCombineCourse:handleChopperPipe()
-    self.pipeController:handleChopperPipe()
+    --self.pipeController:handleChopperPipe()
 
     local trailer = self.pipeController:getClosestObject()
     local dischargeNode = self.pipeController:getDischargeNode()
