@@ -429,6 +429,15 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.UNLOADING_STOPPED_COMBINE then
 
         local x, z = self:unloadStoppedCombine()
+        -- if driveBesideCombine() has a better goal point, use that, instead of the offset course
+        if x ~= nil then
+            gx, gz = x, z
+        end
+
+    elseif self.state == self.states.UNLOADING_MOVING_COMBINE then
+
+        local x, z = self:unloadMovingCombine(dt)
+        -- if driveBesideCombine() has a better goal point, use that, instead of the offset course
         if x ~= nil then
             gx, gz = x, z
         end
@@ -440,13 +449,6 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.BACKING_UP_FOR_REVERSING_COMBINE then
         -- reversing combine asking us to move
         self:moveOutOfWay()
-
-    elseif self.state == self.states.UNLOADING_MOVING_COMBINE then
-
-        local x, z = self:unloadMovingCombine(dt)
-        if x ~= nil then
-            gx, gz = x, z
-        end
 
     elseif self.state == self.states.MOVING_AWAY_FROM_OTHER_VEHICLE then
         -- someone is blocking us or we are blocking someone
@@ -521,9 +523,10 @@ function AIDriveStrategyUnloadCombine:startWaitingForSomethingToDo()
     end
 end
 
----@return number, number gx, gz world coordinates to steer to, instead of the PPC determined goal point. This
---- goal point is calculated from the harvester's position. It is on a straight line parallel to the harvester,
---- under the pipe and a look ahead distance ahead of the unloader
+---@return number, number gx, gz world coordinates to steer to, instead of the PPC determined goal point (which is
+--- calculated from the offset harvester course).
+--- This goal point is calculated from the harvester's position. It is on a straight line parallel to the harvester,
+--- under the pipe and look ahead distance ahead of the unloader
 function AIDriveStrategyUnloadCombine:driveBesideCombine()
     local function isValidNode(targetNode)
         local fillType = self.combineToUnload:getCpDriveStrategy():getFillType()
@@ -575,14 +578,18 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
     self:renderText(0, 0.02, "%s: driveBesideCombine: dz = %.1f, speed = %.1f, factor = %.1f",
             CpUtil.getName(self.vehicle), dz, speed, factor)
 
-    if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
-        DebugUtil.drawDebugNode(bestTargetNode.node, 'target')
-    end
     -- Calculate an artificial goal point relative to the harvester
     _, _, dz = localToLocal(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
     local gx, gy, gz = localToWorld(self.combineToUnload:getAIDirectionNode(),
-            self:getPipeOffset(self.combineToUnload), 0, dz + 3)
-    DebugUtil.drawDebugGizmoAtWorldPos(gx, gy + 3, gz, 1, 0, 1, 0, 1, 0, "Unloader target", false)
+            -- straight line parallel to the harvester, under the pipe, look ahead distance from the unloader
+            self:getPipeOffset(self.combineToUnload), 0, dz + self.ppc:getLookaheadDistance())
+
+    if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
+        DebugUtil.drawDebugNode(bestTargetNode.node, 'target')
+        -- show the goal point
+        DebugUtil.drawDebugGizmoAtWorldPos(gx, gy + 3, gz, 1, 0, 1, 0, 1, 0, "Unloader goal", false)
+    end
+
     self:setMaxSpeed(math.max(0, speed))
     return gx, gz
 end
