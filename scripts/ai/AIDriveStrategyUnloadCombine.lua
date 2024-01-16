@@ -428,7 +428,11 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
 
     elseif self.state == self.states.UNLOADING_STOPPED_COMBINE then
 
-        self:unloadStoppedCombine()
+        local x, z = self:unloadStoppedCombine()
+        if x ~= nil then
+            gx, gz = x, z
+        end
+
     elseif self.state == self.states.WAITING_FOR_MANEUVERING_COMBINE then
 
         self:waitForManeuveringCombine()
@@ -439,7 +443,10 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
 
     elseif self.state == self.states.UNLOADING_MOVING_COMBINE then
 
-        self:unloadMovingCombine(dt)
+        local x, z = self:unloadMovingCombine(dt)
+        if x ~= nil then
+            gx, gz = x, z
+        end
 
     elseif self.state == self.states.MOVING_AWAY_FROM_OTHER_VEHICLE then
         -- someone is blocking us or we are blocking someone
@@ -514,6 +521,9 @@ function AIDriveStrategyUnloadCombine:startWaitingForSomethingToDo()
     end
 end
 
+---@return number, number gx, gz world coordinates to steer to, instead of the PPC determined goal point. This
+--- goal point is calculated from the harvester's position. It is on a straight line parallel to the harvester,
+--- under the pipe and a look ahead distance ahead of the unloader
 function AIDriveStrategyUnloadCombine:driveBesideCombine()
     local function isValidNode(targetNode)
         local fillType = self.combineToUnload:getCpDriveStrategy():getFillType()
@@ -551,7 +561,7 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
     -- use a factor to make sure we reach the pipe fast, but be more gentle while discharging
     local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
     local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(dz * factor, -10, 15)
-    if math.abs(dz) > 0.5 and speed < 2 then
+    if dz < -0.5 and speed < 2 then
         -- Giants does not like speeds under 2, it just stops. So if we calculated a small speed
         -- like when the combine is stopped, but not there yet, make sure we set a speed which
         -- actually keeps the unloader moving, otherwise we will never get there.
@@ -568,7 +578,13 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
     if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
         DebugUtil.drawDebugNode(bestTargetNode.node, 'target')
     end
+    -- Calculate an artificial goal point relative to the harvester
+    _, _, dz = localToLocal(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
+    local gx, gy, gz = localToWorld(self.combineToUnload:getAIDirectionNode(),
+            self:getPipeOffset(self.combineToUnload), 0, dz + 3)
+    DebugUtil.drawDebugGizmoAtWorldPos(gx, gy + 3, gz, 1, 0, 1, 0, 1, 0, "Unloader target", false)
     self:setMaxSpeed(math.max(0, speed))
+    return gx, gz
 end
 
 function AIDriveStrategyUnloadCombine:onWaypointPassed(ix, course)
@@ -1423,6 +1439,7 @@ function AIDriveStrategyUnloadCombine:unloadStoppedCombine()
     if self:changeToUnloadWhenTrailerFull() then
         return
     end
+    local gx, gz
     local combineDriver = self.combineToUnload:getCpDriveStrategy()
     if combineDriver:isUnloadFinished() then
         if combineDriver:isWaitingForUnloadAfterCourseEnded() then
@@ -1432,7 +1449,7 @@ function AIDriveStrategyUnloadCombine:unloadStoppedCombine()
                 self:releaseCombine()
                 self:startMovingBackFromCombine(self.states.MOVING_BACK_WITH_TRAILER_FULL, self.combineJustUnloaded)
             else
-                self:driveBesideCombine()
+                gx, gz = self:driveBesideCombine()
             end
         else
             self:debug('finished unloading stopped combine, move back a bit to make room for it to continue')
@@ -1440,8 +1457,9 @@ function AIDriveStrategyUnloadCombine:unloadStoppedCombine()
             self.ppc:setNormalLookaheadDistance()
         end
     else
-        self:driveBesideCombine()
+        gx, gz = self:driveBesideCombine()
     end
+    return gx, gz
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -1463,7 +1481,7 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
         return
     end
 
-    self:driveBesideCombine()
+    local gx, gz = self:driveBesideCombine()
 
     --when the combine is empty, stop and wait for next combine (unless this can't work without an unloader nearby)
     if self.combineToUnload:getCpDriveStrategy():getFillLevelPercentage() <= 0.1 and
@@ -1520,6 +1538,7 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
         -- for some reason (like combine turned) we are not in a good position anymore then set us up again
         self:startWaitingForSomethingToDo()
     end
+    return gx, gz
 end
 
 ------------------------------------------------------------------------------------------------------------------------
