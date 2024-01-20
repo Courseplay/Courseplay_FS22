@@ -249,7 +249,7 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
             self:callUnloaderWhenNeeded()
         end
     end
-    if self:isTurning() and not self:isTurningOnHeadland() then
+    if self:isTurning() and not self:isTurningOnHeadland() and not self:isFinishingRow() then
         if self:shouldHoldInTurnManeuver() then
             self:setMaxSpeed(0)
         end

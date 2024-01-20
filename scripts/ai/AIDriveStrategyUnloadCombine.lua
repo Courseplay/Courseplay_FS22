@@ -125,6 +125,7 @@ AIDriveStrategyUnloadCombine.UNLOAD_TYPES = {
     openCoverAllowed : boolean
     moveablePipeDisabled : boolean
     vehicle : table|nil
+    holdCombine : boolean
 ]]
 
 ---------------------------------------------
@@ -465,9 +466,14 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.MOVING_BACK then
 
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
+        if self.state.properties.holdCombine then
+            self:debugSparse('Holding combine while backing up')
+            self.combineToUnload:getCpDriveStrategy():hold(1000)
+        end
         -- drive back until the combine is in front of us
         local _, _, dz = self:getDistanceFromCombine(self.state.properties.vehicle)
         if dz > 0 then
+            self:debug('Stop backing up')
             self:startWaitingForSomethingToDo()
         end
 
@@ -1520,7 +1526,7 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
         elseif self.combineToUnload:getCpDriveStrategy():isTurning() or
                 self.combineToUnload:getCpDriveStrategy():isAboutToTurn() then
             self:debug('combine empty and moving forward but we are too close to the end of the row or combine is turning, moving back')
-            self:startMovingBackFromCombine(self.states.MOVING_BACK, self.combineToUnload)
+            self:startMovingBackFromCombine(self.states.MOVING_BACK, self.combineToUnload, true)
             return
         elseif self:getAllTrailersFull(self.settings.fullThreshold:getValue()) then
             -- make some room for the pathfinder, as the trailer may not be full but has reached the threshold,
@@ -1571,7 +1577,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 -- Start moving back from empty combine
 ------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyUnloadCombine:startMovingBackFromCombine(newState, combine)
+function AIDriveStrategyUnloadCombine:startMovingBackFromCombine(newState, combine, holdCombineWhileMovingBack)
     if self.unloadTargetType == self.UNLOAD_TYPES.SILO_LOADER then
         --- Finished unloading of silo unloader. Moving back is not needed.
         self:setNewState(self.states.IDLE)
@@ -1582,6 +1588,7 @@ function AIDriveStrategyUnloadCombine:startMovingBackFromCombine(newState, combi
     self:startCourse(reverseCourse, 1)
     self:setNewState(newState)
     self.state.properties.vehicle = combine
+    self.state.properties.holdCombine = holdCombineWhileMovingBack
     return
 end
 
