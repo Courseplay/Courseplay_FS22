@@ -523,11 +523,8 @@ function AIDriveStrategyUnloadCombine:startWaitingForSomethingToDo()
     end
 end
 
----@return number, number gx, gz world coordinates to steer to, instead of the PPC determined goal point (which is
---- calculated from the offset harvester course).
---- This goal point is calculated from the harvester's position. It is on a straight line parallel to the harvester,
---- under the pipe and look ahead distance ahead of the unloader
-function AIDriveStrategyUnloadCombine:driveBesideCombine()
+---@return table|nil the best node (of all the fill nodes on all trailers) to use to unload a harvester
+function AIDriveStrategyUnloadCombine:getBestTargetNode()
     local function isValidNode(targetNode)
         local fillType = self.combineToUnload:getCpDriveStrategy():getFillType()
         -- for some harvesters (DeWulf), fill type is unknown until they start working
@@ -549,22 +546,48 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
     end
 
     local bestTargetNode
-    for i, targetNode in pairs(self.trailerNodes) do
+    for _, targetNode in pairs(self.trailerNodes) do
         if isValidNode(targetNode) then
             bestTargetNode = targetNode
             break
         end
     end
-    if not bestTargetNode then
-        --- TODO: Check if the driver is released correctly form the combine?
+    return bestTargetNode
+end
+
+---@return number|nil find the best target node and its distance from the pipe, > 0 when behind the pipe, < 0 when in
+--- front of the pipe
+function AIDriveStrategyUnloadCombine:getBestTargetNodeDistanceFromPipe()
+    local bestTargetNode = self:getBestTargetNode()
+    if bestTargetNode == nil then
         return
     end
+    if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
+        DebugUtil.drawDebugNode(bestTargetNode.node, 'target')
+    end
     local _, offsetZ = self:getPipeOffset(self.combineToUnload)
-    local dx, _, dz = localToLocal(self.combineToUnload:getAIDirectionNode(), bestTargetNode.node, 0, 0, offsetZ)
+    local _, _, dz = localToLocal(self.combineToUnload:getAIDirectionNode(), bestTargetNode.node, 0, 0, offsetZ)
+    return dz
+end
+
+---@return number | nil, number | nil gx, gz world coordinates to steer to, instead of the PPC determined goal point (which is
+--- calculated from the offset harvester course).
+--- This goal point is calculated from the harvester's position. It is on a straight line parallel to the harvester,
+--- under the pipe and look ahead distance ahead of the unloader
+--- driveBesideCombine() creates this goal when approaching the harvester to align with the pipe better and faster than
+--- just using the offset course waypoints.
+function AIDriveStrategyUnloadCombine:driveBesideCombine()
+
+    local dz = self:getBestTargetNodeDistanceFromPipe()
+    if dz == nil then
+        return
+    end
+
     -- use a factor to make sure we reach the pipe fast, but be more gentle while discharging
-    local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
-    local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(dz * factor, -10, 15)
-    if dz < -0.5 and speed < 2 then
+    local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.75 or 2
+    local combineSpeed = self.combineToUnload.lastSpeedReal * 3600
+    local speed = combineSpeed + MathUtil.clamp(dz * factor, -10, 15)
+    if dz > 0 and speed < 2 then
         -- Giants does not like speeds under 2, it just stops. So if we calculated a small speed
         -- like when the combine is stopped, but not there yet, make sure we set a speed which
         -- actually keeps the unloader moving, otherwise we will never get there.
@@ -574,23 +597,24 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
     if self.combineToUnload:getCpDriveStrategy():isPipeMoving() then
         speed = (math.min(speed, self.combineToUnload:getLastSpeed() + 2))
     end
+    self:setMaxSpeed(math.max(0, speed))
 
     self:renderText(0, 0.02, "%s: driveBesideCombine: dz = %.1f, speed = %.1f, factor = %.1f",
             CpUtil.getName(self.vehicle), dz, speed, factor)
 
-    -- Calculate an artificial goal point relative to the harvester
-    _, _, dz = localToLocal(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
-    local gx, gy, gz = localToWorld(self.combineToUnload:getAIDirectionNode(),
-            -- straight line parallel to the harvester, under the pipe, look ahead distance from the unloader
-            self:getPipeOffset(self.combineToUnload), 0, dz + self.ppc:getLookaheadDistance())
+    local gx, gy, gz
+    -- Calculate an artificial goal point relative to the harvester to align better when starting to unload
+    if dz > 5 then
+        _, _, dz = localToLocal(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
+        gx, gy, gz = localToWorld(self.combineToUnload:getAIDirectionNode(),
+        -- straight line parallel to the harvester, under the pipe, look ahead distance from the unloader
+                self:getPipeOffset(self.combineToUnload), 0, dz + self.ppc:getLookaheadDistance())
 
-    if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
-        DebugUtil.drawDebugNode(bestTargetNode.node, 'target')
-        -- show the goal point
-        DebugUtil.drawDebugGizmoAtWorldPos(gx, gy + 3, gz, 1, 0, 1, 0, 1, 0, "Unloader goal", false)
+        if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
+            -- show the goal point
+            DebugUtil.drawDebugGizmoAtWorldPos(gx, gy + 3, gz, 1, 0, 1, 0, 1, 0, "Unloader goal", false)
+        end
     end
-
-    self:setMaxSpeed(math.max(0, speed))
     return gx, gz
 end
 
@@ -864,6 +888,15 @@ function AIDriveStrategyUnloadCombine:isInFrontAndAlignedToMovingCombine(debugEn
         self:debugIf(debugEnabled, 'isInFrontAndAlignedToMovingCombine: combine is not moving')
         return false
     end
+    if self.combineToUnload:getCpDriveStrategy():alwaysNeedsUnloader() then
+        -- this harvester won't move without an unloader under the pipe, so if our fill node is in front of the
+        -- trailer, there is no point waiting for it
+        dz = self:getBestTargetNodeDistanceFromPipe()
+        if dz == nil or dz < -0.25 then
+            self:debugIf(debugEnabled, 'isInFrontAndAlignedToMovingCombine: harvester always needs unloader but fill node is in front of the pipe (%s)', tostring(dz))
+            return false
+        end
+    end
     -- in front of the combine, close enough and approximately same direction, about pipe offset side distance
     -- and is not waiting (stopped) for the unloader
     return true
@@ -871,6 +904,7 @@ end
 
 function AIDriveStrategyUnloadCombine:isOkToStartUnloadingCombine()
     if self.combineToUnload:getCpDriveStrategy():isReadyToUnload(true) then
+        -- if it always needs an unloader, it won't move without it, so can't start unloading when in front of the combine
         return self:isBehindAndAlignedToCombine() or self:isInFrontAndAlignedToMovingCombine()
     else
         self:debugSparse('combine not ready to unload, waiting')
@@ -981,19 +1015,6 @@ function AIDriveStrategyUnloadCombine:startCourseFollowingCombine()
     self.followCourse, startIx = self:setupFollowCourse()
     self.combineOffset = self:getPipeOffset(self.combineToUnload)
     self.followCourse:setOffset(-self.combineOffset, 0)
-    -- try to find the waypoint closest to the vehicle, as startIx we got is right beside the combine
-    -- which may be far away and if that's our target, PPC will be slow to bring us back on the course
-    -- and we may end up between the end of the pipe and the combine
-    -- use a higher look ahead as we may be in front of the combine
-    local startSearchAt = math.max(1, startIx - 5)
-    local _, _, dz = self.followCourse:getWaypointLocalPosition(self.vehicle:getAIDirectionNode(), startIx)
-    local nextFwdIx, found = self.followCourse:getNextFwdWaypointIxFromVehiclePosition(startSearchAt,
-            self.vehicle:getAIDirectionNode(),
-            -- allow for more deviation when further from the target
-            (1 + 0.25 * math.abs(dz)) * self.combineToUnload:getCpDriveStrategy():getWorkWidth(), 20)
-    if found then
-        startIx = nextFwdIx
-    end
     self:debug('Will follow combine\'s course at waypoint %d, side offset %.1f', startIx, self.followCourse.offsetX)
     self:startCourse(self.followCourse, startIx)
     self:setNewState(self.states.UNLOADING_MOVING_COMBINE)
@@ -1156,16 +1177,14 @@ function AIDriveStrategyUnloadCombine:call(combine, waypoint)
             -- allow for more align space for shorter pipes
             zOffset = -self:getCombinesMeasuredBackDistance() - (pipeLength > 6 and 2 or 10)
         end
-        if self:isPathfindingNeeded(self.vehicle, self:getCombineRootNode(), xOffset, zOffset) then
+        if self:isOkToStartUnloadingCombine() then
+            self:startUnloadingCombine()
+        elseif self:isPathfindingNeeded(self.vehicle, self:getCombineRootNode(), xOffset, zOffset) then
             self:setNewState(self.states.WAITING_FOR_PATHFINDER)
             self:startPathfindingToWaitingCombine(xOffset, zOffset)
         else
-            self:debug('Can\'t start pathfinding to waiting combine, too close?')
-            if self:isOkToStartUnloadingCombine() then
-                self:startUnloadingCombine()
-            else
-                self:startWaitingForSomethingToDo()
-            end
+            self:debug('Can\'t start pathfinding to waiting combine, and not in a good position to unload, too close?')
+            self:startWaitingForSomethingToDo()
         end
         return true
     end
@@ -1534,6 +1553,7 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
         -- something to follow until the combine reaches the turn (so we don't try to make the turn
         -- also apply an offset as the followCourse is assumed to be the combine's course
         -- TODO: #3029
+        self:debug('waypoint %d is a turn start, creating temporary course to stay on track', self.followCourse:getCurrentWaypointIx())
         self.followCourse = Course.createStraightForwardCourse(self.vehicle, 20, -self.combineOffset)
         self.followCourse:setOffset(-self.combineOffset, 0)
         self:startCourse(self.followCourse, 1)
@@ -2104,9 +2124,9 @@ function AIDriveStrategyUnloadCombine:getFieldUnloadHeap()
 end
 
 --- Starts the unloading on a field with an auger wagon or a trailer.
---- Drives to the heap/ field unload position: 
+--- Drives to the heap/ field unload position:
 ---     For reverse unloading an offset is applied only if an already existing heap was found.
----     For side unloading the x offset of the discharge node is applied. 
+---     For side unloading the x offset of the discharge node is applied.
 ---@param controller ImplementController either a PipeController or TrailerController
 ---@param allowReverseUnloading boolean is unloading at the back allowed?
 function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowReverseUnloading)
@@ -2128,7 +2148,7 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
 
     }
 
-    --- Search for a heap at the field unload position 
+    --- Search for a heap at the field unload position
     --- for reverse unloading or to make sure the pathfinding
     --- is not crossing the heap area.
     local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(self.vehicle,
@@ -2152,8 +2172,8 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
             --- For reverse unloading the unloader needs to drive parallel to the heap.
             self.fieldUnloadData.xOffset = siloWidth / 2 + 2 * vehicleWidth / 3
         else
-            --- Makes sure the x offset for unloading to the side is big enough 
-            --- to make sure the unloader doesn't touch the heap. 
+            --- Makes sure the x offset for unloading to the side is big enough
+            --- to make sure the unloader doesn't touch the heap.
             self.fieldUnloadData.xOffset = MathUtil.sign(self.fieldUnloadData.xOffset) *
                     math.max(math.abs(self.fieldUnloadData.xOffset), siloWidth / 2 + 2 * vehicleWidth / 3)
         end
@@ -2272,7 +2292,7 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadPositionReached()
             local alignmentTurnSegmentCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
             alignmentCourse:append(alignmentTurnSegmentCourse)
 
-            --- Add a small straight segment at the end 
+            --- Add a small straight segment at the end
             --- to straighten the trailer out.
             alignmentCourse:append(Course.createStraightForwardCourse(self.vehicle,
                     AIUtil.getLength(self.vehicle), 0, self.fieldUnloadTurnEndNode))
@@ -2349,9 +2369,9 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadingFinished()
     setRotation(self.fieldUnloadTurnEndNode, 0, rotY + math.pi, 0)
 
     if not self.fieldUnloadData.heapSilo then
-        --- Set the valid heap, when trying to drive to the park position 
+        --- Set the valid heap, when trying to drive to the park position
         --- after creating the heap for the first time.
-        --- This makes sure that the park position doesn't cross the heap. 
+        --- This makes sure that the park position doesn't cross the heap.
         local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(self.vehicle,
                 self.fieldUnloadPositionNode, 0, CpAIJobCombineUnloader.maxHeapLength, -2)
 
