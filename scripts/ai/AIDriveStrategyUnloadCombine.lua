@@ -1815,7 +1815,8 @@ function AIDriveStrategyUnloadCombine:backUpForReversingCombine()
         -- when turning on headland, the combine may not be detecting us with its rear proximity sensor,
         -- but we may still be in its way, so back up until far enough
         local _, _, dz = self:getDistanceFromCombine()
-        if dz > 0 then
+        local workingWidth = self.combineToUnload:getCpDriveStrategy():getWorkWidth()
+        if dz > workingWidth / 2 and dProximity > workingWidth / 2 then
             self:debug('Behind %s, stop backing up', blockedVehicle:getName())
             self:onLastWaypointPassed()
         end
