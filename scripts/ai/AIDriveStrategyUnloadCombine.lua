@@ -1797,7 +1797,7 @@ function AIDriveStrategyUnloadCombine:requestToBackupForReversingCombine(blocked
 end
 
 ------------------------------------------------------------------------------------------------------------------------
--- Moving out of the way of a combine
+-- Moving out of the way of a reversing combine
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:backUpForReversingCombine()
     -- check both distances and use the smaller one, proximity sensor may not see the combine or
@@ -1811,9 +1811,16 @@ function AIDriveStrategyUnloadCombine:backUpForReversingCombine()
 
     self:setMaxSpeed(speed)
 
-    -- reversing combine stopped asking, resume what we were doing before
-    if blockedVehicle ~= self.vehicleRequestingBackUp:get() then
-        -- end reversing course prematurely, it'll resume previous course
+    if self.combineToUnload and self.combineToUnload:getCpDriveStrategy():isTurningOnHeadland() then
+        -- when turning on headland, the combine may not be detecting us with its rear proximity sensor,
+        -- but we may still be in its way, so back up until far enough
+        local _, _, dz = self:getDistanceFromCombine()
+        if dz > 0 then
+            self:debug('Behind %s, stop backing up', blockedVehicle:getName())
+            self:onLastWaypointPassed()
+        end
+    elseif blockedVehicle ~= self.vehicleRequestingBackUp:get() then
+        -- reversing combine stopped asking, resume what we were doing before
         self:debug('request from %s timed out, stop backing up', blockedVehicle:getName())
         self:onLastWaypointPassed()
     end
