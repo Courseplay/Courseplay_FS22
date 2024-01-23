@@ -1816,7 +1816,7 @@ function AIDriveStrategyUnloadCombine:backUpForReversingCombine()
         -- but we may still be in its way, so back up until far enough
         local _, _, dz = self:getDistanceFromCombine()
         local workingWidth = self.combineToUnload:getCpDriveStrategy():getWorkWidth()
-        if dz > workingWidth / 2 and dProximity > workingWidth / 2 then
+        if dz > workingWidth * 0.8 and dProximity > workingWidth * 0.8 then
             self:debug('Behind %s, stop backing up', blockedVehicle:getName())
             self:onLastWaypointPassed()
         end

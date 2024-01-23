@@ -419,6 +419,7 @@ You can define the following custom settings:
 	<Vehicle name="zkivSe.xml"
 			 basePipeMovingToolIndex = "1"
 			 childPipeMovingToolIndex = "2"
+             turnRadius = "8"
 	/>
 
 
