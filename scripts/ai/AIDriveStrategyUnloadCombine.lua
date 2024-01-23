@@ -1788,7 +1788,9 @@ function AIDriveStrategyUnloadCombine:requestToBackupForReversingCombine(blocked
         self.stateAfterMovedOutOfWay = self.state
 
         self:setNewState(self.states.BACKING_UP_FOR_REVERSING_COMBINE)
-        local reverseCourse = Course.createStraightReverseCourse(self.vehicle, self.maxDistanceWhenMovingOutOfWay)
+        local _, backMarker = Markers.getMarkerNodes(self.vehicle)
+        local reverseCourse = Course.createStraightReverseCourse(self.vehicle,
+                0.6 * self.combineToUnload:getCpDriveStrategy():getWorkWidth(), 0, backMarker)
         self:startCourse(reverseCourse, 1)
         self:debug('Backing up for reversing %s', blockedVehicle:getName())
         self.state.properties.vehicle = blockedVehicle
@@ -1811,17 +1813,11 @@ function AIDriveStrategyUnloadCombine:backUpForReversingCombine()
 
     self:setMaxSpeed(speed)
 
-    if self.combineToUnload and self.combineToUnload:getCpDriveStrategy():isTurningOnHeadland() then
-        -- when turning on headland, the combine may not be detecting us with its rear proximity sensor,
-        -- but we may still be in its way, so back up until far enough
-        local _, _, dz = self:getDistanceFromCombine()
-        local workingWidth = self.combineToUnload:getCpDriveStrategy():getWorkWidth()
-        if dz > workingWidth * 0.8 and dProximity > workingWidth * 0.8 then
-            self:debug('Behind %s, stop backing up', blockedVehicle:getName())
-            self:onLastWaypointPassed()
-        end
-    elseif blockedVehicle ~= self.vehicleRequestingBackUp:get() then
+    if not (self.combineToUnload and self.combineToUnload:getCpDriveStrategy():isTurningOnHeadland()) and
+            blockedVehicle ~= self.vehicleRequestingBackUp:get() then
         -- reversing combine stopped asking, resume what we were doing before
+        -- (except during a headland turn, the combine may not be detecting us with its rear proximity sensor,
+        -- but we may still be in its way, so always back up until the end of the reverse course)
         self:debug('request from %s timed out, stop backing up', blockedVehicle:getName())
         self:onLastWaypointPassed()
     end
