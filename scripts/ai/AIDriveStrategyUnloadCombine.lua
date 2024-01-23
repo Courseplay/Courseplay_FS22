@@ -1790,7 +1790,7 @@ function AIDriveStrategyUnloadCombine:requestToBackupForReversingCombine(blocked
         self:setNewState(self.states.BACKING_UP_FOR_REVERSING_COMBINE)
         local _, backMarker = Markers.getMarkerNodes(self.vehicle)
         local reverseCourse = Course.createStraightReverseCourse(self.vehicle,
-                0.6 * self.combineToUnload:getCpDriveStrategy():getWorkWidth(), 0, backMarker)
+                0.6 * (blockedVehicle:getCpDriveStrategy():getWorkWidth()) or 25, 0, backMarker)
         self:startCourse(reverseCourse, 1)
         self:debug('Backing up for reversing %s', blockedVehicle:getName())
         self.state.properties.vehicle = blockedVehicle
