@@ -140,6 +140,7 @@ AIDriveStrategyUnloadCombine.myStates = {
     MOVING_BACK = { vehicle = nil, holdCombine = false },
     MOVING_BACK_WITH_TRAILER_FULL = { vehicle = nil, holdCombine = false }, -- moving back from a combine we just unloaded (not assigned anymore)
     BACKING_UP_FOR_REVERSING_COMBINE = { vehicle = nil }, -- reversing as long as the combine is reversing
+    MOVING_BACK_FOR_HEADLAND_TURN = { vehicle = nil, holdCombine = false }, -- making room for the harvester performing a headland turn
     MOVING_AWAY_FROM_OTHER_VEHICLE = { vehicle = nil }, -- moving until we have enough space between us and an other vehicle
     WAITING_FOR_MANEUVERING_COMBINE = {},
     DRIVING_BACK_TO_START_POSITION_WHEN_FULL = {} --- Drives to the start position with a trailer attached and gives control to giants or AD there.
@@ -649,6 +650,8 @@ function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
         self:startRememberedCourse()
     elseif self.state == self.states.MOVING_AWAY_FROM_OTHER_VEHICLE then
         self:startWaitingForSomethingToDo()
+    elseif self.state == self.states.MOVING_BACK_FOR_HEADLAND_TURN then
+        self:startWaitingForSomethingToDo()
     elseif self.state == self.states.DRIVING_BACK_TO_START_POSITION_WHEN_FULL then
         self:debug('Inverted goal position reached, so give control back to the job.')
         self:onTrailerFull()
@@ -1021,6 +1024,7 @@ function AIDriveStrategyUnloadCombine:startCourseFollowingCombine()
     self.followCourse, startIx = self:setupFollowCourse()
     self.combineOffset = self:getPipeOffset(self.combineToUnload)
     self.followCourse:setOffset(-self.combineOffset, 0)
+    self.reverseForTurnCourse = nil
     self:debug('Will follow combine\'s course at waypoint %d, side offset %.1f', startIx, self.followCourse.offsetX)
     self:startCourse(self.followCourse, startIx)
     self:setNewState(self.states.UNLOADING_MOVING_COMBINE)
@@ -1516,21 +1520,23 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
     local gx, gz = self:driveBesideCombine()
 
     --when the combine is empty, stop and wait for next combine (unless this can't work without an unloader nearby)
-    if self.combineToUnload:getCpDriveStrategy():getFillLevelPercentage() <= 0.1 and
-            not self.combineToUnload:getCpDriveStrategy():alwaysNeedsUnloader() then
+    local combineStrategy = self.combineToUnload:getCpDriveStrategy()
+    if combineStrategy:getFillLevelPercentage() <= 0.1 and not combineStrategy:alwaysNeedsUnloader() then
         --when the combine is in a pocket, make room to get back to course
-        if self.combineToUnload:getCpDriveStrategy():isWaitingInPocket() then
+        if combineStrategy:isWaitingInPocket() then
             self:debug('combine empty and in pocket, drive back')
             self:startMovingBackFromCombine(self.states.MOVING_BACK, self.combineToUnload)
             return
-        elseif self.combineToUnload:getCpDriveStrategy():isTurning() or
-                self.combineToUnload:getCpDriveStrategy():isAboutToTurn() then
+        elseif combineStrategy:isTurningOnHeadland() then
+            self:debug('combine empty and turning on headland, moving back')
+            self:startMakingRoomForCombineTurningOnHeadland(self.combineToUnload)
+        elseif combineStrategy:isTurning() or combineStrategy:isAboutToTurn() then
             self:debug('combine empty and moving forward but we are too close to the end of the row or combine is turning, moving back')
             self:startMovingBackFromCombine(self.states.MOVING_BACK, self.combineToUnload, true)
             return
         elseif self:getAllTrailersFull(self.settings.fullThreshold:getValue()) then
             -- make some room for the pathfinder, as the trailer may not be full but has reached the threshold,
-            -- which case is not caught in changeToUnloadWhenTrailerFull() as we want to keep unloading as long as
+            --, which case is not caught in changeToUnloadWhenTrailerFull() as we want to keep unloading as long as
             -- we can
             self:debug('combine empty and moving forward but we want to leave, so move back a bit')
             self:startMovingBackFromCombine(self.states.MOVING_BACK_WITH_TRAILER_FULL, self.combineToUnload)
@@ -1560,6 +1566,12 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
         -- also apply an offset as the followCourse is assumed to be the combine's course
         -- TODO: #3029
         self:debug('waypoint %d is a turn start, creating temporary course to stay on track', self.followCourse:getCurrentWaypointIx())
+        -- to build a reverse course from the turn start back when we need it later, this will nicely
+        -- follow the original headland even if it isn't straight
+        self.reverseForTurnCourse = self.followCourse:getSectionAsNewCourse(
+                self.followCourse:getCurrentWaypointIx(),
+                self.followCourse:getCurrentWaypointIx() - 10,
+                true)
         self.followCourse = Course.createStraightForwardCourse(self.vehicle, 20, -self.combineOffset)
         self.followCourse:setOffset(-self.combineOffset, 0)
         self:startCourse(self.followCourse, 1)
@@ -1780,7 +1792,8 @@ function AIDriveStrategyUnloadCombine:requestToBackupForReversingCombine(blocked
     if self.state ~= self.states.BACKING_UP_FOR_REVERSING_COMBINE and
             self.state ~= self.states.MOVING_BACK and
             self.state ~= self.states.MOVING_AWAY_FROM_OTHER_VEHICLE and
-            self.state ~= self.states.MOVING_BACK_WITH_TRAILER_FULL
+            self.state ~= self.states.MOVING_BACK_WITH_TRAILER_FULL and
+            self.state ~= self.states.MOVING_BACK_FOR_HEADLAND_TURN
     then
         -- reverse back a bit, this usually solves the problem
         -- TODO: there may be better strategies depending on the situation
@@ -1790,7 +1803,7 @@ function AIDriveStrategyUnloadCombine:requestToBackupForReversingCombine(blocked
         self:setNewState(self.states.BACKING_UP_FOR_REVERSING_COMBINE)
         local _, backMarker = Markers.getMarkerNodes(self.vehicle)
         local reverseCourse = Course.createStraightReverseCourse(self.vehicle,
-                0.6 * (blockedVehicle:getCpDriveStrategy():getWorkWidth()) or 25, 0, backMarker)
+                AIDriveStrategyUnloadCombine.maxDistanceWhenMovingOutOfWay, 0, backMarker)
         self:startCourse(reverseCourse, 1)
         self:debug('Backing up for reversing %s', blockedVehicle:getName())
         self.state.properties.vehicle = blockedVehicle
@@ -1806,21 +1819,40 @@ function AIDriveStrategyUnloadCombine:backUpForReversingCombine()
     -- d may be big enough but parts of the combine still close
     local blockedVehicle = self.state.properties.vehicle
     local d = self:getDistanceFromCombine(blockedVehicle)
-    local dProximity, vehicle = self.proximityController:checkBlockingVehicleFront()
+    local dProximity, vehicleInFront = self.proximityController:checkBlockingVehicleFront()
     local combineSpeed = (blockedVehicle.lastSpeedReal * 3600)
     local speed = combineSpeed + MathUtil.clamp(self.minDistanceWhenMovingOutOfWay - math.min(d, dProximity),
             -combineSpeed, self.settings.reverseSpeed:getValue() * 1.2)
 
     self:setMaxSpeed(speed)
 
-    if not (self.combineToUnload and self.combineToUnload:getCpDriveStrategy():isTurningOnHeadland()) and
-            blockedVehicle ~= self.vehicleRequestingBackUp:get() then
-        -- reversing combine stopped asking, resume what we were doing before
-        -- (except during a headland turn, the combine may not be detecting us with its rear proximity sensor,
-        -- but we may still be in its way, so always back up until the end of the reverse course)
+    -- combine not requesting anymore and is not in front of us
+    if blockedVehicle ~= self.vehicleRequestingBackUp:get() and vehicleInFront ~= self.vehicleRequestingBackUp:get() then
         self:debug('request from %s timed out, stop backing up', blockedVehicle:getName())
         self:onLastWaypointPassed()
     end
+end
+
+--- When we were unloading a combine on the headland while it reached a headland turn,
+--- it stopped until it was empty, and now about the start the turn. We have to move 
+--- out of its way now. 
+function AIDriveStrategyUnloadCombine:startMakingRoomForCombineTurningOnHeadland(combine)
+    self:setNewState(self.states.MOVING_BACK_FOR_HEADLAND_TURN)
+    if self.reverseForTurnCourse then
+        -- if we have a follow course from before the turn, then use that
+        self.reverseForTurnCourse:setOffset(-self.combineOffset, 0)
+        self:startCourse(self.reverseForTurnCourse, 1)
+    else
+        local reverseCourse = Course.createStraightReverseCourse(self.vehicle,
+                AIDriveStrategyUnloadCombine.maxDistanceWhenMovingOutOfWay)
+        self:startCourse(reverseCourse, 1)
+    end
+    self.state.properties.vehicle = combine
+    self.state.properties.holdCombine = true
+end
+
+function AIDriveStrategyUnloadCombine:makeRoomForCombineTurningOnHeadland()
+    self:setMaxSpeed(self.settings.reverseSpeed:getValue())
 end
 
 function AIDriveStrategyUnloadCombine:findOtherUnloaderAroundCombine(combine, combineOffset)
