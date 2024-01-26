@@ -53,12 +53,14 @@ function CpOptionToggleElement:setLabelElement(element)
 end
 
 function CpOptionToggleElement:inputEvent(action, value, eventUsed)
-	eventUsed = CpOptionToggleElement:superClass().inputEvent(self, action, value, eventUsed)
-	if not eventUsed then
-		if action == InputAction.MENU_ACCEPT then
-			if self.focusActive then
-				self:onCenterButtonClicked()
-				eventUsed = true
+	if self:getIsActive() then
+		eventUsed = CpOptionToggleElement:superClass().inputEvent(self, action, value, eventUsed)
+		if not eventUsed then
+			if action == InputAction.MENU_ACCEPT then
+				if self.focusActive then
+					self:onCenterButtonClicked()
+					eventUsed = true
+				end
 			end
 		end
 	end
