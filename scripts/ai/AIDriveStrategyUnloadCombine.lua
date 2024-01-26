@@ -904,7 +904,7 @@ function AIDriveStrategyUnloadCombine:isInFrontAndAlignedToMovingCombine(debugEn
         -- this harvester won't move without an unloader under the pipe, so if our fill node is in front of the
         -- trailer, there is no point waiting for it
         dz = self:getBestTargetNodeDistanceFromPipe()
-        if dz == nil or dz < -0.25 then
+        if dz == nil or dz < -0.5 then
             self:debugIf(debugEnabled, 'isInFrontAndAlignedToMovingCombine: harvester always needs unloader but fill node is in front of the pipe (%s)', tostring(dz))
             return false
         end
