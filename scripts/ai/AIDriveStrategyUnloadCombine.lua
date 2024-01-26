@@ -456,6 +456,9 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
         -- someone is blocking us or we are blocking someone
         self:moveAwayFromOtherVehicle()
 
+    elseif self.state == self.states.MOVING_BACK_FOR_HEADLAND_TURN then
+        self:makeRoomForCombineTurningOnHeadland()
+
     elseif self.state == self.states.MOVING_BACK_WITH_TRAILER_FULL then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
         -- drive back until the combine backmarker is 3m behind us to have some room for the pathfinder
@@ -1838,6 +1841,8 @@ end
 --- out of its way now. 
 function AIDriveStrategyUnloadCombine:startMakingRoomForCombineTurningOnHeadland(combine)
     self:setNewState(self.states.MOVING_BACK_FOR_HEADLAND_TURN)
+    -- reversing almost straight is better this
+    self.ppc:setNormalLookaheadDistance()
     if self.reverseForTurnCourse then
         -- if we have a follow course from before the turn, then use that
         self.reverseForTurnCourse:setOffset(-self.combineOffset, 0)
@@ -1851,8 +1856,19 @@ function AIDriveStrategyUnloadCombine:startMakingRoomForCombineTurningOnHeadland
     self.state.properties.holdCombine = true
 end
 
+--- When the harvester is making a headland turn, stay away from it by backing up, but not too far
 function AIDriveStrategyUnloadCombine:makeRoomForCombineTurningOnHeadland()
-    self:setMaxSpeed(self.settings.reverseSpeed:getValue())
+    local dProximity, _ = self.proximityController:checkBlockingVehicleFront()
+    local d, _, dz = self:getDistanceFromCombine(self.combineToUnload)
+    local dLimit = 0.6 * self.combineToUnload:getCpDriveStrategy():getWorkWidth()
+    -- if we are already behind the harvester's back and far enough and not blocking it and
+    -- not in our proximity, then stop
+    if dz > 0 and d > dLimit and dProximity > dLimit then
+        self:setMaxSpeed(0)
+    else
+        -- otherwise keep moving back
+        self:setMaxSpeed(self.settings.reverseSpeed:getValue())
+    end
 end
 
 function AIDriveStrategyUnloadCombine:findOtherUnloaderAroundCombine(combine, combineOffset)
