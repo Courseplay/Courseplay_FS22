@@ -6,7 +6,7 @@
 	For documentation look up the CpSettingUtil.lua.
 -->
 
-<Settings prefixText="CP_vehicle_courseGeneratorSetting_" autoUpdateGui="true">
+<Settings prefixText="CP_vehicle_courseGeneratorSetting_">
 	<SettingSubTitle title="basic">
 		<Setting classType="AIParameterSettingList" name="workWidth" min="0.5" max="50" incremental="0.1" unit="2" setDefault="setAutomaticWorkWidthAndOffset" onChangeCallback="cpShowWorkWidth" isVisible="isWorkWidthSettingVisible"/>
 		<Setting classType="AIParameterSettingList" name="multiTools" min="1" max="5" default="1"/>

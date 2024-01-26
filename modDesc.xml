@@ -416,6 +416,7 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/gui/CpCourseManagerFrame.lua"/>
 		<sourceFile filename="scripts/gui/CourseDisplay.lua"/>
 		<sourceFile filename="scripts/gui/CpGamePadHudScreen.lua"/>
+		<sourceFile filename="scripts/gui/CpOptionToggleElement.lua"/>
 
 		<sourceFile filename="scripts/gui/hud/HudElements.lua"/>
 		<sourceFile filename="scripts/gui/hud/CpBaseHud.lua"/>

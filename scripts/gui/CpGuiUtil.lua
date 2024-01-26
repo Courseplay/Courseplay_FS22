@@ -476,28 +476,38 @@ function CpGuiUtil.openCourseGeneratorGui(vehicle)
     end
 	CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, "opened ai inGame job creation.")
     vehicle:updateAIFieldWorkerImplementData()
-    pageAI:onCreateJob()
-    for _, job in pairs(pageAI.jobTypeInstances) do 
-        if job:isa(CpAIJob) and job:getIsAvailableForVehicle(vehicle) then 
-            local jobTypeIndex = g_currentMission.aiJobTypeManager:getJobTypeIndex(job)
-            CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, "opened ai inGame menu job %s.", job:getDescription())
-            pageAI.currentJob = nil
-            pageAI:setActiveJobTypeSelection(jobTypeIndex)
-            pageAI.currentJob:applyCurrentState(vehicle, g_currentMission, g_currentMission.player.farmId, false, true)
-            pageAI:updateParameterValueTexts()
-            pageAI:validateParameters()
-            --- Fixes the job selection gui element.
-            local currentIndex = table.findListElementFirstIndex(pageAI.currentJobTypes, jobTypeIndex, 1)
-            pageAI.jobTypeElement:setState(currentIndex)
-            if not vehicle:hasCpCourse() then 
-                if pageAI.currentJob:getCanGenerateFieldWorkCourse() then 
-                    CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, "opened ai inGame menu course generator.")
-                    pageAI:onClickOpenCloseCourseGenerator()
-                end
-            end
-            break
-        end
-    end
+    pageAI.currentJobTypes = {}
+	local currentJobTypesTexts = {}
+	local currentJobTypeIndex, currentIndex = nil, nil
+	for name, index in pairs(AIJobType) do
+		if pageAI.jobTypeInstances[index]:getIsAvailableForVehicle(vehicle) then
+			table.insert(pageAI.currentJobTypes, index)
+			table.insert(currentJobTypesTexts, g_currentMission.aiJobTypeManager:getJobTypeByIndex(index).title)
+			if pageAI.jobTypeInstances[index]:isa(CpAIJob) then 
+				currentJobTypeIndex = index
+				currentIndex = #pageAI.currentJobTypes
+			end
+		end
+	end
+	if #pageAI.currentJobTypes == 0 then
+		return
+	end
+
+	pageAI.jobTypeElement:setTexts(currentJobTypesTexts)
+	pageAI.jobTypeElement:setState(currentIndex or 1)
+
+	pageAI.mode = InGameMenuAIFrame.MODE_CREATE
+	pageAI.currentJobVehicle = vehicle
+	pageAI.currentJob = nil
+
+	pageAI:setJobMenuVisible(true)
+	pageAI:setActiveJobTypeSelection(currentJobTypeIndex or 1)
+	if not vehicle:hasCpCourse() then 
+		if pageAI.currentJob:getCanGenerateFieldWorkCourse() then 
+			CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, "opened ai inGame menu course generator.")
+			pageAI:onClickOpenCloseCourseGenerator()
+		end
+	end
     --- Moves the map, so the selected vehicle is directly visible.
     local worldX, _, worldZ = getWorldTranslation(vehicle.rootNode)
     CpGuiUtil.movesMapCenterTo(pageAI.ingameMap, worldX, worldZ)

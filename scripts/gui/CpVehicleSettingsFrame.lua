@@ -32,15 +32,6 @@ function CpVehicleSettingsFrame:onGuiSetupFinished()
 	FocusManager:removeElement(self.subTitlePrefab)
 	self.multiTextOptionPrefab:unlinkElement()
 	FocusManager:removeElement(self.multiTextOptionPrefab)
-
-	for i = #self.boxLayout.elements, 1, -1 do
-		self.boxLayout.elements[i]:delete()
-	end
-	local settingsBySubTitle,pageTitle = CpVehicleSettings.getSettingSetup()
-	self.pageTitle = g_i18n:getText(pageTitle)
-	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
-	self.boxLayout,self.multiTextOptionPrefab, self.subTitlePrefab)
-	self.boxLayout:invalidateLayout()
 end
 
 --- Binds the settings of the selected vehicle to the gui elements.
@@ -48,32 +39,30 @@ function CpVehicleSettingsFrame:onFrameOpen()
 	CpVehicleSettingsFrame:superClass().onFrameOpen(self)
 	self.currentVehicle = CpInGameMenuAIFrameExtended.getVehicle()
 	--- Changes the page title.
-	local title = string.format(self.pageTitle,self.currentVehicle:getName())
-	self.header:setText(title)	
 	if self.currentVehicle ~=nil then 
 		if self.currentVehicle.getCpSettings then 
 			CpUtil.debugVehicle( CpUtil.DBG_HUD,self.currentVehicle, "onFrameOpen CpVehicleSettingsFrame" )
-			self.settings = self.currentVehicle:getCpSettingsTable()
-			local settingsBySubTitle = CpVehicleSettings.getSettingSetup()
-			CpSettingsUtil.linkGuiElementsAndSettings(self.settings,self.boxLayout,settingsBySubTitle,self.currentVehicle)
+			local settings = self.currentVehicle:getCpSettings()
+			local settingsBySubTitle, pageTitle = CpVehicleSettings.getSettingSetup()
+			pageTitle = g_i18n:getText(pageTitle)
+			for i = #self.boxLayout.elements, 1, -1 do
+				self.boxLayout.elements[i]:delete()
+			end
+			CpSettingsUtil.generateAndBindGuiElementsToSettings(settingsBySubTitle,
+				self.boxLayout, self.multiTextOptionPrefab, 
+				self.subTitlePrefab, settings)
+			CpSettingsUtil.updateGuiElementsBoundToSettings(self.boxLayout, self.currentVehicle)
+			local title = string.format(pageTitle, self.currentVehicle:getName())
+			self.header:setText(title)	
 		end
 	end
-	FocusManager:loadElementFromCustomValues(self.boxLayout)
-	self.boxLayout:invalidateLayout()
 	self:setSoundSuppressed(true)
 	FocusManager:setFocus(self.boxLayout)
 	self:setSoundSuppressed(false)
 end
 
---- Unbinds the settings of the selected vehicle to the gui elements.
-function CpVehicleSettingsFrame:onFrameClose()
-	CpVehicleSettingsFrame:superClass().onFrameClose(self)
-	if self.settings then
-		local currentHotspot = g_currentMission.inGameMenu.pageAI.currentHotspot
-		local vehicle = InGameMenuMapUtil.getHotspotVehicle(currentHotspot)
-		CpUtil.debugVehicle( CpUtil.DBG_HUD,vehicle, "onFrameClose CpVehicleSettingsFrame" )
-		CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings,self.boxLayout)
+function CpVehicleSettingsFrame:onClickCpMultiTextOption(_, guiElement)
+	if self.currentVehicle then
+		CpSettingsUtil.updateGuiElementsBoundToSettings(self.boxLayout, self.currentVehicle)
 	end
-	self.settings = nil
-	self.boxLayout:invalidateLayout()
 end

@@ -231,13 +231,6 @@ function CpCourseGeneratorSettings:isWorkWidthSettingVisible()
     return not self:getCanStartCpBaleFinder() and not self:getCanStartCpBunkerSiloWorker()
 end
 
---- Updates the layout on change, as gui elements might change their visibility.
-function CpCourseGeneratorSettings:updateGui()
-    local spec = self.spec_cpCourseGeneratorSettings
-    CpInGameMenuAIFrameExtended.updateCourseGeneratorSettings(spec.gui, true)
-    CpCourseGeneratorSettings.onCpUnitChanged(self)
-end
-
 --- Generates speed setting values up to the max possible speed.
 function CpCourseGeneratorSettings:generateWorkWidthSettingValuesAndTexts(setting) 
     --- Disabled for now!!
