@@ -65,58 +65,10 @@ function CpOptionToggleElement:inputEvent(action, value, eventUsed)
 	return eventUsed
 end
 
-function CpOptionToggleElement:onRightButtonClicked(steps, noFocus)
-	CpOptionToggleElement:superClass().onRightButtonClicked(self, steps, noFocus)
-	if noFocus == nil or not noFocus then
-		if self.textElement ~= nil then
-			self.textElement:onFocusEnter()
-		end
-	end
-end
-
--- Lines 44-51
-function CpOptionToggleElement:onLeftButtonClicked(steps, noFocus)
-	CpOptionToggleElement:superClass().onLeftButtonClicked(self, steps, noFocus)
-	if noFocus == nil or not noFocus then
-		if self.textElement ~= nil then
-			self.textElement:onFocusEnter()
-		end
-	end
-end
-
-function CpOptionToggleElement:onFocusEnter()
-	CpOptionToggleElement:superClass().onFocusEnter(self)
-
-	if self.textElement ~= nil and self.textElement.state ~= GuiOverlay.STATE_FOCUSED then
-		self.textElement:onFocusEnter()
-	end
-end
-
-function CpOptionToggleElement:onFocusLeave()
-	CpOptionToggleElement:superClass().onFocusLeave(self)
-	
-	if self.textElement ~= nil and self.textElement.state ~= GuiOverlay.STATE_NORMAL then
-		self.textElement:onFocusLeave()
-	end
-end
-
-
--- Lines 521-531
-function CpOptionToggleElement:onHighlight()
-	CpOptionToggleElement:superClass().onHighlight(self)
-
-	if self.textElement ~= nil and self.textElement:getOverlayState() == GuiOverlay.STATE_NORMAL then
-		self.textElement:setOverlayState(GuiOverlay.STATE_HIGHLIGHTED)
-	end
-end
-
--- Lines 535-545
-function CpOptionToggleElement:onHighlightRemove()
-	CpOptionToggleElement:superClass().onHighlightRemove(self)
-
-	if self.textElement ~= nil and self.textElement:getOverlayState() == GuiOverlay.STATE_HIGHLIGHTED then
-		self.textElement:setOverlayState(GuiOverlay.STATE_NORMAL)
-	end
+function CpOptionToggleElement:raiseClickCallback(...)
+	CpOptionToggleElement:superClass().raiseClickCallback(self, ...)
+	--- Magic gui fix, no idea why this is needed ...
+	FocusManager:unsetFocus(self)
 end
 
 
