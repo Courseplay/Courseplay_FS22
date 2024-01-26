@@ -1869,6 +1869,10 @@ function AIDriveStrategyUnloadCombine:makeRoomForCombineTurningOnHeadland()
         -- otherwise keep moving back
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
     end
+    if not self:getCombineIsTurning() then
+        self:debug('Harvester stopped turning, wait for call.')
+        self:startWaitingForSomethingToDo()
+    end
 end
 
 function AIDriveStrategyUnloadCombine:findOtherUnloaderAroundCombine(combine, combineOffset)
