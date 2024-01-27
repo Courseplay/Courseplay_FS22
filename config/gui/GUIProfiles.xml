@@ -110,4 +110,14 @@
         <Value name="position" value="0px -40px" />
     </Profile>
 
+	<Profile name="cpMultiTextOptionText" extends="multiTextOptionText">
+		<Value name="imageColor" value="0 0 0 0"/>
+    </Profile>
+
+	<Profile name="cpMultiTextOptionSettingsText" extends="multiTextOptionSettingsText">
+		<Value name="size" value="210px 48px"/>
+		<Value name="imageColor" value="0 0 0 0"/>
+	</Profile>
+
+
 </GUIProfiles>

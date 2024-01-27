@@ -8,10 +8,10 @@
 
 		<GuiElement type="text" profile="settingsMenuSubtitle" id="subTitlePrefab"/>
 
-		<GuiElement type="multiTextOption" profile="multiTextOptionSettings" id="multiTextOptionPrefab">
+		<GuiElement type="cpOptionToggle" profile="multiTextOptionSettings" id="multiTextOptionPrefab" onClick="onClickCpMultiTextOption">
 			<GuiElement type="button" profile="multiTextOptionSettingsLeft" />
 			<GuiElement type="button" profile="multiTextOptionSettingsRight"/>
-			<GuiElement type="text"   profile="multiTextOptionSettingsText" />
+			<GuiElement type="button" profile="cpMultiTextOptionSettingsText" />
 			<GuiElement type="text"   profile="multiTextOptionSettingsTitle"/>
 			<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
 			<GuiElement type="text"   profile="multiTextOptionSettingsTooltip"/>

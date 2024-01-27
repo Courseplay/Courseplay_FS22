@@ -6,7 +6,7 @@
 	For documentation look up the CpSettingUtil.lua.
 -->
 
-<Settings prefixText="CP_vehicle_vineCourseGeneratorSetting_" autoUpdateGui="true">
+<Settings prefixText="CP_vehicle_vineCourseGeneratorSetting_">
     <SettingSubTitle title="basic">
         <Setting classType="AIParameterSettingList" name="vineCenterOffset" default = "0">
             <Values>

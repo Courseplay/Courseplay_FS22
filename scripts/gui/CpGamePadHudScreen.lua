@@ -8,8 +8,6 @@ CpGamePadHudScreen = {
 		BUTTON_CLEAR = "clearButton",
 		BUTTON_LAYOUT = "bottomButtons",
 		SETTING_TEMPLATE = "settingTemplate",
-		SETTING_TITLE = "settingTitle",
-		SETTING = "settingElement",
 		LAYOUT = "layout"
 	},
 }
@@ -33,27 +31,18 @@ function CpGamePadHudScreen:onGuiSetupFinished()
 	self.settingTemplate:unlinkElement()
 	FocusManager:removeElement(self.settingTemplate)
 
-	CpSettingsUtil.generateGuiElementsFromSettingsTableAlternating(self.settings, self.layout,
-	self.settingTitle, self.settingElement)
 	self.startButton:unlinkElement()
 	FocusManager:removeElement(self.startButton)
-	self.layout:addElement(self.startButton)
 
 	self.recordButton:unlinkElement()
 	FocusManager:removeElement(self.recordButton)
-	self.layout:addElement(self.recordButton)
 
 	self.clearButton:unlinkElement()
 	FocusManager:removeElement(self.clearButton)
 	self.clearButton:setText(g_i18n:getText("CP_courseManager_clear_current_courses"))
-	self.layout:addElement(self.clearButton)
 
 	self.backButton:unlinkElement()
 	FocusManager:removeElement(self.backButton)
-	self.layout:addElement(self.backButton)
-
-
-	self.layout:invalidateLayout()
 
 	CpGamePadHudScreen:superClass().onGuiSetupFinished(self)
 end
@@ -62,13 +51,31 @@ end
 function CpGamePadHudScreen:setData(vehicle, settings) 
 	self.vehicle = vehicle
 	self.settings = settings
-	CpSettingsUtil.linkGuiElementsAndSettings(settings, self.layout, nil, nil, true)
+end
+
+function CpGamePadHudScreen:onClickCpMultiTextOption()
+	CpSettingsUtil.updateGuiElementsBoundToSettings(self.layout, self.vehicle)
 end
 
 function CpGamePadHudScreen:onOpen(element)
 	CpGamePadHudScreen:superClass().onOpen(self)
-	FocusManager:loadElementFromCustomValues(self.layout)
+
+	for i = #self.layout.elements, 1, -1 do
+		self.layout.elements[i]:delete()
+	end
+
+	CpSettingsUtil.generateGuiElementsFromSettingsTableAlternating(self.settings, self.layout,
+		self.settingTemplate:getDescendantByName("title"), 
+		self.settingTemplate:getDescendantByName("element"))
+
+	CpSettingsUtil.updateGuiElementsBoundToSettings(self.layout, self.vehicle)
+
+	self.layout:addElement(self.startButton)
+	self.layout:addElement(self.recordButton)
+	self.layout:addElement(self.clearButton)
+	self.layout:addElement(self.backButton)
 	self.layout:invalidateLayout()
+
 	self:setSoundSuppressed(true)
 	FocusManager:setFocus(self.layout)
 	self:setSoundSuppressed(false)
@@ -91,9 +98,7 @@ end
 
 function CpGamePadHudScreen:onClose(element)
 	CpGamePadHudScreen:superClass().onClose(self)
-	if self.settings then
-		CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings, self.layout, true)
-	end
+	
 	g_inputBinding:removeActionEventsByTarget(self)
 	self.vehicle:closeCpGamePadHud()
 end

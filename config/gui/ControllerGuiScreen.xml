@@ -3,8 +3,8 @@
 	
 	<GuiElement type="empty" id="settingTemplate">
 		<!-- Group title -->
-		<GuiElement type="text" profile="ingameMenuAIParameterGroupTitle" id="settingTitle"/>
-		<GuiElement type="multiTextOption" profile="ingameMenuJobTypeOption" id="settingElement">
+		<GuiElement type="text" profile="ingameMenuAIParameterGroupTitle" name="title"/>
+		<GuiElement type="cpOptionToggle" profile="ingameMenuJobTypeOption" name="element" onClick="onClickCpMultiTextOption">
 			<GuiElement type="button" profile="multiTextOptionLeft" />
 			<GuiElement type="button" profile="multiTextOptionRight" />
 			<GuiElement type="text"   profile="multiTextOptionText" />

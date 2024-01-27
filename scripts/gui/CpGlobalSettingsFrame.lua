@@ -18,8 +18,6 @@ local CpGlobalSettingsFrame_mt = Class(CpGlobalSettingsFrame, TabbedMenuFrameEle
 function CpGlobalSettingsFrame.new(target, custom_mt)
 	local self = TabbedMenuFrameElement.new(target, custom_mt or CpGlobalSettingsFrame_mt)
 	self:registerControls(CpGlobalSettingsFrame.CONTROLS)
-
-    
 	return self
 end
 
@@ -30,38 +28,27 @@ function CpGlobalSettingsFrame:onGuiSetupFinished()
 	FocusManager:removeElement(self.subTitlePrefab)
 	self.multiTextOptionPrefab:unlinkElement()
 	FocusManager:removeElement(self.multiTextOptionPrefab)
-
-	self.settings = g_Courseplay.globalSettings:getSettingsTable()
-	local settingsBySubTitle, pageTitle = g_Courseplay.globalSettings:getSettingSetup()
-	self.settingsBySubTitle = settingsBySubTitle
-	self.header:setText(g_i18n:getText(pageTitle))	
-	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
-	self.boxLayout, self.multiTextOptionPrefab, self.subTitlePrefab)
-	self.boxLayout:invalidateLayout()
 end
 
 function CpGlobalSettingsFrame:onFrameOpen()
 	CpGlobalSettingsFrame:superClass().onFrameOpen(self)
 
-	CpSettingsUtil.linkGuiElementsAndSettings(self.settings, self.boxLayout, self.settingsBySubTitle)
-
-	FocusManager:loadElementFromCustomValues(self.boxLayout)
-	self.boxLayout:invalidateLayout()
+	local settings = g_Courseplay.globalSettings:getSettings()
+	local settingsBySubTitle, pageTitle = g_Courseplay.globalSettings:getSettingSetup()
+	settingsBySubTitle = settingsBySubTitle
+	self.header:setText(g_i18n:getText(pageTitle))
+	for i = #self.boxLayout.elements, 1, -1 do
+		self.boxLayout.elements[i]:delete()
+	end
+	CpSettingsUtil.generateAndBindGuiElementsToSettings(settingsBySubTitle,
+		self.boxLayout, self.multiTextOptionPrefab, 
+		self.subTitlePrefab, settings)
+	CpSettingsUtil.updateGuiElementsBoundToSettings(self.boxLayout)
 	self:setSoundSuppressed(true)
 	FocusManager:setFocus(self.boxLayout)
 	self:setSoundSuppressed(false)
 end
 
-function CpGlobalSettingsFrame:onFrameClose()
-	CpGlobalSettingsFrame:superClass().onFrameClose(self)
-	CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings,self.boxLayout)
-	self.boxLayout:invalidateLayout()
-end
-
-function CpGlobalSettingsFrame.updateGui()
-	local self = g_currentMission.inGameMenu.pageCpGlobalSettings
-	if self and g_gui:getIsGuiVisible() and g_currentMission.inGameMenu.currentPage == self then
-		self:onFrameClose()
-		self:onFrameOpen()
-	end
+function CpGlobalSettingsFrame:onClickCpMultiTextOption(_, guiElement)
+	CpSettingsUtil.updateGuiElementsBoundToSettings(self.boxLayout)
 end

@@ -69,6 +69,7 @@ function CpCourseManager.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, 'onCpShowCourseSettingChanged', CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, 'onCpFieldworkWaypointChanged', CpCourseManager)
+    SpecializationUtil.registerEventListener(vehicleType, 'onCpFinished', CpCourseManager)
 end
 
 function CpCourseManager.registerEvents(vehicleType)
@@ -335,6 +336,11 @@ function CpCourseManager:onCpCourseChange(newCourse,noEventSend)
         self:updateCpCourseDisplayVisibility()
         spec.courseDisplay:clearCourse()
     end
+end
+
+function CpCourseManager:onCpFinished()
+    --- The course was completely finished, so we delete the remembered waypoint.
+    self:rememberCpLastWaypointIx()
 end
 
 function CpCourseManager:drawCpCoursePlot(map, isHudMap)

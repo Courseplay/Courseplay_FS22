@@ -12,8 +12,6 @@ CpSettingsUtil = {}
 
 	Settings :
 		- prefixText (string):  pre fix text used for translations
-		- autoUpdateGui (bool): automatically updates the gui, optional
-
 		- SettingSubTitle(?) :
 			- prefix (bool): prefix used yes/no?, default = true
 			- title (string): sub title text in the gui menu
@@ -68,8 +66,7 @@ function CpSettingsUtil.init()
 	-- valueTypeId, path, description, defaultValue, isRequired
 	schema:register(XMLValueType.STRING, "Settings#title", "Settings prefix text", nil, true)
 	schema:register(XMLValueType.STRING, "Settings#prefixText", "Settings prefix text", nil, true)
-	schema:register(XMLValueType.STRING, "Settings#autoUpdateGui", "Gui gets updated automatically")
-
+	
 	local key = "Settings.SettingSubTitle(?)"
 	schema:register(XMLValueType.STRING, key .."#title", "Setting sub title", nil)
 	schema:register(XMLValueType.BOOL, key .."#prefix", "Setting sub title is a prefix", true)
@@ -150,7 +147,6 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 	end})
 	class.settingsBySubTitle = {}
 	local uniqueID = 0
-	local autoUpdateGui = xmlFile:getValue("Settings#autoUpdateGui")
 	local setupKey = xmlFile:getValue("Settings#prefixText")
 	local pageTitle = xmlFile:getValue("Settings#title")
 	if pageTitle then
@@ -182,7 +178,6 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 		}
 		xmlFile:iterate(masterKey..".Setting", function (i, baseKey)
 			local settingParameters = {}
-			settingParameters.autoUpdateGui = autoUpdateGui
 			settingParameters.classType = xmlFile:getValue(baseKey.."#classType")
 			settingParameters.name = xmlFile:getValue(baseKey.."#name")
 			local title = xmlFile:getValue(baseKey.."#title")
@@ -283,23 +278,66 @@ function CpSettingsUtil.copySettingsValues(settingsTable, settingsTableToCopy)
     end
 end
 
---- Clones for each setting and subtitle generic gui elements and applies basic setups.
----@param settingsBySubTitle table
----@param parentGuiElement GuiElement
----@param genericSettingElement GuiElement
----@param genericSubTitleElement GuiElement
-function CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle, parentGuiElement, genericSettingElement, genericSubTitleElement)
+function CpSettingsUtil.generateAndBindGuiElementsToSettings(settingsBySubTitle, parentGuiElement, 
+		genericSettingElement, genericSubTitleElement, settings)
 	for _, data in ipairs(settingsBySubTitle) do 
 		local clonedSubTitleElement = genericSubTitleElement:clone(parentGuiElement)
 		clonedSubTitleElement:setText(g_i18n:getText(data.title))
+		clonedSubTitleElement.subTitleConfigData = data
 		FocusManager:loadElementFromCustomValues(clonedSubTitleElement)
-		for _, setting in ipairs(data.elements) do 
+		for _, raw_setting in ipairs(data.elements) do 
 			local clonedSettingElement = genericSettingElement:clone(parentGuiElement)
-			setting:setGenericGuiElementValues(clonedSettingElement)
-			FocusManager:loadElementFromCustomValues(clonedSettingElement)
+			local setting = settings[raw_setting:getName()]
+			if setting then
+				clonedSettingElement:setDataSource(setting)
+				clonedSettingElement.aiParameter = setting
+				FocusManager:loadElementFromCustomValues(clonedSettingElement)
+			end
 		end
 	end
 	parentGuiElement:invalidateLayout()
+end
+
+function CpSettingsUtil.updateGuiElementsBoundToSettings(layout, vehicle)
+	local subTitleVisible = true
+	for i, element in pairs(layout.elements) do 
+		local setting = element.aiParameter
+		if setting then 
+			element:setDisabled(setting:getIsDisabled())
+			element:setVisible(subTitleVisible and setting:getIsVisible())
+			element:updateTitle()
+		else
+			if element.subTitleConfigData then
+				local isVisible = true
+				--- Is subtitle 
+				local isDisabledFunc =  element.subTitleConfigData.isDisabledFunc
+				local isVisibleFunc =  element.subTitleConfigData.isVisibleFunc
+				local isVisibleExpertMode =  element.subTitleConfigData.isExpertModeOnly
+				if isVisibleExpertMode and not g_Courseplay.globalSettings.expertModeActive:getValue() then 
+					isVisible = false
+				end
+				local class =  element.subTitleConfigData.class
+				if vehicle then 
+					if class[isVisibleFunc] then 
+						isVisible = class[isVisibleFunc](vehicle)
+					end
+					if class[isDisabledFunc] then 
+						element:setDisabled(class[isDisabledFunc](vehicle))
+					end
+				else 
+					if class[isVisibleFunc] then 
+						isVisible = class[isVisibleFunc](class)
+					end
+					if class[isDisabledFunc] then 
+						element:setDisabled(class[isDisabledFunc](vehicle))
+					end
+				end
+				subTitleVisible = isVisible
+				element:setVisible(isVisible)
+			end
+		end
+	end
+	layout:invalidateLayout()
 end
 
 --- Clones for each setting gui elements and applies basic setups.
@@ -308,85 +346,14 @@ end
 ---@param genericSettingElement GuiElement
 function CpSettingsUtil.generateGuiElementsFromSettingsTableAlternating(settings, parentGuiElement, genericSettingElementTitle, genericSettingElement)
 	for _, setting in ipairs(settings) do 
-
-		local titleElement = genericSettingElementTitle:clone(parentGuiElement, true)
-		titleElement:setText(g_i18n:getText(setting.data.title))
-		genericSettingElement:unlinkElement()
+		local titleElement = genericSettingElementTitle:clone(parentGuiElement)
+		FocusManager:loadElementFromCustomValues(titleElement)
 		CpUtil.debugFormat(CpDebug.DBG_HUD, "Bound setting %s", setting:getName())
-		local clonedSettingElement = genericSettingElement:clone(parentGuiElement, true)
-		clonedSettingElement.cpTitleElement = titleElement
---			parentGuiElement:invalidateLayout()
-		setting:setGenericGuiElementValues(clonedSettingElement)
-	end
-end
-
-
---- Links the gui elements to the correct settings.
----@param settings table settings table that get's linked.
----@param layout table layout with elements to link to.
----@param settingsBySubTitle table|nil reference for sub title elements between the settings.
----@param vehicle table|nil optional vehicle reference
----@param ignoreNormalButtons boolean|nil 
-function CpSettingsUtil.linkGuiElementsAndSettings(settings, layout, settingsBySubTitle, vehicle, ignoreNormalButtons)
-	local valid = true
-	local i = 1
-	local j = 1
-	for ix, element in ipairs(layout.elements) do 
-		if element:isa(MultiTextOptionElement) or element:isa(ButtonElement) and not ignoreNormalButtons then 
-			if valid then
-				CpUtil.debugFormat( CpUtil.DBG_HUD, "Link gui element with setting: %s", settings[i]:getName())
-				if not settingsBySubTitle then
-					settings[i]:setGuiElement(element, layout.elements[ix-1])
-				else
-					settings[i]:setGuiElement(element)
-				end
-			else 
-				element:setVisible(false)
-			end
-			i = i + 1
-		elseif settingsBySubTitle then  
-			valid = true
-			local isDisabledFunc = settingsBySubTitle[j].isDisabledFunc
-			local isVisibleFunc = settingsBySubTitle[j].isVisibleFunc
-			local isVisibleExpertMode = settingsBySubTitle[j].isExpertModeOnly
-			if isVisibleExpertMode and not g_Courseplay.globalSettings.expertModeActive:getValue() then 
-				valid = false
-			end
-			local class = settingsBySubTitle[j].class
-			if vehicle then 
-				if class[isVisibleFunc] then 
-					valid = class[isVisibleFunc](vehicle)
-				end
-				if class[isDisabledFunc] then 
-					element:setDisabled(class[isDisabledFunc](vehicle))
-				end
-			else 
-				if class[isVisibleFunc] then 
-					valid = class[isVisibleFunc](class)
-				end
-				if class[isDisabledFunc] then 
-					element:setDisabled(class[isDisabledFunc](vehicle))
-				end
-			end
-			
-			element:setVisible(valid)
-			j =  j + 1
-		end
-	end
-end
-
---- Unlinks the gui elements to the correct settings.
----@param settings table
----@param layout table
----@param ignoreNormalButtons boolean|nil 
-function CpSettingsUtil.unlinkGuiElementsAndSettings(settings, layout, ignoreNormalButtons)
-	local i = 1
-	for _, element in ipairs(layout.elements) do 
-		if element:isa(MultiTextOptionElement) or element:isa(ButtonElement) and not ignoreNormalButtons then 
-			CpUtil.debugFormat( CpUtil.DBG_HUD, "Unlink gui element with setting: %s", settings[i]:getName())
-			settings[i]:resetGuiElement()
-			i = i + 1
-		end
+		local clonedSettingElement = genericSettingElement:clone(parentGuiElement)
+		clonedSettingElement.aiParameter = setting
+		clonedSettingElement:setDataSource(setting)
+		clonedSettingElement:setLabelElement(titleElement)
+		FocusManager:loadElementFromCustomValues(clonedSettingElement)
 	end
 end
 
@@ -403,16 +370,6 @@ function CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(settingsBySubT
 		table.insert(class.groupedParameters, parameterGroup)
 	end
 end
-
-function CpSettingsUtil.updateAiParameters(currentJobElements)
-	for i, element in pairs(currentJobElements) do 
-		if element.setDataSource then
-			element:setDataSource(element.aiParameter)
-			element:setDisabled(element.aiParameter:getIsDisabled())
-		end
-	end
-end
-
 
 --- Raises an event for all settings.
 ---@param settings table

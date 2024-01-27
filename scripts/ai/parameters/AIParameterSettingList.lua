@@ -158,7 +158,6 @@ function AIParameterSettingList:setToIx(ix)
 		self.previous = self.current
 		self.current = ix
 		self:onChange()
-		self:updateGuiElementValues()
 		self:validateCurrentValue()
 	end
 end
@@ -176,9 +175,6 @@ end
 function AIParameterSettingList:onChange()
 	if self.setupDone then
 		self:raiseCallback(self.callbacks.onChangeCallbackStr)
-		if self.data.autoUpdateGui then 
-			self:getCallback("updateGui")
-		end
 		--- The client user settings are automatically saved on change.
 		if g_server == nil and self:getIsUserSetting() and self.isSynchronized then 
 			self:raiseCallback("onCpUserSettingChanged")
@@ -515,115 +511,14 @@ function AIParameterSettingList:copy(setting)
 	end
 end
 
-
-function AIParameterSettingList:setGenericGuiElementValues(guiElement)
-	if guiElement.labelElement and guiElement.labelElement.setText then
-		guiElement:setLabel(self:getTitle())
+function AIParameterSettingList:onClickCenter(guiElement)
+	if self.textInputAllowed then
+		self:showInputTextDialog(guiElement)
 	end
-	local toolTipElement = guiElement.elements[6]
-	if toolTipElement then
-		toolTipElement:setText(self:getTooltip())
-	end
-end
-
-function AIParameterSettingList:getGuiElementTexts()
-	return self.texts
-end
-
-function AIParameterSettingList:getGuiElementStateFromValue(value)
-	for i = 1, #self.values do
-		if self.values[i] == value then
-			return i
-		end
-	end
-	return nil
-end
-
-function AIParameterSettingList:getGuiElementState()
-	return self:getGuiElementStateFromValue(self.values[self.current])
-end
-
-function AIParameterSettingList:updateGuiElementValues()
-	if self.guiElement == nil then return end
-	self.guiElement:setState(self:getGuiElementState())
-	self.guiElement:setDisabled(self.isDisabled)
-end
-
-function AIParameterSettingList:setGuiElement(guiElement, titleGuiElement)
-	self:validateCurrentValue()
-	self.guiElement = guiElement
-	self.guiElement.target = self
-	self.guiElement.onClickCallback = function(setting, state, element)
-		setting:onClick(state)
-		CpGuiUtil.debugFocus(element.parent)
-		if not FocusManager:setFocus(element) then 
-			element.focusActive = false
-			FocusManager:setFocus(element)
-		end
-	end
-	self.guiElement.leftButtonElement.target = self
-	self.guiElement.rightButtonElement.target = self
-	self.guiElement.leftButtonElement:setCallback("onClickCallback", "setPreviousItem")
-	self.guiElement.rightButtonElement:setCallback("onClickCallback", "setNextItem")
-	self.guiElement:setTexts(self:getGuiElementTexts())
-	self:updateGuiElementValues()
-	self.guiElement:setVisible(self:getIsVisible())
-	self.guiElement:setDisabled(self:getIsDisabled())
-	if titleGuiElement then
-		titleGuiElement:setVisible(self:getIsVisible())
-	end
-	self:registerMouseInputEvent()
-	local max = FocusManager.FIRST_LOCK
-	local min = 50
-	self.guiElement.scrollDelayDuration = MathUtil.clamp(max-#self.values*2.5, min, max)
-end
-
---- Adds text input option to the setting.
-function AIParameterSettingList:registerMouseInputEvent()
-	local function mouseClick(element, superFunc, posX, posY, isDown, isUp, button, eventUsed)
-
-		--- Disables not visible settings in a scrolling layout.
-		--- This fixes a bug from giants.
-		if element.parent then 
-			local parent = element.parent
-			local x, y = element.absPosition[1]+element.absSize[1]/2, element.absPosition[2]+element.absSize[2]/3
-			local cursorInElement = GuiUtils.checkOverlayOverlap(x, y, parent.absPosition[1], parent.absPosition[2], parent.absSize[1], parent.absSize[2], parent.hotspot)
-			if not cursorInElement then 
-								
-				return
-			end
-		end
-		
-		local eventUsed = superFunc(element, posX, posY, isDown, isUp, button, eventUsed)
-		if element:getIsDisabled() or not element:getIsVisible() then 
-			return eventUsed
-		end
-		if self.textInputAllowed then
-			local x, y = unpack(element.textElement.absPosition)
-			local width, height = unpack(element.textElement.absSize)
-			local cursorInElement = GuiUtils.checkOverlayOverlap(posX, posY, x, y, width, height)
-			if not eventUsed and cursorInElement then 
-				if isDown and button == Input.MOUSE_BUTTON_LEFT  then 
-					element.mouseDown = true
-				end
-				if isUp and button == Input.MOUSE_BUTTON_LEFT and element.mouseDown then
-					element.mouseDown = false
-					if not FocusManager:setFocus(element) then 
-						element.focusActive = false
-						FocusManager:setFocus(element)
-					end
-					self:showInputTextDialog()
-				end
-			end
-		end
-		return eventUsed
-	end
-	self.oldMouseEvent = self.guiElement.mouseEvent
-	self.guiElement.mouseEvent = Utils.overwrittenFunction(self.guiElement.mouseEvent, mouseClick)
 end
 
 --- Used for text input settings.
-function AIParameterSettingList:showInputTextDialog()
+function AIParameterSettingList:showInputTextDialog(guiElement)
 	g_gui:showTextInputDialog({
 		disableFilter = true,
 		callback = function (self, value, clickOk)
@@ -649,12 +544,10 @@ function AIParameterSettingList:showInputTextDialog()
 				else 
 					self:setDefault()
 				end
-				if self.guiElement then
-					if not FocusManager:setFocus(self.guiElement) then 
-						self.guiElement.focusActive = false
-						FocusManager:setFocus(self.guiElement)
-					end
-				end
+			end
+			if guiElement and guiElement.updateTitle then
+				guiElement:updateTitle()
+				FocusManager:setFocus(guiElement)
 			end
 		end,
 		maxCharacters = 7,

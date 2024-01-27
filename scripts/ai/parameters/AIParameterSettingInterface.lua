@@ -135,18 +135,8 @@ function AIParameterSettingInterface:isAlmostEqualTo(other)
 	
 end
 
---- Applies title/tooltip texts for the gui element.
-function AIParameterSettingInterface:setGenericGuiElementValues(guiElement)
-	
-end
-
---- Enables updating of the setting value/texts and get access to the onClick callbacks.
-function AIParameterSettingInterface:setGuiElement(guiElement, titleGuiElement)
-	
-end
-
---- Reset after the gui element get's closed/destroyed.
-function AIParameterSettingInterface:resetGuiElement()
+--- GuiElement was clicked
+function AIParameterSettingInterface:onClickCenter(guiElement)
 	
 end
 

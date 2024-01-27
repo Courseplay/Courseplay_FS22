@@ -48,8 +48,8 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	CpInGameMenuAIFrameExtended.setupButtons(self)		
 
 	self:registerControls({"multiTextOptionPrefab","subTitlePrefab","courseGeneratorLayoutElements",
-							"courseGeneratorLayout","courseGeneratorHeader","drawingCustomFieldHeader",
-							"vineCourseGeneratorLayoutElements", "courseGeneratorFrame"})
+		"courseGeneratorLayout","courseGeneratorHeader","drawingCustomFieldHeader","courseGeneratorFrame", 
+		"createCpMultiOptionTemplate", "createCpTextTemplate"})
 
 	--- TODO: Figure out the correct implementation for Issues #1015 & #1457.
 	local element = self:getDescendantByName("ingameMenuAI")
@@ -70,20 +70,20 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	self.multiTextOptionPrefab:unlinkElement()
 	FocusManager:removeElement(self.multiTextOptionPrefab)
 
-	--- Vine course generator layout
-	local settingsBySubTitle = CpCourseGeneratorSettings.getVineSettingSetup()
-	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
-	self.vineCourseGeneratorLayoutElements,self.multiTextOptionPrefab, self.subTitlePrefab)
-	self.vineCourseGeneratorLayoutElements:setVisible(false)
-	self.vineCourseGeneratorLayoutElements:setDisabled(true)
-	self.vineCourseGeneratorLayoutElements:invalidateLayout()
-	--- Default course generator layout
-	local settingsBySubTitle = CpCourseGeneratorSettings.getSettingSetup()
-	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
-	self.courseGeneratorLayoutElements,self.multiTextOptionPrefab, self.subTitlePrefab)
-	self.courseGeneratorLayoutElements:setVisible(false)
-	self.courseGeneratorLayoutElements:setDisabled(true)
-	self.courseGeneratorLayoutElements:invalidateLayout()
+	self.createCpMultiOptionTemplate:unlinkElement()
+	FocusManager:removeElement(self.createCpMultiOptionTemplate)
+
+	self.createCpTextTemplate:unlinkElement()
+	FocusManager:removeElement(self.createCpTextTemplate)
+
+	FocusManager:removeElement(self.createMultiOptionTemplate)
+	self.createMultiOptionTemplate:delete()
+	self.createMultiOptionTemplate = self.createCpMultiOptionTemplate
+
+	FocusManager:removeElement(self.createTextTemplate)
+	self.createTextTemplate:delete()
+	self.createTextTemplate = self.createCpTextTemplate	
+
 
 	self.courseGeneratorLayout:setVisible(false)
 	--- Makes the last selected hotspot is not sold before reopening.
@@ -166,7 +166,7 @@ function CpInGameMenuAIFrameExtended:setupButtons()
 		return btn
 	end
 
-	self.buttonGenerateCourse = createBtn(self.buttonCreateJob,
+	self.buttonGenerateCourse = createBtn(self.buttonStartJob,
 											"CP_ai_page_generate_course",
 											"onClickGenerateFieldWorkCourse")
 
@@ -277,8 +277,6 @@ function InGameMenuAIFrame:onClickOpenCloseCourseGenerator()
 			self.mode = InGameMenuAIFrame.MODE_CREATE
 			self:setJobMenuVisible(true)
 			self.currentJob:getCpJobParameters():validateSettings()
-			CpSettingsUtil.updateAiParameters(self.currentJobElements)
-			CpInGameMenuAIFrameExtended.unbindCourseGeneratorSettings(self)
 			self:updateParameterValueTexts()
 		else
 			self.mode = CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR
@@ -286,7 +284,10 @@ function InGameMenuAIFrame:onClickOpenCloseCourseGenerator()
 			self:toggleMapInput(false)
 			self:setJobMenuVisible(false)
 			self.contextBox:setVisible(false)
-			CpInGameMenuAIFrameExtended.updateCourseGeneratorSettings(self)
+			CpInGameMenuAIFrameExtended.bindCourseGeneratorSettings(self)
+			self:setSoundSuppressed(true)
+			FocusManager:setFocus(self.courseGeneratorLayout)
+			self:setSoundSuppressed(false)
 		end
 	end
 end
@@ -294,64 +295,36 @@ end
 --- Generates the correct course generator layout and binds the settings to the gui elements.
 function CpInGameMenuAIFrameExtended:bindCourseGeneratorSettings()
 	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
-	if vehicle ~=nil and vehicle.getCourseGeneratorSettings then
+	if vehicle ~= nil and vehicle.getCourseGeneratorSettings then
 		CpUtil.debugVehicle( CpUtil.DBG_HUD,vehicle, "binding course generator settings." ) 
 		vehicle:validateCourseGeneratorSettings()
-		self.settings = vehicle:getCourseGeneratorSettingsTable()
+
 		local settingsBySubTitle, title = CpCourseGeneratorSettings.getSettingSetup(vehicle)
-		CpSettingsUtil.linkGuiElementsAndSettings(self.settings,self.courseGeneratorLayoutElements,settingsBySubTitle,vehicle)
-	
-		self.vineSettings = vehicle:getCpVineSettingsTable()
-		local settingsBySubTitle, vineTitle = CpCourseGeneratorSettings.getSettingSetup(vehicle)
-		CpSettingsUtil.linkGuiElementsAndSettings(self.vineSettings,self.vineCourseGeneratorLayoutElements,settingsBySubTitle,vehicle)
-
+		local settings = vehicle:getCourseGeneratorSettings()
 		if self.currentJob:hasFoundVines() then 
-			self.vineCourseGeneratorLayoutElements:setVisible(true)
-			self.vineCourseGeneratorLayoutElements:setDisabled(false)
-			self.courseGeneratorHeader:setText(vineTitle)
-		else 
-			self.courseGeneratorLayoutElements:setVisible(true)
-			self.courseGeneratorLayoutElements:setDisabled(false)
-			self.courseGeneratorHeader:setText(title)
+			settingsBySubTitle, title = CpCourseGeneratorSettings.getVineSettingSetup(vehicle)
+			settings = vehicle:getCpVineSettings()
 		end
+
+		for i = #self.courseGeneratorLayoutElements.elements, 1, -1 do
+			self.courseGeneratorLayoutElements.elements[i]:delete()
+		end
+
+		CpSettingsUtil.generateAndBindGuiElementsToSettings(settingsBySubTitle,
+			self.courseGeneratorLayoutElements,self.multiTextOptionPrefab, 
+			self.subTitlePrefab, settings)
+		CpSettingsUtil.updateGuiElementsBoundToSettings(self.courseGeneratorLayoutElements, vehicle)
+
+		self.courseGeneratorHeader:setText(title)
 	end
 end
 
-function CpInGameMenuAIFrameExtended:updateCourseGeneratorSettings(unbind)
-	if self.courseGeneratorLayout and self.courseGeneratorLayout:getIsVisible() then 
-		if unbind then 
-			CpInGameMenuAIFrameExtended.unbindCourseGeneratorSettings(self)
-		end
-		CpInGameMenuAIFrameExtended.bindCourseGeneratorSettings(self)
-		local layout 
-		if self.currentJob:hasFoundVines() then 
-			layout = self.vineCourseGeneratorLayoutElements
-		else 
-			layout = self.courseGeneratorLayoutElements
-		end
-		FocusManager:loadElementFromCustomValues(layout)
-		layout:invalidateLayout()
-		if FocusManager:getFocusedElement() == nil then
-			self:setSoundSuppressed(true)
-			FocusManager:setFocus(layout)
-			self:setSoundSuppressed(false)
-		end
+--- Course generator gui element was clicked.
+function InGameMenuAIFrame:onClickCpMultiTextOption()
+	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
+	if vehicle ~= nil then
+		CpSettingsUtil.updateGuiElementsBoundToSettings(self.courseGeneratorLayoutElements, vehicle)
 	end
-end
-
-function CpInGameMenuAIFrameExtended:unbindCourseGeneratorSettings()
-	if self.settings then
-		CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings,self.courseGeneratorLayoutElements)
-		self.courseGeneratorLayoutElements:invalidateLayout()
-	end
-	if self.vineSettings then
-		CpSettingsUtil.unlinkGuiElementsAndSettings(self.vineSettings,self.vineCourseGeneratorLayoutElements)
-		self.vineCourseGeneratorLayoutElements:invalidateLayout()
-	end
-	self.vineCourseGeneratorLayoutElements:setVisible(false)
-	self.vineCourseGeneratorLayoutElements:setDisabled(true)
-	self.courseGeneratorLayoutElements:setVisible(false)
-	self.courseGeneratorLayoutElements:setDisabled(true)
 end
 
 --- Updates the visibility of the vehicle settings on select/unselect of a vehicle in the ai menu page.
@@ -446,7 +419,6 @@ function CpInGameMenuAIFrameExtended:onAIFrameClose()
 	g_currentMission:removeMapHotspot(self.fieldSiloAiTargetMapHotspot)
 	g_currentMission:removeMapHotspot(self.unloadAiTargetMapHotspot)
 	g_currentMission:removeMapHotspot(self.loadAiTargetMapHotspot)
-	CpInGameMenuAIFrameExtended.unbindCourseGeneratorSettings(self)
 	g_currentMission.inGameMenu:updatePages()
 end
 InGameMenuAIFrame.onFrameClose = Utils.appendedFunction(InGameMenuAIFrame.onFrameClose,CpInGameMenuAIFrameExtended.onAIFrameClose)
@@ -597,8 +569,12 @@ function CpInGameMenuAIFrameExtended:updateParameterValueTexts(superFunc, ...)
 	g_currentMission:removeMapHotspot(self.loadAiTargetMapHotspot)
 	for _, element in ipairs(self.currentJobElements) do
 		local parameter = element.aiParameter
-		local parameterType = parameter:getType()
 
+		local invalidElement = element:getDescendantByName("invalid")
+		if invalidElement ~= nil then
+			invalidElement:setVisible(not parameter:getIsValid() and not parameter:getIsDisabled())
+		end
+		local parameterType = parameter:getType()
 		if parameterType == AIParameterType.TEXT then
 			local title = element:getDescendantByName("title")
 
@@ -636,8 +612,11 @@ function CpInGameMenuAIFrameExtended:updateParameterValueTexts(superFunc, ...)
 
 				self.rawAiTargetMapHotspot:setWorldRotation(angle)
 			end
+		else 
+			element:updateTitle()
 		end
 	end
+	self.jobMenuLayout:invalidateLayout()
 end
 InGameMenuAIFrame.updateParameterValueTexts = Utils.overwrittenFunction(InGameMenuAIFrame.updateParameterValueTexts,
 															CpInGameMenuAIFrameExtended.updateParameterValueTexts)
@@ -675,7 +654,7 @@ function CpInGameMenuAIFrameExtended:updateWarnings()
 					end
 				end
 			end
-		elseif parameterType == AIParameterType.UNLOADING_STATION then
+		elseif parameterType == AIParameterType.LOADING_STATION then
 			element:updateTitle()
 			local loadingStation = parameter:getLoadingStation()
 
@@ -695,10 +674,11 @@ function CpInGameMenuAIFrameExtended:updateWarnings()
 			end
 		end
 		element:setDisabled(not parameter:getCanBeChanged())
+		self.jobMenuLayout:invalidateLayout()
 	end
 end
 
-InGameMenuAIFrame.updateWarnings = Utils.appendedFunction(InGameMenuAIFrame.updateWarnings, 
+InGameMenuAIFrame.updateWarnings = Utils.overwrittenFunction(InGameMenuAIFrame.updateWarnings, 
 																CpInGameMenuAIFrameExtended.updateWarnings)
 
 --------------------------------------------

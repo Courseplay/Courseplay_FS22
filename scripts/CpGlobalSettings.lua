@@ -101,10 +101,6 @@ function CpGlobalSettings:onUnitChanged()
     end
 end
 
-function CpGlobalSettings:onExpertModeChanged()
-    CpGlobalSettingsFrame.updateGui()
-end
-
 function CpGlobalSettings:debug(str,...)
     CpUtil.debugFormat(CpDebug.DBG_HUD,"Global settings: "..str,...)    
 end
