@@ -25,6 +25,5 @@
 				<Text>only_not_wrapped_bales</Text>
 			</Texts>
 		</Setting>
-		<Setting classType="AIParameterSettingList" name="test" min="0" max="40"/>
 	</SettingSubTitle>
 </Settings>
