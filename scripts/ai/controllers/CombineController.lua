@@ -153,7 +153,22 @@ function CombineController:alwaysNeedsUnloader()
     return self:getCapacity() > 10000000
 end
 
-
+--- The fruit harvested takes some time to be processed, like some root vegetable harvesters where the way from
+--- the pickup to the conveyor belt/pipe take many seconds.
+---@return boolean true if there is still some fruit somewhere being processed, meaning we can expect the pipe to
+--- discharge some more
+function CombineController:isProcessingFruit()
+    if self.combineSpec.loadingDelay > 0 then
+        for i = 1, #self.combineSpec.loadingDelaySlots do
+            if self.combineSpec.loadingDelaySlots[i].valid then
+                return true
+            end
+        end
+        return false
+    else
+        return false
+    end
+end
 -------------------------------------------------------------
 --- Chopper
 -------------------------------------------------------------

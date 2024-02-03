@@ -1260,14 +1260,14 @@ end
 function AIDriveStrategyCombineCourse:shouldHoldInTurnManeuver()
     --- Hold during discharge
     local discharging = self:isDischarging() and not self:isChopper()
-
+    local stillProcessingFruit = self:alwaysNeedsUnloader() and self:isProcessingFruit()
     local isFinishingRow = self.aiTurn and self.aiTurn:isFinishingRow()
     local waitForStraw = self.combineController:isDroppingStrawSwath() and not isFinishingRow
 
-    self:debugSparse('Turn maneuver=> Dischargeable: %s, wait for straw: %s, straw swath active: %s, finishing row: %s',
+    self:debugSparse('Turn maneuver=> Dischargeable: %s, wait for straw: %s, straw swath active: %s, processing: %s, finishing row: %s',
             tostring(discharging), tostring(waitForStraw),
-            tostring(self.combineController:isDroppingStrawSwath()), tostring(isFinishingRow))
-    return discharging or waitForStraw
+            tostring(self.combineController:isDroppingStrawSwath()), tostring(stillProcessingFruit), tostring(isFinishingRow))
+    return discharging or waitForStraw or stillProcessingFruit
 end
 
 --- Should we return to the first point of the course after we are done?
@@ -1419,6 +1419,10 @@ end
 
 function AIDriveStrategyCombineCourse:alwaysNeedsUnloader()
     return self.combineController:alwaysNeedsUnloader()
+end
+
+function AIDriveStrategyCombineCourse:isProcessingFruit()
+    return self.combineController:isProcessingFruit()
 end
 
 function AIDriveStrategyCombineCourse:isFillableTrailerUnderPipe()

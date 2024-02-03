@@ -100,7 +100,7 @@ AIDriveStrategyUnloadCombine.isACombineUnloadAIDriver = true
 -- when calculating a course to a trailer, do not end the course right at the target fill node, instead
 -- unloadTargetOffset meters before that. This allows for a little distance to stop after the tractor
 -- reaches the last waypoint, and the logic in unloadAugerWagon() will move the rig to the exact position anyway.
-AIDriveStrategyUnloadCombine.unloadTargetOffset = 1.5
+fAIDriveStrategyUnloadCombine.unloadTargetOffset = 1.5
 
 --- Offset to apply at the goal marker, so we don't crash with an empty unloader waiting there with the same position.
 AIDriveStrategyUnloadCombine.invertedGoalPositionOffset = -4.5
@@ -1525,42 +1525,33 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
     --when the combine is empty, stop and wait for next combine (unless this can't work without an unloader nearby)
     local combineStrategy = self.combineToUnload:getCpDriveStrategy()
     if combineStrategy:getFillLevelPercentage() <= 0.1 and not combineStrategy:alwaysNeedsUnloader() then
-        --when the combine is in a pocket, make room to get back to course
-        if combineStrategy:isWaitingInPocket() then
-            self:debug('combine empty and in pocket, drive back')
-            self:startMovingBackFromCombine(self.states.MOVING_BACK, self.combineToUnload)
-            return
-        elseif combineStrategy:isTurningOnHeadland() then
-            self:debug('combine empty and turning on headland, moving back')
-            self:startMakingRoomForCombineTurningOnHeadland(self.combineToUnload)
-        elseif combineStrategy:isTurning() or combineStrategy:isAboutToTurn() then
-            self:debug('combine empty and moving forward but we are too close to the end of the row or combine is turning, moving back')
-            self:startMovingBackFromCombine(self.states.MOVING_BACK, self.combineToUnload, true)
-            return
-        elseif self:getAllTrailersFull(self.settings.fullThreshold:getValue()) then
-            -- make some room for the pathfinder, as the trailer may not be full but has reached the threshold,
-            --, which case is not caught in changeToUnloadWhenTrailerFull() as we want to keep unloading as long as
-            -- we can
-            self:debug('combine empty and moving forward but we want to leave, so move back a bit')
-            self:startMovingBackFromCombine(self.states.MOVING_BACK_WITH_TRAILER_FULL, self.combineToUnload)
-            return
-        else
-            self:debug('combine empty and moving forward')
-            self:releaseCombine()
-            self:startWaitingForSomethingToDo()
-            return
-        end
+        self:debug('Combine empty, finish unloading.')
+        self:onUnloadingMovingCombineFinished(combineStrategy)
     end
 
     -- combine stopped in the meanwhile, like for example end of course
-    if self.combineToUnload:getCpDriveStrategy():willWaitForUnloadToFinish() then
+    if combineStrategy:willWaitForUnloadToFinish() then
         self:debug('change to unload stopped combine')
         self:setNewState(self.states.UNLOADING_STOPPED_COMBINE)
         return
     end
 
-    if self.combineToUnload:getCpDriveStrategy():isManeuvering() and
-            not self.combineToUnload:getCpDriveStrategy():isFinishingRow() then
+    if combineStrategy:isTurning() then
+        if not combineStrategy:isFinishingRow() then
+            if combineStrategy:alwaysNeedsUnloader() then
+                if not combineStrategy:isProcessingFruit() then
+                    self:debug('Harvester stopped processing fruit, finish unloading')
+                    self:onUnloadingMovingCombineFinished(combineStrategy)
+                else
+                    -- harvester has still some fruit in the belly, wait until all is discharged
+                    self:debugSparse('Waiting for harvester to stop processing fruit')
+                end
+            else
+                self:debug('Combine turning, finish unloading.')
+                self:onUnloadingMovingCombineFinished(combineStrategy)
+            end
+        end
+    elseif combineStrategy:isManeuvering() then
         -- when the combine is turning just don't move
         self:setMaxSpeed(0)
     elseif self.followCourse:isTurnStartAtIx(self.followCourse:getCurrentWaypointIx()) then
@@ -1589,6 +1580,33 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
     return gx, gz
 end
 
+function AIDriveStrategyUnloadCombine:onUnloadingMovingCombineFinished(combineStrategy)
+    --when the combine is in a pocket, make room to get back to course
+    if combineStrategy:isWaitingInPocket() then
+        self:debug('combine empty and in pocket, drive back')
+        self:startMovingBackFromCombine(self.states.MOVING_BACK, self.combineToUnload)
+        return
+    elseif combineStrategy:isTurningOnHeadland() then
+        self:debug('combine empty and turning on headland, moving back')
+        self:startMakingRoomForCombineTurningOnHeadland(self.combineToUnload)
+    elseif combineStrategy:isTurning() or combineStrategy:isAboutToTurn() then
+        self:debug('combine empty and moving forward but we are too close to the end of the row or combine is turning, moving back')
+        self:startMovingBackFromCombine(self.states.MOVING_BACK, self.combineToUnload, true)
+        return
+    elseif self:getAllTrailersFull(self.settings.fullThreshold:getValue()) then
+        -- make some room for the pathfinder, as the trailer may not be full but has reached the threshold,
+        --, which case is not caught in changeToUnloadWhenTrailerFull() as we want to keep unloading as long as
+        -- we can
+        self:debug('combine empty and moving forward but we want to leave, so move back a bit')
+        self:startMovingBackFromCombine(self.states.MOVING_BACK_WITH_TRAILER_FULL, self.combineToUnload)
+        return
+    else
+        self:debug('combine empty and moving forward')
+        self:releaseCombine()
+        self:startWaitingForSomethingToDo()
+        return
+    end
+end
 ------------------------------------------------------------------------------------------------------------------------
 -- Start moving back from empty combine
 ------------------------------------------------------------------------------------------------------------------------
