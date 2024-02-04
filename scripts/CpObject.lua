@@ -176,6 +176,23 @@ function CpSlowChangingObject:set(targetValue, timeToReachTargetMs)
 	self.timeToReachTargetMs = timeToReachTargetMs or 1
 end
 
+--- Confirm an already set target, or, if the difference between the current and the new target value is
+--- greater than delta, set a new target and target time.
+--- This is to make sure that the target is reached in the required time, even if it is set by confirm()
+--- repeatedly before reached.
+---@param targetValue number
+---@param timeToReachTargetMs number
+---@param delta number
+function CpSlowChangingObject:confirm(targetValue, timeToReachTargetMs, delta)
+	if not self.targetValue or math.abs(targetValue - self.targetValue) > delta then
+		self:set(targetValue, timeToReachTargetMs)
+	else
+		-- still update the target value to anticipate small changes, but not the time so the
+		-- target will be reached about the same time as it first was set
+		self.targetValue = targetValue
+	end
+end
+
 function CpSlowChangingObject:get()
 	local age = g_time - self.targetValueMs
 	if age < self.timeToReachTargetMs then

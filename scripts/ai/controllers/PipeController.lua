@@ -192,6 +192,10 @@ function PipeController:getClosestObject()
     return id and NetworkUtil.getObject(id)
 end
 
+function PipeController:isAutoAimPipe()
+     return #self.pipeSpec.autoAimingStates > 0
+end
+
 function PipeController:handleChopperPipe()
     local currentPipeTargetState = self.pipeSpec.targetState
     if currentPipeTargetState ~= 2 then

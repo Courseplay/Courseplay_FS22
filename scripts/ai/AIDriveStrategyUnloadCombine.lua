@@ -212,7 +212,6 @@ function AIDriveStrategyUnloadCombine:init(task, job)
     self.movingAwayDelay = CpTemporaryObject(false)
     self.checkForTrailerToUnloadTo = CpTemporaryObject(true)
     self.unloadTargetType = self.UNLOAD_TYPES.COMBINE
-
     --- Register all active unloaders here to access them fast.
     AIDriveStrategyUnloadCombine.activeUnloaders[self] = self.vehicle
 end
@@ -595,8 +594,9 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
         return
     end
 
+    local strategy = self.combineToUnload:getCpDriveStrategy()
     -- use a factor to make sure we reach the pipe fast, but be more gentle while discharging
-    local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.75 or 2
+    local factor = strategy:isDischarging() and 0.75 or 2
     local combineSpeed = self.combineToUnload.lastSpeedReal * 3600
     local speed = combineSpeed + MathUtil.clamp(dz * factor, -10, 15)
     if dz > 0 and speed < 2 then
@@ -606,7 +606,7 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
         speed = 2
     end
     -- slow down while the pipe is unfolding to avoid crashing onto it
-    if self.combineToUnload:getCpDriveStrategy():isPipeMoving() then
+    if strategy:isPipeMoving() then
         speed = (math.min(speed, self.combineToUnload:getLastSpeed() + 2))
     end
     self:setMaxSpeed(math.max(0, speed))
@@ -629,6 +629,42 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
     end
     return gx, gz
 end
+
+function AIDriveStrategyUnloadCombine:followChopper(combine)
+    -- this is a chopper, can discharge either side, up to us which side we choose, so see
+    -- where is fruit?
+    local fruitLeft, fruitRight = combine:getCpDriveStrategy():getFruitAtSides()
+    local targetOffsetX, distanceBetweenVehicles = 0, (AIUtil.getWidth(combine) + AIUtil.getWidth(self.vehicle)) / 2 + 1
+    if fruitLeft > 0.5 * fruitRight then
+        -- significantly more fruit on the left, drive to the right
+        targetOffsetX = -distanceBetweenVehicles
+    elseif fruitRight > 0.5 * fruitLeft then
+        -- significantly more fruit on the right, drive to the left
+        targetOffsetX = distanceBetweenVehicles
+    else
+        targetOffsetX = 0
+    end
+    if not self.chopperOffsetX then
+        -- Side offset from a chopper. We don't want this to jump from one side to the other abruptly
+        self.chopperOffsetX = CpSlowChangingObject(targetOffsetX, 0)
+    else
+        self.chopperOffsetX:confirm(targetOffsetX, 5000, 0.2)
+    end
+
+    local gx, gy, gz
+    -- Calculate an artificial goal point relative to the harvester to align better when starting to unload
+    local _, _, dz = localToLocal(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
+    gx, gy, gz = localToWorld(self.combineToUnload:getAIDirectionNode(),
+    -- straight line parallel to the harvester, under the pipe, look ahead distance from the unloader
+            self.chopperOffsetX:get(), 0, dz + self.ppc:getLookaheadDistance())
+
+    if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
+        -- show the goal point
+        DebugUtil.drawDebugGizmoAtWorldPos(gx, gy + 3, gz, 1, 0, 1, 0, 1, 0, "Unloader goal", false)
+    end
+    return gx, gz
+end
+
 
 function AIDriveStrategyUnloadCombine:onWaypointPassed(ix, course)
     if course:isLastWaypointIx(ix) then
@@ -736,9 +772,9 @@ end
 ---@return number, number x and z offset of the pipe's end from the combine's root node in the Giants coordinate system
 ---(x > 0 left, z > 0 forward) corrected with the manual offset settings
 function AIDriveStrategyUnloadCombine:getPipeOffset(combine)
-    -- TODO: unloader offset
     return combine:getCpDriveStrategy():getPipeOffset(-self.settings.combineOffsetX:getValue(), self.settings.combineOffsetZ:getValue())
 end
+
 
 function AIDriveStrategyUnloadCombine:getCombinesMeasuredBackDistance()
     return self.combineToUnload:getCpDriveStrategy():getMeasuredBackDistance()
@@ -1255,6 +1291,8 @@ function AIDriveStrategyUnloadCombine:call(combine, waypoint)
             -- fix it here: the target is behind the combine, not under the pipe. When we get there, we may need another
             -- (short) pathfinding to get under the pipe.
             zOffset = -self:getCombinesMeasuredBackDistance() - 10
+        elseif self.combineToUnload:getCpDriveStrategy():hasAutoAimPipe() then
+            zOffset = -self:getCombinesMeasuredBackDistance()
         else
             -- allow trailer space to align after sharp turns (noticed it more affects potato/sugarbeet harvesters with
             -- pipes close to vehicle)
@@ -1592,10 +1630,15 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
         return
     end
 
-    local gx, gz = self:driveBesideCombine()
+    local combineStrategy = self.combineToUnload:getCpDriveStrategy()
+    local gx, gz
+    if combineStrategy:hasAutoAimPipe() then
+        gx, gz = self:followChopper()
+    else
+        gx, gz = self:driveBesideCombine()
+    end
 
     --when the combine is empty, stop and wait for next combine (unless this can't work without an unloader nearby)
-    local combineStrategy = self.combineToUnload:getCpDriveStrategy()
     if combineStrategy:getFillLevelPercentage() <= 0.1 and not combineStrategy:alwaysNeedsUnloader() then
         self:debug('Combine empty, finish unloading.')
         self:onUnloadingMovingCombineFinished(combineStrategy)
@@ -1644,7 +1687,8 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
         self.followCourse = Course.createStraightForwardCourse(self.vehicle, 20, -self.combineOffset)
         self.followCourse:setOffset(-self.combineOffset, 0)
         self:startCourse(self.followCourse, 1)
-    elseif not self:isBehindAndAlignedToCombine() and not self:isInFrontAndAlignedToMovingCombine() then
+    elseif not combineStrategy:hasAutoAimPipe() and
+            not self:isBehindAndAlignedToCombine() and not self:isInFrontAndAlignedToMovingCombine() then
         -- call these again just to log the reason
         self:isBehindAndAlignedToCombine(true)
         self:isInFrontAndAlignedToMovingCombine(true)

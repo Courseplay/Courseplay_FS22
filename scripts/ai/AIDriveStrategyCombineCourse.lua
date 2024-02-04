@@ -685,6 +685,12 @@ function AIDriveStrategyCombineCourse:isPipeInFruit()
     end
 end
 
+---@return number, number the amount of fruit on left/right side of the combine. 0 is no fruit, and it is probably
+--- a number up to 100, indicating how much fruit is there.
+function AIDriveStrategyCombineCourse:getFruitAtSides()
+    return self.fruitLeft, self.fruitRight
+end
+
 function AIDriveStrategyCombineCourse:checkFruit()
     -- getValidityOfTurnDirections() wants to have the vehicle.aiDriveDirection, so get that here.
     local dx, _, dz = localDirectionToWorld(self.vehicle:getAIDirectionNode(), 0, 0, 1)
@@ -1429,6 +1435,10 @@ function AIDriveStrategyCombineCourse:isFillableTrailerUnderPipe()
     return self.pipeController:isFillableTrailerUnderPipe()
 end
 
+function AIDriveStrategyCombineCourse:hasAutoAimPipe()
+    return self.pipeController:isAutoAimPipe()
+end
+
 function AIDriveStrategyCombineCourse:isChopper()
     return self.combineController:isChopper()
 end
@@ -1821,9 +1831,10 @@ end
 ---@param additionalOffsetX number add this to the offsetX if you don't want to be directly under the pipe. If
 --- greater than 0 -> to the left, less than zero -> to the right
 ---@param additionalOffsetZ number forward (>0)/backward (<0) offset from the pipe
+---@return number, number, boolean X and Z offset of pipe, true the pipe is auto aiming, that is, can discharge either side
 function AIDriveStrategyCombineCourse:getPipeOffset(additionalOffsetX, additionalOffsetZ)
     local pipeOffsetX, pipeOffsetZ = self.pipeController:getPipeOffset()
-    return pipeOffsetX + (additionalOffsetX or 0), pipeOffsetZ + (additionalOffsetZ or 0)
+    return pipeOffsetX + (additionalOffsetX or 0), pipeOffsetZ + (additionalOffsetZ or 0), self:hasAutoAimPipe()
 end
 
 --- Pipe side offset relative to course. This is to help the unloader
