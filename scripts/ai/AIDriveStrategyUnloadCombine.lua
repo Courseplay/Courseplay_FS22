@@ -100,7 +100,7 @@ AIDriveStrategyUnloadCombine.isACombineUnloadAIDriver = true
 -- when calculating a course to a trailer, do not end the course right at the target fill node, instead
 -- unloadTargetOffset meters before that. This allows for a little distance to stop after the tractor
 -- reaches the last waypoint, and the logic in unloadAugerWagon() will move the rig to the exact position anyway.
-fAIDriveStrategyUnloadCombine.unloadTargetOffset = 1.5
+AIDriveStrategyUnloadCombine.unloadTargetOffset = 1.5
 
 --- Offset to apply at the goal marker, so we don't crash with an empty unloader waiting there with the same position.
 AIDriveStrategyUnloadCombine.invertedGoalPositionOffset = -4.5
