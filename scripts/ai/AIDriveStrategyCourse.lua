@@ -114,9 +114,6 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
     self.ppc = PurePursuitController(vehicle)
     self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
 
-    self.pathfinderController = PathfinderController(vehicle)
-    self.pathfinderController:registerListeners(self, self.onPathfindingFinished, self.onPathfindingRetry)
-
     self.storage = vehicle.spec_cpAIWorker
 
     self.settings = vehicle:getCpSettings()
@@ -125,6 +122,9 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
     -- for now, pathfinding generated courses can't be driven by towed tools
     self.allowReversePathfinding = AIUtil.getFirstReversingImplementWithWheels(self.vehicle) == nil
     self.turningRadius = AIUtil.getTurningRadius(vehicle)
+
+    self.pathfinderController = PathfinderController(vehicle, self.turningRadius)
+    self.pathfinderController:registerListeners(self, self.onPathfindingFinished, self.onPathfindingRetry)
 
     self:setAllStaticParameters()
 

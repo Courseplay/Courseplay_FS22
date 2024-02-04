@@ -84,12 +84,13 @@ PathfinderController.defaultNumRetries = 0
 PathfinderController.SUCCESS_FOUND_VALID_PATH = 0
 PathfinderController.ERROR_NO_PATH_FOUND = 1
 PathfinderController.ERROR_INVALID_GOAL_NODE = 2
-function PathfinderController:init(vehicle)
+function PathfinderController:init(vehicle, turningRadius)
     self.vehicle = vehicle
     ---@type PathfinderInterface
     self.pathfinder = nil
     ---@type PathfinderContext
     self.currentContext = nil
+    self.turningRadius = turningRadius or AIUtil.getTurningRadius(vehicle)
     self:reset()
 end
 
@@ -138,7 +139,7 @@ end
 --- TODO: Decide if multiple registered listeners are needed or not?
 ---@param object table
 ---@param successFunc function func(PathfinderController, success, Course, goalNodeInvalid)
----@param retryFunc function func(PathfinderController, last context, was last retry, retry attempt number)
+---@param retryFunc function func(PathfinderController, last context, was last retry, retry attempt number, obstacle ahead)
 function PathfinderController:registerListeners(object, successFunc, retryFunc)
     self.callbackObject = object
     self.callbackSuccessFunction = successFunc
@@ -153,6 +154,18 @@ function PathfinderController:start(context, numRetries, pathfinderCall)
     self.startedAt = g_time
     self.currentContext = context
     self.currentPathfinderCall = pathfinderCall
+
+    -- check if there's an obstacle in front of us, because if we can't drive forward or make a 90º turn to
+    -- the right or left, the pathfinder will inevitably fail
+    local leftOk, rightOk, straightOk = PathfinderUtil.checkForObstaclesAhead(self.vehicle, self.turningRadius, context._objectsToIgnore)
+    if not (leftOk or rightOk or straightOk) then
+        -- no way out
+        self:debug('Obstacle ahead, can\'t start pathfinding')
+        self:callCallback(self.callbackRetryFunction,
+                self.currentContext, self.failCount == self.numRetries, self.failCount, true)
+        return false
+    end
+
     local pathfinder, done, path, goalNodeInvalid = self.currentPathfinderCall()
     if done then
         self:onFinish(path, goalNodeInvalid)
@@ -178,7 +191,7 @@ function PathfinderController:onFinish(path, goalNodeInvalid)
                 --- Retrying the path finding
                 self.failCount = self.failCount + 1
                 self:callCallback(self.callbackRetryFunction,
-                        self.currentContext, self.failCount == self.numRetries, self.failCount)
+                        self.currentContext, self.failCount == self.numRetries, self.failCount, false)
                 return
             elseif self.numRetries > 0 then
                 self:debug("Max number of retries already reached!")
