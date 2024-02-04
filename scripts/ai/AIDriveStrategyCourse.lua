@@ -637,6 +637,24 @@ function AIDriveStrategyCourse:updatePathfinding()
     end
 end
 
+--- Is an obstacle in front of the vehicle?
+--- First check the forward looking proximity sensor, then try creating a short path straight, left and right 90 degrees
+--- If any of those is obstacle free, then the pathfinder at least can start a path. This is to check before a pathfinder
+--- run if there is something in front of us which will inevitably make the pathfinder fail.
+---@param objectsToIgnore table|nil
+function AIDriveStrategyCourse:isObstacleAhead(objectsToIgnore)
+    if self.forwardLookingProximitySensorPack then
+        local d, vehicle, _, deg, dAvg = self.forwardLookingProximitySensorPack:getClosestObjectDistanceAndRootVehicle()
+        if d < 1.2 * self.turningRadius then
+            self:debug('Obstacle ahead at %.1f m', d)
+            return true
+        end
+    end
+    local leftOk, rightOk, straightOk = PathfinderUtil.checkForObstaclesAhead(self.vehicle, self.turningRadius, objectsToIgnore)
+    -- if at least one is ok, we are good to go.
+    return not (leftOk or rightOk or straightOk)
+end
+
 --- Create an alignment course between the current vehicle position and waypoint endIx of the course
 ---@param course Course the course to start
 ---@param ix number the waypoint where start the course

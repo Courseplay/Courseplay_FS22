@@ -134,7 +134,7 @@ AIDriveStrategyUnloadCombine.UNLOAD_TYPES = {
 AIDriveStrategyUnloadCombine.myStates = {
     IDLE = { fuelSaveAllowed = true }, --- Only allow fuel save, if the unloader is waiting for a combine.
     WAITING_FOR_PATHFINDER = {},
-
+    MOVING_BACK_BEFORE_PATHFINDING = {}, -- there is an obstacle ahead, move back a bit so the pathfinder can succeed
     --- States to maneuver away from combines and so on.
     --- No need to be assigned to a combine!
     MOVING_BACK = { vehicle = nil, holdCombine = false },
@@ -467,6 +467,8 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
             self:startUnloadingTrailers()
         end
 
+    elseif self.state == self.states.MOVING_BACK_BEFORE_PATHFINDING then
+        self:setMaxSpeed(self.settings.reverseSpeed:getValue())
     elseif self.state == self.states.MOVING_BACK then
 
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
@@ -651,6 +653,8 @@ function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
     elseif self.state == self.states.BACKING_UP_FOR_REVERSING_COMBINE then
         self:setNewState(self.stateAfterMovedOutOfWay)
         self:startRememberedCourse()
+    elseif self.state == self.states.MOVING_BACK_BEFORE_PATHFINDING then
+        self:startWaitingForSomethingToDo()
     elseif self.state == self.states.MOVING_AWAY_FROM_OTHER_VEHICLE then
         self:startWaitingForSomethingToDo()
     elseif self.state == self.states.MOVING_BACK_FOR_HEADLAND_TURN then
@@ -1084,6 +1088,13 @@ end
 -- Pathfinding to waiting (not moving) combine
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:startPathfindingToWaitingCombine(xOffset, zOffset)
+    if self:isObstacleAhead() then
+        self:debug('There is an obstacle ahead, moving back before starting the pathfinding')
+        self:setNewState(self.states.MOVING_BACK_BEFORE_PATHFINDING)
+        local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 1.5 * self.turningRadius)
+        self:startCourse(reverseCourse, 1)
+        return
+    end
     local context = PathfinderContext(self.vehicle)
     local maxFruitPercent = self:getMaxFruitPercent(self:getCombineRootNode(), xOffset, zOffset)
     context:maxFruitPercent(maxFruitPercent)
@@ -1160,7 +1171,6 @@ function AIDriveStrategyUnloadCombine:call(combine, waypoint)
         if self:isPathfindingNeeded(self.vehicle, waypoint, xOffset, zOffset, 25) then
             self.rendezvousWaypoint = waypoint
             self.combineToUnload = combine
-            self:setNewState(self.states.WAITING_FOR_PATHFINDER)
             -- just in case, as the combine may give us a rendezvous waypoint
             -- where it is full, make sure we are behind the combine
             zOffset = -self:getCombinesMeasuredBackDistance() - 5

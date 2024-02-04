@@ -392,21 +392,11 @@ function AIDriveStrategyFindBales:startReversing()
 end
 
 function AIDriveStrategyFindBales:isObstacleAhead()
-    -- TODO_22 check the proximity sensor first
-    if self.forwardLookingProximitySensorPack then
-        local d, vehicle, _, deg, dAvg = self.forwardLookingProximitySensorPack:getClosestObjectDistanceAndRootVehicle()
-        if d < 1.2 * self.turningRadius then
-            self:debug('Obstacle ahead at %.1f m', d)
-            return true
-        end
-    end
     local objectsToIgnore = self:getBalesToIgnore()
     -- then a more thorough check, we want to ignore the last bale we worked on as that may lay around too close
     -- to the baler. This happens for example to the Andersen bale wrapper.
     self:debug('Check obstacles ahead, ignoring %d bale object, first is %s', #objectsToIgnore, objectsToIgnore[1] or 'nil')
-    local leftOk, rightOk, straightOk = PathfinderUtil.checkForObstaclesAhead(self.vehicle, self.turningRadius, objectsToIgnore)
-    -- if at least one is ok, we are good to go.
-    return not (leftOk or rightOk or straightOk)
+    AIDriveStrategyCourse.isObstacleAhead(self, objectsToIgnore)
 end
 
 function AIDriveStrategyFindBales:isNearFieldEdge()
