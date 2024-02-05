@@ -297,7 +297,7 @@ function PathfinderUtil.CollisionDetector:overlapBoxCallback(transformId)
         --- Roughly checks the overlap box for any dropped fill type to the ground.
         --- TODO: DensityMapHeightUtil.getFillTypeAtArea() would be better.
         local fillType = DensityMapHeightUtil.getFillTypeAtLine(x, y, z, x + dirX * size, y, z + dirZ * size, size)
-        if fillType and fillType ~= FillType.UNKNOWN then
+        if not self.ignoreFruitHeaps and fillType and fillType ~= FillType.UNKNOWN then
             self:debug('collision with terrain and fillType: %s.',
                     g_fillTypeManager:getFillTypeByIndex(fillType).title)
         else
@@ -316,10 +316,11 @@ function PathfinderUtil.CollisionDetector:overlapBoxCallback(transformId)
     self.collidingShapes = self.collidingShapes + 1
 end
 
-function PathfinderUtil.CollisionDetector:findCollidingShapes(node, vehicleData, vehiclesToIgnore, objectsToIgnore, log)
+function PathfinderUtil.CollisionDetector:findCollidingShapes(node, vehicleData, vehiclesToIgnore, objectsToIgnore, ignoreFruitHeaps)
     self.vehiclesToIgnore = vehiclesToIgnore or {}
     self.objectsToIgnore = objectsToIgnore or {}
     self.vehicleData = vehicleData
+    self.ignoreFruitHeaps = ignoreFruitHeaps
     -- the box for overlapBox() is symmetric, so if our root node is not in the middle of the vehicle rectangle,
     -- we have to translate it into the middle
     -- right/rear is negative
@@ -516,6 +517,7 @@ function PathfinderConstraints:init(context)
     self.areaToAvoid = context._areaToAvoid
     self.areaToIgnoreFruit = context._areaToIgnoreFruit
     self.areaToIgnoreOffFieldPenalty = context._areaToIgnoreOffFieldPenalty
+    self.ignoreFruitHeaps = context._ignoreFruitHeaps
     self.initialMaxFruitPercent = self.maxFruitPercent
     self.initialOffFieldPenalty = self.offFieldPenalty
     self.strictMode = false
@@ -591,7 +593,7 @@ function PathfinderConstraints:isValidAnalyticSolutionNode(node, log)
     end
     -- off field nodes are always valid (they have a penalty) as we may need to make bigger loops to
     -- align properly with our target and don't want to restrict ourselves too much
-    return self:isValidNode(node, log, false, true)
+    return self:isValidNode(node, false, true)
 end
 
 -- A helper node to calculate world coordinates
@@ -603,10 +605,9 @@ end
 
 --- Check if node is valid: would we collide with another vehicle or shape here?
 ---@param node State3D
----@param log boolean log colliding shapes/vehicles
 ---@param ignoreTrailer boolean don't check the trailer
 ---@param offFieldValid boolean consider nodes well off the field valid even in strict mode
-function PathfinderConstraints:isValidNode(node, log, ignoreTrailer, offFieldValid)
+function PathfinderConstraints:isValidNode(node, ignoreTrailer, offFieldValid)
     if not offFieldValid and self.strictMode then
         if not CpFieldUtil.isOnField(node.x, -node.y) then
             return false
@@ -620,7 +621,7 @@ function PathfinderConstraints:isValidNode(node, log, ignoreTrailer, offFieldVal
     local myCollisionData = PathfinderUtil.getBoundingBoxInWorldCoordinates(PathfinderUtil.helperNode, self.vehicleData, 'me')
     -- for debug purposes only, store validity info on node
     node.collidingShapes = PathfinderUtil.collisionDetector:findCollidingShapes(
-            PathfinderUtil.helperNode, self.vehicleData, self.vehiclesToIgnore, self.objectsToIgnore, log)
+            PathfinderUtil.helperNode, self.vehicleData, self.vehiclesToIgnore, self.objectsToIgnore, self.ignoreFruitHeaps)
     if self.vehicleData.trailer and not ignoreTrailer then
         -- now check the trailer or towed implement
         -- move the node to the rear of the vehicle (where approximately the trailer is attached)
@@ -631,7 +632,7 @@ function PathfinderConstraints:isValidNode(node, log, ignoreTrailer, offFieldVal
 
         node.collidingShapes = node.collidingShapes + PathfinderUtil.collisionDetector:findCollidingShapes(
                 PathfinderUtil.helperNode, self.vehicleData.trailerRectangle, self.vehiclesToIgnore,
-                self.objectsToIgnore, log)
+                self.objectsToIgnore, self.ignoreFruitHeaps)
     end
     local isValid = node.collidingShapes == 0
     if not isValid then
@@ -995,7 +996,7 @@ function PathfinderUtil.checkForObstaclesAhead(vehicle, turnRadius, objectsToIgn
 
     local function isValidPath(constraints, path)
         for i, node in ipairs(path) do
-            if not constraints:isValidNode(node, false, false) then
+            if not constraints:isValidNode(node, false) then
                 return false
             end
         end
@@ -1018,7 +1019,7 @@ function PathfinderUtil.checkForObstaclesAhead(vehicle, turnRadius, objectsToIgn
 
     PathfinderUtil.overlapBoxes = {}
     local context = PathfinderContext(vehicle):objectsToIgnore(objectsToIgnore)
-    context:ignoreFruit():offFieldPenalty(0)
+    context:ignoreFruit():offFieldPenalty(0):ignoreFruitHeaps(true)
     local constraints = PathfinderConstraints(context)
     local start = PathfinderUtil.getVehiclePositionAsState3D(vehicle)
     PathfinderUtil.initializeTrailerHeading(start, constraints.vehicleData)

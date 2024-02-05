@@ -49,6 +49,7 @@ local context = PathfinderContext():maxFruitPercent(100):useFieldNum(10):vehicle
 ---@field _mustBeAccurate boolean
 ---@field _areaToIgnoreFruit PathfinderUtil.Area|nil
 ---@field _areaToIgnoreOffFieldPenalty PathfinderUtil.NodeArea|nil
+---@field _ignoreFruitHeaps boolean
 PathfinderContext = CpObject()
 PathfinderContext.defaultOffFieldPenalty = 7.5
 PathfinderContext.attributesToDefaultValue = {
@@ -78,7 +79,9 @@ PathfinderContext.attributesToDefaultValue = {
     -- No off-field penalty in this area (for instance when need to approach another vehicle, such as a trailer
     -- to unload to, regardless of it is on the field or not, but we do want to have normal off-field penalty for
     -- the rest of the path
-    ["areaToIgnoreOffFieldPenalty"] = CpObjectUtil.BUILDER_API_NIL
+    ["areaToIgnoreOffFieldPenalty"] = CpObjectUtil.BUILDER_API_NIL,
+    -- Tell the collision detector to ignore heaps of fruit on the ground.
+    ["ignoreFruitHeaps"] = false
 }
 
 function PathfinderContext:init(vehicle)
