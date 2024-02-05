@@ -631,40 +631,38 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
 end
 
 function AIDriveStrategyUnloadCombine:followChopper(combine)
-    -- this is a chopper, can discharge either side, up to us which side we choose, so see
-    -- where is fruit?
-    local fruitLeft, fruitRight = combine:getCpDriveStrategy():getFruitAtSides()
-    local targetOffsetX, distanceBetweenVehicles = 0, (AIUtil.getWidth(combine) + AIUtil.getWidth(self.vehicle)) / 2 + 1
-    if fruitLeft > 0.5 * fruitRight then
-        -- significantly more fruit on the left, drive to the right
-        targetOffsetX = -distanceBetweenVehicles
-    elseif fruitRight > 0.5 * fruitLeft then
-        -- significantly more fruit on the right, drive to the left
-        targetOffsetX = distanceBetweenVehicles
-    else
-        targetOffsetX = 0
-    end
-    if not self.chopperOffsetX then
-        -- Side offset from a chopper. We don't want this to jump from one side to the other abruptly
-        self.chopperOffsetX = CpSlowChangingObject(targetOffsetX, 0)
-    else
-        self.chopperOffsetX:confirm(targetOffsetX, 5000, 0.2)
+
+    -- self.chopperOffsetX is now where we should be. If we are on the wrong side, we can't just
+    -- move the goal point to the correct side, as we need to duck behind the chopper, that is, moving
+    -- the goal point back first so the tractor gets behind the choppers back and then to the correct
+    -- side, and then forward again.
+
+    -- Normally, when driving beside the harvester, align the direction nodes
+    local dx, _, dz = localToLocal(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
+
+    -- adjust speed to the harvester's speed
+
+    if math.abs(dx - self.chopperOffsetX:get()) > 1 then
+        -- if the difference between the current and desired offset is big, slow down, our reference point is
+        -- the back of the harvester
+        dz = dz + self:getCombinesMeasuredBackDistance()
     end
 
-    local gx, gy, gz
-    -- Calculate an artificial goal point relative to the harvester to align better when starting to unload
-    local _, _, dz = localToLocal(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
-    gx, gy, gz = localToWorld(self.combineToUnload:getAIDirectionNode(),
+    local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(-dz * 2, -10, 15)
+    self:setMaxSpeed(speed)
+
+    local gx, gy, gz = localToWorld(self.combineToUnload:getAIDirectionNode(),
     -- straight line parallel to the harvester, under the pipe, look ahead distance from the unloader
             self.chopperOffsetX:get(), 0, dz + self.ppc:getLookaheadDistance())
 
     if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
         -- show the goal point
         DebugUtil.drawDebugGizmoAtWorldPos(gx, gy + 3, gz, 1, 0, 1, 0, 1, 0, "Unloader goal", false)
+        self:renderText(0, 0.02, "%s: followChopper: dz = %.1f, speed = %.1f",
+                CpUtil.getName(self.vehicle), dz, speed)
     end
     return gx, gz
 end
-
 
 function AIDriveStrategyUnloadCombine:onWaypointPassed(ix, course)
     if course:isLastWaypointIx(ix) then
@@ -772,9 +770,32 @@ end
 ---@return number, number x and z offset of the pipe's end from the combine's root node in the Giants coordinate system
 ---(x > 0 left, z > 0 forward) corrected with the manual offset settings
 function AIDriveStrategyUnloadCombine:getPipeOffset(combine)
-    return combine:getCpDriveStrategy():getPipeOffset(-self.settings.combineOffsetX:getValue(), self.settings.combineOffsetZ:getValue())
+    local offsetX, offsetZ = combine:getCpDriveStrategy():getPipeOffset(-self.settings.combineOffsetX:getValue(), self.settings.combineOffsetZ:getValue())
+    if combine:getCpDriveStrategy():hasAutoAimPipe() then
+        -- Calculate a virtual pipe offset for the unloader to drive beside the chopper based on which
+        -- side of the chopper is already harvested, or behind it if both sides have fruit.
+        local fruitLeft, fruitRight = combine:getCpDriveStrategy():getFruitAtSides()
+        local targetOffsetX, distanceBetweenVehicles = 0, (AIUtil.getWidth(combine) + AIUtil.getWidth(self.vehicle)) / 2 + 1
+        if fruitLeft > 0.5 * fruitRight then
+            -- significantly more fruit on the left, drive to the right
+            targetOffsetX = -distanceBetweenVehicles
+        elseif fruitRight > 0.5 * fruitLeft then
+            -- significantly more fruit on the right, drive to the left
+            targetOffsetX = distanceBetweenVehicles
+        else
+            targetOffsetX = 0
+        end
+        if not self.chopperOffsetX then
+            -- Side offset from a chopper. We don't want this to jump from one side to the other abruptly
+            self.chopperOffsetX = CpSlowChangingObject(targetOffsetX, 0)
+        else
+            self.chopperOffsetX:confirm(targetOffsetX, 5000, 0.2)
+        end
+        return self.chopperOffsetX:get(), offsetZ
+    else
+        return offsetX, offsetZ
+    end
 end
-
 
 function AIDriveStrategyUnloadCombine:getCombinesMeasuredBackDistance()
     return self.combineToUnload:getCpDriveStrategy():getMeasuredBackDistance()
