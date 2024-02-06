@@ -307,6 +307,10 @@ function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
     self.proximityController:registerIsSlowdownEnabledCallback(self, AIDriveStrategyUnloadCombine.isProximitySpeedControlEnabled)
     self.proximityController:registerBlockingVehicleListener(self, AIDriveStrategyUnloadCombine.onBlockingVehicle)
     self.proximityController:registerIgnoreObjectCallback(self, AIDriveStrategyUnloadCombine.ignoreProximityObject)
+    local frontMarker, _ = Markers.getMarkerNodes(self.vehicle)
+    self.followModeProximitySensor = WideForwardLookingProximitySensorPack(
+            self.vehicle, frontMarker, 10, 0.5, self:getProximitySensorWidth())
+
     -- remove any course already loaded (for instance to not to interfere with the fieldworker proximity controller)
     vehicle:resetCpCourses()
     --- Target nodes for unloading into the trailer.
@@ -325,11 +329,12 @@ function AIDriveStrategyUnloadCombine:initializeImplementControllers(vehicle)
 end
 
 function AIDriveStrategyUnloadCombine:isProximitySpeedControlEnabled()
-    return true
+    return not (self.state == self.states.UNLOADING_MOVING_COMBINE and self.combineToUnload:getCpDriveStrategy():hasAutoAimPipe())
 end
 
 function AIDriveStrategyUnloadCombine:ignoreProximityObject(object, vehicle, moveForwards, hitTerrain)
-    return self.state == self.states.UNLOADING_ON_THE_FIELD and hitTerrain
+    return (self.state == self.states.UNLOADING_ON_THE_FIELD and hitTerrain) or
+            (self.state == self.states.UNLOADING_MOVING_COMBINE and vehicle == self.combineToUnload)
 end
 
 function AIDriveStrategyUnloadCombine:checkCollisionWarning()
@@ -346,6 +351,9 @@ end
 function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
     self:updateLowFrequencyImplementControllers()
 
+    -- if applicable, calculate on which side of an auto aim pipe we should be driving, once every loop
+    self:calculateAutoAimPipeOffsetX(self.combineToUnload)
+    
     local moveForwards = not self.ppc:isReversing()
     local gx, gz
 
@@ -632,7 +640,7 @@ end
 
 function AIDriveStrategyUnloadCombine:followChopper(combine)
 
-    -- self.chopperOffsetX is now where we should be. If we are on the wrong side, we can't just
+    -- self.autoAimPipeOffsetX is set in getPipeOffset() to where we should be. If we are on the wrong side, we can't just
     -- move the goal point to the correct side, as we need to duck behind the chopper, that is, moving
     -- the goal point back first so the tractor gets behind the choppers back and then to the correct
     -- side, and then forward again.
@@ -642,26 +650,64 @@ function AIDriveStrategyUnloadCombine:followChopper(combine)
 
     -- adjust speed to the harvester's speed
 
-    if math.abs(dx - self.chopperOffsetX:get()) > 1 then
+    if math.abs(dx - self:getAutoAimPipeOffsetX()) > 1 then
         -- if the difference between the current and desired offset is big, slow down, our reference point is
         -- the back of the harvester
         dz = dz + self:getCombinesMeasuredBackDistance()
     end
 
-    local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(-dz * 2, -10, 15)
+    local d = self.followModeProximitySensor:getClosestObjectDistanceAndRootVehicle()
+
+    local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(math.min(-dz, (d - 1)) * 2, -10, 15)
     self:setMaxSpeed(speed)
 
     local gx, gy, gz = localToWorld(self.combineToUnload:getAIDirectionNode(),
     -- straight line parallel to the harvester, under the pipe, look ahead distance from the unloader
-            self.chopperOffsetX:get(), 0, dz + self.ppc:getLookaheadDistance())
+            self:getAutoAimPipeOffsetX(), 0, dz + self.ppc:getLookaheadDistance())
 
     if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
         -- show the goal point
         DebugUtil.drawDebugGizmoAtWorldPos(gx, gy + 3, gz, 1, 0, 1, 0, 1, 0, "Unloader goal", false)
-        self:renderText(0, 0.02, "%s: followChopper: dz = %.1f, speed = %.1f",
-                CpUtil.getName(self.vehicle), dz, speed)
+        local t = {
+            title = self:getStateAsString(),
+            content = {
+                { name = 'dz', value = string.format('%.1f', dz) },
+                { name = 'dProxy', value = string.format('%.1f', d) },
+                { name = 'speed', value = string.format('%.1f', speed) },
+                { name = 'autoAimOffsetX', value = string.format('%.1f', self:getAutoAimPipeOffsetX()) },
+            }
+        }
+        CpDebug:drawVehicleDebugTable(self.vehicle, { t }, 5, 0.07)
     end
     return gx, gz
+end
+
+function AIDriveStrategyUnloadCombine:calculateAutoAimPipeOffsetX(harvester)
+    if harvester and harvester:getCpDriveStrategy():hasAutoAimPipe() then
+        -- Calculate a virtual pipe offset for the unloader to drive beside the chopper based on which
+        -- side of the chopper is already harvested, or behind it if both sides have fruit.
+        local fruitLeft, fruitRight = harvester:getCpDriveStrategy():getFruitAtSides()
+        local targetOffsetX, distanceBetweenVehicles = 0, (AIUtil.getWidth(harvester) + AIUtil.getWidth(self.vehicle)) / 2 + 1
+        if harvester:getCpDriveStrategy():isOnHeadland(1) then
+            -- on the first headland always drive behind the chopper
+            targetOffsetX = 0
+        elseif fruitLeft > 0.5 * fruitRight then
+            -- significantly more fruit on the left, drive to the right
+            targetOffsetX = -distanceBetweenVehicles
+        elseif fruitRight > 0.5 * fruitLeft then
+            -- significantly more fruit on the right, drive to the left
+            targetOffsetX = distanceBetweenVehicles
+        else
+            targetOffsetX = 0
+        end
+        if not self.autoAimPipeOffsetX then
+            -- Side offset from a chopper. We don't want this to jump from one side to the other abruptly
+            self.autoAimPipeOffsetX = CpSlowChangingObject(targetOffsetX, 0)
+        else
+            self.autoAimPipeOffsetX:confirm(targetOffsetX, 5000, 0.2)
+        end
+    end
+    return self:getAutoAimPipeOffsetX()
 end
 
 function AIDriveStrategyUnloadCombine:onWaypointPassed(ix, course)
@@ -772,29 +818,14 @@ end
 function AIDriveStrategyUnloadCombine:getPipeOffset(combine)
     local offsetX, offsetZ = combine:getCpDriveStrategy():getPipeOffset(-self.settings.combineOffsetX:getValue(), self.settings.combineOffsetZ:getValue())
     if combine:getCpDriveStrategy():hasAutoAimPipe() then
-        -- Calculate a virtual pipe offset for the unloader to drive beside the chopper based on which
-        -- side of the chopper is already harvested, or behind it if both sides have fruit.
-        local fruitLeft, fruitRight = combine:getCpDriveStrategy():getFruitAtSides()
-        local targetOffsetX, distanceBetweenVehicles = 0, (AIUtil.getWidth(combine) + AIUtil.getWidth(self.vehicle)) / 2 + 1
-        if fruitLeft > 0.5 * fruitRight then
-            -- significantly more fruit on the left, drive to the right
-            targetOffsetX = -distanceBetweenVehicles
-        elseif fruitRight > 0.5 * fruitLeft then
-            -- significantly more fruit on the right, drive to the left
-            targetOffsetX = distanceBetweenVehicles
-        else
-            targetOffsetX = 0
-        end
-        if not self.chopperOffsetX then
-            -- Side offset from a chopper. We don't want this to jump from one side to the other abruptly
-            self.chopperOffsetX = CpSlowChangingObject(targetOffsetX, 0)
-        else
-            self.chopperOffsetX:confirm(targetOffsetX, 5000, 0.2)
-        end
-        return self.chopperOffsetX:get(), offsetZ
+        return self:getAutoAimPipeOffsetX(), offsetZ
     else
         return offsetX, offsetZ
     end
+end
+
+function AIDriveStrategyUnloadCombine:getAutoAimPipeOffsetX()
+    return self.autoAimPipeOffsetX and self.autoAimPipeOffsetX:get() or 0
 end
 
 function AIDriveStrategyUnloadCombine:getCombinesMeasuredBackDistance()
@@ -1313,7 +1344,12 @@ function AIDriveStrategyUnloadCombine:call(combine, waypoint)
             -- (short) pathfinding to get under the pipe.
             zOffset = -self:getCombinesMeasuredBackDistance() - 10
         elseif self.combineToUnload:getCpDriveStrategy():hasAutoAimPipe() then
-            zOffset = -self:getCombinesMeasuredBackDistance()
+            if math.abs(self:getAutoAimPipeOffsetX()) < 3 then
+                -- will drive behind the harvester, so target must be further back
+                zOffset = -self:getCombinesMeasuredBackDistance() - 10
+            else
+                zOffset = -self:getCombinesMeasuredBackDistance()
+            end
         else
             -- allow trailer space to align after sharp turns (noticed it more affects potato/sugarbeet harvesters with
             -- pipes close to vehicle)
