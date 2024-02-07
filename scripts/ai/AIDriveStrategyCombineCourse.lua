@@ -463,8 +463,10 @@ function AIDriveStrategyCombineCourse:onWaypointPassed(ix, course)
     self.combineController:updateStrawSwath(isOnHeadland)
 
     if self.state == self.states.WORKING then
-        self:estimateDistanceUntilFull(ix)
-        self:callUnloaderWhenNeeded()
+        if not self:alwaysNeedsUnloader() then
+            self:estimateDistanceUntilFull(ix)
+            self:callUnloaderWhenNeeded()
+        end
     end
 
     if self.state == self.states.UNLOADING_ON_FIELD and

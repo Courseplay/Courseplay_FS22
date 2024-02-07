@@ -307,9 +307,11 @@ function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
     self.proximityController:registerIsSlowdownEnabledCallback(self, AIDriveStrategyUnloadCombine.isProximitySpeedControlEnabled)
     self.proximityController:registerBlockingVehicleListener(self, AIDriveStrategyUnloadCombine.onBlockingVehicle)
     self.proximityController:registerIgnoreObjectCallback(self, AIDriveStrategyUnloadCombine.ignoreProximityObject)
-    local frontMarker, _ = Markers.getMarkerNodes(self.vehicle)
+    -- this is for following a chopper. The reason we are not using the proximityController's forward looking
+    -- sensor is that it may be too high, and does not see the header of the chopper. Alternatively, we could
+    -- lower the proximityController.
     self.followModeProximitySensor = WideForwardLookingProximitySensorPack(
-            self.vehicle, frontMarker, 10, 0.5, self:getProximitySensorWidth())
+            self.vehicle, Markers.getFrontMarkerNode(self.vehicle), 10, 0.5, self:getProximitySensorWidth())
 
     -- remove any course already loaded (for instance to not to interfere with the fieldworker proximity controller)
     vehicle:resetCpCourses()
@@ -646,7 +648,7 @@ function AIDriveStrategyUnloadCombine:followChopper(combine)
     -- side, and then forward again.
 
     -- Normally, when driving beside the harvester, align the direction nodes
-    local dx, _, dz = localToLocal(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
+    local dx, _, dz = localToLocal(Markers.getFrontMarkerNode(self.vehicle), self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
 
     -- adjust speed to the harvester's speed
 
@@ -656,9 +658,9 @@ function AIDriveStrategyUnloadCombine:followChopper(combine)
         dz = dz + self:getCombinesMeasuredBackDistance()
     end
 
-    local d = self.followModeProximitySensor:getClosestObjectDistanceAndRootVehicle()
+    local dProxy = self.followModeProximitySensor:getClosestObjectDistanceAndRootVehicle()
 
-    local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(math.min(-dz, (d - 1)) * 2, -10, 15)
+    local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(math.min(-dz, dProxy - 1) * 2, -10, 15)
     self:setMaxSpeed(speed)
 
     local gx, gy, gz = localToWorld(self.combineToUnload:getAIDirectionNode(),
@@ -672,7 +674,7 @@ function AIDriveStrategyUnloadCombine:followChopper(combine)
             title = self:getStateAsString(),
             content = {
                 { name = 'dz', value = string.format('%.1f', dz) },
-                { name = 'dProxy', value = string.format('%.1f', d) },
+                { name = 'dProxy', value = string.format('%.1f', dProxy) },
                 { name = 'speed', value = string.format('%.1f', speed) },
                 { name = 'autoAimOffsetX', value = string.format('%.1f', self:getAutoAimPipeOffsetX()) },
             }
@@ -949,24 +951,27 @@ function AIDriveStrategyUnloadCombine:isLinedUpWithPipe(dx, dz, pipeOffset, debu
 end
 
 function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(debugEnabled)
+    -- if the harvester has an auto aim pipe, like a chopper we can relax our conditions
+    local hasAutoAimPipe = self.combineToUnload:getCpDriveStrategy():hasAutoAimPipe()
     local dx, _, dz = localToLocal(self.vehicle.rootNode, self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
     local pipeOffset = self:getPipeOffset(self.combineToUnload)
-    if dz > 0 then
+    if dz > (hasAutoAimPipe and - 5 or 0) then
         self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: dz > 0')
         return false
     end
-    if not self:isLinedUpWithPipe(dx, dz, pipeOffset, debugEnabled) then
+    if not hasAutoAimPipe and not self:isLinedUpWithPipe(dx, dz, pipeOffset, debugEnabled) then
         return false
     end
     local d = MathUtil.vector2Length(dx, dz)
-    if d > 30 then
-        self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: too far from combine (%.1f > 30)', d)
+    local dLimit = (hasAutoAimPipe and 50 or 30)
+    if d > dLimit then
+        self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: too far from combine (%.1f > %.1f)', d, dLimit)
         return false
     end
-    if not CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(),
-            AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg) then
-        self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: direction difference is > %d)',
-                AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg)
+    local dirLimit = (hasAutoAimPipe and 2 * AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg
+            or AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg)
+    if not CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), dirLimit) then
+        self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: direction difference is > %d)', dirLimit)
         return false
     end
     -- close enough and approximately same direction and behind and not too far to the left or right, about the same
