@@ -663,13 +663,14 @@ function AIDriveStrategyUnloadCombine:followChopper(combine)
     local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(math.min(-dz, dProxy - 1) * 2, -10, 15)
     self:setMaxSpeed(speed)
 
+    local _, _, dzGoal = localToLocal(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
     local gx, gy, gz = localToWorld(self.combineToUnload:getAIDirectionNode(),
     -- straight line parallel to the harvester, under the pipe, look ahead distance from the unloader
-            self:getAutoAimPipeOffsetX(), 0, dz + self.ppc:getLookaheadDistance())
+            self:getAutoAimPipeOffsetX(), 0, dzGoal + self.ppc:getLookaheadDistance())
 
     if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
         -- show the goal point
-        DebugUtil.drawDebugGizmoAtWorldPos(gx, gy + 3, gz, 1, 0, 1, 0, 1, 0, "Unloader goal", false)
+        DebugUtil.drawDebugGizmoAtWorldPos(gx, gy + 4, gz, 0, 0, 1, 0, 1, 0, "Virtual goal", false)
         local t = {
             title = self:getStateAsString(),
             content = {
