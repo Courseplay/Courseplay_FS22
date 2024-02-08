@@ -1063,7 +1063,8 @@ function AIDriveStrategyUnloadCombine:startPathfindingToMovingCombine(waypoint, 
     context:offFieldPenalty(self:getOffFieldPenalty(self.combineToUnload))
     context:useFieldNum(CpFieldUtil.getFieldNumUnderVehicle(self.combineToUnload))
     context:areaToAvoid(nil):vehiclesToIgnore({ self.combineToUnload })
-    self.pathfinderController:registerListeners(self, self.onPathfindingDoneToMovingCombine, self.onPathfindingHasObstacleAhead)
+    self.pathfinderController:registerListeners(self, self.onPathfindingDoneToMovingCombine,
+            self.onPathfindingFailedToMovingTarget)
     -- TODO: consider creating a variation of findPathToWaypoint() which accepts a Waypoint instead of Course/ix
     self.pathfinderController:findPathToGoal(
             context,
@@ -1102,7 +1103,8 @@ function AIDriveStrategyUnloadCombine:startPathfindingToWaitingCombine(xOffset, 
     context:useFieldNum(CpFieldUtil.getFieldNumUnderVehicle(self.combineToUnload))
     context:areaToAvoid(self.combineToUnload:getCpDriveStrategy():getAreaToAvoid())
     context:vehiclesToIgnore({})
-    self.pathfinderController:registerListeners(self, self.onPathfindingDoneToWaitingCombine, self.onPathfindingHasObstacleAhead)
+    self.pathfinderController:registerListeners(self, self.onPathfindingDoneToWaitingCombine,
+            self.onPathfindingFailedToStationaryTarget)
     self.pathfinderController:findPathToNode(context, self:getCombineRootNode(), xOffset or 0, zOffset or 0)
 end
 
@@ -1120,16 +1122,49 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneToWaitingCombine(controll
     end
 end
 
--- Use as a default pathfinder controller failure callback. If the pathfinding fails due to a obstacle in front
+-- Use as a default pathfinder controller failure callback for stationary targets, where retrying later with the
+-- same constraints won't help.
+-- If the pathfinding fails due to a obstacle in front
 -- of the vehicle, this will start the vehicle moving back on a temporary course. When the end of that course
 -- reached, the pathfinding is retried with the same context (and with the same 'done' callback, to continue
 -- where we left off)
-function AIDriveStrategyUnloadCombine:onPathfindingHasObstacleAhead(controller, lastContext, wasLastRetry,
-                                                                    currentRetryAttempt, isObstacleAhead)
+-- If this was the last try, give up.
+-- Otherwise, relax pathfinding constraints if we have retries left
+function AIDriveStrategyUnloadCombine:onPathfindingFailedToStationaryTarget(...)
+    self:debug('Pathfinding to stationary target failed.')
+    self:onPathfindingFailed(
+            function() self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new()) end, ...)
+end
+
+-- Same as above, but don't stop the job, as the target is moving, the situation may change by the time the
+-- harvester next calls.
+function AIDriveStrategyUnloadCombine:onPathfindingFailedToMovingTarget(...)
+    self:debug('Pathfinding to moving target failed.')
+    self:onPathfindingFailed(
+            function() self:startWaitingForSomethingToDo() end, ...)
+end
+
+
+function AIDriveStrategyUnloadCombine:onPathfindingFailed(giveUpFunc, controller, lastContext, wasLastRetry,
+                                                          currentRetryAttempt, isObstacleAhead)
     if isObstacleAhead then
         self:startMovingBackBeforePathfinding(controller, lastContext)
+    elseif wasLastRetry then
+        giveUpFunc()
+    elseif currentRetryAttempt == 1 then
+        self:debug('First attempt to find path failed, trying with reduced off-field penalty')
+        lastContext:offFieldPenalty(PathfinderContext.defaultOffFieldPenalty / 2)
+        controller:retry(lastContext)
+    elseif currentRetryAttempt == 2 then
+        self:debug('Second attempt to find path failed, trying with reduced off-field penalty and fruit percent')
+        lastContext:maxFruitPercent(self:getMaxFruitPercent() / 2):offFieldPenalty(PathfinderContext.defaultOffFieldPenalty / 2)
+        controller:retry(lastContext)
+    elseif currentRetryAttempt == 3 then
+        self:debug('Third attempt to find path failed, trying with reduced off-field penalty and no fruit avoidance')
+        lastContext:ignoreFruit():offFieldPenalty(PathfinderContext.defaultOffFieldPenalty / 4)
+        controller:retry(lastContext)
     else
-        self:startWaitingForSomethingToDo()
+        giveUpFunc()
     end
 end
 
@@ -1956,25 +1991,9 @@ function AIDriveStrategyUnloadCombine:startPathfindingToInvertedGoalPositionMark
     context:maxFruitPercent(self:getMaxFruitPercent()):offFieldPenalty(PathfinderContext.defaultOffFieldPenalty)
     context:useFieldNum(fieldNum):allowReverse(self:getAllowReversePathfinding())
     self.pathfinderController:registerListeners(self, self.onPathfindingDoneToInvertedGoalPositionMarker,
-            self.onPathfindingFailedToInvertedGoalPositionMarker)
+            self.onPathfindingFailedToStationaryTarget)
     self.pathfinderController:findPathToNode(context, self.invertedStartPositionMarkerNode,
             self.invertedGoalPositionOffset, -1.5 * AIUtil.getLength(self.vehicle), 2)
-end
-
-function AIDriveStrategyUnloadCombine:onPathfindingFailedToInvertedGoalPositionMarker(controller, lastContext,
-                                                                                      wasLastRetry, currentRetryAttempt,
-                                                                                      isObstacleAhead)
-    if isObstacleAhead then
-        self:startMovingBackBeforePathfinding(controller, lastContext)
-    elseif currentRetryAttempt == 1 then
-        self:debug('First attempt to find path to the start position failed, trying with reduced off-field penalty')
-        lastContext:offFieldPenalty(PathfinderContext.defaultOffFieldPenalty / 2)
-        controller:retry(lastContext)
-    elseif currentRetryAttempt == 2 then
-        self:debug('Second attempt to find path to the start position failed, trying with reduced off-field penalty and fruit percent')
-        lastContext:maxFruitPercent(self:getMaxFruitPercent() / 2):offFieldPenalty(PathfinderContext.defaultOffFieldPenalty / 2)
-        controller:retry(lastContext)
-    end
 end
 
 --- Path to the start position was found.
@@ -2042,7 +2061,7 @@ function AIDriveStrategyUnloadCombine:startSelfUnload(ignoreFruit)
                 PathfinderUtil.NodeArea.createVehicleArea(self.unloadTrailer, 1.5 * SelfUnloadHelper.maxDistanceFromField))
         self.pathfinderController:registerListeners(self,
                 self.onPathfindingDoneBeforeSelfUnload,
-                self.onPathfindingFailedBeforeSelfUnload)
+                self.onPathfindingFailedBeforeSelfUnload, 1)
         self.pathfinderController:findPathToNode(context, self.selfUnloadTargetNode, offsetX, -alignLength, 1)
     else
         self:debug('Pathfinder already active')
@@ -2051,7 +2070,7 @@ function AIDriveStrategyUnloadCombine:startSelfUnload(ignoreFruit)
 end
 
 function AIDriveStrategyUnloadCombine:onPathfindingFailedBeforeSelfUnload(controller, lastContext,
-                                                                        wasLastRetry, currentRetryAttempt, isObstacleAhead)
+                                                                          wasLastRetry, currentRetryAttempt, isObstacleAhead)
     if isObstacleAhead then
         self:startMovingBackBeforePathfinding(controller, lastContext)
     elseif currentRetryAttempt == 1 then
@@ -2307,7 +2326,8 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
     context:maxFruitPercent(self:getMaxFruitPercent()):offFieldPenalty(PathfinderContext.defaultOffFieldPenalty)
     context:useFieldNum(CpFieldUtil.getFieldNumUnderVehicle(self.vehicle))
     context:allowReverse(self:getAllowReversePathfinding())
-    self.pathfinderController:registerListeners(self, self.onPathfindingDoneBeforeUnloadingOnField, self.onPathfindingHasObstacleAhead)
+    self.pathfinderController:registerListeners(self, self.onPathfindingDoneBeforeUnloadingOnField,
+            self.onPathfindingFailedToStationaryTarget, 2)
     self.pathfinderController:findPathToNode(context, self.fieldUnloadPositionNode,
             -self.fieldUnloadData.xOffset, -AIUtil.getLength(self.vehicle) * 1.3)
 end
@@ -2514,7 +2534,7 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadingFinished()
     context:useFieldNum(CpFieldUtil.getFieldNumUnderVehicle(self.vehicle))
     context:allowReverse(self:getAllowReversePathfinding())
     self.pathfinderController:registerListeners(self, self.onPathfindingDoneBeforeDrivingToFieldUnloadParkPosition,
-            self.onPathfindingHasObstacleAhead)
+            self.onPathfindingFailedToStationaryTarget, 2)
     self.pathfinderController:findPathToNode(context, self.fieldUnloadTurnEndNode,
             -self.fieldUnloadData.xOffset * 1.5, -AIUtil.getLength(self.vehicle))
 end
