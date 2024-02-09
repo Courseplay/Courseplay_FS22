@@ -656,8 +656,8 @@ function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
     elseif self.state == self.states.MOVING_BACK_BEFORE_PATHFINDING then
         if self.state.properties.pathfinderController then
             self:debug('Retry last pathfinding after moved back a bit')
-            self.state.properties.pathfinderController:retry(self.state.properties.pathfinderContext)
             self:setNewState(self.states.WAITING_FOR_PATHFINDER)
+            self.state.properties.pathfinderController:retry(self.state.properties.pathfinderContext)
         else
             self:debug('No pathfinder controller after moving back')
             self:startWaitingForSomethingToDo()
@@ -1104,7 +1104,7 @@ function AIDriveStrategyUnloadCombine:startPathfindingToWaitingCombine(xOffset, 
     context:areaToAvoid(self.combineToUnload:getCpDriveStrategy():getAreaToAvoid())
     context:vehiclesToIgnore({})
     self.pathfinderController:registerListeners(self, self.onPathfindingDoneToWaitingCombine,
-            self.onPathfindingFailedToStationaryTarget)
+            self.onPathfindingFailedToStationaryTarget, 2)
     self.pathfinderController:findPathToNode(context, self:getCombineRootNode(), xOffset or 0, zOffset or 0)
 end
 
@@ -1117,7 +1117,7 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneToWaitingCombine(controll
         return true
     else
         self:debug('Pathfinding to waiting combine failed')
-        self:startWaitingForSomethingToDo()
+        self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
         return false
     end
 end
