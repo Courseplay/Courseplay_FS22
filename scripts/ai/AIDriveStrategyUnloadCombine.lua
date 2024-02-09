@@ -355,7 +355,7 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
 
     -- if applicable, calculate on which side of an auto aim pipe we should be driving, once every loop
     self:calculateAutoAimPipeOffsetX(self.combineToUnload)
-    
+
     local moveForwards = not self.ppc:isReversing()
     local gx, gz
 
@@ -447,8 +447,13 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
 
     elseif self.state == self.states.UNLOADING_MOVING_COMBINE then
 
-        local x, z = self:unloadMovingCombine(dt)
-        -- if driveBesideCombine() has a better goal point, use that, instead of the offset course
+        local x, z
+        if self.combineToUnload:getCpDriveStrategy():hasAutoAimPipe() then
+            x, z = self:unloadMovingChopper()
+        else
+            x, z = self:unloadMovingCombine(dt)
+        end
+        -- if driveBesideCombine()/followChopper() has a better goal point, use that, instead of the offset course
         if x ~= nil then
             gx, gz = x, z
         end
@@ -640,8 +645,44 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
     return gx, gz
 end
 
-function AIDriveStrategyUnloadCombine:followChopper(combine)
+------------------------------------------------------------------------------------------------------------------------
+-- Unload chopper (always moving)
+------------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyUnloadCombine:unloadMovingChopper()
 
+    -- allow on the fly offset changes
+    self.combineOffset = self:getPipeOffset(self.combineToUnload)
+    self.followCourse:setOffset(-self.combineOffset, 0)
+
+    if self:changeToUnloadWhenTrailerFull() then
+        return
+    end
+
+    local combineStrategy = self.combineToUnload:getCpDriveStrategy()
+    local gx, gz = self:followChopper()
+
+    if combineStrategy:isTurning() then
+        if not combineStrategy:isFinishingRow() then
+            if not combineStrategy:isProcessingFruit() then
+                self:debug('Harvester stopped processing fruit, finish unloading')
+                self:onUnloadingMovingCombineFinished(combineStrategy)
+            else
+                -- harvester has still some fruit in the belly, wait until all is discharged
+                self:debugSparse('Waiting for harvester to stop processing fruit')
+            end
+        end
+    elseif combineStrategy:isManeuvering() then
+        -- when the combine is turning just don't move
+        self:setMaxSpeed(0)
+
+    end
+    return gx, gz
+end
+
+------------------------------------------------------------------------------------------------------------------------
+-- Drive with the chopper, avoiding fruit and staying in the reach of the pipe.
+------------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyUnloadCombine:followChopper(combine)
     -- self.autoAimPipeOffsetX is set in getPipeOffset() to where we should be. If we are on the wrong side, we can't just
     -- move the goal point to the correct side, as we need to duck behind the chopper, that is, moving
     -- the goal point back first so the tractor gets behind the choppers back and then to the correct
@@ -956,7 +997,7 @@ function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(debugEnabled)
     local hasAutoAimPipe = self.combineToUnload:getCpDriveStrategy():hasAutoAimPipe()
     local dx, _, dz = localToLocal(self.vehicle.rootNode, self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
     local pipeOffset = self:getPipeOffset(self.combineToUnload)
-    if dz > (hasAutoAimPipe and - 5 or 0) then
+    if dz > (hasAutoAimPipe and -5 or 0) then
         self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: dz > 0')
         return false
     end
@@ -1694,12 +1735,7 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
     end
 
     local combineStrategy = self.combineToUnload:getCpDriveStrategy()
-    local gx, gz
-    if combineStrategy:hasAutoAimPipe() then
-        gx, gz = self:followChopper()
-    else
-        gx, gz = self:driveBesideCombine()
-    end
+    local gx, gz = self:driveBesideCombine()
 
     --when the combine is empty, stop and wait for next combine (unless this can't work without an unloader nearby)
     if combineStrategy:getFillLevelPercentage() <= 0.1 and not combineStrategy:alwaysNeedsUnloader() then
