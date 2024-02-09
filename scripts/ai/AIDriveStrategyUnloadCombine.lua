@@ -656,8 +656,8 @@ function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
     elseif self.state == self.states.MOVING_BACK_BEFORE_PATHFINDING then
         if self.state.properties.pathfinderController then
             self:debug('Retry last pathfinding after moved back a bit')
-            self.state.properties.pathfinderController:retry(self.state.properties.pathfinderContext)
             self:setNewState(self.states.WAITING_FOR_PATHFINDER)
+            self.lastState.properties.pathfinderController:retry(self.lastState.properties.pathfinderContext)
         else
             self:debug('No pathfinder controller after moving back')
             self:startWaitingForSomethingToDo()
