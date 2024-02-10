@@ -1599,6 +1599,7 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
     if combineStrategy:getFillLevelPercentage() <= 0.1 and not combineStrategy:alwaysNeedsUnloader() then
         self:debug('Combine empty, finish unloading.')
         self:onUnloadingMovingCombineFinished(combineStrategy)
+        return
     end
 
     -- combine stopped in the meanwhile, like for example end of course
@@ -1614,6 +1615,7 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
                 if not combineStrategy:isProcessingFruit() then
                     self:debug('Harvester stopped processing fruit, finish unloading')
                     self:onUnloadingMovingCombineFinished(combineStrategy)
+                    return
                 else
                     -- harvester has still some fruit in the belly, wait until all is discharged
                     self:debugSparse('Waiting for harvester to stop processing fruit')
@@ -1621,6 +1623,7 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
             else
                 self:debug('Combine turning, finish unloading.')
                 self:onUnloadingMovingCombineFinished(combineStrategy)
+                return
             end
         end
     elseif combineStrategy:isManeuvering() then
