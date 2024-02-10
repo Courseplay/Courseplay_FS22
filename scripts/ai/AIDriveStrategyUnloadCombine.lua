@@ -143,7 +143,9 @@ AIDriveStrategyUnloadCombine.myStates = {
     MOVING_BACK_FOR_HEADLAND_TURN = { vehicle = nil, holdCombine = false }, -- making room for the harvester performing a headland turn
     MOVING_AWAY_FROM_OTHER_VEHICLE = { vehicle = nil }, -- moving until we have enough space between us and an other vehicle
     WAITING_FOR_MANEUVERING_COMBINE = {},
-    DRIVING_BACK_TO_START_POSITION_WHEN_FULL = {} --- Drives to the start position with a trailer attached and gives control to giants or AD there.
+    DRIVING_BACK_TO_START_POSITION_WHEN_FULL = {}, -- Drives to the start position with a trailer attached and gives control to giants or AD there.
+    HANDLE_CHOPPER_180_TURN = {},
+    HANDLE_CHOPPER_HEADLAND_TURN = {}
 }
 
 -------------------------------------------------
@@ -524,6 +526,11 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
         self:setMaxSpeed(self:getFieldSpeed())
     elseif self.state == self.states.REVERSING_TO_THE_FIELD_UNLOAD_HEAP then
         self:driveToReverseFieldUnloadHeap()
+    elseif self.state == self.states.HANDLE_CHOPPER_180_TURN then
+        local x, z = self:handleChopper180Turn()
+        if x ~= nil then
+            gx, gz = x, z
+        end
     elseif self.state == self.states.DRIVE_TO_FIELD_UNLOAD_PARK_POSITION then
         self:setMaxSpeed(self:getFieldSpeed())
     end
@@ -650,7 +657,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:unloadMovingChopper()
 
-    -- allow on the fly offset changes
+    -- recalculate offset, just in case
     self.combineOffset = self:getPipeOffset(self.combineToUnload)
     self.followCourse:setOffset(-self.combineOffset, 0)
 
@@ -661,20 +668,8 @@ function AIDriveStrategyUnloadCombine:unloadMovingChopper()
     local combineStrategy = self.combineToUnload:getCpDriveStrategy()
     local gx, gz = self:followChopper()
 
-    if combineStrategy:isTurning() then
-        if not combineStrategy:isFinishingRow() then
-            if not combineStrategy:isProcessingFruit() then
-                self:debug('Harvester stopped processing fruit, finish unloading')
-                self:onUnloadingMovingCombineFinished(combineStrategy)
-            else
-                -- harvester has still some fruit in the belly, wait until all is discharged
-                self:debugSparse('Waiting for harvester to stop processing fruit')
-            end
-        end
-    elseif combineStrategy:isManeuvering() then
-        -- when the combine is turning just don't move
-        self:setMaxSpeed(0)
-
+    if combineStrategy:isTurning() and not combineStrategy:isFinishingRow() then
+        self:startChopperTurn(combineStrategy)
     end
     return gx, gz
 end
@@ -682,7 +677,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 -- Drive with the chopper, avoiding fruit and staying in the reach of the pipe.
 ------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyUnloadCombine:followChopper(combine)
+function AIDriveStrategyUnloadCombine:followChopper()
     -- self.autoAimPipeOffsetX is set in getPipeOffset() to where we should be. If we are on the wrong side, we can't just
     -- move the goal point to the correct side, as we need to duck behind the chopper, that is, moving
     -- the goal point back first so the tractor gets behind the choppers back and then to the correct
@@ -722,6 +717,71 @@ function AIDriveStrategyUnloadCombine:followChopper(combine)
             }
         }
         CpDebug:drawVehicleDebugTable(self.vehicle, { t }, 5, 0.07)
+    end
+    return gx, gz
+end
+
+------------------------------------------------------------------------------------------------------------------------
+-- Chopper turns
+------------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyUnloadCombine:startChopperTurn(combineStrategy)
+    if combineStrategy:isTurningOnHeadland() then
+        self:debug('Start chopper headland turn')
+        self:startCourse(self.followCourse, combineStrategy:getTurnStartWpIx())
+        self:setNewState(self.states.HANDLE_CHOPPER_HEADLAND_TURN)
+    else
+        self:debug('Start chopper 180 turn')
+        self:setNewState(self.states.HANDLE_CHOPPER_180_TURN)
+    end
+end
+
+------------------------------------------------------------------------------------------------------------------------
+-- Chopper turn 180
+-- The default strategy here is to stop before reaching the end of the row and then wait for the combine
+-- to finish the 180 turn. After it finished the turn, we drive forward a bit to make sure we are behind the
+-- chopper and then continue on the chopper's fieldwork course with the appropriate offset without pathfinding.
+--
+-- If the combine says that it won't reverse during the turn (for example performs a wide turn because the
+-- next row to work on is not adjacent the current row), we switch to 'follow chopper through the turn' mode
+------------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyUnloadCombine:handleChopper180Turn()
+
+    if self:changeToUnloadWhenTrailerFull() then
+        return
+    end
+
+    local gx, gz = self:followChopper()
+
+    if self.combineToUnload:getCpDriveStrategy():isTurningButNotEndingTurn() then
+        -- move forward until we reach the turn start waypoint
+        local _, _, d = self.turnContext:getLocalPositionFromWorkEnd(Markers.getFrontMarkerNode(self.vehicle))
+        self:debugSparse('Waiting for the chopper to turn, distance from row end %.1f', d)
+        -- stop a bit before the end of the row to let the tractor slow down.
+        if d > -3 then
+            self:setMaxSpeed(0)
+        else
+            self:setMaxSpeed(self.settings.turnSpeed:getValue())
+        end
+        if self.combineToUnload:getCpDriveStrategy():isTurnForwardOnly() then
+            ---@type Course
+            local turnCourse = self.combineToUnload:getCpDriveStrategy():getTurnCourse()
+            if turnCourse then
+                self:debug('Follow chopper through the turn')
+                self:startCourse(turnCourse:copy(self.vehicle), 1)
+                self:setNewState(self.states.FOLLOW_CHOPPER_THROUGH_TURN)
+            else
+                self:debugSparse('Chopper said turn is forward only but has no turn course')
+            end
+        end
+    else
+        local _, _, dz = self:getDistanceFromCombine()
+        self:setSpeed(self.vehicle.cp.speeds.turn)
+        -- start the chopper course (and thus, turning towards it) only after we are behind it
+        if dz < -3 then
+            self:debug('now behind chopper, continue following chopper')
+
+            self:setNewState(self.states.UNLOADING_MOVING_COMBINE)
+        end
     end
     return gx, gz
 end
@@ -1786,8 +1846,7 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
         self.followCourse = Course.createStraightForwardCourse(self.vehicle, 20, -self.combineOffset)
         self.followCourse:setOffset(-self.combineOffset, 0)
         self:startCourse(self.followCourse, 1)
-    elseif not combineStrategy:hasAutoAimPipe() and
-            not self:isBehindAndAlignedToCombine() and not self:isInFrontAndAlignedToMovingCombine() then
+    elseif not self:isBehindAndAlignedToCombine() and not self:isInFrontAndAlignedToMovingCombine() then
         -- call these again just to log the reason
         self:isBehindAndAlignedToCombine(true)
         self:isInFrontAndAlignedToMovingCombine(true)
