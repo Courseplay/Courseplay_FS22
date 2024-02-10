@@ -145,7 +145,8 @@ AIDriveStrategyUnloadCombine.myStates = {
     WAITING_FOR_MANEUVERING_COMBINE = {},
     DRIVING_BACK_TO_START_POSITION_WHEN_FULL = {}, -- Drives to the start position with a trailer attached and gives control to giants or AD there.
     HANDLE_CHOPPER_180_TURN = {},
-    HANDLE_CHOPPER_HEADLAND_TURN = {}
+    HANDLE_CHOPPER_HEADLAND_TURN = {},
+    FOLLOW_CHOPPER_THROUGH_TURN = {}
 }
 
 -------------------------------------------------
@@ -531,6 +532,8 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
         if x ~= nil then
             gx, gz = x, z
         end
+    elseif self.state == self.states.FOLLOW_CHOPPER_THROUGH_TURN then
+        self:followChopperThroughTurn()
     elseif self.state == self.states.DRIVE_TO_FIELD_UNLOAD_PARK_POSITION then
         self:setMaxSpeed(self:getFieldSpeed())
     end
@@ -753,15 +756,6 @@ function AIDriveStrategyUnloadCombine:handleChopper180Turn()
     local gx, gz = self:followChopper()
 
     if self.combineToUnload:getCpDriveStrategy():isTurningButNotEndingTurn() then
-        -- move forward until we reach the turn start waypoint
-        local _, _, d = self.turnContext:getLocalPositionFromWorkEnd(Markers.getFrontMarkerNode(self.vehicle))
-        self:debugSparse('Waiting for the chopper to turn, distance from row end %.1f', d)
-        -- stop a bit before the end of the row to let the tractor slow down.
-        if d > -3 then
-            self:setMaxSpeed(0)
-        else
-            self:setMaxSpeed(self.settings.turnSpeed:getValue())
-        end
         if self.combineToUnload:getCpDriveStrategy():isTurnForwardOnly() then
             ---@type Course
             local turnCourse = self.combineToUnload:getCpDriveStrategy():getTurnCourse()
@@ -775,7 +769,7 @@ function AIDriveStrategyUnloadCombine:handleChopper180Turn()
         end
     else
         local _, _, dz = self:getDistanceFromCombine()
-        self:setSpeed(self.vehicle.cp.speeds.turn)
+        self:setMaxSpeed(self.settings.turnSpeed:getValue())
         -- start the chopper course (and thus, turning towards it) only after we are behind it
         if dz < -3 then
             self:debug('now behind chopper, continue following chopper')
@@ -784,6 +778,36 @@ function AIDriveStrategyUnloadCombine:handleChopper180Turn()
         end
     end
     return gx, gz
+end
+
+------------------------------------------------------------------------------------------------------------------------
+-- Follow chopper through turn
+-- here we drive the chopper's turn course carefully keeping our distance from the combine.
+------------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyUnloadCombine:followChopperThroughTurn()
+
+    if self:changeToUnloadWhenTrailerFull() then
+        return
+    end
+
+    local d = self:getDistanceFromCombine()
+    if self.combineToUnload:getCpDriveStrategy():isTurning() then
+        -- making sure we are never ahead of the chopper on the course (we both drive the same course), this
+        -- prevents the unloader cutting in front of the chopper when for example the unloader is on the
+        -- right side of the chopper and the chopper reaches a right turn.
+        if self.course:getCurrentWaypointIx() > self.combineToUnload:getCpDriveStrategy().course:getCurrentWaypointIx() then
+            self:setMaxSpeed(0)
+        end
+        -- follow course, make sure we are keeping distance from the chopper
+        local combineSpeed = (self.combineToUnload.lastSpeedReal * 3600)
+        local speed = math.max(self.settings.turnSpeed:getValue(), combineSpeed)
+        self:setMaxSpeed(speed)
+        self:renderText(0, 0.7, 'd = %.1f, speed = %.1f', d, speed)
+    else
+        self:debug('chopper is ending/ended turn, return to follow mode')
+        self:startCourse(self.followCourse, self.combineCourse:getCurrentWaypointIx())
+        self:setNewState(self.states.UNLOADING_MOVING_COMBINE)
+    end
 end
 
 function AIDriveStrategyUnloadCombine:calculateAutoAimPipeOffsetX(harvester)
@@ -1952,6 +1976,7 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
     end
     if self.state ~= self.states.MOVING_AWAY_FROM_OTHER_VEHICLE and
             self.state ~= self.states.BACKING_UP_FOR_REVERSING_COMBINE and
+            self.state ~= self.states.FOLLOW_CHOPPER_THROUGH_TURN and
             not self:isBeingHeld() then
         self:debug('%s has been blocking us for a while, move a bit', CpUtil.getName(blockingVehicle))
         local course
