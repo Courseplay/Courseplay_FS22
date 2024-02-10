@@ -172,7 +172,7 @@ function PathfinderController:start(context, numRetries, pathfinderCall)
         if not (leftOk or rightOk or straightOk) then
             -- no way out
             self:debug('Obstacle ahead, can\'t start pathfinding')
-            self:callCallback(self.callbackObstacleAtStartFunction, true, false)
+            self:callCallback(self.callbackObstacleAtStartFunction, self.currentContext, true, false)
             return false
         end
     end
