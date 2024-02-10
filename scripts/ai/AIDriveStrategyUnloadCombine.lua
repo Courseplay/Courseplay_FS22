@@ -1754,12 +1754,14 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
         self:debug('%s has been blocking us for a while, move a bit', CpUtil.getName(blockingVehicle))
         local course
         local isBlockingVehicleAheadOfUs = AIUtil.isOtherVehicleAhead(self.vehicle, blockingVehicle)
-        local trailer = AIUtil.getImplementOrVehicleWithSpecialization(self.vehicle, Trailer)
+        -- TODO: maybe a generic getTrailer() ?
+        local referenceObject = AIUtil.getImplementOrVehicleWithSpecialization(self.vehicle, Trailer) or
+                AIUtil.getImplementOrVehicleWithSpecialization(self.vehicle, HookLiftTrailer) or self.vehicle
         if AIDriveStrategyCombineCourse.isActiveCpCombine(blockingVehicle) then
             -- except we are blocking our buddy, so set up a course parallel to the combine's direction,
             -- with an offset from the combine that makes sure we are clear. Use the trailer's root node (and not
             -- the tractor's) as when we reversing, it is easier when the trailer remains on the same side of the combine
-            local dx, _, _ = localToLocal(trailer.rootNode, blockingVehicle:getAIDirectionNode(), 0, 0, 0)
+            local dx, _, _ = localToLocal(referenceObject.rootNode, blockingVehicle:getAIDirectionNode(), 0, 0, 0)
             local xOffset = self.vehicle.size.width / 2 + blockingVehicle:getCpDriveStrategy():getWorkWidth() / 2 + 2
             xOffset = dx > 0 and xOffset or -xOffset
             self:setNewState(self.states.MOVING_AWAY_FROM_OTHER_VEHICLE)
@@ -1792,7 +1794,7 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
             else
                 self:debug('%s is a CP combine, not head on, not same direction', CpUtil.getName(blockingVehicle))
                 self.state.properties.dx = nil
-                course = self:createMoveAwayCourse(blockingVehicle, isBlockingVehicleAheadOfUs, trailer)
+                course = self:createMoveAwayCourse(blockingVehicle, isBlockingVehicleAheadOfUs, referenceObject)
             end
         elseif (AIDriveStrategyUnloadCombine.isActiveCpCombineUnloader(blockingVehicle) or
                 AIDriveStrategyUnloadCombine.isActiveCpSiloLoader(blockingVehicle)) and
@@ -1804,7 +1806,7 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
         else
             self:debug('%s is not a combine and not an idle unloader, moving out of their way.', CpUtil.getName(blockingVehicle))
             -- straight back or forward
-            course = self:createMoveAwayCourse(blockingVehicle, isBlockingVehicleAheadOfUs, trailer)
+            course = self:createMoveAwayCourse(blockingVehicle, isBlockingVehicleAheadOfUs, referenceObject)
             self:setNewState(self.states.MOVING_AWAY_FROM_OTHER_VEHICLE)
             self.state.properties.vehicle = blockingVehicle
             self.state.properties.dx = nil
