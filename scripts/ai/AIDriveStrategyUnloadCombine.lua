@@ -1564,7 +1564,7 @@ function AIDriveStrategyUnloadCombine:unloadStoppedCombine()
             end
         else
             self:debug('finished unloading stopped combine, move back a bit to make room for it to continue')
-            self:startMovingBackFromCombine(self.states.MOVING_BACK, self.combineToUnload)
+            self:startMovingBackFromCombine(self.states.MOVING_BACK, self.combineToUnload, true)
             self.ppc:setNormalLookaheadDistance()
         end
     else
