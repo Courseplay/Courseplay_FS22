@@ -28,6 +28,9 @@ PathfinderController for easy access to the pathfinder.
 	- Also gets triggered if no valid path was found and all retry attempts are used.
 - Every time the path finding failed a callback gets triggered, if there are retry attempts left over.
 	- Enabled the changing of the pathfinder context and restart with the new context.
+- Callback if there is an obstacle around the vehicle so the pathfinding will inevitably fail, no matter
+  how many time it is retried. This check ignores everything but collisions with vehicles or objects.
+  No check if no callback registered.
 
 Example implementations: 
 
@@ -36,7 +39,8 @@ function Strategy:startPathfindingToGoal()
 	context:set(
 		...
 	)
-	self.pathfinderController:registerListeners(self, self.onPathfindingFinished, self.onPathfindingRetry)
+	self.pathfinderController:registerListeners(self, self.onPathfindingFinished, self.onPathfindingRetry, 
+	    self.onPathfindingObstacleAtStart)
 
 	local numRetries = 2
 	self.pathfinderController:findPathToNode(context, ..., numRetries)
@@ -139,11 +143,16 @@ end
 --- TODO: Decide if multiple registered listeners are needed or not?
 ---@param object table
 ---@param successFunc function func(PathfinderController, success, Course, goalNodeInvalid)
----@param retryFunc function func(PathfinderController, last context, was last retry, retry attempt number, obstacle ahead)
-function PathfinderController:registerListeners(object, successFunc, retryFunc)
+---@param retryFunc function func(PathfinderController, last context, was last retry, retry attempt number)
+---@param obstacleAtStartFunc function|nil func(PathfinderController, last context, obstacleFront, obstacleBehind),
+--- called when there is an obstacle ahead of the vehicle so it can't even start driving anywhere forward. In this case
+--- pathfinding makes no sense. No check if no callback is registered.
+--- TODO: check aft as well if reverse pathfinding allowed.
+function PathfinderController:registerListeners(object, successFunc, retryFunc, obstacleAtStartFunc)
     self.callbackObject = object
     self.callbackSuccessFunction = successFunc
     self.callbackRetryFunction = retryFunc
+    self.callbackObstacleAtStartFunction = obstacleAtStartFunc
 end
 
 --- Pathfinder was started
@@ -155,15 +164,17 @@ function PathfinderController:start(context, numRetries, pathfinderCall)
     self.currentContext = context
     self.currentPathfinderCall = pathfinderCall
 
-    -- check if there's an obstacle in front of us, because if we can't drive forward or make a 90º turn to
-    -- the right or left, the pathfinder will inevitably fail
-    local leftOk, rightOk, straightOk = PathfinderUtil.checkForObstaclesAhead(self.vehicle, self.turningRadius, context._objectsToIgnore)
-    if not (leftOk or rightOk or straightOk) then
-        -- no way out
-        self:debug('Obstacle ahead, can\'t start pathfinding')
-        self:callCallback(self.callbackRetryFunction,
-                self.currentContext, self.failCount == self.numRetries, self.failCount, true)
-        return false
+    if self.callbackObstacleAtStartFunction then
+        -- check if there's an obstacle in front of us, because if we can't drive forward or make a 90º turn to
+        -- the right or left, the pathfinder will inevitably fail
+        -- TODO: check behind us if reverse pathfinding allowed
+        local leftOk, rightOk, straightOk = PathfinderUtil.checkForObstaclesAhead(self.vehicle, self.turningRadius, context._objectsToIgnore)
+        if not (leftOk or rightOk or straightOk) then
+            -- no way out
+            self:debug('Obstacle ahead, can\'t start pathfinding')
+            self:callCallback(self.callbackObstacleAtStartFunction, true, false)
+            return false
+        end
     end
 
     local pathfinder, done, path, goalNodeInvalid = self.currentPathfinderCall()
