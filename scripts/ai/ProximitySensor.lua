@@ -365,9 +365,9 @@ end
 WideForwardLookingProximitySensorPack = CpObject(ProximitySensorPack)
 
 --- Pack looking forward, but sensors distributed evenly through the width of the vehicle
-function WideForwardLookingProximitySensorPack:init(vehicle, node, range, height, width)
+function WideForwardLookingProximitySensorPack:init(vehicle, node, range, height, width, directionsDeg)
     CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, vehicle, 'Creating wide forward proximity sensor %.1fm', width)
-    local directionsDeg = {10, 8, 5, 3, 0, -3, -5, -8, -10}
+    directionsDeg = directionsDeg or {10, 8, 5, 3, 0, -3, -5, -8, -10}
     local xOffsets = self:getXOffsets(width, #directionsDeg)
     ProximitySensorPack.init(self, 'wideForward', vehicle, node, range, height,
             directionsDeg, xOffsets, true)

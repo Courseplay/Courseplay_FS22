@@ -329,6 +329,16 @@ function PathfinderController:findPathToGoal(context, goal, numRetries)
     return true
 end
 
+function PathfinderController:findAnalyticPathFromVehicleToGoal(goal, allowReverse)
+    local path, _ = PathfinderUtil.findAnalyticPathFromStartToGoal(allowReverse and ReedsSheppSolver() or DubinsSolver(),
+            PathfinderUtil.getVehiclePositionAsState3D(self.vehicle), goal, self.turningRadius)
+    if path then
+        return Course.createFromAnalyticPath(self.vehicle, path, true)
+    else
+        return nil
+    end
+end
+
 function PathfinderController:getTemporaryCourseFromPath(path)
     return Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
 end

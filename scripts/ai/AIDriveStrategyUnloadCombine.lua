@@ -312,9 +312,10 @@ function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
     self.proximityController:registerIgnoreObjectCallback(self, AIDriveStrategyUnloadCombine.ignoreProximityObject)
     -- this is for following a chopper. The reason we are not using the proximityController's forward looking
     -- sensor is that it may be too high, and does not see the header of the chopper. Alternatively, we could
-    -- lower the proximityController.
+    -- lower the proximityController. Also, this is a little wider to catch the chopper during turns.
     self.followModeProximitySensor = WideForwardLookingProximitySensorPack(
-            self.vehicle, Markers.getFrontMarkerNode(self.vehicle), 10, 0.5, self:getProximitySensorWidth())
+            self.vehicle, Markers.getFrontMarkerNode(self.vehicle), 10, 0.5, self:getProximitySensorWidth(),
+            {20, 15, 8, 5, 0, -5, -8, -15, -20})
 
     -- remove any course already loaded (for instance to not to interfere with the fieldworker proximity controller)
     vehicle:resetCpCourses()
@@ -478,9 +479,10 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
 
     elseif self.state == self.states.MOVING_BACK_WITH_TRAILER_FULL then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
-        -- drive back until the combine backmarker is 3m behind us to have some room for the pathfinder
-        local _, _, dz = self:getDistanceFromCombine(self.state.properties.vehicle)
-        if dz > -3 then
+        -- drive back to have some room for the pathfinder
+        local _, dx, dz = self:getDistanceFromCombine(self.state.properties.vehicle)
+        -- drive back more if we are close to the harvester
+        if dz > (dx < self.turningRadius) and 0 or -3 then
             self:startUnloadingTrailers()
         end
 
@@ -696,10 +698,12 @@ function AIDriveStrategyUnloadCombine:followChopper()
         -- the back of the harvester
         dz = dz + self:getCombinesMeasuredBackDistance()
     end
-
-    local dProxy = self.followModeProximitySensor:getClosestObjectDistanceAndRootVehicle()
-
-    local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(math.min(-dz, dProxy - 1) * 2, -10, 15)
+    -- use both proximity sensor front as they are at different heights, one may see the header, but not the
+    -- choppers high back...
+    local dFollowProxy = self.followModeProximitySensor:getClosestObjectDistanceAndRootVehicle()
+    local dProxy = self.proximityController:checkBlockingVehicleFront()
+    local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(
+            math.min(-dz, dFollowProxy - 1, dProxy - 1) * 2, -10, 15)
     self:setMaxSpeed(speed)
 
     local _, _, dzGoal = localToLocal(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
@@ -715,6 +719,7 @@ function AIDriveStrategyUnloadCombine:followChopper()
             content = {
                 { name = 'dz', value = string.format('%.1f', dz) },
                 { name = 'dProxy', value = string.format('%.1f', dProxy) },
+                { name = 'dFollowProxy', value = string.format('%.1f', dFollowProxy) },
                 { name = 'speed', value = string.format('%.1f', speed) },
                 { name = 'autoAimOffsetX', value = string.format('%.1f', self:getAutoAimPipeOffsetX()) },
             }
