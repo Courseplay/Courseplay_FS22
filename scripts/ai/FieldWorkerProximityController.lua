@@ -170,8 +170,10 @@ function FieldWorkerProximityController:getMaxSpeed(distanceLimit, currentMaxSpe
     -- only when the maxSpeed we return in getDriveData is exactly 0
     maxSpeed = maxSpeed > 1 and maxSpeed or 0
 
-    self:debugSparse('minimum distance to others %.1f, maximum convoy distance from others %.1f, speed = %.1f, slow down factor = %.2f',
+    if minDistanceFromOthers < math.huge then
+        self:debugSparse('minimum distance to others %.1f, maximum convoy distance from others %.1f, speed = %.1f, slow down factor = %.2f',
             minDistanceFromOthers, maxConvoyDistance, maxSpeed, self.slowDownFactor:get())
+    end
 
     return maxSpeed
 end

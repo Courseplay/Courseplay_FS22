@@ -90,6 +90,7 @@ AIDriveStrategyUnloadCombine.proximitySensorRange = 15
 AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg = 35 -- under this angle the unloader considers itself aligned with the combine
 -- Add a short straight section to align with the combine's course in case it is late for the rendezvous
 AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength = 10
+AIDriveStrategyUnloadCombine.targetDistanceBehindChopper = 1
 
 -- Developer hack: to check the class of an object one should use the is_a() defined in CpObject.lua.
 -- However, when we reload classes on the fly during the development, the is_a() calls in other modules still
@@ -145,7 +146,7 @@ AIDriveStrategyUnloadCombine.myStates = {
     WAITING_FOR_MANEUVERING_COMBINE = {},
     DRIVING_BACK_TO_START_POSITION_WHEN_FULL = {}, -- Drives to the start position with a trailer attached and gives control to giants or AD there.
     HANDLE_CHOPPER_180_TURN = {},
-    HANDLE_CHOPPER_HEADLAND_TURN = {},
+    HANDLE_CHOPPER_HEADLAND_TURN = { reversing = false },
     FOLLOW_CHOPPER_THROUGH_TURN = {}
 }
 
@@ -315,7 +316,7 @@ function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
     -- lower the proximityController. Also, this is a little wider to catch the chopper during turns.
     self.followModeProximitySensor = WideForwardLookingProximitySensorPack(
             self.vehicle, Markers.getFrontMarkerNode(self.vehicle), 10, 0.5, self:getProximitySensorWidth(),
-            {20, 15, 8, 5, 0, -5, -8, -15, -20})
+            { 20, 15, 8, 5, 0, -5, -8, -15, -20 })
 
     -- remove any course already loaded (for instance to not to interfere with the fieldworker proximity controller)
     vehicle:resetCpCourses()
@@ -340,7 +341,9 @@ end
 
 function AIDriveStrategyUnloadCombine:ignoreProximityObject(object, vehicle, moveForwards, hitTerrain)
     return (self.state == self.states.UNLOADING_ON_THE_FIELD and hitTerrain) or
-            (self.state == self.states.UNLOADING_MOVING_COMBINE and vehicle == self.combineToUnload)
+            -- these states handle the proximity by themselves
+            (self.state == self.states.UNLOADING_MOVING_COMBINE and vehicle == self.combineToUnload) or
+            (self.state == self.states.HANDLE_CHOPPER_HEADLAND_TURN and vehicle == self.combineToUnload)
 end
 
 function AIDriveStrategyUnloadCombine:checkCollisionWarning()
@@ -482,7 +485,7 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
         -- drive back to have some room for the pathfinder
         local _, dx, dz = self:getDistanceFromCombine(self.state.properties.vehicle)
         -- drive back more if we are close to the harvester
-        if dz > (dx < self.turningRadius) and 0 or -3 then
+        if dz > ((math.abs(dx) < self.turningRadius) and 0 or -3) then
             self:startUnloadingTrailers()
         end
 
@@ -534,6 +537,8 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
         if x ~= nil then
             gx, gz = x, z
         end
+    elseif self.state == self.states.HANDLE_CHOPPER_HEADLAND_TURN then
+        self:handleChopperHeadlandTurn()
     elseif self.state == self.states.FOLLOW_CHOPPER_THROUGH_TURN then
         self:followChopperThroughTurn()
     elseif self.state == self.states.DRIVE_TO_FIELD_UNLOAD_PARK_POSITION then
@@ -690,22 +695,30 @@ function AIDriveStrategyUnloadCombine:followChopper()
 
     -- Normally, when driving beside the harvester, align the direction nodes
     local dx, _, dz = localToLocal(Markers.getFrontMarkerNode(self.vehicle), self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
-
-    -- adjust speed to the harvester's speed
-
-    if math.abs(dx - self:getAutoAimPipeOffsetX()) > 1 then
-        -- if the difference between the current and desired offset is big, slow down, our reference point is
-        -- the back of the harvester
-        dz = dz + self:getCombinesMeasuredBackDistance()
-    end
-    -- use both proximity sensor front as they are at different heights, one may see the header, but not the
+    -- use both proximity sensors front as they are at different heights, one may see the header, but not the
     -- choppers high back...
     local dFollowProxy = self.followModeProximitySensor:getClosestObjectDistanceAndRootVehicle()
     local dProxy = self.proximityController:checkBlockingVehicleFront()
-    local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(
-            math.min(-dz, dFollowProxy - 1, dProxy - 1) * 2, -10, 15)
-    self:setMaxSpeed(speed)
+    local speed
+    -- adjust speed to the harvester's speed
+    local sameDirection = CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), 45)
+    if sameDirection then
+        if math.abs(dx - self:getAutoAimPipeOffsetX()) > 1 then
+            -- if the difference between the current and desired offset is big, slow down, our reference point is
+            -- the back of the harvester
+            dz = dz + self:getCombinesMeasuredBackDistance()
+        end
+        speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(
+                math.min(-dz, dFollowProxy - self.targetDistanceBehindChopper, dProxy - self.targetDistanceBehindChopper) * 2,
+                -10, 15)
+    else
+        -- not aligned with the chopper, drive forward to get closer, regardless of dz
+        speed = MathUtil.clamp(
+                math.min(dFollowProxy - self.targetDistanceBehindChopper, dProxy - self.targetDistanceBehindChopper) * 2,
+                0, self.settings.turnSpeed:getValue())
+    end
 
+    self:setMaxSpeed(speed)
     local _, _, dzGoal = localToLocal(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
     local gx, gy, gz = localToWorld(self.combineToUnload:getAIDirectionNode(),
     -- straight line parallel to the harvester, under the pipe, look ahead distance from the unloader
@@ -714,16 +727,13 @@ function AIDriveStrategyUnloadCombine:followChopper()
     if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
         -- show the goal point
         DebugUtil.drawDebugGizmoAtWorldPos(gx, gy + 4, gz, 0, 0, 1, 0, 1, 0, "Virtual goal", false)
-        local t = {
-            title = self:getStateAsString(),
-            content = {
-                { name = 'dz', value = string.format('%.1f', dz) },
-                { name = 'dProxy', value = string.format('%.1f', dProxy) },
-                { name = 'dFollowProxy', value = string.format('%.1f', dFollowProxy) },
-                { name = 'speed', value = string.format('%.1f', speed) },
-                { name = 'autoAimOffsetX', value = string.format('%.1f', self:getAutoAimPipeOffsetX()) },
-            }
-        }
+        self:renderDebugTable({
+            { name = 'dz', value = string.format('%.1f', dz) },
+            { name = 'dProxy', value = string.format('%.1f', dProxy) },
+            { name = 'dFollowProxy', value = string.format('%.1f', dFollowProxy) },
+            { name = 'speed', value = string.format('%.1f', speed) },
+            { name = 'autoAimOffsetX', value = string.format('%.1f', self:getAutoAimPipeOffsetX()) },
+        })
         CpDebug:drawVehicleDebugTable(self.vehicle, { t }, 5, 0.07)
     end
     return gx, gz
@@ -811,6 +821,75 @@ function AIDriveStrategyUnloadCombine:followChopperThroughTurn()
     else
         self:debug('chopper is ending/ended turn, return to follow mode')
         self:startCourse(self.followCourse, self.combineCourse:getCurrentWaypointIx())
+        self:setNewState(self.states.UNLOADING_MOVING_COMBINE)
+    end
+end
+
+------------------------------------------------------------------------------------------------------------------------
+-- Chopper turn on headland
+------------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyUnloadCombine:handleChopperHeadlandTurn()
+
+    if self:changeToUnloadWhenTrailerFull() then
+        return
+    end
+
+    -- ask the chopper to ignore us, we'll make sure we stay away.
+    self.combineToUnload:getCpDriveStrategy():requestToIgnoreProximity(self.vehicle)
+
+    local d, dx, dz = self:getDistanceFromCombine()
+    local turnSpeed = self.settings.turnSpeed:getValue()
+    local combineSpeed = self.combineToUnload.lastSpeedReal * 3600
+    local speed, dReference
+
+    --if the chopper is reversing, drive backwards, otherwise forwards, always keeping the distance from the chopper
+    if AIUtil.isReversing(self.combineToUnload) then
+        if not self.state.properties.reversing then
+            self:debug('Harvester reversing')
+            self.state.properties.reversing = true
+            local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 20)
+            self:startCourse(reverseCourse, 1)
+        end
+        local sameDirection = CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), 45)
+        -- stay closer when still discharging
+        if sameDirection then
+            -- reverse speed is controlled around combine's speed
+            dReference = self.combineToUnload:getCpDriveStrategy():isDischarging() and dz or dz - 3
+            speed = combineSpeed + MathUtil.clamp(self.targetDistanceBehindChopper - dReference, -combineSpeed,
+                    self.settings.reverseSpeed:getValue() * 1.5)
+        else
+            -- reverse speed only depends on distance from the combine, stop when at working width
+            speed = MathUtil.clamp(self.combineToUnload:getCpDriveStrategy():getWorkWidth() - d, 0,
+                    self.settings.reverseSpeed:getValue() * 1.5)
+        end
+    else
+        if self.state.properties.reversing then
+            self:debug('Harvester driving forward')
+            self.state.properties.reversing = false
+            self:startCourse(self.followCourse, self.combineCourse:getCurrentWaypointIx())
+        end
+        -- get closer to the chopper when beside it
+        dReference = (math.abs(dx) > 3) and dz or d
+        speed = combineSpeed +
+                (MathUtil.clamp(dReference - self.targetDistanceBehindChopper, -turnSpeed, turnSpeed))
+    end
+
+    self:setMaxSpeed(speed)
+
+    self:renderDebugTable({
+        { name = 'reversing', value = string.format('%s', self.state.properties.reversing) },
+        { name = 'd', value = string.format('%.1f', d) },
+        { name = 'dx', value = string.format('%.1f', dx) },
+        { name = 'dz', value = string.format('%.1f', dz) },
+        { name = 'speed', value = string.format('%.1f', speed) },
+    })
+
+    --when the turn is finished, return to follow chopper
+    if not self:getCombineIsTurning() then
+        self:debug('Combine stopped turning, resuming follow course')
+        -- resume course beside combine
+        -- skip over the turn start waypoint as it will throw the PPC off course
+        self:startCourse(self.followCourse, self.combineCourse:skipOverTurnStart(self.combineCourse:getCurrentWaypointIx()))
         self:setNewState(self.states.UNLOADING_MOVING_COMBINE)
     end
 end
@@ -1809,11 +1888,6 @@ end
 -- We are driving on a copy of the combine's course with an offset
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:unloadMovingCombine()
-
-    -- ignore combine for the proximity sensor
-    -- self:ignoreVehicleProximity(self.combineToUnload, 3000)
-    -- make sure the combine won't slow down when seeing us
-    -- self.combineToUnload:getCpDriveStrategy():ignoreVehicleProximity(self.vehicle, 3000)
 
     -- allow on the fly offset changes
     self.combineOffset = self:getPipeOffset(self.combineToUnload)
@@ -2855,5 +2929,18 @@ function AIDriveStrategyUnloadCombine:renderText(x, y, ...)
 
     renderText(0.6 + x, 0.2 + y, 0.018, string.format(...))
 end
+
+---@param content table with a list of {name, value} tables
+function AIDriveStrategyUnloadCombine:renderDebugTable(content)
+    if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
+        local t = {
+            title = self:getStateAsString(),
+            content = content
+        }
+        CpDebug:drawVehicleDebugTable(self.vehicle, { t }, 5, 0.07)
+    end
+end
+
+
 
 --FillUnit.updateFillUnitAutoAimTarget = Utils.overwrittenFunction(FillUnit.updateFillUnitAutoAimTarget, AIDriveStrategyUnloadCombine.updateFillUnitAutoAimTarget)
