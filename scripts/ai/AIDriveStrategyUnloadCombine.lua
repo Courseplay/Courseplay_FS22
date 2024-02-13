@@ -1924,8 +1924,8 @@ function AIDriveStrategyUnloadCombine:backUpForReversingCombine()
 
     self:setMaxSpeed(speed)
 
-    -- combine not requesting anymore and is not in front of us
-    if blockedVehicle ~= self.vehicleRequestingBackUp:get() and vehicleInFront ~= self.vehicleRequestingBackUp:get() then
+    -- combine not requesting anymore
+    if self.vehicleRequestingBackUp:get() == nil then
         self:debug('request from %s timed out, stop backing up', blockedVehicle:getName())
         self:onLastWaypointPassed()
     end
