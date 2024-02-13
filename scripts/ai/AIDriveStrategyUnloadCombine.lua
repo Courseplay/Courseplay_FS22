@@ -806,11 +806,12 @@ function AIDriveStrategyUnloadCombine:followChopperThroughTurn()
     end
 
     local d = self:getDistanceFromCombine()
-    if self.combineToUnload:getCpDriveStrategy():isTurning() then
+    local turnCourse = self.combineToUnload:getCpDriveStrategy():getTurnCourse()
+    if self.combineToUnload:getCpDriveStrategy():isTurning() and turnCourse ~= nil then
         -- making sure we are never ahead of the chopper on the course (we both drive the same course), this
         -- prevents the unloader cutting in front of the chopper when for example the unloader is on the
         -- right side of the chopper and the chopper reaches a right turn.
-        if self.course:getCurrentWaypointIx() > self.combineToUnload:getCpDriveStrategy().course:getCurrentWaypointIx() then
+        if self.course:getCurrentWaypointIx() > turnCourse:getCurrentWaypointIx() then
             self:setMaxSpeed(0)
         end
         -- follow course, make sure we are keeping distance from the chopper
