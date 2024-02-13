@@ -900,17 +900,20 @@ function AIDriveStrategyUnloadCombine:calculateAutoAimPipeOffsetX(harvester)
         -- side of the chopper is already harvested, or behind it if both sides have fruit.
         local fruitLeft, fruitRight = harvester:getCpDriveStrategy():getFruitAtSides()
         local targetOffsetX, distanceBetweenVehicles = 0, (AIUtil.getWidth(harvester) + AIUtil.getWidth(self.vehicle)) / 2 + 1
+        -- we use 20% of the average as a threshold for significant difference
+        local fruitThreshold = 0.2 * 0.5 * (fruitLeft + fruitRight)
         if harvester:getCpDriveStrategy():isOnHeadland(1) then
             -- on the first headland always drive behind the chopper
             targetOffsetX = 0
-        elseif fruitLeft > 0.5 * fruitRight then
+        elseif math.abs(fruitRight - fruitLeft) < fruitThreshold then
+            -- about the same amount of fruit on both sides
+            targetOffsetX = 0
+        elseif fruitLeft > fruitRight then
             -- significantly more fruit on the left, drive to the right
             targetOffsetX = -distanceBetweenVehicles
-        elseif fruitRight > 0.5 * fruitLeft then
+        else
             -- significantly more fruit on the right, drive to the left
             targetOffsetX = distanceBetweenVehicles
-        else
-            targetOffsetX = 0
         end
         if not self.autoAimPipeOffsetX then
             -- Side offset from a chopper. We don't want this to jump from one side to the other abruptly
