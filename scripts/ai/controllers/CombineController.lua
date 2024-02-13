@@ -178,7 +178,7 @@ function CombineController:fixDischargeDistanceForChopper()
     local dischargeNode = self.implement:getCurrentDischargeNode()
     if self:isChopper() and dischargeNode and dischargeNode.maxDistance then
         local safeDischargeNodeMaxDistance = 40
-        if dischargeNode.maxDistance < safeDischargeNodeMaxDistance then
+        if false and dischargeNode.maxDistance < safeDischargeNodeMaxDistance then
             self:debug('Chopper maximum throw distance is %.1f, increasing to %.1f', dischargeNode.maxDistance, safeDischargeNodeMaxDistance)
             dischargeNode.maxDistance = safeDischargeNodeMaxDistance
         end
