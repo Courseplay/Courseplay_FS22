@@ -831,6 +831,9 @@ end
 ---@return boolean if true, the harvester is reversing (and we are on a straight reverse course)
 function AIDriveStrategyUnloadCombine:handleChopperTurn(harvester)
 
+    -- since we are taking care of staying away, ask the chopper to ignore us
+    harvester:getCpDriveStrategy():requestToIgnoreProximity(self.vehicle)
+
     local d, dx, dz = self:getDistanceFromCombine(harvester)
     local combineSpeed = harvester.lastSpeedReal * 3600
     local speed, dReference

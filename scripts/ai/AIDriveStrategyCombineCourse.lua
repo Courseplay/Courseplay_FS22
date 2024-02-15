@@ -89,6 +89,7 @@ function AIDriveStrategyCombineCourse:init(task, job)
     self.temporaryHold = CpTemporaryObject(false)
     -- periodically check if we need to call an unloader
     self.timeToCallUnloader = CpTemporaryObject(true)
+    self.unloaderRequestedToIgnoreProximity = CpTemporaryObject()
 
     --- Register info texts
     self:registerInfoTextForStates(self:getFillLevelInfoText(), {
@@ -131,6 +132,7 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
     Markers.setMarkerNodes(self.vehicle, self.measuredBackDistance)
 
     self.proximityController:registerBlockingVehicleListener(self, AIDriveStrategyCombineCourse.onBlockingVehicle)
+    self.proximityController:registerIgnoreObjectCallback(self, AIDriveStrategyCombineCourse.ignoreProximityObject)
 
     -- distance to keep to the right (>0) or left (<0) when pulling back to make room for the tractor
     self.pullBackRightSideOffset = math.abs(self.pipeController:getPipeOffsetX()) - self:getWorkWidth() / 2 + 5
@@ -2061,13 +2063,25 @@ function AIDriveStrategyCombineCourse:onBlockingVehicle(vehicle, isBack)
     end
 end
 
+-- An unloader may request the harvester to ignore its proximity because the unloader will take care
+-- of staying away.
+function AIDriveStrategyCombineCourse:requestToIgnoreProximity(vehicle)
+    self.unloaderRequestedToIgnoreProximity:set(vehicle, 1000)
+end
+
+-- Proximity controller checking if an object/vehicle should be ignored
+function AIDriveStrategyCombineCourse:ignoreProximityObject(object, vehicle, moveForwards, hitTerrain)
+    return vehicle == self.unloaderRequestedToIgnoreProximity:get()
+end
+
 --- Check if the unloader is blocking us when we are reversing in a turn and immediately notify it
 function AIDriveStrategyCombineCourse:checkBlockingUnloader()
     if not self.ppc:isReversing() and not AIUtil.isReversing(self.vehicle) then
         return
     end
     local d, blockingVehicle = self.proximityController:checkBlockingVehicleBack()
-    if d < 1000 and blockingVehicle and AIUtil.isStopped(self.vehicle) and
+    if blockingVehicle ~= self.unloaderRequestedToIgnoreProximity:get() and d < 1000 and
+            blockingVehicle and AIUtil.isStopped(self.vehicle) and
             not self:isWaitingForUnload() and not self:shouldHoldInTurnManeuver() then
         -- try requesting only if the unloader really blocks us, that is we are actually backing up but
         -- can't move because of the unloader, and not when we are stopped for other reasons
