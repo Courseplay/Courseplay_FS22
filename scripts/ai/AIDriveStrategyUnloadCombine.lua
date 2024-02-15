@@ -138,15 +138,15 @@ AIDriveStrategyUnloadCombine.myStates = {
     MOVING_BACK_BEFORE_PATHFINDING = { pathfinderController = nil, pathfinderContext = nil }, -- there is an obstacle ahead, move back a bit so the pathfinder can succeed
     --- States to maneuver away from combines and so on.
     --- No need to be assigned to a combine!
-    MOVING_BACK = { vehicle = nil, holdCombine = false },
-    MOVING_BACK_WITH_TRAILER_FULL = { vehicle = nil, holdCombine = false }, -- moving back from a combine we just unloaded (not assigned anymore)
-    BACKING_UP_FOR_REVERSING_COMBINE = { vehicle = nil }, -- reversing as long as the combine is reversing
-    MOVING_BACK_FOR_HEADLAND_TURN = { vehicle = nil, holdCombine = false }, -- making room for the harvester performing a headland turn
-    MOVING_AWAY_FROM_OTHER_VEHICLE = { vehicle = nil }, -- moving until we have enough space between us and an other vehicle
+    MOVING_BACK = { vehicle = nil, holdCombine = false, denyBackupRequest = true },
+    MOVING_BACK_WITH_TRAILER_FULL = { vehicle = nil, holdCombine = false, denyBackupRequest = true }, -- moving back from a combine we just unloaded (not assigned anymore)
+    BACKING_UP_FOR_REVERSING_COMBINE = { vehicle = nil, denyBackupRequest = true }, -- reversing as long as the combine is reversing
+    MOVING_BACK_FOR_HEADLAND_TURN = { vehicle = nil, holdCombine = false, denyBackupRequest = true }, -- making room for the harvester performing a headland turn
+    MOVING_AWAY_FROM_OTHER_VEHICLE = { vehicle = nil, denyBackupRequest = true }, -- moving until we have enough space between us and an other vehicle
     WAITING_FOR_MANEUVERING_COMBINE = {},
     DRIVING_BACK_TO_START_POSITION_WHEN_FULL = {}, -- Drives to the start position with a trailer attached and gives control to giants or AD there.
-    HANDLE_CHOPPER_180_TURN = {},
-    HANDLE_CHOPPER_HEADLAND_TURN = { reversing = false },
+    HANDLE_CHOPPER_180_TURN = {reversing = false, denyBackupRequest = true},
+    HANDLE_CHOPPER_HEADLAND_TURN = { reversing = false, denyBackupRequest = true },
     FOLLOW_CHOPPER_THROUGH_TURN = {}
 }
 
@@ -727,14 +727,10 @@ function AIDriveStrategyUnloadCombine:followChopper()
     if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
         -- show the goal point
         DebugUtil.drawDebugGizmoAtWorldPos(gx, gy + 4, gz, 0, 0, 1, 0, 1, 0, "Virtual goal", false)
-        self:renderDebugTable({
-            { name = 'dz', value = string.format('%.1f', dz) },
-            { name = 'dProxy', value = string.format('%.1f', dProxy) },
-            { name = 'dFollowProxy', value = string.format('%.1f', dFollowProxy) },
-            { name = 'speed', value = string.format('%.1f', speed) },
-            { name = 'autoAimOffsetX', value = string.format('%.1f', self:getAutoAimPipeOffsetX()) },
-        })
-        CpDebug:drawVehicleDebugTable(self.vehicle, { t }, 5, 0.07)
+        self:renderDebugTableFromLists(
+                {'dz', 'dProxy', 'dFollowProxy', 'speed', 'autoAimOffsetX'},
+                {dz, dProxy, dFollowProxy, speed, self:getAutoAimPipeOffsetX()}
+        )
     end
     return gx, gz
 end
@@ -768,8 +764,6 @@ function AIDriveStrategyUnloadCombine:handleChopper180Turn()
         return
     end
 
-    local gx, gz = self:followChopper()
-
     if self.combineToUnload:getCpDriveStrategy():isTurningButNotEndingTurn() then
         if self.combineToUnload:getCpDriveStrategy():isTurnForwardOnly() then
             ---@type Course
@@ -778,6 +772,7 @@ function AIDriveStrategyUnloadCombine:handleChopper180Turn()
                 self:debug('Follow chopper through the turn')
                 self:startCourse(turnCourse:copy(self.vehicle), 1)
                 self:setNewState(self.states.FOLLOW_CHOPPER_THROUGH_TURN)
+                return
             else
                 self:debugSparse('Chopper said turn is forward only but has no turn course')
             end
@@ -790,9 +785,95 @@ function AIDriveStrategyUnloadCombine:handleChopper180Turn()
             self:debug('now behind chopper, continue following chopper')
 
             self:setNewState(self.states.UNLOADING_MOVING_COMBINE)
+            return
         end
     end
-    return gx, gz
+    local speed, isReversing = self:handleChopperTurn(self.combineToUnload)
+
+    self:setMaxSpeed(speed)
+
+    if not isReversing then
+        -- when driving forward, we still follow the virtual goal near the harvester (and not the course waypoints)
+        return self:followChopper()
+    end
+
+end
+
+------------------------------------------------------------------------------------------------------------------------
+-- Chopper turn on headland
+------------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyUnloadCombine:handleChopperHeadlandTurn()
+
+    if self:changeToUnloadWhenTrailerFull() then
+        return
+    end
+
+    local speed, _ = self:handleChopperTurn(self.combineToUnload)
+
+    self:setMaxSpeed(speed)
+
+    --when the turn is finished, return to follow chopper
+    if not self:getCombineIsTurning() then
+        self:debug('Combine stopped turning, resuming follow course')
+        -- resume course beside combine
+        -- skip over the turn start waypoint as it will throw the PPC off course
+        self:startCourse(self.followCourse, self.combineCourse:skipOverTurnStart(self.combineCourse:getCurrentWaypointIx()))
+        self:setNewState(self.states.UNLOADING_MOVING_COMBINE)
+    end
+end
+
+--- Handle both 180 and headland turns. Monitor the harvester and if it changes to reverse, set up a straight
+--- reverse course for the unloader to use when backing up. If it changes back to forward, set the unloader back on
+--- the follow course.
+--- Calculate a speed (for both forward and reverse) that makes sure the harvester does not crash into the unloader.
+---@param harvester table
+---@return number speed to set to stay away (but not too far) from the maneuvering harvester
+---@return boolean if true, the harvester is reversing (and we are on a straight reverse course)
+function AIDriveStrategyUnloadCombine:handleChopperTurn(harvester)
+
+    local d, dx, dz = self:getDistanceFromCombine(harvester)
+    local combineSpeed = harvester.lastSpeedReal * 3600
+    local speed, dReference
+
+    --if the chopper is reversing, drive backwards, otherwise forwards, always keeping the distance from the chopper
+    if AIUtil.isReversing(harvester) then
+        if not self.state.properties.reversing then
+            self:debug('Harvester reversing')
+            self.state.properties.reversing = true
+            local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 20)
+            self:startCourse(reverseCourse, 1)
+        end
+        local sameDirection = CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), harvester:getAIDirectionNode(), 45)
+        -- stay closer when still discharging
+        if sameDirection then
+            -- reverse speed is controlled around combine's speed
+            dReference = harvester:getCpDriveStrategy():isDischarging() and dz or dz - 3
+            speed = combineSpeed + MathUtil.clamp(self.targetDistanceBehindChopper - dReference, -combineSpeed,
+                    self.settings.reverseSpeed:getValue() * 1.5)
+        else
+            -- reverse speed only depends on distance from the combine, stop when at working width
+            speed = MathUtil.clamp(harvester:getCpDriveStrategy():getWorkWidth() - d, 0,
+                    self.settings.reverseSpeed:getValue() * 1.5)
+        end
+    else
+        if self.state.properties.reversing then
+            self:debug('Harvester driving forward')
+            self.state.properties.reversing = false
+            self:startCourse(self.followCourse, self.combineCourse:getCurrentWaypointIx())
+        end
+        local turnSpeed = self.settings.turnSpeed:getValue()
+        -- get closer to the chopper when beside it
+        dReference = (math.abs(dx) > 3) and dz or d
+        speed = combineSpeed +
+                (MathUtil.clamp(dReference - self.targetDistanceBehindChopper, -turnSpeed, turnSpeed))
+    end
+
+    self:renderDebugTableFromLists(
+            {'reversing', 'd', 'dx', 'dz', 'speed'},
+            {self.state.properties.reversing, d, dx, dz, speed}
+    )
+
+    return speed, self.state.properties.reversing
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -827,78 +908,11 @@ function AIDriveStrategyUnloadCombine:followChopperThroughTurn()
 end
 
 ------------------------------------------------------------------------------------------------------------------------
--- Chopper turn on headland
+--- Calculate a virtual pipe offset for the unloader to drive beside the chopper based on which
+--- side of the chopper is already harvested, or behind it if both sides have fruit.
 ------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyUnloadCombine:handleChopperHeadlandTurn()
-
-    if self:changeToUnloadWhenTrailerFull() then
-        return
-    end
-
-    -- ask the chopper to ignore us, we'll make sure we stay away.
-    self.combineToUnload:getCpDriveStrategy():requestToIgnoreProximity(self.vehicle)
-
-    local d, dx, dz = self:getDistanceFromCombine()
-    local turnSpeed = self.settings.turnSpeed:getValue()
-    local combineSpeed = self.combineToUnload.lastSpeedReal * 3600
-    local speed, dReference
-
-    --if the chopper is reversing, drive backwards, otherwise forwards, always keeping the distance from the chopper
-    if AIUtil.isReversing(self.combineToUnload) then
-        if not self.state.properties.reversing then
-            self:debug('Harvester reversing')
-            self.state.properties.reversing = true
-            local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 20)
-            self:startCourse(reverseCourse, 1)
-        end
-        local sameDirection = CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), 45)
-        -- stay closer when still discharging
-        if sameDirection then
-            -- reverse speed is controlled around combine's speed
-            dReference = self.combineToUnload:getCpDriveStrategy():isDischarging() and dz or dz - 3
-            speed = combineSpeed + MathUtil.clamp(self.targetDistanceBehindChopper - dReference, -combineSpeed,
-                    self.settings.reverseSpeed:getValue() * 1.5)
-        else
-            -- reverse speed only depends on distance from the combine, stop when at working width
-            speed = MathUtil.clamp(self.combineToUnload:getCpDriveStrategy():getWorkWidth() - d, 0,
-                    self.settings.reverseSpeed:getValue() * 1.5)
-        end
-    else
-        if self.state.properties.reversing then
-            self:debug('Harvester driving forward')
-            self.state.properties.reversing = false
-            self:startCourse(self.followCourse, self.combineCourse:getCurrentWaypointIx())
-        end
-        -- get closer to the chopper when beside it
-        dReference = (math.abs(dx) > 3) and dz or d
-        speed = combineSpeed +
-                (MathUtil.clamp(dReference - self.targetDistanceBehindChopper, -turnSpeed, turnSpeed))
-    end
-
-    self:setMaxSpeed(speed)
-
-    self:renderDebugTable({
-        { name = 'reversing', value = string.format('%s', self.state.properties.reversing) },
-        { name = 'd', value = string.format('%.1f', d) },
-        { name = 'dx', value = string.format('%.1f', dx) },
-        { name = 'dz', value = string.format('%.1f', dz) },
-        { name = 'speed', value = string.format('%.1f', speed) },
-    })
-
-    --when the turn is finished, return to follow chopper
-    if not self:getCombineIsTurning() then
-        self:debug('Combine stopped turning, resuming follow course')
-        -- resume course beside combine
-        -- skip over the turn start waypoint as it will throw the PPC off course
-        self:startCourse(self.followCourse, self.combineCourse:skipOverTurnStart(self.combineCourse:getCurrentWaypointIx()))
-        self:setNewState(self.states.UNLOADING_MOVING_COMBINE)
-    end
-end
-
 function AIDriveStrategyUnloadCombine:calculateAutoAimPipeOffsetX(harvester)
     if harvester and harvester:getCpDriveStrategy():hasAutoAimPipe() then
-        -- Calculate a virtual pipe offset for the unloader to drive beside the chopper based on which
-        -- side of the chopper is already harvested, or behind it if both sides have fruit.
         local fruitLeft, fruitRight = harvester:getCpDriveStrategy():getFruitAtSides()
         local targetOffsetX, distanceBetweenVehicles = 0, (AIUtil.getWidth(harvester) + AIUtil.getWidth(self.vehicle)) / 2 + 1
         -- we use 20% of the average as a threshold for significant difference
@@ -2197,12 +2211,8 @@ function AIDriveStrategyUnloadCombine:requestToBackupForReversingCombine(blocked
         self:debugSparse('%s is still reversing and wants me to back up', blockedVehicle:getName())
     end
     self.vehicleRequestingBackUp:set(blockedVehicle, 3000)
-    if self.state ~= self.states.BACKING_UP_FOR_REVERSING_COMBINE and
-            self.state ~= self.states.MOVING_BACK and
-            self.state ~= self.states.MOVING_AWAY_FROM_OTHER_VEHICLE and
-            self.state ~= self.states.MOVING_BACK_WITH_TRAILER_FULL and
-            self.state ~= self.states.MOVING_BACK_FOR_HEADLAND_TURN
-    then
+    -- if we are in one of these states, we are already backing up
+    if not self.state.properties.denyBackupRequest then
         -- reverse back a bit, this usually solves the problem
         -- TODO: there may be better strategies depending on the situation
         self:rememberCourse(self.course, self.course:getCurrentWaypointIx())
@@ -2241,9 +2251,11 @@ function AIDriveStrategyUnloadCombine:backUpForReversingCombine()
     end
 end
 
+------------------------------------------------------------------------------------------------------------------------
 --- When we were unloading a combine on the headland while it reached a headland turn,
 --- it stopped until it was empty, and now about the start the turn. We have to move 
 --- out of its way now. 
+------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:startMakingRoomForCombineTurningOnHeadland(combine)
     self:setNewState(self.states.MOVING_BACK_FOR_HEADLAND_TURN)
     -- reversing almost straight is better this
@@ -2261,7 +2273,9 @@ function AIDriveStrategyUnloadCombine:startMakingRoomForCombineTurningOnHeadland
     self.state.properties.holdCombine = true
 end
 
+------------------------------------------------------------------------------------------------------------------------
 --- When the harvester is making a headland turn, stay away from it by backing up, but not too far
+------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:makeRoomForCombineTurningOnHeadland()
     local dProximity, _ = self.proximityController:checkBlockingVehicleFront()
     local d, _, dz = self:getDistanceFromCombine(self.combineToUnload)
@@ -2933,6 +2947,21 @@ function AIDriveStrategyUnloadCombine:renderText(x, y, ...)
 
     renderText(0.6 + x, 0.2 + y, 0.018, string.format(...))
 end
+
+---@param names table list of names for the debug table
+---@param values table corresponding values
+function AIDriveStrategyUnloadCombine:renderDebugTableFromLists(names, values)
+    local content = {}
+    for i, value in ipairs(values) do
+        if type(value) == 'number' then
+            table.insert(content, {name = names[i], value = string.format('%.1f', value)})
+        else
+            table.insert(content, {name = names[i], value = tostring(value)})
+        end
+    end
+    self:renderDebugTable(content)
+end
+
 
 ---@param content table with a list of {name, value} tables
 function AIDriveStrategyUnloadCombine:renderDebugTable(content)
