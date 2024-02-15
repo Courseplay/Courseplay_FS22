@@ -912,12 +912,13 @@ end
 --- side of the chopper is already harvested, or behind it if both sides have fruit.
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:calculateAutoAimPipeOffsetX(harvester)
-    if harvester and harvester:getCpDriveStrategy():hasAutoAimPipe() then
-        local fruitLeft, fruitRight = harvester:getCpDriveStrategy():getFruitAtSides()
+    local strategy = harvester and harvester:getCpDriveStrategy()
+    if strategy and strategy.hasAutoAimPipe and strategy:hasAutoAimPipe() then
+        local fruitLeft, fruitRight = strategy:getFruitAtSides()
         local targetOffsetX, distanceBetweenVehicles = 0, (AIUtil.getWidth(harvester) + AIUtil.getWidth(self.vehicle)) / 2 + 1
         -- we use 20% of the average as a threshold for significant difference
         local fruitThreshold = 0.2 * 0.5 * (fruitLeft + fruitRight)
-        if harvester:getCpDriveStrategy():isOnHeadland(1) then
+        if strategy:isOnHeadland(1) then
             -- on the first headland always drive behind the chopper
             targetOffsetX = 0
         elseif math.abs(fruitRight - fruitLeft) < fruitThreshold then
