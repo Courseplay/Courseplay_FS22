@@ -183,6 +183,16 @@ function AIDriveStrategyCombineCourse:checkMarkers()
     end
 end
 
+function AIDriveStrategyCombineCourse:getAllowReversePathfinding()
+    if self:isTurning() and self:hasAutoAimPipe() and self.unloader:get() ~= nil then
+        -- chopper with CP unloader turning, disable reverse for pathfinder turns
+        -- to make following the chopper through the turn easier
+        return false
+    else
+        return AIDriveStrategyFieldWorkCourse.getAllowReversePathfinding(self)
+    end
+end
+
 --- Get the combine object, this can be different from the vehicle in case of tools towed or mounted on a tractor
 function AIDriveStrategyCombineCourse:getCombine()
     return self.combine
