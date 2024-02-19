@@ -115,7 +115,7 @@ end
 ---@param expiryMs number for expiryMs milliseconds after startMs, the object will return the value set above,
 --- valueWhenExpired otherwise. When nil, it'll remain value forever
 ---@param startMs number after starMs milliseconds from now, the object will return the value set above
---- (for expiryMs milliseconds). When not nil, the value is set immediately.
+--- (for expiryMs milliseconds). When nil, the value is set immediately.
 function CpTemporaryObject:set(value, expiryMs, startMs)
 	self.value = value
 	self.startTime = startMs and g_time + startMs or g_time
@@ -158,6 +158,20 @@ function CpTemporaryObject:reset()
 	self.value = self.valueWhenExpired
 	self.expiryTime = g_time
 	self.startTime = g_time
+end
+
+---@class CpDelayedBoolean : CpTemporaryObject
+CpDelayedBoolean = CpObject(CpTemporaryObject)
+
+function CpDelayedBoolean:get(condition, delay)
+	if condition then
+		if not self:isPending() then
+			self:set(true, nil, delay)
+		end
+	else
+		self:reset()
+	end
+	return CpTemporaryObject.get(self)
 end
 
 --- Object slowly adjusting its value

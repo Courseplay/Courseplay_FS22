@@ -663,6 +663,23 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
 end
 
 ------------------------------------------------------------------------------------------------------------------------
+-- Are we stuck?
+-- For some reason, we are not moving but the chopper needs us
+------------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyUnloadCombine:isInDeadlock()
+    if self.combineToUnload then
+        local combineStrategy = self.combineToUnload:getCpDriveStrategy()
+        if self.inDeadlock == nil then
+            self.inDeadlock = CpDelayedBoolean()
+        end
+        return self.inDeadlock:get(
+                combineStrategy:isWaitingForUnload() and AIUtil.isStopped(self.vehicle), 10000)
+    else
+        return false
+    end
+end
+
+------------------------------------------------------------------------------------------------------------------------
 -- Unload chopper (always moving)
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:unloadMovingChopper()
@@ -672,6 +689,12 @@ function AIDriveStrategyUnloadCombine:unloadMovingChopper()
     self.followCourse:setOffset(-self.combineOffset, 0)
 
     if self:changeToUnloadWhenTrailerFull() then
+        return
+    end
+
+    if self:isInDeadlock() then
+        self:debug('Deadlock situation detected while unloading moving chopper.')
+        self:startWaitingForSomethingToDo()
         return
     end
 
