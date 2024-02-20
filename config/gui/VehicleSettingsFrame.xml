@@ -8,13 +8,13 @@
 
 		<GuiElement type="text" profile="settingsMenuSubtitle" id="subTitlePrefab"/>
 
-		<GuiElement type="cpOptionToggle" profile="multiTextOptionSettings" id="multiTextOptionPrefab" onClick="onClickCpMultiTextOption">
-			<GuiElement type="button" profile="multiTextOptionSettingsLeft" />
-			<GuiElement type="button" profile="multiTextOptionSettingsRight"/>
-			<GuiElement type="button" profile="cpMultiTextOptionSettingsText" />
-			<GuiElement type="text"   profile="multiTextOptionSettingsTitle"/>
-			<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-			<GuiElement type="text"   profile="multiTextOptionSettingsTooltip"/>
+		<GuiElement type="cpOptionToggle" profile="multiTextOptionSettings" id="multiTextOptionPrefab" onClick="onClickCpMultiTextOption" namedComponents="true">
+			<GuiElement type="button" profile="multiTextOptionSettingsLeft" name="left"/>
+			<GuiElement type="button" profile="multiTextOptionSettingsRight" name="right"/>
+			<GuiElement type="button" profile="cpMultiTextOptionSettingsText" name="text"/>
+			<GuiElement type="text"   profile="multiTextOptionSettingsTitle" name="label"/>
+			<GuiElement type="text"   profile="multiTextOptionSettingsTooltip" name="tooltip"/>
+			<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" name="gradient"/>
 		</GuiElement>
 
 		<GuiElement type="empty" profile="ingameMenuSettingsBox" id="settingsContainer">
