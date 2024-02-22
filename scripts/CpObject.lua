@@ -165,7 +165,8 @@ CpDelayedBoolean = CpObject(CpTemporaryObject)
 
 function CpDelayedBoolean:get(condition, delay)
 	if condition then
-		if not self:isPending() then
+		if not self:isPending() and not CpTemporaryObject.get(self) then
+			-- set only if not yet set, to not extend the start time
 			self:set(true, nil, delay)
 		end
 	else

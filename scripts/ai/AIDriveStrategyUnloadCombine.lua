@@ -672,8 +672,7 @@ function AIDriveStrategyUnloadCombine:isInDeadlock()
         if self.inDeadlock == nil then
             self.inDeadlock = CpDelayedBoolean()
         end
-        return self.inDeadlock:get(
-                combineStrategy:isWaitingForUnload() and AIUtil.isStopped(self.vehicle), 10000)
+        return self.inDeadlock:get(combineStrategy:isWaitingForUnload() and AIUtil.isStopped(self.vehicle), 10000)
     else
         return false
     end
@@ -694,7 +693,7 @@ function AIDriveStrategyUnloadCombine:unloadMovingChopper()
 
     if self:isInDeadlock() then
         self:debug('Deadlock situation detected while unloading moving chopper.')
-        self:startWaitingForSomethingToDo()
+        self:startMovingBackFromCombine(self.states.MOVING_BACK, self.combineToUnload)
         return
     end
 
@@ -2035,7 +2034,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 -- Start moving back from empty combine
 ------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyUnloadCombine:startMovingBackFromCombine(newState, combine, holdCombineWhileMovingBack)
+function AIDriveStrategyUnloadCombine:  startMovingBackFromCombine(newState, combine, holdCombineWhileMovingBack)
     if self.unloadTargetType == self.UNLOAD_TYPES.SILO_LOADER then
         --- Finished unloading of silo unloader. Moving back is not needed.
         self:setNewState(self.states.IDLE)
