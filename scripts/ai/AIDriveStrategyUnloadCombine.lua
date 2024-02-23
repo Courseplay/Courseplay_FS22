@@ -609,8 +609,8 @@ function AIDriveStrategyUnloadCombine:getBestTargetNodeDistanceFromPipe()
         DebugUtil.drawDebugNode(bestTargetNode.node, 'target')
     end
     local _, offsetZ = self:getPipeOffset(self.combineToUnload)
-    local _, _, dz = localToLocal(self.combineToUnload:getAIDirectionNode(), bestTargetNode.node, 0, 0, offsetZ)
-    return dz
+    local _, _, dz = localToLocal(bestTargetNode.node, self.combineToUnload:getAIDirectionNode(), 0, 0, -offsetZ)
+    return -dz
 end
 
 ---@return number | nil, number | nil gx, gz world coordinates to steer to, instead of the PPC determined goal point (which is
