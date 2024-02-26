@@ -1279,7 +1279,7 @@ end
 --- is held for unloading or waiting for the straw swath to stop
 function AIDriveStrategyCombineCourse:shouldHoldInTurnManeuver()
     --- Hold during discharge
-    local discharging = self:isDischarging()
+    local discharging = self:isDischarging() and not self:alwaysNeedsUnloader()
     local stillProcessingFruit = self:alwaysNeedsUnloader() and self:isProcessingFruit()
     local isFinishingRow = self.aiTurn and self.aiTurn:isFinishingRow()
     local waitForStraw = self.combineController:isDroppingStrawSwath() and not isFinishingRow
