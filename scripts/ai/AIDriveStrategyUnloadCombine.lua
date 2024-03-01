@@ -1190,7 +1190,7 @@ function AIDriveStrategyUnloadCombine:debugIf(enabled, ...)
     end
 end
 
---- Is the vehicle lined up with the pipes, based on the two offset values and a tolerance
+--- Is the vehicle lined up with the pipe, based on the two offset values and a tolerance
 ---@param dx number side offset of the vehicle from the combine's centerline, left > 0 > right
 ---@param dz number front/back (+/-) offset of the vehicle from the combine's root node
 ---@param pipeOffset number side offset of the pipe from the combine's centerline
@@ -1825,7 +1825,9 @@ function AIDriveStrategyUnloadCombine:driveToCombine()
 
     self.combineToUnload:getCpDriveStrategy():reconfirmRendezvous()
 
-    if self:isOkToStartUnloadingCombine() then
+    -- towards the end of the course we start checking if we can already switch to unload
+    if self.course:getDistanceToLastWaypoint(self.course:getCurrentWaypointIx()) < 15 and
+            self:isOkToStartUnloadingCombine() then
         self:startUnloadingCombine()
     end
 end
