@@ -960,7 +960,7 @@ function AIDriveStrategyUnloadCombine:calculateAutoAimPipeOffsetX(harvester)
             -- Side offset from a chopper. We don't want this to jump from one side to the other abruptly
             self.autoAimPipeOffsetX = CpSlowChangingObject(targetOffsetX, 0)
         else
-            self.autoAimPipeOffsetX:confirm(targetOffsetX, 5000, 0.2)
+            self.autoAimPipeOffsetX:confirm(targetOffsetX, 3000, 0.2)
         end
     end
     return self:getAutoAimPipeOffsetX()
@@ -1605,7 +1605,7 @@ function AIDriveStrategyUnloadCombine:call(combine, waypoint)
         elseif self.combineToUnload:getCpDriveStrategy():hasAutoAimPipe() then
             if math.abs(self:getAutoAimPipeOffsetX()) < 3 then
                 -- will drive behind the harvester, so target must be further back
-                zOffset = -self:getCombinesMeasuredBackDistance() - 10
+                zOffset = -self:getCombinesMeasuredBackDistance() - 3
             else
                 zOffset = -self:getCombinesMeasuredBackDistance()
             end
@@ -1614,7 +1614,7 @@ function AIDriveStrategyUnloadCombine:call(combine, waypoint)
             -- pipes close to vehicle)
             local pipeLength = math.abs(self:getPipeOffset(self.combineToUnload))
             -- allow for more align space for shorter pipes
-            zOffset = -self:getCombinesMeasuredBackDistance() - (pipeLength > 6 and 2 or 10)
+            zOffset = -self:getCombinesMeasuredBackDistance() - (pipeLength > 6 and 2 or 5)
         end
         if self:isOkToStartUnloadingCombine() then
             self:startUnloadingCombine()
