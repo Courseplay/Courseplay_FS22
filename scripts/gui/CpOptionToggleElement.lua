@@ -63,6 +63,16 @@ function CpOptionToggleElement:setLabelElement(element)
 	self:updateTitle()
 end
 
+function CpOptionToggleElement:mouseEvent(posX, posY, isDown, isUp, button, eventUsed)
+	if self.parent then 
+		local _, clipY1 , _, clipY2 = self.parent:getClipArea()
+		if (clipY1 - self.absPosition[2] * 0.02) > (self.absPosition[2]) or (clipY2 + self.absPosition[2] * 0.02) < ( self.absPosition[2] + self.absSize[2]) then 
+			return eventUsed
+		end
+	end
+	return CpOptionToggleElement:superClass().mouseEvent(self, posX, posY, isDown, isUp, button, eventUsed)
+end
+
 function CpOptionToggleElement:inputEvent(action, value, eventUsed)
 	if self:getIsActive() then
 		eventUsed = CpOptionToggleElement:superClass().inputEvent(self, action, value, eventUsed)
