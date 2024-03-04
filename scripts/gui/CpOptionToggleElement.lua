@@ -30,26 +30,49 @@ function CpOptionToggleElement:onCenterButtonClicked()
 	self:setSoundSuppressed(false)
 end
 
-function CpOptionToggleElement:addElement(...)
-	CpOptionToggleElement:superClass().addElement(self, ...)
+function CpOptionToggleElement:addElement(element, ...)
+	CpOptionToggleElement:superClass().addElement(self, element, ...)
 	if self.textElement then
 		self.textElement.forceHighlight = true
 		self.textElement:setHandleFocus(false)
 		self.textElement.target = self
 		self.textElement:setCallback("onClickCallback", "onCenterButtonClicked")
 	end
+	if self.namedComponents then
+		if element.name == "tooltip" then
+			self.toolTipElement = element
+		end
+	end
 end
 
 function CpOptionToggleElement:updateTitle()
+	if not self.dataSource then 
+		return
+	end
 	CpOptionToggleElement:superClass().updateTitle(self)
 	if self.labelElement and self.labelElement.setText then 
 		self.labelElement:setText(self.dataSource:getTitle())
+	end
+	if self.toolTipElement and self.toolTipElement.setText and self.dataSource.getTooltip then
+		self.toolTipElement:setText(self.dataSource:getTooltip())
 	end
 end
 
 function CpOptionToggleElement:setLabelElement(element)
 	self.labelElement = element
 	self:updateTitle()
+end
+
+function CpOptionToggleElement:mouseEvent(posX, posY, isDown, isUp, button, eventUsed)
+	if self.parent then 
+		-- Fixes giants bug, where the scrolling layout is not disabling the mouse event for invisible child elements.
+		local _, clipY1 , _, clipY2 = self.parent:getClipArea()
+		if (clipY1 - self.absPosition[2] * 0.02) > (self.absPosition[2]) or 
+			(clipY2 + self.absPosition[2] * 0.02) < ( self.absPosition[2] + self.absSize[2]) then 
+			return eventUsed
+		end
+	end
+	return CpOptionToggleElement:superClass().mouseEvent(self, posX, posY, isDown, isUp, button, eventUsed)
 end
 
 function CpOptionToggleElement:inputEvent(action, value, eventUsed)
