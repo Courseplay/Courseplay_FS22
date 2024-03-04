@@ -66,7 +66,7 @@ end
 function CpOptionToggleElement:mouseEvent(posX, posY, isDown, isUp, button, eventUsed)
 	if self.parent then 
 		-- Fixes giants bug, where the scrolling layout is not disabling the mouse event for invisible child elements.
-		local _, clipY1 , _, clipY2 = self.parent:getClipArea()
+		local _, clipY1 , _, clipY2 = self.parent:getClipArea(0,0,1,1)
 		if (clipY1 - self.absPosition[2] * 0.02) > (self.absPosition[2]) or 
 			(clipY2 + self.absPosition[2] * 0.02) < ( self.absPosition[2] + self.absSize[2]) then 
 			return eventUsed
