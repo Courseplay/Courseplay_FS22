@@ -103,7 +103,6 @@ function AIDriveStrategyCombineCourse:init(task, job)
         }
     })
 
-    -- TODO: move this to a setting
     self.callUnloaderAtFillLevelPercentage = 80
 end
 
@@ -722,6 +721,7 @@ function AIDriveStrategyCombineCourse:estimateDistanceUntilFull(ix)
     end
     local litersUntilFull = capacity - fillLevel
     local dUntilFull = litersUntilFull / self.litersPerMeter
+    self.callUnloaderAtFillLevelPercentage = self.settings.callUnloaderPercent:getValue()
     local litersUntilCallUnloader = capacity * self.callUnloaderAtFillLevelPercentage / 100 - fillLevel
     local dUntilCallUnloader = litersUntilCallUnloader / self.litersPerMeter
     self.waypointIxWhenFull = self.course:getNextWaypointIxWithinDistance(ix, dUntilFull) or self.course:getNumberOfWaypoints()

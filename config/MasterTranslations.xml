@@ -829,6 +829,14 @@
 			<Text language="de"><![CDATA[Strohablage an, aus oder nur im Vorgewende aus.]]></Text>
 			<Text language="en"><![CDATA[Enables/disables straw swath or only disables it on headlands.]]></Text>
 		</Translation>
+			<Translation name="CP_vehicle_setting_callUnloaderPercent_title">
+			<Text language="de"><![CDATA[Brief vor dem Anruf]]></Text>
+			<Text language="en"><![CDATA[Pre call level]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_callUnloaderPercent_tooltip">
+			<Text language="de"><![CDATA[Loader-Aufruf oberhalb des eingestellten Levels.]]></Text>
+			<Text language="en"><![CDATA[Loader call above set level.]]></Text>
+		</Translation>
 		<Translation name="CP_vehicle_setting_strawSwath_onlyCenter">
 			<Text language="de"><![CDATA[Vorgewende deaktiviert]]></Text>
 			<Text language="en"><![CDATA[Headlands disabled]]></Text>

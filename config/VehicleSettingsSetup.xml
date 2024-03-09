@@ -95,6 +95,8 @@
 		<Setting classType="AIParameterBooleanSetting" name="selfUnload"/>
 		<!--Unload on first Headland-->
 		<Setting classType="AIParameterBooleanSetting" name="unloadOnFirstHeadland" defaultBool="false" isExpertModeOnly="true"/>
+		<!--UnloadLevel-->
+		<Setting classType="AIParameterSettingList" name="callUnloaderPercent" min="0" max="100" incremental="5" default ="80" unit="4" isExpertModeOnly="false"/>
 		<!--Strawswath-->
 		<Setting classType="AIParameterSettingList" name="strawSwath" default="2">
 			<Values>

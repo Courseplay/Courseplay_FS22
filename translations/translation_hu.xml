@@ -255,6 +255,8 @@
     <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="A kombájn az első fordulóban hívja a kirakodót."/>
     <text name="CP_vehicle_setting_strawSwath_title" text="Szalma rendrakás"/>
     <text name="CP_vehicle_setting_strawSwath_tooltip" text="Engedélyezi/letiltja a szalma rendet, vagy csak a táblavégeken tiltja le."/>
+    <text name="CP_vehicle_setting_callUnloaderPercent_title" text="Hívás előtti szint"/>
+    <text name="CP_vehicle_setting_callUnloaderPercent_tooltip" text="Rakodó hívása a beállított szint felett."/>
     <text name="CP_vehicle_setting_strawSwath_onlyCenter" text="Tiltás a fordulósávon"/>
     <!---->
     <!--Course generator settings-->
