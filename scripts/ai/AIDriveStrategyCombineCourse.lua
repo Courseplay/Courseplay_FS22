@@ -102,8 +102,6 @@ function AIDriveStrategyCombineCourse:init(task, job)
             [self.states.WAITING_FOR_UNLOAD_IN_POCKET] = true
         }
     })
-
-    self.callUnloaderAtFillLevelPercentage = 80
 end
 
 function AIDriveStrategyCombineCourse:getStateAsString()
@@ -721,14 +719,13 @@ function AIDriveStrategyCombineCourse:estimateDistanceUntilFull(ix)
     end
     local litersUntilFull = capacity - fillLevel
     local dUntilFull = litersUntilFull / self.litersPerMeter
-    self.callUnloaderAtFillLevelPercentage = self.settings.callUnloaderPercent:getValue()
-    local litersUntilCallUnloader = capacity * self.callUnloaderAtFillLevelPercentage / 100 - fillLevel
+    local litersUntilCallUnloader = capacity * self.settings.callUnloaderPercent:getValue() / 100 - fillLevel
     local dUntilCallUnloader = litersUntilCallUnloader / self.litersPerMeter
     self.waypointIxWhenFull = self.course:getNextWaypointIxWithinDistance(ix, dUntilFull) or self.course:getNumberOfWaypoints()
     local wpDistance
     self.waypointIxWhenCallUnloader, wpDistance = self.course:getNextWaypointIxWithinDistance(ix, dUntilCallUnloader)
     self:debug('Will be full at waypoint %d, fill level %d at waypoint %d (current waypoint %d), %.1f m and %.1f l until call (currently %.1f l), wp distance %.1f',
-            self.waypointIxWhenFull or -1, self.callUnloaderAtFillLevelPercentage, self.waypointIxWhenCallUnloader or -1,
+            self.waypointIxWhenFull or -1, self.settings.callUnloaderPercent:getValue(), self.waypointIxWhenCallUnloader or -1,
             self.course:getCurrentWaypointIx(), dUntilCallUnloader, litersUntilCallUnloader, fillLevel, wpDistance)
 end
 
