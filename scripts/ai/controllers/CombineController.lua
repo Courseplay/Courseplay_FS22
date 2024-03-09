@@ -8,9 +8,6 @@ function CombineController:init(vehicle, combine)
     self.settings = vehicle:getCpSettings()
     self.beaconLightsActive = false
     self.hasPipe = SpecializationUtil.hasSpecialization(Pipe, combine.specializations)
-    if self.hasPipe then
-        self:fixDischargeDistanceForChopper()
-    end
     self.isWheeledImplement = ImplementUtil.isWheeledImplement(combine)
 end
 
@@ -128,13 +125,13 @@ function CombineController:isDroppingStrawSwath()
     return self.combineSpec.strawPSenabled
 end
 
-function CombineController:isEarthFruitHarvester()
+function CombineController:isRootVegetableHarvester()
     for _, fruitTypeIndex in pairs(CpUtil.getAllRootVegetables()) do
         local fillUnitIndex = g_fruitTypeManager:getFillTypeIndexByFruitTypeIndex(fruitTypeIndex)
         self:debug("check if fruitType %s is supported", g_fillTypeManager:getFillTypeNameByIndex(fillUnitIndex))
         for i, _ in ipairs(self.implement:getFillUnits()) do
             if self.implement:getFillUnitSupportsFillType(i, fillUnitIndex) then
-                self:debug('This is a earth fruit harvester.')
+                self:debug('This is a root vegetable harvester.')
                 return true
             end
         end
@@ -174,11 +171,13 @@ end
 -------------------------------------------------------------
 
 --- Make life easier for unloaders, increase chopper discharge distance
+-- TODO: this is not used as everything seems to work fine with the default throw distances, leaving in for now
+-- in case it turns out later we need it
 function CombineController:fixDischargeDistanceForChopper()
     local dischargeNode = self.implement:getCurrentDischargeNode()
     if self:isChopper() and dischargeNode and dischargeNode.maxDistance then
         local safeDischargeNodeMaxDistance = 40
-        if false and dischargeNode.maxDistance < safeDischargeNodeMaxDistance then
+        if dischargeNode.maxDistance < safeDischargeNodeMaxDistance then
             self:debug('Chopper maximum throw distance is %.1f, increasing to %.1f', dischargeNode.maxDistance, safeDischargeNodeMaxDistance)
             dischargeNode.maxDistance = safeDischargeNodeMaxDistance
         end

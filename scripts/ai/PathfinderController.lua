@@ -329,6 +329,10 @@ function PathfinderController:findPathToGoal(context, goal, numRetries)
     return true
 end
 
+--- Generate an analytic path from the vehicle's current position to a goal position
+--- Does not need a context
+---@param goal State3D goal pose
+---@param allowReverse boolean allow reverse driving
 function PathfinderController:findAnalyticPathFromVehicleToGoal(goal, allowReverse)
     local path, _ = PathfinderUtil.findAnalyticPathFromStartToGoal(allowReverse and ReedsSheppSolver() or DubinsSolver(),
             PathfinderUtil.getVehiclePositionAsState3D(self.vehicle), goal, self.turningRadius)

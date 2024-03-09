@@ -367,7 +367,8 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
         -- TODO: instead of just wait a few seconds we could check if the unloader has actually left
         if self.waitingForUnloaderSince + 5000 < g_currentMission.time then
             if self.stateBeforeWaitingForUnloaderToLeave == self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK then
-                local pullBackReturnCourse = self:createPullBackReturnCourse()
+                local pullBackReturnCourse = self.pathfinderController:findAnalyticPathFromVehicleToGoal(
+                        self.positionToContinueAfterPullback, self:getAllowReversePathfinding())
                 if pullBackReturnCourse then
                     self.unloadState = self.states.RETURNING_FROM_PULL_BACK
                     self:debug('Unloading finished, returning to fieldwork on return course')
@@ -1218,17 +1219,6 @@ function AIDriveStrategyCombineCourse:getAreaToAvoid()
     end
 end
 
-function AIDriveStrategyCombineCourse:createPullBackReturnCourse()
-    local path, _ = PathfinderUtil.findAnalyticPathFromStartToGoal(
-            self:getAllowReversePathfinding() and ReedsSheppSolver() or DubinsSolver(),
-            PathfinderUtil.getVehiclePositionAsState3D(self.vehicle), self.positionToContinueAfterPullback, self.turningRadius)
-    if path then
-        return Course.createFromAnalyticPath(self.vehicle, path, true)
-    else
-        return nil
-    end
-end
-
 --- Create a temporary course to make a pocket in the fruit on the right (or left), so we can move into that pocket and
 --- wait for the unload there. This way the unload tractor does not have to leave the field.
 --- We create a temporary course to reverse back far enough. After that, we return to the main course but
@@ -1374,7 +1364,7 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
             -- TODO: either make disabling combine headland turns configurable, or
             -- TODO: decide automatically based on the vehicle's properties, like turn radius, work width, etc.
             -- and disable when such a turn does not make sense for the vehicle.
-        elseif self.combineController:isEarthFruitHarvester() then
+        elseif self.combineController:isRootVegetableHarvester() then
             self:debug('Headland turn but this harvester uses normal turn maneuvers.')
             AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
         elseif self.course:isOnConnectingTrack(ix) then
@@ -1497,28 +1487,6 @@ end
 function AIDriveStrategyCombineCourse:updateChopperFillType()
     if self:isChopper() then
         self.combineController:updateChopperFillType()
-    end
-end
-
--- TODO: move this to the PipeController?
-function AIDriveStrategyCombineCourse:handleChopperPipe()
-    --self.pipeController:handleChopperPipe()
-
-    local trailer = self.pipeController:getClosestObject()
-    local dischargeNode = self.pipeController:getDischargeNode()
-    local targetObject = self.pipeController:getDischargeObject()
-    self:debugSparse('%s %s', dischargeNode, self:isAnyWorkAreaProcessing())
-    if not self.waitingForTrailer and self:isAnyWorkAreaProcessing() and (targetObject == nil or trailer == nil) then
-        self:debug('Chopper waiting for trailer, discharge node %s, target object %s, trailer %s',
-                tostring(dischargeNode), tostring(targetObject), tostring(trailer))
-        self.waitingForTrailer = true
-    end
-    if self.waitingForTrailer then
-        self:setMaxSpeed(0)
-        if not (targetObject == nil or trailer == nil) then
-            self:debug('Chopper has trailer now, continue')
-            self.waitingForTrailer = false
-        end
     end
 end
 
