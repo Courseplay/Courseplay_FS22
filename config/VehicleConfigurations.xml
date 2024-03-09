@@ -419,6 +419,7 @@ You can define the following custom settings:
 	<Vehicle name="zkivSe.xml"
 			 basePipeMovingToolIndex = "1"
 			 childPipeMovingToolIndex = "2"
+             turnRadius = "8"
 	/>
 
 
@@ -545,6 +546,13 @@ You can define the following custom settings:
 	<Vehicle name="claasCropSensor.xml"
 			 workingWidth = "18"			 
 	/>
+
+    <!--Mod: Rolland Pack-->
+    <Vehicle name="ampliroll7526.xml"
+             turnRadius = "12"
+             disableUnfolding = "true"
+    />             
+
     <!--Tractors and Others-->
 
     <!--Mod: Big Bud 747-->
@@ -624,8 +632,6 @@ You can define the following custom settings:
 	<Vehicle name="bresselUndLadeL71.xml"
 			shovelMovingToolIx = "1"
 	/>
-
-    <!--Tractors-->
 
     <!--Mod: FS22_CLAAS_Xerion_3000_series-->
     <Vehicle name="xerion_tracvc.xml"

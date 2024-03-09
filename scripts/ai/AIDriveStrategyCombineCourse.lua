@@ -89,6 +89,7 @@ function AIDriveStrategyCombineCourse:init(task, job)
     self.temporaryHold = CpTemporaryObject(false)
     -- periodically check if we need to call an unloader
     self.timeToCallUnloader = CpTemporaryObject(true)
+    self.unloaderRequestedToIgnoreProximity = CpTemporaryObject()
 
     --- Register info texts
     self:registerInfoTextForStates(self:getFillLevelInfoText(), {
@@ -131,6 +132,7 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
     Markers.setMarkerNodes(self.vehicle, self.measuredBackDistance)
 
     self.proximityController:registerBlockingVehicleListener(self, AIDriveStrategyCombineCourse.onBlockingVehicle)
+    self.proximityController:registerIgnoreObjectCallback(self, AIDriveStrategyCombineCourse.ignoreProximityObject)
 
     -- distance to keep to the right (>0) or left (<0) when pulling back to make room for the tractor
     self.pullBackRightSideOffset = math.abs(self.pipeController:getPipeOffsetX()) - self:getWorkWidth() / 2 + 5
@@ -181,6 +183,16 @@ function AIDriveStrategyCombineCourse:checkMarkers()
     end
 end
 
+function AIDriveStrategyCombineCourse:getAllowReversePathfinding()
+    if self:isTurning() and self:hasAutoAimPipe() and self.unloader:get() ~= nil then
+        -- chopper with CP unloader turning, disable reverse for pathfinder turns
+        -- to make following the chopper through the turn easier
+        return false
+    else
+        return AIDriveStrategyFieldWorkCourse.getAllowReversePathfinding(self)
+    end
+end
+
 --- Get the combine object, this can be different from the vehicle in case of tools towed or mounted on a tractor
 function AIDriveStrategyCombineCourse:getCombine()
     return self.combine
@@ -212,6 +224,11 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 
         if self:isFull() then
             self:changeToUnloadOnField()
+        elseif self:alwaysNeedsUnloader() then
+            if not self.pipeController:isFillableTrailerUnderPipe() then
+                self:debug('Need an unloader to work but have no fillable trailer under the pipe')
+                self:changeToUnloadOnField()
+            end
         elseif self:shouldWaitAtEndOfRow() then
             self:startWaitingForUnloadBeforeNextRow()
         end
@@ -244,7 +261,7 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
             self:callUnloaderWhenNeeded()
         end
     end
-    if self:isTurning() and not self:isTurningOnHeadland() then
+    if self:isTurning() and not self:isFinishingRow() then
         if self:shouldHoldInTurnManeuver() then
             self:setMaxSpeed(0)
         end
@@ -312,8 +329,11 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
     elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_ON_FIELD then
         if g_updateLoopIndex % 5 == 0 then
             --small delay, to make sure no more fillLevel change is happening
-            if not self:isFull() and not self:shouldStopForUnloading() then
+            if not self:isFull() and not self:shouldStopForUnloading() and not self:alwaysNeedsUnloader() then
                 self:debug('not full anymore, can continue working')
+                self:changeToFieldWork()
+            elseif self:alwaysNeedsUnloader() and self:isFillableTrailerUnderPipe() then
+                self:debug('Need an unloader to work, now have a trailer under the pipe, can continue working')
                 self:changeToFieldWork()
             end
         end
@@ -347,7 +367,8 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
         -- TODO: instead of just wait a few seconds we could check if the unloader has actually left
         if self.waitingForUnloaderSince + 5000 < g_currentMission.time then
             if self.stateBeforeWaitingForUnloaderToLeave == self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK then
-                local pullBackReturnCourse = self:createPullBackReturnCourse()
+                local pullBackReturnCourse = self.pathfinderController:findAnalyticPathFromVehicleToGoal(
+                        self.positionToContinueAfterPullback, self:getAllowReversePathfinding())
                 if pullBackReturnCourse then
                     self.unloadState = self.states.RETURNING_FROM_PULL_BACK
                     self:debug('Unloading finished, returning to fieldwork on return course')
@@ -455,8 +476,10 @@ function AIDriveStrategyCombineCourse:onWaypointPassed(ix, course)
     self.combineController:updateStrawSwath(isOnHeadland)
 
     if self.state == self.states.WORKING then
-        self:estimateDistanceUntilFull(ix)
-        self:callUnloaderWhenNeeded()
+        if not self:alwaysNeedsUnloader() then
+            self:estimateDistanceUntilFull(ix)
+            self:callUnloaderWhenNeeded()
+        end
     end
 
     if self.state == self.states.UNLOADING_ON_FIELD and
@@ -639,6 +662,10 @@ function AIDriveStrategyCombineCourse:isFull(fillLevelFullPercentage)
 end
 
 function AIDriveStrategyCombineCourse:shouldMakePocket()
+    if self:alwaysNeedsUnloader() then
+        self:debug('Always need unloader so not making a pocket')
+        return false
+    end
     if self.fruitLeft > 0.75 and self.fruitRight > 0.75 then
         -- fruit both sides
         return true
@@ -652,7 +679,12 @@ function AIDriveStrategyCombineCourse:shouldMakePocket()
 end
 
 function AIDriveStrategyCombineCourse:shouldPullBack()
-    return self:isPipeInFruit()
+    if self:alwaysNeedsUnloader() then
+        self:debug('Always need unloader so not making a pocket')
+        return false
+    else
+        return self:isPipeInFruit()
+    end
 end
 
 function AIDriveStrategyCombineCourse:isPipeOnLeft()
@@ -666,6 +698,12 @@ function AIDriveStrategyCombineCourse:isPipeInFruit()
     else
         return self.fruitLeft < self.fruitRight
     end
+end
+
+---@return number, number the amount of fruit on left/right side of the combine. 0 is no fruit, and it is probably
+--- a number up to 100, indicating how much fruit is there.
+function AIDriveStrategyCombineCourse:getFruitAtSides()
+    return self.fruitLeft, self.fruitRight
 end
 
 function AIDriveStrategyCombineCourse:checkFruit()
@@ -808,8 +846,8 @@ function AIDriveStrategyCombineCourse:callUnloaderWhenNeeded()
 
     local bestUnloader, bestEte
     if self:isWaitingForUnload() then
-        bestUnloader, _ = self:findUnloader(self.vehicle, nil)
         self:debug('callUnloaderWhenNeeded: stopped, need unloader here')
+        bestUnloader, _ = self:findUnloader(self.vehicle, nil)
         if bestUnloader then
             bestUnloader:getCpDriveStrategy():call(self.vehicle, nil)
         end
@@ -899,7 +937,9 @@ function AIDriveStrategyCombineCourse:findUnloader(combine, waypoint)
             local x, _, z = getWorldTranslation(self.vehicle.rootNode)
             ---@type AIDriveStrategyUnloadCombine
             local driveStrategy = vehicle:getCpDriveStrategy()
-            if driveStrategy:isServingPosition(x, z, 0) then
+            -- look a bit outside of the field as the harvester's root node may be just off the field (like in a turn,
+            -- or when starting.
+            if driveStrategy:isServingPosition(x, z, 10) then
                 local unloaderFillLevelPercentage = driveStrategy:getFillLevelPercentage()
                 if driveStrategy:isIdle() and unloaderFillLevelPercentage < 99 then
                     local unloaderDistance, unloaderEte
@@ -1179,17 +1219,6 @@ function AIDriveStrategyCombineCourse:getAreaToAvoid()
     end
 end
 
-function AIDriveStrategyCombineCourse:createPullBackReturnCourse()
-    local path, _ = PathfinderUtil.findAnalyticPathFromStartToGoal(
-            self:getAllowReversePathfinding() and ReedsSheppSolver() or DubinsSolver(),
-            PathfinderUtil.getVehiclePositionAsState3D(self.vehicle), self.positionToContinueAfterPullback, self.turningRadius)
-    if path then
-        return Course.createFromAnalyticPath(self.vehicle, path, true)
-    else
-        return nil
-    end
-end
-
 --- Create a temporary course to make a pocket in the fruit on the right (or left), so we can move into that pocket and
 --- wait for the unload there. This way the unload tractor does not have to leave the field.
 --- We create a temporary course to reverse back far enough. After that, we return to the main course but
@@ -1225,7 +1254,7 @@ end
 
 --- Only allow fuel save, if no trailer is under the pipe and we are waiting for unloading.
 function AIDriveStrategyCombineCourse:isFuelSaveAllowed()
-    if self.pipeController:isFillableTrailerUnderPipe() then
+    if self.pipeController:isFillableTrailerInRange() then
         -- Disables Fuel save, when a trailer is under the pipe.
         return false
     end
@@ -1240,15 +1269,16 @@ end
 --- is held for unloading or waiting for the straw swath to stop
 function AIDriveStrategyCombineCourse:shouldHoldInTurnManeuver()
     --- Hold during discharge
-    local discharging = self:isDischarging() and not self:isChopper()
-
+    local discharging = self:isDischarging() and not self:alwaysNeedsUnloader()
+    local stillProcessingFruit = self:alwaysNeedsUnloader() and self:isProcessingFruit()
     local isFinishingRow = self.aiTurn and self.aiTurn:isFinishingRow()
     local waitForStraw = self.combineController:isDroppingStrawSwath() and not isFinishingRow
 
-    self:debugSparse('Turn maneuver=> Dischargeable: %s, wait for straw: %s, straw swath active: %s, finishing row: %s',
-            tostring(discharging), tostring(waitForStraw),
-            tostring(self.combineController:isDroppingStrawSwath()), tostring(isFinishingRow))
-    return discharging or waitForStraw
+    self:debugSparse('Turn maneuver=> Autoaim: %s, discharging: %s, wait for straw: %s, straw swath active: %s, processing: %s, finishing row: %s',
+            tostring(self:hasAutoAimPipe()), tostring(discharging), tostring(waitForStraw),
+            tostring(self.combineController:isDroppingStrawSwath()), tostring(stillProcessingFruit), tostring(isFinishingRow))
+    -- choppers don't hold, they need to keep moving through turns and actively harvesting
+    return (discharging or waitForStraw or stillProcessingFruit) and not self:hasAutoAimPipe()
 end
 
 --- Should we return to the first point of the course after we are done?
@@ -1330,11 +1360,11 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
         if self.combineController:isTowed() then
             self:debug('Headland turn but this is a towed harvester using normal turn maneuvers.')
             AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
-        -- The type of fruit being harvested isn't really the indicator if we can make a headland turn
-        -- TODO: either make disabling combine headland turns configurable, or
-        -- TODO: decide automatically based on the vehicle's properties, like turn radius, work width, etc.
-        -- and disable when such a turn does not make sense for the vehicle.
-        elseif self.combineController:isEarthFruitHarvester() then
+            -- The type of fruit being harvested isn't really the indicator if we can make a headland turn
+            -- TODO: either make disabling combine headland turns configurable, or
+            -- TODO: decide automatically based on the vehicle's properties, like turn radius, work width, etc.
+            -- and disable when such a turn does not make sense for the vehicle.
+        elseif self.combineController:isRootVegetableHarvester() then
             self:debug('Headland turn but this harvester uses normal turn maneuvers.')
             AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
         elseif self.course:isOnConnectingTrack(ix) then
@@ -1398,6 +1428,22 @@ function AIDriveStrategyCombineCourse:getFieldworkCourse()
     return self.course
 end
 
+function AIDriveStrategyCombineCourse:alwaysNeedsUnloader()
+    return self.combineController:alwaysNeedsUnloader()
+end
+
+function AIDriveStrategyCombineCourse:isProcessingFruit()
+    return self.combineController:isProcessingFruit()
+end
+
+function AIDriveStrategyCombineCourse:isFillableTrailerUnderPipe()
+    return self.pipeController:isFillableTrailerUnderPipe()
+end
+
+function AIDriveStrategyCombineCourse:hasAutoAimPipe()
+    return self.pipeController:isAutoAimPipe()
+end
+
 function AIDriveStrategyCombineCourse:isChopper()
     return self.combineController:isChopper()
 end
@@ -1407,7 +1453,7 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyCombineCourse:handlePipe(dt)
     if self:isChopper() then
-        self:handleChopperPipe()
+        self.pipeController:handleChopperPipe()
     else
         self:handleCombinePipe(dt)
     end
@@ -1422,7 +1468,7 @@ function AIDriveStrategyCombineCourse:handleCombinePipe(dt)
 end
 
 function AIDriveStrategyCombineCourse:isAGoodTrailerInRange()
-    local _, trailer = self.pipeController:isFillableTrailerUnderPipe()
+    local _, trailer = self.pipeController:isFillableTrailerInRange()
     local unloaderVehicle = trailer and trailer:getRootVehicle()
 
     if unloaderVehicle == nil then
@@ -1441,28 +1487,6 @@ end
 function AIDriveStrategyCombineCourse:updateChopperFillType()
     if self:isChopper() then
         self.combineController:updateChopperFillType()
-    end
-end
-
--- TODO: move this to the PipeController?
-function AIDriveStrategyCombineCourse:handleChopperPipe()
-    self.pipeController:handleChopperPipe()
-
-    local trailer = self.pipeController:getClosestObject()
-    local dischargeNode = self.pipeController:getDischargeNode()
-    local targetObject = self.pipeController:getDischargeObject()
-    self:debugSparse('%s %s', dischargeNode, self:isAnyWorkAreaProcessing())
-    if not self.waitingForTrailer and self:isAnyWorkAreaProcessing() and (targetObject == nil or trailer == nil) then
-        self:debug('Chopper waiting for trailer, discharge node %s, target object %s, trailer %s',
-                tostring(dischargeNode), tostring(targetObject), tostring(trailer))
-        self.waitingForTrailer = true
-    end
-    if self.waitingForTrailer then
-        self:setMaxSpeed(0)
-        if not (targetObject == nil or trailer == nil) then
-            self:debug('Chopper has trailer now, continue')
-            self.waitingForTrailer = false
-        end
     end
 end
 
@@ -1790,9 +1814,10 @@ end
 ---@param additionalOffsetX number add this to the offsetX if you don't want to be directly under the pipe. If
 --- greater than 0 -> to the left, less than zero -> to the right
 ---@param additionalOffsetZ number forward (>0)/backward (<0) offset from the pipe
+---@return number, number, boolean X and Z offset of pipe, true the pipe is auto aiming, that is, can discharge either side
 function AIDriveStrategyCombineCourse:getPipeOffset(additionalOffsetX, additionalOffsetZ)
     local pipeOffsetX, pipeOffsetZ = self.pipeController:getPipeOffset()
-    return pipeOffsetX + (additionalOffsetX or 0), pipeOffsetZ + (additionalOffsetZ or 0)
+    return pipeOffsetX + (additionalOffsetX or 0), pipeOffsetZ + (additionalOffsetZ or 0), self:hasAutoAimPipe()
 end
 
 --- Pipe side offset relative to course. This is to help the unloader
@@ -2016,13 +2041,25 @@ function AIDriveStrategyCombineCourse:onBlockingVehicle(vehicle, isBack)
     end
 end
 
+-- An unloader may request the harvester to ignore its proximity because the unloader will take care
+-- of staying away.
+function AIDriveStrategyCombineCourse:requestToIgnoreProximity(vehicle)
+    self.unloaderRequestedToIgnoreProximity:set(vehicle, 1000)
+end
+
+-- Proximity controller checking if an object/vehicle should be ignored
+function AIDriveStrategyCombineCourse:ignoreProximityObject(object, vehicle, moveForwards, hitTerrain)
+    return vehicle == self.unloaderRequestedToIgnoreProximity:get()
+end
+
 --- Check if the unloader is blocking us when we are reversing in a turn and immediately notify it
 function AIDriveStrategyCombineCourse:checkBlockingUnloader()
     if not self.ppc:isReversing() and not AIUtil.isReversing(self.vehicle) then
         return
     end
     local d, blockingVehicle = self.proximityController:checkBlockingVehicleBack()
-    if d < 1000 and blockingVehicle and AIUtil.isStopped(self.vehicle) and
+    if blockingVehicle ~= self.unloaderRequestedToIgnoreProximity:get() and d < 1000 and
+            blockingVehicle and AIUtil.isStopped(self.vehicle) and
             not self:isWaitingForUnload() and not self:shouldHoldInTurnManeuver() then
         -- try requesting only if the unloader really blocks us, that is we are actually backing up but
         -- can't move because of the unloader, and not when we are stopped for other reasons

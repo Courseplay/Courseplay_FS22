@@ -16,6 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]--
 
+--- A proximity sensor raycasting parallel to the terrain to find obstacles/vehicles
 ---@class ProximitySensor
 ProximitySensor = CpObject()
 -- maximum angle we rotate the sensor into the direction the vehicle is turning
@@ -222,10 +223,10 @@ function ProximitySensorPack:debug(...)
     CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, self.vehicle, ...)
 end
 
-function ProximitySensorPack:getXOffsets(width, directionsDeg)
+function ProximitySensorPack:getXOffsets(width, nSensors)
     local xOffsets = {}
     -- spread them out evenly across the width
-    local dx = width / #directionsDeg
+    local dx = width / nSensors
     for xOffset = width / 2 - dx / 2, - width / 2 + dx / 2 - 0.1, - dx do
         table.insert(xOffsets, xOffset)
     end
@@ -364,10 +365,10 @@ end
 WideForwardLookingProximitySensorPack = CpObject(ProximitySensorPack)
 
 --- Pack looking forward, but sensors distributed evenly through the width of the vehicle
-function WideForwardLookingProximitySensorPack:init(vehicle, node, range, height, width)
+function WideForwardLookingProximitySensorPack:init(vehicle, node, range, height, width, directionsDeg)
     CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, vehicle, 'Creating wide forward proximity sensor %.1fm', width)
-    local directionsDeg = {10, 8, 5, 3, 0, -3, -5, -8, -10}
-    local xOffsets = self:getXOffsets(width, directionsDeg)
+    directionsDeg = directionsDeg or {10, 8, 5, 3, 0, -3, -5, -8, -10}
+    local xOffsets = self:getXOffsets(width, #directionsDeg)
     ProximitySensorPack.init(self, 'wideForward', vehicle, node, range, height,
             directionsDeg, xOffsets, true)
 end
@@ -379,7 +380,7 @@ WideBackwardLookingProximitySensorPack = CpObject(ProximitySensorPack)
 function WideBackwardLookingProximitySensorPack:init(vehicle, node, range, height, width, rotationEnabled)
     CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, vehicle, 'Creating wide backward proximity sensor %.1fm', width)
     local directionsDeg = {-190, -188, -185, -183, 180, 183, 185, 188, 190}
-    local xOffsets = self:getXOffsets(width, directionsDeg)
+    local xOffsets = self:getXOffsets(width, #directionsDeg)
     ProximitySensorPack.init(self, 'wideBackward', vehicle, node, range, height,
             directionsDeg, xOffsets, rotationEnabled)
 end
@@ -413,4 +414,143 @@ function SingleBackwardLookingProximitySensorPack:init(vehicle, node, range, hei
     CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, vehicle, 'Creating single backward proximity sensor')
     ProximitySensorPack.init(self, 'singleBackward', vehicle, node, range, height,
             {180}, {0}, false)
+end
+
+------------------------------------------------------------------------------------------------------------------------
+--- Proximity Fence
+------------------------------------------------------------------------------------------------------------------------
+
+--- A proximity sensor raycasting vertically to find obstacles/vehicles
+---@class VerticalProximitySensor : ProximitySensor
+VerticalProximitySensor = CpObject(ProximitySensor)
+-- raycast vertically up from just above the ground
+VerticalProximitySensor.minHeightAboveGround = 0.1
+
+---@param node number
+---@param xOffset number distance sideways from the node
+---@param zOffset number distance forward from the node
+---@param height number the maximum height of the sensor ray, from the ground (it is a vertical line, from just above
+--- the ground to this height
+---@param vehicle table
+function VerticalProximitySensor:init(node, xOffset, zOffset, height, vehicle)
+    self.node = node
+    self.xOffset = xOffset
+    self.zOffset = zOffset
+    self.range = math.sqrt(xOffset * xOffset + zOffset * zOffset)
+    CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, vehicle, 'Vertical proximity sensor dx %.1f, dz %.1f', xOffset, zOffset)
+    self.height = height or 1
+    self.lastUpdateLoopIndex = 0
+    self.enabled = true
+    self.vehicle = vehicle
+    -- vehicles can only be ignored temporarily
+    self.ignoredVehicle = CpTemporaryObject()
+end
+
+function VerticalProximitySensor:update()
+    -- already updated in this loop, no need to raycast again
+    if g_updateLoopIndex == self.lastUpdateLoopIndex then return end
+    self.lastUpdateLoopIndex = g_updateLoopIndex
+
+    local x, _, z = localToWorld(self.node, self.xOffset, 0, self.zOffset)
+    local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z)
+    self.distanceOfClosestObject = math.huge
+    self.objectId = nil
+    self.hitTerrain = false
+    if self.enabled then
+        local raycastMask = CollisionFlag.STATIC_OBJECTS + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE
+        -- straight up from 10 cm above the ground to height
+        raycastClosest(x, y + self.minHeightAboveGround, z, 0, 1, 0,
+                'raycastCallback', self.height - self.minHeightAboveGround, self, raycastMask)
+        if CpDebug:isChannelActive(CpDebug.DBG_TRAFFIC, self.vehicle) then
+            DebugUtil.drawDebugLine(x, y + self.minHeightAboveGround, z, x, y + self.height - self.minHeightAboveGround, z, 1, 1, 0)
+        end
+    end
+    if CpDebug:isChannelActive(CpDebug.DBG_TRAFFIC, self.vehicle) and self.distanceOfClosestObject < math.huge then
+        local green = self.distanceOfClosestObject / self.range
+        local red = 1 - green
+        DebugUtil.drawDebugLine(x, y + self.height, z, self.closestObjectX, self.closestObjectY, self.closestObjectZ, red, green, 0)
+    end
+end
+
+function VerticalProximitySensor:raycastCallback(objectId, x, y, z, distance)
+    local object = g_currentMission:getNodeObject(objectId)
+    if object and object.getRootVehicle and object:getRootVehicle() == self.ignoredVehicle:get() then
+        -- ignore this vehicle
+        return
+    end
+    self.distanceOfClosestObject = self.range
+    self.objectId = objectId
+    self.hitTerrain = objectId == g_currentMission.terrainRootNode
+    self.closestObjectX, self.closestObjectY, self.closestObjectZ = x, y, z
+end
+
+---@class ProximityFence : ProximitySensorPack
+ProximityFence = CpObject(ProximitySensorPack)
+
+--- A proximity fence is a series of vertical proximity sensors in a row (just like the posts of a fence).
+---@param vehicle table vehicle we attach the sensor to, used only to rotate the sensor with the steering angle
+---@param node number node (front or back) to attach the sensor to
+---@param range number range of the sensor in meters, that is, the distance of the fence from node
+---@param height number height of the fence (of the individual vertical sensors)
+---@param width number width of the fence
+---@param nSensors number|nil number of sensors, these will be distributed along the width, default 5
+function ProximityFence:init(vehicle, node, range, height, width, nSensors)
+    ---@type VerticalProximitySensor[]
+    self.sensors = {}
+    self.vehicle = vehicle
+    self.range = range
+    self.height = height
+    self.width = width
+    self.name = 'fence'
+    self.node = getChild(node, self.name)
+    if self.node <= 0 then
+        -- node with this name does not yet exist
+        -- add a separate node for the pack (so we can move it independently from 'node'
+        self.node = CpUtil.createNode(self.name, 0, 0, 0, node)
+    end
+    -- reset it on the parent node
+    setTranslation(self.node, 0, 0, 0)
+    setRotation(self.node, 0, 0, 0)
+    self.xOffsets = self:getXOffsets(self.width, nSensors or 5)
+    for _, xOffset in ipairs(self.xOffsets) do
+        table.insert(self.sensors, VerticalProximitySensor(self.node, xOffset or 0, self.range, self.height, vehicle))
+    end
+end
+
+function ProximityFence:update()
+    self:callForAllSensors(VerticalProximitySensor.update)
+end
+
+--- Gets the closest hit of a proximity sensor.
+---@return number distance of closest hit in meters
+---@return table|nil closest root vehicle
+---@return table|nil closest object
+---@return boolean terrain was hit
+---@return number xOffset of the closest obstacle in meters,  left > 0, right < 0
+function ProximityFence:getClosestObjectDistanceAndRootVehicle()
+    -- make sure we have the latest info, the sensors will make sure they only raycast once per loop
+    self:update()
+    local closestDistance = math.huge
+    local closestRootVehicle, closestObject, hitTerrain, closestXOffset
+    for i, sensor in ipairs(self.sensors) do
+        local d = sensor:getClosestObjectDistance()
+        if d < closestDistance then
+            closestDistance = d
+            closestXOffset = self.xOffsets[i]
+            closestRootVehicle = sensor:getClosestRootVehicle()
+            closestObject = sensor:getClosestObject()
+            hitTerrain = sensor:hasHitTerrain()
+        end
+    end
+    if closestRootVehicle == self.vehicle then
+        self:adjustForwardPosition()
+    end
+    return closestDistance, closestRootVehicle, closestObject, hitTerrain, closestXOffset
+end
+
+function ProximityFence:adjustForwardPosition()
+    local x, y, z = getTranslation(self.node)
+    self:debug('moving proximity sensor %s %.1f so it does not interfere with own vehicle', self.name, 0.1)
+    -- move pack forward/back a bit
+    setTranslation(self.node, x, y, z + 0.1)
 end

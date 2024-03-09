@@ -115,7 +115,7 @@ end
 ---@param expiryMs number for expiryMs milliseconds after startMs, the object will return the value set above,
 --- valueWhenExpired otherwise. When nil, it'll remain value forever
 ---@param startMs number after starMs milliseconds from now, the object will return the value set above
---- (for expiryMs milliseconds). When not nil, the value is set immediately.
+--- (for expiryMs milliseconds). When nil, the value is set immediately.
 function CpTemporaryObject:set(value, expiryMs, startMs)
 	self.value = value
 	self.startTime = startMs and g_time + startMs or g_time
@@ -160,6 +160,21 @@ function CpTemporaryObject:reset()
 	self.startTime = g_time
 end
 
+---@class CpDelayedBoolean : CpTemporaryObject
+CpDelayedBoolean = CpObject(CpTemporaryObject)
+
+function CpDelayedBoolean:get(condition, delay)
+	if condition then
+		if not self:isPending() and not CpTemporaryObject.get(self) then
+			-- set only if not yet set, to not extend the start time
+			self:set(true, nil, delay)
+		end
+	else
+		self:reset()
+	end
+	return CpTemporaryObject.get(self)
+end
+
 --- Object slowly adjusting its value
 ---@class CpSlowChangingObject
 CpSlowChangingObject = CpObject()
@@ -174,6 +189,23 @@ function CpSlowChangingObject:set(targetValue, timeToReachTargetMs)
 	self.targetValue = targetValue
 	self.targetValueMs = g_time
 	self.timeToReachTargetMs = timeToReachTargetMs or 1
+end
+
+--- Confirm an already set target, or, if the difference between the current and the new target value is
+--- greater than delta, set a new target and target time.
+--- This is to make sure that the target is reached in the required time, even if it is set by confirm()
+--- repeatedly before reached.
+---@param targetValue number
+---@param timeToReachTargetMs number
+---@param delta number
+function CpSlowChangingObject:confirm(targetValue, timeToReachTargetMs, delta)
+	if not self.targetValue or math.abs(targetValue - self.targetValue) > delta then
+		self:set(targetValue, timeToReachTargetMs)
+	else
+		-- still update the target value to anticipate small changes, but not the time so the
+		-- target will be reached about the same time as it first was set
+		self.targetValue = targetValue
+	end
 end
 
 function CpSlowChangingObject:get()

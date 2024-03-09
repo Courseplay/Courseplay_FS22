@@ -383,7 +383,7 @@ end
 -- Preparation marks an root vegetable since this is the only factor that diversifies them from normal fruit types
 -- SUGARCANE is an exception and ignored
 function CpUtil.getAllRootVegetables()
-    local earthFruits = {}
+    local rootVegetables = {}
     for _, fruitTypeData in pairs(g_fruitTypeManager.fruitTypes) do
         local minPreparingGrowthState = fruitTypeData.minPreparingGrowthState
         local preparedGrowthState = fruitTypeData.preparedGrowthState
@@ -393,10 +393,10 @@ function CpUtil.getAllRootVegetables()
         if minPreparingGrowthState ~= -1 and preparedGrowthState ~= -1 and name ~= "SUGARCANE" then
 			local fruitType = g_fruitTypeManager:getFruitTypeByName(name)
             if fruitType ~= nil then
-				table.insert(earthFruits, fruitType.index)
+				table.insert(rootVegetables, fruitType.index)
             end
         end
     end
 
-    return earthFruits
+    return rootVegetables
 end
