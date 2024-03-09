@@ -831,11 +831,11 @@
 		</Translation>
 			<Translation name="CP_vehicle_setting_callUnloaderPercent_title">
 			<Text language="de"><![CDATA[Brief vor dem Anruf]]></Text>
-			<Text language="en"><![CDATA[Pre call level]]></Text>
+			<Text language="en"><![CDATA[Unloader call level]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_callUnloaderPercent_tooltip">
 			<Text language="de"><![CDATA[Loader-Aufruf oberhalb des eingestellten Levels.]]></Text>
-			<Text language="en"><![CDATA[Loader call above set level.]]></Text>
+			<Text language="en"><![CDATA[Call unloader when the harvester fill level is above this limit.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_strawSwath_onlyCenter">
 			<Text language="de"><![CDATA[Vorgewende deaktiviert]]></Text>
