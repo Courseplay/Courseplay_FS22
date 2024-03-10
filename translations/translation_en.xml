@@ -806,8 +806,7 @@ Attention: As soon as you release the mouse button, the waypoints will be set, t
 "/>
     <text name="CP_help_page_unloader_title" text="Harvester unloader"/>
     <text name="CP_help_page_unloaderGeneral_text" text="
-The unloader mode of Courseplay works with combines, harvesters and towed harvesters driven by Courseplay.
-It does not work with choppers.
+The unloader mode of Courseplay works with combines, harvesters, choppers and towed harvesters driven by Courseplay.
 You can either use a regular trailer or an auger wagon to unload a combine.
 To empty trailers, you can use the Giants Helper or AutoDrive.
 Starting the unloader requires a few things:

@@ -809,8 +809,7 @@ Achtung: Sobald du loslässt, werden die Wegpunkte abgesetzt, dies kann nicht r�
 "/>
     <text name="CP_help_page_unloader_title" text="Ernter-Abfahrer"/>
     <text name="CP_help_page_unloaderGeneral_text" text="
-Der Abfahrermodus von Courseplay funktioniert nur mit Dreschern, Vollerntern und gezogenen Erntern, die von Courseplay gesteuert werden.
-Häcksler funktionieren nicht.
+Der Abfahrermodus von Courseplay funktioniert nur mit Dreschern, Vollerntern, Häckslern und gezogenen Erntern, die von Courseplay gesteuert werden.
 Zum Abtanken können normale Anhänger oder Überladewagen verwendet werden.
 Zum Entleeren von Anhängern kann entweder der Giants Helfer oder AutoDrive verwendet werden.
 Um einen Abfahrer zu starten gibt es ein paar Voraussetzungen:

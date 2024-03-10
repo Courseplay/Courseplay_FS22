@@ -58,7 +58,7 @@ function PipeController:update(dt)
         if self.implement:getCanDischargeToGround(self.dischargeData.dischargeNode) then 
             --- Update discharge timer
             self.isDischargingTimer:set(true, 500)
-            if not self:isDischarging() then 
+            if not self:isDischarging() then
                 self.implement:setDischargeState(Dischargeable.DISCHARGE_STATE_GROUND)
             end
         else 
@@ -115,15 +115,22 @@ end
 
 ---@return boolean true if there is a fillable trailer under the pipe
 ---@return table|nil the trailer vehicle, if there is one
-function PipeController:isFillableTrailerUnderPipe()
+function PipeController:isFillableTrailerInRange()
+    local myFillType = self:getFillType()
     for trailer, value in pairs(self.pipeSpec.objectsInTriggers) do
         if value > 0 then
-            if FillLevelManager.canLoadTrailer(trailer, self:getFillType()) then
+            if myFillType == FillType.UNKNOWN or FillLevelManager.canLoadTrailer(trailer, myFillType) then
                 return true, trailer
             end
         end
     end
     return false
+end
+
+--- Is there a trailer under the pipe? This returns true only when the pipe can actually discharge into the trailer
+--- (as opposed to just being in the range, which turns the threshing on/opens the pipe)
+function PipeController:isFillableTrailerUnderPipe()
+    return self.implement:getDischargeTargetObject(self.implement:getCurrentDischargeNode())
 end
 
 function PipeController:getPipeOffset()
@@ -144,6 +151,14 @@ end
 
 function PipeController:isDischarging()
     return self.implement:getDischargeState() ~= Dischargeable.DISCHARGE_STATE_OFF
+end
+
+function PipeController:isDischargingToObject()
+    return self.implement:getDischargeState() == Dischargeable.DISCHARGE_STATE_OBJECT
+end
+
+function PipeController:canDischargeToObject()
+    return nil ~= self.implement:getDischargeTargetObject(self:getDischargeNode())
 end
 
 function PipeController:getDischargeNode()
@@ -175,6 +190,10 @@ end
 function PipeController:getClosestObject()
     local id = self.pipeSpec.nearestObjectInTriggers.objectId
     return id and NetworkUtil.getObject(id)
+end
+
+function PipeController:isAutoAimPipe()
+     return #self.pipeSpec.autoAimingStates > 0
 end
 
 function PipeController:handleChopperPipe()
