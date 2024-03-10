@@ -829,6 +829,14 @@
 			<Text language="de"><![CDATA[Strohablage an, aus oder nur im Vorgewende aus.]]></Text>
 			<Text language="en"><![CDATA[Enables/disables straw swath or only disables it on headlands.]]></Text>
 		</Translation>
+			<Translation name="CP_vehicle_setting_callUnloaderPercent_title">
+			<Text language="de"><![CDATA[Abfahrer rufen ab]]></Text>
+			<Text language="en"><![CDATA[Call unloader at]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_callUnloaderPercent_tooltip">
+			<Text language="de"><![CDATA[Ruft einen Abfahrer wenn der Füllstand des Ernters über diesen Wert liegt.]]></Text>
+			<Text language="en"><![CDATA[Call unloader when the harvester fill level is above this value.]]></Text>
+		</Translation>
 		<Translation name="CP_vehicle_setting_strawSwath_onlyCenter">
 			<Text language="de"><![CDATA[Vorgewende deaktiviert]]></Text>
 			<Text language="en"><![CDATA[Headlands disabled]]></Text>
