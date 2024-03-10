@@ -255,6 +255,8 @@
     <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="La cosechadora llamará al descargador en primera cabecera."/>
     <text name="CP_vehicle_setting_strawSwath_title" text="Franja de paja"/>
     <text name="CP_vehicle_setting_strawSwath_tooltip" text="Habilitar/Deshabilitar la franja de paja en cabeceras."/>
+    <text name="CP_vehicle_setting_callUnloaderPercent_title" text="Call unloader at"/>
+    <text name="CP_vehicle_setting_callUnloaderPercent_tooltip" text="Call unloader when the harvester fill level is above this value."/>
     <text name="CP_vehicle_setting_strawSwath_onlyCenter" text="Cabeceras deshabilitadas"/>
     <!---->
     <!--Course generator settings-->

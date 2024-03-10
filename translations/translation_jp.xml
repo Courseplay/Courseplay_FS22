@@ -255,6 +255,8 @@
     <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="コンバインは最初のまくら地に荷下ろしする車両を呼び出します"/>
     <text name="CP_vehicle_setting_strawSwath_title" text="わらを排出する"/>
     <text name="CP_vehicle_setting_strawSwath_tooltip" text="わらの排出を設定します（有効：排出する/無効：排出しない/まくら地は無効：まくら地での排出のみ無効にします)"/>
+    <text name="CP_vehicle_setting_callUnloaderPercent_title" text="Call unloader at"/>
+    <text name="CP_vehicle_setting_callUnloaderPercent_tooltip" text="Call unloader when the harvester fill level is above this value."/>
     <text name="CP_vehicle_setting_strawSwath_onlyCenter" text="有効（まくら地は無効)"/>
     <!---->
     <!--Course generator settings-->

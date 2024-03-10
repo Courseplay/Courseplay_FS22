@@ -255,6 +255,8 @@
     <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="Maaidorser roept de losser op de eerste wendakker"/>
     <text name="CP_vehicle_setting_strawSwath_title" text="Strozwad"/>
     <text name="CP_vehicle_setting_strawSwath_tooltip" text="Schakelt strozwad in/uit of alleen op wendakkers."/>
+    <text name="CP_vehicle_setting_callUnloaderPercent_title" text="Call unloader at"/>
+    <text name="CP_vehicle_setting_callUnloaderPercent_tooltip" text="Call unloader when the harvester fill level is above this value."/>
     <text name="CP_vehicle_setting_strawSwath_onlyCenter" text="Wendakkers uitgeschakeld"/>
     <!---->
     <!--Course generator settings-->

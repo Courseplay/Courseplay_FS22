@@ -255,6 +255,8 @@
     <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="Colheitadeira chamará a carreta na cabeceira."/>
     <text name="CP_vehicle_setting_strawSwath_title" text="fileira de palha"/>
     <text name="CP_vehicle_setting_strawSwath_tooltip" text="Ativar / desativar fileira de palha."/>
+    <text name="CP_vehicle_setting_callUnloaderPercent_title" text="Call unloader at"/>
+    <text name="CP_vehicle_setting_callUnloaderPercent_tooltip" text="Call unloader when the harvester fill level is above this value."/>
     <text name="CP_vehicle_setting_strawSwath_onlyCenter" text="Cabeceira desativada"/>
     <!---->
     <!--Course generator settings-->

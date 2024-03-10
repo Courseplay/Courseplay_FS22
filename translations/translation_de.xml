@@ -255,6 +255,8 @@
     <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="Wenn aktiv, ruft der Drescher den Abfahrer im ersten Vorgewende, auch wenn dieser dann außerhalb des Feldes fahren muss. Wenn deaktiviert, baut der Drescher erst eine Tasche, bevor der Abfahrer gerufen wird."/>
     <text name="CP_vehicle_setting_strawSwath_title" text="Strohablage"/>
     <text name="CP_vehicle_setting_strawSwath_tooltip" text="Strohablage an, aus oder nur im Vorgewende aus."/>
+    <text name="CP_vehicle_setting_callUnloaderPercent_title" text="Abfahrer rufen ab"/>
+    <text name="CP_vehicle_setting_callUnloaderPercent_tooltip" text="Ruft einen Abfahrer wenn der Füllstand des Ernters über diesen Wert liegt."/>
     <text name="CP_vehicle_setting_strawSwath_onlyCenter" text="Vorgewende deaktiviert"/>
     <!---->
     <!--Course generator settings-->

@@ -255,6 +255,8 @@
     <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="A ceifeira irá chamar para descarregar na primeira cabeceira."/>
     <text name="CP_vehicle_setting_strawSwath_title" text="Cordão de palha"/>
     <text name="CP_vehicle_setting_strawSwath_tooltip" text="Activa/desactiva o cordão de palha ou apenas desactiva nas cabeceiras."/>
+    <text name="CP_vehicle_setting_callUnloaderPercent_title" text="Call unloader at"/>
+    <text name="CP_vehicle_setting_callUnloaderPercent_tooltip" text="Call unloader when the harvester fill level is above this value."/>
     <text name="CP_vehicle_setting_strawSwath_onlyCenter" text="Desactiva as cabeceiras"/>
     <!---->
     <!--Course generator settings-->
