@@ -1604,8 +1604,10 @@ function AIDriveStrategyUnloadCombine:call(combine, waypoint)
             zOffset = -self:getCombinesMeasuredBackDistance() - 10
         elseif self.combineToUnload:getCpDriveStrategy():hasAutoAimPipe() then
             if math.abs(self:getAutoAimPipeOffsetX()) < 3 then
-                -- will drive behind the harvester, so target must be further back
-                zOffset = -self:getCombinesMeasuredBackDistance() - 3
+                -- will drive behind the harvester, so target must be further back, making sure there's a few meters
+                -- between the harvester's back and the tractor's front
+                local _, frontMarkerDistance = Markers.getFrontMarkerNode(self.vehicle)
+                zOffset = -self:getCombinesMeasuredBackDistance() - frontMarkerDistance - 2
             else
                 zOffset = -self:getCombinesMeasuredBackDistance()
             end
