@@ -78,17 +78,17 @@
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
-    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direzione nel bunker silos:"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direzione nel bunker silos:"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direzione nel silos bunker:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direzione nel silos bunker:"/>
     <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="In avanti"/>
     <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Inversione"/>
     <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="In attesa scarico:"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="In attesa scarico:"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="nel bunker silos"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="nel silos bunker"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="in posizione di parcheggio"/>
     <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Ferma al 99% di compattazione"/>
     <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Ferma al 99% di compattazione"/>
-    <text name="CP_bunkerSilo_compactionPercentage" text="Compattazione bunker Silos:"/>
+    <text name="CP_bunkerSilo_compactionPercentage" text="Compattazione silos bunker:"/>
     <!---->
     <!--AI silo lader worker job parameters-->
     <!---->
@@ -154,7 +154,7 @@
     <text name="CP_vehicle_setting_title" text="Impostazioni del veicolo (%s)"/>
     <text name="CP_vehicle_setting_subTitle_basic" text="Generali"/>
     <text name="CP_vehicle_setting_subTitle_implement" text="Attrezzi"/>
-    <text name="CP_vehicle_setting_subTitle_combine" text="Mietritrebbia"/>
+    <text name="CP_vehicle_setting_subTitle_combine" text="Mietitrebbia"/>
     <text name="CP_vehicle_setting_subTitle_seeder" text="Seminatrici"/>
     <text name="CP_vehicle_setting_subTitle_multitool" text="Multiaccessori"/>
     <text name="CP_vehicle_setting_subTitle_speed" text="Velocità"/>
@@ -229,8 +229,8 @@
     <text name="CP_vehicle_setting_turnSpeed_tooltip" text="Velocità massima durante le manovre di svolta. Intervallo: 2 - 25"/>
     <text name="CP_vehicle_setting_reverseSpeed_title" text="Retromarcia"/>
     <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="Velocità massima in retromarcia. Intervallo: 2 - 25"/>
-    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silos"/>
-    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Velocità massima durante la guida in un silos. Intervallo: 2 - 25"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silos bunker"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Velocità massima durante la guida in un silos bunker. Intervallo: 2 - 25"/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
@@ -255,8 +255,8 @@
     <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="L'autista chiamerà lo scaricatore a fine lavoro"/>
     <text name="CP_vehicle_setting_strawSwath_title" text="Andana paglia"/>
     <text name="CP_vehicle_setting_strawSwath_tooltip" text="Abilita/disabilita l'andana paglia o la disabilita solo ad inizio campo"/>
-    <text name="CP_vehicle_setting_callUnloaderPercent_title" text="Call unloader at"/>
-    <text name="CP_vehicle_setting_callUnloaderPercent_tooltip" text="Call unloader when the harvester fill level is above this value."/>
+    <text name="CP_vehicle_setting_callUnloaderPercent_title" text="Chiama lo scaricatore al:"/>
+    <text name="CP_vehicle_setting_callUnloaderPercent_tooltip" text="Chiamare lo scaricatore quando il livello di riempimento della macchina è superiore a questo valore."/>
     <text name="CP_vehicle_setting_strawSwath_onlyCenter" text="Inizio campo disabilitato"/>
     <!---->
     <!--Course generator settings-->
@@ -390,7 +390,7 @@
     <text name="CP_courseManager_change_mode" text="Cambia modalità"/>
     <text name="CP_courseManager_load_courses" text="Carica percorso"/>
     <text name="CP_courseManager_save_courses" text="Salva percorso"/>
-    <text name="CP_courseManager_edit_course" text="Apri il course editor"/>
+    <text name="CP_courseManager_edit_course" text="Apri il gestore percorsi"/>
     <text name="CP_courseManager_clear_current_courses" text="Cancella percorso attuale"/>
     <text name="CP_courseManager_create_directory" text="Crea nuova cartella"/>
     <text name="CP_courseManager_move_entry" text="Sposta voce"/>
