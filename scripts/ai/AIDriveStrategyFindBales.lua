@@ -393,8 +393,8 @@ function AIDriveStrategyFindBales:startPathfindingToBale(bale)
     self.state = self.states.DRIVING_TO_NEXT_BALE
     g_baleToCollectManager:lockBale(bale:getBaleObject(), self)
     local context = PathfinderContext(self.vehicle):objectsToIgnore(self:getBalesToIgnore()):allowReverse(false)
-    self.pathfinderController:findPathToGoal(context, self:getPathfinderBaleTargetAsGoalNode(bale), 3)
     self.lastPathfinderBaleTarget = bale
+    self.pathfinderController:findPathToGoal(context, self:getPathfinderBaleTargetAsGoalNode(bale), 3)
 end
 
 function AIDriveStrategyFindBales:startReversing()
@@ -407,7 +407,7 @@ function AIDriveStrategyFindBales:isObstacleAhead()
     -- then a more thorough check, we want to ignore the last bale we worked on as that may lay around too close
     -- to the baler. This happens for example to the Andersen bale wrapper.
     self:debug('Check obstacles ahead, ignoring %d bale object, first is %s', #objectsToIgnore, objectsToIgnore[1] or 'nil')
-    AIDriveStrategyCourse.isObstacleAhead(self, objectsToIgnore)
+    return AIDriveStrategyCourse.isObstacleAhead(self, objectsToIgnore)
 end
 
 function AIDriveStrategyFindBales:isNearFieldEdge()
