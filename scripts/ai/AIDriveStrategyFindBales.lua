@@ -230,17 +230,18 @@ function AIDriveStrategyFindBales:findBales()
 end
 
 ---@param bales table[]
+---@param baleToIgnore BaleToCollect|nil exclude this bale from the results
 ---@return BaleToCollect|nil closest bale
 ---@return number|nil distance to the closest bale
 ---@return number|nil index of the bale
-function AIDriveStrategyFindBales:findClosestBale(bales)
+function AIDriveStrategyFindBales:findClosestBale(bales, baleToIgnore)
     if not bales then 
         return
     end
     local closestBale, minDistance, ix = nil, math.huge, 1
     local invalidBales = 0
     for i, bale in ipairs(bales) do
-        if bale:isStillValid() and bale ~= self.lastPathfinderBaleTarget then
+        if bale:isStillValid() and bale ~= baleToIgnore then
             local _, _, _, d = bale:getPositionInfoFromNode(self.vehicle:getAIDirectionNode())
             self:debug('%d. bale (%d, %s) in %.1f m', i, bale:getId(), bale:getBaleObject(), d)
             if d < self.turningRadius * 4 then
@@ -315,10 +316,27 @@ function AIDriveStrategyFindBales:onPathfindingFinished(controller,
     if self.state == self.states.DRIVING_TO_NEXT_BALE then 
         if success then 
             self:startCourse(course, 1)
+        elseif goalNodeInvalid then
+            -- there may be another bale too close to the previous one
+            self:debug('Pathfinding failed, goal node invalid.')
+            self:retryPathfindingWithAnotherBale()
+            return
         else
             self:info('Pathfinding failed, giving up!')
             self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
         end
+    end
+end
+
+--- After pathfinding failed, retry with another bale
+function AIDriveStrategyFindBales:retryPathfindingWithAnotherBale()
+    self:debug("Retrying with another bale.")
+    local bale, d, ix = self:findClosestBale(self.bales, self.lastPathfinderBaleTarget)
+    if bale then
+        self:startPathfindingToBale(bale)
+    else
+        self:debug("No valid bale found on retry!")
+        self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
     end
 end
 
@@ -337,14 +355,7 @@ function AIDriveStrategyFindBales:onPathfindingRetry(controller,
                 self:debug("Retrying the same bale again.")
                 self:startPathfindingToBale(self.lastPathfinderBaleTarget)
             else 
-                self:debug("Retrying with another bale.")
-                local bale, d, ix = self:findClosestBale(self.bales)
-                if bale then 
-                    self:startPathfindingToBale(bale)
-                else 
-                    self:debug("No valid bale found on retry: %d!", currentRetryAttempt)
-                    self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
-                end
+                self:retryPathfindingWithAnotherBale()
             end
         else 
             if self:isNearFieldEdge() then
