@@ -128,10 +128,9 @@ function CpBaseHud:init(vehicle)
     end
     self.width, self.height = getNormalizedScreenValues(self.baseSize.x, self.baseSize.y)
 
-    
     self.lineHeight = self.height/(self.numLines+2)
     self.hMargin = self.lineHeight
-    self.wMargin = self.lineHeight/2
+    self.wMargin = self.lineHeight/2 * ((1920/1080) / g_screenAspectRatio)
 
     self.lines = {}
     for i=1, (self.numLines+1) do 
