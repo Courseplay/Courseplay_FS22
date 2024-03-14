@@ -582,9 +582,11 @@ function PipeController:moveDependedPipePart(tool, dt)
         local lDirX, _, lDirZ = localDirectionToWorld(self.implement.rootNode, self.pipeOnLeftSide and -1 or 1, 0, 0)
         local lX1, _, lZ1 = localToLocal(toolNode, self.implement.rootNode, 0, 0, 0)
         local x1, _, z1 = localToWorld(self.implement.rootNode, lX1, 0, lZ1)
-        DebugUtil.drawDebugLine(x1, gyT, z1, 
-            x1 + lDirX * 5, gyT, z1 + lDirZ * 5, 
-            1, 0, 0, 0, false)
+        if CpDebug:isChannelActive(CpDebug.DBG_FIELDWORK, self.vehicle) then
+            DebugUtil.drawDebugLine(x1, gyT, z1, 
+                x1 + lDirX * 5, gyT, z1 + lDirZ * 5, 
+                1, 0, 0, 0, false)
+        end
     end
     ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, MathUtil.clamp(targetRot, tool.rotMin, tool.rotMax))
 end
