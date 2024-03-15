@@ -5,11 +5,11 @@
 	For documentation look up the CpSettingUtil.lua.
 -->
 
-<Settings prefixText="CP_jobParameters_">
+<Settings prefixText="CP_fieldWorkJobParameters_">
 	<SettingSubTitle title="ai_parameterGroupTitlePosition" prefix="false">
 		<Setting classType="CpAIParameterPositionAngle" name="startPosition" positionParameterType="DRIVE_TO"/>
 	</SettingSubTitle>
-	<SettingSubTitle title="CP_jobParameters_fieldPosition_title" prefix="false">
+	<SettingSubTitle title="CP_fieldWorkJobParameters_fieldPosition_title" prefix="false">
 		<Setting classType="CpAIParameterPosition" name="fieldPosition" positionParameterType="FIELD_OR_SILO"/>
 	</SettingSubTitle>
 	<SettingSubTitle title="startAt">

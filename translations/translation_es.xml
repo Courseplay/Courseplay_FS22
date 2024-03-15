@@ -30,28 +30,28 @@
     <!---->
     <!--AI job parameters-->
     <!---->
-    <text name="CP_jobParameters_fieldPosition_title" text="Posición en campo:"/>
-    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Posición en Silo:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Pos. Estac."/>
-    <text name="CP_jobParameters_subTitle_startAt" text="Comience en:"/>
-    <text name="CP_jobParameters_startAt_title" text="Comience en:"/>
-    <text name="CP_jobParameters_startAt_tooltip" text="Dónde comenzar el trabajo de campo"/>
-    <text name="CP_jobParameters_startAt_nearest" text="Punto más cercano"/>
-    <text name="CP_jobParameters_startAt_first" text="Primer punto"/>
-    <text name="CP_jobParameters_startAt_last" text="Último punto"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Modo Trabajo en Silo"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Modo Carga de silo"/>
-    <text name="CP_jobParameters_startAt_unload" text="Descargando Cosechadora/Picadora"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Descargar cargador de silo"/>
-    <text name="CP_jobParameters_startAt_bales" text="Recogiendo/Envolviendo fardos"/>
-    <text name="CP_jobParameters_subTitle_laneOffset" text="Desplazamiento de carril:"/>
-    <text name="CP_jobParameters_laneOffset_title" text="Desplazamiento de carril:"/>
-    <text name="CP_jobParameters_laneOffset_tooltip" text="Desplazamiento de carril"/>
-    <text name="CP_jobParameters_laneOffset_center" text="Centro"/>
-    <text name="CP_jobParameters_laneOffset_left" text="Izquierdo(1)"/>
-    <text name="CP_jobParameters_laneOffset_right" text="Derecho(1)"/>
-    <text name="CP_jobParameters_laneOffset_left_2" text="Izquierdo(2)"/>
-    <text name="CP_jobParameters_laneOffset_right_2" text="Derecho(2)"/>
+    <text name="CP_fieldWorkJobParameters_fieldPosition_title" text="Posición en campo:"/>
+    <text name="CP_fieldWorkJobParameters_bunkerSiloPosition_title" text="Posición en Silo:"/>
+    <text name="CP_fieldWorkJobParameters_parkPosition_title" text="Pos. Estac."/>
+    <text name="CP_fieldWorkJobParameters_subTitle_startAt" text="Comience en:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_title" text="Comience en:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_tooltip" text="Dónde comenzar el trabajo de campo"/>
+    <text name="CP_fieldWorkJobParameters_startAt_nearest" text="Punto más cercano"/>
+    <text name="CP_fieldWorkJobParameters_startAt_first" text="Primer punto"/>
+    <text name="CP_fieldWorkJobParameters_startAt_last" text="Último punto"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bunkerSilo" text="Modo Trabajo en Silo"/>
+    <text name="CP_fieldWorkJobParameters_startAt_siloLoader" text="Modo Carga de silo"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload" text="Descargando Cosechadora/Picadora"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload_siloLoader" text="Descargar cargador de silo"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bales" text="Recogiendo/Envolviendo fardos"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_laneOffset" text="Desplazamiento de carril:"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_title" text="Desplazamiento de carril:"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_tooltip" text="Desplazamiento de carril"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_center" text="Centro"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left" text="Izquierdo(1)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right" text="Derecho(1)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left_2" text="Izquierdo(2)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right_2" text="Derecho(2)"/>
     <!---->
     <!--AI bale finder job parameters-->
     <!---->

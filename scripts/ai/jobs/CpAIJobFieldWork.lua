@@ -4,7 +4,7 @@ CpAIJobFieldWork = {
     name = "FIELDWORK_CP",
     jobName = "CP_job_fieldWork",
     GenerateButton = "FIELDWORK_BUTTON",
-    fieldPositionParameterText = "CP_jobParameters_fieldPosition_title"
+    fieldPositionParameterText = "CP_fieldWorkJobParameters_fieldPosition_title"
 }
 local AIJobFieldWorkCp_mt = Class(CpAIJobFieldWork, CpAIJob)
 
@@ -45,7 +45,7 @@ end
 
 function CpAIJobFieldWork:setupJobParameters()
     CpAIJob.setupJobParameters(self)
-    self:setupCpJobParameters(CpJobParameters(self))
+    self:setupCpJobParameters(CpFieldWorkJobParameters(self))
 end
 
 ---@param vehicle table

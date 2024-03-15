@@ -30,28 +30,28 @@
     <!---->
     <!--AI job parameters-->
     <!---->
-    <text name="CP_jobParameters_fieldPosition_title" text="田地位置："/>
-    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
-    <text name="CP_jobParameters_subTitle_startAt" text="选择起始点:"/>
-    <text name="CP_jobParameters_startAt_title" text="选择起始点:"/>
-    <text name="CP_jobParameters_startAt_tooltip" text="该任务的起始点"/>
-    <text name="CP_jobParameters_startAt_nearest" text="最近的点"/>
-    <text name="CP_jobParameters_startAt_first" text="第一个点"/>
-    <text name="CP_jobParameters_startAt_last" text="最后的点"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Silo load mode"/>
-    <text name="CP_jobParameters_startAt_unload" text="开始卸货 联合收割机/青贮饲料收割机"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
-    <text name="CP_jobParameters_startAt_bales" text="扎捆/收集草垛"/>
-    <text name="CP_jobParameters_subTitle_laneOffset" text="车道位置设置"/>
-    <text name="CP_jobParameters_laneOffset_title" text="车道位置设置"/>
-    <text name="CP_jobParameters_laneOffset_tooltip" text="使用多个工具时的车道选择（最多 5 个）。 "/>
-    <text name="CP_jobParameters_laneOffset_center" text="中间"/>
-    <text name="CP_jobParameters_laneOffset_left" text="左边(1)"/>
-    <text name="CP_jobParameters_laneOffset_right" text="右边(1)"/>
-    <text name="CP_jobParameters_laneOffset_left_2" text="左边(2)"/>
-    <text name="CP_jobParameters_laneOffset_right_2" text="右边(2)"/>
+    <text name="CP_fieldWorkJobParameters_fieldPosition_title" text="田地位置："/>
+    <text name="CP_fieldWorkJobParameters_bunkerSiloPosition_title" text="Silo position:"/>
+    <text name="CP_fieldWorkJobParameters_parkPosition_title" text="Park position:"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_startAt" text="选择起始点:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_title" text="选择起始点:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_tooltip" text="该任务的起始点"/>
+    <text name="CP_fieldWorkJobParameters_startAt_nearest" text="最近的点"/>
+    <text name="CP_fieldWorkJobParameters_startAt_first" text="第一个点"/>
+    <text name="CP_fieldWorkJobParameters_startAt_last" text="最后的点"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
+    <text name="CP_fieldWorkJobParameters_startAt_siloLoader" text="Silo load mode"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload" text="开始卸货 联合收割机/青贮饲料收割机"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bales" text="扎捆/收集草垛"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_laneOffset" text="车道位置设置"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_title" text="车道位置设置"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_tooltip" text="使用多个工具时的车道选择（最多 5 个）。 "/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_center" text="中间"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left" text="左边(1)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right" text="右边(1)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left_2" text="左边(2)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right_2" text="右边(2)"/>
     <!---->
     <!--AI bale finder job parameters-->
     <!---->

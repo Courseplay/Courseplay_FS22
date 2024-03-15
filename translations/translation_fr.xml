@@ -30,28 +30,28 @@
     <!---->
     <!--AI job parameters-->
     <!---->
-    <text name="CP_jobParameters_fieldPosition_title" text="Point de départ dans le champ"/>
-    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Position du silo"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Position d'attente"/>
-    <text name="CP_jobParameters_subTitle_startAt" text="Démarrage"/>
-    <text name="CP_jobParameters_startAt_title" text="Démarrage"/>
-    <text name="CP_jobParameters_startAt_tooltip" text="Point de départ du travail dans le champ"/>
-    <text name="CP_jobParameters_startAt_nearest" text="Point le plus proche"/>
-    <text name="CP_jobParameters_startAt_first" text="Premier point"/>
-    <text name="CP_jobParameters_startAt_last" text="Dernier point"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Silo Bunker"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Tas/Silo"/>
-    <text name="CP_jobParameters_startAt_unload" text="Déchargement de la récolteuse"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Déchargement d'une chargeuse"/>
-    <text name="CP_jobParameters_startAt_bales" text="Ramassage/enrub. des bottes"/>
-    <text name="CP_jobParameters_subTitle_laneOffset" text="Position dans la rangée"/>
-    <text name="CP_jobParameters_laneOffset_title" text="Position dans la rangée"/>
-    <text name="CP_jobParameters_laneOffset_tooltip" text="Choix de la rangée lors d'un travail à plusieurs outils (maximum 5)."/>
-    <text name="CP_jobParameters_laneOffset_center" text="centre"/>
-    <text name="CP_jobParameters_laneOffset_left" text="gauche(1)"/>
-    <text name="CP_jobParameters_laneOffset_right" text="droite(1)"/>
-    <text name="CP_jobParameters_laneOffset_left_2" text="gauche(2)"/>
-    <text name="CP_jobParameters_laneOffset_right_2" text="droite(2)"/>
+    <text name="CP_fieldWorkJobParameters_fieldPosition_title" text="Point de départ dans le champ"/>
+    <text name="CP_fieldWorkJobParameters_bunkerSiloPosition_title" text="Position du silo"/>
+    <text name="CP_fieldWorkJobParameters_parkPosition_title" text="Position d'attente"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_startAt" text="Démarrage"/>
+    <text name="CP_fieldWorkJobParameters_startAt_title" text="Démarrage"/>
+    <text name="CP_fieldWorkJobParameters_startAt_tooltip" text="Point de départ du travail dans le champ"/>
+    <text name="CP_fieldWorkJobParameters_startAt_nearest" text="Point le plus proche"/>
+    <text name="CP_fieldWorkJobParameters_startAt_first" text="Premier point"/>
+    <text name="CP_fieldWorkJobParameters_startAt_last" text="Dernier point"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bunkerSilo" text="Silo Bunker"/>
+    <text name="CP_fieldWorkJobParameters_startAt_siloLoader" text="Tas/Silo"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload" text="Déchargement de la récolteuse"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload_siloLoader" text="Déchargement d'une chargeuse"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bales" text="Ramassage/enrub. des bottes"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_laneOffset" text="Position dans la rangée"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_title" text="Position dans la rangée"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_tooltip" text="Choix de la rangée lors d'un travail à plusieurs outils (maximum 5)."/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_center" text="centre"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left" text="gauche(1)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right" text="droite(1)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left_2" text="gauche(2)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right_2" text="droite(2)"/>
     <!---->
     <!--AI bale finder job parameters-->
     <!---->

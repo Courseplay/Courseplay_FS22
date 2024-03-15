@@ -89,91 +89,91 @@
 		</Translation>
 	</Category>
 	<Category name="AI job parameters">	
-		<Translation name="CP_jobParameters_fieldPosition_title">
+		<Translation name="CP_fieldWorkJobParameters_fieldPosition_title">
 			<Text language="de"><![CDATA[Feldposition:]]></Text>
 			<Text language="en"><![CDATA[Field position:]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_bunkerSiloPosition_title">
+		<Translation name="CP_fieldWorkJobParameters_bunkerSiloPosition_title">
 			<Text language="de"><![CDATA[Siloposition:]]></Text>
 			<Text language="en"><![CDATA[Silo position:]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_parkPosition_title">
+		<Translation name="CP_fieldWorkJobParameters_parkPosition_title">
 			<Text language="de"><![CDATA[Parkposition:]]></Text>
 			<Text language="en"><![CDATA[Park position:]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_subTitle_startAt">
+		<Translation name="CP_fieldWorkJobParameters_subTitle_startAt">
 			<Text language="de"><![CDATA[Start am:]]></Text>
 			<Text language="en"><![CDATA[Start at:]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_startAt_title">
+		<Translation name="CP_fieldWorkJobParameters_startAt_title">
 			<Text language="de"><![CDATA[Start am:]]></Text>
 			<Text language="en"><![CDATA[Start at:]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_startAt_tooltip">
+		<Translation name="CP_fieldWorkJobParameters_startAt_tooltip">
 			<Text language="de"><![CDATA[Wo die Arbeit gestartet wird.]]></Text>
 			<Text language="en"><![CDATA[Where to start field work.]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_startAt_nearest">
+		<Translation name="CP_fieldWorkJobParameters_startAt_nearest">
 			<Text language="de"><![CDATA[Nahester Wegpunkt]]></Text>
 			<Text language="en"><![CDATA[nearest waypoint]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_startAt_first">
+		<Translation name="CP_fieldWorkJobParameters_startAt_first">
 			<Text language="de"><![CDATA[Erster Wegpunkt]]></Text>
 			<Text language="en"><![CDATA[first waypoint]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_startAt_last">
+		<Translation name="CP_fieldWorkJobParameters_startAt_last">
 			<Text language="de"><![CDATA[Letzter Wegpunkt]]></Text>
 			<Text language="en"><![CDATA[last waypoint]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_startAt_bunkerSilo">
+		<Translation name="CP_fieldWorkJobParameters_startAt_bunkerSilo">
 			<Text language="de"><![CDATA[Bunkersilo-Modus]]></Text>
 			<Text language="en"><![CDATA[Bunker silo mode]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_startAt_siloLoader">
+		<Translation name="CP_fieldWorkJobParameters_startAt_siloLoader">
 			<Text language="de"><![CDATA[Silo laden]]></Text>
 			<Text language="en"><![CDATA[Silo load mode]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_startAt_unload">
+		<Translation name="CP_fieldWorkJobParameters_startAt_unload">
 			<Text language="de"><![CDATA[Drescher entladen]]></Text>
 			<Text language="en"><![CDATA[unload combine]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_startAt_unload_siloLoader">
+		<Translation name="CP_fieldWorkJobParameters_startAt_unload_siloLoader">
 			<Text language="de"><![CDATA[Silolader entladen]]></Text>
 			<Text language="en"><![CDATA[Unload Silo loader]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_startAt_bales">
+		<Translation name="CP_fieldWorkJobParameters_startAt_bales">
 			<Text language="de"><![CDATA[Ballen sammeln/wickeln]]></Text>
 			<Text language="en"><![CDATA[collecting/wrapping bales]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_subTitle_laneOffset">
+		<Translation name="CP_fieldWorkJobParameters_subTitle_laneOffset">
 			<Text language="de"><![CDATA[Bahn:]]></Text>
 			<Text language="en"><![CDATA[Lane offset:]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_laneOffset_title">
+		<Translation name="CP_fieldWorkJobParameters_laneOffset_title">
 			<Text language="de"><![CDATA[Bahn:]]></Text>
 			<Text language="en"><![CDATA[Lane offset:]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_laneOffset_tooltip">
+		<Translation name="CP_fieldWorkJobParameters_laneOffset_tooltip">
 			<Text language="de"><![CDATA[Bahnauswahl, wenn ein Multitoolkurs erstellt wurde.]]></Text>
 			<Text language="en"><![CDATA[Lane offset]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_laneOffset_center">
+		<Translation name="CP_fieldWorkJobParameters_laneOffset_center">
 			<Text language="de"><![CDATA[Mitte]]></Text>
 			<Text language="en"><![CDATA[center]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_laneOffset_left">
+		<Translation name="CP_fieldWorkJobParameters_laneOffset_left">
 			<Text language="de"><![CDATA[Links(1)]]></Text>
 			<Text language="en"><![CDATA[left(1)]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_laneOffset_right">
+		<Translation name="CP_fieldWorkJobParameters_laneOffset_right">
 			<Text language="de"><![CDATA[Rechts(1)]]></Text>
 			<Text language="en"><![CDATA[right(1)]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_laneOffset_left_2">
+		<Translation name="CP_fieldWorkJobParameters_laneOffset_left_2">
 			<Text language="de"><![CDATA[Links(2)]]></Text>
 			<Text language="en"><![CDATA[left(2)]]></Text>
 		</Translation>
-		<Translation name="CP_jobParameters_laneOffset_right_2">
+		<Translation name="CP_fieldWorkJobParameters_laneOffset_right_2">
 			<Text language="de"><![CDATA[Rechts(2)]]></Text>
 			<Text language="en"><![CDATA[right(2)]]></Text>
 		</Translation>
