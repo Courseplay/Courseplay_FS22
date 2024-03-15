@@ -109,8 +109,11 @@ function CpAIJobBunkerSilo:validate(farmId)
 	return true, ''
 end
 
-function CpAIJobBunkerSilo:draw(map)
-	g_bunkerSiloManager:drawSilos(map, self.bunkerSilo)
+function CpAIJobBunkerSilo:draw(map, isOverviewMap)
+	CpAIJob.draw(self, map, isOverviewMap)
+	if not isOverviewMap then
+		g_bunkerSiloManager:drawSilos(map, self.bunkerSilo)
+	end
 end
 
 function CpAIJobBunkerSilo:readStream(streamId, connection)

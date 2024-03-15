@@ -466,9 +466,10 @@ function CpInGameMenuAIFrameExtended:draw()
 	local pageAI = g_currentMission.inGameMenu.pageAI
 	local job = pageAI.currentJob
 	if pageAI.mode == InGameMenuAIFrame.MODE_CREATE or 
-		   pageAI.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR then
+		pageAI.mode == InGameMenuAIFrame.MODE_OVERVIEW or
+		pageAI.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR then
 		if job and job.draw then
-			job:draw(self)
+			job:draw(self, pageAI.mode == InGameMenuAIFrame.MODE_OVERVIEW)
 		end
 	end
 
