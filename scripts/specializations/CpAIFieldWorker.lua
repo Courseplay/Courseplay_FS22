@@ -81,13 +81,13 @@ function CpAIFieldWorker:onLoad(savegame)
     local spec = self.spec_cpAIFieldWorker
     --- This job is for starting the driving with a key bind or the hud.
     spec.cpJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
-    spec.cpJob:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_NEAREST_POINT)
+    spec.cpJob:getCpJobParameters().startAt:setValue(CpFieldWorkJobParameters.START_AT_NEAREST_POINT)
     spec.cpJob:setVehicle(self, true)
     --- Theses jobs are used for external mod, for example AutoDrive.
     spec.cpJobStartAtFirstWp = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
-    spec.cpJobStartAtFirstWp:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_FIRST_POINT)
+    spec.cpJobStartAtFirstWp:getCpJobParameters().startAt:setValue(CpFieldWorkJobParameters.START_AT_FIRST_POINT)
     spec.cpJobStartAtLastWp = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
-    spec.cpJobStartAtLastWp:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_LAST_POINT)
+    spec.cpJobStartAtLastWp:getCpJobParameters().startAt:setValue(CpFieldWorkJobParameters.START_AT_LAST_POINT)
 end
 
 function CpAIFieldWorker:onLoadFinished(savegame)

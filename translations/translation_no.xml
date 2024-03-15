@@ -30,28 +30,28 @@
     <!---->
     <!--AI job parameters-->
     <!---->
-    <text name="CP_jobParameters_fieldPosition_title" text="Field position:"/>
-    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
-    <text name="CP_jobParameters_subTitle_startAt" text="Start at:"/>
-    <text name="CP_jobParameters_startAt_title" text="Start at:"/>
-    <text name="CP_jobParameters_startAt_tooltip" text="Where to start field work"/>
-    <text name="CP_jobParameters_startAt_nearest" text="nearest waypoint"/>
-    <text name="CP_jobParameters_startAt_first" text="first waypoint"/>
-    <text name="CP_jobParameters_startAt_last" text="last waypoint"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Silo load mode"/>
-    <text name="CP_jobParameters_startAt_unload" text="unloading combine/chopper"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
-    <text name="CP_jobParameters_startAt_bales" text="collecting/wrapping bales"/>
-    <text name="CP_jobParameters_subTitle_laneOffset" text="Lane offset:"/>
-    <text name="CP_jobParameters_laneOffset_title" text="Lane offset:"/>
-    <text name="CP_jobParameters_laneOffset_tooltip" text="Lane offset"/>
-    <text name="CP_jobParameters_laneOffset_center" text="center"/>
-    <text name="CP_jobParameters_laneOffset_left" text="left(1)"/>
-    <text name="CP_jobParameters_laneOffset_right" text="right(1)"/>
-    <text name="CP_jobParameters_laneOffset_left_2" text="left(2)"/>
-    <text name="CP_jobParameters_laneOffset_right_2" text="right(2)"/>
+    <text name="CP_fieldWorkJobParameters_fieldPosition_title" text="Field position:"/>
+    <text name="CP_fieldWorkJobParameters_bunkerSiloPosition_title" text="Silo position:"/>
+    <text name="CP_fieldWorkJobParameters_parkPosition_title" text="Park position:"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_startAt" text="Start at:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_title" text="Start at:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_tooltip" text="Where to start field work"/>
+    <text name="CP_fieldWorkJobParameters_startAt_nearest" text="nearest waypoint"/>
+    <text name="CP_fieldWorkJobParameters_startAt_first" text="first waypoint"/>
+    <text name="CP_fieldWorkJobParameters_startAt_last" text="last waypoint"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
+    <text name="CP_fieldWorkJobParameters_startAt_siloLoader" text="Silo load mode"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload" text="unloading combine/chopper"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bales" text="collecting/wrapping bales"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_laneOffset" text="Lane offset:"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_title" text="Lane offset:"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_tooltip" text="Lane offset"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_center" text="center"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left" text="left(1)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right" text="right(1)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left_2" text="left(2)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right_2" text="right(2)"/>
     <!---->
     <!--AI bale finder job parameters-->
     <!---->

@@ -4,7 +4,7 @@ local modName = CpAICombineUnloader and CpAICombineUnloader.MOD_NAME -- for relo
 ---@class CpAICombineUnloader
 CpAICombineUnloader = {}
 
-CpAICombineUnloader.startText = g_i18n:getText("CP_jobParameters_startAt_unload")
+CpAICombineUnloader.startText = g_i18n:getText("CP_fieldWorkJobParameters_startAt_unload")
 
 CpAICombineUnloader.MOD_NAME = g_currentModName or modName
 CpAICombineUnloader.NAME = ".cpAICombineUnloader"

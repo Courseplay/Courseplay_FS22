@@ -4,7 +4,7 @@ local modName = CpAIBunkerSiloWorker and CpAIBunkerSiloWorker.MOD_NAME -- for re
 ---@class CpAIBunkerSiloWorker
 CpAIBunkerSiloWorker = {}
 
-CpAIBunkerSiloWorker.startText = g_i18n:getText("CP_jobParameters_startAt_bunkerSilo")
+CpAIBunkerSiloWorker.startText = g_i18n:getText("CP_fieldWorkJobParameters_startAt_bunkerSilo")
 
 CpAIBunkerSiloWorker.MOD_NAME = g_currentModName or modName
 CpAIBunkerSiloWorker.NAME = ".cpAIBunkerSiloWorker"
@@ -109,7 +109,7 @@ function CpAIBunkerSiloWorker:getCpStartableJob(superFunc, isStartedByHud)
     local spec = self.spec_cpAIBunkerSiloWorker
     local job = self:getCanStartCpBunkerSiloWorker() and spec.cpJob
     if isStartedByHud and not AIUtil.hasChildVehicleWithSpecialization(self, Leveler) then 
-        job = self:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO and job
+        job = self:getCpStartingPointSetting():getValue() == CpFieldWorkJobParameters.START_AT_BUNKER_SILO and job
     end
 	return superFunc(self, isStartedByHud) or job
 end

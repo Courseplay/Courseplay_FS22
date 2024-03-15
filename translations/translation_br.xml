@@ -30,28 +30,28 @@
     <!---->
     <!--AI job parameters-->
     <!---->
-    <text name="CP_jobParameters_fieldPosition_title" text="Posição no campo:"/>
-    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Posição do silo:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
-    <text name="CP_jobParameters_subTitle_startAt" text="Iniciar em:"/>
-    <text name="CP_jobParameters_startAt_title" text="Iniciar em:"/>
-    <text name="CP_jobParameters_startAt_tooltip" text="Onde começar o trabalho no campo"/>
-    <text name="CP_jobParameters_startAt_nearest" text="próximo waypoint"/>
-    <text name="CP_jobParameters_startAt_first" text="primeiro waypoint"/>
-    <text name="CP_jobParameters_startAt_last" text="último waypoint"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="modo silo bunker"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Modo carregar silo"/>
-    <text name="CP_jobParameters_startAt_unload" text="descarregando colheitadeira"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Descarregar carregador de silo"/>
-    <text name="CP_jobParameters_startAt_bales" text="fardos coletar/embalar"/>
-    <text name="CP_jobParameters_subTitle_laneOffset" text="Distância da fileira:"/>
-    <text name="CP_jobParameters_laneOffset_title" text="Distância da fileira:"/>
-    <text name="CP_jobParameters_laneOffset_tooltip" text="Distância da fileira"/>
-    <text name="CP_jobParameters_laneOffset_center" text="centro"/>
-    <text name="CP_jobParameters_laneOffset_left" text="esquerda(1)"/>
-    <text name="CP_jobParameters_laneOffset_right" text="direita(1)"/>
-    <text name="CP_jobParameters_laneOffset_left_2" text="esquerda(2)"/>
-    <text name="CP_jobParameters_laneOffset_right_2" text="direita(2)"/>
+    <text name="CP_fieldWorkJobParameters_fieldPosition_title" text="Posição no campo:"/>
+    <text name="CP_fieldWorkJobParameters_bunkerSiloPosition_title" text="Posição do silo:"/>
+    <text name="CP_fieldWorkJobParameters_parkPosition_title" text="Park position:"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_startAt" text="Iniciar em:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_title" text="Iniciar em:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_tooltip" text="Onde começar o trabalho no campo"/>
+    <text name="CP_fieldWorkJobParameters_startAt_nearest" text="próximo waypoint"/>
+    <text name="CP_fieldWorkJobParameters_startAt_first" text="primeiro waypoint"/>
+    <text name="CP_fieldWorkJobParameters_startAt_last" text="último waypoint"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bunkerSilo" text="modo silo bunker"/>
+    <text name="CP_fieldWorkJobParameters_startAt_siloLoader" text="Modo carregar silo"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload" text="descarregando colheitadeira"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload_siloLoader" text="Descarregar carregador de silo"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bales" text="fardos coletar/embalar"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_laneOffset" text="Distância da fileira:"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_title" text="Distância da fileira:"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_tooltip" text="Distância da fileira"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_center" text="centro"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left" text="esquerda(1)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right" text="direita(1)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left_2" text="esquerda(2)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right_2" text="direita(2)"/>
     <!---->
     <!--AI bale finder job parameters-->
     <!---->

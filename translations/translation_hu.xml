@@ -30,28 +30,28 @@
     <!---->
     <!--AI job parameters-->
     <!---->
-    <text name="CP_jobParameters_fieldPosition_title" text="Szántóföld:"/>
-    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Siló pozíció:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Parkolási pozíció:"/>
-    <text name="CP_jobParameters_subTitle_startAt" text="Útvonal kezdete:"/>
-    <text name="CP_jobParameters_startAt_title" text="Útvonal kezdete:"/>
-    <text name="CP_jobParameters_startAt_tooltip" text="Melyik útvonalpontnál kezdje a munkát"/>
-    <text name="CP_jobParameters_startAt_nearest" text="legközelebbi pont"/>
-    <text name="CP_jobParameters_startAt_first" text="első pont"/>
-    <text name="CP_jobParameters_startAt_last" text="utoljára használt pont"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker siló mód"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Siló töltési mód"/>
-    <text name="CP_jobParameters_startAt_unload" text="kirakodó kombájn/aprító"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Silo rakodó kiürítése"/>
-    <text name="CP_jobParameters_startAt_bales" text="bálák összegyűjtése/csomagolása"/>
-    <text name="CP_jobParameters_subTitle_laneOffset" text="Konvoj pozíció:"/>
-    <text name="CP_jobParameters_laneOffset_title" text="Konvoj pozíció:"/>
-    <text name="CP_jobParameters_laneOffset_tooltip" text="Konvoj pozíció"/>
-    <text name="CP_jobParameters_laneOffset_center" text="középen"/>
-    <text name="CP_jobParameters_laneOffset_left" text="bal (belső)"/>
-    <text name="CP_jobParameters_laneOffset_right" text="jobb (belső)"/>
-    <text name="CP_jobParameters_laneOffset_left_2" text="bal (külső)"/>
-    <text name="CP_jobParameters_laneOffset_right_2" text="jobb (külsó)"/>
+    <text name="CP_fieldWorkJobParameters_fieldPosition_title" text="Szántóföld:"/>
+    <text name="CP_fieldWorkJobParameters_bunkerSiloPosition_title" text="Siló pozíció:"/>
+    <text name="CP_fieldWorkJobParameters_parkPosition_title" text="Parkolási pozíció:"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_startAt" text="Útvonal kezdete:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_title" text="Útvonal kezdete:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_tooltip" text="Melyik útvonalpontnál kezdje a munkát"/>
+    <text name="CP_fieldWorkJobParameters_startAt_nearest" text="legközelebbi pont"/>
+    <text name="CP_fieldWorkJobParameters_startAt_first" text="első pont"/>
+    <text name="CP_fieldWorkJobParameters_startAt_last" text="utoljára használt pont"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bunkerSilo" text="Bunker siló mód"/>
+    <text name="CP_fieldWorkJobParameters_startAt_siloLoader" text="Siló töltési mód"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload" text="kirakodó kombájn/aprító"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload_siloLoader" text="Silo rakodó kiürítése"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bales" text="bálák összegyűjtése/csomagolása"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_laneOffset" text="Konvoj pozíció:"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_title" text="Konvoj pozíció:"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_tooltip" text="Konvoj pozíció"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_center" text="középen"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left" text="bal (belső)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right" text="jobb (belső)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left_2" text="bal (külső)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right_2" text="jobb (külsó)"/>
     <!---->
     <!--AI bale finder job parameters-->
     <!---->

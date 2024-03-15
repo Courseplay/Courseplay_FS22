@@ -6,7 +6,7 @@ local modName = CpAISiloLoaderWorker and CpAISiloLoaderWorker.MOD_NAME -- for re
 ---@class CpAISiloLoaderWorker
 CpAISiloLoaderWorker = {}
 
-CpAISiloLoaderWorker.startText = g_i18n:getText("CP_jobParameters_startAt_siloLoader")
+CpAISiloLoaderWorker.startText = g_i18n:getText("CP_fieldWorkJobParameters_startAt_siloLoader")
 
 CpAISiloLoaderWorker.MOD_NAME = g_currentModName or modName
 CpAISiloLoaderWorker.NAME = ".cpAISiloLoaderWorker"
@@ -106,7 +106,7 @@ function CpAISiloLoaderWorker:getCpStartableJob(superFunc, isStartedByHud)
     local spec = self.spec_cpAISiloLoaderWorker
     local job = self:getCanStartCpSiloLoaderWorker() and spec.cpJob
     if isStartedByHud and not AIUtil.hasChildVehicleWithSpecialization(self, ConveyorBelt) then 
-        job = self:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_SILO_LOADING and job
+        job = self:getCpStartingPointSetting():getValue() == CpFieldWorkJobParameters.START_AT_SILO_LOADING and job
     end
 	return superFunc(self, isStartedByHud) or job
 end

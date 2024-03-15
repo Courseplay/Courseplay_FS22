@@ -3,8 +3,8 @@
 CpAIJobBunkerSilo = {
 	name = "BUNKER_SILO_CP",
 	jobName = "CP_job_bunkerSilo",
-	fieldPositionParameterText = "CP_jobParameters_bunkerSiloPosition_title",
-	targetPositionParameterText = "CP_jobParameters_parkPosition_title",
+	fieldPositionParameterText = "CP_fieldWorkJobParameters_bunkerSiloPosition_title",
+	targetPositionParameterText = "CP_fieldWorkJobParameters_parkPosition_title",
 }
 local CpAIJobBunkerSilo_mt = Class(CpAIJobBunkerSilo, CpAIJob)
 

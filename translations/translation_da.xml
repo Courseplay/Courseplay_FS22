@@ -30,28 +30,28 @@
     <!---->
     <!--AI job parameters-->
     <!---->
-    <text name="CP_jobParameters_fieldPosition_title" text="Mark position:"/>
-    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Parkerings position:"/>
-    <text name="CP_jobParameters_subTitle_startAt" text="Start ved:"/>
-    <text name="CP_jobParameters_startAt_title" text="Start ved:"/>
-    <text name="CP_jobParameters_startAt_tooltip" text="Hvor bliver arbejdet startet."/>
-    <text name="CP_jobParameters_startAt_nearest" text="Nærmeste vejpunkt"/>
-    <text name="CP_jobParameters_startAt_first" text="Første vejpunkt"/>
-    <text name="CP_jobParameters_startAt_last" text="Sidste vejpunkt"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="kørersilo tilstand"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Silo load mode"/>
-    <text name="CP_jobParameters_startAt_unload" text="Aflad mejetærsker/snitter"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
-    <text name="CP_jobParameters_startAt_bales" text="Saml/Wrap Baller"/>
-    <text name="CP_jobParameters_subTitle_laneOffset" text="Bane offset:"/>
-    <text name="CP_jobParameters_laneOffset_title" text="Bane offset ved konvoj:"/>
-    <text name="CP_jobParameters_laneOffset_tooltip" text="Rutevalg, når et konvojforløb blev oprettet."/>
-    <text name="CP_jobParameters_laneOffset_center" text="Mitte"/>
-    <text name="CP_jobParameters_laneOffset_left" text="Venstre(1)"/>
-    <text name="CP_jobParameters_laneOffset_right" text="Højre(1)"/>
-    <text name="CP_jobParameters_laneOffset_left_2" text="Venstre(2)"/>
-    <text name="CP_jobParameters_laneOffset_right_2" text="Højre(2)"/>
+    <text name="CP_fieldWorkJobParameters_fieldPosition_title" text="Mark position:"/>
+    <text name="CP_fieldWorkJobParameters_bunkerSiloPosition_title" text="Silo position:"/>
+    <text name="CP_fieldWorkJobParameters_parkPosition_title" text="Parkerings position:"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_startAt" text="Start ved:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_title" text="Start ved:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_tooltip" text="Hvor bliver arbejdet startet."/>
+    <text name="CP_fieldWorkJobParameters_startAt_nearest" text="Nærmeste vejpunkt"/>
+    <text name="CP_fieldWorkJobParameters_startAt_first" text="Første vejpunkt"/>
+    <text name="CP_fieldWorkJobParameters_startAt_last" text="Sidste vejpunkt"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bunkerSilo" text="kørersilo tilstand"/>
+    <text name="CP_fieldWorkJobParameters_startAt_siloLoader" text="Silo load mode"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload" text="Aflad mejetærsker/snitter"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bales" text="Saml/Wrap Baller"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_laneOffset" text="Bane offset:"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_title" text="Bane offset ved konvoj:"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_tooltip" text="Rutevalg, når et konvojforløb blev oprettet."/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_center" text="Mitte"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left" text="Venstre(1)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right" text="Højre(1)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left_2" text="Venstre(2)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right_2" text="Højre(2)"/>
     <!---->
     <!--AI bale finder job parameters-->
     <!---->
