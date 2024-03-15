@@ -269,6 +269,10 @@ function CpAIJob.getIsStartErrorText(state)
 	return g_i18n:getText("ai_startStateSuccess")
 end
 
+function CpAIJob:draw(map, isOverviewMap)
+	
+end
+
 
 function CpAIJob:writeStream(streamId, connection)
 	streamWriteBool(streamId, self.isDirectStart)

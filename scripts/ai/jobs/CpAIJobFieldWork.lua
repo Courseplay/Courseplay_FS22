@@ -149,9 +149,12 @@ function CpAIJobFieldWork:validate(farmId)
     return true, ''
 end
 
-function CpAIJobFieldWork:draw(map)
-    if self.selectedFieldPlot then
-        self.selectedFieldPlot:draw(map)
+function CpAIJobFieldWork:draw(map, isOverviewMap)
+	CpAIJob.draw(self, map, isOverviewMap)
+    if not isOverviewMap then
+        if self.selectedFieldPlot then
+            self.selectedFieldPlot:draw(map)
+        end
     end
 end
 
