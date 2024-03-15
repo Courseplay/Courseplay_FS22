@@ -241,7 +241,7 @@ function AIDriveStrategyFindBales:findClosestBale(bales, baleToIgnore)
     local closestBale, minDistance, ix = nil, math.huge, 1
     local invalidBales = 0
     for i, bale in ipairs(bales) do
-        if bale:isStillValid() and bale ~= baleToIgnore then
+        if bale:isStillValid() then
             local _, _, _, d = bale:getPositionInfoFromNode(self.vehicle:getAIDirectionNode())
             self:debug('%d. bale (%d, %s) in %.1f m', i, bale:getId(), bale:getBaleObject(), d)
             if d < self.turningRadius * 4 then
@@ -251,9 +251,13 @@ function AIDriveStrategyFindBales:findClosestBale(bales, baleToIgnore)
                 self:debug('    Dubins length is %.1f m', d)
             end
             if d < minDistance then
-                closestBale = bale
-                minDistance = d
-                ix = i
+                if bale ~= baleToIgnore then
+                    closestBale = bale
+                    minDistance = d
+                    ix = i
+                else
+                    self:debug('    IGNORED')
+                end
             end
         else
             --- When a bale gets wrapped it changes its identity and the node becomes invalid. This can happen
