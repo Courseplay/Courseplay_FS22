@@ -467,11 +467,8 @@ function CpInGameMenuAIFrameExtended:draw()
 	local job = pageAI.currentJob
 	if pageAI.mode == InGameMenuAIFrame.MODE_CREATE or 
 		   pageAI.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR then
-		if job and job.drawSelectedField then
-			job:drawSelectedField(self)
-		end
-		if job and job.drawSilos then 
-			job:drawSilos(self)
+		if job and job.draw then
+			job:draw(self)
 		end
 	end
 

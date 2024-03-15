@@ -107,7 +107,7 @@ function CpAIJobBaleFinder:validateFieldPosition(isValid, errorMessage)
 	return isValid, errorMessage
 end
 
-function CpAIJobBaleFinder:drawSelectedField(map)
+function CpAIJobBaleFinder:draw(map)
 	self.selectedFieldPlot:draw(map)
 end
 

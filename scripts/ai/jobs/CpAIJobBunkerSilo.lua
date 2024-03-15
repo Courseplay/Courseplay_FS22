@@ -109,7 +109,7 @@ function CpAIJobBunkerSilo:validate(farmId)
 	return true, ''
 end
 
-function CpAIJobBunkerSilo:drawSilos(map)
+function CpAIJobBunkerSilo:draw(map)
 	g_bunkerSiloManager:drawSilos(map, self.bunkerSilo)
 end
 

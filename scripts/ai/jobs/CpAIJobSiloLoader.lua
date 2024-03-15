@@ -321,7 +321,7 @@ function CpAIJobSiloLoader:getUnloadTriggerAt(unloadPosition)
 	return found, trigger, station
 end
 
-function CpAIJobSiloLoader:drawSilos(map)
+function CpAIJobSiloLoader:draw(map)
     self.heapPlot:draw(map)
 	g_bunkerSiloManager:drawSilos(map, self.bunkerSilo) 
 	if self.cpJobParameters.unloadAt:getValue() == CpSiloLoaderJobParameters.UNLOAD_TRIGGER then 
