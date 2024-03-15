@@ -284,6 +284,7 @@ function CpSettingsUtil.generateAndBindGuiElementsToSettings(settingsBySubTitle,
 		local clonedSubTitleElement = genericSubTitleElement:clone(parentGuiElement)
 		clonedSubTitleElement:setText(g_i18n:getText(data.title))
 		clonedSubTitleElement.subTitleConfigData = data
+		clonedSubTitleElement:applyScreenAlignment()
 		FocusManager:loadElementFromCustomValues(clonedSubTitleElement)
 		for _, raw_setting in ipairs(data.elements) do 
 			local clonedSettingElement = genericSettingElement:clone(parentGuiElement)
@@ -291,6 +292,7 @@ function CpSettingsUtil.generateAndBindGuiElementsToSettings(settingsBySubTitle,
 			if setting then
 				clonedSettingElement:setDataSource(setting)
 				clonedSettingElement.aiParameter = setting
+				clonedSettingElement:applyScreenAlignment()
 				FocusManager:loadElementFromCustomValues(clonedSettingElement)
 			end
 		end
