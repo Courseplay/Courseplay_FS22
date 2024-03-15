@@ -228,7 +228,7 @@ function CpAIJobCombineUnloader:validate(farmId)
 	return isValid, errorMessage
 end
 
-function CpAIJobCombineUnloader:drawSelectedField(map)
+function CpAIJobCombineUnloader:draw(map)
 	self.selectedFieldPlot:draw(map)
     self.heapPlot:draw(map)
 end

@@ -149,7 +149,7 @@ function CpAIJobFieldWork:validate(farmId)
     return true, ''
 end
 
-function CpAIJobFieldWork:drawSelectedField(map)
+function CpAIJobFieldWork:draw(map)
     if self.selectedFieldPlot then
         self.selectedFieldPlot:draw(map)
     end
