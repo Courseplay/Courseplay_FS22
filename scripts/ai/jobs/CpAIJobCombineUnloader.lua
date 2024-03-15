@@ -281,8 +281,16 @@ function CpAIJobCombineUnloader:setupGiantsUnloaderData(vehicle)
 		local maxOffset = self.dischargeNodeInfos[#self.dischargeNodeInfos].offsetZ
 
 		self.driveToUnloadingTask:setTargetOffset(-maxOffset)
-
 	end
+	local unloadingStation = self.unloadingStationParameter:getUnloadingStation()
+
+	if unloadingStation == nil then
+		return
+	end
+	self.supportedFillTypes = unloadingStation:getAISupportedFillTypes()
+
+
+
 end
 
 function CpAIJobCombineUnloader:getNextTaskIndex(isSkipTask)
@@ -301,6 +309,16 @@ function CpAIJobCombineUnloader:canContinueWork()
 		local canContinue, errorMessage = AIJobDeliver.canContinueWork(self)
 		if not canContinue then 
 			return canContinue, errorMessage
+		end
+		local hasSupportedFillTypeLoaded = false
+		for _, dischargeNodeInfo in ipairs(self.dischargeNodeInfos) do
+			local fillType = dischargeNodeInfo.vehicle:getFillUnitFillType(dischargeNodeInfo.dischargeNode.fillUnitIndex)
+			if self.supportedFillTypes[fillType] then 
+				hasSupportedFillTypeLoaded = true
+			end
+		end
+		if not hasSupportedFillTypeLoaded then
+			return false, AIMessageErrorNoValidFillTypeLoaded.new()
 		end
 	end
 
@@ -336,11 +354,12 @@ function CpAIJobCombineUnloader:getStartTaskIndex()
 	end
 	local fillLevelPercentage = FillLevelManager.getTotalTrailerFillLevelPercentage(vehicle)
 	local readyToDriveUnloading = vehicle:getCpSettings().fullThreshold:getValue() < fillLevelPercentage
-	if readyToDriveUnloading then 
+	if readyToDriveUnloading and self:canContinueWork() then 
 		CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Not close to the field and vehicle is full, so start driving to unload.")
 		--- Small hack, so we can use the giants function and don't need to do copy & paste.
 		local oldTaskIx = self.currentTaskIndex
 		self.currentTaskIndex = self.combineUnloaderTask.taskIndex
+		--- Needs to be used to set the unload target coordinates.
 		self:getNextTaskIndex()
 		self.currentTaskIndex = oldTaskIx
 		return self.driveToUnloadingTask.taskIndex
