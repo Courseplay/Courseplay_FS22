@@ -29,7 +29,8 @@ AIDriveStrategyFindBales.myStates = {
     DRIVING_TO_NEXT_BALE = {},
     APPROACHING_BALE = {},
     WORKING_ON_BALE = {},
-    REVERSING_AFTER_PATHFINDER_FAILURE = {}
+    REVERSING_AFTER_PATHFINDER_FAILURE = {},
+    REVERSING_DUE_TO_OBSTACLE_AHEAD = {}
 }
 
 function AIDriveStrategyFindBales:init(task, job)
@@ -297,7 +298,7 @@ function AIDriveStrategyFindBales:findPathToNextBale()
             table.remove(self.bales, ix)
         else
             self:debug('There is an obstacle ahead, backing up a bit and retry')
-            self:startReversing()
+            self:startReversing(self.states.REVERSING_DUE_TO_OBSTACLE_AHEAD)
         end
     end
 end
@@ -336,7 +337,7 @@ function AIDriveStrategyFindBales:onPathfindingFinished(controller,
                 elseif self:isNearFieldEdge() then
                     self.balesTried = {}
                     self:debug('Finding path to next bale failed, we are close to the field edge, back up a bit and then try again')
-                    self:startReversing()
+                    self:startReversing(self.states.REVERSING_AFTER_PATHFINDER_FAILURE)
                 else
                     self:debug('Finding path to next bale failed, but we are not too close to the field edge')
                     self:retryPathfindingWithAnotherBale()
@@ -345,7 +346,7 @@ function AIDriveStrategyFindBales:onPathfindingFinished(controller,
                 self:info('Pathfinding failed three times or no more bales to try, back up a bit and try again')
                 self.triedReversingAfterPathfinderFailure = true
                 self.balesTried = {}
-                self:startReversing()
+                self:startReversing(self.states.REVERSING_AFTER_PATHFINDER_FAILURE)
             else
                 self:info('Pathfinding failed three times, giving up')
                 self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
@@ -389,9 +390,9 @@ function AIDriveStrategyFindBales:startPathfindingToBale(bale)
     self.pathfinderController:findPathToGoal(context, self:getPathfinderBaleTargetAsGoalNode(bale))
 end
 
-function AIDriveStrategyFindBales:startReversing()
+function AIDriveStrategyFindBales:startReversing(state)
     self:startCourse(Course.createStraightReverseCourse(self.vehicle, 10), 1)
-    self.state = self.states.REVERSING_AFTER_PATHFINDER_FAILURE
+    self.state = state
 end
 
 function AIDriveStrategyFindBales:isObstacleAhead()
@@ -430,8 +431,11 @@ function AIDriveStrategyFindBales:onWaypointPassed(ix, course)
         elseif self.state == self.states.REVERSING_AFTER_PATHFINDER_FAILURE then
             self:debug('backed up after pathfinder failed, trying again')
             self.state = self.states.SEARCHING_FOR_NEXT_BALE
+        elseif self.state == self.states.REVERSING_DUE_TO_OBSTACLE_AHEAD then
+            self:debug('backed due to obstacle, trying again')
+            self.state = self.states.SEARCHING_FOR_NEXT_BALE
         end
-    elseif self.state == self.states.REVERSING_AFTER_PATHFINDER_FAILURE then
+    elseif self.state == self.states.REVERSING_DUE_TO_OBSTACLE_AHEAD then
         if not self:isObstacleAhead() then
             self:debug('backed up after pathfinder failed, no more obstacle ahead, trying again')
             self.state = self.states.SEARCHING_FOR_NEXT_BALE
@@ -476,6 +480,8 @@ function AIDriveStrategyFindBales:getDriveData(dt, vX, vY, vZ)
         self:workOnBale()
         self:setMaxSpeed(0)
     elseif self.state == self.states.REVERSING_AFTER_PATHFINDER_FAILURE then
+        self:setMaxSpeed(self.settings.reverseSpeed:getValue())
+    elseif self.state == self.states.REVERSING_DUE_TO_OBSTACLE_AHEAD then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
     end
 
