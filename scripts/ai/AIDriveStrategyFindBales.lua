@@ -176,9 +176,9 @@ function AIDriveStrategyFindBales:setAllStaticParameters()
     self.turningRadius = AIUtil.getTurningRadius(self.vehicle)
     -- Set the offset to 0, we'll take care of getting the grabber to the right place
     self.settings.toolOffsetX:setFloatValue(0)
-    self.pathfinderFailureCount = 0
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
-
+    -- list of bales we tried (or in the process of trying) to find path for
+    self.balesTried = {}
     self.numBalesLeftOver = 0
 end
 
@@ -213,7 +213,7 @@ function AIDriveStrategyFindBales:findBales()
             -- if the bale has a mountObject it is already on the loader so ignore it
             if not object.mountObject and object:getOwnerFarmId() == self.vehicle:getOwnerFarmId() and
                     self:isBaleOnField(bale) then
-                -- bales may have multiple nodes, using the object.id deduplicates the list
+                -- bales may .have multiple nodes, using the object.id deduplicates the list
                 balesFound[object.id] = bale
             end
         end
@@ -230,11 +230,11 @@ function AIDriveStrategyFindBales:findBales()
 end
 
 ---@param bales table[]
----@param baleToIgnore BaleToCollect|nil exclude this bale from the results
+---@param balesToIgnore BaleToCollect[]|nil exclude bales on this list from the results
 ---@return BaleToCollect|nil closest bale
 ---@return number|nil distance to the closest bale
 ---@return number|nil index of the bale
-function AIDriveStrategyFindBales:findClosestBale(bales, baleToIgnore)
+function AIDriveStrategyFindBales:findClosestBale(bales, balesToIgnore)
     if not bales then 
         return
     end
@@ -251,7 +251,8 @@ function AIDriveStrategyFindBales:findClosestBale(bales, baleToIgnore)
                 self:debug('    Dubins length is %.1f m', d)
             end
             if d < minDistance then
-                if bale ~= baleToIgnore then
+                if not table.hasElement(balesToIgnore or {}, bale) then
+                    -- bale is not on the list of bales to ignore
                     closestBale = bale
                     minDistance = d
                     ix = i
@@ -265,7 +266,7 @@ function AIDriveStrategyFindBales:findClosestBale(bales, baleToIgnore)
             --- in the grabber's way. That is now wrapped but our bale list does not know about it so let's rescan the field
             self:debug('%d. bale (%d, %s) INVALID', i, bale:getId(), bale:getBaleObject())
             invalidBales = invalidBales + 1
-            self:debug('Found an invalid bales, rescanning field', invalidBales)
+            self:debug('Found invalid bale(s), rescanning field', invalidBales)
             self.bales = self:findBales()
             -- return empty, next time this is called everything should be ok
             return
@@ -317,17 +318,29 @@ end
 ---@param goalNodeInvalid boolean|nil
 function AIDriveStrategyFindBales:onPathfindingFinished(controller, 
     success, course, goalNodeInvalid)
-    if self.state == self.states.DRIVING_TO_NEXT_BALE then 
-        if success then 
+    if self.state == self.states.DRIVING_TO_NEXT_BALE then
+        if success then
+            self.balesTried = {}
             self:startCourse(course, 1)
-        elseif goalNodeInvalid then
-            -- there may be another bale too close to the previous one
-            self:debug('Pathfinding failed, goal node invalid.')
-            self:retryPathfindingWithAnotherBale()
-            return
         else
-            self:info('Pathfinding failed, giving up!')
-            self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
+            g_baleToCollectManager:unlockBalesByDriver(self)
+            if #self.balesTried < 3 then
+                if goalNodeInvalid then
+                    -- there may be another bale too close to the previous one
+                    self:debug('Finding path to next bale failed, goal node invalid.')
+                    self:retryPathfindingWithAnotherBale()
+                elseif self:isNearFieldEdge() then
+                    self.balesTried = {}
+                    self:debug('Finding path to next bale failed, we are close to the field edge, back up a bit and then try again')
+                    self:startReversing()
+                else
+                    self:debug('Finding path to next bale failed, but we are not too close to the field edge')
+                    self:retryPathfindingWithAnotherBale()
+                end
+            else
+                self:info('Pathfinding failed three times, giving up')
+                self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
+            end
         end
     end
 end
@@ -335,47 +348,13 @@ end
 --- After pathfinding failed, retry with another bale
 function AIDriveStrategyFindBales:retryPathfindingWithAnotherBale()
     self:debug("Retrying with another bale.")
-    local bale, d, ix = self:findClosestBale(self.bales, self.lastPathfinderBaleTarget)
+    local bale, d, ix = self:findClosestBale(self.bales, self.balesTried)
     if bale then
         self:startPathfindingToBale(bale)
     else
+        self.balesTried = {}
         self:debug("No valid bale found on retry!")
         self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
-    end
-end
-
---- Pathfinding failed, but a retry attempt is leftover.
----@param controller PathfinderController
----@param lastContext PathfinderContext
----@param wasLastRetry boolean
----@param currentRetryAttempt number
-function AIDriveStrategyFindBales:onPathfindingRetry(controller, 
-    lastContext, wasLastRetry, currentRetryAttempt)
-    if self.state == self.states.DRIVING_TO_NEXT_BALE then 
-        g_baleToCollectManager:unlockBalesByDriver(self)
-        if currentRetryAttempt == 1 then 
-            if self.lastPathfinderBaleTarget 
-                and g_baleToCollectManager:isValidBale(self.lastPathfinderBaleTarget) then 
-                self:debug("Retrying the same bale again.")
-                self:startPathfindingToBale(self.lastPathfinderBaleTarget)
-            else 
-                self:retryPathfindingWithAnotherBale()
-            end
-        else 
-            if self:isNearFieldEdge() then
-                self:debug('Finding path to next bale failed twice, we are close to the field edge, back up a bit and then try again')
-                self:startReversing()
-            else
-                self:debug('Finding path to next bale failed twice, but we are not too close to the field edge, trying another bale')
-                local bale, d, ix = self:findClosestBale(self.bales)
-                if bale then 
-                    self:startPathfindingToBale(bale)
-                else 
-                    self:debug("No valid bale found on retry: %d!", currentRetryAttempt)
-                    self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
-                end
-            end
-        end
     end
 end
 
@@ -397,8 +376,8 @@ function AIDriveStrategyFindBales:startPathfindingToBale(bale)
     self.state = self.states.DRIVING_TO_NEXT_BALE
     g_baleToCollectManager:lockBale(bale:getBaleObject(), self)
     local context = PathfinderContext(self.vehicle):objectsToIgnore(self:getBalesToIgnore()):allowReverse(false)
-    self.lastPathfinderBaleTarget = bale
-    self.pathfinderController:findPathToGoal(context, self:getPathfinderBaleTargetAsGoalNode(bale), 3)
+    table.insert(self.balesTried, bale)
+    self.pathfinderController:findPathToGoal(context, self:getPathfinderBaleTargetAsGoalNode(bale))
 end
 
 function AIDriveStrategyFindBales:startReversing()
@@ -468,7 +447,7 @@ function AIDriveStrategyFindBales:getDriveData(dt, vX, vY, vZ)
         else
             --- Waiting until the unfolding has finished.
             if self.bales == nil then 
-                --- Makes sure the hud bale counter already get's updated
+                --- Makes sure the hud bale counter already gets updated
                 self.bales = self:findBales() 
             end
             self:setMaxSpeed(0)

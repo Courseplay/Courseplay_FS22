@@ -69,7 +69,7 @@ function BaleToCollect.isValidBale(object, baleWrapper, baleLoader, baleWrapType
 end
 
 function BaleToCollect:isStillValid()
-	return BaleToCollect.isValidBale(self.bale)
+	return BaleToCollect.isValidBale(self.bale) and not self:isLocked()
 end
 
 function BaleToCollect:isLoaded()
@@ -104,6 +104,10 @@ end
 
 function BaleToCollect:getBaleObject()
 	return self.bale
+end
+
+function BaleToCollect:isLocked()
+	return not g_baleToCollectManager:isValidBale(self.bale)
 end
 
 function BaleToCollect:getPosition()
