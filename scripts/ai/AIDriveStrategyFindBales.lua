@@ -179,6 +179,9 @@ function AIDriveStrategyFindBales:setAllStaticParameters()
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
     -- list of bales we tried (or in the process of trying) to find path for
     self.balesTried = {}
+    -- when everything fails, reverse and try again. This is reset only when a pathfinding succeeds to avoid
+    -- backing up forever
+    self.triedReversingAfterPathfinderFailure = false
     self.numBalesLeftOver = 0
 end
 
@@ -320,6 +323,7 @@ function AIDriveStrategyFindBales:onPathfindingFinished(controller,
     success, course, goalNodeInvalid)
     if self.state == self.states.DRIVING_TO_NEXT_BALE then
         if success then
+            self.triedReversing = false
             self.balesTried = {}
             self:startCourse(course, 1)
         else
@@ -337,6 +341,11 @@ function AIDriveStrategyFindBales:onPathfindingFinished(controller,
                     self:debug('Finding path to next bale failed, but we are not too close to the field edge')
                     self:retryPathfindingWithAnotherBale()
                 end
+            elseif not self.triedReversing then
+                self:info('Pathfinding failed three times, back up a bit and try again')
+                self.triedReversing = true
+                self.balesTried = {}
+                self:startReversing()
             else
                 self:info('Pathfinding failed three times, giving up')
                 self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
