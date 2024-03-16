@@ -323,12 +323,12 @@ function AIDriveStrategyFindBales:onPathfindingFinished(controller,
     success, course, goalNodeInvalid)
     if self.state == self.states.DRIVING_TO_NEXT_BALE then
         if success then
-            self.triedReversing = false
+            self.triedReversingAfterPathfinderFailure = false
             self.balesTried = {}
             self:startCourse(course, 1)
         else
             g_baleToCollectManager:unlockBalesByDriver(self)
-            if #self.balesTried < 3 then
+            if #self.balesTried < 3 and #self.bales > #self.balesTried then
                 if goalNodeInvalid then
                     -- there may be another bale too close to the previous one
                     self:debug('Finding path to next bale failed, goal node invalid.')
@@ -341,9 +341,9 @@ function AIDriveStrategyFindBales:onPathfindingFinished(controller,
                     self:debug('Finding path to next bale failed, but we are not too close to the field edge')
                     self:retryPathfindingWithAnotherBale()
                 end
-            elseif not self.triedReversing then
-                self:info('Pathfinding failed three times, back up a bit and try again')
-                self.triedReversing = true
+            elseif not self.triedReversingAfterPathfinderFailure then
+                self:info('Pathfinding failed three times or no more bales to try, back up a bit and try again')
+                self.triedReversingAfterPathfinderFailure = true
                 self.balesTried = {}
                 self:startReversing()
             else
