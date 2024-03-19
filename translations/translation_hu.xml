@@ -607,9 +607,9 @@ A szerkesztő mód aktiválása a következő opciókat teszi elérhetővé:
   1) Kattints az áthelyezés gombra a képernyő alján.
   2) Kattints az áthelyezni kívánt útvonalra.
   3) Kattints arra a könyvtárra, ahová az útvonalat át szeretné helyezni.
-Az átnevezéshez egyszerűen kattint az átnevezés gombra, majd a mappára vagy a mentet útra. Ezután csak írd be az új nevet.
-Egy útvpnal vagy könyvtár törléséhez kattintson a törlés gombra, majd a törölni kívánt mappára vagy útra.
-A könyvtáraknak üresnek kell lenniük, ha törölni szeretné őket.
+Az átnevezéshez egyszerűen kattints az átnevezés gombra, majd a mappára vagy a mentet útvonalra. Ezután csak írd be az új nevet.
+Egy útvonal vagy könyvtár törléséhez kattints a törlés gombra, majd a törölni kívánt mappára vagy útvonalra.
+A könyvtáraknak üresnek kell lenniük, ha törölni szeretnéd őket.
 "/>
     <text name="CP_help_page_minihud_title" text="Mini HUD"/>
     <text name="CP_help_page_minihud_text" text="
@@ -626,7 +626,7 @@ J: Útvonal másolása és beillesztése egy másik járműre.
     A másolás gomb megnyomása után az útvonal beilleszthető egy útvonal nélküli járműbe, amikor az ikon zöldre vált.
 K és L: A szövegre kattintva visszaállítja az automatikus értékek módosításait.
 M: Megjeleníti a másolt útvonalat.
-N: Ez a terület a sáveltolódást mutatja, ha többjárműves (multitool) pálya van betöltve. A szövegre kattintva válthat a pozíciók között.
+N: Ez a terület a sáveltolódást mutatja, ha többjárműves (multitool) útvonal van betöltve. A szövegre kattintva válthat a pozíciók között.
 O: Egyéni útvonal rögzítésének indítása/leállítása.
 P: Eltávolítja az útvonalat a járműből.
 Q: Módosítja az útvonal láthatóságát: be, ki és csak start/stop között.
@@ -807,20 +807,18 @@ A pótkocsik ürítéséhez használhatja a Giants Helpert (FS22 Segítő) vagy 
 A kirakó elindításához néhány dologra van szükség:
 - Egyetlen utánfutót vagy áttöltő kocsit kell csatlakoztatni. Több utánfutó nem támogatott.
 - Használja a HUD Cél ikonját a betakarított tábla kiválasztásához. A kirakodó kirakja az összes Courseplay hajtott betakarítógépet, amely azon a területen dolgozik.
-- A kirakodó elindításához a pályán vagy a pálya 20 méteres körzetében kell lennie.
+- A kirakodó elindításához a táblán, vagy annak 20 méteres körzetében kell lennie.
 
 A kirakodó csak néhány beállítással rendelkezik, amelyeket módosíthat:
-- Beállíthatja azt a feltöltési szintet, amelynél a kirakodó telinek tekinti magát. Ez
-Az, hogy ne várjon egy kombájnra, ha a pótkocsi majdnem tele van.
+- Beállíthatod azt a feltöltési szintet, amelynél a kirakodó telinek tekinti magát, hogy
+ne várjon egy kombájnra, ha a pótkocsi majdnem tele van.
 - A HUD-ban található eltolásokkal beállíthatja a kirakodó helyzetét a betakarítógép csöve alatt.
 "/>
     <text name="CP_help_page_unloaderTrailer_title" text="Utánfutók használata"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
-Ha pótkocsit használsz a kirakodáshoz, kétféleképpen szállíthatja a termést a silóba vagy az értékesítési pontra: a Giants segítő (FS22 Segítő)
-vagy AutoDrive.
-Használhatja az AI menüt és létrehozhat egy munkát, majd aktiválhatja a Giants segítő funkciót, és kirakhatja a célt a
-a lista aljára, vagy a HUD kerék ikonjának aktiválásával.
-Utóbbi esetben a kerék ikon kékre váltásd, után kell kiválasztani a kirakodó állomást.
+Ha egy utánfutót használsz a termény szállításához, két lehetőséged van az aratott termény szállítására: Giants segédjét, vagy az AutoDrive-ot használhatod.
+Az AI menü segítségével létrehozol egy feladatot, majd aktiválod a Giants segéd funkcióját és a lerakási célt a lista alján, vagy a HUD-on található kerék
+ikon aktiválásával kapcsolhatod be. Utóbbi esetben a kék színre váltott kerék ikon után kell kiválasztanod a lerakási állomást.
 
 Az utánfutó ürítése az AutoDrive-val ugyanúgy működik, mint egy rakodókocsi használata, tekintsd meg az AutoDrive oktatóanyagát az interneten (AutoDrive Tutorials).
 "/>
@@ -828,7 +826,7 @@ Az utánfutó ürítése az AutoDrive-val ugyanúgy működik, mint egy rakodók
     <text name="CP_help_page_unloaderAuger_text" text="
 Az áttöltő kocsi használata nagyon egyszerű.
 Csakúgy, mint a pótkocsik esetében, itt is a célkereszt ikon segítségével választhatod ki azt a táblát, ahová ki szeretné rakni a kombájnt vagy a betakarítógépet.
-A kirakodó elindításához helyezze vissza az útvonalra vagy 20 méteren belülre.
+A kirakodó elindításához helyezd vissza a táblára vagy annak 20 méteres körzetébe.
 Ha az áttöltő kocsi megtelik, automatikusan keres egy utánfutót a szántóföldön vagy annak közelében, hogy áttöltsön.
 Abban az esetben, ha az utánfutó megtelt, és az áttöltő kocsi még mindig nem üres, akkor keres egy másik pótkocsit, amelyre ki kell rakodnia.
 Ha nem áll rendelkezésre pótkocsi, folytatja a kombájn kiürítését.
