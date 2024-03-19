@@ -148,10 +148,6 @@ function CpFieldWorkJobParameters.getSettings(vehicle)
     return vehicle.spec_cpAIFieldWorker.cpJob:getCpJobParameters()
 end
 
-function CpFieldWorkJobParameters:isUnloadRefillTargetDisabled()
-    return self:isGiantsForStreetActive() --- TODO: Added check for refill/unload possibilities ...
-end
-
 function CpFieldWorkJobParameters:getMultiTools()
     local vehicle = self.job:getVehicle()
     if vehicle then 
