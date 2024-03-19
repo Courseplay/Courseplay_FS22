@@ -67,6 +67,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 
 	self.subTitlePrefab:unlinkElement()
 	FocusManager:removeElement(self.subTitlePrefab)
+
 	self.multiTextOptionPrefab:unlinkElement()
 	FocusManager:removeElement(self.multiTextOptionPrefab)
 
@@ -79,11 +80,12 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	FocusManager:removeElement(self.createMultiOptionTemplate)
 	self.createMultiOptionTemplate:delete()
 	self.createMultiOptionTemplate = self.createCpMultiOptionTemplate
+	self.createMultiOptionTemplate:applyScreenAlignment()
 
 	FocusManager:removeElement(self.createTextTemplate)
 	self.createTextTemplate:delete()
 	self.createTextTemplate = self.createCpTextTemplate	
-
+	self.createTextTemplate:applyScreenAlignment()
 
 	self.courseGeneratorLayout:setVisible(false)
 	--- Makes the last selected hotspot is not sold before reopening.

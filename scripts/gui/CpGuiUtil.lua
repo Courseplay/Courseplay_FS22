@@ -479,13 +479,13 @@ function CpGuiUtil.openCourseGeneratorGui(vehicle)
     pageAI.currentJobTypes = {}
 	local currentJobTypesTexts = {}
 	local currentJobTypeIndex, currentIndex = nil, nil
-	for name, index in pairs(AIJobType) do
+	for index, jobType in ipairs(g_currentMission.aiJobTypeManager.jobTypes) do
 		if pageAI.jobTypeInstances[index]:getIsAvailableForVehicle(vehicle) then
 			table.insert(pageAI.currentJobTypes, index)
-			table.insert(currentJobTypesTexts, g_currentMission.aiJobTypeManager:getJobTypeByIndex(index).title)
+			table.insert(currentJobTypesTexts, jobType.title)
 			if pageAI.jobTypeInstances[index]:isa(CpAIJob) then 
-				currentJobTypeIndex = index
-				currentIndex = #pageAI.currentJobTypes
+				currentJobTypeIndex = currentJobTypeIndex or index
+				currentIndex = currentIndex or #pageAI.currentJobTypes
 			end
 		end
 	end
