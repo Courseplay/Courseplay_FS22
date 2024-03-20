@@ -1509,7 +1509,7 @@ function AIDriveStrategyUnloadCombine:onPathfindingFailed(giveUpFunc, controller
         controller:retry(lastContext)
     elseif currentRetryAttempt == 2 then
         self:debug('Second attempt to find path failed, trying with reduced off-field penalty and fruit percent')
-        lastContext:maxFruitPercent(self:getMaxFruitPercent() / 2):offFieldPenalty(PathfinderContext.defaultOffFieldPenalty / 2)
+        lastContext:maxFruitPercent(self:getMaxFruitPercent() / 2):offFieldPenalty(PathfinderContext.defaultOffFieldPenalty / 2):ignoreFruitHeaps()
         controller:retry(lastContext)
     elseif currentRetryAttempt == 3 then
         self:debug('Third attempt to find path failed, trying with reduced off-field penalty and no fruit avoidance')
