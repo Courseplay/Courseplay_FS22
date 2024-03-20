@@ -9,6 +9,7 @@ PipeController.PIPE_STATE_MOVING = 0
 PipeController.PIPE_STATE_CLOSED = 1
 PipeController.PIPE_STATE_OPEN = 2
 PipeController.moveablePipeHeightOffset = 1 --- Offset to the calculated pipe height.
+PipeController.unloadingToGroundSpeed = 3
 
 function PipeController:init(vehicle, implement, isConsoleCommand)
     self.isConsoleCommand = isConsoleCommand
@@ -35,9 +36,8 @@ function PipeController:getDriveData()
     local maxSpeed
     if self.isDischargingToGround then
         if self.isDischargingTimer:get() then
-            --- Waiting until the discharging stopped or 
-            --- the trailer is empty and the folding animation is playing.
-            maxSpeed = 0
+            --- Slows down the driver while unloading
+            maxSpeed = self.unloadingToGroundSpeed
             self:debugSparse("Waiting for unloading!")
         end
         if self.implement:getIsAIPreparingToDrive() or self:isPipeMoving() then
