@@ -118,6 +118,10 @@ function AIDriveStrategyFindBales:isReadyToLoadNextBale()
     return not isGrabbingBale
 end
 
+function AIDriveStrategyFindBales:isGrabbingBale()
+    return not self:isReadyToLoadNextBale()
+end
+
 --- Have any bales been loaded?
 function AIDriveStrategyFindBales:hasBalesLoaded()
     local hasBales = false
@@ -287,6 +291,11 @@ function AIDriveStrategyFindBales:getDubinsPathLengthToBale(bale)
 end
 
 function AIDriveStrategyFindBales:findPathToNextBale()
+    if self.bumpedIntoAnotherBale then
+        self.bumpedIntoAnotherBale = false
+        self:debug("Bumped into a bale other than the target on the way, rescanning.")
+        self:findBales()
+    end
     local bale, d, ix = self:findClosestBale(self.bales)
     if bale then
         if bale:isLoaded() then
@@ -473,6 +482,10 @@ function AIDriveStrategyFindBales:getDriveData(dt, vX, vY, vZ)
         self:setMaxSpeed(0)
     elseif self.state == self.states.DRIVING_TO_NEXT_BALE then
         self:setMaxSpeed(self.settings.fieldSpeed:getValue())
+        if not self.bumpedIntoAnotherBale and self:isGrabbingBale() then
+            -- we are not at the bale yet but grabbing something, likely bumped into another bale
+            self.bumpedIntoAnotherBale = true
+        end
     elseif self.state == self.states.APPROACHING_BALE then
         self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue() / 2)
         self:approachBale()
