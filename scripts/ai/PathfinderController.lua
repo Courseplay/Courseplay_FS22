@@ -39,7 +39,7 @@ function Strategy:startPathfindingToGoal()
 	context:set(
 		...
 	)
-	self.pathfinderController:registerListeners(self, self.onPathfindingFinished, self.onPathfindingRetry, 
+	self.pathfinderController:registerListeners(self, self.onPathfindingFinished, self.onPathfindingFailed,
 	    self.onPathfindingObstacleAtStart)
 
 	local numRetries = 2
@@ -61,7 +61,7 @@ function Strategy:onPathfindingFinished(controller : PathfinderController, succe
 	end
 end
 
-function Strategy:onPathfindingRetry(controller : PathfinderController, currentContext : PathfinderContext,
+function Strategy:onPathfindingFailed(controller : PathfinderController, currentContext : PathfinderContext,
 	wasLastRetry : boolean, currentRetryAttempt : number)
 	if currentRetryAttempt == 1 then 
 		// Reduced fruit impact:
@@ -143,15 +143,15 @@ end
 --- TODO: Decide if multiple registered listeners are needed or not?
 ---@param object table
 ---@param successFunc function func(PathfinderController, success, Course, goalNodeInvalid)
----@param retryFunc function func(PathfinderController, last context, was last retry, retry attempt number)
+---@param failedFunc function func(PathfinderController, last context, was last retry, retry attempt number)
 ---@param obstacleAtStartFunc function|nil func(PathfinderController, last context, obstacleFront, obstacleBehind),
 --- called when there is an obstacle ahead of the vehicle so it can't even start driving anywhere forward. In this case
 --- pathfinding makes no sense. No check if no callback is registered.
 --- TODO: check aft as well if reverse pathfinding allowed.
-function PathfinderController:registerListeners(object, successFunc, retryFunc, obstacleAtStartFunc)
+function PathfinderController:registerListeners(object, successFunc, failedFunc, obstacleAtStartFunc)
     self.callbackObject = object
     self.callbackSuccessFunction = successFunc
-    self.callbackRetryFunction = retryFunc
+    self.callbackFailedFunction = failedFunc
     self.callbackObstacleAtStartFunction = obstacleAtStartFunc
 end
 
@@ -195,13 +195,13 @@ function PathfinderController:onFinish(path, goalNodeInvalid)
     self.timeTakenMs = g_time - self.startedAt
     local retValue = self:isValidPath(path, goalNodeInvalid)
     if retValue == self.ERROR_NO_PATH_FOUND then
-        if self.callbackRetryFunction then
+        if self.callbackFailedFunction then
             --- Retry is allowed, so check if any tries are leftover
             if self.failCount < self.numRetries then
                 self:debug("Failed with try %d of %d.", self.failCount, self.numRetries)
                 --- Retrying the path finding
                 self.failCount = self.failCount + 1
-                self:callCallback(self.callbackRetryFunction,
+                self:callCallback(self.callbackFailedFunction,
                         self.currentContext, self.failCount == self.numRetries, self.failCount, false)
                 return
             elseif self.numRetries > 0 then

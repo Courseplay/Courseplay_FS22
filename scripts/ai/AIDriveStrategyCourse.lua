@@ -124,7 +124,7 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
     self.turningRadius = AIUtil.getTurningRadius(vehicle)
 
     self.pathfinderController = PathfinderController(vehicle, self.turningRadius)
-    self.pathfinderController:registerListeners(self, self.onPathfindingFinished, self.onPathfindingRetry)
+    self.pathfinderController:registerListeners(self, self.onPathfindingFinished, self.onPathfindingFailed)
 
     self:setAllStaticParameters()
 
@@ -611,7 +611,7 @@ end
 ---@param lastContext PathfinderContext
 ---@param wasLastRetry boolean
 ---@param currentRetryAttempt number
-function AIDriveStrategyCourse:onPathfindingRetry(controller, lastContext, wasLastRetry, currentRetryAttempt)
+function AIDriveStrategyCourse:onPathfindingFailed(controller, lastContext, wasLastRetry, currentRetryAttempt)
     -- override
 end
 

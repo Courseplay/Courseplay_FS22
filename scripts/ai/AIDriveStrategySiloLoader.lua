@@ -282,7 +282,7 @@ end
 ---@param lastContext PathfinderContext
 ---@param wasLastRetry boolean
 ---@param currentRetryAttempt number
-function AIDriveStrategySiloLoader:onPathfindingRetry(controller, 
+function AIDriveStrategySiloLoader:onPathfindingFailed(controller,
     lastContext, wasLastRetry, currentRetryAttempt)
     --- TODO: Think of possible points of failures, that could be adjusted here.
     ---       Maybe a small reverse course might help to avoid a deadlock
