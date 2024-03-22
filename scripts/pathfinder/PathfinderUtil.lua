@@ -363,7 +363,7 @@ end
 
 PathfinderUtil.collisionDetector = PathfinderUtil.CollisionDetector()
 
----@param areaToIgnoreFruit PathfinderUtil.Area
+---@param areaToIgnoreFruit PathfinderUtil.Area|nil
 function PathfinderUtil.hasFruit(x, z, length, width, areaToIgnoreFruit)
     if areaToIgnoreFruit and areaToIgnoreFruit:contains(x, z) then
         return false

@@ -394,7 +394,8 @@ end
 function AIDriveStrategyFindBales:startPathfindingToBale(bale)
     self.state = self.states.DRIVING_TO_NEXT_BALE
     g_baleToCollectManager:lockBale(bale:getBaleObject(), self)
-    local context = PathfinderContext(self.vehicle):objectsToIgnore(self:getBalesToIgnore()):allowReverse(false)
+    local context = PathfinderContext(self.vehicle):objectsToIgnore(self:getBalesToIgnore())
+    context:allowReverse(false):maxFruitPercent(self.settings.avoidFruit:getValue() and 10 or math.huge)
     table.insert(self.balesTried, bale)
     self.pathfinderController:findPathToGoal(context, self:getPathfinderBaleTargetAsGoalNode(bale))
 end
