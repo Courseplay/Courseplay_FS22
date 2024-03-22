@@ -1964,6 +1964,10 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
 
     if combineStrategy:isTurning() then
         if not combineStrategy:isFinishingRow() then
+            -- harvester is now about the start the turn after it finished the row
+            -- in any case, we stop here, don't want to follow it through the turn.
+            -- We expect it to stop here as well until empty (see shouldHoldInTurnManeuver())
+            self:setMaxSpeed(0)
             if combineStrategy:alwaysNeedsUnloader() then
                 if not combineStrategy:isProcessingFruit() then
                     self:debug('Harvester stopped processing fruit, finish unloading')
@@ -1974,9 +1978,7 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
                     self:debugSparse('Waiting for harvester to stop processing fruit')
                 end
             else
-                self:debug('Combine turning, finish unloading.')
-                self:onUnloadingMovingCombineFinished(combineStrategy)
-                return
+                self:debugSparse('Combine turning, wait until it stops discharging.')
             end
         end
     elseif combineStrategy:isManeuvering() then
