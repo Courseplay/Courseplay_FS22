@@ -106,6 +106,10 @@ function AIDriveStrategyDriveToFieldWorkStart:update(dt)
 end
 
 function AIDriveStrategyDriveToFieldWorkStart:getDriveData(dt, vX, vY, vZ)
+
+    self:updateLowFrequencyImplementControllers()
+    self:updateLowFrequencyPathfinder()
+
     local moveForwards = not self.ppc:isReversing()
     local gx, gz, _
 
@@ -117,9 +121,7 @@ function AIDriveStrategyDriveToFieldWorkStart:getDriveData(dt, vX, vY, vZ)
         gx, _, gz = self.ppc:getGoalPointPosition()
     end
 
-    if self.state == self.states.WAITING_FOR_PATHFINDER then
-        self:setMaxSpeed(0)
-    elseif self.state == self.states.PREPARE_TO_DRIVE then
+    if self.state == self.states.PREPARE_TO_DRIVE then
         self:setMaxSpeed(0)
         local isReadyToDrive, blockingVehicle = self.vehicle:getIsAIReadyToDrive()
         if isReadyToDrive or not self.settings.foldImplementAtEnd:getValue() then
@@ -157,60 +159,59 @@ end
 ---@param course Course
 ---@param ix number
 function AIDriveStrategyDriveToFieldWorkStart:startCourseWithPathfinding(course, ix)
-    if not self.pathfinder or not self.pathfinder:isActive() then
-        -- set a course so the PPC is able to do its updates.
-        self.course = course
-        self.ppc:setCourse(self.course)
-        self.ppc:initialize(ix)
-        self:rememberCourse(course, ix)
-        self:setFrontAndBackMarkers()
-        local x, _, z = course:getWaypointPosition(ix)
-        self:debug('offsetx %.1f, x %.1f, z %.1f', course.offsetX, x, z)
-        self.state = self.states.WAITING_FOR_PATHFINDER
-        local fieldNum = CpFieldUtil.getFieldIdAtWorldPosition(x, z)
-        -- if there is fruit at the target, create an area around it where the pathfinder ignores the fruit
-        -- so there's no penalty driving there. This is to speed up pathfinding when start harvesting for instance
-        local fruitAtTarget = PathfinderUtil.hasFruit(x, z, self.workWidth, self.workWidth)
-        self.pathfindingStartedAt = g_currentMission.time
-        local done, path
-        local _, steeringLength = AIUtil.getSteeringParameters(self.vehicle)
-        -- always drive a behind the target waypoint so there's room to straighten out towed implements
-        -- a bit before start working
-        self.zOffset = math.min(-self.frontMarkerDistance, -steeringLength)
-        self:debug('Pathfinding to waypoint %d, with zOffset %.1f = min(%.1f, %.1f)', ix, self.zOffset,
-                -self.frontMarkerDistance, -steeringLength)
-        local context = PathfinderContext(self.vehicle):allowReverse(self:getAllowReversePathfinding())
-        context:useFieldNum(fieldNum)
-        context:areaToIgnoreFruit(fruitAtTarget and PathfinderUtil.Area(x, z, 2 * self.workWidth) or nil)
-        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(course, ix,
-                self.multitoolOffset, self.zOffset, context)
-        if done then
-            return self:onPathfindingDoneToCourseStart(path)
-        else
-            self:setPathfindingDoneCallback(self, self.onPathfindingDoneToCourseStart)
-            return true
-        end
-    else
-        self:info('Pathfinder already active')
-        self.state = self.states.PREPARE_TO_DRIVE
-        return false
-    end
+    self.course = course
+    self.ppc:setCourse(self.course)
+    self.ppc:initialize(ix)
+    self:rememberCourse(course, ix)
+    self:setFrontAndBackMarkers()
+
+    local context = PathfinderContext(self.vehicle)
+    context:maxFruitPercent(self.settings.avoidFruit:getValue() and 10 or math.huge)
+    -- if there is fruit at the target, create an area around it where the pathfinder ignores the fruit
+    -- so there's no penalty driving there. This is to speed up pathfinding when start harvesting for instance
+    local x, _, z = course:getWaypointPosition(ix)
+    local fruitAtTarget = PathfinderUtil.hasFruit(x, z, self.workWidth, self.workWidth)
+    local fieldNum = CpFieldUtil.getFieldIdAtWorldPosition(x, z)
+    context:areaToIgnoreFruit(fruitAtTarget and PathfinderUtil.Area(x, z, 2 * self.workWidth) or nil)
+    context:useFieldNum(fieldNum):allowReverse(self:getAllowReversePathfinding())
+
+    local _, steeringLength = AIUtil.getSteeringParameters(self.vehicle)
+    -- always drive a behind the target waypoint so there's room to straighten out towed implements
+    -- a bit before start working
+    self.zOffset = math.min(-self.frontMarkerDistance, -steeringLength)
+    self:debug('Pathfinding to waypoint %d, with zOffset %.1f = min(%.1f, %.1f)', ix, self.zOffset,
+            -self.frontMarkerDistance, -steeringLength)
+
+    self.pathfinderController:findPathToWaypoint(context, course, 
+        ix, self.multitoolOffset, self.zOffset, 1)
 end
 
-function AIDriveStrategyDriveToFieldWorkStart:onPathfindingDoneToCourseStart(path)
-    local fieldWorkCourse, ix = self:getRememberedCourseAndIx()
-    local courseToStart
-    if path and #path > 2 then
-        self:debug('Pathfinding to start fieldwork finished with %d waypoints (%d ms)',
-                #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
-        courseToStart = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-        courseToStart:adjustForTowedImplements(2)
+--- Pathfinding has finished
+---@param controller PathfinderController
+---@param success boolean
+---@param course Course|nil
+---@param goalNodeInvalid boolean|nil
+function AIDriveStrategyDriveToFieldWorkStart:onPathfindingFinished(controller, success, course, goalNodeInvalid)
+    if success then 
+        course:adjustForTowedImplements(2)
     else
         self:debug('Pathfinding to start fieldwork failed, using alignment course instead')
-        courseToStart = self:createAlignmentCourse(fieldWorkCourse, ix)
+        local fieldWorkCourse, ix = self:getRememberedCourseAndIx()
+        course = self:createAlignmentCourse(fieldWorkCourse, ix)
     end
     self.state = self.states.PREPARE_TO_DRIVE
-    self:startCourse(courseToStart, 1)
+    self:startCourse(course, 1)
+end
+
+--- Pathfinding failed, but a retry attempt is leftover.
+---@param controller PathfinderController
+---@param lastContext PathfinderContext
+---@param wasLastRetry boolean
+---@param currentRetryAttempt number
+function AIDriveStrategyDriveToFieldWorkStart:onPathfindingRetry(controller, lastContext, wasLastRetry, currentRetryAttempt)
+    self:debug('Failed to find a path, trying with a reduced off-field penalty and no fruit avoidence again')
+    lastContext:offFieldPenalty(PathfinderContext.defaultOffFieldPenalty / 2):ignoreFruit():ignoreFruitHeaps()
+    controller:retry(lastContext)
 end
 
 -----------------------------------------------------------------------------------------------------------------------
