@@ -208,7 +208,7 @@ end
 ---@param lastContext PathfinderContext
 ---@param wasLastRetry boolean
 ---@param currentRetryAttempt number
-function AIDriveStrategyDriveToFieldWorkStart:onPathfindingRetry(controller, lastContext, wasLastRetry, currentRetryAttempt)
+function AIDriveStrategyDriveToFieldWorkStart:onPathfindingFailed(controller, lastContext, wasLastRetry, currentRetryAttempt)
     self:debug('Failed to find a path, trying with a reduced off-field penalty and no fruit avoidence again')
     lastContext:offFieldPenalty(PathfinderContext.defaultOffFieldPenalty / 2):ignoreFruit():ignoreFruitHeaps()
     controller:retry(lastContext)
