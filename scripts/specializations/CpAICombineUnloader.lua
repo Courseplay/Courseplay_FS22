@@ -240,7 +240,7 @@ end
 
 --- If we have a trailer which can be emptied, we can unload a combine
 function CpAICombineUnloader:getCanStartCpCombineUnloader()
-	return not self:getCanStartCpFieldWork() and CpAICombineUnloader.isOnlyOneTrailerAttached(self)
+	return not (self:getCanStartCpFieldWork() and self:hasCpCourse()) and CpAICombineUnloader.isOnlyOneTrailerAttached(self)
 end
 
 function CpAICombineUnloader:getCanStartCp(superFunc)
