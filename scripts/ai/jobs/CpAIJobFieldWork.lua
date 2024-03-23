@@ -13,7 +13,7 @@ function CpAIJobFieldWork.new(isServer, customMt)
 
     self.hasValidPosition = false
     self.foundVines = nil
-    self.selectedFieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
+    self.selectedFieldPlot = FieldPlot(true)
     self.selectedFieldPlot:setVisible(false)
     return self
 end

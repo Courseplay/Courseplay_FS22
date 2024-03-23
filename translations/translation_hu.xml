@@ -479,6 +479,7 @@ Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felü
     <text name="CP_customFieldManager_edit" text="Egyedi szántóföld szerkesztése"/>
     <text name="CP_customFieldManager_draw" text="Szántóföld rajzolás"/>
     <text name="CP_customFieldManager_draw_header" text="Jobb klikkel tudod a szántóföld határait megrajzolni"/>
+    <text name="CP_customFieldManager_draw_sub_header" text="Hold the left shift key for a straight line."/>
     <text name="CP_customFieldManager_save" text="Szántóföld mentés"/>
     <text name="CP_controllerGui_startRecording" text="Szántóföld-határ rögzítés indítása"/>
     <text name="CP_controllerGui_stopRecording" text="Szántóföld-határ rögzítés leállítása"/>

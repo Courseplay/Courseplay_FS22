@@ -48,8 +48,8 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	CpInGameMenuAIFrameExtended.setupButtons(self)		
 
 	self:registerControls({"multiTextOptionPrefab","subTitlePrefab","courseGeneratorLayoutElements",
-		"courseGeneratorLayout","courseGeneratorHeader","drawingCustomFieldHeader","courseGeneratorFrame", 
-		"createCpMultiOptionTemplate", "createCpTextTemplate"})
+		"courseGeneratorLayout","courseGeneratorHeader","drawingCustomFieldHeader", "drawingCustomFieldSubHeader",
+		"courseGeneratorFrame", "createCpMultiOptionTemplate", "createCpTextTemplate"})
 
 	--- TODO: Figure out the correct implementation for Issues #1015 & #1457.
 	local element = self:getDescendantByName("ingameMenuAI")
@@ -64,6 +64,8 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 
 	self.drawingCustomFieldHeader:setVisible(false)
 	self.drawingCustomFieldHeader:setText(g_i18n:getText("CP_customFieldManager_draw_header"))
+	self.drawingCustomFieldSubHeader:setVisible(false)
+	self.drawingCustomFieldSubHeader:setText(g_i18n:getText("CP_customFieldManager_draw_sub_header"))
 
 	self.subTitlePrefab:unlinkElement()
 	FocusManager:removeElement(self.subTitlePrefab)
@@ -402,6 +404,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameOpen()
 	CpInGameMenuAIFrameExtended.addMapHotSpots(self)
 	g_customFieldManager:refresh()
 	self.drawingCustomFieldHeader:setVisible(false)
+	self.drawingCustomFieldSubHeader:setVisible(false)
 	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
 	self.lastVehicle = vehicle
 	g_currentMission.inGameMenu:updatePages()
@@ -474,10 +477,34 @@ function CpInGameMenuAIFrameExtended:draw()
 
 	--- Draws the current progress, while creating a custom field.
 	if pageAI.mode == CpInGameMenuAIFrameExtended.MODE_DRAW_FIELD_BORDER and next(CpInGameMenuAIFrameExtended.curDrawPositions) then
+		local localX, localY = pageAI.ingameMap:getLocalPosition(g_inputBinding.mousePosXLast, g_inputBinding.mousePosYLast)
+		local worldX, worldZ = pageAI.ingameMap:localToWorldPos(localX, localY)
+
+		if #CpInGameMenuAIFrameExtended.curDrawPositions > 0 then
+			local pos = CpInGameMenuAIFrameExtended.curDrawPositions[#CpInGameMenuAIFrameExtended.curDrawPositions]
+			local dx, dz, length = CpMathUtil.getPointDirection( pos, {x = worldX, z = worldZ})
+			if Input.isKeyPressed(Input.KEY_lshift) then
+				if math.abs(dx) > math.abs(dz) then 
+					dz = 0
+					dx = MathUtil.sign(dx)
+				else
+					dx = 0
+					dz = MathUtil.sign(dz)
+				end
+				worldX = pos.x + dx * length
+				worldZ = pos.z + dz * length
+			end
+			pageAI.customFieldPlot:setNextTargetPoint(worldX, worldZ)
+		else 
+			pageAI.customFieldPlot:setNextTargetPoint()
+		end
+
+
 		pageAI.customFieldPlot:setWaypoints(CpInGameMenuAIFrameExtended.curDrawPositions)
 		pageAI.customFieldPlot:draw(self,true)
 		pageAI.customFieldPlot:setVisible(true)
 	end
+
 end
 
 function CpInGameMenuAIFrameExtended:delete()
@@ -724,6 +751,7 @@ function InGameMenuAIFrame:onClickCreateFieldBorder()
 	if self.mode == CpInGameMenuAIFrameExtended.MODE_DRAW_FIELD_BORDER then 
 		self.mode = InGameMenuAIFrame.MODE_OVERVIEW
 		self.drawingCustomFieldHeader:setVisible(false)
+		self.drawingCustomFieldSubHeader:setVisible(false)
 		g_customFieldManager:addField(CpInGameMenuAIFrameExtended.curDrawPositions)
 		CpInGameMenuAIFrameExtended.curDrawPositions = {}
 		--- Restore hotspot filters here:
@@ -734,6 +762,7 @@ function InGameMenuAIFrame:onClickCreateFieldBorder()
 	else
 		CpInGameMenuAIFrameExtended.curDrawPositions = {}
 		self.drawingCustomFieldHeader:setVisible(true)
+		self.drawingCustomFieldSubHeader:setVisible(true)
 		self.mode = CpInGameMenuAIFrameExtended.MODE_DRAW_FIELD_BORDER 
 		CpInGameMenuAIFrameExtended.hotspotFilterState = {}
 		--- Change the hotspot filter here:
@@ -748,12 +777,26 @@ function CpInGameMenuAIFrameExtended:mouseEvent(superFunc,posX, posY, isDown, is
 		local localX, localY = self.ingameMap:getLocalPosition(posX, posY)
 		local worldX, worldZ = self.ingameMap:localToWorldPos(localX, localY)
 		if button == Input.MOUSE_BUTTON_RIGHT then 
+			-- if Input.isKeyPressed(Input.KEY_lshift) then
 			if isUp and g_updateLoopIndex > CpInGameMenuAIFrameExtended.drawDelay then 
 				if #CpInGameMenuAIFrameExtended.curDrawPositions > 0 then
 					--- Makes sure that waypoints are inserted between long lines,
 					--- as the coursegenerator depends on these.
 					local pos = CpInGameMenuAIFrameExtended.curDrawPositions[#CpInGameMenuAIFrameExtended.curDrawPositions]
-					local dx,dz,length = CpMathUtil.getPointDirection( pos, {x = worldX, z = worldZ})
+					local dx, dz, length = CpMathUtil.getPointDirection( pos, {x = worldX, z = worldZ})
+
+					if Input.isKeyPressed(Input.KEY_lshift) then
+						if math.abs(dx) > math.abs(dz) then 
+							dz = 0
+							dx = MathUtil.sign(dx)
+						else
+							dx = 0
+							dz = MathUtil.sign(dz)
+						end
+						worldX = pos.x + dx * length
+						worldZ = pos.z + dz * length
+					end
+
 					for i=3, length-3, 3 do 
 						table.insert(CpInGameMenuAIFrameExtended.curDrawPositions, 
 						{x = pos.x + dx * i,

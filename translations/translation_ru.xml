@@ -479,6 +479,7 @@
     <text name="CP_customFieldManager_edit" text="Редактировать пользовательское поле"/>
     <text name="CP_customFieldManager_draw" text="Нарисовать пользовательское поле"/>
     <text name="CP_customFieldManager_draw_header" text="Нарисуйте линии пользовательского поля с помощью правого клика."/>
+    <text name="CP_customFieldManager_draw_sub_header" text="Hold the left shift key for a straight line."/>
     <text name="CP_customFieldManager_save" text="Сохранить пользовательское поле"/>
     <text name="CP_controllerGui_startRecording" text="Начать запись пользовательского поля."/>
     <text name="CP_controllerGui_stopRecording" text="Завершить запись пользовательского поля."/>

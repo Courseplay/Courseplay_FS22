@@ -479,6 +479,7 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <text name="CP_customFieldManager_edit" text="Editar Campo Personalizado"/>
     <text name="CP_customFieldManager_draw" text="Dibujar Campo Personalizado"/>
     <text name="CP_customFieldManager_draw_header" text="Dibujar las líneas del Campo con el Botón Derecho del Mouse."/>
+    <text name="CP_customFieldManager_draw_sub_header" text="Hold the left shift key for a straight line."/>
     <text name="CP_customFieldManager_save" text="Guardar Campo Personalizado"/>
     <text name="CP_controllerGui_startRecording" text="Iniciar grabación del campo personalizado."/>
     <text name="CP_controllerGui_stopRecording" text="Parar grabación del campo personalizado."/>

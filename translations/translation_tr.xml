@@ -479,6 +479,7 @@ Editör kapatıldığında kurs otomatik olarak kaydedilir ve seçilen kursu ge�
     <text name="CP_customFieldManager_edit" text="Özel alanı düzenle"/>
     <text name="CP_customFieldManager_draw" text="Özel alan çiz"/>
     <text name="CP_customFieldManager_draw_header" text="Sağ tıklama ile özel alan çizgileri çizin."/>
+    <text name="CP_customFieldManager_draw_sub_header" text="Hold the left shift key for a straight line."/>
     <text name="CP_customFieldManager_save" text="Özel alanı kaydet"/>
     <text name="CP_controllerGui_startRecording" text="Özel alan kaydını başlatın."/>
     <text name="CP_controllerGui_stopRecording" text="Özel alan kaydını durdurun."/>

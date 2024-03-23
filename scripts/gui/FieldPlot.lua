@@ -27,6 +27,7 @@ function FieldPlot:init(drawLastWp)
 	-- use a thicker line
 	self.lineThickness = 4 / g_screenHeight
 	self.drawLastWp = drawLastWp
+	self.nextTargetPoint = {}
 end
 
 function FieldPlot:setNormalColor()
@@ -38,6 +39,11 @@ end
 function FieldPlot:setBrightColor()
 	self.lightColor = {CpGuiUtil.getNormalizedRgb(255, 255, 255)}
 	self.darkColor = {CpGuiUtil.getNormalizedRgb(255, 255, 255)}
+end
+
+--- This point will be draw in green.
+function FieldPlot:setNextTargetPoint(x, z)
+	self.nextTargetPoint = {x = x, z = z}
 end
 
 --- Draws custom fields.
@@ -59,6 +65,10 @@ function FieldPlot:draw(map)
 --		setOverlayColor( self.courseOverlayId, r, g, b, 0.8 )
 --		renderOverlay( self.courseOverlayId, x, y, width, self.lineThickness )
 
+	end
+	if lastWp and self.nextTargetPoint.x ~= nil then 
+		self:drawLineBetween(map, lastWp.x, lastWp.z, self.nextTargetPoint.x, self.nextTargetPoint.z,
+			false, self.lineThickness, 0, 1, 0)
 	end
 end
 
