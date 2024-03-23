@@ -1559,6 +1559,10 @@ function AIDriveStrategyUnloadCombine:isIdle()
     return self.state == self.states.IDLE
 end
 
+function AIDriveStrategyUnloadCombine:isAllowedToBeCalled()
+    return self:isIdle() or self:hasToWaitForAssignedCombine()
+end
+
 --- Get the Dubins path length and the estimated seconds en-route to gaol
 ---@param goal State3D
 function AIDriveStrategyUnloadCombine:getDistanceAndEte(goal)
