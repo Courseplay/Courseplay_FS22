@@ -479,6 +479,7 @@ La course est automatiquement sauvegardée à la fermeture de l'éditeur et remp
     <text name="CP_customFieldManager_edit" text="Editer le champ personnalisé"/>
     <text name="CP_customFieldManager_draw" text="Tracer un champ personnalisé"/>
     <text name="CP_customFieldManager_draw_header" text="Clic droit sur chaque point de contour du champ personnalisé."/>
+    <text name="CP_customFieldManager_draw_sub_header" text="Hold the left shift key for a straight line."/>
     <text name="CP_customFieldManager_save" text="Sauvegarder le champ personnalisé"/>
     <text name="CP_controllerGui_startRecording" text="Démarrer l'enregistrement du champ personnalisé"/>
     <text name="CP_controllerGui_stopRecording" text="Arrêter l'enregistrement du champ personnalisé"/>

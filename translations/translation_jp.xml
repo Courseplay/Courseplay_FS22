@@ -479,6 +479,7 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_customFieldManager_edit" text="Edit custom field"/>
     <text name="CP_customFieldManager_draw" text="カスタムフィールドを手描きする"/>
     <text name="CP_customFieldManager_draw_header" text="右クリックでカスタムフィールドの線を描く"/>
+    <text name="CP_customFieldManager_draw_sub_header" text="Hold the left shift key for a straight line."/>
     <text name="CP_customFieldManager_save" text="カスタムフィールドを保存する"/>
     <text name="CP_controllerGui_startRecording" text="カスタムフィールドのレコード開始"/>
     <text name="CP_controllerGui_stopRecording" text="カスタムフィールドのレコード停止"/>

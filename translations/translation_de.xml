@@ -479,6 +479,7 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_customFieldManager_edit" text="Randkurs bearbeiten"/>
     <text name="CP_customFieldManager_draw" text="Randkurs zeichnen"/>
     <text name="CP_customFieldManager_draw_header" text="Zeichne Linien mit Rechtsklick."/>
+    <text name="CP_customFieldManager_draw_sub_header" text="Halte die linke Shift Taste für eine gerade Linie."/>
     <text name="CP_customFieldManager_save" text="Randkurs speichern"/>
     <text name="CP_controllerGui_startRecording" text="Starte Feldrandaufnahme."/>
     <text name="CP_controllerGui_stopRecording" text="Stoppe Feldrandaufnahme."/>

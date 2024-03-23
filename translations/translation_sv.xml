@@ -479,6 +479,7 @@ Banan sparas automatiskt vid stängning av editorn och åsidosätter den valda b
     <text name="CP_customFieldManager_edit" text="Redigera anpassat fält"/>
     <text name="CP_customFieldManager_draw" text="Rita anpassat fält"/>
     <text name="CP_customFieldManager_draw_header" text="Rita anpassade fältlinjer med högerklicka."/>
+    <text name="CP_customFieldManager_draw_sub_header" text="Hold the left shift key for a straight line."/>
     <text name="CP_customFieldManager_save" text="Spara anpassat fält"/>
     <text name="CP_controllerGui_startRecording" text="Starta anpassad fältinspelning."/>
     <text name="CP_controllerGui_stopRecording" text="Stoppa anpassad fältinspelning."/>

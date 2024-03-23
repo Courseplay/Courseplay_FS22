@@ -479,6 +479,7 @@ Ruten gemmes automatisk ved lukning af editoren og tilsidesætter den valgte rut
     <text name="CP_customFieldManager_edit" text="Ændre brugerdefineret mark"/>
     <text name="CP_customFieldManager_draw" text="Optegn brugerdefineret mark"/>
     <text name="CP_customFieldManager_draw_header" text="Optegn brugerdefineret mark med højre museknap."/>
+    <text name="CP_customFieldManager_draw_sub_header" text="Hold the left shift key for a straight line."/>
     <text name="CP_customFieldManager_save" text="Gem brugerdefineret mark"/>
     <text name="CP_controllerGui_startRecording" text="Start brugerdefineret markoptegnelse."/>
     <text name="CP_controllerGui_stopRecording" text="Stop brugerdefineret markoptegnelse."/>

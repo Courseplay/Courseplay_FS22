@@ -479,6 +479,7 @@
     <text name="CP_customFieldManager_edit" text="編輯自訂田地"/>
     <text name="CP_customFieldManager_draw" text="繪製自訂田地"/>
     <text name="CP_customFieldManager_draw_header" text="右鍵繪製自訂田地範圍"/>
+    <text name="CP_customFieldManager_draw_sub_header" text="Hold the left shift key for a straight line."/>
     <text name="CP_customFieldManager_save" text="儲存自訂田地"/>
     <text name="CP_controllerGui_startRecording" text="開始自訂田地記錄。"/>
     <text name="CP_controllerGui_stopRecording" text="停止自訂田地記錄。"/>

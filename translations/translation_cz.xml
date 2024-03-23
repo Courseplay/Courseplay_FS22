@@ -479,6 +479,7 @@ Trasa se automaticky uloží při zavření editoru a přepíše vybranou trasu.
     <text name="CP_customFieldManager_edit" text="Upravit vlastní pole"/>
     <text name="CP_customFieldManager_draw" text="Kreslit vlastní pole"/>
     <text name="CP_customFieldManager_draw_header" text="Nakreslí vlastní trasy na poli kliknutím pravým tlačítkem"/>
+    <text name="CP_customFieldManager_draw_sub_header" text="Hold the left shift key for a straight line."/>
     <text name="CP_customFieldManager_save" text="Uložit vlastní pole"/>
     <text name="CP_controllerGui_startRecording" text="Spustit nahrávání vlastního pole"/>
     <text name="CP_controllerGui_stopRecording" text="Ukončit nahrávání vlastního pole"/>

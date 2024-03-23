@@ -479,6 +479,7 @@ A rota é guardada automaticamente ao fechar o editor e sobrepõe-se a qualquer 
     <text name="CP_customFieldManager_edit" text="Editar campo personalizado"/>
     <text name="CP_customFieldManager_draw" text="Desenhar campo personalizado"/>
     <text name="CP_customFieldManager_draw_header" text="Desenha o limite para o campo personalizado com o botão direito do rato."/>
+    <text name="CP_customFieldManager_draw_sub_header" text="Hold the left shift key for a straight line."/>
     <text name="CP_customFieldManager_save" text="Guarda campo personalizado"/>
     <text name="CP_controllerGui_startRecording" text="Início gravação de campo personalizado."/>
     <text name="CP_controllerGui_stopRecording" text="Pára a gravação de campo personalizado."/>
