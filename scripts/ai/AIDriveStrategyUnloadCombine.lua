@@ -558,6 +558,21 @@ function AIDriveStrategyUnloadCombine:hasToWaitForAssignedCombine()
     return false
 end
 
+---@param combine table
+---@param combineDriver AIDriveStrategyCombineCourse
+function AIDriveStrategyUnloadCombine:areThereAnyCombinesOrLoaderLeftoverOnTheField(combine, combineDriver)
+    for _, vehicle in pairs(g_currentMission.vehicles) do 
+        if vehicle ~= combine and AIDriveStrategyCombineCourse.isActiveCpCombine(vehicle) then
+            local x, _, z = getWorldTranslation(combine.rootNode)
+            if self:isServingPosition(x, z, 10) then
+                --- At least one more combine oder loader is working on this field.
+                return true
+            end
+        end
+    end
+    return false
+end
+
 function AIDriveStrategyUnloadCombine:startWaitingForSomethingToDo()
     if self.state ~= self.states.IDLE then
         self:releaseCombine()
@@ -1544,6 +1559,10 @@ function AIDriveStrategyUnloadCombine:isIdle()
     return self.state == self.states.IDLE
 end
 
+function AIDriveStrategyUnloadCombine:isAllowedToBeCalled()
+    return self:isIdle() or self:hasToWaitForAssignedCombine()
+end
+
 --- Get the Dubins path length and the estimated seconds en-route to gaol
 ---@param goal State3D
 function AIDriveStrategyUnloadCombine:getDistanceAndEte(goal)
@@ -1913,10 +1932,17 @@ function AIDriveStrategyUnloadCombine:unloadStoppedCombine()
     if combineDriver:isUnloadFinished() then
         if combineDriver:isWaitingForUnloadAfterCourseEnded() then
             if combineDriver:getFillLevelPercentage() < 0.1 then
-                self:debug('Finished unloading combine at end of fieldwork, changing to unload course')
-                self.ppc:setNormalLookaheadDistance()
-                self:releaseCombine()
-                self:startMovingBackFromCombine(self.states.MOVING_BACK_WITH_TRAILER_FULL, self.combineJustUnloaded)
+                if self:areThereAnyCombinesOrLoaderLeftoverOnTheField(self.combineToUnload, combineDriver) then
+                    self:debug('Finished unloading combine at end of fieldwork, but there are more unload targets left over on the field.')
+                    self.ppc:setNormalLookaheadDistance()
+                    self:releaseCombine()
+                    self:startMovingBackFromCombine(self.states.MOVING_BACK, self.combineJustUnloaded)
+                else
+                    self:debug('Finished unloading combine at end of fieldwork, changing to unload course')
+                    self.ppc:setNormalLookaheadDistance()
+                    self:releaseCombine()
+                    self:startMovingBackFromCombine(self.states.MOVING_BACK_WITH_TRAILER_FULL, self.combineJustUnloaded)
+                end
             else
                 gx, gz = self:driveBesideCombine()
             end
