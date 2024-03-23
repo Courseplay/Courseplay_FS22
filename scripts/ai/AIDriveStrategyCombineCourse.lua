@@ -563,6 +563,16 @@ function AIDriveStrategyCombineCourse:stopForUnload(newUnloadStateAfterStopped, 
     self.raiseHeaderAfterStopped = raiseHeaderAfterStopped
 end
 
+--- Start waiting for the implements to lower
+-- getCanAIVehicleContinueWork() seems to return false when the implement being lowered/raised (moving) but
+-- true otherwise. Due to some timing issues it may return true just after we started lowering it
+-- so the harvester misses some fruit when restarting after unloading ended
+function AIDriveStrategyCombineCourse:startWaitingForLower()
+    -- force delayed lower
+    self.state = self.states.WAITING_FOR_LOWER_DELAYED
+    self:debug('waiting for lower delayed')
+end
+
 function AIDriveStrategyCombineCourse:changeToUnloadOnField()
     self:checkFruit()
     -- TODO: check around turn maneuvers we may not want to pull back before a turn
