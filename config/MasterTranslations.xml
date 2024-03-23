@@ -1688,6 +1688,10 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="de"><![CDATA[Zeichne Linien mit Rechtsklick.]]></Text>
 			<Text language="en"><![CDATA[Draw custom field lines with right click.]]></Text>
 		</Translation>
+		<Translation name="CP_customFieldManager_draw_sub_header">
+			<Text language="de"><![CDATA[Halte die linke Shift Taste für eine gerade Linie.]]></Text>
+			<Text language="en"><![CDATA[Hold the left shift key for a straight line.]]></Text>
+		</Translation>
 		<Translation name="CP_customFieldManager_save">
 			<Text language="de"><![CDATA[Randkurs speichern]]></Text>
 			<Text language="en"><![CDATA[Save custom field]]></Text>

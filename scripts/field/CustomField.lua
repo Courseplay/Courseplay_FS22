@@ -40,7 +40,7 @@ function CustomField:setup(name, vertices)
 
     self.name = name or ""
     self.fieldId = name --- used for external mods
-    self.fieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
+    self.fieldPlot = FieldPlot(true)
     self.fieldPlot:setVisible(true)
 
     self.vertices = vertices

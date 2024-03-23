@@ -15,7 +15,7 @@ function CpAIJobCombineUnloader.new(isServer, customMt)
 
 	self.lastPositionX, self.lastPositionZ = math.huge, math.huge
 
-    self.selectedFieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
+    self.selectedFieldPlot = FieldPlot(true)
     self.selectedFieldPlot:setVisible(false)
 	self.selectedFieldPlot:setBrightColor(true)
 

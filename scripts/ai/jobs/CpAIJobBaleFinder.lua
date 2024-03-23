@@ -11,7 +11,7 @@ local AIJobBaleFinderCp_mt = Class(CpAIJobBaleFinder, CpAIJob)
 
 function CpAIJobBaleFinder.new(isServer, customMt)
 	local self = CpAIJob.new(isServer, customMt or AIJobBaleFinderCp_mt)
-	self.selectedFieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
+	self.selectedFieldPlot = FieldPlot(true)
     self.selectedFieldPlot:setVisible(false)
 	self.selectedFieldPlot:setBrightColor(true)
 

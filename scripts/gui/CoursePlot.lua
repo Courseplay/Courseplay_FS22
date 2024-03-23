@@ -79,6 +79,35 @@ function CoursePlot:setStopPosition( x, z )
 	self.stopPosition.x, self.stopPosition.z = x, z
 end
 
+--- Draws a line between two points on the given map
+---@param map table
+---@param x number
+---@param z number
+---@param nx number
+---@param nz number
+---@param isHudMap boolean|nil
+---@param lineThickness number
+---@param r number
+---@param g number
+---@param b number
+---@param a number|nil
+function CoursePlot:drawLineBetween(map, x, z, nx, nz, isHudMap, lineThickness, r, g, b, a)
+	local mapRotation = map.layout:getMapRotation()
+	local startX, startY, _, sv = CpGuiUtil.worldToScreen(map, x, z, isHudMap)
+	local endX, endY, _, ev = CpGuiUtil.worldToScreen(map, nx, nz, isHudMap)
+	local dx, dz = nx - x, nz - z
+	if startX and startY and endX and endY then
+		local dx2D = endX - startX
+		local dy2D = ( endY - startY ) / g_screenAspectRatio
+		local width = MathUtil.vector2Length(dx2D, dy2D)
+
+		local rotation = MathUtil.getYRotationFromDirection(dx, dz) - math.pi * 0.5 + mapRotation
+		setOverlayColor( self.courseOverlayId, r, g, b, a or 0.8 )
+		setOverlayRotation( self.courseOverlayId, rotation, 0, 0 )
+		renderOverlay( self.courseOverlayId, startX, startY, width, lineThickness )
+	end
+end
+
 -- Draw the waypoints in the screen area defined in new(), the bottom left corner
 -- is at worldX/worldZ coordinates, the size shown is worldWidth wide (and high)
 function CoursePlot:drawPoints(map, points, isHudMap)
@@ -86,7 +115,6 @@ function CoursePlot:drawPoints(map, points, isHudMap)
 	if isHudMap then 
 		lineThickness = lineThickness/2
 	end
-	local mapRotation = map.layout:getMapRotation()
 	if points and #points > 1 then
 		-- I know this is in helpers.lua already but that code has too many dependencies
 		-- on global variables and vehicle.cp.
@@ -95,24 +123,10 @@ function CoursePlot:drawPoints(map, points, isHudMap)
 		for i = 1, #points - 1 do
 			wp = points[ i ]
 			np = points[ i + 1 ]
-
-			startX, startY, _, sv = CpGuiUtil.worldToScreen(map, wp.x, wp.z, isHudMap)
-			endX, endY, _, ev = CpGuiUtil.worldToScreen(map, np.x, np.z, isHudMap)
-	
-			-- render only if it is on the plot area
-			if startX and startY and endX and endY then
-				dx2D = endX - startX
-				dy2D = ( endY - startY ) / g_screenAspectRatio
-				width = MathUtil.vector2Length(dx2D, dy2D)
-
-				dx = np.x - wp.x
-				dz = np.z - wp.z
-				rotation = MathUtil.getYRotationFromDirection(dx, dz) - math.pi * 0.5 + mapRotation
-				r, g, b = MathUtil.vector3ArrayLerp(self.lightColor, self.darkColor, wp.progress or 1)
-				setOverlayColor( self.courseOverlayId, r, g, b, 0.8 )
-				setOverlayRotation( self.courseOverlayId, rotation, 0, 0 )
-				renderOverlay( self.courseOverlayId, startX, startY, width, lineThickness )
-			end
+			
+			r, g, b = MathUtil.vector3ArrayLerp(self.lightColor, self.darkColor, wp.progress or 1)
+			self:drawLineBetween(map, wp.x, wp.z, np.x, np.z,
+				isHudMap, lineThickness, r, g, b)
 		end
 		setOverlayRotation( self.courseOverlayId, 0, 0, 0 ) -- reset overlay rotation
 	end
