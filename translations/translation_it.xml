@@ -479,7 +479,7 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <text name="CP_customFieldManager_edit" text="Modifica campo personalizzato"/>
     <text name="CP_customFieldManager_draw" text="Disegna campo personalizzato"/>
     <text name="CP_customFieldManager_draw_header" text="Disegna linee campo personalizzato con il tasto destro del mouse."/>
-    <text name="CP_customFieldManager_draw_sub_header" text="Hold the left shift key for a straight line."/>
+    <text name="CP_customFieldManager_draw_sub_header" text="Tieni premuto il tasto Maiusc sinistro per una linea retta."/>
     <text name="CP_customFieldManager_save" text="Salva campo personalizzato"/>
     <text name="CP_controllerGui_startRecording" text="Avvia registrazione campo personalizzato."/>
     <text name="CP_controllerGui_stopRecording" text="Ferma registrazione campo personalizzato."/>
