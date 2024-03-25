@@ -255,8 +255,8 @@
     <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="La batteuse appellera une remorque à la première fourrière."/>
     <text name="CP_vehicle_setting_strawSwath_title" text="Andains de paille"/>
     <text name="CP_vehicle_setting_strawSwath_tooltip" text="Active/Désactive les andains de paille ou les désactive uniquement dans les fourrières."/>
-    <text name="CP_vehicle_setting_callUnloaderPercent_title" text="Call unloader at"/>
-    <text name="CP_vehicle_setting_callUnloaderPercent_tooltip" text="Call unloader when the harvester fill level is above this value."/>
+    <text name="CP_vehicle_setting_callUnloaderPercent_title" text="Appel pour un déchargement à "/>
+    <text name="CP_vehicle_setting_callUnloaderPercent_tooltip" text="Appelle une benne en attente lorsque la trémie de la récolteuse dépasse cette valeur."/>
     <text name="CP_vehicle_setting_strawSwath_onlyCenter" text="Désactivés dans les fourrières"/>
     <!---->
     <!--Course generator settings-->
@@ -479,7 +479,7 @@ La course est automatiquement sauvegardée à la fermeture de l'éditeur et remp
     <text name="CP_customFieldManager_edit" text="Editer le champ personnalisé"/>
     <text name="CP_customFieldManager_draw" text="Tracer un champ personnalisé"/>
     <text name="CP_customFieldManager_draw_header" text="Clic droit sur chaque point de contour du champ personnalisé."/>
-    <text name="CP_customFieldManager_draw_sub_header" text="Hold the left shift key for a straight line."/>
+    <text name="CP_customFieldManager_draw_sub_header" text="Maintenez la touche MAJ Gauche pour une ligne droite."/>
     <text name="CP_customFieldManager_save" text="Sauvegarder le champ personnalisé"/>
     <text name="CP_controllerGui_startRecording" text="Démarrer l'enregistrement du champ personnalisé"/>
     <text name="CP_controllerGui_stopRecording" text="Arrêter l'enregistrement du champ personnalisé"/>
