@@ -30,28 +30,28 @@
     <!---->
     <!--AI job parameters-->
     <!---->
-    <text name="CP_jobParameters_fieldPosition_title" text="フィールドポジション（開始地点）"/>
-    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
-    <text name="CP_jobParameters_subTitle_startAt" text="開始地点:"/>
-    <text name="CP_jobParameters_startAt_title" text="開始地点:"/>
-    <text name="CP_jobParameters_startAt_tooltip" text="野外作業の開始地点"/>
-    <text name="CP_jobParameters_startAt_nearest" text="近くのウェイポイント"/>
-    <text name="CP_jobParameters_startAt_first" text="最初のウェイポイント"/>
-    <text name="CP_jobParameters_startAt_last" text="最後のウェイポイント"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Silo load mode"/>
-    <text name="CP_jobParameters_startAt_unload" text="コンバインの荷下ろし/チョッパー"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
-    <text name="CP_jobParameters_startAt_bales" text="ベール回収、ベールラッピング"/>
-    <text name="CP_jobParameters_subTitle_laneOffset" text="レーンオフセット:"/>
-    <text name="CP_jobParameters_laneOffset_title" text="レーンオフセット:"/>
-    <text name="CP_jobParameters_laneOffset_tooltip" text="レーンオフセット"/>
-    <text name="CP_jobParameters_laneOffset_center" text="中央（ライン上）"/>
-    <text name="CP_jobParameters_laneOffset_left" text="左(第1レーン)"/>
-    <text name="CP_jobParameters_laneOffset_right" text="右(第1レーン)"/>
-    <text name="CP_jobParameters_laneOffset_left_2" text="左(第2レーン)"/>
-    <text name="CP_jobParameters_laneOffset_right_2" text="右(第2レーン)"/>
+    <text name="CP_fieldWorkJobParameters_fieldPosition_title" text="フィールドポジション（開始地点）"/>
+    <text name="CP_fieldWorkJobParameters_bunkerSiloPosition_title" text="Silo position:"/>
+    <text name="CP_fieldWorkJobParameters_parkPosition_title" text="Park position:"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_startAt" text="開始地点:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_title" text="開始地点:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_tooltip" text="野外作業の開始地点"/>
+    <text name="CP_fieldWorkJobParameters_startAt_nearest" text="近くのウェイポイント"/>
+    <text name="CP_fieldWorkJobParameters_startAt_first" text="最初のウェイポイント"/>
+    <text name="CP_fieldWorkJobParameters_startAt_last" text="最後のウェイポイント"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
+    <text name="CP_fieldWorkJobParameters_startAt_siloLoader" text="Silo load mode"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload" text="コンバインの荷下ろし/チョッパー"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bales" text="ベール回収、ベールラッピング"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_laneOffset" text="レーンオフセット:"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_title" text="レーンオフセット:"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_tooltip" text="レーンオフセット"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_center" text="中央（ライン上）"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left" text="左(第1レーン)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right" text="右(第1レーン)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left_2" text="左(第2レーン)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right_2" text="右(第2レーン)"/>
     <!---->
     <!--AI bale finder job parameters-->
     <!---->

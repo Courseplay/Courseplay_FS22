@@ -30,28 +30,28 @@
     <!---->
     <!--AI job parameters-->
     <!---->
-    <text name="CP_jobParameters_fieldPosition_title" text="Pozycja na polu:"/>
-    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Pozycja w silosie:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Pozycja postojowa:"/>
-    <text name="CP_jobParameters_subTitle_startAt" text="Rozpocznij od:"/>
-    <text name="CP_jobParameters_startAt_title" text="Rozpocznij od:"/>
-    <text name="CP_jobParameters_startAt_tooltip" text="Ustala gdzie zacząć pracę polową."/>
-    <text name="CP_jobParameters_startAt_nearest" text="Najbliższego punkt trasy"/>
-    <text name="CP_jobParameters_startAt_first" text="Pierwszego punkt trasy"/>
-    <text name="CP_jobParameters_startAt_last" text="Ostatni punkt trasy"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Tryb silosu bunkrowego"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Tryb załadunku pryzmy"/>
-    <text name="CP_jobParameters_startAt_unload" text="Rozładunku kombajnu/sieczkarni"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Rozładunku załadowującego"/>
-    <text name="CP_jobParameters_startAt_bales" text="Zbierania/Owijania bel"/>
-    <text name="CP_jobParameters_subTitle_laneOffset" text="Przesunięcie linii:"/>
-    <text name="CP_jobParameters_laneOffset_title" text="Przesunięcie linii:"/>
-    <text name="CP_jobParameters_laneOffset_tooltip" text="Przesunięcie linii"/>
-    <text name="CP_jobParameters_laneOffset_center" text="Środek"/>
-    <text name="CP_jobParameters_laneOffset_left" text="Lewo(1)"/>
-    <text name="CP_jobParameters_laneOffset_right" text="Prawo(1)"/>
-    <text name="CP_jobParameters_laneOffset_left_2" text="Lewo(2)"/>
-    <text name="CP_jobParameters_laneOffset_right_2" text="Prawo(2)"/>
+    <text name="CP_fieldWorkJobParameters_fieldPosition_title" text="Pozycja na polu:"/>
+    <text name="CP_fieldWorkJobParameters_bunkerSiloPosition_title" text="Pozycja w silosie:"/>
+    <text name="CP_fieldWorkJobParameters_parkPosition_title" text="Pozycja postojowa:"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_startAt" text="Rozpocznij od:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_title" text="Rozpocznij od:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_tooltip" text="Ustala gdzie zacząć pracę polową."/>
+    <text name="CP_fieldWorkJobParameters_startAt_nearest" text="Najbliższego punkt trasy"/>
+    <text name="CP_fieldWorkJobParameters_startAt_first" text="Pierwszego punkt trasy"/>
+    <text name="CP_fieldWorkJobParameters_startAt_last" text="Ostatni punkt trasy"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bunkerSilo" text="Tryb silosu bunkrowego"/>
+    <text name="CP_fieldWorkJobParameters_startAt_siloLoader" text="Tryb załadunku pryzmy"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload" text="Rozładunku kombajnu/sieczkarni"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload_siloLoader" text="Rozładunku załadowującego"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bales" text="Zbierania/Owijania bel"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_laneOffset" text="Przesunięcie linii:"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_title" text="Przesunięcie linii:"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_tooltip" text="Przesunięcie linii"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_center" text="Środek"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left" text="Lewo(1)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right" text="Prawo(1)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left_2" text="Lewo(2)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right_2" text="Prawo(2)"/>
     <!---->
     <!--AI bale finder job parameters-->
     <!---->

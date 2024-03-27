@@ -30,28 +30,28 @@
     <!---->
     <!--AI job parameters-->
     <!---->
-    <text name="CP_jobParameters_fieldPosition_title" text="Posizione del campo:"/>
-    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Posizione bunker silos:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Posizione parcheggio:"/>
-    <text name="CP_jobParameters_subTitle_startAt" text="Iniziare da:"/>
-    <text name="CP_jobParameters_startAt_title" text="Iniziare da:"/>
-    <text name="CP_jobParameters_startAt_tooltip" text="Da dove iniziare il lavoro sul campo"/>
-    <text name="CP_jobParameters_startAt_nearest" text="Dal punto più vicino"/>
-    <text name="CP_jobParameters_startAt_first" text="Dal primo punto - inizio"/>
-    <text name="CP_jobParameters_startAt_last" text="Dall'ultimo punto lavorato"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Modalità bunker silos"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Modalità di caricamento del silos"/>
-    <text name="CP_jobParameters_startAt_unload" text="Scarico mietitrebbia/trincia"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Scarica il caricatore al silos"/>
-    <text name="CP_jobParameters_startAt_bales" text="Raccogliere/avvolgere balle"/>
-    <text name="CP_jobParameters_subTitle_laneOffset" text="Calibrazione corsia:"/>
-    <text name="CP_jobParameters_laneOffset_title" text="Calibrazione corsia:"/>
-    <text name="CP_jobParameters_laneOffset_tooltip" text="Calibrazione corsia"/>
-    <text name="CP_jobParameters_laneOffset_center" text="Al centro"/>
-    <text name="CP_jobParameters_laneOffset_left" text="A sinistra(1)"/>
-    <text name="CP_jobParameters_laneOffset_right" text="A destra(1)"/>
-    <text name="CP_jobParameters_laneOffset_left_2" text="A sinistra(2)"/>
-    <text name="CP_jobParameters_laneOffset_right_2" text="A destra(2)"/>
+    <text name="CP_fieldWorkJobParameters_fieldPosition_title" text="Posizione del campo:"/>
+    <text name="CP_fieldWorkJobParameters_bunkerSiloPosition_title" text="Posizione bunker silos:"/>
+    <text name="CP_fieldWorkJobParameters_parkPosition_title" text="Posizione parcheggio:"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_startAt" text="Iniziare da:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_title" text="Iniziare da:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_tooltip" text="Da dove iniziare il lavoro sul campo"/>
+    <text name="CP_fieldWorkJobParameters_startAt_nearest" text="Dal punto più vicino"/>
+    <text name="CP_fieldWorkJobParameters_startAt_first" text="Dal primo punto - inizio"/>
+    <text name="CP_fieldWorkJobParameters_startAt_last" text="Dall'ultimo punto lavorato"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bunkerSilo" text="Modalità bunker silos"/>
+    <text name="CP_fieldWorkJobParameters_startAt_siloLoader" text="Modalità di caricamento del silos"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload" text="Scarico mietitrebbia/trincia"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload_siloLoader" text="Scarica il caricatore al silos"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bales" text="Raccogliere/avvolgere balle"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_laneOffset" text="Calibrazione corsia:"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_title" text="Calibrazione corsia:"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_tooltip" text="Calibrazione corsia"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_center" text="Al centro"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left" text="A sinistra(1)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right" text="A destra(1)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left_2" text="A sinistra(2)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right_2" text="A destra(2)"/>
     <!---->
     <!--AI bale finder job parameters-->
     <!---->

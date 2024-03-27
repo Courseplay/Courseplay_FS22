@@ -4,7 +4,7 @@ local modName = CpAIBaleFinder and CpAIBaleFinder.MOD_NAME -- for reload
 ---@class CpAIBaleFinder
 CpAIBaleFinder = {}
 
-CpAIBaleFinder.startText = g_i18n:getText("CP_jobParameters_startAt_bales")
+CpAIBaleFinder.startText = g_i18n:getText("CP_fieldWorkJobParameters_startAt_bales")
 
 CpAIBaleFinder.MOD_NAME = g_currentModName or modName
 CpAIBaleFinder.NAME = ".cpAIBaleFinder"

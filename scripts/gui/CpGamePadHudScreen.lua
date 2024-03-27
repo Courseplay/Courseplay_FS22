@@ -194,10 +194,10 @@ end
 
 function CpGamePadHudFieldWorkScreen:update(dt, ...)
 	CpGamePadHudFieldWorkScreen:superClass().update(self, dt, ...)
-	if self.vehicle:getCanStartCpBunkerSiloWorker() and self.vehicle:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO
+	if self.vehicle:getCanStartCpBunkerSiloWorker() and self.vehicle:getCpStartingPointSetting():getValue() == CpFieldWorkJobParameters.START_AT_BUNKER_SILO
 		and not AIUtil.hasChildVehicleWithSpecialization(self.vehicle, Leveler) then
 		self.vehicle:reopenCpGamePadHud()
-	elseif self.vehicle:getCanStartCpSiloLoaderWorker() and self.vehicle:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_SILO_LOADING
+	elseif self.vehicle:getCanStartCpSiloLoaderWorker() and self.vehicle:getCpStartingPointSetting():getValue() == CpFieldWorkJobParameters.START_AT_SILO_LOADING
 		and not AIUtil.hasChildVehicleWithSpecialization(self.vehicle, ConveyorBelt) then
 		self.vehicle:reopenCpGamePadHud()
 	end
@@ -247,7 +247,7 @@ end
 
 function CpGamePadHudBunkerSiloScreen:update(dt, ...)
 	CpGamePadHudBunkerSiloScreen:superClass().update(self, dt, ...)
-	if not self.vehicle:getCanStartCpBunkerSiloWorker() or self.vehicle:getCpStartingPointSetting():getValue() ~= CpJobParameters.START_AT_BUNKER_SILO then
+	if not self.vehicle:getCanStartCpBunkerSiloWorker() or self.vehicle:getCpStartingPointSetting():getValue() ~= CpFieldWorkJobParameters.START_AT_BUNKER_SILO then
 		self.vehicle:reopenCpGamePadHud()
 	end
 end
@@ -268,7 +268,7 @@ end
 
 function CpGamePadHudSiloLoaderScreen:update(dt, ...)
 	CpGamePadHudSiloLoaderScreen:superClass().update(self, dt, ...)
-	if not self.vehicle:getCanStartCpSiloLoaderWorker() or self.vehicle:getCpStartingPointSetting():getValue() ~= CpJobParameters.START_AT_SILO_LOADING then
+	if not self.vehicle:getCanStartCpSiloLoaderWorker() or self.vehicle:getCpStartingPointSetting():getValue() ~= CpFieldWorkJobParameters.START_AT_SILO_LOADING then
 		self.vehicle:reopenCpGamePadHud()
 	end
 end

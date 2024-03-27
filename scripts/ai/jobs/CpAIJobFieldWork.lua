@@ -4,7 +4,7 @@ CpAIJobFieldWork = {
     name = "FIELDWORK_CP",
     jobName = "CP_job_fieldWork",
     GenerateButton = "FIELDWORK_BUTTON",
-    fieldPositionParameterText = "CP_jobParameters_fieldPosition_title"
+    fieldPositionParameterText = "CP_fieldWorkJobParameters_fieldPosition_title"
 }
 local AIJobFieldWorkCp_mt = Class(CpAIJobFieldWork, CpAIJob)
 
@@ -45,7 +45,7 @@ end
 
 function CpAIJobFieldWork:setupJobParameters()
     CpAIJob.setupJobParameters(self)
-    self:setupCpJobParameters(CpJobParameters(self))
+    self:setupCpJobParameters(CpFieldWorkJobParameters(self))
 end
 
 ---@param vehicle table
@@ -149,9 +149,12 @@ function CpAIJobFieldWork:validate(farmId)
     return true, ''
 end
 
-function CpAIJobFieldWork:drawSelectedField(map)
-    if self.selectedFieldPlot then
-        self.selectedFieldPlot:draw(map)
+function CpAIJobFieldWork:draw(map, isOverviewMap)
+	CpAIJob.draw(self, map, isOverviewMap)
+    if not isOverviewMap then
+        if self.selectedFieldPlot then
+            self.selectedFieldPlot:draw(map)
+        end
     end
 end
 

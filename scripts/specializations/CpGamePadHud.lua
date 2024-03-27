@@ -13,7 +13,7 @@ CpGamePadHud.GUI_NAME = "CpGamePadHudDialog"
 CpGamePadHud.SETTING_TYPES = {
 	vehicleSettings = CpVehicleSettings,
 	courseGeneratorSettings = CpCourseGeneratorSettings,
-	jobParameters = CpJobParameters,
+	fieldWorkJobParameters = CpFieldWorkJobParameters,
 	baleFinderJobParameters = CpBaleFinderJobParameters,
 	combineUnloaderJobParameters = CpCombineUnloaderJobParameters,
 	bunkerSiloJobParameters = CpBunkerSiloJobParameters,
@@ -194,10 +194,10 @@ function CpGamePadHud:actionEventOpenCloseDisplay()
 		page = CpGamePadHud.UNLOADER_PAGE
 	elseif self:getCanStartCpBaleFinder() then 
 		page = CpGamePadHud.BALE_LOADER_PAGE
-	elseif self:getCanStartCpSiloLoaderWorker() and (self:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_SILO_LOADING or 
+	elseif self:getCanStartCpSiloLoaderWorker() and (self:getCpStartingPointSetting():getValue() == CpFieldWorkJobParameters.START_AT_SILO_LOADING or 
 		AIUtil.hasChildVehicleWithSpecialization(self, ConveyorBelt)) then
 		page = CpGamePadHud.SILO_LOADER_PAGE
-	elseif self:getCanStartCpBunkerSiloWorker() and (self:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO
+	elseif self:getCanStartCpBunkerSiloWorker() and (self:getCpStartingPointSetting():getValue() == CpFieldWorkJobParameters.START_AT_BUNKER_SILO
 		or (AIUtil.hasChildVehicleWithSpecialization(self, Leveler) 
 		   and not AIUtil.hasChildVehicleWithSpecialization(self, Shovel))) then 
 		page = CpGamePadHud.BUNKER_SILO_PAGE

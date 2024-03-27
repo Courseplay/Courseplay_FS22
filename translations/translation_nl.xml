@@ -30,28 +30,28 @@
     <!---->
     <!--AI job parameters-->
     <!---->
-    <text name="CP_jobParameters_fieldPosition_title" text="Veld positie:"/>
-    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
-    <text name="CP_jobParameters_subTitle_startAt" text="Begin bij:"/>
-    <text name="CP_jobParameters_startAt_title" text="Begin bij:"/>
-    <text name="CP_jobParameters_startAt_tooltip" text="Waar te beginnen met veldwerk"/>
-    <text name="CP_jobParameters_startAt_nearest" text="dichtsbijzijnde tussenpunt"/>
-    <text name="CP_jobParameters_startAt_first" text="eerste tussenpunt"/>
-    <text name="CP_jobParameters_startAt_last" text="laatste tussenpunt"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Silo load mode"/>
-    <text name="CP_jobParameters_startAt_unload" text="maaidorser/hakselaar lossen"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
-    <text name="CP_jobParameters_startAt_bales" text="balen verzamelen/verpakken"/>
-    <text name="CP_jobParameters_subTitle_laneOffset" text="Baan afwijking:"/>
-    <text name="CP_jobParameters_laneOffset_title" text="Baan afwijking:"/>
-    <text name="CP_jobParameters_laneOffset_tooltip" text="Baan afwijking"/>
-    <text name="CP_jobParameters_laneOffset_center" text="midden"/>
-    <text name="CP_jobParameters_laneOffset_left" text="links(1)"/>
-    <text name="CP_jobParameters_laneOffset_right" text="rechts(1)"/>
-    <text name="CP_jobParameters_laneOffset_left_2" text="links(2)"/>
-    <text name="CP_jobParameters_laneOffset_right_2" text="rechts(2)"/>
+    <text name="CP_fieldWorkJobParameters_fieldPosition_title" text="Veld positie:"/>
+    <text name="CP_fieldWorkJobParameters_bunkerSiloPosition_title" text="Silo position:"/>
+    <text name="CP_fieldWorkJobParameters_parkPosition_title" text="Park position:"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_startAt" text="Begin bij:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_title" text="Begin bij:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_tooltip" text="Waar te beginnen met veldwerk"/>
+    <text name="CP_fieldWorkJobParameters_startAt_nearest" text="dichtsbijzijnde tussenpunt"/>
+    <text name="CP_fieldWorkJobParameters_startAt_first" text="eerste tussenpunt"/>
+    <text name="CP_fieldWorkJobParameters_startAt_last" text="laatste tussenpunt"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
+    <text name="CP_fieldWorkJobParameters_startAt_siloLoader" text="Silo load mode"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload" text="maaidorser/hakselaar lossen"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bales" text="balen verzamelen/verpakken"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_laneOffset" text="Baan afwijking:"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_title" text="Baan afwijking:"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_tooltip" text="Baan afwijking"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_center" text="midden"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left" text="links(1)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right" text="rechts(1)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left_2" text="links(2)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right_2" text="rechts(2)"/>
     <!---->
     <!--AI bale finder job parameters-->
     <!---->
