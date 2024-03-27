@@ -479,7 +479,7 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_customFieldManager_edit" text="Editar campo customizado"/>
     <text name="CP_customFieldManager_draw" text="Desenhar campo customizado"/>
     <text name="CP_customFieldManager_draw_header" text="Clique no botão direito do mouse para desenhar linhas no campo customizado."/>
-    <text name="CP_customFieldManager_draw_sub_header" text="Hold the left shift key for a straight line."/>
+    <text name="CP_customFieldManager_draw_sub_header" text="Segure a tecla shift esquerda para uma linha reta."/>
     <text name="CP_customFieldManager_save" text="Salvar campo customizado"/>
     <text name="CP_controllerGui_startRecording" text="Iniciar gravação de campo customizado."/>
     <text name="CP_controllerGui_stopRecording" text="Parar gravação de campo customizado."/>
