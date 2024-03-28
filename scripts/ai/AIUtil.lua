@@ -321,9 +321,10 @@ end
 ---@param vehicle table
 ---@param object table
 ---@return boolean
-function AIUtil.isObjectAttachedOnTheBack(vehicle,object)
-	local _, _, dz = localToLocal(object.rootNode, AIUtil.getDirectionNode(vehicle), 0, 0, 0)
-	if dz < 0 then
+function AIUtil.isObjectAttachedOnTheBack(vehicle, object)
+	-- TODO: now in the implement's coordinate system, this is still not 100% reliable in turns
+	local _, _, dz = localToLocal(AIUtil.getDirectionNode(vehicle), object.rootNode, 0, 0, 0)
+	if dz > 0 then
 		return true
 	end
 	return false
