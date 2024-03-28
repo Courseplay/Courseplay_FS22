@@ -619,7 +619,9 @@ end
 
 function CourseTurn:onWaypointChange(ix)
     AITurn.onWaypointChange(self, ix)
-    if self.turnCourse then
+    local tightTurnOffsetDisabled = not self.turnContext:isHeadlandCorner() and
+            g_vehicleConfigurations:getRecursively(self.vehicle, 'disableTightTurnOffsetInTurns')
+    if self.turnCourse and not tightTurnOffsetDisabled then
         if self.forceTightTurnOffset or (self.enableTightTurnOffset and self.turnCourse:useTightTurnOffset(ix)) then
             -- adjust the course a bit to the outside in a curve to keep a towed implement on the course
             -- TODO_22
@@ -732,7 +734,7 @@ function CourseTurn:onPathfindingDone(path)
         self.turnCourse:setUseTightTurnOffsetForLastWaypoints(15)
         local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.turnCourse, nil, true)
         local x = AIUtil.getDirectionNodeToReverserNodeOffset(self.vehicle)
-        self:debug('Extending course at direction switch for reversing to %.1f m (or at least 1m)', -x )
+        self:debug('Extending course at direction switch for reversing to %.1f m (or at least 1m)', -x)
         self.turnCourse:adjustForReversing(math.max(1, -x))
         TurnManeuver.setLowerImplements(self.turnCourse, endingTurnLength, true)
     else
@@ -987,7 +989,7 @@ function StartRowOnly:init(vehicle, driveStrategy, ppc, turnContext, startRowCou
     local _, steeringLength = AIUtil.getSteeringParameters(self.vehicle)
     self.enableTightTurnOffset = steeringLength > 0 and not AIUtil.hasArticulatedAxis(self.vehicle)
 
-        -- TODO: do we need tight turn offset here?
+    -- TODO: do we need tight turn offset here?
     self.turnCourse:setUseTightTurnOffsetForLastWaypoints(15)
     -- add a turn ending section into the row to make sure the implements are lowered correctly
     local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.turnCourse, 3, true)

@@ -128,7 +128,7 @@ You can define the following custom settings:
 	Disables the pipe height adjustment for trailers of a few pipe implements/vehicles.
 
 - ignorePipeMovingToolIndex: int
-	Ignores the given pipe moving tool by it's index.
+	Ignores the given pipe moving tool by its index.
 	This can be used to ignore a pipe moving part 
 	and only use one part.
 	An example is the premium expansion Dewulf P3K Profi.
@@ -140,6 +140,13 @@ You can define the following custom settings:
 - childPipeMovingToolIndex: int
 	Moving tool index for the pipe controller to control the pipe height.
 	This index is for the pipe part that is directly connected to the discharge node.
+
+- disableTightTurnOffsetInTurns: boolean
+    "Tight turn offset" is extending the radius of a turn with a towed implement, in
+    order to keep the implement on the path, while the tractor is driving outside the
+    generated turn course. Setting this to true disables this, as some implements,
+    especially big plows turn on the spot and align better with the next row without
+    tight turn offset.
 
 -->
 <VehicleConfigurations>
@@ -169,6 +176,7 @@ You can define the following custom settings:
 		<Configuration type="INT">basePipeMovingToolIndex</Configuration>
 		<Configuration type="INT">childPipeMovingToolIndex</Configuration>
 		<Configuration type="FLOAT">unloadOffsetX</Configuration>
+        <Configuration type="BOOL">disableTightTurnOffsetInTurns</Configuration>
 	</Configurations>
     <!--[GIANTS]-->
 
