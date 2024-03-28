@@ -477,9 +477,9 @@ You can define the following custom settings:
     <Vehicle name="pw10012.xml"
              noReverse = "true"
              implementWheelAlwaysOnGround = "true"
-             disableTightTurnOffsetInTurns = "true"
+             tightTurnOffsetDistanceInTurns = "1"
              workingWidth = "5.8"
-             turnRadius = "7.5"
+             turnRadius = "7.8"
              raiseLate = "true"
              lowerEarly = "true"
     />
