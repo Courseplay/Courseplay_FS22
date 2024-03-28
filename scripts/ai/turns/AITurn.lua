@@ -619,9 +619,7 @@ end
 
 function CourseTurn:onWaypointChange(ix)
     AITurn.onWaypointChange(self, ix)
-    local tightTurnOffsetDisabled = not self.turnContext:isHeadlandCorner() and
-            g_vehicleConfigurations:getRecursively(self.vehicle, 'disableTightTurnOffsetInTurns')
-    if self.turnCourse and not tightTurnOffsetDisabled then
+    if self.turnCourse then
         if self.forceTightTurnOffset or (self.enableTightTurnOffset and self.turnCourse:useTightTurnOffset(ix)) then
             -- adjust the course a bit to the outside in a curve to keep a towed implement on the course
             -- TODO_22
