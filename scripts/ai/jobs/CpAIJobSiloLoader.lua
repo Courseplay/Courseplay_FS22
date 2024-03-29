@@ -321,19 +321,22 @@ function CpAIJobSiloLoader:getUnloadTriggerAt(unloadPosition)
 	return found, trigger, station
 end
 
-function CpAIJobSiloLoader:drawSilos(map)
-    self.heapPlot:draw(map)
-	g_bunkerSiloManager:drawSilos(map, self.bunkerSilo) 
-	if self.cpJobParameters.unloadAt:getValue() == CpSiloLoaderJobParameters.UNLOAD_TRIGGER then 
-		local fillTypes = self:getConvertedFillTypes()
-		local silo = self.heap or self.bunkerSilo
-		if silo then 
-			table.insert(fillTypes, silo:getFillType())
+function CpAIJobSiloLoader:draw(map, isOverviewMap)
+	CpAIJob.draw(self, map, isOverviewMap)
+	if not isOverviewMap then
+		self.heapPlot:draw(map)
+		g_bunkerSiloManager:drawSilos(map, self.bunkerSilo) 
+		if self.cpJobParameters.unloadAt:getValue() == CpSiloLoaderJobParameters.UNLOAD_TRIGGER then 
+			local fillTypes = self:getConvertedFillTypes()
+			local silo = self.heap or self.bunkerSilo
+			if silo then 
+				table.insert(fillTypes, silo:getFillType())
+			end
+			g_triggerManager:drawDischargeableTriggers(map, self.unloadTrigger, fillTypes)
+		else 
+			--- Drawing trailer area
+			self.trailerAreaPlot:draw(map)
 		end
-		g_triggerManager:drawDischargeableTriggers(map, self.unloadTrigger, fillTypes)
-	else 
-		--- Drawing trailer area
-		self.trailerAreaPlot:draw(map)
 	end
 end
 

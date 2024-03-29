@@ -24,22 +24,18 @@ CpJobParameters = CpObject()
 CpJobParameters.xmlKey = ".cpJobParameters"
 CpJobParameters.baseFilePath = "config/jobParameters/"
 
-function CpJobParameters:init(job)
-    if not CpJobParameters.settings then
+function CpJobParameters:init(job, class, configPath)
+    if not class.settings then
         -- initialize the class members first so the class can be used to access constants, etc.
-        local filePath = Utils.getFilename(self.baseFilePath .. "JobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
-        CpSettingsUtil.loadSettingsFromSetup(CpJobParameters, filePath)
+        local filePath = Utils.getFilename(self.baseFilePath .. configPath, g_Courseplay.BASE_DIRECTORY)
+        CpSettingsUtil.loadSettingsFromSetup(class, filePath)
     end
-    CpSettingsUtil.cloneSettingsTable(self, CpJobParameters.settings, nil, self)
+    CpSettingsUtil.cloneSettingsTable(self, class.settings, nil, self)
     self.job = job
 end
 
 function CpJobParameters.registerXmlSchema(schema, baseKey)
     CpSettingsUtil.registerXmlSchema(schema, baseKey .. CpJobParameters.xmlKey.."(?)")
-end
-
-function CpJobParameters.getSettings(vehicle)
-    return vehicle.spec_cpAIFieldWorker.cpJob:getCpJobParameters()
 end
 
 function CpJobParameters:validateSettings()
@@ -87,32 +83,6 @@ function CpJobParameters:getAiTargetMapHotspotParameters()
     return parameters
 end
 
-function CpJobParameters:getMultiTools()
-    local vehicle = self.job:getVehicle()
-    if vehicle then 
-        local course = vehicle:getFieldWorkCourse()
-        if course then 
-            return course:getMultiTools() or 1
-        else 
-            return 1
-        end
-    end
-    --- This needs to be 5, as the server otherwise has problems.
-    return 5
-end
-
-function CpJobParameters:noMultiToolsCourseSelected()
-    return self:getMultiTools() <= 1
-end
-
-function CpJobParameters:evenNumberOfMultiTools()
-    return self:getMultiTools() %2 == 0
-end
-
-function CpJobParameters:lessThanThreeMultiTools()
-    return self:getMultiTools() < 4
-end
-
 function CpJobParameters:isAIMenuJob()
     return not self.job:getIsHudJob()
 end
@@ -153,14 +123,55 @@ end
 ---@param callbackStr string event to be raised
 ---@param setting AIParameterSettingList setting that raised the callback.
 function CpJobParameters:raiseCallback(callbackStr, setting, ...)
+    if self[callbackStr] then 
+        self[callbackStr](self, setting, ...)
+        return
+    end
     local vehicle = self.job:getVehicle()
     if vehicle then 
         SpecializationUtil.raiseEvent(vehicle, callbackStr, setting, ...)
     end
 end
 
-function CpJobParameters:__tostring()
-   return tostring(self.settings)
+function CpJobParameters:debug(...)
+    self.job:debug(...)
+end
+
+---@class CpFieldWorkJobParameters : CpJobParameters
+CpFieldWorkJobParameters = CpObject(CpJobParameters)
+function CpFieldWorkJobParameters:init(job)
+    CpJobParameters.init(self, job, 
+        CpFieldWorkJobParameters, "FieldWorkJobParameterSetup.xml")
+end
+
+function CpFieldWorkJobParameters.getSettings(vehicle)
+    return vehicle.spec_cpAIFieldWorker.cpJob:getCpJobParameters()
+end
+
+function CpFieldWorkJobParameters:getMultiTools()
+    local vehicle = self.job:getVehicle()
+    if vehicle then 
+        local course = vehicle:getFieldWorkCourse()
+        if course then 
+            return course:getMultiTools() or 1
+        else 
+            return 1
+        end
+    end
+    --- This needs to be 5, as the server otherwise has problems.
+    return 5
+end
+
+function CpFieldWorkJobParameters:noMultiToolsCourseSelected()
+    return self:getMultiTools() <= 1
+end
+
+function CpFieldWorkJobParameters:evenNumberOfMultiTools()
+    return self:getMultiTools() %2 == 0
+end
+
+function CpFieldWorkJobParameters:lessThanThreeMultiTools()
+    return self:getMultiTools() < 4
 end
 
 --- Are the setting values roughly equal.
@@ -180,26 +191,21 @@ end
 ---@class CpBaleFinderJobParameters : CpJobParameters
 CpBaleFinderJobParameters = CpObject(CpJobParameters)
 
-
 function CpBaleFinderJobParameters:init(job)
-    if not CpBaleFinderJobParameters.settings then
-        -- initialize the class members first so the class can be used to access constants, etc.
-        local filePath = Utils.getFilename(self.baseFilePath .. "BaleFinderJobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
-        CpSettingsUtil.loadSettingsFromSetup(CpBaleFinderJobParameters, filePath)
-    end
-    CpSettingsUtil.cloneSettingsTable(self, CpBaleFinderJobParameters.settings, nil, self)
-    self.job = job
+    CpJobParameters.init(self, job, 
+        CpBaleFinderJobParameters, "BaleFinderJobParameterSetup.xml")
 end
 
 function CpBaleFinderJobParameters.getSettings(vehicle)
     return vehicle.spec_cpAIBaleFinder.cpJob:getCpJobParameters()
 end
 
-function CpBaleFinderJobParameters:isBaleWrapSettingVisible()
+function CpBaleFinderJobParameters:hasBaleLoader()
     local vehicle = self.job:getVehicle()
     if vehicle then 
         return AIUtil.hasChildVehicleWithSpecialization(vehicle, BaleLoader)
     end
+    return true
 end
 
 --- AI parameters for the bale finder job.
@@ -209,13 +215,8 @@ end
 CpCombineUnloaderJobParameters = CpObject(CpJobParameters)
 
 function CpCombineUnloaderJobParameters:init(job)
-    self.job = job
-    if not CpCombineUnloaderJobParameters.settings then
-        local filePath = Utils.getFilename(self.baseFilePath .. "CombineUnloaderJobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
-        -- initialize the class members first so the class can be used to access constants, etc.
-        CpSettingsUtil.loadSettingsFromSetup(CpCombineUnloaderJobParameters, filePath)
-    end
-    CpSettingsUtil.cloneSettingsTable(self, CpCombineUnloaderJobParameters.settings, nil, self)
+    CpJobParameters.init(self, job, 
+        CpCombineUnloaderJobParameters, "CombineUnloaderJobParameterSetup.xml")
 end
 
 function CpCombineUnloaderJobParameters:isGiantsUnloadDisabled()
@@ -303,13 +304,8 @@ end
 CpBunkerSiloJobParameters = CpObject(CpJobParameters)
 
 function CpBunkerSiloJobParameters:init(job)
-    if not CpBunkerSiloJobParameters.settings then
-        local filePath = Utils.getFilename(self.baseFilePath .."BunkerSiloJobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
-        -- initialize the class members first so the class can be used to access constants, etc.
-        CpSettingsUtil.loadSettingsFromSetup(CpBunkerSiloJobParameters, filePath)
-    end
-    CpSettingsUtil.cloneSettingsTable(self, CpBunkerSiloJobParameters.settings, nil, self)
-    self.job = job
+    CpJobParameters.init(self, job, 
+        CpBunkerSiloJobParameters, "BunkerSiloJobParameterSetup.xml")
 end
 
 function CpBunkerSiloJobParameters.getSettings(vehicle)
@@ -337,13 +333,8 @@ end
 CpSiloLoaderJobParameters = CpObject(CpJobParameters)
 
 function CpSiloLoaderJobParameters:init(job)
-    if not CpSiloLoaderJobParameters.settings then
-        local filePath = Utils.getFilename(self.baseFilePath .."SiloLoaderJobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
-        -- initialize the class members first so the class can be used to access constants, etc.
-        CpSettingsUtil.loadSettingsFromSetup(CpSiloLoaderJobParameters, filePath)
-    end
-    CpSettingsUtil.cloneSettingsTable(self, CpSiloLoaderJobParameters.settings, nil, self)
-    self.job = job
+    CpJobParameters.init(self, job, 
+        CpSiloLoaderJobParameters, "SiloLoaderJobParameterSetup.xml")
 end
 
 function CpSiloLoaderJobParameters.getSettings(vehicle)

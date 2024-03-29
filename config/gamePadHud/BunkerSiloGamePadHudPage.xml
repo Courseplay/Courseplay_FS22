@@ -5,7 +5,7 @@
 -->
 
 <Settings title="CP_vehicle_setting_display">
-	<Setting type="jobParameters" name = "startAt" />
+	<Setting type="fieldWorkJobParameters" name = "startAt" />
 	<Setting type="vehicleSettings" name="bunkerSiloWorkWidth"/>
 	<Setting type="bunkerSiloJobParameters" name = "drivingForwardsIntoSilo" />
 	<Setting type="bunkerSiloJobParameters" name = "waitAtParkPosition" />

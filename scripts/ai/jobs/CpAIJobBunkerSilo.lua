@@ -3,8 +3,8 @@
 CpAIJobBunkerSilo = {
 	name = "BUNKER_SILO_CP",
 	jobName = "CP_job_bunkerSilo",
-	fieldPositionParameterText = "CP_jobParameters_bunkerSiloPosition_title",
-	targetPositionParameterText = "CP_jobParameters_parkPosition_title",
+	fieldPositionParameterText = "CP_fieldWorkJobParameters_bunkerSiloPosition_title",
+	targetPositionParameterText = "CP_fieldWorkJobParameters_parkPosition_title",
 }
 local CpAIJobBunkerSilo_mt = Class(CpAIJobBunkerSilo, CpAIJob)
 
@@ -109,8 +109,11 @@ function CpAIJobBunkerSilo:validate(farmId)
 	return true, ''
 end
 
-function CpAIJobBunkerSilo:drawSilos(map)
-	g_bunkerSiloManager:drawSilos(map, self.bunkerSilo)
+function CpAIJobBunkerSilo:draw(map, isOverviewMap)
+	CpAIJob.draw(self, map, isOverviewMap)
+	if not isOverviewMap then
+		g_bunkerSiloManager:drawSilos(map, self.bunkerSilo)
+	end
 end
 
 function CpAIJobBunkerSilo:readStream(streamId, connection)

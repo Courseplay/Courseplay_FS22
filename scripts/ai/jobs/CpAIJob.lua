@@ -23,12 +23,7 @@ CpAIJob = {
 local AIJobCp_mt = Class(CpAIJob, AIJob)
 
 function CpAIJob.new(isServer, customMt)
-	local mt = customMt or AIJobCp_mt
-	mt.__tostring = function(_self)
-		CpUtil.info("Job: %s", g_currentMission.aiJobTypeManager:getJobTypeByIndex(_self.jobTypeIndex).name)
-		return string.format("%d Job parameters", tostring(_self.cpJobParameters))
-	end
-	local self = AIJob.new(isServer, mt)
+	local self = AIJob.new(isServer, customMt or AIJobCp_mt)
 	self.isDirectStart = false
 	self.debugChannel = CpDebug.DBG_FIELDWORK
 
@@ -274,6 +269,10 @@ function CpAIJob.getIsStartErrorText(state)
 	return g_i18n:getText("ai_startStateSuccess")
 end
 
+function CpAIJob:draw(map, isOverviewMap)
+	
+end
+
 
 function CpAIJob:writeStream(streamId, connection)
 	streamWriteBool(streamId, self.isDirectStart)
@@ -469,41 +468,14 @@ AIJobTypeManager.getJobTypeIndex = Utils.overwrittenFunction(AIJobTypeManager.ge
 
 --- Registers additional jobs.
 function CpAIJob.registerJob(AIJobTypeManager)
-	AIJobTypeManager:registerJobType(CpAIJobBaleFinder.name, CpAIJobBaleFinder.jobName, CpAIJobBaleFinder)
-	AIJobTypeManager:registerJobType(CpAIJobFieldWork.name, CpAIJobFieldWork.jobName, CpAIJobFieldWork)
-	AIJobTypeManager:registerJobType(CpAIJobCombineUnloader.name, CpAIJobCombineUnloader.jobName, CpAIJobCombineUnloader)
-	AIJobTypeManager:registerJobType(CpAIJobSiloLoader.name, CpAIJobSiloLoader.jobName, CpAIJobSiloLoader)
-	AIJobTypeManager:registerJobType(CpAIJobBunkerSilo.name, CpAIJobBunkerSilo.jobName, CpAIJobBunkerSilo)
-end
-
-
---- for reload, messing with the internals of the job type manager so it uses the reloaded job
-if g_currentMission then
-	local myJobTypeIndex = g_currentMission.aiJobTypeManager:getJobTypeIndexByName(AIJob.name)
-	if myJobTypeIndex then
-		local myJobType = g_currentMission.aiJobTypeManager:getJobTypeByIndex(myJobTypeIndex)
-		myJobType.classObject = AIJob
+	local function register(class)
+		AIJobTypeManager:registerJobType(class.name, class.jobName, class)
 	end
-	local myJobTypeIndex = g_currentMission.aiJobTypeManager:getJobTypeIndexByName(CpAIJobFieldWork.name)
-	if myJobTypeIndex then
-		local myJobType = g_currentMission.aiJobTypeManager:getJobTypeByIndex(myJobTypeIndex)
-		myJobType.classObject = CpAIJobFieldWork
-	end
-	local myJobTypeIndex = g_currentMission.aiJobTypeManager:getJobTypeIndexByName(CpAIJobBaleFinder.name)
-	if myJobTypeIndex then
-		local myJobType = g_currentMission.aiJobTypeManager:getJobTypeByIndex(myJobTypeIndex)
-		myJobType.classObject = CpAIJobBaleFinder
-	end
-	local myJobTypeIndex = g_currentMission.aiJobTypeManager:getJobTypeIndexByName(CpAIJobBunkerSilo.name)
-	if myJobTypeIndex then
-		local myJobType = g_currentMission.aiJobTypeManager:getJobTypeByIndex(myJobTypeIndex)
-		myJobType.classObject = CpAIJobBunkerSilo
-	end
-	local myJobTypeIndex = g_currentMission.aiJobTypeManager:getJobTypeIndexByName(CpAIJobSiloLoader.name)
-	if myJobTypeIndex then
-		local myJobType = g_currentMission.aiJobTypeManager:getJobTypeByIndex(myJobTypeIndex)
-		myJobType.classObject = CpAIJobSiloLoader
-	end
+	register(CpAIJobBaleFinder)
+	register(CpAIJobFieldWork)
+	register(CpAIJobCombineUnloader)
+	register(CpAIJobSiloLoader)
+	register(CpAIJobBunkerSilo)
 end
 
 AIJobTypeManager.loadMapData = Utils.appendedFunction(AIJobTypeManager.loadMapData,CpAIJob.registerJob)
