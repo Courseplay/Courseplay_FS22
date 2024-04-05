@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	All the global settings can be setup here.
+	For documentation look up the CpSettingUtil.lua.
+-->
+
+<Settings prefixText="CP_hud_settings_">
+    <SettingSubTitle title="basic">
+		<Setting classType="AIParameterSettingList" name="hudStartAt">
+			<Values>
+				<!-- Fieldwork -->
+				<Value name="START_AT_FIELDWORK_NEAREST_POINT" isDisabled="isFieldWorkModeDisabled">1</Value>
+				<Value name="START_AT_FIELDWORK_FIRST_POINT" isDisabled="isFieldWorkModeDisabled">2</Value>
+				<Value name="START_AT_FIELDWORK_LAST_POINT" isDisabled="isFieldWorkModeDisabled">3</Value>
+				<!-- Bale Finder -->
+				<Value name="START_AT_BALE_FINDER" isDisabled="isBaleFinderModeDisabled">4</Value>
+				<!-- Bunker Silo -->
+				<Value name="START_AT_BUNKER_SILO" isDisabled="isBunkerSiloModeDisabled">5</Value> 
+				<!-- Silo Loader -->
+				<Value name="START_AT_SILO_LOADING" isDisabled="isSiloLoadingModeDisabled">6</Value> 
+				<!-- Combine Unloader -->
+				<Value name="START_AT_UNLOADER_HARVESTER" isDisabled="isUnloaderModeDisabled">7</Value> 
+				<Value name="START_AT_UNLOADER_LOADER" isDisabled="isUnloaderModeDisabled">8</Value> 
+				<!-- Street Driver -->
+				<Value name="START_AT_STREET_DRIVE_TO" isDisabled="isStreetModeDisabled">9</Value> 
+				<Value name="START_AT_STREET_UNLOAD_OR_REFILL" isDisabled="isStreetModeDisabled">10</Value> 
+				<Value name="START_AT_STREET_LOAD_AND_UNLOAD" isDisabled="isStreetModeDisabled">11</Value> 
+
+			</Values>
+			<Texts>
+				<Text>fieldWork_nearest</Text>
+				<Text>fieldWork_first</Text>
+				<Text>fieldWork_last</Text>
+				<Text>baleFinder</Text>
+				<Text>bunkerSilo</Text>
+				<Text>siloLoader</Text>
+				<Text>unloader_harvester</Text>
+				<Text>unloader_loader</Text>
+				<Text>street_driveTo</Text>
+				<Text>street_unloadOrRefill</Text>
+				<Text>street_loadAndUnload</Text>
+			</Texts>
+		</Setting>
+	</SettingSubTitle>
+</Settings>

@@ -20,20 +20,6 @@ function CpSiloLoaderWorkerHudPageElement:setupElements(baseHud, vehicle, lines,
     self.workWidthBtn = baseHud:addLineTextButton(self, 3, CpBaseHud.defaultFontSize, 
                                                 vehicle:getCpSettings().bunkerSiloWorkWidth) 
 
-    --- Goal button.
-    local width, height = getNormalizedScreenValues(37, 37)    
-    local goalOverlay = CpGuiUtil.createOverlay({width, height},
-                                                {AITargetHotspot.FILENAME, CpBaseHud.uvs.goalSymbol}, 
-                                                CpBaseHud.OFF_COLOR,
-                                                CpBaseHud.alignments.bottomRight)
-    
-    self.goalBtn = CpHudButtonElement.new(goalOverlay, self)
-    local x, y = unpack(lines[4].right)
-    self.goalBtn:setPosition(x, y + hMargin/2)
-    self.goalBtn:setCallback("onClickPrimary", vehicle, function (vehicle)
-        baseHud:openCourseGeneratorGui(vehicle)
-    end)
-
 
     --- Displays the fill level of current worked on heap.
     local x, y = unpack(lines[4].left)
@@ -153,15 +139,4 @@ function CpSiloLoaderWorkerHudPageElement:arePositionEqual(parameters, otherPara
         return false
     end
     return true 
-end
-
-function CpSiloLoaderWorkerHudPageElement:isStartingPointBtnDisabled(vehicle)
-    return AIUtil.hasChildVehicleWithSpecialization(vehicle, ConveyorBelt) or vehicle:getIsCpActive()
-end
-
-function CpSiloLoaderWorkerHudPageElement:getStartingPointBtnText(vehicle)
-    if self:isStartingPointBtnDisabled(vehicle) then 
-        return vehicle:getCpStartText()
-    end
-    return vehicle:getCpStartingPointSetting():getString()
 end

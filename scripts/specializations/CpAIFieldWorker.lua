@@ -68,7 +68,6 @@ end
 function CpAIFieldWorker.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanStartCp', CpAIFieldWorker.getCanStartCp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartableJob', CpAIFieldWorker.getCpStartableJob)
-    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartText', CpAIFieldWorker.getCpStartText)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpDriveStrategy', CpAIFieldWorker.getCpDriveStrategy)
 end
 
@@ -294,14 +293,12 @@ function CpAIFieldWorker:getCanStartCp(superFunc)
 end
 
 --- Gets the field work job for the hud or start action event.
-function CpAIFieldWorker:getCpStartableJob(superFunc, ...)
+function CpAIFieldWorker:getCpStartableJob(superFunc, isStartedByHud)
     local spec = self.spec_cpAIFieldWorker
-	return self:getCanStartCpFieldWork() and self:hasCpCourse() and spec.cpJob or superFunc(self, ...)
-end
-
-function CpAIFieldWorker:getCpStartText(superFunc)
-    local spec = self.spec_cpAIFieldWorker
-	return self:hasCpCourse() and spec.cpJob:getCpJobParameters().startAt:getString() or superFunc(self)
+    if isStartedByHud and self:cpIsHudFieldWorkJobSelected() then 
+        return self:getCanStartCpFieldWork() and self:hasCpCourse() and spec.cpJob
+    end
+	return superFunc(self, isStartedByHud) or self:getCanStartCpFieldWork() and self:hasCpCourse() and spec.cpJob
 end
 
 --- Makes sure a callstack is printed, when an error appeared.

@@ -48,7 +48,6 @@ end
 function CpAISiloLoaderWorker.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanStartCp', CpAISiloLoaderWorker.getCanStartCp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartableJob', CpAISiloLoaderWorker.getCpStartableJob)
-    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartText', CpAISiloLoaderWorker.getCpStartText)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtFirstWp', CpAISiloLoaderWorker.startCpAtFirstWp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtLastWp', CpAISiloLoaderWorker.startCpAtLastWp)
 end
@@ -104,16 +103,10 @@ end
 
 function CpAISiloLoaderWorker:getCpStartableJob(superFunc, isStartedByHud)
     local spec = self.spec_cpAISiloLoaderWorker
-    local job = self:getCanStartCpSiloLoaderWorker() and spec.cpJob
-    if isStartedByHud and not AIUtil.hasChildVehicleWithSpecialization(self, ConveyorBelt) then 
-        job = self:getCpStartingPointSetting():getValue() == CpFieldWorkJobParameters.START_AT_SILO_LOADING and job
+    if isStartedByHud and self:cpIsHudSiloLoaderJobSelected() then 
+        return self:getCanStartCpSiloLoaderWorker() and spec.cpJob
     end
-	return superFunc(self, isStartedByHud) or job
-end
-
-function CpAISiloLoaderWorker:getCpStartText(superFunc)
-	local text = superFunc and superFunc(self)
-	return text~="" and text or self:getCanStartCpSiloLoaderWorker() and CpAISiloLoaderWorker.startText
+	return superFunc(self, isStartedByHud) or self:getCanStartCpSiloLoaderWorker() and spec.cpJob
 end
 
 function CpAISiloLoaderWorker:getCpSiloLoaderWorkerJobParameters()

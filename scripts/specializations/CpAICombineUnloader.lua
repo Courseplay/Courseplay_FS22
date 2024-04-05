@@ -141,7 +141,6 @@ end
 function CpAICombineUnloader.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanStartCp', CpAICombineUnloader.getCanStartCp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartableJob', CpAICombineUnloader.getCpStartableJob)
-    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartText', CpAICombineUnloader.getCpStartText)
 
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtFirstWp', CpAICombineUnloader.startCpAtFirstWp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtLastWp', CpAICombineUnloader.startCpAtLastWp)
@@ -247,16 +246,13 @@ function CpAICombineUnloader:getCanStartCp(superFunc)
     return superFunc(self) or self:getCanStartCpCombineUnloader() and not self:getIsCpCourseRecorderActive()
 end
 
-function CpAICombineUnloader:getCpStartableJob(superFunc, ...)
+function CpAICombineUnloader:getCpStartableJob(superFunc, isStartedByHud)
     local spec = self.spec_cpAICombineUnloader
-    return superFunc(self, ...) or self:getCanStartCpCombineUnloader() and spec.cpJob
+    if isStartedByHud and self:cpIsHudUnloaderJobSelected() then 
+        return self:getCanStartCpCombineUnloader() and spec.cpJob
+    end
+    return superFunc(self, isStartedByHud) or self:getCanStartCpCombineUnloader() and spec.cpJob
 end
-
-function CpAICombineUnloader:getCpStartText(superFunc)
-	local text = superFunc and superFunc(self)
-	return text~="" and text or self:getCanStartCpCombineUnloader() and self:getCpCombineUnloaderJobParameters().unloadTarget:getString()
-end
-
 
 --- Starts the cp driver at the first waypoint.
 function CpAICombineUnloader:startCpAtFirstWp(superFunc)
