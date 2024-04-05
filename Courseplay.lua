@@ -200,6 +200,7 @@ function Courseplay:update(dt)
         -- Doubles the map zoom for 4x Maps. Mainly to make it easier to set targets for unload triggers.
         self.postInit = true
         local function setIngameMapFix(mapElement)
+            mapElement:reset()
             local factor = 2*mapElement.terrainSize/2048
             mapElement.zoomMax = mapElement.zoomMax * factor
             mapElement.zoomDefault = mapElement.zoomDefault * factor
