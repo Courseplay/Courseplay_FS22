@@ -7,12 +7,18 @@ CpHud.MOD_NAME = g_currentModName
 
 CpHud.NAME = ".cpHud"
 CpHud.SPEC_NAME = CpHud.MOD_NAME .. CpHud.NAME
-CpHud.KEY = "."..CpHud.MOD_NAME..CpHud.NAME .. "."
+CpHud.KEY = "." .. CpHud.MOD_NAME .. CpHud.NAME
+CpHud.SETTINGS_KEY = ".settings"
 CpHud.isHudActive = false
 CpHud.workWidthDisplayDelayMs = 5000 -- 5 seconds
+CpHud.hudSettings = {}
 
 function CpHud.initSpecialization()
     local schema = Vehicle.xmlSchemaSavegame
+    CpSettingsUtil.registerXmlSchema(schema, 
+        "vehicles.vehicle(?)" .. CpHud.KEY .. CpHud.SETTINGS_KEY .. "(?)")
+    local filePath = Utils.getFilename("config/HudSettingsSetup.xml", g_Courseplay.BASE_DIRECTORY)
+    CpSettingsUtil.loadSettingsFromSetup(CpHud.hudSettings, filePath)
 end
 
 function CpHud.prerequisitesPresent(specializations)
@@ -44,6 +50,7 @@ function CpHud.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "cpUpdateMouseAction", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onWriteUpdateStream", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onReadUpdateStream", CpHud)
+    SpecializationUtil.registerEventListener(vehicleType, "onStateChange", CpHud)
 end
 
 function CpHud.registerFunctions(vehicleType)
@@ -57,13 +64,22 @@ function CpHud.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'showCpBunkerSiloWorkWidth', CpHud.showCpBunkerSiloWorkWidth)
     SpecializationUtil.registerFunction(vehicleType, 'showCpCombineUnloaderWorkWidth', CpHud.showCpCombineUnloaderWorkWidth)
     SpecializationUtil.registerFunction(vehicleType, 'showCpCourseWorkWidth', CpHud.showCpCourseWorkWidth)
+    SpecializationUtil.registerFunction(vehicleType, "cpGetHudStartingPointSetting", CpHud.cpGetHudStartingPointSetting)
+
+    SpecializationUtil.registerFunction(vehicleType, "cpIsHudFieldWorkJobSelected", CpHud.cpIsHudFieldWorkJobSelected)
+    SpecializationUtil.registerFunction(vehicleType, "cpIsHudBaleFinderJobSelected", CpHud.cpIsHudBaleFinderJobSelected)
+    SpecializationUtil.registerFunction(vehicleType, "cpIsHudBunkerSiloJobSelected", CpHud.cpIsHudBunkerSiloJobSelected)
+    SpecializationUtil.registerFunction(vehicleType, "cpIsHudSiloLoaderJobSelected", CpHud.cpIsHudSiloLoaderJobSelected)
+    SpecializationUtil.registerFunction(vehicleType, "cpIsHudUnloaderJobSelected", CpHud.cpIsHudUnloaderJobSelected)
+    SpecializationUtil.registerFunction(vehicleType, "cpIsHudDriveToJobSelected", CpHud.cpIsHudDriveToJobSelected)
+    SpecializationUtil.registerFunction(vehicleType, "cpIsHudTransportJobSelected", CpHud.cpIsHudTransportJobSelected)
 end
 
 function CpHud.registerOverwrittenFunctions(vehicleType)
    if vehicleType.functions["enterVehicleRaycastClickToSwitch"] ~= nil then 
         SpecializationUtil.registerOverwrittenFunction(vehicleType, "enterVehicleRaycastClickToSwitch", CpHud.enterVehicleRaycastClickToSwitch)
    end
-  
+   SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartText', CpHud.getCpStartText)
 end
 
 --- Disables the click to switch action, while the mouse is over the cp hud.
@@ -178,7 +194,15 @@ function CpHud:onLoad(savegame)
 	spec.lastShownWorkWidthTimeStamp = g_time
     spec.lastShownBaleCollectorOffsetTimeStamp = g_time
     spec.openCloseText = g_i18n:getText("input_CP_OPEN_CLOSE_HUD")
-    
+    spec.hudSettings = {}
+    --- Clones the generic settings to create different settings containers for each vehicle. 
+    CpSettingsUtil.cloneSettingsTable(spec.hudSettings, CpHud.hudSettings.settings, self, CpHud)
+    for _, setting in ipairs(spec.hudSettings.settings) do
+        setting:refresh()
+    end
+    if savegame == nil or savegame.resetVehicles then return end
+    CpSettingsUtil.loadFromXmlFile(spec, savegame.xmlFile, 
+                        savegame.key .. CpHud.KEY .. CpHud.SETTINGS_KEY, self)
 end
 
 function CpHud:onWriteUpdateStream(streamId, connection, dirtyMask)
@@ -202,7 +226,10 @@ function CpHud:onPostLoad(savegame)
 end
 
 function CpHud:saveToXMLFile(xmlFile, baseKey, usedModNames)
-   
+   --- Saves the settings.
+    local spec = self.spec_cpHud
+    CpSettingsUtil.saveToXmlFile(spec.settings, xmlFile, 
+        baseKey .. CpHud.SETTINGS_KEY, self, nil)
 end
 
 function CpHud:onEnterVehicle(isControlling)
@@ -219,6 +246,19 @@ function CpHud:onLeaveVehicle(wasEntered)
     -- turn off mouse when leaving the vehicle
     if wasEntered then
    	    self:resetCpHud()
+    end
+end
+
+function CpHud:onStateChange(state, data)
+    local spec = self.spec_cpHud
+    if state == Vehicle.STATE_CHANGE_ATTACH then 
+        for _, setting in ipairs(spec.hudSettings.settings) do
+            setting:refresh()
+        end
+    elseif state == Vehicle.STATE_CHANGE_DETACH then
+        for _, setting in ipairs(spec.hudSettings.settings) do
+            setting:refresh()
+        end
     end
 end
 
@@ -289,4 +329,81 @@ end
 
 function CpHud:cpInit()
     self.spec_cpHud.hud = CpBaseHud(self)
+end
+
+--------------------------------------
+--- Hud Settings
+--------------------------------------
+
+function CpHud:isFieldWorkModeDisabled()
+    return not self:getCanStartCpFieldWork()
+end
+
+function CpHud:isBaleFinderModeDisabled()
+    return not self:getCanStartCpBaleFinder()
+end
+
+function CpHud:isSiloLoadingModeDisabled()
+    return not self:getCanStartCpSiloLoaderWorker()
+end
+
+function CpHud:isUnloaderModeDisabled()
+    return not self:getCanStartCpCombineUnloader()
+end
+
+function CpHud:isStreetModeDisabled()
+    return false
+end
+
+function CpHud:cpIsHudFieldWorkJobSelected()
+    local spec = self.spec_cpHud
+    local value = spec.hudSettings.hudStartAt:getValue()
+    return value <= CpHud.hudSettings.START_AT_FIELDWORK_LAST_POINT
+end
+
+function CpHud:cpIsHudBaleFinderJobSelected()
+    local spec = self.spec_cpHud
+    local value = spec.hudSettings.hudStartAt:getValue()
+    return value == CpHud.hudSettings.START_AT_BALE_FINDER
+end
+
+function CpHud:cpIsHudBunkerSiloJobSelected()
+    local spec = self.spec_cpHud
+    local value = spec.hudSettings.hudStartAt:getValue()
+    return value == CpHud.hudSettings.START_AT_BUNKER_SILO
+end
+
+function CpHud:cpIsHudSiloLoaderJobSelected()
+    local spec = self.spec_cpHud
+    local value = spec.hudSettings.hudStartAt:getValue()
+    return value == CpHud.hudSettings.START_AT_SILO_LOADING
+end
+
+function CpHud:cpIsHudUnloaderJobSelected()
+    local spec = self.spec_cpHud
+    local value = spec.hudSettings.hudStartAt:getValue()
+    return value == CpHud.hudSettings.START_AT_UNLOADER_HARVESTER or
+        value == CpHud.hudSettings.START_AT_UNLOADER_LOADER
+end
+
+function CpHud:cpIsHudDriveToJobSelected()
+    local spec = self.spec_cpHud
+    local value = spec.hudSettings.hudStartAt:getValue()
+    return value == CpHud.hudSettings.START_AT_STREET_DRIVE_TO
+end
+
+function CpHud:cpIsHudTransportJobSelected()
+    local spec = self.spec_cpHud
+    local value = spec.hudSettings.hudStartAt:getValue()
+    return value > CpHud.hudSettings.START_AT_STREET_DRIVE_TO
+end
+
+function CpHud:cpGetHudStartingPointSetting()
+    local spec = self.spec_cpHud
+    return spec.hudSettings.hudStartAt
+end
+
+function CpHud:getCpStartText()
+    local spec = self.spec_cpHud
+    return spec.hudSettings.hudStartAt:getString() or "---"
 end

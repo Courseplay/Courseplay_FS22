@@ -3,7 +3,7 @@
 CpHudElement = {}
 local CpHudElement_mt = Class(CpHudElement, HUDElement)
 
-function CpHudElement.new(overlay,parentHudElement,customMt)
+function CpHudElement.new(overlay, parentHudElement, customMt)
     if customMt == nil then
         customMt = CpHudElement_mt
     end
@@ -317,10 +317,15 @@ function CpTextHudElement:draw()
 	setTextWrapWidth(0)
 	setTextBold(false)
 	setTextColor(1, 1, 1, 1)
+    CpTextHudElement:superClass().draw(self)
 end
 
 function CpTextHudElement:getScreenHeight()
     return self.screenTextSize   
+end
+
+function CpTextHudElement:getText()
+    return self.text
 end
 
 --- Moveable Hud element.

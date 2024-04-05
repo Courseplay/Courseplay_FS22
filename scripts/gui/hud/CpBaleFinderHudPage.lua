@@ -27,20 +27,6 @@ function CpBaleFinderHudPageElement:setupElements(baseHud, vehicle, lines, wMarg
     }
     self.baleFinderFillTypeBtn:setCallback(callback, callback)             
     
-    --- Goal button.
-    local width, height = getNormalizedScreenValues(37, 37)    
-    local goalOverlay = CpGuiUtil.createOverlay({width, height},
-                                                {AITargetHotspot.FILENAME, CpBaseHud.uvs.goalSymbol}, 
-                                                CpBaseHud.OFF_COLOR,
-                                                CpBaseHud.alignments.bottomRight)
-    
-    self.goalBtn = CpHudButtonElement.new(goalOverlay, self)
-    local x, y = unpack(lines[4].right)
-    self.goalBtn:setPosition(x, y + hMargin/2)
-    self.goalBtn:setCallback("onClickPrimary", vehicle, function (vehicle)
-        baseHud:openCourseGeneratorGui(vehicle)
-    end)
-
     --- Bale progress of how much bales have bin worked on, similar to waypoint progress.
 	self.balesProgressBtn = baseHud:addRightLineTextButton(self, 4, CpBaseHud.defaultFontSize, 
         function(vehicle)
