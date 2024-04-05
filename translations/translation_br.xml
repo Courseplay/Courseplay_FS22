@@ -149,6 +149,21 @@
     <text name="CP_ai_taskDescriptionWaitsForTrailer" text="Aguardando carretas"/>
     <text name="CP_ai_taskDescriptionUnloadingToTrigger" text="Descarregar no trigger"/>
     <!---->
+    <!--Hud settings-->
+    <!---->
+    <text name="CP_hud_settings_hudStartAt_title" text="TODO: CP AI Job:"/>
+    <text name="CP_hud_settings_hudStartAt_fieldWork_first" text="TODO: Feldarbeit: erster Wegpunkt"/>
+    <text name="CP_hud_settings_hudStartAt_fieldWork_nearest" text="TODO: Feldarbeit: nächster Wegpunkt"/>
+    <text name="CP_hud_settings_hudStartAt_fieldWork_last" text="TODO: Feldarbeit: letzter Wegpunkt"/>
+    <text name="CP_hud_settings_hudStartAt_baleFinder" text="TODO: Ballen sammeln"/>
+    <text name="CP_hud_settings_hudStartAt_bunkerSilo" text="TODO: Bunkersilo"/>
+    <text name="CP_hud_settings_hudStartAt_siloLoader" text="TODO: Silo Lader"/>
+    <text name="CP_hud_settings_hudStartAt_unloader_harvester" text="TODO: Drescher abladen"/>
+    <text name="CP_hud_settings_hudStartAt_unloader_loader" text="TODO: Lader abladen"/>
+    <text name="CP_hud_settings_hudStartAt_street_driveTo" text="TODO: Drive to"/>
+    <text name="CP_hud_settings_hudStartAt_street_unloadOrRefill" text="TODO: Unload or refill"/>
+    <text name="CP_hud_settings_hudStartAt_street_loadAndUnload" text="TODO: Load and unload"/>
+    <!---->
     <!--Vehicle settings-->
     <!---->
     <text name="CP_vehicle_setting_title" text="Configuração do veículo para (%s)"/>
