@@ -296,6 +296,13 @@ end
 function CpAIFieldWorker:getCpStartableJob(superFunc, isStartedByHud)
     local spec = self.spec_cpAIFieldWorker
     if isStartedByHud and self:cpIsHudFieldWorkJobSelected() then 
+        if self:cpGetHudStartingPointSetting():getValue() == CpHud.hudSettings.START_AT_FIELDWORK_FIRST_POINT then 
+            spec.cpJob:getCpJobParameters().startAt:setValue(CpFieldWorkJobParameters.START_AT_FIRST_POINT)
+        elseif self:cpGetHudStartingPointSetting():getValue() == CpHud.hudSettings.START_AT_FIELDWORK_NEAREST_POINT then
+            spec.cpJob:getCpJobParameters().startAt:setValue(CpFieldWorkJobParameters.START_AT_NEAREST_POINT)
+        else 
+            spec.cpJob:getCpJobParameters().startAt:setValue(CpFieldWorkJobParameters.START_AT_LAST_POINT)
+        end
         return self:getCanStartCpFieldWork() and self:hasCpCourse() and spec.cpJob
     end
 	return superFunc(self, isStartedByHud) or self:getCanStartCpFieldWork() and self:hasCpCourse() and spec.cpJob

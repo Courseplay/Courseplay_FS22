@@ -249,6 +249,11 @@ end
 function CpAICombineUnloader:getCpStartableJob(superFunc, isStartedByHud)
     local spec = self.spec_cpAICombineUnloader
     if isStartedByHud and self:cpIsHudUnloaderJobSelected() then 
+        if self:cpGetHudStartingPointSetting():getValue() == CpHud.hudSettings.START_AT_UNLOADER_HARVESTER then 
+            spec.cpJob:getCpJobParameters().unloadTarget:setValue(CpCombineUnloaderJobParameters.UNLOAD_COMBINE)
+        else 
+            spec.cpJob:getCpJobParameters().unloadTarget:setValue(CpCombineUnloaderJobParameters.UNLOAD_SILO_LOADER)
+        end
         return self:getCanStartCpCombineUnloader() and spec.cpJob
     end
     return superFunc(self, isStartedByHud) or self:getCanStartCpCombineUnloader() and spec.cpJob

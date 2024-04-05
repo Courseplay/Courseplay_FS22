@@ -452,6 +452,56 @@
 			<Text language="en"><![CDATA[Unloads to an unload trigger]]></Text>
 		</Translation>
 	</Category>
+	<Category name="Hud settings">
+		<Translation name="CP_hud_settings_hudStartAt_title">
+			<Text language="de"><![CDATA[TODO: CP AI Job:]]></Text>
+			<Text language="en"><![CDATA[TODO: CP AI Job:]]></Text>
+		</Translation>
+		<Translation name="CP_hud_settings_hudStartAt_fieldWork_first">
+			<Text language="de"><![CDATA[TODO: Feldarbeit: erster Wegpunkt]]></Text>
+			<Text language="en"><![CDATA[TODO: Feldarbeit: erster Wegpunkt]]></Text>
+		</Translation>
+		<Translation name="CP_hud_settings_hudStartAt_fieldWork_nearest">
+			<Text language="de"><![CDATA[TODO: Feldarbeit: nächster Wegpunkt]]></Text>
+			<Text language="en"><![CDATA[TODO: Feldarbeit: nächster Wegpunkt]]></Text>
+		</Translation>
+		<Translation name="CP_hud_settings_hudStartAt_fieldWork_last">
+			<Text language="de"><![CDATA[TODO: Feldarbeit: letzter Wegpunkt]]></Text>
+			<Text language="en"><![CDATA[TODO: Feldarbeit: letzter Wegpunkt]]></Text>
+		</Translation>
+		<Translation name="CP_hud_settings_hudStartAt_baleFinder">
+			<Text language="de"><![CDATA[TODO: Ballen sammeln]]></Text>
+			<Text language="en"><![CDATA[TODO: Ballen sammeln]]></Text>
+		</Translation>
+		<Translation name="CP_hud_settings_hudStartAt_bunkerSilo">
+			<Text language="de"><![CDATA[TODO: Bunkersilo]]></Text>
+			<Text language="en"><![CDATA[TODO: Bunkersilo]]></Text>
+		</Translation>
+		<Translation name="CP_hud_settings_hudStartAt_siloLoader">
+			<Text language="de"><![CDATA[TODO: Silo Lader]]></Text>
+			<Text language="en"><![CDATA[TODO: Silo Lader]]></Text>
+		</Translation>
+		<Translation name="CP_hud_settings_hudStartAt_unloader_harvester">
+			<Text language="de"><![CDATA[TODO: Drescher abladen]]></Text>
+			<Text language="en"><![CDATA[TODO: Drescher abladen]]></Text>
+		</Translation>
+		<Translation name="CP_hud_settings_hudStartAt_unloader_loader">
+			<Text language="de"><![CDATA[TODO: Lader abladen]]></Text>
+			<Text language="en"><![CDATA[TODO: Lader abladen]]></Text>
+		</Translation>
+		<Translation name="CP_hud_settings_hudStartAt_street_driveTo">
+			<Text language="de"><![CDATA[TODO: Drive to]]></Text>
+			<Text language="en"><![CDATA[TODO: Drive to]]></Text>
+		</Translation>
+		<Translation name="CP_hud_settings_hudStartAt_street_unloadOrRefill">
+			<Text language="de"><![CDATA[TODO: Unload or refill]]></Text>
+			<Text language="en"><![CDATA[TODO: Unload or refill]]></Text>
+		</Translation>
+		<Translation name="CP_hud_settings_hudStartAt_street_loadAndUnload">
+			<Text language="de"><![CDATA[TODO: Load and unload]]></Text>
+			<Text language="en"><![CDATA[TODO: Load and unload]]></Text>
+		</Translation>
+	</Category>
 	<Category name="Vehicle settings">	
 		<Translation name="CP_vehicle_setting_title">
 			<Text language="de"><![CDATA[Fahrzeugeinstellungen für (%s)]]></Text>
