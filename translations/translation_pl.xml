@@ -479,7 +479,7 @@ Kurs jest automatycznie zapisywany po zamknięciu edytora i nadpisuje wybrany ku
     <text name="CP_customFieldManager_edit" text="Edytuj własne pole"/>
     <text name="CP_customFieldManager_draw" text="Narysuj nowe pole"/>
     <text name="CP_customFieldManager_draw_header" text="Narysuj linie nowego pola z prawym kliknięciem."/>
-    <text name="CP_customFieldManager_draw_sub_header" text="Hold the left shift key for a straight line."/>
+    <text name="CP_customFieldManager_draw_sub_header" text="Przytrzymaj lewy klawisz Shift, aby narysować prostą linię."/>
     <text name="CP_customFieldManager_save" text="Zapisz nowe pole"/>
     <text name="CP_controllerGui_startRecording" text="Rozpocznij nagrywanie nowego pola."/>
     <text name="CP_controllerGui_stopRecording" text="Zakończ nagrywanie nowego pola."/>
