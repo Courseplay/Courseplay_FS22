@@ -57,11 +57,11 @@ function CpFieldWorkHudPageElement:setupElements(baseHud, vehicle, lines, wMargi
         end, vehicle)
    
     --- Work width
-    self.workWidthBtn = baseHud:addLineTextButton(self, 3, CpBaseHud.defaultFontSize, 
+    self.workWidthBtn = baseHud:addLineTextButtonWithIncrementalButtons(self, 3, CpBaseHud.defaultFontSize, 
         vehicle:getCourseGeneratorSettings().workWidth)
 
     --- Tool offset x
-    self.toolOffsetXBtn = baseHud:addLineTextButton(self, 2, CpBaseHud.defaultFontSize, 
+    self.toolOffsetXBtn = baseHud:addLineTextButtonWithIncrementalButtons(self, 2, CpBaseHud.defaultFontSize, 
         vehicle:getCpSettings().toolOffsetX)
 
     --- Lane offset

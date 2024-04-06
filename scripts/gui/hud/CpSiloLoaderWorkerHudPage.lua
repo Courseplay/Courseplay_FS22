@@ -17,7 +17,7 @@ end
 function CpSiloLoaderWorkerHudPageElement:setupElements(baseHud, vehicle, lines, wMargin, hMargin)
 	
     --- Work width
-    self.workWidthBtn = baseHud:addLineTextButton(self, 3, CpBaseHud.defaultFontSize, 
+    self.workWidthBtn = baseHud:addLineTextButtonWithIncrementalButtons(self, 3, CpBaseHud.defaultFontSize, 
                                                 vehicle:getCpSettings().bunkerSiloWorkWidth) 
 
 
@@ -30,7 +30,7 @@ function CpSiloLoaderWorkerHudPageElement:setupElements(baseHud, vehicle, lines,
     self.fillLevelProgressText = CpTextHudElement.new(self, x, y, CpBaseHud.defaultFontSize, RenderText.ALIGN_RIGHT)
     
     --- Shovel loading height offset.
-    self.loadingShovelHeightOffsetBtn = baseHud:addLineTextButton(self, 2, CpBaseHud.defaultFontSize, 
+    self.loadingShovelHeightOffsetBtn = baseHud:addLineTextButtonWithIncrementalButtons(self, 2, CpBaseHud.defaultFontSize, 
         vehicle:getCpSettings().loadingShovelHeightOffset) 
 
     CpGuiUtil.addCopyAndPasteButtons(self, baseHud, 

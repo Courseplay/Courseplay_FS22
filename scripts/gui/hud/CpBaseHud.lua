@@ -400,11 +400,27 @@ function CpBaseHud:addRightLineTextButton(parent, line, textSize, callbackFunc, 
 end
 
 function CpBaseHud:addLineTextButton(parent, line, textSize, setting)
-    if setting == nil then 
-        self:debug("Setting is nil!")
-        printCallstack()
-        return
-    end
+    local x, y = unpack(self.lines[line].left)
+    local dx, dy = unpack(self.lines[line].right)
+    local btnYOffset = self.hMargin*0.1
+    local element = CpHudSettingElement.new(parent, x, y, dx, y - btnYOffset, 
+                                            nil, nil, textSize, textSize)
+    local callbackLabel = {
+        callbackStr = "onClickPrimary",
+        class =  setting,
+        func =  setting.setNextItem,
+    }
+
+    local callbackText = {
+        callbackStr = "onClickPrimary",
+        class =  setting,
+        func =  setting.setNextItem,
+    }
+    element:setCallback(callbackLabel, callbackText)
+    return element
+end
+
+function CpBaseHud:addLineTextButtonWithIncrementalButtons(parent, line, textSize, setting)
     local imageFilename = Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY)
 
     local width, height = getNormalizedScreenValues(16, 16)
@@ -422,7 +438,7 @@ function CpBaseHud:addLineTextButton(parent, line, textSize, setting)
     local dx, dy = unpack(self.lines[line].right)
     local btnYOffset = self.hMargin*0.1
     local element = CpHudSettingElement.new(parent, x, y, dx, y - btnYOffset, 
-                                            incrementalOverlay, decrementalOverlay, textSize)
+                                            incrementalOverlay, decrementalOverlay, textSize, textSize - 2)
 
     local callbackIncremental = {
         callbackStr = "onClickPrimary",

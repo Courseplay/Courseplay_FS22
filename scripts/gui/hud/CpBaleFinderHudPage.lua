@@ -12,7 +12,7 @@ end
 
 function CpBaleFinderHudPageElement:setupElements(baseHud, vehicle, lines, wMargin, hMargin)
 	--- Tool offset x
-	self.toolOffsetXBtn = baseHud:addLineTextButton(self, 2, CpBaseHud.defaultFontSize, 
+	self.toolOffsetXBtn = baseHud:addLineTextButtonWithIncrementalButtons(self, 2, CpBaseHud.defaultFontSize, 
 												vehicle:getCpSettings().baleCollectorOffset)
 
     --- Bale finder fill type

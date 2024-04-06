@@ -16,33 +16,32 @@ function CpCombineUnloaderHudPageElement.new(overlay, parentHudElement, customMt
 end
 
 function CpCombineUnloaderHudPageElement:setupElements(baseHud, vehicle, lines, wMargin, hMargin)
-    
+
     --- Tool offset x
-	self.combineOffsetXBtn = baseHud:addLineTextButton(self, 3, CpBaseHud.defaultFontSize, 
-												vehicle:getCpSettings().combineOffsetX)
+    self.combineOffsetXBtn = baseHud:addLineTextButtonWithIncrementalButtons(self, 3, CpBaseHud.defaultFontSize, 
+        vehicle:getCpSettings().combineOffsetX)
 
     --- Tool offset z
-    self.combineOffsetZBtn = baseHud:addLineTextButton(self, 2, CpBaseHud.defaultFontSize, 
-                                                vehicle:getCpSettings().combineOffsetZ)
+    self.combineOffsetZBtn = baseHud:addLineTextButtonWithIncrementalButtons(self, 2, CpBaseHud.defaultFontSize, 
+        vehicle:getCpSettings().combineOffsetZ)
 
     --- Full threshold 
-    self.fullThresholdBtn = baseHud:addLineTextButton(self, 4, CpBaseHud.defaultFontSize, 
-                                                vehicle:getCpSettings().fullThreshold)              
+    self.fullThresholdBtn = baseHud:addLineTextButtonWithIncrementalButtons(self, 4, CpBaseHud.defaultFontSize, 
+        vehicle:getCpSettings().fullThreshold)              
 
     --- Unloading combine or silo loader ?
-    self.unloadModeBtn = baseHud:addLeftLineTextButton(self, 5, CpBaseHud.defaultFontSize, 
-    function (vehicle)
-        vehicle:getCpCombineUnloaderJobParameters().unloadTarget:setNextItem()
-    end, vehicle)
+    self.unloadModeBtn = baseHud:addLineTextButton(self, 5, CpBaseHud.defaultFontSize, 
+        vehicle:getCpCombineUnloaderJobParameters().unloadTarget)
 
     --- Drive now button
     local width, height = getNormalizedScreenValues(22, 22)
     local driveNowBtnWidth, height = getNormalizedScreenValues(26, 30)
     local imageFilename = Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY)
     local driveNowOverlay = CpGuiUtil.createOverlay({driveNowBtnWidth, height},
-                                                        {imageFilename, GuiUtils.getUVs(unpack(CpBaseHud.uvs.driveNowSymbol))}, 
-                                                        CpBaseHud.OFF_COLOR,
-                                                        CpBaseHud.alignments.bottomRight)
+        {imageFilename, GuiUtils.getUVs(unpack(CpBaseHud.uvs.driveNowSymbol))}, 
+        CpBaseHud.OFF_COLOR,
+        CpBaseHud.alignments.bottomRight)
+
     self.driveNowBtn = CpHudButtonElement.new(driveNowOverlay, self)
     local x, y = unpack(lines[8].right)
     y = y - hMargin/4
@@ -100,8 +99,8 @@ function CpCombineUnloaderHudPageElement:updateContent(vehicle, status)
     self.fullThresholdBtn:setDisabled(fullThreshold:getIsDisabled())
 
     self.unloadModeBtn:setDisabled(vehicle:getIsCpActive())
-    local text = vehicle:getCpCombineUnloaderJobParameters().unloadTarget:getString()
-    self.unloadModeBtn:setTextDetails(text)
+    local unloadModeSetting = vehicle:getCpCombineUnloaderJobParameters().unloadTarget
+    self.unloadModeBtn:setTextDetails(unloadModeSetting:getTitle(), unloadModeSetting:getString())
 
     local fillLevelPercentage = FillLevelManager.getTotalTrailerFillLevelPercentage(vehicle)
     if fillLevelPercentage > 0.01 then 
