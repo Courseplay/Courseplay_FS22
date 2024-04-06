@@ -5,8 +5,6 @@
 -->
 
 <Settings title="CP_vehicle_setting_display">
-	<Setting type="vehicleSettings" name = "showCourse" />
-	<Setting type="fieldWorkJobParameters" name = "startAt" />
 	<Setting type="baleFinderJobParameters" name = "baleWrapType" />
 	<Setting type="vehicleSettings" name = "baleCollectorOffset" />
 </Settings>

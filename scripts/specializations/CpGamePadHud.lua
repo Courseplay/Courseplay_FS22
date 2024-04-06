@@ -188,24 +188,25 @@ end
 
 function CpGamePadHud:actionEventOpenCloseDisplay()
 	local spec = self.spec_cpGamePadHud
-	spec.isVisible = true
-	local page = ""
-	if self:getCanStartCpCombineUnloader() then 
-		page = CpGamePadHud.UNLOADER_PAGE
-	elseif self:getCanStartCpBaleFinder() then 
-		page = CpGamePadHud.BALE_LOADER_PAGE
-	elseif self:getCanStartCpSiloLoaderWorker() and (self:getCpStartingPointSetting():getValue() == CpFieldWorkJobParameters.START_AT_SILO_LOADING or 
-		AIUtil.hasChildVehicleWithSpecialization(self, ConveyorBelt)) then
-		page = CpGamePadHud.SILO_LOADER_PAGE
-	elseif self:getCanStartCpBunkerSiloWorker() and (self:getCpStartingPointSetting():getValue() == CpFieldWorkJobParameters.START_AT_BUNKER_SILO
-		or (AIUtil.hasChildVehicleWithSpecialization(self, Leveler) 
-		   and not AIUtil.hasChildVehicleWithSpecialization(self, Shovel))) then 
-		page = CpGamePadHud.BUNKER_SILO_PAGE
-	else
+	local page
+	if self:cpIsHudFieldWorkJobSelected() then 
+        page = CpGamePadHud.FIELDWORK_PAGE
+    elseif self:cpIsHudBaleFinderJobSelected() then
+        page = CpGamePadHud.BALE_LOADER_PAGE
+    elseif self:cpIsHudBunkerSiloJobSelected() then
+        page = CpGamePadHud.BUNKER_SILO_PAGE
+    elseif self:cpIsHudSiloLoaderJobSelected() then
+        page = CpGamePadHud.SILO_LOADER_PAGE
+    elseif self:cpIsHudUnloaderJobSelected() then
+        page = CpGamePadHud.UNLOADER_PAGE
+    elseif self:cpIsHudStreetJobSelected() then
 		page = CpGamePadHud.FIELDWORK_PAGE
+    end
+	if page then
+		spec.isVisible = true
+		CpGamePadHud.pages[page].screen:setData(self, spec.pages[page].settings) 
+		g_gui:showGui(page)
 	end
-	CpGamePadHud.pages[page].screen:setData(self, spec.pages[page].settings) 
-	g_gui:showGui(page)
 end
 
 function CpGamePadHud:isCpGamePadHudActive()
