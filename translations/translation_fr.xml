@@ -889,6 +889,7 @@ Votre sélection devrait ressembler à l'illustration ci-contre.
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Affiche/masque les canaux de debogage."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Affiche mini ATH"/>
     <text name="input_CP_START_STOP" text="CP: Ouvrier Courseplay"/>
+    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Change current selected job"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Change le point de départ"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: Efface la course actuellement sélectionnée"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="CP: Affiche la course actuelle du véhicule"/>

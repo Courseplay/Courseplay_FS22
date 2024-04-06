@@ -916,6 +916,7 @@ HUD также показывает оставшийся уровень запо
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Показать/Скрыть каналы отладки"/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Открыть mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Отправить/Остановить водителя"/>
+    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Change current selected job"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Изменить точку отправки"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: Очистить текущий загруженный курс"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="CP: Показать текущий курс на технике"/>

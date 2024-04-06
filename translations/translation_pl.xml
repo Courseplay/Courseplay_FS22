@@ -905,6 +905,7 @@ Twój wybór powinien wyglądać podobnie do tego zdjęcia.
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Menu kanałów debugowania"/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Otwórz mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Uruchom/Zatrzymaj kierowcę"/>
+    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Change current selected job"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Zmień punkt startowy"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: Wyczyść aktualnie załadowany kurs"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Pokaż aktualny kurs pojazdu"/>

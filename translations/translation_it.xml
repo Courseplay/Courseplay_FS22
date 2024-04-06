@@ -913,6 +913,7 @@ Ora la tua selezione dovrebbe essere simile all'immagine.
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Mostra il menù del canale di debug si/no"/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Apri mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Avvia/Ferma autista"/>
+    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Change current selected job"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Cambia punto di partenza"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: Cancella il percorso attualmente caricato"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Mostra il percorso attuale del veicolo"/>

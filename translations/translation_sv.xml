@@ -905,6 +905,7 @@ Now your selection should look similar to the image.
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Visa felsökningskanalsmeny Ja/Nej."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Öppna mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Starta/Stoppa förare"/>
+    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Change current selected job"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Ändrar startpunkt"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: Tabort den aktuella inlästa kursen"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Visa fordonets aktuella kurs"/>

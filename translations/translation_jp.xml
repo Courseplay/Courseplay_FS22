@@ -907,6 +907,7 @@ Now your selection should look similar to the image.
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="コースプレイ：デバッグメニューを表示/非表示"/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="コースプレイ：ミニGUIを開く"/>
     <text name="input_CP_START_STOP" text="コースプレイ：開始/停止"/>
+    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Change current selected job"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: Clears currently loaded course"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Show the current course of the vehicle"/>

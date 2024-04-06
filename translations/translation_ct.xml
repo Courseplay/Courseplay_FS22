@@ -900,6 +900,7 @@ Now your selection should look similar to the image.
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: 顯示除錯通道菜單 是/否。"/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: 打開迷你HUB"/>
     <text name="input_CP_START_STOP" text="CP: 啟動/停止司機"/>
+    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Change current selected job"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: 改變起始點"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: 清除目前載入的任務"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="顯示車輛的目前路線"/>

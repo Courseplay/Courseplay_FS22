@@ -929,6 +929,7 @@ Das Kreuz sollte jetzt, wie im Bild dargestellt, gelb sein.
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Debugkanäle-Menü anzeigen/ausblenden"/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Mini-GUI öffnen"/>
     <text name="input_CP_START_STOP" text="CP: CP-Helfer starten/stoppen"/>
+    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Aktueller ausgewählten Job ändern"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Startpunkt ändern"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: Aktuell geladenen Kurs löschen"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="CP: Kurs Sichtbarkeit ändern"/>

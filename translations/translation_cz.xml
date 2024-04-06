@@ -898,6 +898,7 @@ Nyní by váš výběr měl vypadat podobně jako na obrázku.
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Zobrazit nabídku kanálu ladění ano/ne"/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Otevřt/zavřít nastavení vozidla"/>
     <text name="input_CP_START_STOP" text="CP: Spustit mini GUI"/>
+    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Change current selected job"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Změnit startovní bod"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: Vymazat aktuálně nahranou trasu"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Zobrazit aktuální trasu vozidla"/>
