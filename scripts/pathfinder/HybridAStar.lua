@@ -514,7 +514,7 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
 					-- ignore invalidity of a node in the first few iterations: this is due to the fact that sometimes
 					-- we end up being in overlap with another vehicle when we start the pathfinding and all we need is
 					-- an iteration or two to bring us out of that position
-					if self.ignoreValidityAtStart and self.iterations < 3 or constraints:isValidNode(succ) then
+					if self.ignoreValidityAtStart and self.iterations < 10 or constraints:isValidNode(succ) then
 						succ:updateG(primitive, constraints:getNodePenalty(succ))
 						local analyticSolutionCost = 0
 						if self.analyticSolverEnabled then
