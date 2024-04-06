@@ -29,14 +29,11 @@ function CpCombineUnloaderHudPageElement:setupElements(baseHud, vehicle, lines, 
     self.fullThresholdBtn = baseHud:addLineTextButton(self, 4, CpBaseHud.defaultFontSize, 
                                                 vehicle:getCpSettings().fullThreshold)              
 
-    
-    -- --- Giants unloading station
-    -- local x, y = unpack(lines[5].left)
-    -- self.giantsUnloadStationText = CpTextHudElement.new(self , x , y, CpBaseHud.defaultFontSize)                 
-    -- self.giantsUnloadStationText:setCallback("onClickPrimary", vehicle, 
-    -- function(vehicle)
-    --     vehicle:getCpCombineUnloaderJobParameters().unloadingStation:setNextItem()
-    -- end)
+    --- Unloading combine or silo loader ?
+    self.unloadModeBtn = baseHud:addLeftLineTextButton(self, 5, CpBaseHud.defaultFontSize, 
+    function (vehicle)
+        vehicle:getCpCombineUnloaderJobParameters().unloadTarget:setNextItem()
+    end, vehicle)
 
     --- Drive now button
     local width, height = getNormalizedScreenValues(22, 22)
@@ -47,27 +44,12 @@ function CpCombineUnloaderHudPageElement:setupElements(baseHud, vehicle, lines, 
                                                         CpBaseHud.OFF_COLOR,
                                                         CpBaseHud.alignments.bottomRight)
     self.driveNowBtn = CpHudButtonElement.new(driveNowOverlay, self)
-    local x, y = unpack(lines[6].right)
+    local x, y = unpack(lines[8].right)
     y = y - hMargin/4
     local driveNowBtnX = x - 2*width - wMargin/2 - wMargin/8
     self.driveNowBtn:setPosition(driveNowBtnX, y)
     self.driveNowBtn:setCallback("onClickPrimary", vehicle, function (vehicle)
         vehicle:startCpCombineUnloaderUnloading()
-    end)
-
-    --- Giants unload button
-    local width, height = getNormalizedScreenValues(22, 22)
-    local giantsUnloadOverlay = CpGuiUtil.createOverlay({width, height},
-                                                        {AIHotspot.FILENAME, AIHotspot.UVS}, 
-                                                        CpBaseHud.OFF_COLOR,
-                                                        CpBaseHud.alignments.bottomRight)
-    self.activateGiantsUnloadBtn = CpHudButtonElement.new(giantsUnloadOverlay, self)
-    local _, y = unpack(lines[6].right)
-    y = y - hMargin/16
-    x = driveNowBtnX - driveNowBtnWidth - wMargin/8
-    self.activateGiantsUnloadBtn:setPosition(x, y)
-    self.activateGiantsUnloadBtn:setCallback("onClickPrimary", vehicle, function (vehicle)
-        vehicle:getCpCombineUnloaderJobParameters().useGiantsUnload:setNextItem()
     end)
 
     CpGuiUtil.addCopyAndPasteButtons(self, baseHud, 
@@ -117,15 +99,9 @@ function CpCombineUnloaderHudPageElement:updateContent(vehicle, status)
     self.fullThresholdBtn:setTextDetails(fullThreshold:getTitle(), fullThreshold:getString())
     self.fullThresholdBtn:setDisabled(fullThreshold:getIsDisabled())
 
-    -- local useGiantsUnload = vehicle:getCpCombineUnloaderJobParameters().useGiantsUnload
-    -- self.giantsUnloadStationText:setVisible(useGiantsUnload:getValue() and not useGiantsUnload:getIsDisabled())
-    -- self.giantsUnloadStationText:setDisabled(not useGiantsUnload:getValue() or vehicle:getIsCpActive())
-    -- local giantsUnloadStation = vehicle:getCpCombineUnloaderJobParameters().unloadingStation
-    -- self.giantsUnloadStationText:setTextDetails(giantsUnloadStation:getString())
-
-    -- self.activateGiantsUnloadBtn:setColor(useGiantsUnload:getValue() and unpack(CpBaseHud.ON_COLOR) or unpack(CpBaseHud.OFF_COLOR))
-    -- self.activateGiantsUnloadBtn:setVisible(not useGiantsUnload:getIsDisabled())
-    -- self.activateGiantsUnloadBtn:setDisabled(useGiantsUnload:getIsDisabled() or vehicle:getIsCpActive())
+    self.unloadModeBtn:setDisabled(vehicle:getIsCpActive())
+    local text = vehicle:getCpCombineUnloaderJobParameters().unloadTarget:getString()
+    self.unloadModeBtn:setTextDetails(text)
 
     local fillLevelPercentage = FillLevelManager.getTotalTrailerFillLevelPercentage(vehicle)
     if fillLevelPercentage > 0.01 then 
@@ -200,6 +176,3 @@ function CpCombineUnloaderHudPageElement:arePositionEqual(parameters, otherParam
     return true 
 end
 
-function CpCombineUnloaderHudPageElement:isStartingPointBtnVisible()
-    return false
-end

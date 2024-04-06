@@ -64,15 +64,14 @@ function CpHud.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'showCpBunkerSiloWorkWidth', CpHud.showCpBunkerSiloWorkWidth)
     SpecializationUtil.registerFunction(vehicleType, 'showCpCombineUnloaderWorkWidth', CpHud.showCpCombineUnloaderWorkWidth)
     SpecializationUtil.registerFunction(vehicleType, 'showCpCourseWorkWidth', CpHud.showCpCourseWorkWidth)
-    SpecializationUtil.registerFunction(vehicleType, "cpGetHudStartingPointSetting", CpHud.cpGetHudStartingPointSetting)
+    SpecializationUtil.registerFunction(vehicleType, "cpGetHudSelectedJobSetting", CpHud.cpGetHudSelectedJobSetting)
 
     SpecializationUtil.registerFunction(vehicleType, "cpIsHudFieldWorkJobSelected", CpHud.cpIsHudFieldWorkJobSelected)
     SpecializationUtil.registerFunction(vehicleType, "cpIsHudBaleFinderJobSelected", CpHud.cpIsHudBaleFinderJobSelected)
     SpecializationUtil.registerFunction(vehicleType, "cpIsHudBunkerSiloJobSelected", CpHud.cpIsHudBunkerSiloJobSelected)
     SpecializationUtil.registerFunction(vehicleType, "cpIsHudSiloLoaderJobSelected", CpHud.cpIsHudSiloLoaderJobSelected)
     SpecializationUtil.registerFunction(vehicleType, "cpIsHudUnloaderJobSelected", CpHud.cpIsHudUnloaderJobSelected)
-    SpecializationUtil.registerFunction(vehicleType, "cpIsHudDriveToJobSelected", CpHud.cpIsHudDriveToJobSelected)
-    SpecializationUtil.registerFunction(vehicleType, "cpIsHudTransportJobSelected", CpHud.cpIsHudTransportJobSelected)
+    SpecializationUtil.registerFunction(vehicleType, "cpIsHudStreetJobSelected", CpHud.cpIsHudStreetJobSelected)
 end
 
 function CpHud.registerOverwrittenFunctions(vehicleType)
@@ -357,53 +356,46 @@ end
 
 function CpHud:cpIsHudFieldWorkJobSelected()
     local spec = self.spec_cpHud
-    local value = spec.hudSettings.hudStartAt:getValue()
-    return value <= CpHud.hudSettings.START_AT_FIELDWORK_LAST_POINT
+    local value = spec.hudSettings.selectedJob:getValue()
+    return value == CpHud.hudSettings.FIELDWORK_SELECTED
 end
 
 function CpHud:cpIsHudBaleFinderJobSelected()
     local spec = self.spec_cpHud
-    local value = spec.hudSettings.hudStartAt:getValue()
-    return value == CpHud.hudSettings.START_AT_BALE_FINDER
+    local value = spec.hudSettings.selectedJob:getValue()
+    return value == CpHud.hudSettings.BALE_FINDER_SELECTED
 end
 
 function CpHud:cpIsHudBunkerSiloJobSelected()
     local spec = self.spec_cpHud
-    local value = spec.hudSettings.hudStartAt:getValue()
-    return value == CpHud.hudSettings.START_AT_BUNKER_SILO
+    local value = spec.hudSettings.selectedJob:getValue()
+    return value == CpHud.hudSettings.BUNKER_SILO_SELECTED
 end
 
 function CpHud:cpIsHudSiloLoaderJobSelected()
     local spec = self.spec_cpHud
-    local value = spec.hudSettings.hudStartAt:getValue()
-    return value == CpHud.hudSettings.START_AT_SILO_LOADING
+    local value = spec.hudSettings.selectedJob:getValue()
+    return value == CpHud.hudSettings.SILO_LOADER_SELECTED
 end
 
 function CpHud:cpIsHudUnloaderJobSelected()
     local spec = self.spec_cpHud
-    local value = spec.hudSettings.hudStartAt:getValue()
-    return value == CpHud.hudSettings.START_AT_UNLOADER_HARVESTER or
-        value == CpHud.hudSettings.START_AT_UNLOADER_LOADER
+    local value = spec.hudSettings.selectedJob:getValue()
+    return value == CpHud.hudSettings.COMBINE_UNLOADER_SELECTED
 end
 
-function CpHud:cpIsHudDriveToJobSelected()
+function CpHud:cpIsHudStreetJobSelected()
     local spec = self.spec_cpHud
-    local value = spec.hudSettings.hudStartAt:getValue()
-    return value == CpHud.hudSettings.START_AT_STREET_DRIVE_TO
+    local value = spec.hudSettings.selectedJob:getValue()
+    return value == CpHud.hudSettings.STREET_DRIVER_SELECTED
 end
 
-function CpHud:cpIsHudTransportJobSelected()
+function CpHud:cpGetHudSelectedJobSetting()
     local spec = self.spec_cpHud
-    local value = spec.hudSettings.hudStartAt:getValue()
-    return value > CpHud.hudSettings.START_AT_STREET_DRIVE_TO
-end
-
-function CpHud:cpGetHudStartingPointSetting()
-    local spec = self.spec_cpHud
-    return spec.hudSettings.hudStartAt
+    return spec.hudSettings.selectedJob
 end
 
 function CpHud:getCpStartText()
     local spec = self.spec_cpHud
-    return spec.hudSettings.hudStartAt:getString() or "---"
+    return spec.hudSettings.selectedJob:getString() or "---"
 end

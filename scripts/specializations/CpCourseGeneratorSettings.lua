@@ -228,7 +228,7 @@ end
 
 --- Only show the work width, if the bale finder can't be started.
 function CpCourseGeneratorSettings:isWorkWidthSettingVisible()
-    return not self:getCanStartCpBaleFinder() and not self:getCanStartCpBunkerSiloWorker()
+    return not self:getCanStartCpBaleFinder()
 end
 
 --- Generates speed setting values up to the max possible speed.

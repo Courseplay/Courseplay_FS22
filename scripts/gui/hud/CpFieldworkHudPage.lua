@@ -1,6 +1,6 @@
 
 --- Fieldwork Hud page
----@class CpFieldWorkHudPageElement : CpHudElement
+---@class CpFieldWorkHudPageElement : CpHudPageElement
 ---@field private parent CpBaseHud
 CpFieldWorkHudPageElement = {}
 local CpFieldWorkHudPageElement_mt = Class(CpFieldWorkHudPageElement, CpHudPageElement)
@@ -13,8 +13,9 @@ end
 function CpFieldWorkHudPageElement:setupElements(baseHud, vehicle, lines, wMargin, hMargin)
 	
     --- Time remaining text
-    local x, y = unpack(lines[6].left)
-    self.timeRemainingText = CpTextHudElement.new(self , x , y, CpBaseHud.defaultFontSize)
+    local x, y = unpack(lines[7].right)
+    self.timeRemainingText = CpTextHudElement.new(self, x - 2 * baseHud.wMargin, y, 
+        CpBaseHud.defaultFontSize, RenderText.ALIGN_RIGHT)
     
 	--- Clear course button.
     local width, height = getNormalizedScreenValues(18, 18)
@@ -24,7 +25,7 @@ function CpFieldWorkHudPageElement:setupElements(baseHud, vehicle, lines, wMargi
                                                 CpBaseHud.OFF_COLOR,
                                                 CpBaseHud.alignments.bottomRight)
     self.clearCourseBtn = CpHudButtonElement.new(clearCourseOverlay, self)
-    local x, y = unpack(lines[6].right)
+    local x, y = unpack(lines[8].right)
     x = x - 2*width - wMargin/2 - wMargin/4
     self.clearCourseBtn:setPosition(x, y)
     self.clearCourseBtn:setCallback("onClickPrimary", vehicle, function (vehicle)
@@ -41,7 +42,7 @@ function CpFieldWorkHudPageElement:setupElements(baseHud, vehicle, lines, wMargi
                                                         CpBaseHud.OFF_COLOR,
                                                         CpBaseHud.alignments.bottomRight)
     self.courseVisibilityBtn = CpHudButtonElement.new(courseVisibilityOverlay, self)
-    local _, y = unpack(lines[6].right)
+    local _, y = unpack(lines[8].right)
     y = y - hMargin/16
     x = x - width - wMargin/4
     self.courseVisibilityBtn:setPosition(x, y)
@@ -49,20 +50,25 @@ function CpFieldWorkHudPageElement:setupElements(baseHud, vehicle, lines, wMargi
         vehicle:getCpSettings().showCourse:setNextItem()
     end)
 
-	
+    --- Starting point 
+    self.startingPointBtn = baseHud:addLeftLineTextButton(self, 5, CpBaseHud.defaultFontSize, 
+        function (vehicle)
+            vehicle:getCpStartingPointSetting():setNextItem()
+        end, vehicle)
+   
     --- Work width
     self.workWidthBtn = baseHud:addLineTextButton(self, 3, CpBaseHud.defaultFontSize, 
-                                                vehicle:getCourseGeneratorSettings().workWidth)
+        vehicle:getCourseGeneratorSettings().workWidth)
 
-	--- Tool offset x
-	self.toolOffsetXBtn = baseHud:addLineTextButton(self, 2, CpBaseHud.defaultFontSize, 
-												vehicle:getCpSettings().toolOffsetX)
+    --- Tool offset x
+    self.toolOffsetXBtn = baseHud:addLineTextButton(self, 2, CpBaseHud.defaultFontSize, 
+        vehicle:getCpSettings().toolOffsetX)
 
-	--- Lane offset
+    --- Lane offset
     self.laneOffsetBtn = baseHud:addRightLineTextButton(self, 5, CpBaseHud.defaultFontSize, 
-	function (vehicle)
-		vehicle:getCpLaneOffsetSetting():setNextItem()
-	end, vehicle)
+    function (vehicle)
+        vehicle:getCpLaneOffsetSetting():setNextItem()
+    end, vehicle)
 
 
      --- Course name
@@ -95,6 +101,9 @@ function CpFieldWorkHudPageElement:updateContent(vehicle, status)
 
 	self.waypointProgressBtn:setTextDetails(status:getWaypointText())
 
+    local startingPoint = vehicle:getCpStartingPointSetting()
+    self.startingPointBtn:setTextDetails(startingPoint:getString())
+    
 	local laneOffset = vehicle:getCpLaneOffsetSetting()
     self.laneOffsetBtn:setVisible(laneOffset:getCanBeChanged())
     self.laneOffsetBtn:setTextDetails(laneOffset:getString())
@@ -125,12 +134,4 @@ function CpFieldWorkHudPageElement:updateContent(vehicle, status)
     end
 
     CpGuiUtil.updateCopyBtn(self, vehicle, status)
-end
-
-function CpFieldWorkHudPageElement:isStartingPointBtnDisabled(vehicle)
-    return false
-end
-
-function CpFieldWorkHudPageElement:getStartingPointBtnText(vehicle)
-    return vehicle:getCpStartingPointSetting():getString()
 end

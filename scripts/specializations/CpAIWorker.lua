@@ -182,7 +182,7 @@ function CpAIWorker:updateActionEvents()
             g_inputBinding:setActionEventActive(actionEvent.actionEventId, false)
         end
         actionEvent = spec.actionEvents[InputAction.CP_CHANGE_STARTING_POINT]
-        local startingPointSetting = self:cpGetHudStartingPointSetting()
+        local startingPointSetting = self:cpGetHudSelectedJobSetting()
         g_inputBinding:setActionEventText(actionEvent.actionEventId, string.format("CP: %s %s", startingPointSetting:getTitle(), startingPointSetting:getString()))
         g_inputBinding:setActionEventActive(actionEvent.actionEventId, self:getCanStartCp())
 
@@ -197,7 +197,7 @@ function CpAIWorker:updateActionEvents()
 end
 
 function CpAIWorker:changeStartingPoint()
-    local startingPointSetting = self:cpGetHudStartingPointSetting()
+    local startingPointSetting = self:cpGetHudSelectedJobSetting()
     startingPointSetting:setNextItem()
 end
 

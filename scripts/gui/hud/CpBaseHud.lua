@@ -33,7 +33,7 @@ CpBaseHud.headerFontSize = 14
 CpBaseHud.titleFontSize = 20
 CpBaseHud.defaultFontSize = 16
 
-CpBaseHud.numLines = 7
+CpBaseHud.numLines = 8
 
 CpBaseHud.uvs = {
     plusSymbol = {
@@ -168,7 +168,9 @@ function CpBaseHud:init(vehicle)
         }
         self.lines[i] = line
     end
-
+    self.lines[self.numLines-1].left[2] = self.lines[self.numLines-1].left[2] - self.hMargin/2
+    self.lines[self.numLines-1].right[2] = self.lines[self.numLines-1].right[2] - self.hMargin/2
+    self.lines[self.numLines].right[2] = self.lines[self.numLines].right[2] - self.hMargin/4
     
     local background = CpGuiUtil.createOverlay({self.width, self.height},
                                             {g_baseUIFilename, g_colorBgUVs}, 
@@ -222,7 +224,7 @@ function CpBaseHud:init(vehicle)
                                                     self.BASE_COLOR,
                                                     self.alignments.bottomLeft)
     self.cpIcon = CpHudButtonElement.new(cpIconOverlay, self.baseHud)
-    local x, y = unpack(self.lines[7].left)
+    local x, y = unpack(self.lines[8].left)
     y = y - self.hMargin/4
     self.cpIcon:setPosition(x, y)
     self.cpIcon:setCallback("onClickPrimary", self.vehicle, function (vehicle)
@@ -230,20 +232,26 @@ function CpBaseHud:init(vehicle)
                             end)
 
     --- Title 
-    local x, y = unpack(self.lines[7].left)
+    local x, y = unpack(self.lines[8].left)
     x = x + cpIconWidth + self.wMargin/2
     self.vehicleNameBtn = CpTextHudElement.new(self.baseHud , x , y, self.defaultFontSize)
     self.vehicleNameBtn:setCallback("onClickPrimary", self.vehicle, 
                                 function()
                                     self:openVehicleSettingsGui(self.vehicle)
                                 end)
-    
-    --- Starting point
-    self.startingPointBtn = self:addLeftLineTextButtonWithIcon(self.baseHud, 5, self.defaultFontSize, 
+                                
+    self.selectedJobBtn = self:addLeftLineTextButton(self.baseHud, 7, self.defaultFontSize, 
                             function (vehicle)
-                                self:executeStartingPointBtnCallback(vehicle)
-                            end, self.vehicle, 24, 24, "img/ui_courseplay.dds")
-
+                                vehicle:cpGetHudSelectedJobSetting():setNextItem()
+                            end, self.vehicle)
+     
+    local x, y = unpack(self.lines[6].left)
+    local spacerLineOverlay = Overlay.new("dataS/scripts/shared/graph_pixel.png", 
+        x, y, self.width - 2 * self.wMargin, self.hMargin/8)
+    spacerLineOverlay:setColor(unpack(self.OFF_COLOR))
+    spacerLineOverlay:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE)
+    local spacerLine = CpHudElement.new(spacerLineOverlay, self.baseHud)
+    
     --------------------------------------
     --- Right side
     --------------------------------------
@@ -257,7 +265,7 @@ function CpBaseHud:init(vehicle)
                                                     self.alignments.bottomRight)
 
     self.exitBtn = CpHudButtonElement.new(exitBtnOverlay, self.baseHud)
-    local x, y = CpBaseHud.x + self.width -width/3 , CpBaseHud.y + self.height - headerHeight + self.hMargin/8
+    local x, y = CpBaseHud.x + self.width -width/3 , CpBaseHud.y + self.height - headerHeight + self.hMargin/12
     self.exitBtn:setPosition(x, y) 
     self.exitBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
         vehicle:closeCpHud()
@@ -271,7 +279,7 @@ function CpBaseHud:init(vehicle)
                                                         self.OFF_COLOR,
                                                         self.alignments.bottomRight)
     self.onOffButton = CpHudButtonElement.new(onOffIndicatorOverlay, self.baseHud)
-    local x, y = unpack(self.lines[6].right)
+    local x, y = unpack(self.lines[8].right)
     self.onOffButton:setPosition(x, y)
     self.onOffButton:setCallback("onClickPrimary", self.vehicle, function(vehicle)
         vehicle:cpStartStopDriver(true)
@@ -285,7 +293,7 @@ function CpBaseHud:init(vehicle)
                                                 self.OFF_COLOR,
                                                 self.alignments.bottomRight)
     self.startStopRecordingBtn = CpHudButtonElement.new(circleOverlay, self.baseHud)
-    local x, y = unpack(self.lines[6].right)
+    local x, y = unpack(self.lines[8].right)
     x = x - onOffBtnWidth - self.wMargin/2
     self.startStopRecordingBtn:setPosition(x, y)
     self.startStopRecordingBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
@@ -302,12 +310,26 @@ function CpBaseHud:init(vehicle)
                                                 self.OFF_COLOR,
                                                 self.alignments.bottomRight)
     self.pauseRecordingBtn = CpHudButtonElement.new(circleOverlay, self.baseHud)
-    local x, y = unpack(self.lines[6].right)
+    local x, y = unpack(self.lines[8].right)
     self.pauseRecordingBtn:setPosition(x, y)
     self.pauseRecordingBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
         if vehicle:getIsCpCourseRecorderActive() then 
             vehicle:toggleCpCourseRecorderPause()
         end
+    end)
+
+    --- Goal button.
+    local width, height = getNormalizedScreenValues(34, 34)    
+    local goalOverlay = CpGuiUtil.createOverlay({width, height},
+                                                {AITargetHotspot.FILENAME, self.uvs.goalSymbol}, 
+                                                self.OFF_COLOR,
+                                                self.alignments.bottomRight)
+    
+    self.goalBtn = CpHudButtonElement.new(goalOverlay, self.baseHud)
+    local x, y = unpack(self.lines[7].right)
+    self.goalBtn:setPosition(x, y - self.hMargin/4)
+    self.goalBtn:setCallback("onClickPrimary", vehicle, function (vehicle)
+        self:openCourseGeneratorGui(vehicle)
     end)
 
 
@@ -469,7 +491,6 @@ function CpBaseHud:isMouseOverArea(posX, posY)
 end
 
 function CpBaseHud:getActiveHudPage(vehicle)
-  
     if vehicle:cpIsHudFieldWorkJobSelected() then 
         return self.fieldworkLayout
     elseif vehicle:cpIsHudBaleFinderJobSelected() then
@@ -480,10 +501,8 @@ function CpBaseHud:getActiveHudPage(vehicle)
         return self.siloLoaderWorkerLayout
     elseif vehicle:cpIsHudUnloaderJobSelected() then
         return self.combineUnloaderLayout
-    elseif vehicle:cpIsHudDriveToJobSelected() then
-        return self.fieldworkLayout
-    else
-        return self.fieldworkLayout
+    elseif vehicle:cpIsHudStreetJobSelected() then
+      --  return self.fieldworkLayout
     end
 end
 
@@ -543,38 +562,33 @@ function CpBaseHud:updateContent(vehicle, status)
     self.siloLoaderWorkerLayout:setDisabled(true)
 
     local activeLayout = self:getActiveHudPage(vehicle)
-    activeLayout:setVisible(true)
-    activeLayout:setDisabled(false)
-    activeLayout:updateContent(vehicle, status)
-
-    local text, uvs = self:getStartingPointBtnTextAndIconUvs(vehicle)
-    if text ~= self.startingPointBtn:getText() then
-        self.startingPointBtn:setTextDetails(text)
-        self.startingPointBtn.icon:setUVs(uvs)
+    if activeLayout then
+        activeLayout:setVisible(true)
+        activeLayout:setDisabled(false)
+        activeLayout:updateContent(vehicle, status)
     end
+    self.selectedJobBtn:setTextDetails(vehicle:cpGetHudSelectedJobSetting():getString())
 end
 
 
-function CpBaseHud:getStartingPointBtnTextAndIconUvs(vehicle)
-    local setting = vehicle:cpGetHudStartingPointSetting()
-    local uvs = self.uvs.fieldWorkSymbol
-    if vehicle:cpIsHudFieldWorkJobSelected() then 
-        uvs = self.uvs.fieldWorkSymbol
-    elseif vehicle:cpIsHudBaleFinderJobSelected() then
-        uvs = self.uvs.baleFinderSymbol
-    elseif vehicle:cpIsHudBunkerSiloJobSelected() then
-        uvs = self.uvs.bunkerSymbol
-    elseif vehicle:cpIsHudSiloLoaderJobSelected() then
-        uvs = self.uvs.shovelSymbol
-    elseif vehicle:cpIsHudUnloaderJobSelected() then
-        uvs = self.uvs.unloaderSymbol
-    elseif vehicle:cpIsHudDriveToJobSelected() then
-        uvs = self.uvs.streetDriveToSymbol
-    else
-        uvs = self.uvs.streetLoadAndUnloadSymbol
-    end
-    return setting:getString(), GuiUtils.getUVs(unpack(uvs))
-end
+-- function CpBaseHud:getStartingPointBtnTextAndIconUvs(vehicle)
+--     local setting = vehicle:cpGetHudSelectedJobSetting()
+--     local uvs = self.uvs.fieldWorkSymbol
+--     if vehicle:cpIsHudFieldWorkJobSelected() then 
+--         uvs = self.uvs.fieldWorkSymbol
+--     elseif vehicle:cpIsHudBaleFinderJobSelected() then
+--         uvs = self.uvs.baleFinderSymbol
+--     elseif vehicle:cpIsHudBunkerSiloJobSelected() then
+--         uvs = self.uvs.bunkerSymbol
+--     elseif vehicle:cpIsHudSiloLoaderJobSelected() then
+--         uvs = self.uvs.shovelSymbol
+--     elseif vehicle:cpIsHudUnloaderJobSelected() then
+--         uvs = self.uvs.unloaderSymbol
+--     elseif vehicle:cpIsHudStreetJobSelected() then
+--         uvs = self.uvs.streetDriveToSymbol
+--     end
+--     return setting:getString(), GuiUtils.getUVs(unpack(uvs))
+-- end
 
 function CpBaseHud:delete()
     self.baseHud:delete()
@@ -602,18 +616,6 @@ end
 
 function CpBaseHud:openGlobalSettingsGui(vehicle)
     CpGuiUtil.openGlobalSettingsGui(vehicle)
-end
-
-function CpBaseHud:executeStartingPointBtnCallback(vehicle)
-    local setting = vehicle:cpGetHudStartingPointSetting()
-    setting:setNextItem()
-
-    -- local activeLayout = self:getActiveHudPage(vehicle)
-    -- if activeLayout and activeLayout.executeStartingPointBtnCallback then 
-    --     activeLayout:executeStartingPointBtnCallback(vehicle)
-    -- else
-    --     vehicle:getCpStartingPointSetting():setNextItem()   
-    -- end
 end
 
 --- Saves hud position.
