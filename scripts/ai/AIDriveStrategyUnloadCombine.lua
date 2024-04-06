@@ -1466,7 +1466,7 @@ function AIDriveStrategyUnloadCombine:startPathfindingToWaitingCombine(xOffset, 
     context:areaToAvoid(self.combineToUnload:getCpDriveStrategy():getAreaToAvoid())
     context:vehiclesToIgnore({})
     self.pathfinderController:registerListeners(self, self.onPathfindingDoneToWaitingCombine,
-            self.onPathfindingFailedToStationaryTarget, self.onPathfindingObstacleAtStart)
+            self.onPathfindingFailedToStationaryTarget) --, self.onPathfindingObstacleAtStart)
     self.pathfinderController:findPathToNode(context, self:getCombineRootNode(), xOffset or 0, zOffset or 0, 2)
 end
 
