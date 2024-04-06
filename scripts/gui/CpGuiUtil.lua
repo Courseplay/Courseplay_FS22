@@ -349,7 +349,7 @@ function CpGuiUtil.addCopyAndPasteButtons(layout, baseHud, vehicle, lines, wMarg
                                       
 	local leftX, leftY = unpack(lines[line].left)
     local rightX, rightY = unpack(lines[line].right)
-    local btnYOffset = hMargin*0.2
+    local btnYOffset = hMargin/3
 	local width, height = getNormalizedScreenValues(22, 22)
 
 	local copyOverlay = CpGuiUtil.createOverlay({width, height},
