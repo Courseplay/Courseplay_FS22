@@ -346,6 +346,10 @@ function CpHud:isSiloLoadingModeDisabled()
     return not self:getCanStartCpSiloLoaderWorker()
 end
 
+function CpHud:isBunkerSiloModeDisabled()
+    return not self:getCanStartCpBunkerSiloWorker()
+end
+
 function CpHud:isUnloaderModeDisabled()
     return not self:getCanStartCpCombineUnloader()
 end

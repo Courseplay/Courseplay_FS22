@@ -327,7 +327,7 @@ function CpBaseHud:init(vehicle)
     
     self.goalBtn = CpHudButtonElement.new(goalOverlay, self.baseHud)
     local x, y = unpack(self.lines[7].right)
-    self.goalBtn:setPosition(x, y - self.hMargin/4)
+    self.goalBtn:setPosition(x + self.wMargin/4, y - self.hMargin/4)
     self.goalBtn:setCallback("onClickPrimary", vehicle, function (vehicle)
         self:openCourseGeneratorGui(vehicle)
     end)
