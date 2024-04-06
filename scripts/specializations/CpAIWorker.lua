@@ -128,6 +128,7 @@ function CpAIWorker:onRegisterActionEvents(isActiveForInput, isActiveForInputIgn
             end
 
             addActionEvent(self, InputAction.CP_START_STOP, CpAIWorker.startStopCpActionEvent)
+            addActionEvent(self, InputAction.CP_CHANGE_SELECTED_JOB, CpAIWorker.changeCurrentSelectedJob)
             addActionEvent(self, InputAction.CP_CHANGE_STARTING_POINT, CpAIWorker.changeStartingPoint)
             addActionEvent(self, InputAction.CP_CLEAR_COURSE, CpAIWorker.clearCourse,
                     g_i18n:getText("input_CP_CLEAR_COURSE"))
@@ -181,14 +182,25 @@ function CpAIWorker:updateActionEvents()
         else
             g_inputBinding:setActionEventActive(actionEvent.actionEventId, false)
         end
+        actionEvent = spec.actionEvents[InputAction.CP_CHANGE_SELECTED_JOB]
+        local selectedJobSetting = self:cpGetHudSelectedJobSetting()
+        g_inputBinding:setActionEventText(actionEvent.actionEventId, string.format("CP: %s (%s)", 
+            selectedJobSetting:getTitle(), selectedJobSetting:getString()))
+        g_inputBinding:setActionEventActive(actionEvent.actionEventId, 
+            self:getShowAIToggleActionEvent() and not self:getIsAIActive())
+
         actionEvent = spec.actionEvents[InputAction.CP_CHANGE_STARTING_POINT]
-        local startingPointSetting = self:cpGetHudSelectedJobSetting()
-        g_inputBinding:setActionEventText(actionEvent.actionEventId, string.format("CP: %s %s", startingPointSetting:getTitle(), startingPointSetting:getString()))
-        g_inputBinding:setActionEventActive(actionEvent.actionEventId, self:getCanStartCp())
+        local startingPointSetting = self:getCpStartingPointSetting()
+        g_inputBinding:setActionEventText(actionEvent.actionEventId, string.format("CP: %s (%s)", 
+            startingPointSetting:getTitle(), startingPointSetting:getString()))
+        g_inputBinding:setActionEventActive(actionEvent.actionEventId, 
+            self:getShowAIToggleActionEvent() and not self:getIsAIActive()
+            and self:cpIsHudFieldWorkJobSelected())
 
         actionEvent = spec.actionEvents[InputAction.CP_CHANGE_COURSE_VISIBILITY]
         local setting = self:getCpSettings().showCourse
-        g_inputBinding:setActionEventText(actionEvent.actionEventId, string.format("CP: %s: %s", setting:getTitle(), setting:getString()))
+        g_inputBinding:setActionEventText(actionEvent.actionEventId, string.format("CP: %s (%s)", 
+            setting:getTitle(), setting:getString()))
         g_inputBinding:setActionEventActive(actionEvent.actionEventId, self:hasCpCourse())
 
         actionEvent = spec.actionEvents[InputAction.CP_CLEAR_COURSE]
@@ -197,8 +209,13 @@ function CpAIWorker:updateActionEvents()
 end
 
 function CpAIWorker:changeStartingPoint()
-    local startingPointSetting = self:cpGetHudSelectedJobSetting()
+    local startingPointSetting = self:getCpStartingPointSetting()
     startingPointSetting:setNextItem()
+end
+
+function CpAIWorker:changeCurrentSelectedJob()
+    local currentJobSetting = self:cpGetHudSelectedJobSetting()
+    currentJobSetting:setNextItem()
 end
 
 function CpAIWorker:clearCourse()

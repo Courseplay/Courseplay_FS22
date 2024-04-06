@@ -2763,6 +2763,10 @@ TPS extension
 			<Text language="de"><![CDATA[CP: CP-Helfer starten/stoppen]]></Text>
 			<Text language="en"><![CDATA[CP: Start/stop driver]]></Text>
 		</Translation>
+		<Translation name="input_CP_CHANGE_SELECTED_JOB">
+			<Text language="de"><![CDATA[CP: Aktueller ausgewählten Job ändern]]></Text>
+			<Text language="en"><![CDATA[CP: Change current selected job]]></Text>
+		</Translation>
 		<Translation name="input_CP_CHANGE_STARTING_POINT">
 			<Text language="de"><![CDATA[CP: Startpunkt ändern]]></Text>
 			<Text language="en"><![CDATA[CP: Change starting point]]></Text>
