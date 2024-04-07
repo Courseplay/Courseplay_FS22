@@ -2,7 +2,7 @@
 
 <i3D name="CourseplayWaypointSign" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
   <Asset>
-    <Export program="GIANTS Editor 64bit" version="9.0.2"/>
+    <Export program="GIANTS Editor 64bit" version="9.0.3"/>
   </Asset>
 
   <Files>
@@ -31,9 +31,9 @@
   </Dynamics>
 
   <Scene>
-      <Shape shapeId="1" name="Waypoint" clipDistance="100" nodeId="9" materialIds="4" castsShadows="true">
+      <Shape shapeId="1" name="Waypoint" clipDistance="100" nodeId="9" materialIds="4">
         <Shape shapeId="2" name="Line" nodeId="10" materialIds="5" castsShadows="true"/>
-        <Shape shapeId="2" name="LineDown" rotation="90 0 0" visibility="false" nodeId="13" materialIds="5" castsShadows="true"/>
+        <Shape shapeId="2" name="LineDown" rotation="90 0 0" visibility="false" nodeId="11" materialIds="5" castsShadows="true"/>
       </Shape>
   </Scene>
 
