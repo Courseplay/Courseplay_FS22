@@ -240,11 +240,11 @@ function AIDriveStrategyAttachHeader:startPathfindingToCutter()
         context:mustBeAccurate(false):allowReverse(true):offFieldPenalty(0)
         context:vehiclesToIgnore({ self.vehicle }):areaToAvoid(self.trailerAreaToAvoid)
         context:ignoreFruit()
-        local done, path, goalNodeInvalid
-        self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(
+        local result
+        self.pathfinder, result = PathfinderUtil.startPathfindingFromVehicleToNode(
                 self.cutterNode, 0, -math.max(1.5 * length, 1.5 * self.turningRadius), context)
-        if done then
-            return self:onPathfindingDoneToCutter(path, goalNodeInvalid)
+        if result.done then
+            return self:onPathfindingDoneToCutter(result)
         else
             self:setPathfindingDoneCallback(self, self.onPathfindingDoneToCutter)
             return true
@@ -254,9 +254,9 @@ function AIDriveStrategyAttachHeader:startPathfindingToCutter()
     end
 end
 
-function AIDriveStrategyAttachHeader:onPathfindingDoneToCutter(path, goalNodeInvalid)
-    if path and #path > 2 then
-        local course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+function AIDriveStrategyAttachHeader:onPathfindingDoneToCutter(result)
+    if result.path and #result.path > 2 then
+        local course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(result.path), true)
         self:startCourse(course, 1)
         self.state = self.states.DRIVING_TO_HEADER
         return true

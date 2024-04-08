@@ -1611,12 +1611,12 @@ function AIDriveStrategyCombineCourse:startSelfUnload(unloadStateAfterPathfindin
         -- and the trailer
         context:areaToIgnoreOffFieldPenalty(
                 PathfinderUtil.NodeArea.createVehicleArea(trailer, 1.5 * SelfUnloadHelper.maxDistanceFromField))
-        local done, path
+        local result
         -- require full accuracy from pathfinder as we must exactly line up with the trailer
-        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(
+        self.pathfinder, result = PathfinderUtil.startPathfindingFromVehicleToNode(
                 targetNode, offsetX, -alignLength, context)
-        if done then
-            return self:onPathfindingDoneBeforeSelfUnload(path)
+        if result.done then
+            return self:onPathfindingDoneBeforeSelfUnload(result.path)
         else
             self.state = self.states.WAITING_FOR_PATHFINDER
             self:setPathfindingDoneCallback(self, self.onPathfindingDoneBeforeSelfUnload)
@@ -1665,11 +1665,11 @@ function AIDriveStrategyCombineCourse:returnToFieldworkAfterSelfUnload()
         local fieldWorkCourse, ix = self:getRememberedCourseAndIx()
         self:debug('Return to fieldwork after self unload at waypoint %d', ix)
         local context = PathfinderContext(self.vehicle):allowReverse(self:getAllowReversePathfinding())
-        local done, path
-        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
+        local result
+        self.pathfinder, result = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
                 fieldWorkCourse, ix, self.settings.toolOffsetX:getValue(), 0, context)
-        if done then
-            return self:onPathfindingDoneAfterSelfUnload(path)
+        if result.done then
+            return self:onPathfindingDoneAfterSelfUnload(result.path)
         else
             self.state = self.states.WAITING_FOR_PATHFINDER
             self:setPathfindingDoneCallback(self, self.onPathfindingDoneAfterSelfUnload)

@@ -86,6 +86,30 @@ function PathfinderInterface:debug(...)
 	end
 end
 
+--- The result of a pathfinder run
+--- Attributes are public, no getters.
+---@class PathfinderResult
+PathfinderResult = CpObject()
+
+---@param done boolean true if pathfinding is done (success or failure), false means it isn't ready and
+---                resume() must be called to continue until this is true
+---@param path Polyline the path if found
+---@param goalNodeInvalid boolean if true, the goal node is invalid (for instance a vehicle or obstacle is there) so
+---                the pathfinding can never succeed.
+---@param maxDistance number the furthest distance the pathfinding tried from the start, only when no path found
+---@param trailerCollisionsOnly boolean only collisions with the trailer was detected.
+function PathfinderResult:init(done, path, goalNodeInvalid, maxDistance, trailerCollisionsOnly)
+	self.done = done
+	self.path = path
+	self.goalNodeInvalid = goalNodeInvalid or false
+	self.maxDistance = maxDistance or 0
+	self.trailerCollisionsOnly = trailerCollisionsOnly or false
+end
+
+function PathfinderResult:__tostring()
+	return self:attributesToString()
+end
+
 --- Interface definition for pathfinder constraints (for dependency injection of node penalty/validity checks
 ---@class PathfinderConstraintInterface
 PathfinderConstraintInterface = CpObject()
@@ -112,12 +136,9 @@ function PathfinderConstraintInterface:getNodePenalty(node)
 	return 0
 end
 
---- Relax pathfinder constraints (like reduce fruit penalty?)
-function PathfinderConstraintInterface:relaxConstraints()
-end
-
---- Reset pathfinder constraints to their original value
-function PathfinderConstraintInterface:resetConstraints()
+--- Are all collisions detected caused by the trailer only?
+---@return boolean true if there were collisions and all caused by the trailer
+function PathfinderConstraintInterface:trailerCollisionsOnly()
 end
 
 --- Show statistics about constraints applied
@@ -243,7 +264,7 @@ function HybridAStar.MotionPrimitives:createSuccessor(node, primitive, hitchLeng
 	-- if the motion primitive has a fixed heading, use that, otherwise the delta
 	local tSucc = primitive.t or node.t + primitive.dt
 	return State3D(xSucc, ySucc, tSucc, node.g, node, primitive.gear, primitive.steer,
-			node:getNextTrailerHeading(primitive.d, hitchLength))
+			node:getNextTrailerHeading(primitive.d, hitchLength), node.d + primitive.d)
 end
 
 function HybridAStar.MotionPrimitives:__tostring()
@@ -289,6 +310,7 @@ function HybridAStar.NodeList:init(gridSize, thetaResolutionDeg)
 	self.thetaResolutionDeg = thetaResolutionDeg
 	self.lowestCost = math.huge
 	self.highestCost = -math.huge
+	self.highestDistance = -math.huge
 end
 
 ---@param node State3D
@@ -326,6 +348,9 @@ function HybridAStar.NodeList:add(node)
 	self.nodes[x][y][t] = node
 	if node.cost >= self.highestCost then
 		self.highestCost = node.cost
+	end
+	if node.d >= self.highestDistance then
+		self.highestDistance = node.d
 	end
 	if node.cost < self.lowestCost then
 		self.lowestCost = node.cost
@@ -514,7 +539,7 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
 					-- ignore invalidity of a node in the first few iterations: this is due to the fact that sometimes
 					-- we end up being in overlap with another vehicle when we start the pathfinding and all we need is
 					-- an iteration or two to bring us out of that position
-					if self.ignoreValidityAtStart and self.iterations < 10 or constraints:isValidNode(succ) then
+					if (self.ignoreValidityAtStart and self.iterations < 3) or constraints:isValidNode(succ) then
 						succ:updateG(primitive, constraints:getNodePenalty(succ))
 						local analyticSolutionCost = 0
 						if self.analyticSolverEnabled then
@@ -687,8 +712,13 @@ end
 ---                              when we search for a valid analytic solution we use this instead of isValidNode()
 ---@param hitchLength number hitch length of a trailer (length between hitch on the towing vehicle and the
 --- rear axle of the trailer), can be nil
+---@return boolean true if pathfinding is done (success or failure), false means it isn't ready and
+---                resume() must be called to continue until this is true
+---@return Polyline the path if found
+---@return boolean if true, the goal node is invalid (for instance a vehicle or obstacle is there) so
+---                the pathfinding can never succeed.
+---@return number the furthest distance the pathfinding tried from the start, only when no path found
 function HybridAStarWithAStarInTheMiddle:start(start, goal, turnRadius, allowReverse, constraints, hitchLength)
-	self.retries = 0
 	self.startNode, self.goalNode = State3D.copy(start), State3D.copy(goal)
 	self.originalStartNode = State3D.copy(self.startNode)
 	self.turnRadius, self.allowReverse, self.hitchLength = turnRadius, allowReverse, hitchLength
@@ -697,13 +727,9 @@ function HybridAStarWithAStarInTheMiddle:start(start, goal, turnRadius, allowRev
 	-- how far is start/goal apart?
 	self.startNode:updateH(self.goalNode, turnRadius)
 	self.phase = self.MIDDLE
-	self:debug('Finding direct path between start and goal...')
+	self:debug('Finding fast A* path between start and goal...')
 	self.coroutine = coroutine.create(self.aStarPathfinder.findPath)
 	self.currentPathfinder = self.aStarPathfinder
-	self.startToMiddleRetries = 0
-	self.middleToEndRetries = 0
-	self.allHybridRetries = 0
-	self.constraints:resetConstraints()
 	-- strict mode for the middle part, stay close to the field, for future improvements, disabled for now
 	-- self.constraints:setStrictMode()
 	return self:resume(self.startNode, self.goalNode, turnRadius, false, constraints, hitchLength)
@@ -746,7 +772,8 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
 		print(done)
 		printCallstack()
 		self.coroutine = nil
-		return true, nil, goalNodeInvalid
+		return PathfinderResult(true, nil, goalNodeInvalid,
+				self.currentPathfinder.nodes.highestDistance, self.constraints:trailerCollisionsOnly())
 	end
 	if done then
 		self.coroutine = nil
@@ -757,21 +784,17 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
 				local result = Polygon:new(path)
 				result:calculateData()
 				result:space(math.pi / 20, 2)
-				return true, result
+				return PathfinderResult(true, result)
 			else
-				if self.allHybridRetries < 1 then
-					self:debug('all hybrid path did not work out, relax constraints and try again')
-					self.allHybridRetries = self.allHybridRetries + 1
-					self.constraints:relaxConstraints()
-					return self:findHybridStartToEnd()
-				else
-					self:debug('all hybrid: we already tried with relaxed constraints, this did not work out')
-					return true, nil, goalNodeInvalid
-				end
+                self:debug('all hybrid: no path found')
+                return PathfinderResult(true, nil, goalNodeInvalid,
+						self.currentPathfinder.nodes.highestDistance, self.constraints:trailerCollisionsOnly())
 			end
 		elseif self.phase == self.MIDDLE then
 			self.constraints:resetStrictMode()
-			if not path then return true, nil, goalNodeInvalid end
+			if not path then
+				return PathfinderResult(true, nil, goalNodeInvalid)
+			end
 			local lMiddlePath = HybridAStar.length(path)
 			self:debug('Direct path is %d m', lMiddlePath)
 			-- do we even need to use the normal A star or the nodes are close enough that the hybrid A star will be fast enough?
@@ -782,7 +805,9 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
 			self.middlePath = path
 			HybridAStar.shortenStart(self.middlePath, self.hybridRange)
 			HybridAStar.shortenEnd(self.middlePath, self.hybridRange)
-			if #self.middlePath < 2 then return true, nil end
+			if #self.middlePath < 2 then
+				return PathfinderResult(true, nil)
+			end
 			State3D.smooth(self.middlePath)
 			State3D.setAllHeadings(self.middlePath)
 			State3D.calculateTrailerHeadings(self.middlePath, self.hitchLength, true)
@@ -790,13 +815,11 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
 		elseif self.phase == self.START_TO_MIDDLE then
 			if path then
 				-- start and middle sections ready, continue with the piece from the middle to the end
-				-- but reset the constraints first (in case we relaxed them when building the start -> middle piece
-				self.constraints:resetConstraints()
 				self.path = path
 				-- create start point at the last waypoint of middlePath before shortening
 				self.middleToEndStart = State3D.copy(self.middlePath[#self.middlePath])
 				-- now shorten both ends of middlePath to avoid short fwd/reverse sections due to overlaps (as the
-				-- patfhinding may end anywhere within deltaPosGoal
+				-- pathfinding may end anywhere within deltaPosGoal
 				HybridAStar.shortenStart(self.middlePath,self.hybridAStarPathfinder.deltaPosGoal * 2)
 				HybridAStar.shortenEnd(self.middlePath, self.hybridAStarPathfinder.deltaPosGoal * 2)
 				-- append middle to start
@@ -805,15 +828,9 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
 				end
 				return self:findPathFromMiddleToEnd()
 			else
-				if self.startToMiddleRetries < 1 then
-					self:debug('start to middle did not work out, relax constraints and try again')
-					self.startToMiddleRetries = self.startToMiddleRetries + 1
-					self.constraints:relaxConstraints()
-					return self:findPathFromStartToMiddle()
-				else
-					self:debug('start to middle: we already tried with relaxed constraints, this did not work out')
-					return true, nil, goalNodeInvalid
-				end
+                self:debug('start to middle: no path found')
+				return PathfinderResult(true, nil, goalNodeInvalid,
+						self.currentPathfinder.nodes.highestDistance, self.constraints:trailerCollisionsOnly())
 			end
 		elseif self.phase == self.MIDDLE_TO_END then
 			if path then
@@ -827,25 +844,19 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
 				end
 				State3D.smooth(self.path)
 			else
-				if self.middleToEndRetries < 1 then
-					self:debug('middle to end did not work out, relax constraints and retry')
-					self.middleToEndRetries = self.middleToEndRetries + 1
-					self.constraints:relaxConstraints()
-					return self:findPathFromMiddleToEnd()
-				else
-					self:debug('middle to end: we already tried with relaxed constraints, this did not work out')
-					return true, nil, goalNodeInvalid
-				end
+                self:debug('middle to end: no path found')
+				return PathfinderResult(true, nil, goalNodeInvalid,
+						self.currentPathfinder.nodes.highestDistance, self.constraints:trailerCollisionsOnly())
 			end
 			self.constraints:showStatistics()
-			return true, self.path
+			return PathfinderResult(true, self.path)
 		end
 	end
-	return false
+	return PathfinderResult(false)
 end
 
 
---- Dummy A* pathfinder implementation, does not calculate a path, just returns a pre-calculated path passed in 
+--- Dummy A* pathfinder implementation, does not calculate a path, just returns a pre-calculated path passed in
 --- to its constructor. 
 ---@see HybridAStarWithPathInTheMiddle
 ---@class DummyAStar : HybridAStar

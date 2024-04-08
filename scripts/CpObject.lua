@@ -68,6 +68,20 @@ function CpObject(base, init)
 		str = str .. ']'
 		return str
 	end
+	--- For use in a __tostring to show attribute values of an object
+	---@param str string|nil  string to append the result to
+	---@param attributeList table<string, any>|nil a table with keys to list, default is self
+	---@param prefix string|nil prefix to use to build the variable name from the keys in attributeList. For builder API
+	--- object, this would be '_'
+	---@return string str with the attribute values appended
+	c.attributesToString = function(self, str, attributeList, prefix)
+		str = str or ''
+		for attributeName, _ in pairs(attributeList or self) do
+			local variableName = prefix or '' .. attributeName
+			str = str .. string.format('%s: %s ', variableName, tostring(self[variableName]))
+		end
+		return str
+	end
 
 	setmetatable(c, mt)
 	return c
@@ -98,7 +112,6 @@ function CpObjectUtil.registerBuilderAPI(class, attributesToDefault)
 		end
 	end
 end
-
 
 --- Object that holds a value temporarily. You can tell when to set the value and how long it should keep that
 --- value, in milliseconds. Great for timers.

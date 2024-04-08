@@ -619,11 +619,11 @@ function AIDriveStrategyFieldWorkCourse:returnToStartAfterDone()
         self.pathfindingStartedAt = g_currentMission.time
         self:debug('Return to first waypoint')
         local context = PathfinderContext(self.vehicle):allowReverse(self:getAllowReversePathfinding())
-        local done, path
-        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
+        local result
+        self.pathfinder, result = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
                 self.fieldWorkCourse, 1, 0, 0, context)
-        if done then
-            return self:onPathfindingDoneToReturnToStart(path)
+        if result.done then
+            return self:onPathfindingDoneToReturnToStart(result.path)
         else
             self.state = self.states.WAITING_FOR_PATHFINDER
             self:setPathfindingDoneCallback(self, self.onPathfindingDoneToReturnToStart)

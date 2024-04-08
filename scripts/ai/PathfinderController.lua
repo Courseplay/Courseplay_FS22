@@ -114,9 +114,9 @@ end
 function PathfinderController:update(dt)
     if self:isActive() then
         --- Applies coroutine for path finding
-        local done, path, goalNodeInvalid = self.pathfinder:resume()
-        if done then
-            self:onFinish(path, goalNodeInvalid)
+        local result = self.pathfinder:resume()
+        if result.done then
+            self:onFinish(result)
         end
     end
 end
@@ -177,9 +177,9 @@ function PathfinderController:start(context, numRetries, pathfinderCall)
         end
     end
 
-    local pathfinder, done, path, goalNodeInvalid = self.currentPathfinderCall()
-    if done then
-        self:onFinish(path, goalNodeInvalid)
+    local pathfinder, result = self.currentPathfinderCall()
+    if result.done then
+        self:onFinish(result)
     else
         self:debug("Continuing as coroutine...")
         self.pathfinder = pathfinder
@@ -190,10 +190,10 @@ end
 --- Path finding has finished
 ---@param path table|nil
 ---@param goalNodeInvalid boolean|nil
-function PathfinderController:onFinish(path, goalNodeInvalid)
+function PathfinderController:onFinish(result)
     self.pathfinder = nil
     self.timeTakenMs = g_time - self.startedAt
-    local retValue = self:isValidPath(path, goalNodeInvalid)
+    local retValue = self:evaluateResult(result)
     if retValue == self.ERROR_NO_PATH_FOUND then
         if self.callbackFailedFunction then
             --- Retry is allowed, so check if any tries are leftover
@@ -232,19 +232,18 @@ function PathfinderController:retry(context)
 end
 
 --- Is the path found and valid?
----@param path table|nil
----@param goalNodeInvalid boolean|nil
----@return integer
-function PathfinderController:isValidPath(path, goalNodeInvalid)
-    if path and #path > 2 then
-        self:debug('Found a path (%d waypoints, after %d ms)', #path, self.timeTakenMs)
+---@param result PathfinderResult
+---@return number
+function PathfinderController:evaluateResult(result)
+    if result.path and #result.path > 2 then
+        self:debug('Found a path (%d waypoints, after %d ms)', #result.path, self.timeTakenMs)
         return self.SUCCESS_FOUND_VALID_PATH
     end
-    if goalNodeInvalid then
+    if result.goalNodeInvalid then
         self:error('No path found, goal node is invalid')
         return self.ERROR_INVALID_GOAL_NODE
     end
-    self:error("No path found after %d ms", self.timeTakenMs)
+    self:error("No path found after %d ms, highest distance %.1f m", self.timeTakenMs, result.highestDistance or -1)
     return self.ERROR_NO_PATH_FOUND
 end
 

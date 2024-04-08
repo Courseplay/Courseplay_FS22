@@ -505,7 +505,7 @@ PathfinderConstraints = CpObject(PathfinderConstraintInterface)
 
 ---@param context PathfinderContext
 function PathfinderConstraints:init(context)
-    self.vehicleData = PathfinderUtil.VehicleData(context._vehicle, true, 0.5)
+    self.vehicleData = PathfinderUtil.VehicleData(context._vehicle, true, 0.25)
     self.trailerHitchLength = AIUtil.getTowBarLength(context._vehicle)
     self.turnRadius = AIUtil.getTurningRadius(context._vehicle) or 10
     self.objectsToIgnore = context._objectsToIgnore or {}
@@ -534,6 +534,7 @@ function PathfinderConstraints:resetCounts()
     self.fruitPenaltyNodeCount = 0
     self.offFieldPenaltyNodeCount = 0
     self.collisionNodeCount = 0
+    self.trailerCollisionNodeCount = 0
     self.areaToAvoidPenaltyCount = 0
 end
 
@@ -617,8 +618,6 @@ function PathfinderConstraints:isValidNode(node, ignoreTrailer, offFieldValid)
     PathfinderUtil.setWorldPositionAndRotationOnTerrain(PathfinderUtil.helperNode,
             node.x, -node.y, CourseGenerator.toCpAngle(node.t), 0.5)
 
-    -- check the vehicle and all implements attached to it except a trailer or towed implement
-    local myCollisionData = PathfinderUtil.getBoundingBoxInWorldCoordinates(PathfinderUtil.helperNode, self.vehicleData, 'me')
     -- for debug purposes only, store validity info on node
     node.collidingShapes = PathfinderUtil.collisionDetector:findCollidingShapes(
             PathfinderUtil.helperNode, self.vehicleData, self.vehiclesToIgnore, self.objectsToIgnore, self.ignoreFruitHeaps)
@@ -633,6 +632,9 @@ function PathfinderConstraints:isValidNode(node, ignoreTrailer, offFieldValid)
         node.collidingShapes = node.collidingShapes + PathfinderUtil.collisionDetector:findCollidingShapes(
                 PathfinderUtil.helperNode, self.vehicleData.trailerRectangle, self.vehiclesToIgnore,
                 self.objectsToIgnore, self.ignoreFruitHeaps)
+        if node.collidingShapes > 0 then
+            self.trailerCollisionNodeCount = self.trailerCollisionNodeCount + 1
+        end
     end
     local isValid = node.collidingShapes == 0
     if not isValid then
@@ -651,26 +653,16 @@ function PathfinderConstraints:resetStrictMode()
     self.strictMode = false
 end
 
-function PathfinderConstraints:relaxConstraints()
-    self:showStatistics()
-    self:debug('relaxing pathfinder constraints: allow driving through fruit')
-    self.maxFruitPercent = math.huge
-    self:resetCounts()
-end
-
 function PathfinderConstraints:showStatistics()
-    self:debug('Nodes: %d, Penalties: fruit: %d, off-field: %d, collisions: %d, area to avoid: %d',
+    self:debug('Nodes: %d, Penalties: fruit: %d, off-field: %d, collisions: %d, trailer collisions: %d, area to avoid: %d',
             self.totalNodeCount, self.fruitPenaltyNodeCount, self.offFieldPenaltyNodeCount, self.collisionNodeCount,
-            self.areaToAvoidPenaltyCount)
+            self.trailerCollisionNodeCount, self.areaToAvoidPenaltyCount)
     self:debug('  max fruit %.1f %%, off-field penalty: %.1f',
             self.maxFruitPercent, self.offFieldPenalty)
 end
 
-function PathfinderConstraints:resetConstraints()
-    self:debug('resetting pathfinder constraints: maximum fruit percent allowed is now %.1f',
-            self.initialMaxFruitPercent)
-    self.maxFruitPercent = self.initialMaxFruitPercent
-    self:resetCounts()
+function PathfinderConstraints:trailerCollisionsOnly()
+    return self.trailerCollisionNodeCount > 0 and self.collisionNodeCount == 0
 end
 
 function PathfinderConstraints:debug(...)
@@ -768,9 +760,8 @@ end
 function PathfinderUtil.startPathfinding(vehicle, start, goal, constraints, allowReverse, mustBeAccurate)
     PathfinderUtil.overlapBoxes = {}
     local pathfinder = HybridAStarWithAStarInTheMiddle(vehicle, constraints.turnRadius * 4, 100, 40000, mustBeAccurate)
-    local done, path, goalNodeInvalid = pathfinder:start(start, goal, constraints.turnRadius, allowReverse,
+    return pathfinder, pathfinder:start(start, goal, constraints.turnRadius, allowReverse,
             constraints, constraints.trailerHitchLength)
-    return pathfinder, done, path, goalNodeInvalid
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -791,9 +782,7 @@ end
 --- vehicle is towing the implements and is past the end of the row when the implement reaches the end of the row.
 ---@param turnOnField boolean is turn on field allowed?
 ---@return PathfinderInterface pathfinder
----@return boolean done finished pathfinding?
----@return table|nil path that was found?
----@return boolean|nil goalNodeInvalid
+---@return PathfinderResult
 function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode, goalOffset, turnRadius, allowReverse,
                                         courseWithHeadland, workingWidth, backMarkerDistance, turnOnField)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(vehicle:getAIDirectionNode(), 0, startOffset or 0)
@@ -830,9 +819,7 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
     local context = PathfinderContext(vehicle):useFieldNum(CpFieldUtil.getFieldNumUnderVehicle(vehicle))
     context:offFieldPenalty(turnOnField and 10 or context._offFieldPenalty)
     local constraints = PathfinderConstraints(context)
-    local done, path, goalNodeInvalid =
-        pathfinder:start(start, goal, turnRadius, allowReverse, constraints, constraints.trailerHitchLength)
-    return pathfinder, done, path, goalNodeInvalid
+    return pathfinder, pathfinder:start(start, goal, turnRadius, allowReverse, constraints, constraints.trailerHitchLength)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -911,9 +898,7 @@ end
 ---@param goal State3D
 ---@param context PathfinderContext
 ---@return PathfinderInterface pathfinder
----@return boolean done finished pathfinding?
----@return table|nil path that was found?
----@return boolean|nil goalNodeInvalid
+---@return PathfinderResult
 function PathfinderUtil.startPathfindingFromVehicleToGoal(goal, context)
 
     local start = PathfinderUtil.getVehiclePositionAsState3D(context._vehicle)
@@ -932,9 +917,7 @@ end
 ---@param zOffset number length offset of the goal from the goalWaypoint
 ---@param context PathfinderContext
 ---@return PathfinderInterface pathfinder
----@return boolean done finished pathfinding?
----@return table|nil path that was found?
----@return boolean|nil goalNodeInvalid
+---@return PathfinderResult
 function PathfinderUtil.startPathfindingFromVehicleToWaypoint(course, goalWaypointIx, xOffset, zOffset, context)
     local goal = PathfinderUtil.getWaypointAsState3D(course:getWaypoint(goalWaypointIx), xOffset, zOffset)
     -- TODO: this was forced to true here before refactoring, but is false in the context by default
@@ -950,9 +933,7 @@ end
 ---@param zOffset number length offset of the goal from the goal node
 ---@param context PathfinderContext
 ---@return PathfinderInterface pathfinder
----@return boolean done finished pathfinding?
----@return table|nil path that was found?
----@return boolean|nil goalNodeInvalid
+---@return PathfinderResult
 function PathfinderUtil.startPathfindingFromVehicleToNode(goalNode, xOffset, zOffset, context)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalNode, xOffset, zOffset)
     local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
@@ -967,9 +948,7 @@ end
 ---@param zOffset number length offset of the goal from the goal node (> 0 is front)
 ---@param context PathfinderContext
 ---@return PathfinderInterface pathfinder
----@return boolean done finished pathfinding?
----@return table|nil path that was found?
----@return boolean|nil goalNodeInvalid
+---@return PathfinderResult
 function PathfinderUtil.startAStarPathfindingFromVehicleToNode(goalNode, xOffset, zOffset, context)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(context._vehicle:getAIDirectionNode())
     local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
@@ -980,9 +959,7 @@ function PathfinderUtil.startAStarPathfindingFromVehicleToNode(goalNode, xOffset
     PathfinderUtil.initializeTrailerHeading(start, constraints.vehicleData)
 
     local pathfinder = AStar(context._vehicle, 100, 10000)
-    local done, path, goalNodeInvalid =
-        pathfinder:start(start, goal, constraints.turnRadius, false, constraints, constraints.trailerHitchLength)
-    return pathfinder, done, path, goalNodeInvalid
+    return pathfinder, pathfinder:start(start, goal, constraints.turnRadius, false, constraints, constraints.trailerHitchLength)
 end
 
 ------------------------------------------------------------------------------------------------------------------------

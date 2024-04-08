@@ -707,17 +707,17 @@ end
 
 function CourseTurn:generatePathfinderTurn(useHeadland)
     self.pathfindingStartedAt = g_currentMission.time
-    local done, path
+    local result
     local turnEndNode, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(self.steeringLength)
     local _, backMarkerDistance = self.driveStrategy:getFrontAndBackMarkers()
     self:debug('Pathfinder turn (useHeadland: %s): generate turn with hybrid A*, goal offset %.1f', useHeadland, goalOffset)
-    self.driveStrategy.pathfinder, done, path = PathfinderUtil.findPathForTurn(self.vehicle, 0, turnEndNode, goalOffset,
+    self.driveStrategy.pathfinder, result = PathfinderUtil.findPathForTurn(self.vehicle, 0, turnEndNode, goalOffset,
             self.turningRadius, self.driveStrategy:getAllowReversePathfinding(),
             useHeadland and self.fieldWorkCourse or nil,
             self.driveStrategy:getWorkWidth(), backMarkerDistance,
             self.driveStrategy:isTurnOnFieldActive())
-    if done then
-        return self:onPathfindingDone(path)
+    if result.done then
+        return self:onPathfindingDone(result.path)
     else
         self.state = self.states.WAITING_FOR_PATHFINDER
         self.driveStrategy:setPathfindingDoneCallback(self, self.onPathfindingDone)
