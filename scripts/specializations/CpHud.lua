@@ -200,7 +200,7 @@ function CpHud:onLoad(savegame)
         setting:refresh()
     end
     if savegame == nil or savegame.resetVehicles then return end
-    CpSettingsUtil.loadFromXmlFile(spec, savegame.xmlFile, 
+    CpSettingsUtil.loadFromXmlFile(spec.hudSettings, savegame.xmlFile, 
                         savegame.key .. CpHud.KEY .. CpHud.SETTINGS_KEY, self)
 end
 
@@ -227,7 +227,7 @@ end
 function CpHud:saveToXMLFile(xmlFile, baseKey, usedModNames)
    --- Saves the settings.
     local spec = self.spec_cpHud
-    CpSettingsUtil.saveToXmlFile(spec.settings, xmlFile, 
+    CpSettingsUtil.saveToXmlFile(spec.hudSettings.settings, xmlFile, 
         baseKey .. CpHud.SETTINGS_KEY, self, nil)
 end
 
