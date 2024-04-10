@@ -313,15 +313,17 @@ function CpAIJobCombineUnloader:canContinueWork()
 		if not canContinue then 
 			return canContinue, errorMessage
 		end
-		local hasSupportedFillTypeLoaded = false
-		for _, dischargeNodeInfo in ipairs(self.dischargeNodeInfos) do
-			local fillType = dischargeNodeInfo.vehicle:getFillUnitFillType(dischargeNodeInfo.dischargeNode.fillUnitIndex)
-			if self.supportedFillTypes[fillType] then 
-				hasSupportedFillTypeLoaded = true
+		if self.currentTaskIndex == self.driveToUnloadingTask.taskIndex then
+			local hasSupportedFillTypeLoaded = false
+			for _, dischargeNodeInfo in ipairs(self.dischargeNodeInfos) do
+				local fillType = dischargeNodeInfo.vehicle:getFillUnitFillType(dischargeNodeInfo.dischargeNode.fillUnitIndex)
+				if self.supportedFillTypes[fillType] then 
+					hasSupportedFillTypeLoaded = true
+				end
 			end
-		end
-		if not hasSupportedFillTypeLoaded then
-			return false, AIMessageErrorNoValidFillTypeLoaded.new()
+			if not hasSupportedFillTypeLoaded then
+				return false, AIMessageErrorNoValidFillTypeLoaded.new()
+			end
 		end
 	end
 
