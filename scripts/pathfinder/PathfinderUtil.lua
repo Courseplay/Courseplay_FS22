@@ -518,6 +518,7 @@ function PathfinderConstraints:init(context)
     self.areaToIgnoreFruit = context._areaToIgnoreFruit
     self.areaToIgnoreOffFieldPenalty = context._areaToIgnoreOffFieldPenalty
     self.ignoreFruitHeaps = context._ignoreFruitHeaps
+    self.ignoreTrailerAtStartRange = context._ignoreTrailerAtStartRange or 0
     self.initialMaxFruitPercent = self.maxFruitPercent
     self.initialOffFieldPenalty = self.offFieldPenalty
     self.strictMode = false
@@ -621,6 +622,7 @@ function PathfinderConstraints:isValidNode(node, ignoreTrailer, offFieldValid)
     -- for debug purposes only, store validity info on node
     node.collidingShapes = PathfinderUtil.collisionDetector:findCollidingShapes(
             PathfinderUtil.helperNode, self.vehicleData, self.vehiclesToIgnore, self.objectsToIgnore, self.ignoreFruitHeaps)
+    ignoreTrailer = ignoreTrailer or node.d < self.ignoreTrailerAtStartRange
     if self.vehicleData.trailer and not ignoreTrailer then
         -- now check the trailer or towed implement
         -- move the node to the rear of the vehicle (where approximately the trailer is attached)
@@ -662,7 +664,7 @@ function PathfinderConstraints:showStatistics()
 end
 
 function PathfinderConstraints:trailerCollisionsOnly()
-    return self.trailerCollisionNodeCount > 0 and self.collisionNodeCount == 0
+    return self.trailerCollisionNodeCount > 0 and self.collisionNodeCount == self.trailerCollisionNodeCount
 end
 
 function PathfinderConstraints:debug(...)

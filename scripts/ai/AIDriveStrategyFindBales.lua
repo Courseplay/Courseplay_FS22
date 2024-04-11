@@ -178,7 +178,7 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFindBales:setAllStaticParameters()
     -- make sure we have a good turning radius set
-    self.turningRadius = AIUtil.getTurningRadius(self.vehicle)
+    self.turningRadius = AIUtil.getTurningRadius(self.vehicle, true)
     -- Set the offset to 0, we'll take care of getting the grabber to the right place
     self.settings.toolOffsetX:setFloatValue(0)
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)

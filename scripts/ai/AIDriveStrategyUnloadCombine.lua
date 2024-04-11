@@ -145,7 +145,7 @@ AIDriveStrategyUnloadCombine.myStates = {
     MOVING_AWAY_FROM_OTHER_VEHICLE = { vehicle = nil, denyBackupRequest = true }, -- moving until we have enough space between us and an other vehicle
     WAITING_FOR_MANEUVERING_COMBINE = {},
     DRIVING_BACK_TO_START_POSITION_WHEN_FULL = {}, -- Drives to the start position with a trailer attached and gives control to giants or AD there.
-    HANDLE_CHOPPER_180_TURN = {reversing = false, denyBackupRequest = true},
+    HANDLE_CHOPPER_180_TURN = { reversing = false, denyBackupRequest = true },
     HANDLE_CHOPPER_HEADLAND_TURN = { reversing = false, denyBackupRequest = true },
     FOLLOW_CHOPPER_THROUGH_TURN = {}
 }
@@ -561,7 +561,7 @@ end
 ---@param combine table
 ---@param combineDriver AIDriveStrategyCombineCourse
 function AIDriveStrategyUnloadCombine:areThereAnyCombinesOrLoaderLeftoverOnTheField(combine, combineDriver)
-    for _, vehicle in pairs(g_currentMission.vehicles) do 
+    for _, vehicle in pairs(g_currentMission.vehicles) do
         if vehicle ~= combine and AIDriveStrategyCombineCourse.isActiveCpCombine(vehicle) then
             local x, _, z = getWorldTranslation(combine.rootNode)
             if self:isServingPosition(x, z, 10) then
@@ -765,8 +765,8 @@ function AIDriveStrategyUnloadCombine:followChopper()
         -- show the goal point
         DebugUtil.drawDebugGizmoAtWorldPos(gx, gy + 4, gz, 0, 0, 1, 0, 1, 0, "Virtual goal", false)
         self:renderDebugTableFromLists(
-                {'dz', 'dProxy', 'dFollowProxy', 'speed', 'autoAimOffsetX'},
-                {dz, dProxy, dFollowProxy, speed, self:getAutoAimPipeOffsetX()}
+                { 'dz', 'dProxy', 'dFollowProxy', 'speed', 'autoAimOffsetX' },
+                { dz, dProxy, dFollowProxy, speed, self:getAutoAimPipeOffsetX() }
         )
     end
     return gx, gz
@@ -909,8 +909,8 @@ function AIDriveStrategyUnloadCombine:handleChopperTurn(harvester)
     end
 
     self:renderDebugTableFromLists(
-            {'reversing', 'd', 'dx', 'dz', 'speed'},
-            {self.state.properties.reversing, d, dx, dz, speed}
+            { 'reversing', 'd', 'dx', 'dz', 'speed' },
+            { self.state.properties.reversing, d, dx, dz, speed }
     )
 
     return speed, self.state.properties.reversing
@@ -1466,7 +1466,7 @@ function AIDriveStrategyUnloadCombine:startPathfindingToWaitingCombine(xOffset, 
     context:areaToAvoid(self.combineToUnload:getCpDriveStrategy():getAreaToAvoid())
     context:vehiclesToIgnore({})
     self.pathfinderController:registerListeners(self, self.onPathfindingDoneToWaitingCombine,
-            self.onPathfindingFailedToStationaryTarget) --, self.onPathfindingObstacleAtStart)
+            self.onPathfindingFailedToStationaryTarget, self.onPathfindingObstacleAtStart)
     self.pathfinderController:findPathToNode(context, self:getCombineRootNode(), xOffset or 0, zOffset or 0, 2)
 end
 
@@ -1510,8 +1510,15 @@ function AIDriveStrategyUnloadCombine:onPathfindingFailedToMovingTarget(...)
             end, ...)
 end
 
-function AIDriveStrategyUnloadCombine:onPathfindingObstacleAtStart(controller, lastContext, obstacleAhead, obstacleBehind)
-    self:startMovingBackBeforePathfinding(controller, lastContext)
+function AIDriveStrategyUnloadCombine:onPathfindingObstacleAtStart(controller, lastContext, maxDistance, trailerCollisionsOnly)
+    if trailerCollisionsOnly then
+        self:debug('Pathfinding detected obstacle at start, trailer collisions only, retry with ignoring the trailer')
+        lastContext:ignoreTrailerAtStartRange(1.5 * self.turningRadius)
+        controller:retry(lastContext)
+    else
+        self:debug('Pathfinding detected obstacle at start, back up and retry')
+        self:startMovingBackBeforePathfinding(controller, lastContext)
+    end
 end
 
 function AIDriveStrategyUnloadCombine:onPathfindingFailed(giveUpFunc, controller, lastContext, wasLastRetry,
@@ -2066,7 +2073,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 -- Start moving back from empty combine
 ------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyUnloadCombine:  startMovingBackFromCombine(newState, combine, holdCombineWhileMovingBack)
+function AIDriveStrategyUnloadCombine:startMovingBackFromCombine(newState, combine, holdCombineWhileMovingBack)
     if self.unloadTargetType == self.UNLOAD_TYPES.SILO_LOADER then
         --- Finished unloading of silo unloader. Moving back is not needed.
         self:setNewState(self.states.IDLE)
@@ -3012,14 +3019,13 @@ function AIDriveStrategyUnloadCombine:renderDebugTableFromLists(names, values)
     local content = {}
     for i, value in ipairs(values) do
         if type(value) == 'number' then
-            table.insert(content, {name = names[i], value = string.format('%.1f', value)})
+            table.insert(content, { name = names[i], value = string.format('%.1f', value) })
         else
-            table.insert(content, {name = names[i], value = tostring(value)})
+            table.insert(content, { name = names[i], value = tostring(value) })
         end
     end
     self:renderDebugTable(content)
 end
-
 
 ---@param content table with a list of {name, value} tables
 function AIDriveStrategyUnloadCombine:renderDebugTable(content)

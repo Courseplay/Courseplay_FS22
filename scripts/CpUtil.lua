@@ -166,6 +166,16 @@ function CpUtil.debugVehicle(channel, vehicle, ...)
 	end
 end
 
+--- Wrapper for callers who want to suppress writing the message to the log based on a condition
+---@param enabled boolean only write the debug message if this is true, otherwise do nothing
+---@param channel number
+---@param vehicle table
+function CpUtil.debugVehicleIf(enabled, channel, vehicle, ...)
+	if enabled then
+		CpUtil.debugVehicle(channel, vehicle, ...)
+	end
+end
+
 --- Debug function for implements, that calls CpUtil.debugVehicle, with the root vehicle. 
 ---@param channel number
 ---@param implement table

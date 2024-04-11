@@ -89,7 +89,7 @@ end
 function AIDriveStrategyAttachHeader:setAllStaticParameters()
     AIDriveStrategyCourse.setAllStaticParameters(self)
     -- make sure we have a good turning radius set
-    self.turningRadius = AIUtil.getTurningRadius(self.vehicle)
+    self.turningRadius = AIUtil.getTurningRadius(self.vehicle, true)
     self.proximityController:registerIgnoreObjectCallback(self, self.ignoreProximityObject)
 end
 
