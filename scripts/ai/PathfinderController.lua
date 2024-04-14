@@ -107,8 +107,6 @@ function PathfinderController:reset()
     self.numRetries = 0
     self.failCount = 0
     self.startedAt = 0
-    self.timeTakenMs = 0
-    self.currentContext = nil
 end
 
 function PathfinderController:update(dt)
@@ -198,7 +196,6 @@ function PathfinderController:handleFailedPathfinding(result)
         end
     end
     self:callCallback(self.callbackSuccessFunction, false, nil, result.goalNodeInvalid)
-    self:reset()
 end
 
 --- Path finding has finished
@@ -231,22 +228,6 @@ function PathfinderController:retry(context)
         self:error('Pathfinder has not been called before, can\'t retry')
         return false
     end
-end
-
---- Is the path found and valid?
----@param result PathfinderResult
----@return number
-function PathfinderController:evaluateResult(result)
-    if result.path and #result.path > 2 then
-        self:debug('Found a path (%d waypoints, after %d ms)', #result.path, self.timeTakenMs)
-        return self.SUCCESS_FOUND_VALID_PATH
-    end
-    if result.goalNodeInvalid then
-        self:error('No path found, goal node is invalid')
-        return self.ERROR_INVALID_GOAL_NODE
-    end
-    self:error("No path found after %d ms, highest distance %.1f m", self.timeTakenMs, result.highestDistance or -1)
-    return self.ERROR_NO_PATH_FOUND
 end
 
 function PathfinderController:callCallback(callbackFunc, ...)
