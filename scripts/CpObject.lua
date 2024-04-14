@@ -77,7 +77,7 @@ function CpObject(base, init)
 	c.attributesToString = function(self, str, attributeList, prefix)
 		str = str or ''
 		for attributeName, _ in pairs(attributeList or self) do
-			local variableName = prefix or '' .. attributeName
+			local variableName = (prefix or '') .. attributeName
 			str = str .. string.format('%s: %s ', variableName, tostring(self[variableName]))
 		end
 		return str
