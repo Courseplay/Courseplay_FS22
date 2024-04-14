@@ -107,7 +107,7 @@ function PathfinderResult:init(done, path, goalNodeInvalid, maxDistance, trailer
 end
 
 function PathfinderResult:__tostring()
-	return self:attributesToString()
+	return self:attributesToString(nil, {'done', 'goalNodeInvalid', 'maxDistance', 'trailerCollisionOnly'})
 end
 
 --- Interface definition for pathfinder constraints (for dependency injection of node penalty/validity checks

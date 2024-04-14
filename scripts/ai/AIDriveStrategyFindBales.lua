@@ -301,13 +301,10 @@ function AIDriveStrategyFindBales:findPathToNextBale()
         if bale:isLoaded() then
             self:debug('Bale %d is already loaded, skipping', bale:getId())
             table.remove(self.bales, ix)
-        elseif not self:isObstacleAhead() then
+        else
             self:startPathfindingToBale(bale)
             -- remove bale from list
             table.remove(self.bales, ix)
-        else
-            self:debug('There is an obstacle ahead, backing up a bit and retry')
-            self:startReversing(self.states.REVERSING_DUE_TO_OBSTACLE_AHEAD)
         end
     end
 end
@@ -397,20 +394,20 @@ function AIDriveStrategyFindBales:startPathfindingToBale(bale)
     local context = PathfinderContext(self.vehicle):objectsToIgnore(self:getBalesToIgnore())
     context:allowReverse(false):maxFruitPercent(self.settings.avoidFruit:getValue() and 10 or math.huge)
     table.insert(self.balesTried, bale)
+    self.pathfinderController:registerListeners(self, self.onPathfindingFinished, nil,
+            self.onPathfindingObstacleAtStart)
     self.pathfinderController:findPathToGoal(context, self:getPathfinderBaleTargetAsGoalNode(bale))
 end
 
-function AIDriveStrategyFindBales:startReversing(state)
-    self:startCourse(Course.createStraightReverseCourse(self.vehicle, 10), 1)
-    self.state = state
+function AIDriveStrategyFindBales:onPathfindingObstacleAtStart(controller, lastContext, maxDistance, trailerCollisionsOnly)
+    g_baleToCollectManager:unlockBalesByDriver(self)
+    self:debug('Pathfinding detected obstacle at start, back up and retry')
+    self:startReversing(self.states.REVERSING_DUE_TO_OBSTACLE_AHEAD)
 end
 
-function AIDriveStrategyFindBales:isObstacleAhead()
-    local objectsToIgnore = self:getBalesToIgnore()
-    -- then a more thorough check, we want to ignore the last bale we worked on as that may lay around too close
-    -- to the baler. This happens for example to the Andersen bale wrapper.
-    self:debug('Check obstacles ahead, ignoring %d bale object, first is %s', #objectsToIgnore, objectsToIgnore[1] or 'nil')
-    return AIDriveStrategyCourse.isObstacleAhead(self, objectsToIgnore)
+function AIDriveStrategyFindBales:startReversing(state)
+    self.state = state
+    self:startCourse(Course.createStraightReverseCourse(self.vehicle, 10), 1)
 end
 
 function AIDriveStrategyFindBales:isNearFieldEdge()
@@ -443,11 +440,6 @@ function AIDriveStrategyFindBales:onWaypointPassed(ix, course)
             self.state = self.states.SEARCHING_FOR_NEXT_BALE
         elseif self.state == self.states.REVERSING_DUE_TO_OBSTACLE_AHEAD then
             self:debug('backed due to obstacle, trying again')
-            self.state = self.states.SEARCHING_FOR_NEXT_BALE
-        end
-    elseif self.state == self.states.REVERSING_DUE_TO_OBSTACLE_AHEAD then
-        if not self:isObstacleAhead() then
-            self:debug('backed up after pathfinder failed, no more obstacle ahead, trying again')
             self.state = self.states.SEARCHING_FOR_NEXT_BALE
         end
     end
