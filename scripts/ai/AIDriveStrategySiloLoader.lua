@@ -348,6 +348,14 @@ function AIDriveStrategySiloLoader:isPipeOnLeft()
     return self.conveyorController:isPipeOnTheLeftSide()
 end
 
+function AIDriveStrategySiloLoader:hasAutoAimPipe()
+    return false
+end
+
+function AIDriveStrategySiloLoader:alwaysNeedsUnloader()
+    return false
+end
+
 --- Let unloaders register for events. This is different from the CombineUnloadManager registration, these
 --- events are for the low level coordination between the combine and its unloader(s). CombineUnloadManager
 --- takes care about coordinating the work between multiple combines.
