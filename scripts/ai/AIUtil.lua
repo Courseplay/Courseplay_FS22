@@ -186,19 +186,22 @@ function AIUtil.getDirectionNodeToReverserNodeOffset(vehicle)
 end
 
 -- Get the turning radius of the vehicle and its implements (copied from AIDriveStrategyStraight.updateTurnData())
-function AIUtil.getTurningRadius(vehicle)
-	CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Finding turn radius:')
+---@param vehicle table
+---@param logEnabled boolean only write debug logs if this is true
+function AIUtil.getTurningRadius(vehicle, logEnabled)
+	
+	CpUtil.debugVehicleIf(logEnabled, CpDebug.DBG_IMPLEMENTS, vehicle, 'Finding turn radius:')
 
 	local radius = vehicle.maxTurningRadius or 6
-	CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  turnRadius set to %.1f', radius)
+	CpUtil.debugVehicleIf(logEnabled, CpDebug.DBG_IMPLEMENTS, vehicle, '  turnRadius set to %.1f', radius)
 
 	if g_vehicleConfigurations:get(vehicle, 'turnRadius') then
 		radius = g_vehicleConfigurations:get(vehicle, 'turnRadius')
-		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  turnRadius set from config file to %.1f', radius)
+		CpUtil.debugVehicleIf(logEnabled, CpDebug.DBG_IMPLEMENTS, vehicle, '  turnRadius set from config file to %.1f', radius)
 	end
 
 	if vehicle:getAIMinTurningRadius() ~= nil then
-		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  AIMinTurningRadius by Giants is %.1f', vehicle:getAIMinTurningRadius())
+		CpUtil.debugVehicleIf(logEnabled, CpDebug.DBG_IMPLEMENTS, vehicle, '  AIMinTurningRadius by Giants is %.1f', vehicle:getAIMinTurningRadius())
 		radius = math.max(radius, vehicle:getAIMinTurningRadius())
 	end
 
@@ -208,14 +211,14 @@ function AIUtil.getTurningRadius(vehicle)
 		local turnRadius = 0
 		if g_vehicleConfigurations:get(implement, 'turnRadius') then
 			turnRadius = g_vehicleConfigurations:get(implement, 'turnRadius')
-			CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: using the configured turn radius %.1f',
+			CpUtil.debugVehicleIf(logEnabled, CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: using the configured turn radius %.1f',
 				implement:getName(), turnRadius)
 		elseif vehicle.isServer and SpecializationUtil.hasSpecialization(AIImplement, implement.specializations) then
 			--- Make sure this function only gets called on the server, as otherwise error might appear.
 			-- only call this for AIImplements, others may throw an error as the Giants code assumes AIImplement
 			turnRadius = AIVehicleUtil.getMaxToolRadius({object = implement}) -- Giants should fix their code and take the implement object as the parameter
 			if turnRadius > 0 then
-				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: using the Giants turn radius %.1f',
+				CpUtil.debugVehicleIf(logEnabled, CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: using the Giants turn radius %.1f',
 					implement:getName(), turnRadius)
 			end
 		end
@@ -226,23 +229,23 @@ function AIUtil.getTurningRadius(vehicle)
 					-- Auger wagons don't usually have a proper turn radius configured which causes problems when we
 					-- are calculating the path to a trailer when unloading. Use this as a minimum turn radius.
 					turnRadius = 10
-                    CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, auger wagon, we use a default %.1f',
+                    CpUtil.debugVehicleIf(logEnabled, CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, auger wagon, we use a default %.1f',
                             implement:getName(), turnRadius)
 				else
 				    turnRadius = 6
-				    CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, towed implement, we use a default %.1f',
+				    CpUtil.debugVehicleIf(logEnabled, CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, towed implement, we use a default %.1f',
 						implement:getName(), turnRadius)
 				end
 			else
-				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, not towed, do not use turn radius',
+				CpUtil.debugVehicleIf(logEnabled, CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, not towed, do not use turn radius',
 					implement:getName())
 			end
 		end
 		maxToolRadius = math.max(maxToolRadius, turnRadius)
-		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: max tool radius now is %.1f', implement:getName(), maxToolRadius)
+		CpUtil.debugVehicleIf(logEnabled, CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: max tool radius now is %.1f', implement:getName(), maxToolRadius)
 	end
 	radius = math.max(radius, maxToolRadius)
-	CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'getTurningRadius: %.1f m', radius)
+	CpUtil.debugVehicleIf(logEnabled, CpDebug.DBG_IMPLEMENTS, vehicle, 'getTurningRadius: %.1f m', radius)
 	return radius
 end
 

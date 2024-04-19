@@ -81,7 +81,15 @@ PathfinderContext.attributesToDefaultValue = {
     -- the rest of the path
     ["areaToIgnoreOffFieldPenalty"] = CpObjectUtil.BUILDER_API_NIL,
     -- Tell the collision detector to ignore heaps of fruit on the ground.
-    ["ignoreFruitHeaps"] = false
+    ["ignoreFruitHeaps"] = false,
+    -- If the pathfinding fails without getting further than 1.5 * turning radius, the controller triggers
+    -- the "obstacle at start" callback. This is to override that limit when needed.
+    ["obstacleAtStartRange"] = CpObjectUtil.BUILDER_API_NIL,
+    -- If true, ignore the trailer within so many meters (actual path length, not distance) of the start.
+    -- This is useful when there's another vehicle close to the starting point, and the trailer (with the
+    -- buffer area around it) often triggers a collision which, when the vehicle drives the path, isn't
+    -- really a problem.
+    ["ignoreTrailerAtStartRange"] = 0
 }
 
 function PathfinderContext:init(vehicle)
@@ -103,10 +111,7 @@ end
 
 function PathfinderContext:__tostring()
     local str = string.format('[ %s: ', CpUtil.getName(self._vehicle))
-    for attributeName, _ in pairs(PathfinderContext.attributesToDefaultValue) do
-        local variableName = '_' .. attributeName
-        str = str .. string.format('%s: %s ', variableName, self[variableName])
-    end
+    str = self:attributesToString(str, PathfinderContext.attributesToDefaultValue, '_')
     str = str .. ']'
     return str
 end

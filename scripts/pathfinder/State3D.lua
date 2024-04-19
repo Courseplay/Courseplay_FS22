@@ -28,12 +28,14 @@ State3D = CpObject(Vector)
 ---@param gear Gear straight/left/right
 ---@param steer Steer forward/backward
 ---@param tTrailer number heading (theta) of the attached trailer in radians
-function State3D:init(x, y, t, g, pred, gear, steer, tTrailer)
+---@param d number distance so far (g without the penalty)
+function State3D:init(x, y, t, g, pred, gear, steer, tTrailer, d)
     self.x = x
     self.y = y
     self.t = self:normalizeHeadingRad(t)
     self.pred = pred
     self.g = g or 0
+    self.d = d or 0
     self.h = 0
     self.cost = 0
     self.goal = false
