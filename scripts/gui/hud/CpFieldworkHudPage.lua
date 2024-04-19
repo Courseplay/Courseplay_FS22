@@ -17,22 +17,6 @@ function CpFieldWorkHudPageElement:setupElements(baseHud, vehicle, lines, wMargi
     self.timeRemainingText = CpTextHudElement.new(self, x - 2 * baseHud.wMargin, y, 
         CpBaseHud.defaultFontSize, RenderText.ALIGN_RIGHT)
     
-	--- Clear course button.
-    local width, height = getNormalizedScreenValues(18, 18)
-    local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
-    local clearCourseOverlay = CpGuiUtil.createOverlay({width, height},
-                                                {imageFilename, GuiUtils.getUVs(unpack(CpBaseHud.uvs.clearCourseSymbol))}, 
-                                                CpBaseHud.OFF_COLOR,
-                                                CpBaseHud.alignments.bottomRight)
-    self.clearCourseBtn = CpHudButtonElement.new(clearCourseOverlay, self)
-    local x, y = unpack(lines[8].right)
-    x = x - 2*width - wMargin/2 - wMargin/4
-    self.clearCourseBtn:setPosition(x, y)
-    self.clearCourseBtn:setCallback("onClickPrimary", vehicle, function (vehicle)
-        if vehicle:hasCpCourse() and not vehicle:getIsCpActive() then
-            vehicle:resetCpCoursesFromGui()
-        end
-    end)
     
     --- Toggle waypoint visibility.
     local width, height = getNormalizedScreenValues(20, 20)
@@ -96,8 +80,6 @@ function CpFieldWorkHudPageElement:updateContent(vehicle, status)
     self.timeRemainingText:setTextDetails(status:getTimeRemainingText())
 
     self.courseNameBtn:setTextDetails(vehicle:getCurrentCpCourseName())
-
-	self.clearCourseBtn:setVisible(vehicle:hasCpCourse() and not vehicle:getIsCpActive())
 
 	self.waypointProgressBtn:setTextDetails(status:getWaypointText())
 

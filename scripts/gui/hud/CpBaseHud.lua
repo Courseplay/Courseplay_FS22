@@ -318,6 +318,23 @@ function CpBaseHud:init(vehicle)
         end
     end)
 
+    --- Clear course button.
+    local width, height = getNormalizedScreenValues(18, 18)
+    local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
+    local clearCourseOverlay = CpGuiUtil.createOverlay({width, height},
+                                                {imageFilename, GuiUtils.getUVs(unpack(CpBaseHud.uvs.clearCourseSymbol))}, 
+                                                CpBaseHud.OFF_COLOR,
+                                                CpBaseHud.alignments.bottomRight)
+    self.clearCourseBtn = CpHudButtonElement.new(clearCourseOverlay, self)
+    local x, y = unpack(lines[8].right)
+    x = x - 2*width - wMargin/2 - wMargin/4
+    self.clearCourseBtn:setPosition(x, y)
+    self.clearCourseBtn:setCallback("onClickPrimary", vehicle, function (vehicle)
+        if vehicle:hasCpCourse() and not vehicle:getIsCpActive() then
+            vehicle:resetCpCoursesFromGui()
+        end
+    end)
+
     --- Goal button.
     local width, height = getNormalizedScreenValues(34, 34)    
     local goalOverlay = CpGuiUtil.createOverlay({width, height},
@@ -584,6 +601,9 @@ function CpBaseHud:updateContent(vehicle, status)
         activeLayout:updateContent(vehicle, status)
     end
     self.selectedJobBtn:setTextDetails(vehicle:cpGetHudSelectedJobSetting():getString())
+    self.selectedJobBtn:setDisabled(vehicle:getIsAIActive())
+
+    self.clearCourseBtn:setVisible(vehicle:hasCpCourse() and not vehicle:getIsCpActive())
 end
 
 
