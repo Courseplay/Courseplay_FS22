@@ -326,8 +326,8 @@ function CpBaseHud:init(vehicle)
                                                 self.OFF_COLOR,
                                                 self.alignments.bottomRight)
     self.clearCourseBtn = CpHudButtonElement.new(clearCourseOverlay, self.baseHud)
-    local x, y = unpack(lines[8].right)
-    x = x - 2*width - wMargin/2 - wMargin/4
+    local x, y = unpack(self.lines[8].right)
+    x = x - 2*width - self.wMargin/2 - self.wMargin/4
     self.clearCourseBtn:setPosition(x, y)
     self.clearCourseBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
         if vehicle:hasCpCourse() and not vehicle:getIsCpActive() then
