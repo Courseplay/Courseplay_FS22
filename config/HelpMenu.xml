@@ -68,10 +68,45 @@
 		<page title="$l10n_CP_help_page_minihud_title">
 			<paragraph>
 				<text text="$l10n_CP_help_page_blank"/>
-				<image filename="img/helpmenu/minihudhelp.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
+				<image filename="img/helpmenu/minihudhelp_general.dds" size="1024 1024" uvs="0px 0px 478px 305px"/>
             </paragraph>
 			<paragraph>
-				<text text="$l10n_CP_help_page_minihud_text"/>
+				<text text="$l10n_CP_help_page_minihud_general_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_blank"/>
+				<image filename="img/helpmenu/minihudhelp_fieldwork.dds" size="1024 1024" uvs="0px 0px 478px 305px"/>
+            </paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_minihud_fieldwork_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_blank"/>
+				<image filename="img/helpmenu/minihudhelp_combineunload.dds" size="1024 1024" uvs="0px 0px 478px 305px"/>
+            </paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_minihud_combineunload_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_blank"/>
+				<image filename="img/helpmenu/minihudhelp_balecollect.dds" size="1024 1024" uvs="0px 0px 478px 305px"/>
+            </paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_minihud_balecollect_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_blank"/>
+				<image filename="img/helpmenu/minihudhelp_siloloader.dds" size="1024 1024" uvs="0px 0px 478px 305px"/>
+            </paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_minihud_siloloader_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_blank"/>
+				<image filename="img/helpmenu/minihudhelp_siloworker.dds" size="1024 1024" uvs="0px 0px 478px 305px"/>
+            </paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_minihud_siloworker_text"/>
 			</paragraph>
 		</page>
 		<!--Courseplay customField-->
