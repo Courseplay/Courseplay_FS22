@@ -624,11 +624,11 @@ Ordner müssen leer sein damit sie gelöscht werden können.
     <text name="CP_help_page_minihud_title" text="Mini-HUD"/>
     <text name="CP_help_page_minihud_general_title" text="General"/>
     <text name="CP_help_page_minihud_general_text" text="
-A: Mit gedrückter Maustaste auf die Kopfzeile lässt sich das HUD auf eine beliebige Position verschieben. Auf der rechten Seite wird die Version angezeigt und ein X zum schließen mit der Maustaste.
+A: Mit gedrückter linker Maustaste auf der Kopfzeile lässt sich das HUD auf eine beliebige Position verschieben. Auf der rechten Seite wird die Version angezeigt und ein X zum schließen mit der Maustaste.
 B: Um schnell zu den globalen Einstellungen zu gelangen, kannst du mit der Maus auf das CP-Icon klicken.
 C: Hier wird der Name deines Fahrzeugs angezeigt, klickst du darauf, gelangst du direkt in die CP-Fahrzeugeinstellungen.
 D: Diese Symbole sind dafür da um (1) den aktuell geladenen Kurs zu löschen, (2a) die Anzeige des geladenen Kurs durch zu schalten (2b) wenn kein Kurs geladen ist, einen Feldrandkurs aufzuzeichnen, (3) den Helfer zu starten und zu stoppen.
-E: Dieses Zielicon hat verschiedene Funktionen, je nach gewähltem Modus, er bringt dich direkt auf die Helferkarte mit dem entsprechenden Job und benötigte Marker zu platzieren oder weitere Einstellung vor zu nehmen.
+E: Dieses Zielicon hat verschiedene Funktionen, je nach gewähltem Modus, er bringt dich direkt auf die Helferkarte mit dem entsprechenden Job und benötigte Marker zu platzieren oder weitere Einstellung vor zu nehmen. Links davon wird bei der Feldarbeit die verbleibende Zeit vom Kurs angezeigt.
 F: Mit der Maus kannst du auf den Text klicken um für dein aktuelles gespann verfügbare Modi durch zu schalten.
 G: Unterhalb dieser Linie befinden sich Modi abhängige Einstellungen, die in den nachfolgenden Bildern erklärt werden.
 "/>
