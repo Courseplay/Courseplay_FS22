@@ -2035,6 +2035,7 @@ G: Unterhalb dieser Linie befinden sich Modi abhängige Einstellungen, die in de
 			<Text language="en"><![CDATA[
 TODO
 ]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_minihud_fieldwork_text">
 	<Text language="de"><![CDATA[
 A: Mit der Maus lässt sich hier der Startpunkt per Mausklick durchschalten.
@@ -2046,6 +2047,7 @@ E: Es ist möglich, mit dem Symbol auf der rechten Seite einen Kurs eines Fahrze
 	<Text language="en"><![CDATA[
 TODO
 ]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_minihud_combineunload_text">
 	<Text language="de"><![CDATA[
 A: Da ein Drescher und ein Lader (z.B. ROPA Maus) auf einem Feld arbeiten könnten, kannst du hier umschalten, welches Gerät vom Abfahrer abgetankt werden soll.
@@ -2057,6 +2059,7 @@ E: Ähnlich wie beim kopieren eines Kurses, werden hier Positionen der Marker f�
 	<Text language="en"><![CDATA[
 TODO
 ]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_minihud_balecollect_text">
 	<Text language="de"><![CDATA[
 A: Ballen die seit dem letzten scann (dies passiert automatisch) noch auf dem Feld liegen.
@@ -2066,6 +2069,7 @@ C: Dieser Offset stellt den Versatz ein der zwischen Traktormitte und der mitte 
 	<Text language="en"><![CDATA[
 TODO
 ]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_minihud_siloloader_text">
 	<Text language="de"><![CDATA[
 A: Die Liter die noch auf dem gewählten Haufen erkannt werden.
@@ -2076,6 +2080,7 @@ D: Wie schon beim Abfahrer, kannst du heir die benötigten Marker kopieren und a
 	<Text language="en"><![CDATA[
 TODO
 ]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_minihud_siloworker_text">
 	<Text language="de"><![CDATA[
 A: Wie auch beim Silo Lader, ist die Schildhöhe entscheident. Die kannst du hier anpassen.
