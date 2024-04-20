@@ -498,10 +498,10 @@ function CpHudSettingElement:setDisabled(disabled)
         self.labelElement:setDisabled(true)
     else 
         if self.incrementalElement then
-            self.incrementalElement:setVisible(true)
+            self.incrementalElement:setVisible(self.textElement:getVisible())
         end
         if self.decrementalElement then
-            self.decrementalElement:setVisible(true)
+            self.decrementalElement:setVisible(self.textElement:getVisible())
         end
         self.textElement:setDisabled(false)
         self.labelElement:setDisabled(false)
