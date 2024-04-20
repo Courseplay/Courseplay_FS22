@@ -2022,6 +2022,10 @@ Directories must be empty if you want to delete them.
 			<Text language="de"><![CDATA[Mini-HUD]]></Text>
 			<Text language="en"><![CDATA[Mini HUD]]></Text>
 		</Translation>
+		<Translation name="CP_help_page_minihud_general_title">
+			<Text language="de"><![CDATA[General]]></Text>
+			<Text language="en"><![CDATA[General]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_minihud_general_text">
 			<Text language="de"><![CDATA[
 A: Mit gedrückter Maustaste auf die Kopfzeile lässt sich das HUD auf eine beliebige Position verschieben. Auf der rechten Seite wird die Version angezeigt und ein X zum schließen mit der Maustaste.
@@ -2036,6 +2040,10 @@ G: Unterhalb dieser Linie befinden sich Modi abhängige Einstellungen, die in de
 TODO
 ]]></Text>
 		</Translation>
+		<Translation name="CP_help_page_minihud_fieldwork_title">
+			<Text language="de"><![CDATA[Feldarbeit]]></Text>
+			<Text language="en"><![CDATA[Fieldwork]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_minihud_fieldwork_text">
 	<Text language="de"><![CDATA[
 A: Mit der Maus lässt sich hier der Startpunkt per Mausklick durchschalten.
@@ -2047,6 +2055,10 @@ E: Es ist möglich, mit dem Symbol auf der rechten Seite einen Kurs eines Fahrze
 	<Text language="en"><![CDATA[
 TODO
 ]]></Text>
+		</Translation>
+		<Translation name="CP_help_page_minihud_combineunload_title">
+			<Text language="de"><![CDATA[Drescher Abfahrer]]></Text>
+			<Text language="en"><![CDATA[Combine unloader]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_minihud_combineunload_text">
 	<Text language="de"><![CDATA[
@@ -2060,6 +2072,10 @@ E: Ähnlich wie beim kopieren eines Kurses, werden hier Positionen der Marker f�
 TODO
 ]]></Text>
 		</Translation>
+		<Translation name="CP_help_page_minihud_balecollect_title">
+			<Text language="de"><![CDATA[Ballen sammeln/wickeln]]></Text>
+			<Text language="en"><![CDATA[Bale collect/wrap]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_minihud_balecollect_text">
 	<Text language="de"><![CDATA[
 A: Ballen die seit dem letzten scann (dies passiert automatisch) noch auf dem Feld liegen.
@@ -2069,6 +2085,10 @@ C: Dieser Offset stellt den Versatz ein der zwischen Traktormitte und der mitte 
 	<Text language="en"><![CDATA[
 TODO
 ]]></Text>
+		</Translation>
+		<Translation name="CP_help_page_minihud_siloloader_title">
+			<Text language="de"><![CDATA[Silo Lader]]></Text>
+			<Text language="en"><![CDATA[Silo loader]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_minihud_siloloader_text">
 	<Text language="de"><![CDATA[
@@ -2080,6 +2100,10 @@ D: Wie schon beim Abfahrer, kannst du heir die benötigten Marker kopieren und a
 	<Text language="en"><![CDATA[
 TODO
 ]]></Text>
+		</Translation>
+		<Translation name="CP_help_page_minihud_siloworker_title">
+			<Text language="de"><![CDATA[Silo Arbeiter]]></Text>
+			<Text language="en"><![CDATA[Silo worker]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_minihud_siloworker_text">
 	<Text language="de"><![CDATA[

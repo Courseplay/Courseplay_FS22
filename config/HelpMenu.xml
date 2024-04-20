@@ -68,6 +68,7 @@
 		<page title="$l10n_CP_help_page_minihud_title">
 			<paragraph>
 				<text text="$l10n_CP_help_page_blank"/>
+				<title text="$l10n_CP_help_page_minihud_general_title" />
 				<image filename="img/helpmenu/minihudhelp_general.dds" size="1024 1024" uvs="0px 0px 478px 305px"/>
             </paragraph>
 			<paragraph>
@@ -75,6 +76,7 @@
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_blank"/>
+				<title text="$l10n_CP_help_page_minihud_fieldwork_title" />
 				<image filename="img/helpmenu/minihudhelp_fieldwork.dds" size="1024 1024" uvs="0px 0px 478px 305px"/>
             </paragraph>
 			<paragraph>
@@ -82,6 +84,7 @@
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_blank"/>
+				<title text="$l10n_CP_help_page_minihud_combineunload_title" />
 				<image filename="img/helpmenu/minihudhelp_combineunload.dds" size="1024 1024" uvs="0px 0px 478px 305px"/>
             </paragraph>
 			<paragraph>
@@ -89,6 +92,7 @@
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_blank"/>
+				<title text="$l10n_CP_help_page_minihud_balecollect_title" />
 				<image filename="img/helpmenu/minihudhelp_balecollect.dds" size="1024 1024" uvs="0px 0px 478px 305px"/>
             </paragraph>
 			<paragraph>
@@ -96,6 +100,7 @@
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_blank"/>
+				<title text="$l10n_CP_help_page_minihud_siloloader_title" />
 				<image filename="img/helpmenu/minihudhelp_siloloader.dds" size="1024 1024" uvs="0px 0px 478px 305px"/>
             </paragraph>
 			<paragraph>
@@ -103,6 +108,7 @@
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_blank"/>
+				<title text="$l10n_CP_help_page_minihud_siloworker_title" />
 				<image filename="img/helpmenu/minihudhelp_siloworker.dds" size="1024 1024" uvs="0px 0px 478px 305px"/>
             </paragraph>
 			<paragraph>
