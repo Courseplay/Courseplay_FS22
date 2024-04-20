@@ -617,25 +617,23 @@ För att radera en kurs eller katalog klicka på knappen Radera och efter det at
 Kataloger måste vara tomma om du vill radera dem.
 "/>
     <text name="CP_help_page_minihud_title" text="Mini HUD"/>
-    <text name="CP_help_page_minihud_text" text="
-A: Om du Klickar på Fordonets namn Öppnar Fordonskonfigurationssidan.
-B: Växla var Kursen Ska startas med ett klick.
-C: OM DU Klickar på Coursename Öppnar du Ai-Menyn med kursgeneratorn Öppen.
-D: start Kurspelhjälpen.
-E: Visar Aktuella Waypoint / TotalA Waypoints. Klicka för att tycka att Öppna Kurshanteraren.
-F: Klicka på ikonen Öppnar Sidan Allmänna Inställningar.
-G: Stänger Hud.
-H: Minska och Öka Arbetsbedden. SV Röd Linje på Ditt Fordon Visar den Aktuella Inställningen.
-I: Värde för Horisontell Förskjutning, + Vänster, - Höger.
-J: Kopiera och klistra in en kurs till ett annat fordon.
-     När kopieringsknappen tryckts, kan kursen klistras in i ett fordon utan kurs när ikonen blir grön.
-K och L: Om du klickar på Texten Återställs Dina Ändringar I Bilvärddena.
-M: Visar den kopierade kursen.
-N: Detta OMRÅDE Visar Körfältets Offset OM Du Har en Multitool-Kurs. Genom att klicka på Texten Växlar positionerna.
-O: Start / Sluta Spela i en anpassad Fältkurs.
-P: Tar Bort Kurs från Fordon.
-Fråga: Ändrar kursens synlighet mellan: ON, OFF och START / STOPP.
-R: Ta bort den kopierade kursen från urklippet.
+    <text name="CP_help_page_minihud_general_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_fieldwork_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_combineunload_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_balecollect_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_siloloader_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_siloworker_text" text="
+TODO
 "/>
     <text name="CP_help_page_customField_title" text="Anpassade fält"/>
     <text name="CP_help_page_customFieldRecord_text" text="

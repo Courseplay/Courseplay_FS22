@@ -617,25 +617,23 @@ Aby usunąć kurs lub folder, kliknij przycisk Usuń, a następnie folder lub ku
 Foldery muszą być puste, jeśli chcesz je usunąć.
 "/>
     <text name="CP_help_page_minihud_title" text="Mini HUD"/>
-    <text name="CP_help_page_minihud_text" text="
-A: Kliknięcie nazwy pojazdu otwiera stronę konfiguracji pojazdu.
-B: Przełącz miejsce rozpoczęcia kursu jednym kliknięciem.
-C: Klikając na nazwę kursu, otworzysz menu pomocników SI z otwartym generatorem kursów.
-D: Uruchom pomocnika Courseplay.
-E: Pokazuje aktualne/wszystkie punkty trasy. Kliknij aby otworzyć menadżer kursów.
-F: Kliknięcie na ikonę otwiera stronę z głównymi ustawieniami.
-G: Zamyka HUD.
-H: Zwiększa i zmniejsza szerokość roboczą. Czerwona linia na twoim pojeździe pokazuje obecne ustawienia.
-I: Wartość przesunięcia horyzontalnego, + w lewo, - w prawo.
-J: Skopiuj i załaduj kurs do innego pojazdu.
-     Po naciśnięciu przycisku kopiowania kurs można załadować go do pojazdu bez kursu, gdy ikona zmieni kolor na zielony.
-K i L: Kliknięcie na tekst zresetuje ustawienia do wartości automatycznych.
-M: Pokazuje skopiowany kurs.
-N: Ten obszar pokazuje przesunięcie linii jeśli masz załadowany kurs dla wielu narzędzi. Kliknięcie na tekst przełącza pozycję.
-O: Rozpocznij/Zakończ nagrywanie nowego pola.
-P: Usuń kurs z pojazdu.
-Q: Zmienia widoczność kursu między: Włączony, Wyłączony i tylko Start/Stop.
-R: Usuwa skopiowany kurs ze schowka.
+    <text name="CP_help_page_minihud_general_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_fieldwork_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_combineunload_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_balecollect_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_siloloader_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_siloworker_text" text="
+TODO
 "/>
     <text name="CP_help_page_customField_title" text="Nowe pola"/>
     <text name="CP_help_page_customFieldRecord_text" text="

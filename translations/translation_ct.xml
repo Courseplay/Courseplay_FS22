@@ -615,25 +615,23 @@ Courseplay 允許您生成具有附加功能的任務路線，例如：地頭。
 如果要刪除資料夾，資料夾必須為空。 
 "/>
     <text name="CP_help_page_minihud_title" text="迷你HUD"/>
-    <text name="CP_help_page_minihud_text" text="
-單擊車輛名稱將打開車輛配置頁面。
-B：只需單擊一下，即可切換任務的起始位置。
-C：點擊任務名稱，你會打開AI菜單，路線生成器。
-D:啟動Courseplay助手。
-E：顯示當前航路點/所有航路點。單擊打開任務管理器。
-F：點擊圖示打開常規設置頁面。
-G:關閉HUD。
-H：減少和增加工作寬度。車輛上的紅線顯示當前設置。
-I：橫向調整值，+左，-右。
-J: 將路線複製並黏貼到其他車輛。
-     按下複製按鈕後，當圖示變為綠色時，可以將路線黏貼到沒有路線的車輛中。
-K 和 L：點擊文本將重設對自動值的更改。
-M: 顯示複製的路線。
-N：如果你載入了多工具任務，該區域顯示車道位置。單擊文本可切換位置。
-O：開始/停止錄製自訂田間任務。
-P：從車輛上移除路線
-Q: 更改 開、關和 僅開始/停止 之間的課程可見性。
-R: 從剪貼板中刪除複製的路線。
+    <text name="CP_help_page_minihud_general_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_fieldwork_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_combineunload_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_balecollect_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_siloloader_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_siloworker_text" text="
+TODO
 "/>
     <text name="CP_help_page_customField_title" text="自訂田地"/>
     <text name="CP_help_page_customFieldRecord_text" text="

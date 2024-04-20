@@ -617,25 +617,23 @@ For deleting a course or directory click on the delete button and after that the
 Directories must be empty if you want to delete them.
 "/>
     <text name="CP_help_page_minihud_title" text="ミニHUD"/>
-    <text name="CP_help_page_minihud_text" text="
-A： 車両名をクリックすると、車両設定ページが表示されます。
-B: 1クリックでコースの開始位置を切り替えます。
-C: コース名をクリックすると、コースジェネレータを開いた状態でAIメニューが表示されます。
-D: コースプレイヘルパーを起動します。
-E: 現在のウェイポイント/全てのウェイポイントを表示します。クリックするとコースマネージャーが開きます。
-F: アイコンをクリックすると一般設定ページが開きます。
-G: HUDを閉じます。
-H: 作業幅を小さくしたり大きくしたりします。自車両の赤い線が現在の設定を示しています。
-I： 水平方向のオフセットの値で、+左、-右です。
-J: Copy and paste a course to a different vehicle.
-     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
-K、 L：テキストをクリックすると、変更内容がオート値にリセットされます。
-M: Shows the copied course.
-N: このエリアは、マルチツールコースをロードしている場合、レーンオフセットを表示します。テキストをクリックすると、位置が切り替わります。
-O: カスタムフィールドコースのレコードを開始/停止します。
-P: 車両からコースを削除します。
-Q: Changes the course visibility between: on, off and start/stop only.
-R: Removes the copied course from the clipboard.
+    <text name="CP_help_page_minihud_general_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_fieldwork_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_combineunload_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_balecollect_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_siloloader_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_siloworker_text" text="
+TODO
 "/>
     <text name="CP_help_page_customField_title" text="カスタムフィールド"/>
     <text name="CP_help_page_customFieldRecord_text" text="

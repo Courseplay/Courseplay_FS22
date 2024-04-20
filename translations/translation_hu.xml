@@ -617,25 +617,23 @@ Egy útvonal vagy könyvtár törléséhez kattints a törlés gombra, majd a t�
 A könyvtáraknak üresnek kell lenniük, ha törölni szeretnéd őket.
 "/>
     <text name="CP_help_page_minihud_title" text="Mini HUD"/>
-    <text name="CP_help_page_minihud_text" text="
-A: A jármű nevére kattintva megnyílik a jármű konfigurációs oldala.
-B: Egy kattintással váltsd át az útvonal kezdőpontját.
-C: Az útvonal nevére kattintva megnyílik az AI menü az útvonalgenerátorral.
-D: Elindítja vagy leállítja a segítőt. Ha a szín zöld, akkor a CP segítő aktív.
-E: Megjeleníti az aktuális / összes útpontokat. Kattints az útvonalgenerátor megnyitásához.
-F: Az ikonra kattintva megnyílik az általános beállítások oldala.
-G: Bezárja a HUD-ot.
-H: Csökkentheted vagy növelheted a munkaszélességet. A jármű mellett lévő piros vonalak mutatják az aktuális beállítást.
-I: Vízszintes eltolás értéke, + balra, - jobbra.
-J: Útvonal másolása és beillesztése egy másik járműre.
-    A másolás gomb megnyomása után az útvonal beilleszthető egy útvonal nélküli járműbe, amikor az ikon zöldre vált.
-K és L: A szövegre kattintva választhatod az automatikus értékek módosításait.
-M: Megjeleníti a másolt útvonalat.
-N: Ez a terület a sáveltolódást mutatja, ha több eszköz útvonal van betöltve. A szövegre kattintva válthat a pozíciók között.
-O: Egyéni útvonal rögzítésének indítása/leállítása.
-P: Eltávolítja az útvonalat a járműből.
-Q: Módosítja az útvonal láthatóságát: be, ki és csak start/stop között.
-R: Eltávolítja a másolt útvonalat a vágólapról.
+    <text name="CP_help_page_minihud_general_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_fieldwork_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_combineunload_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_balecollect_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_siloloader_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_siloworker_text" text="
+TODO
 "/>
     <text name="CP_help_page_customField_title" text="Egyéni Mezők"/>
     <text name="CP_help_page_customFieldRecord_text" text="

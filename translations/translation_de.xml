@@ -622,27 +622,45 @@ Einen Kurs oder Ordner zu löschen geht ähnlich einfach. Klicke auf den &quot;L
 Ordner müssen leer sein damit sie gelöscht werden können.
 "/>
     <text name="CP_help_page_minihud_title" text="Mini-HUD"/>
-    <text name="CP_help_page_minihud_text" text="
-A: Mit einem Klick auf den Fahrzeugnamen, gelangst du direkt in das Menü mit den Fahrzeugeinstellungen.
-B: Schaltet die Startpunkte für den Helfer durch.
-C: Klickst du auf den Kursnamen oder auf &quot;kein Kurs&quot; wird das Helfermenü geöffnet.
-     Wenn das Fahrzeug auf dem Feld steht, wird auch direkt der Kursgenerator geöffnet.
-D: Startet oder stoppt den Helfer. Ist der Pfeil grün, ist der Helfer aktiv.
-E: Zeigt den aktuellen Wegpunkt / alle Wegpunkte des Kurses. Klickt man drauf, öffnet sich der Kursmanager.
-F: Klickst du auf das Icon, öffnen sich die globalen Einstellungen.
-G: Schließt das HUD.
-H: Erhöht oder verringert die Arbeitsbreite. Eine rote Linie auf dem Fahrzeug zeigt den aktuellen Wert an.
-I: Wert für den horizontalen Versatz, + links, - rechts.
-J: Kurs kopieren und einfügen in ein anderes Fahrzeug.
-     Wenn der Kurs kopiert wurde, kann dieser in ein anderes Fahrzeug eingefügt werden (&quot;Einfügen&quot;-Button leuchtet grün).
-K und L: Durch einen Klick auf den Text wird der Standardwert geladen.
-M: Zeigt den Namen des kopierten Kurses.
-N: An dieser Stelle wird die Bahn eines Multitoolkurses angezeigt, wenn einer geladen wurde.
-     Die Position lässt sich durch einen Klick auf den Text ändern.
-O: Startet und stoppt die Aufnahme eines eigenen Feldrandkurses.
-P: Entfernt den Kurs aus dem Fahrzeug.
-Q: Ändert die Kursanzeige der Wegpunkte zwischen: an, aus und nur Start/Stopp.
-R: Entfernt den kopierten Kurs aus der Zwischenablage.
+    <text name="CP_help_page_minihud_general_text" text="
+A: Mit gedrückter Maustaste auf die Kopfzeile lässt sich das HUD auf eine beliebige Position verschieben. Auf der rechten Seite wird die Version angezeigt und ein X zum schließen mit der Maustaste.
+B: Um schnell zu den globalen Einstellungen zu gelangen, kannst du mit der Maus auf das CP-Icon klicken.
+C: Hier wird der Name deines Fahrzeugs angezeigt, klickst du darauf, gelangst du direkt in die CP-Fahrzeugeinstellungen.
+D: Diese Symbole sind dafür da um (1) den aktuell geladenen Kurs zu löschen, (2a) die Anzeige des geladenen Kurs durch zu schalten (2b) wenn kein Kurs geladen ist, einen Feldrandkurs aufzuzeichnen, (3) den Helfer zu starten und zu stoppen.
+E: Dieses Zielicon hat verschiedene Funktionen, je nach gewähltem Modus, er bringt dich direkt auf die Helferkarte mit dem entsprechenden Job und benötigte Marker zu platzieren oder weitere Einstellung vor zu nehmen.
+F: Mit der Maus kannst du auf den Text klicken um für dein aktuelles gespann verfügbare Modi durch zu schalten.
+G: Unterhalb dieser Linie befinden sich Modi abhängige Einstellungen, die in den nachfolgenden Bildern erklärt werden.
+"/>
+    <text name="CP_help_page_minihud_fieldwork_text" text="
+A: Mit der Maus lässt sich hier der Startpunkt per Mausklick durchschalten.
+B: Hier wird der Name des Kurses angezeigt, den du geladen hast. Ein erst generierter Kurs, wird als Temporärer Kurs angezeigt. Die Striche auf der rechten Seite, zeigen die aktuellen und gesammten Wegpunkte des Kurses an.
+C: Die Arbeitsbreite kann hier mit einem Mausklick neu berechnet werden, auf der rechten Seite kannst du mit klick auf + und - oder mit dem Mausrad auf der Zahl die Arbeitsbreite verstellen.
+D: Manche Geräte benötigen einen Versatz von der Mitte des Fahrzeugs. Dies kannst du hier einstellen. Die Funktionen im HUD sind genauso wie die von der Arbeitsbreite.
+E: Es ist möglich, mit dem Symbol auf der rechten Seite einen Kurs eines Fahrzeugs zu kopieren. Der Name taucht dann auf der linken Seite auf. Ein Fahrzeug ohne Kurs, hat auf der linken Seite ein ähnliches Symbol zum einfügen des Kureses. Das Löschen symbol löscht den Kurs nur aus der Zwischenablage!
+"/>
+    <text name="CP_help_page_minihud_combineunload_text" text="
+A: Da ein Drescher und ein Lader (z.B. ROPA Maus) auf einem Feld arbeiten könnten, kannst du hier umschalten, welches Gerät vom Abfahrer abgetankt werden soll.
+B: Hier kannst du bestimmen, ab wie viel % der Abfahrer zum entladen fahren soll. Einstellbar zwischen 40% und 100%. Die Bedienung ist gleich wie bei der Arbeitsbreite vom Feldarbeitsmodus.
+C: Es kann vorkommen, dass die Position des Abfahrers nicht perfekt passt. Das kann am Trailer oder am Rohr des Ernters liegen. Manchmal reicht auch ein Gefälle des Feldes aus. Hier kannst du den Abstand zum Ernter einstellen.
+D: Das gleiche lässt sich auch für eine korrektur nach vorne oder nach hinten einstellen.
+E: Ähnlich wie beim kopieren eines Kurses, werden hier Positionen der Marker für den Abfahrer kopiert und auf einen anderen übertragen.
+"/>
+    <text name="CP_help_page_minihud_balecollect_text" text="
+A: Ballen die seit dem letzten scann (dies passiert automatisch) noch auf dem Feld liegen.
+B: Ballen die gesammelt oder bearbeitet werden sollen (z.B. nur gewickelte Ballen sammeln).
+C: Dieser Offset stellt den Versatz ein der zwischen Traktormitte und der mitte der Gabel liegt. Es kann nötig sein, bei einem breiterem Traktor (z.B. Breitreifen) diesen Wert an zu passen.
+"/>
+    <text name="CP_help_page_minihud_siloloader_text" text="
+A: Die Liter die noch auf dem gewählten Haufen erkannt werden.
+B: Arbeitsbreite des Gerätes, gleich wie Feldarbeit.
+C: Die höhe der Schaufel über den Boden ist ein Wert der relativ genau sein muss. Da dieser sich von Tool zu Tool unterscheiden kann, kannst du mit der Einstellung die höhe Live überprüfen und anpassen.
+D: Wie schon beim Abfahrer, kannst du heir die benötigten Marker kopieren und auf ein weiteres Gerät einfügen.
+"/>
+    <text name="CP_help_page_minihud_siloworker_text" text="
+A: Wie auch beim Silo Lader, ist die Schildhöhe entscheident. Die kannst du hier anpassen.
+B: Diese Anzeige zeigt dir den aktuellen Fortschritt der Siloverdichtung an.
+C: Auch hier spielt die Arbeitsbreite eine Rolle und kannst diese hier anpassen.
+D: Hier kannst du entscheiden, ob der Silo Arbeiter im Silo oder auf einer gewählten Parkposition warten soll, wenn sich ein Abfahrer dem Silo nähert.
 "/>
     <text name="CP_help_page_customField_title" text="Selbst erstellte Felder"/>
     <text name="CP_help_page_customFieldRecord_text" text="

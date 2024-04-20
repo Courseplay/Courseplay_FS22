@@ -615,25 +615,23 @@ Courseplay 允许您生成具有附加功能的任务路线，例如：地头。
 如果要删除文件夹，文件夹必须为空。 
 "/>
     <text name="CP_help_page_minihud_title" text="迷你HUD"/>
-    <text name="CP_help_page_minihud_text" text="
-单击车辆名称将打开车辆配置页面。
-B：只需单击一下，即可切换任务的起始位置。
-C：点击任务名称，你会打开AI菜单，路线生成器。
-D:启动Courseplay助手。
-E：显示当前航路点/所有航路点。单击打开任务管理器。
-F：点击图标打开常规设置页面。
-G:关闭HUD。
-H：减少和增加工作宽度。车辆上的红线显示当前设置。
-I：横向调整值，+左，-右。
-J: 将路线复制并粘贴到其他车辆。
-     按下复制按钮后，当图标变为绿色时，可以将路线粘贴到没有路线的车辆中。
-K 和 L：点击文本将重置对自动值的更改。
-M: 显示复制的路线。
-N：如果你加载了多工具任务，该区域显示车道位置。单击文本可切换位置。
-O：开始/停止录制自定义田间任务。
-P：从车辆上移除路线
-Q: 更改 开、关和 仅开始/停止 之间的课程可见性。
-R: 从剪贴板中删除复制的路线。
+    <text name="CP_help_page_minihud_general_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_fieldwork_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_combineunload_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_balecollect_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_siloloader_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_siloworker_text" text="
+TODO
 "/>
     <text name="CP_help_page_customField_title" text="自定义田地"/>
     <text name="CP_help_page_customFieldRecord_text" text="

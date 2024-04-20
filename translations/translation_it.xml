@@ -617,25 +617,23 @@ Per eliminare un percorso o una cartella, fare clic sul pulsante Elimina e quind
 Le cartelle devono essere vuote se si desidera eliminarle.
 "/>
     <text name="CP_help_page_minihud_title" text="Mini HUD"/>
-    <text name="CP_help_page_minihud_text" text="
-A: Cliccando sul nome del veicolo si apre la pagina delle configurazioni del veicolo.
-B: Seleziona da dove iniziare il percorso con un clic.
-C: Cliccando sul nome del percorso si aprirà il Menu IA con il generatore di percorsi aperto.
-D: Avvia il lavoratore del Courseplay.
-E: Mostra il punto corrente/i punti totali. Fare clic per aprire il gestore percorsi.
-F: Cliccando sull'icona si apre la pagina delle impostazioni generali.
-G: Chiude la HUD.
-H: Diminuire e aumentare la larghezza di lavoro. Una linea rossa sul tuo veicolo mostra l'impostazione corrente.
-I: Valore per la correzione orizzontale, + a sinistra, - a destra.
-J: Copia e incolla un percorso su un altro veicolo.
-     Una volta premuto il pulsante copia, quando l'icona diventa verde, il percorso può essere incollato su un veicolo senza percorso.
-K e L: Facendo clic sul testo verranno ripristinate le modifiche ai valori automatici.
-M: Mostra il percorso copiato.
-N: Quest'area mostra la correzione della corsia se è stata caricata una rotta multiattrezzo. Cliccando sul testo si alternano le posizioni.
-O: Avvia/interrompi la registrazione di un corso sul campo personalizzato.
-P: Rimuove il porcorso dal veicolo
-Q: Modifica la visibilità del percorso tra: acceso, spento e solo start/stop.
-R: Rimuove dagli appunti il percorso copiato.
+    <text name="CP_help_page_minihud_general_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_fieldwork_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_combineunload_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_balecollect_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_siloloader_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_siloworker_text" text="
+TODO
 "/>
     <text name="CP_help_page_customField_title" text="Campi personalizzati"/>
     <text name="CP_help_page_customFieldRecord_text" text="

@@ -617,25 +617,23 @@ Para eliminar un curso o directorio, haga clic en el botón Eliminar y luego en 
 Los directorios deben estar vacíos si desea eliminarlos.
 "/>
     <text name="CP_help_page_minihud_title" text="Mini HUD"/>
-    <text name="CP_help_page_minihud_text" text="
-A: Al hacer clic en el nombre del vehículo, se abrirá la página de configuración del vehículo.
-B: Alternar dónde comenzar la ruta con un clic.
-C: Al hacer clic en el nombre de la ruta, se abrirá el menú AI con el generador de rutas abierto.
-D: Iniciar el asistente de Courseplay.
-E: Muestra los puntos de ruta: Actual/Total. Haga clic para abrir el administrador de rutas.
-F: Al hacer clic en el icono se abre la página de configuración general.
-G: Cierra el HUD.
-H: Disminuir/Aumentar el ancho de trabajo. Una línea roja en su vehículo muestra la configuración actual.
-I: Valor del desplazamiento horizontal, (+)Izquierda, (-)Derecha.
-J: Copia y pega el curso a un vehículo diferente.
-     Una vez presionado el botón de copiar, el curso se puede pegar en un vehículo sin un curso cuando el ícono se vuelve verde.
-K y L: Al hacer clic en el texto, se restablecerán los cambios a los valores automáticos.
-M: Muestra el curso copiado.
-N: Esta área muestra el desplazamiento del carril si tiene cargado una ruta multiherramienta. Al hacer clic en el texto, se alternan las posiciones.
-O: Inicia/Detiene la grabación de un curso de campo personalizado.
-P: Remueve el curso de un vehículo.
-P: Cambia la visibilidad del curso entre: Encendido, Apagado e Inicio/Parada únicamente.
-R: Elimina el curso copiado del portapapeles.
+    <text name="CP_help_page_minihud_general_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_fieldwork_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_combineunload_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_balecollect_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_siloloader_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_siloworker_text" text="
+TODO
 "/>
     <text name="CP_help_page_customField_title" text="Campos Personalizados"/>
     <text name="CP_help_page_customFieldRecord_text" text="

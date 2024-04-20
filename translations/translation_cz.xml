@@ -614,25 +614,23 @@ Pro smazání trasy nebo adresáře klikněte na tlačítko smazat a poté na sl
 Adresáře musí být prázdné, pokud je chcete smazat.
 "/>
     <text name="CP_help_page_minihud_title" text="Mini HUD"/>
-    <text name="CP_help_page_minihud_text" text="
-A: Kliknutím na název vozidla se otevře stránka konfigurace vozidla.
-B: Jedním kliknutím vyberte, kde má začít trasa.
-C: Kliknutím na název trasy otevřete nabídku AI s otevřeným generátorem trasy.
-D: Spusťte pomocníka Courseplay.
-E: Zobrazuje aktuální trasový bod / celkový počet trasových bodů. Kliknutím otevřete správce trasy.
-F: Kliknutím na ikonu se otevře stránka obecných nastavení.
-G: Zavře Hud.
-H: Snižte a zvětšete pracovní šířku. Červená čára na vašem vozidle ukazuje aktuální nastavení.
-I: Hodnota pro horizontální posun, + vlevo, - vpravo.
-J: Zkopírujte a vložte trasu do jiného vozidla.
-      Jakmile bylo stisknuto tlačítko kopírování, lze trasu vložit do vozidla bez trasy, když se ikona změní na zelenou.
-K a L: Kliknutím na text resetujete změny na automatické hodnoty.
-M: Zobrazuje zkopírovanou trasu.
-N: Tato oblast zobrazuje odsazení jízdního pruhu, pokud máte načtenou trasu s více nástroji. Kliknutím na text přepnete pozice.
-O: Spuštění/zastavení záznamu vlastní trasy na poli.
-P: Odstraňuje trasu z vozidla
-Q: Mění viditelnost trasy mezi: zapnuto, vypnuto a pouze start/stop.
-R: Odebere zkopírovanou trasu ze schránky.
+    <text name="CP_help_page_minihud_general_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_fieldwork_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_combineunload_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_balecollect_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_siloloader_text" text="
+TODO
+"/>
+    <text name="CP_help_page_minihud_siloworker_text" text="
+TODO
 "/>
     <text name="CP_help_page_customField_title" text="Vlastní pole"/>
     <text name="CP_help_page_customFieldRecord_text" text="
