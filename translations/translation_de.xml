@@ -622,6 +622,7 @@ Einen Kurs oder Ordner zu löschen geht ähnlich einfach. Klicke auf den &quot;L
 Ordner müssen leer sein damit sie gelöscht werden können.
 "/>
     <text name="CP_help_page_minihud_title" text="Mini-HUD"/>
+    <text name="CP_help_page_minihud_general_title" text="General"/>
     <text name="CP_help_page_minihud_general_text" text="
 A: Mit gedrückter Maustaste auf die Kopfzeile lässt sich das HUD auf eine beliebige Position verschieben. Auf der rechten Seite wird die Version angezeigt und ein X zum schließen mit der Maustaste.
 B: Um schnell zu den globalen Einstellungen zu gelangen, kannst du mit der Maus auf das CP-Icon klicken.
@@ -631,6 +632,7 @@ E: Dieses Zielicon hat verschiedene Funktionen, je nach gewähltem Modus, er bri
 F: Mit der Maus kannst du auf den Text klicken um für dein aktuelles gespann verfügbare Modi durch zu schalten.
 G: Unterhalb dieser Linie befinden sich Modi abhängige Einstellungen, die in den nachfolgenden Bildern erklärt werden.
 "/>
+    <text name="CP_help_page_minihud_fieldwork_title" text="Feldarbeit"/>
     <text name="CP_help_page_minihud_fieldwork_text" text="
 A: Mit der Maus lässt sich hier der Startpunkt per Mausklick durchschalten.
 B: Hier wird der Name des Kurses angezeigt, den du geladen hast. Ein erst generierter Kurs, wird als Temporärer Kurs angezeigt. Die Striche auf der rechten Seite, zeigen die aktuellen und gesammten Wegpunkte des Kurses an.
@@ -638,6 +640,7 @@ C: Die Arbeitsbreite kann hier mit einem Mausklick neu berechnet werden, auf der
 D: Manche Geräte benötigen einen Versatz von der Mitte des Fahrzeugs. Dies kannst du hier einstellen. Die Funktionen im HUD sind genauso wie die von der Arbeitsbreite.
 E: Es ist möglich, mit dem Symbol auf der rechten Seite einen Kurs eines Fahrzeugs zu kopieren. Der Name taucht dann auf der linken Seite auf. Ein Fahrzeug ohne Kurs, hat auf der linken Seite ein ähnliches Symbol zum einfügen des Kureses. Das Löschen symbol löscht den Kurs nur aus der Zwischenablage!
 "/>
+    <text name="CP_help_page_minihud_combineunload_title" text="Drescher Abfahrer"/>
     <text name="CP_help_page_minihud_combineunload_text" text="
 A: Da ein Drescher und ein Lader (z.B. ROPA Maus) auf einem Feld arbeiten könnten, kannst du hier umschalten, welches Gerät vom Abfahrer abgetankt werden soll.
 B: Hier kannst du bestimmen, ab wie viel % der Abfahrer zum entladen fahren soll. Einstellbar zwischen 40% und 100%. Die Bedienung ist gleich wie bei der Arbeitsbreite vom Feldarbeitsmodus.
@@ -645,17 +648,20 @@ C: Es kann vorkommen, dass die Position des Abfahrers nicht perfekt passt. Das k
 D: Das gleiche lässt sich auch für eine korrektur nach vorne oder nach hinten einstellen.
 E: Ähnlich wie beim kopieren eines Kurses, werden hier Positionen der Marker für den Abfahrer kopiert und auf einen anderen übertragen.
 "/>
+    <text name="CP_help_page_minihud_balecollect_title" text="Ballen sammeln/wickeln"/>
     <text name="CP_help_page_minihud_balecollect_text" text="
 A: Ballen die seit dem letzten scann (dies passiert automatisch) noch auf dem Feld liegen.
 B: Ballen die gesammelt oder bearbeitet werden sollen (z.B. nur gewickelte Ballen sammeln).
 C: Dieser Offset stellt den Versatz ein der zwischen Traktormitte und der mitte der Gabel liegt. Es kann nötig sein, bei einem breiterem Traktor (z.B. Breitreifen) diesen Wert an zu passen.
 "/>
+    <text name="CP_help_page_minihud_siloloader_title" text="Silo Lader"/>
     <text name="CP_help_page_minihud_siloloader_text" text="
 A: Die Liter die noch auf dem gewählten Haufen erkannt werden.
 B: Arbeitsbreite des Gerätes, gleich wie Feldarbeit.
 C: Die höhe der Schaufel über den Boden ist ein Wert der relativ genau sein muss. Da dieser sich von Tool zu Tool unterscheiden kann, kannst du mit der Einstellung die höhe Live überprüfen und anpassen.
 D: Wie schon beim Abfahrer, kannst du heir die benötigten Marker kopieren und auf ein weiteres Gerät einfügen.
 "/>
+    <text name="CP_help_page_minihud_siloworker_title" text="Silo Arbeiter"/>
     <text name="CP_help_page_minihud_siloworker_text" text="
 A: Wie auch beim Silo Lader, ist die Schildhöhe entscheident. Die kannst du hier anpassen.
 B: Diese Anzeige zeigt dir den aktuellen Fortschritt der Siloverdichtung an.
