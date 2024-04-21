@@ -635,7 +635,7 @@ G: Unterhalb dieser Linie befinden sich Modi abhängige Einstellungen, die in de
     <text name="CP_help_page_minihud_fieldwork_title" text="Feldarbeit"/>
     <text name="CP_help_page_minihud_fieldwork_text" text="
 A: Mit der Maus lässt sich hier der Startpunkt per Mausklick durchschalten.
-B: Hier wird der Name des Kurses angezeigt, den du geladen hast. Ein erst generierter Kurs, wird als Temporärer Kurs angezeigt. Die Striche auf der rechten Seite, zeigen die aktuellen und gesammten Wegpunkte des Kurses an.
+B: Hier wird der Name des Kurses angezeigt, den du geladen hast. Ein erst generierter Kurs, wird als Temporärer Kurs angezeigt. Die Striche auf der rechten Seite, zeigen die aktuellen und gesamten Wegpunkte des Kurses an.
 C: Die Arbeitsbreite kann hier mit einem Mausklick neu berechnet werden, auf der rechten Seite kannst du mit klick auf + und - oder mit dem Mausrad auf der Zahl die Arbeitsbreite verstellen.
 D: Manche Geräte benötigen einen Versatz von der Mitte des Fahrzeugs. Dies kannst du hier einstellen. Die Funktionen im HUD sind genauso wie die von der Arbeitsbreite.
 E: Es ist möglich, mit dem Symbol auf der rechten Seite einen Kurs eines Fahrzeugs zu kopieren. Der Name taucht dann auf der linken Seite auf. Ein Fahrzeug ohne Kurs, hat auf der linken Seite ein ähnliches Symbol zum einfügen des Kureses. Das Löschen symbol löscht den Kurs nur aus der Zwischenablage!
@@ -650,7 +650,7 @@ E: Ähnlich wie beim kopieren eines Kurses, werden hier Positionen der Marker f�
 "/>
     <text name="CP_help_page_minihud_balecollect_title" text="Ballen sammeln/wickeln"/>
     <text name="CP_help_page_minihud_balecollect_text" text="
-A: Ballen die seit dem letzten scann (dies passiert automatisch) noch auf dem Feld liegen.
+A: Ballen die seit dem letzten scan (dies passiert automatisch) noch auf dem Feld liegen.
 B: Ballen die gesammelt oder bearbeitet werden sollen (z.B. nur gewickelte Ballen sammeln).
 C: Dieser Offset stellt den Versatz ein der zwischen Traktormitte und der mitte der Gabel liegt. Es kann nötig sein, bei einem breiterem Traktor (z.B. Breitreifen) diesen Wert an zu passen.
 "/>
