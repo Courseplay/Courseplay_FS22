@@ -634,7 +634,7 @@ G: Unterhalb dieser Linie befinden sich Modi abhängige Einstellungen, die in de
 "/>
     <text name="CP_help_page_minihud_fieldwork_title" text="Feldarbeit"/>
     <text name="CP_help_page_minihud_fieldwork_text" text="
-A: Mit der Maus lässt sich hier der Startpunkt per Mausklick durchschalten.
+A: Mit der Maus lässt sich hier der Startpunkt per Mausklick durchschalten. Ist ein Multitool Kurs geladen, kann auf der rechten Seite die Bahn gewählt werden.
 B: Hier wird der Name des Kurses angezeigt, den du geladen hast. Ein erst generierter Kurs, wird als &quot;temporärer Kurs&quot; angezeigt. Die Striche auf der rechten Seite, zeigen die aktuellen und gesamten Wegpunkte des Kurses an.
 C: Die Arbeitsbreite kann hier mit einem Mausklick neu berechnet werden, auf der rechten Seite kannst du mit klick auf + und - oder mit dem Mausrad auf der Zahl die Arbeitsbreite verstellen.
 D: Manche Geräte benötigen einen Versatz von der Mitte des Fahrzeugs. Dies kannst du hier einstellen. Die Funktionen im HUD sind genauso wie die von der Arbeitsbreite.
