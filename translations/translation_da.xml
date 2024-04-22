@@ -627,15 +627,41 @@ F: Click on the text to toggle the available modes for your current tools.
 G: The settings shown under this line depend on the current job. These will be explained with the following pictures.
 "/>
     <text name="CP_help_page_minihud_fieldwork_title" text="Fieldwork"/>
-    
+    <text name="CP_help_page_minihud_fieldwork_text" text="
+A: Click to select where to the start the work. If a multitool course is loaded, on the right side you can select the lane.
+B: Displays the name of the loaded course. If you just generated a course, it shows 'temporary course'. On the right side you'll see the current/total waypoints once the job is started.
+C: Clicking on the text will recalculate the working width, or you can set it manually on the right by clicking +/-, or with the mouse wheel over the number.
+D: Some tools need an offset to the side. Courseplay will calculate it automatically when clicking on the text, or you can change it manually just like the working width.
+E: Use the symbol on the right side to copy the current course to the clipboard. The name of the copied course is then shown on the left. You can load the copied course into another vehicle which has no course yet. To remove the course from the clipboard, click on the remove symbol.
+"/>
     <text name="CP_help_page_minihud_combineunload_title" text="Combine unloader"/>
-    
+    <text name="CP_help_page_minihud_combineunload_text" text="
+A: Select what type of vehicle should the worker unload. This is useful if you have different types, like a combine and a loader such as the ROPA Maus working on the same field.
+B: Set the fill level (40% - 100%) the worker should drive to the unload site. Click the +/- or use the scroll wheel over the number to change.
+C: Sometimes the position of the unloader under the pipe is less than perfect. This may be due to the trailer or the pipe of the harvester, sometimes caused by the slope of the field. You can manually correct the distance to the harvester here.
+D: Same as above, but here you can adjust the position of the unloader relative to the pipe to the front or to the rear.
+E: Similar to copying a course, here you can copy the marker positions to another vehicle.
+"/>
     <text name="CP_help_page_minihud_balecollect_title" text="Bale collect/wrap"/>
-    
+    <text name="CP_help_page_minihud_balecollect_text" text="
+A: Remaining bales on the field.
+B: Type of the bales to collect/wrap.
+C: Offset between the tractor's centerline and the loader arm's centerline. You may need to adjust this for bigger tractors (e.g. with wider tires).
+"/>
     <text name="CP_help_page_minihud_siloloader_title" text="Silo loader"/>
-    
+    <text name="CP_help_page_minihud_siloloader_text" text="
+A: Remaining size of the heap in liters.
+B: Working width, same as with fieldwork job.
+C: Courseplay needs the exact height of the bucket above ground set correctly. Since this height can be different for each tool, you can check and adjust it with this setting.
+D: Just like with the unloader, you can copy the marker positions to another vehicle.
+"/>
     <text name="CP_help_page_minihud_siloworker_title" text="Silo worker"/>
-    
+    <text name="CP_help_page_minihud_siloworker_text" text="
+A: Similar to the silo loader, the height of the leveler is critical. You can adjust it here.
+B: Shows the progress of the compacting.
+C: You can change the working width when needed here.
+D: This setting tells the worker to wait in the silo or at a selected parking position when an unloader approaches the silo.
+"/>
     <text name="CP_help_page_customField_title" text="Brugerdefineret marker"/>
     <text name="CP_help_page_customFieldRecord_text" text="
 Du kan oprette brugerdefineret mark på to måder.
