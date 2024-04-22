@@ -628,25 +628,15 @@ F: Click on the text to toggle the available modes for your current tools.
 G: The settings shown under this line depend on the current job. These will be explained with the following pictures.
 "/>
     <text name="CP_help_page_minihud_fieldwork_title" text="Fieldwork"/>
-    <text name="CP_help_page_minihud_fieldwork_text" text="
-TODO
-"/>
+    
     <text name="CP_help_page_minihud_combineunload_title" text="Combine unloader"/>
-    <text name="CP_help_page_minihud_combineunload_text" text="
-TODO
-"/>
+    
     <text name="CP_help_page_minihud_balecollect_title" text="Bale collect/wrap"/>
-    <text name="CP_help_page_minihud_balecollect_text" text="
-TODO
-"/>
+    
     <text name="CP_help_page_minihud_siloloader_title" text="Silo loader"/>
-    <text name="CP_help_page_minihud_siloloader_text" text="
-TODO
-"/>
+    
     <text name="CP_help_page_minihud_siloworker_title" text="Silo worker"/>
-    <text name="CP_help_page_minihud_siloworker_text" text="
-TODO
-"/>
+    
     <text name="CP_help_page_customField_title" text="Custom Fields"/>
     <text name="CP_help_page_customFieldRecord_text" text="
 There are two ways to create a custom field.
