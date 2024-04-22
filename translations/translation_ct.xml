@@ -616,7 +616,15 @@ Courseplay 允許您生成具有附加功能的任務路線，例如：地頭。
 "/>
     <text name="CP_help_page_minihud_title" text="迷你HUD"/>
     <text name="CP_help_page_minihud_general_title" text="General"/>
-    
+    <text name="CP_help_page_minihud_general_text" text="
+A: Hold the left mouse button on the headline to drag the HUD to a position you like. On the right side, the installed version is shown and the X will close the HUD with a mouse click.
+B: Click on the Courseplay icon to access the global settings.
+C: At this position the name of your vehicle is displayed. Clicking on it will get you to the vehicle settings menu.
+D: These symbols are to: (1) delete the currently loaded course, (2a) toggle how the course will be displayed, (2b) if no course is loaded, a record button is shown to record a field border course, (3) to start or stop the helper.
+E: This target icon has different options depending on the selected mode, it opens the AI Menu with the job and be able to place marker and additional settings for the job. On the left side of the icon, with a fieldwork running, the remaining time of the course is shown.
+F: Click on the text to toggle the available modes for your current tools.
+G: The settings shown under this line depend on the current job. These will be explained with the following pictures.
+"/>
     <text name="CP_help_page_minihud_fieldwork_title" text="Fieldwork"/>
     <text name="CP_help_page_minihud_fieldwork_text" text="
 TODO
