@@ -617,9 +617,7 @@ Mapper skal være tomme, hvis du vil slette dem.
 "/>
     <text name="CP_help_page_minihud_title" text="Mini HUD"/>
     <text name="CP_help_page_minihud_general_title" text="General"/>
-    <text name="CP_help_page_minihud_general_text" text="
-TODO
-"/>
+    
     <text name="CP_help_page_minihud_fieldwork_title" text="Fieldwork"/>
     <text name="CP_help_page_minihud_fieldwork_text" text="
 TODO

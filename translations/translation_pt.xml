@@ -613,9 +613,7 @@ Os diretórios devem estar vazios se você quiser excluí-los.
 "/>
     <text name="CP_help_page_minihud_title" text="Mini HUD"/>
     <text name="CP_help_page_minihud_general_title" text="General"/>
-    <text name="CP_help_page_minihud_general_text" text="
-TODO
-"/>
+    
     <text name="CP_help_page_minihud_fieldwork_title" text="Fieldwork"/>
     <text name="CP_help_page_minihud_fieldwork_text" text="
 TODO
