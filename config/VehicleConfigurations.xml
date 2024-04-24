@@ -149,9 +149,10 @@ You can define the following custom settings:
     shorter for some implements, especially big plows turn on the spot and align
     better with the next row without tight turn offset.
 
-- openPipeEalry: boolean
-    This will open the pipe of a combine before reaching the trailer.
-    This is useful for combines with a pipe that folds up from below.
+- openPipeEarly: boolean
+    This will open the pipe of a harvester early while approaching a trailer for self unloading.
+    This is useful for combines with a pipe that folds up from below, making sure by the time the harvester
+    reaches the trailer, the pipe is already open.
 
 -->
 <VehicleConfigurations>
@@ -182,7 +183,7 @@ You can define the following custom settings:
 		<Configuration type="INT">childPipeMovingToolIndex</Configuration>
 		<Configuration type="FLOAT">unloadOffsetX</Configuration>
         <Configuration type="FLOAT">tightTurnOffsetDistanceInTurns</Configuration>
-        <Configuration type="BOOL">openPipeEalry</Configuration>
+        <Configuration type="BOOL">openPipeEarly</Configuration>
 	</Configurations>
     <!--[GIANTS]-->
 

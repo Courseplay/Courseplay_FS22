@@ -90,6 +90,8 @@ function AIDriveStrategyCombineCourse:init(task, job)
     -- periodically check if we need to call an unloader
     self.timeToCallUnloader = CpTemporaryObject(true)
     self.unloaderRequestedToIgnoreProximity = CpTemporaryObject()
+    -- we want to keep to pipe open, even if there is no trailer under it
+    self.forcePipeOpen = CpTemporaryObject()
 
     --- Register info texts
     self:registerInfoTextForStates(self:getFillLevelInfoText(), {
@@ -393,14 +395,19 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
                 self:changeToFieldWork()
             end
         end
-    elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED or
-            self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD or
-            self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_BEFORE_NEXT_ROW then
+    elseif self:isUnloadStateOneOf(self.drivingToSelfUnloadStates) then
         if self:isCloseToCourseEnd(25) then
             -- slow down towards the end of the course, near the trailer
-            self:setMaxSpeed(0.5 * self.settings.fieldSpeed:getValue())
+            self:setMaxSpeed(math.max(10, 0.5 * self.settings.fieldSpeed:getValue()))
             -- we'll be very close to the tractor/trailer, don't stop too soon
             self.proximityController:setTemporaryStopThreshold(self.proximityStopThresholdSelfUnload, 3000)
+            if g_vehicleConfigurations:getRecursively(self.vehicle, 'openPipeEarly') then
+                if not self.pipeController:isPipeOpen() then
+                    self:debug('Opening pipe early to not crash it into the trailer')
+                    self.pipeController:openPipe()
+                end
+                self.forcePipeOpen:set(true, 1000)
+            end
         else
             self:setMaxSpeed(self.settings.fieldSpeed:getValue())
         end
@@ -1470,7 +1477,12 @@ function AIDriveStrategyCombineCourse:handleCombinePipe(dt)
     if self:isAGoodTrailerInRange() or self:isAutoDriveWaitingForPipe() then
         self.pipeController:openPipe()
     else
-        self.pipeController:closePipe(true)
+        if not self.forcePipeOpen:get() then
+            -- when driving to self unload, we may open the pipe well before reaching the trailer to avoid
+            -- banging it into the trailer. This is configurable, and needed for harvester opening their pipe
+            -- upwards
+            self.pipeController:closePipe(true)
+        end
     end
 end
 
@@ -1865,6 +1877,11 @@ function AIDriveStrategyCombineCourse:initUnloadStates()
         self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED,
         self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED_WAITING_FOR_DISCHARGE,
         self.states.RETURNING_FROM_SELF_UNLOAD
+    }
+    self.drivingToSelfUnloadStates = {
+        self.states.DRIVING_TO_SELF_UNLOAD,
+        self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED,
+        self.states.DRIVING_TO_SELF_UNLOAD_BEFORE_NEXT_ROW,
     }
 end
 
