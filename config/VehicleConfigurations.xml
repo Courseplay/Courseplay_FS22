@@ -629,6 +629,7 @@ You can define the following custom settings:
     <Vehicle name="premos5000.xml"
 			 disablePipeMovingToolCorrection = "true"
 			 unloadOffsetX = "-3.56"
+             openPipeEarly = "true"
     />
 
 	<!--Mod: FS22_lizardHTB6000-->
