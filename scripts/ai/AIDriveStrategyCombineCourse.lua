@@ -398,7 +398,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
     elseif self:isUnloadStateOneOf(self.drivingToSelfUnloadStates) then
         if self:isCloseToCourseEnd(25) then
             -- slow down towards the end of the course, near the trailer
-            self:setMaxSpeed(math.max(10, 0.5 * self.settings.fieldSpeed:getValue()))
+            self:setMaxSpeed(math.min(10, 0.5 * self.settings.fieldSpeed:getValue()))
             -- we'll be very close to the tractor/trailer, don't stop too soon
             self.proximityController:setTemporaryStopThreshold(self.proximityStopThresholdSelfUnload, 3000)
             if g_vehicleConfigurations:getRecursively(self.vehicle, 'openPipeEarly') then
