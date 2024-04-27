@@ -186,7 +186,6 @@ function AIDriveStrategyFindBales:setAllStaticParameters()
     self.balesTried = {}
     -- when everything fails, reverse and try again. This is reset only when a pathfinding succeeds to avoid
     -- backing up forever
-    self.triedReversingAfterPathfinderFailure = false
     self.numBalesLeftOver = 0
 end
 
@@ -330,12 +329,11 @@ function AIDriveStrategyFindBales:onPathfindingFinished(controller,
     success, course, goalNodeInvalid)
     if self.state == self.states.DRIVING_TO_NEXT_BALE then
         if success then
-            self.triedReversingAfterPathfinderFailure = false
             self.balesTried = {}
             self:startCourse(course, 1)
         else
             g_baleToCollectManager:unlockBalesByDriver(self)
-            if #self.balesTried < 3 and #self.bales > #self.balesTried then
+            if #self.balesTried < 5 and #self.bales > #self.balesTried then
                 if goalNodeInvalid then
                     -- there may be another bale too close to the previous one
                     self:debug('Finding path to next bale failed, goal node invalid.')
@@ -348,13 +346,9 @@ function AIDriveStrategyFindBales:onPathfindingFinished(controller,
                     self:debug('Finding path to next bale failed, but we are not too close to the field edge')
                     self:retryPathfindingWithAnotherBale()
                 end
-            elseif not self.triedReversingAfterPathfinderFailure then
-                self:info('Pathfinding failed three times or no more bales to try, back up a bit and try again')
-                self.triedReversingAfterPathfinderFailure = true
-                self.balesTried = {}
-                self:startReversing(self.states.REVERSING_AFTER_PATHFINDER_FAILURE)
             else
-                self:info('Pathfinding failed three times, giving up')
+                self.balesTried = {}
+                self:info('Pathfinding failed five times, giving up')
                 self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
             end
         end
@@ -401,6 +395,7 @@ end
 
 function AIDriveStrategyFindBales:onPathfindingObstacleAtStart(controller, lastContext, maxDistance, trailerCollisionsOnly)
     g_baleToCollectManager:unlockBalesByDriver(self)
+    self.balesTried = {}
     self:debug('Pathfinding detected obstacle at start, back up and retry')
     self:startReversing(self.states.REVERSING_DUE_TO_OBSTACLE_AHEAD)
 end
