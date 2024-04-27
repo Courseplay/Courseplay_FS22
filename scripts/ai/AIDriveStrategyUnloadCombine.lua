@@ -664,8 +664,8 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
     local gx, gy, gz
     -- Calculate an artificial goal point relative to the harvester to align better when starting to unload
     if dz > 5 then
-        _, _, dz = localToLocal(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
-        gx, gy, gz = localToWorld(self.combineToUnload:getAIDirectionNode(),
+        _, _, dz = localToLocal(self.vehicle:getAIDirectionNode(), self:getCombineRootNode(), 0, 0, 0)
+        gx, gy, gz = localToWorld(self:getCombineRootNode(),
         -- straight line parallel to the harvester, under the pipe, look ahead distance from the unloader
                 self:getPipeOffset(self.combineToUnload), 0, dz + self.ppc:getLookaheadDistance())
 
