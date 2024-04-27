@@ -3,7 +3,7 @@
 CpHudElement = {}
 local CpHudElement_mt = Class(CpHudElement, HUDElement)
 
-function CpHudElement.new(overlay,parentHudElement,customMt)
+function CpHudElement.new(overlay, parentHudElement, customMt)
     if customMt == nil then
         customMt = CpHudElement_mt
     end
@@ -317,10 +317,15 @@ function CpTextHudElement:draw()
 	setTextWrapWidth(0)
 	setTextBold(false)
 	setTextColor(1, 1, 1, 1)
+    CpTextHudElement:superClass().draw(self)
 end
 
 function CpTextHudElement:getScreenHeight()
     return self.screenTextSize   
+end
+
+function CpTextHudElement:getText()
+    return self.text
 end
 
 --- Moveable Hud element.
@@ -410,7 +415,7 @@ end
 CpHudSettingElement = {}
 local CpHudSettingElement_mt = Class(CpHudSettingElement, CpHudButtonElement)
 function CpHudSettingElement.new(parentHudElement, posX, posY, maxPosX, posBtnY, incrementalOverlay, decrementalOverlay, 
-                                    textSize, textAlignment, textColor, textBold, customMt)
+                                    labelTextSize, textSize, textAlignment, textColor, textBold, customMt)
     if customMt == nil then
         customMt = CpHudSettingElement_mt
     end
@@ -420,19 +425,23 @@ function CpHudSettingElement.new(parentHudElement, posX, posY, maxPosX, posBtnY,
 	backgroundOverlay:setColor(1, 1, 1, 1)
     local self = CpHudButtonElement.new(backgroundOverlay, parentHudElement, customMt)
     self:setPosition(posX, posY)
-    self.labelElement = CpTextHudElement.new(parentHudElement, posX, posY, textSize)
+    self.labelElement = CpTextHudElement.new(parentHudElement, posX, posY, labelTextSize)
     self.labelElement:setTextDetails("Label")
-
-    self.incrementalElement = CpHudButtonElement.new(incrementalOverlay, parentHudElement)
-    self.incrementalElement:setPosition(maxPosX, posBtnY)
-    local w = self.incrementalElement:getWidth()
-    local x = maxPosX - w*1.5
-    self.textElement = CpTextHudElement.new(parentHudElement, x, posY, textSize-2,RenderText.ALIGN_RIGHT)
+    local w = 0
+    local x = maxPosX
+    if incrementalOverlay then
+        self.incrementalElement = CpHudButtonElement.new(incrementalOverlay, parentHudElement)
+        self.incrementalElement:setPosition(maxPosX, posBtnY)
+        w = self.incrementalElement:getWidth()
+        x = maxPosX - w * 1.5
+    end
+    self.textElement = CpTextHudElement.new(parentHudElement, x, posY, textSize, RenderText.ALIGN_RIGHT)
     self.textElement:setTextDetails("100.00")
     w = self.textElement:getWidth()
-    self.decrementalElement = CpHudButtonElement.new(decrementalOverlay, parentHudElement)
-    self.decrementalElement:setPosition(x-w*1.5, posBtnY)
-
+    if decrementalOverlay then
+        self.decrementalElement = CpHudButtonElement.new(decrementalOverlay, parentHudElement)
+        self.decrementalElement:setPosition(x-w*1.5, posBtnY)
+    end
     return self
 end
 
@@ -461,14 +470,14 @@ function CpHudSettingElement:setCallback(callbackLabel,callbackText,callbackIncr
                                 --    unpack(callbackText.args)
                             )
     end                 
-    if callbackIncremental then                        
+    if callbackIncremental and self.incrementalElement then                        
         self.incrementalElement:setCallback(callbackIncremental.callbackStr, 
                                         callbackIncremental.class,
                                         callbackIncremental.func
                                    --     unpack(callbackIncremental.args)
                                     )
     end                 
-    if callbackDecremental then  
+    if callbackDecremental and self.decrementalElement then  
         self.decrementalElement:setCallback(callbackDecremental.callbackStr, 
                                         callbackDecremental.class,
                                         callbackDecremental.func
@@ -479,13 +488,21 @@ end
 
 function CpHudSettingElement:setDisabled(disabled)
     if disabled then 
-        self.incrementalElement:setVisible(false)
-        self.decrementalElement:setVisible(false)
+        if self.incrementalElement then
+            self.incrementalElement:setVisible(false)
+        end
+        if self.decrementalElement then
+            self.decrementalElement:setVisible(false)
+        end
         self.textElement:setDisabled(true)
         self.labelElement:setDisabled(true)
     else 
-        self.incrementalElement:setVisible(true)
-        self.decrementalElement:setVisible(true)
+        if self.incrementalElement then
+            self.incrementalElement:setVisible(self.textElement:getVisible())
+        end
+        if self.decrementalElement then
+            self.decrementalElement:setVisible(self.textElement:getVisible())
+        end
         self.textElement:setDisabled(false)
         self.labelElement:setDisabled(false)
     end
@@ -493,8 +510,12 @@ function CpHudSettingElement:setDisabled(disabled)
 end
 
 function CpHudSettingElement:setVisible(visible)
-    self.incrementalElement:setVisible(visible)
-    self.decrementalElement:setVisible(visible)
+    if self.incrementalElement then
+        self.incrementalElement:setVisible(visible)
+    end
+    if self.decrementalElement then
+        self.decrementalElement:setVisible(visible)
+    end
     self.textElement:setVisible(visible)
     self.labelElement:setVisible(visible)
     CpHudSettingElement:superClass().setVisible(self, visible)

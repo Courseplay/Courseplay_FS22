@@ -407,8 +407,7 @@ function CpVehicleSettings:setAutomaticBaleCollectorOffset()
 end
 
 function CpVehicleSettings:isLoadingShovelOffsetSettingVisible()
-    return self:getCanStartCpSiloLoaderWorker() and not AIUtil.hasChildVehicleWithSpecialization(self, ConveyorBelt) or
-        AIUtil.hasChildVehicleWithSpecialization(self, Leveler)
+    return not AIUtil.hasChildVehicleWithSpecialization(self, ConveyorBelt) 
 end
 
 function CpVehicleSettings:isLoadingShovelOffsetSettingDisabled()

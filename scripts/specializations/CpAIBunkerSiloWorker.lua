@@ -46,7 +46,6 @@ end
 function CpAIBunkerSiloWorker.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanStartCp', CpAIBunkerSiloWorker.getCanStartCp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartableJob', CpAIBunkerSiloWorker.getCpStartableJob)
-    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartText', CpAIBunkerSiloWorker.getCpStartText)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtFirstWp', CpAIBunkerSiloWorker.startCpAtFirstWp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtLastWp', CpAIBunkerSiloWorker.startCpAtLastWp)
 end
@@ -107,16 +106,10 @@ end
 
 function CpAIBunkerSiloWorker:getCpStartableJob(superFunc, isStartedByHud)
     local spec = self.spec_cpAIBunkerSiloWorker
-    local job = self:getCanStartCpBunkerSiloWorker() and spec.cpJob
-    if isStartedByHud and not AIUtil.hasChildVehicleWithSpecialization(self, Leveler) then 
-        job = self:getCpStartingPointSetting():getValue() == CpFieldWorkJobParameters.START_AT_BUNKER_SILO and job
+    if isStartedByHud and self:cpIsHudBunkerSiloJobSelected() then 
+        return self:getCanStartCpBunkerSiloWorker() and spec.cpJob
     end
-	return superFunc(self, isStartedByHud) or job
-end
-
-function CpAIBunkerSiloWorker:getCpStartText(superFunc)
-	local text = superFunc and superFunc(self)
-	return text~="" and text or self:getCanStartCpBunkerSiloWorker() and CpAIBunkerSiloWorker.startText
+	return superFunc(self, isStartedByHud) or self:getCanStartCpBunkerSiloWorker() and spec.cpJob
 end
 
 function CpAIBunkerSiloWorker:getCpBunkerSiloWorkerJobParameters()

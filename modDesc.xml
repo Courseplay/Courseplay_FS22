@@ -489,6 +489,9 @@ Changelog 7.1.0.0:
 			<binding device="KB_MOUSE_DEFAULT" input="KEY_lctrl KEY_h" />
 		</actionBinding>
 
+		<actionBinding action="CP_CHANGE_SELECTED_JOB">
+			<binding device="" input="" />
+		</actionBinding>
 		<actionBinding action="CP_CHANGE_STARTING_POINT">
 			<binding device="" input="" />
 		</actionBinding>
@@ -526,6 +529,7 @@ Changelog 7.1.0.0:
 		<action name="CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" />
 		<action name="CP_START_STOP" />
 
+		<action name="CP_CHANGE_SELECTED_JOB"/>
 		<action name="CP_CHANGE_STARTING_POINT"/>
 		<action name="CP_CLEAR_COURSE"/>
 		<action name="CP_CHANGE_COURSE_VISIBILITY"/>

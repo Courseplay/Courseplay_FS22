@@ -12,50 +12,20 @@ function CpBunkerSiloWorkerHudPageElement:setupElements(baseHud, vehicle, lines,
 
 		
 	--- Driving direction
-	local x, y = unpack(lines[4].left)
-	local xRight,_ = unpack(lines[4].right)
-	self.driveDirectionBtn = CpHudTextSettingElement.new(self, x, y,
-										xRight, CpBaseHud.defaultFontSize)
-	local callback = {
-		callbackStr = "onClickPrimary",
-		class =  vehicle:getCpBunkerSiloWorkerJobParameters().drivingForwardsIntoSilo,
-		func =   vehicle:getCpBunkerSiloWorkerJobParameters().drivingForwardsIntoSilo.setNextItem,
-	}
-	self.driveDirectionBtn:setCallback(callback, callback)             			
+    self.driveDirectionBtn = baseHud:addLineTextButton(self, 4, CpBaseHud.defaultFontSize, 
+        vehicle:getCpBunkerSiloWorkerJobParameters().drivingForwardsIntoSilo)  			
     
     --- Leveler height offset.
-    self.levelerHeightOffsetBtn = baseHud:addLineTextButton(self, 4, CpBaseHud.defaultFontSize, 
+    self.levelerHeightOffsetBtn = baseHud:addLineTextButtonWithIncrementalButtons(self, 4, CpBaseHud.defaultFontSize, 
         vehicle:getCpSettings().levelerHeightOffset) 
 
     --- Waiting at park position
-	local x, y = unpack(lines[1].left)
-	local xRight,_ = unpack(lines[1].right)
-	self.waitAtBtn = CpHudTextSettingElement.new(self, x, y,
-										xRight, CpBaseHud.defaultFontSize)
-	local callback = {
-		callbackStr = "onClickPrimary",
-		class =  vehicle:getCpBunkerSiloWorkerJobParameters().waitAtParkPosition,
-		func =   vehicle:getCpBunkerSiloWorkerJobParameters().waitAtParkPosition.setNextItem,
-	}
-	self.waitAtBtn:setCallback(callback, callback)             				
-	
-    --- Work width
-    self.workWidthBtn = baseHud:addLineTextButton(self, 2, CpBaseHud.defaultFontSize, 
-                                                vehicle:getCpSettings().bunkerSiloWorkWidth) 
+    self.waitAtBtn = baseHud:addLineTextButton(self, 1, CpBaseHud.defaultFontSize, 
+        vehicle:getCpBunkerSiloWorkerJobParameters().waitAtParkPosition)  	
 
-    --- Goal button.
-    local width, height = getNormalizedScreenValues(37, 37)    
-    local goalOverlay = CpGuiUtil.createOverlay({width, height},
-                                                {AITargetHotspot.FILENAME, CpBaseHud.uvs.goalSymbol}, 
-                                                CpBaseHud.OFF_COLOR,
-                                                CpBaseHud.alignments.bottomRight)
-    
-    self.goalBtn = CpHudButtonElement.new(goalOverlay, self)
-    local x, y = unpack(lines[4].right)
-    self.goalBtn:setPosition(x, y + hMargin/2)
-    self.goalBtn:setCallback("onClickPrimary", vehicle, function (vehicle)
-        baseHud:openCourseGeneratorGui(vehicle)
-    end)
+    --- Work width
+    self.workWidthBtn = baseHud:addLineTextButtonWithIncrementalButtons(self, 2, CpBaseHud.defaultFontSize, 
+                                                vehicle:getCpSettings().bunkerSiloWorkWidth) 
 
     --- Bunker silo compaction percentage
     local x, y = unpack(lines[3].left)
@@ -107,16 +77,4 @@ function CpBunkerSiloWorkerHudPageElement:updateContent(vehicle, status)
     end
     self.compactionPercentageBtn:setTextDetails(g_i18n:getText("CP_bunkerSilo_compactionPercentage"), compactionText)
     self.compactionPercentageBtn:setDisabled(stopWithCompactedSilo:getIsDisabled())
-end
-
-function CpBunkerSiloWorkerHudPageElement:isStartingPointBtnDisabled(vehicle)
-    return AIUtil.hasChildVehicleWithSpecialization(vehicle, Leveler) 
-        and not AIUtil.hasChildVehicleWithSpecialization(vehicle, Shovel) 
-end
-
-function CpBunkerSiloWorkerHudPageElement:getStartingPointBtnText(vehicle)
-    if self:isStartingPointBtnDisabled(vehicle) then 
-        return vehicle:getCpStartText()
-    end
-    return vehicle:getCpStartingPointSetting():getString()
 end

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	All the global settings can be setup here.
+	For documentation look up the CpSettingUtil.lua.
+-->
+
+<Settings prefixText="CP_hud_settings_">
+    <SettingSubTitle title="basic">
+		<Setting classType="AIParameterSettingList" name="selectedJob">
+			<Values>
+				<!-- Fieldwork -->
+				<Value name="FIELDWORK_SELECTED" isDisabled="isFieldWorkModeDisabled">1</Value>
+				<!-- Bale Finder -->
+				<Value name="BALE_FINDER_SELECTED" isDisabled="isBaleFinderModeDisabled">2</Value>
+				<!-- Bunker Silo -->
+				<Value name="BUNKER_SILO_SELECTED" isDisabled="isBunkerSiloModeDisabled">3</Value> 
+				<!-- Silo Loader -->
+				<Value name="SILO_LOADER_SELECTED" isDisabled="isSiloLoadingModeDisabled">4</Value> 
+				<!-- Combine Unloader -->
+				<Value name="COMBINE_UNLOADER_SELECTED" isDisabled="isUnloaderModeDisabled">5</Value> 
+				<!-- Street Driver -->
+				<!--
+				<Value name="STREET_DRIVER_SELECTED" isDisabled="isStreetModeDisabled">6</Value> 
+				-->
+			</Values>
+			<Texts>
+				<Text prefix="false">CP_job_fieldWork</Text>
+				<Text prefix="false">CP_job_baleCollect</Text>
+				<Text prefix="false">CP_job_bunkerSilo</Text>
+				<Text prefix="false">CP_job_siloLoader</Text>
+				<Text prefix="false">CP_job_combineUnload</Text>
+				<Text prefix="false">CP_job_street</Text>
+			</Texts>
+		</Setting>
+	</SettingSubTitle>
+</Settings>

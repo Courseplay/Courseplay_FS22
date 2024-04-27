@@ -53,8 +53,11 @@ function CpGamePadHudScreen:setData(vehicle, settings)
 	self.settings = settings
 end
 
-function CpGamePadHudScreen:onClickCpMultiTextOption()
+function CpGamePadHudScreen:onClickCpMultiTextOption(v, guiElement)
 	CpSettingsUtil.updateGuiElementsBoundToSettings(self.layout, self.vehicle)
+	if guiElement.aiParameter and guiElement.aiParameter:getName() == "selectedJob" then 
+		self.vehicle:reopenCpGamePadHud()
+	end
 end
 
 function CpGamePadHudScreen:onOpen(element)
@@ -63,6 +66,11 @@ function CpGamePadHudScreen:onOpen(element)
 	for i = #self.layout.elements, 1, -1 do
 		self.layout.elements[i]:delete()
 	end
+	CpSettingsUtil.generateGuiElementsFromSettingsTableAlternating({self.vehicle:cpGetHudSelectedJobSetting()}, self.layout,
+		self.settingTemplate:getDescendantByName("title"), 
+		self.settingTemplate:getDescendantByName("element"))
+		
+
 
 	CpSettingsUtil.generateGuiElementsFromSettingsTableAlternating(self.settings, self.layout,
 		self.settingTemplate:getDescendantByName("title"), 
@@ -192,17 +200,6 @@ function CpGamePadHudFieldWorkScreen.new(settings, target, custom_mt)
 	return self
 end
 
-function CpGamePadHudFieldWorkScreen:update(dt, ...)
-	CpGamePadHudFieldWorkScreen:superClass().update(self, dt, ...)
-	if self.vehicle:getCanStartCpBunkerSiloWorker() and self.vehicle:getCpStartingPointSetting():getValue() == CpFieldWorkJobParameters.START_AT_BUNKER_SILO
-		and not AIUtil.hasChildVehicleWithSpecialization(self.vehicle, Leveler) then
-		self.vehicle:reopenCpGamePadHud()
-	elseif self.vehicle:getCanStartCpSiloLoaderWorker() and self.vehicle:getCpStartingPointSetting():getValue() == CpFieldWorkJobParameters.START_AT_SILO_LOADING
-		and not AIUtil.hasChildVehicleWithSpecialization(self.vehicle, ConveyorBelt) then
-		self.vehicle:reopenCpGamePadHud()
-	end
-end
-
 function CpGamePadHudFieldWorkScreen:drawWorkWidth()
 	self.vehicle:showCpCourseWorkWidth()
 end
@@ -245,13 +242,6 @@ function CpGamePadHudBunkerSiloScreen.new(settings, target, custom_mt)
 	return self
 end
 
-function CpGamePadHudBunkerSiloScreen:update(dt, ...)
-	CpGamePadHudBunkerSiloScreen:superClass().update(self, dt, ...)
-	if not self.vehicle:getCanStartCpBunkerSiloWorker() or self.vehicle:getCpStartingPointSetting():getValue() ~= CpFieldWorkJobParameters.START_AT_BUNKER_SILO then
-		self.vehicle:reopenCpGamePadHud()
-	end
-end
-
 function CpGamePadHudBunkerSiloScreen:drawWorkWidth()
 	self.vehicle:showCpBunkerSiloWorkWidth()
 end
@@ -264,13 +254,6 @@ function CpGamePadHudSiloLoaderScreen.new(settings, target, custom_mt)
 	local self = CpGamePadHudScreen.new(settings, target, custom_mt or CpGamePadHudSiloLoaderScreen_mt)
 
 	return self
-end
-
-function CpGamePadHudSiloLoaderScreen:update(dt, ...)
-	CpGamePadHudSiloLoaderScreen:superClass().update(self, dt, ...)
-	if not self.vehicle:getCanStartCpSiloLoaderWorker() or self.vehicle:getCpStartingPointSetting():getValue() ~= CpFieldWorkJobParameters.START_AT_SILO_LOADING then
-		self.vehicle:reopenCpGamePadHud()
-	end
 end
 
 function CpGamePadHudSiloLoaderScreen:drawWorkWidth()
