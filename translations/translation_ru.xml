@@ -659,7 +659,7 @@ D: Just like with the unloader, you can copy the marker positions to another veh
     <text name="CP_help_page_minihud_siloworker_title" text="Silo worker"/>
     <text name="CP_help_page_minihud_siloworker_text" text="
 A: Similar to the silo loader, the height of the leveler is critical. You can adjust it here.
-B: Shows the progress of the compacting.
+B: Shows the progress of the compacting. Clicking on it, toggles the option to stop the driver when reached full compacting.
 C: You can change the working width when needed here.
 D: This setting tells the worker to wait in the silo or at a selected parking position when an unloader approaches the silo.
 "/>
