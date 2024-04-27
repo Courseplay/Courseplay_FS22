@@ -174,7 +174,7 @@ function PathfinderController:start(context, numRetries, pathfinderCall)
 end
 
 function PathfinderController:handleFailedPathfinding(result)
-    if self.callbackObstacleAtStartFunction and
+    if self.callbackObstacleAtStartFunction and not result.goalNodeInvalid and
             result.maxDistance < (self.currentContext._obstacleAtStartRange or (1.5 * self.turningRadius)) then
         -- pathfinder failed before getting further than the range in the context, or, if not given,
         -- further than the default of 1.5 radius, which is approximately the length of a quarter circle.
