@@ -186,7 +186,6 @@ function AIDriveStrategyFindBales:setAllStaticParameters()
     self.balesTried = {}
     -- when everything fails, reverse and try again. This is reset only when a pathfinding succeeds to avoid
     -- backing up forever
-    self.triedReversingAfterPathfinderFailure = false
     self.numBalesLeftOver = 0
 end
 
@@ -330,7 +329,6 @@ function AIDriveStrategyFindBales:onPathfindingFinished(controller,
     success, course, goalNodeInvalid)
     if self.state == self.states.DRIVING_TO_NEXT_BALE then
         if success then
-            self.triedReversingAfterPathfinderFailure = false
             self.balesTried = {}
             self:startCourse(course, 1)
         else
@@ -349,7 +347,8 @@ function AIDriveStrategyFindBales:onPathfindingFinished(controller,
                     self:retryPathfindingWithAnotherBale()
                 end
             else
-                self:info('Pathfinding failed three times, giving up')
+                self.balesTried = {}
+                self:info('Pathfinding failed five times, giving up')
                 self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
             end
         end
@@ -396,6 +395,7 @@ end
 
 function AIDriveStrategyFindBales:onPathfindingObstacleAtStart(controller, lastContext, maxDistance, trailerCollisionsOnly)
     g_baleToCollectManager:unlockBalesByDriver(self)
+    self.balesTried = {}
     self:debug('Pathfinding detected obstacle at start, back up and retry')
     self:startReversing(self.states.REVERSING_DUE_TO_OBSTACLE_AHEAD)
 end
