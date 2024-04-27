@@ -2092,7 +2092,9 @@ E: Similar to copying a course, here you can copy the marker positions to anothe
 		</Translation>
 		<Translation name="CP_help_page_minihud_balecollect_text">
 	<Text language="de"><![CDATA[
-A: Ballen die seit dem letzten scan (dies passiert automatisch) noch auf dem Feld liegen.
+A: Ballen die nach dem letzten automatischen Scan noch auf dem Feld liegen.
+
+
 B: Ballen die gesammelt oder bearbeitet werden sollen (z.B. nur gewickelte Ballen sammeln).
 C: Dieser Offset stellt den Versatz ein der zwischen Traktormitte und der mitte der Gabel liegt. Es kann nötig sein, bei einem breiterem Traktor (z.B. Breitreifen) diesen Wert an zu passen.
 ]]></Text>
@@ -2108,10 +2110,10 @@ C: Offset between the tractor's centerline and the loader arm's centerline. You 
 		</Translation>
 		<Translation name="CP_help_page_minihud_siloloader_text">
 	<Text language="de"><![CDATA[
-A: Die Liter die noch auf dem gewählten Haufen erkannt werden.
-B: Arbeitsbreite des Gerätes, gleich wie Feldarbeit.
-C: Die höhe der Schaufel über den Boden ist ein Wert der relativ genau sein muss. Da dieser sich von Tool zu Tool unterscheiden kann, kannst du mit der Einstellung die höhe Live überprüfen und anpassen.
-D: Wie schon beim Abfahrer, kannst du heir die benötigten Marker kopieren und auf ein weiteres Gerät einfügen.
+A: Die aktuelle Füllmenge des gewählten Haufens.
+B: Arbeitsbreite des Laders oder der Schaufel, genauso wie bei der Feldarbeit.
+C: Offset für die Ladehöhe einer Schaufel. Dieser kann genutzt werden falls die Schaufel nicht tief genug gesenkt wird oder sogar zu tief gesenkt wird.
+D: Wie schon beim Abfahrer, kannst du hier die benötigten Marker kopieren und auf ein weiteres Gerät einfügen.
 ]]></Text>
 	<Text language="en"><![CDATA[
 A: Remaining size of the heap in liters.
@@ -2127,7 +2129,7 @@ D: Just like with the unloader, you can copy the marker positions to another veh
 		<Translation name="CP_help_page_minihud_siloworker_text">
 	<Text language="de"><![CDATA[
 A: Wie auch beim Silo Lader, ist die Schildhöhe entscheident. Die kannst du hier anpassen.
-B: Diese Anzeige zeigt dir den aktuellen Fortschritt der Siloverdichtung an.
+B: Diese Anzeige zeigt dir den aktuellen Fortschritt der Siloverdichtung an. Durch einen Mausklick auf den Text, kannst du umschalten, ob der Abfahrer automatisch bei 100% Siloverdichtung stoppen soll.
 C: Auch hier spielt die Arbeitsbreite eine Rolle und kannst diese hier anpassen.
 D: Hier kannst du entscheiden, ob der Silo Arbeiter im Silo oder auf einer gewählten Parkposition warten soll, wenn sich ein Abfahrer dem Silo nähert.
 ]]></Text>
