@@ -20,7 +20,9 @@
 				<!-- Combine Unloader -->
 				<Value name="COMBINE_UNLOADER_SELECTED" isDisabled="isUnloaderModeDisabled">5</Value> 
 				<!-- Street Driver -->
+				<!--
 				<Value name="STREET_DRIVER_SELECTED" isDisabled="isStreetModeDisabled">6</Value> 
+				-->
 			</Values>
 			<Texts>
 				<Text prefix="false">CP_job_fieldWork</Text>
