@@ -149,6 +149,11 @@ You can define the following custom settings:
     shorter for some implements, especially big plows turn on the spot and align
     better with the next row without tight turn offset.
 
+- openPipeEarly: boolean
+    This will open the pipe of a harvester early while approaching a trailer for self unloading.
+    This is useful for combines with a pipe that folds up from below, making sure by the time the harvester
+    reaches the trailer, the pipe is already open.
+
 -->
 <VehicleConfigurations>
 	<Configurations>
@@ -178,6 +183,7 @@ You can define the following custom settings:
 		<Configuration type="INT">childPipeMovingToolIndex</Configuration>
 		<Configuration type="FLOAT">unloadOffsetX</Configuration>
         <Configuration type="FLOAT">tightTurnOffsetDistanceInTurns</Configuration>
+        <Configuration type="BOOL">openPipeEarly</Configuration>
 	</Configurations>
     <!--[GIANTS]-->
 
@@ -205,7 +211,7 @@ You can define the following custom settings:
 
     <!-- Implements -->
 
-    <!--\vehicles\<bednar-->
+    <!--\vehicles\bednar-->
     <Vehicle name="terraland"
              noReverse = "true"
     />
@@ -253,6 +259,7 @@ You can define the following custom settings:
     <!--\vehicles\grimme-->
     <Vehicle name="rootster604.xml"
              noReverse = "true"
+             openPipeEarly = "true"
     />
     <Vehicle name="SE260.xml"
              toolOffsetX = "-1.8"
@@ -622,6 +629,7 @@ You can define the following custom settings:
     <Vehicle name="premos5000.xml"
 			 disablePipeMovingToolCorrection = "true"
 			 unloadOffsetX = "-3.56"
+             openPipeEarly = "true"
     />
 
 	<!--Mod: FS22_lizardHTB6000-->
