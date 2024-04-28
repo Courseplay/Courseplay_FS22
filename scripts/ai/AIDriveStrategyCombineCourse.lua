@@ -197,6 +197,20 @@ function AIDriveStrategyCombineCourse:getCombine()
     return self.combine
 end
 
+function AIDriveStrategyCombineCourse:isAttachedHarvester()
+    return self.vehicle == self.combine
+end
+
+function AIDriveStrategyCombineCourse:getPipeOffsetReferenceNode()
+    if self:isAttachedHarvester() then
+        -- for attached harvesters this gets the root node of the harvester as that is our reference point to the
+        -- pipe offsets
+        return self:getCombine().rootNode
+    else
+        return self.vehicle:getAIDirectionNode()
+    end
+end
+
 function AIDriveStrategyCombineCourse:update(dt)
     AIDriveStrategyFieldWorkCourse.update(self, dt)
     self:updateChopperFillType()
