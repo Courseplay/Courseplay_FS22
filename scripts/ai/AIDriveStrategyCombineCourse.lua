@@ -198,7 +198,7 @@ function AIDriveStrategyCombineCourse:getCombine()
 end
 
 function AIDriveStrategyCombineCourse:isAttachedHarvester()
-    return self.vehicle == self.combine
+    return self.vehicle ~= self.combine
 end
 
 function AIDriveStrategyCombineCourse:getPipeOffsetReferenceNode()
