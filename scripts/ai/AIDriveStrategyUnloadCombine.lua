@@ -664,8 +664,8 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
     local gx, gy, gz
     -- Calculate an artificial goal point relative to the harvester to align better when starting to unload
     if dz > 5 then
-        _, _, dz = localToLocal(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
-        gx, gy, gz = localToWorld(self.combineToUnload:getAIDirectionNode(),
+        _, _, dz = localToLocal(self.vehicle:getAIDirectionNode(), self:getPipeOffsetReferenceNode(), 0, 0, 0)
+        gx, gy, gz = localToWorld(self:getPipeOffsetReferenceNode(),
         -- straight line parallel to the harvester, under the pipe, look ahead distance from the unloader
                 self:getPipeOffset(self.combineToUnload), 0, dz + self.ppc:getLookaheadDistance())
 
@@ -1222,7 +1222,7 @@ end
 function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(debugEnabled)
     -- if the harvester has an auto aim pipe, like a chopper we can relax our conditions
     local hasAutoAimPipe = self.combineToUnload:getCpDriveStrategy():hasAutoAimPipe()
-    local dx, _, dz = localToLocal(self.vehicle.rootNode, self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
+    local dx, _, dz = localToLocal(self.vehicle.rootNode, self:getPipeOffsetReferenceNode(), 0, 0, 0)
     local pipeOffset = self:getPipeOffset(self.combineToUnload)
     if dz > (hasAutoAimPipe and -5 or 0) then
         self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: dz > 0')
@@ -1250,7 +1250,7 @@ end
 
 --- In front of the combine, right distance from pipe to start unloading and the combine is moving
 function AIDriveStrategyUnloadCombine:isInFrontAndAlignedToMovingCombine(debugEnabled)
-    local dx, _, dz = localToLocal(self.vehicle.rootNode, self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
+    local dx, _, dz = localToLocal(self.vehicle.rootNode, self:getPipeOffsetReferenceNode(), 0, 0, 0)
     local pipeOffset = self:getPipeOffset(self.combineToUnload)
     if dz < 0 then
         self:debugIf(debugEnabled, 'isInFrontAndAlignedToMovingCombine: dz < 0')
@@ -1367,7 +1367,7 @@ function AIDriveStrategyUnloadCombine:startUnloadingStoppedCombine()
     -- get a path to the pipe, make the pipe 0.5 m longer so the path will be 0.5 more to the outside to make
     -- sure we don't bump into the pipe
     local offsetX, offsetZ = self:getPipeOffset(self.combineToUnload)
-    local unloadCourse = Course.createFromNode(self.vehicle, self:getCombineRootNode(), offsetX, offsetZ - 5, 30, 2, false)
+    local unloadCourse = Course.createFromNode(self.vehicle, self:getPipeOffsetReferenceNode(), offsetX, offsetZ - 5, 30, 2, false)
     self:startCourse(unloadCourse, 1)
     -- make sure to get to the course as soon as possible
     self.ppc:setShortLookaheadDistance()
@@ -1410,10 +1410,8 @@ function AIDriveStrategyUnloadCombine:getCombineToUnload()
     return self.combineToUnload
 end
 
-function AIDriveStrategyUnloadCombine:getCombineRootNode()
-    -- for attached harvesters this gets the root node of the harvester as that is our reference point to the
-    -- pipe offsets
-    return self.combineToUnload:getCpDriveStrategy():getCombine().rootNode
+function AIDriveStrategyUnloadCombine:getPipeOffsetReferenceNode()
+    return self.combineToUnload:getCpDriveStrategy():getPipeOffsetReferenceNode()
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -1459,7 +1457,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:startPathfindingToWaitingCombine(xOffset, zOffset)
     local context = PathfinderContext(self.vehicle)
-    local maxFruitPercent = self:getMaxFruitPercent(self:getCombineRootNode(), xOffset, zOffset)
+    local maxFruitPercent = self:getMaxFruitPercent(self:getPipeOffsetReferenceNode(), xOffset, zOffset)
     context:maxFruitPercent(maxFruitPercent)
     context:offFieldPenalty(self:getOffFieldPenalty(self.combineToUnload))
     context:useFieldNum(CpFieldUtil.getFieldNumUnderVehicle(self.combineToUnload))
@@ -1467,7 +1465,7 @@ function AIDriveStrategyUnloadCombine:startPathfindingToWaitingCombine(xOffset, 
     context:vehiclesToIgnore({})
     self.pathfinderController:registerListeners(self, self.onPathfindingDoneToWaitingCombine,
             self.onPathfindingFailedToStationaryTarget, self.onPathfindingObstacleAtStart)
-    self.pathfinderController:findPathToNode(context, self:getCombineRootNode(), xOffset or 0, zOffset or 0, 2)
+    self.pathfinderController:findPathToNode(context, self:getPipeOffsetReferenceNode(), xOffset or 0, zOffset or 0, 2)
 end
 
 function AIDriveStrategyUnloadCombine:onPathfindingDoneToWaitingCombine(controller, success, course, goalNodeInvalid)
@@ -1646,7 +1644,7 @@ function AIDriveStrategyUnloadCombine:call(combine, waypoint)
         end
         if self:isOkToStartUnloadingCombine() then
             self:startUnloadingCombine()
-        elseif self:isPathfindingNeeded(self.vehicle, self:getCombineRootNode(), xOffset, zOffset) then
+        elseif self:isPathfindingNeeded(self.vehicle, self:getPipeOffsetReferenceNode(), xOffset, zOffset) then
             self:setNewState(self.states.WAITING_FOR_PATHFINDER)
             self:startPathfindingToWaitingCombine(xOffset, zOffset)
         else

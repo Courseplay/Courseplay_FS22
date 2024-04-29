@@ -46,7 +46,7 @@ end
 
 function AIDriveStrategySiloLoader:delete()
     AIDriveStrategyCourse.delete(self)
-    if self.bunkerSiloController then 
+    if self.bunkerSiloController then
         self.bunkerSiloController:delete()
         self.bunkerSiloController = nil
     end
@@ -71,7 +71,7 @@ function AIDriveStrategySiloLoader:startWithoutCourse(jobParameters)
     self.jobParameters = jobParameters
 
     local x, z, dx, dz
-    if self.bunkerSilo ~= nil then 
+    if self.bunkerSilo ~= nil then
         self:debug("Bunker silo was found.")
         self.silo = self.bunkerSilo
         --- Only used to calculate the correct path into the silo.
@@ -80,7 +80,7 @@ function AIDriveStrategySiloLoader:startWithoutCourse(jobParameters)
         x, z = unpack(startPos)
         dx, dz = unpack(endPos)
         --- TODO: apply offset, if the silo is not filled equally to both sides.
-    else 
+    else
         self:debug("Heap was found.")
         self.silo = self.heapSilo
         --self:updateLoadPositionByHeapSilo()
@@ -91,15 +91,14 @@ function AIDriveStrategySiloLoader:startWithoutCourse(jobParameters)
     --- fill level, when the driver is started
     self.fillLevelLeftOverSinceStart = self.silo:getTotalFillLevel()
 
-
-    local siloCourse = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 
-        0, 0, 3, 3, false)
+    local siloCourse = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz,
+            0, 0, 3, 3, false)
 
     local vx, _, vz = getWorldTranslation(AIUtil.getDirectionNode(self.vehicle))
     local dx, _, dz = siloCourse:worldToWaypointLocal(1, vx, 0, vz)
-    if dz < 5 and dz > -self.maxDistanceWithoutPathfinding and 
-        math.abs(dx) <= math.abs(dz) and 
-        math.abs(dx) < self.maxDistanceWithoutPathfinding * math.sqrt(2)/2 then 
+    if dz < 5 and dz > -self.maxDistanceWithoutPathfinding and
+            math.abs(dx) <= math.abs(dz) and
+            math.abs(dx) < self.maxDistanceWithoutPathfinding * math.sqrt(2) / 2 then
         --[[
             |...|
             |...|   <- Silo
@@ -120,13 +119,12 @@ function AIDriveStrategySiloLoader:startWithoutCourse(jobParameters)
     end
 end
 
- 
 --- Moves the field unload position to the center front of the heap.
 function AIDriveStrategySiloLoader:updateLoadPositionByHeapSilo()
     local sx, sz = self.silo:getStartPosition()
     local wx, wz = self.silo:getWidthPosition()
-    local dirX, dirZ, siloWidth = CpMathUtil.getPointDirection({x = sx, z = sz}, {x = wx, z = wz})
-    local cx, cz = sx + dirX * siloWidth/2, sz + dirZ * siloWidth/2
+    local dirX, dirZ, siloWidth = CpMathUtil.getPointDirection({ x = sx, z = sz }, { x = wx, z = wz })
+    local cx, cz = sx + dirX * siloWidth / 2, sz + dirZ * siloWidth / 2
     setTranslation(self.heapNode, cx, 0, cz)
     local dirX, dirZ = self.silo:getLengthDirection()
     local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
@@ -195,7 +193,7 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategySiloLoader:onWaypointPassed(ix, course)
     if course:isLastWaypointIx(ix) then
-        if self.state == self.states.DRIVING_ALIGNMENT_COURSE then 
+        if self.state == self.states.DRIVING_ALIGNMENT_COURSE then
             local course = self:getRememberedCourseAndIx()
             self:startCourse(course, 1)
             self.state = self.states.WAITING_FOR_PREPARING
@@ -226,18 +224,18 @@ function AIDriveStrategySiloLoader:getDriveData(dt, vX, vY, vZ)
 
     if self.state == self.states.DRIVING_ALIGNMENT_COURSE then
         self:setMaxSpeed(self.settings.fieldSpeed:getValue())
-    elseif self.state == self.states.WAITING_FOR_PREPARING then 
+    elseif self.state == self.states.WAITING_FOR_PREPARING then
         self:setMaxSpeed(0)
         self:prepareForStart()
-    elseif self.state == self.states.WAITING_FOR_PATHFINDER then 
+    elseif self.state == self.states.WAITING_FOR_PATHFINDER then
         self:setMaxSpeed(0)
-    elseif self.state == self.states.WORKING then 
+    elseif self.state == self.states.WORKING then
 
-        self:setMaxSpeed(self.settings.reverseSpeed:getValue() * (1 - self.shovelController:getFillLevelPercentage()/100))
-        if not self.conveyorController:isDischarging() and self.shovelController:isFull() then 
+        self:setMaxSpeed(self.settings.reverseSpeed:getValue() * (1 - self.shovelController:getFillLevelPercentage() / 100))
+        if not self.conveyorController:isDischarging() and self.shovelController:isFull() then
             self:setMaxSpeed(0)
         end
-        
+
         self:callUnloaderWhenNeeded()
         if self.bunkerSiloController then
             local _, _, closestObject = self.siloEndProximitySensor:getClosestObjectDistanceAndRootVehicle()
@@ -248,7 +246,7 @@ function AIDriveStrategySiloLoader:getDriveData(dt, vX, vY, vZ)
             end
         end
 
-    elseif self.state == self.states.FINISHED then 
+    elseif self.state == self.states.FINISHED then
         self:setMaxSpeed(0)
         self:debugSparse("Waiting until the conveyor is empty.")
         if self.shovelController:isEmpty() then
@@ -265,14 +263,14 @@ end
 ---@param success boolean
 ---@param course Course|nil
 ---@param goalNodeInvalid boolean|nil
-function AIDriveStrategySiloLoader:onPathfindingFinished(controller, 
-    success, course, goalNodeInvalid)
+function AIDriveStrategySiloLoader:onPathfindingFinished(controller,
+                                                         success, course, goalNodeInvalid)
     if not success then
         self:debug('Pathfinding failed, giving up!')
         self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
         return
     end
-    if self.state == self.states.DRIVING_ALIGNMENT_COURSE then 
+    if self.state == self.states.DRIVING_ALIGNMENT_COURSE then
         self:startCourse(course, 1)
     end
 end
@@ -283,15 +281,15 @@ end
 ---@param wasLastRetry boolean
 ---@param currentRetryAttempt number
 function AIDriveStrategySiloLoader:onPathfindingFailed(controller,
-    lastContext, wasLastRetry, currentRetryAttempt)
+                                                       lastContext, wasLastRetry, currentRetryAttempt)
     --- TODO: Think of possible points of failures, that could be adjusted here.
     ---       Maybe a small reverse course might help to avoid a deadlock
     ---       after one pathfinder failure based on proximity sensor data and so on ..
-    if self.state == self.states.DRIVING_ALIGNMENT_COURSE then 
+    if self.state == self.states.DRIVING_ALIGNMENT_COURSE then
         local course = self:getRememberedCourseAndIx()
         local fm = self:getFrontAndBackMarkers()
-        controller:findPathToWaypoint(lastContext, course, 
-            1, 0, -1.5*(fm + 4), 1)
+        controller:findPathToWaypoint(lastContext, course,
+                1, 0, -1.5 * (fm + 4), 1)
     end
 end
 
@@ -302,8 +300,8 @@ function AIDriveStrategySiloLoader:startPathfindingToStart(course)
     self:rememberCourse(course, 1)
     local fm = self:getFrontAndBackMarkers()
     local context = PathfinderContext(self.vehicle):allowReverse(true):ignoreFruit()
-    self.pathfinderController:findPathToWaypoint(context, course, 
-        1, 0, -1.5*(fm + 4), 1)
+    self.pathfinderController:findPathToWaypoint(context, course,
+            1, 0, -1.5 * (fm + 4), 1)
 end
 
 function AIDriveStrategySiloLoader:prepareForStart()
@@ -322,15 +320,14 @@ function AIDriveStrategySiloLoader:update(dt)
         elseif self.ppc:getCourse():isTemporary() then
             self.ppc:getCourse():draw()
         end
-        if self.silo then 
+        if self.silo then
             self.silo:drawDebug()
         end
-        if self.bunkerSiloController then 
+        if self.bunkerSiloController then
             self.bunkerSiloController:draw()
         end
     end
 end
-
 
 function AIDriveStrategySiloLoader:updateCpStatus(status)
     status:setSiloLoaderStatus(self.silo:getTotalFillLevel(), self.fillLevelLeftOverSinceStart)
@@ -378,7 +375,6 @@ function AIDriveStrategySiloLoader:deregisterUnloader(driver, noEventSend)
     self.unloader:reset()
 end
 
-
 function AIDriveStrategySiloLoader:getMeasuredBackDistance()
     return math.abs(self.conveyorController:getPipeOffsetZ())
 end
@@ -425,7 +421,7 @@ function AIDriveStrategySiloLoader:findUnloader()
                 local unloaderFillLevelPercentage = driveStrategy:getFillLevelPercentage()
                 if driveStrategy:isIdle() and unloaderFillLevelPercentage < 99 then
                     local unloaderDistance, unloaderEte = driveStrategy:getDistanceAndEteToVehicle(self.vehicle)
-            
+
                     local score = unloaderFillLevelPercentage - 0.1 * unloaderDistance
                     self:debug('findUnloader: %s idle on my field, fill level %.1f, distance %.1f, ETE %.1f, score %.1f)',
                             CpUtil.getName(vehicle), unloaderFillLevelPercentage, unloaderDistance, unloaderEte, score)
@@ -451,7 +447,6 @@ function AIDriveStrategySiloLoader:findUnloader()
     end
 end
 
-
 function AIDriveStrategySiloLoader:isPipeMoving()
     return false
 end
@@ -464,22 +459,22 @@ function AIDriveStrategySiloLoader:canLoadTrailer(trailer)
     local dischargeNode = self.conveyorController:getDischargeNode()
     local fillType = self.conveyorController:getDischargeFillType()
     if not trailer:getFillUnitSupportsFillType(dischargeNode.dischargeFillUnitIndex, fillType) then
-		return false
-	end
+        return false
+    end
 
-	local allowFillType = trailer:getFillUnitAllowsFillType(dischargeNode.dischargeFillUnitIndex, fillType)
+    local allowFillType = trailer:getFillUnitAllowsFillType(dischargeNode.dischargeFillUnitIndex, fillType)
 
-	if not allowFillType then
-		return false
-	end
+    if not allowFillType then
+        return false
+    end
 
-	if trailer.getFillUnitFreeCapacity ~= nil and trailer:getFillUnitFreeCapacity(dischargeNode.dischargeFillUnitIndex, fillType, self.vehicle:getActiveFarm()) <= 0 then
-		return false
-	end
+    if trailer.getFillUnitFreeCapacity ~= nil and trailer:getFillUnitFreeCapacity(dischargeNode.dischargeFillUnitIndex, fillType, self.vehicle:getActiveFarm()) <= 0 then
+        return false
+    end
 
-	if trailer.getIsFillAllowedFromFarm ~= nil and not trailer:getIsFillAllowedFromFarm(self.vehicle:getActiveFarm()) then
-		return false
-	end
+    if trailer.getIsFillAllowedFromFarm ~= nil and not trailer:getIsFillAllowedFromFarm(self.vehicle:getActiveFarm()) then
+        return false
+    end
 
     return true
 end
@@ -512,6 +507,14 @@ function AIDriveStrategySiloLoader:getCombine()
     return self.vehicle
 end
 
+function AIDriveStrategySiloLoader:isAttachedHarvester()
+    return false
+end
+
+function AIDriveStrategySiloLoader:getPipeOffsetReferenceNode()
+    return self.vehicle:getAIDirectionNode()
+end
+
 function AIDriveStrategySiloLoader:isWaitingForUnloadAfterPulledBack()
     return true
 end
@@ -537,7 +540,7 @@ function AIDriveStrategySiloLoader:isAboutToReturnFromPocket()
 end
 
 function AIDriveStrategySiloLoader:isManeuvering()
-   return false 
+    return false
 end
 
 function AIDriveStrategySiloLoader:isWaitingForUnload()
@@ -549,7 +552,7 @@ function AIDriveStrategySiloLoader:hasRendezvousWith(vehicle)
 end
 
 function AIDriveStrategySiloLoader:cancelRendezvous()
-    
+
 end
 
 --- The unloader may call this repeatedly to confirm that the rendezvous still stands, making sure the
