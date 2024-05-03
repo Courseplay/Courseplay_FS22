@@ -136,7 +136,7 @@ function CpAIBaleFinder:getCpStartableJob(superFunc, isStartedByHud)
     if isStartedByHud and self:cpIsHudBaleFinderJobSelected() then 
         return self:getCanStartCpBaleFinder() and spec.cpJob
     end
-	return superFunc(self, isStartedByHud) or self:getCanStartCpBaleFinder() and spec.cpJob
+	return superFunc(self, isStartedByHud) or not isStartedByHud and self:getCanStartCpBaleFinder() and spec.cpJob
 end
 
 --- Starts the cp driver at the first waypoint.
