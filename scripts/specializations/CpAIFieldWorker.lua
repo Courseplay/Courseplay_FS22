@@ -298,7 +298,7 @@ function CpAIFieldWorker:getCpStartableJob(superFunc, isStartedByHud)
     if isStartedByHud and self:cpIsHudFieldWorkJobSelected() then 
         return self:getCanStartCpFieldWork() and self:hasCpCourse() and spec.cpJob
     end
-	return superFunc(self, isStartedByHud) or self:getCanStartCpFieldWork() and self:hasCpCourse() and spec.cpJob
+	return superFunc(self, isStartedByHud) or not isStartedByHud and self:getCanStartCpFieldWork() and self:hasCpCourse() and spec.cpJob
 end
 
 --- Makes sure a callstack is printed, when an error appeared.

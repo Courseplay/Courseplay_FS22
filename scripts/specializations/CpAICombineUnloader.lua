@@ -251,7 +251,7 @@ function CpAICombineUnloader:getCpStartableJob(superFunc, isStartedByHud)
     if isStartedByHud and self:cpIsHudUnloaderJobSelected() then 
         return self:getCanStartCpCombineUnloader() and spec.cpJob
     end
-    return superFunc(self, isStartedByHud) or self:getCanStartCpCombineUnloader() and spec.cpJob
+    return superFunc(self, isStartedByHud) or not isStartedByHud and self:getCanStartCpCombineUnloader() and spec.cpJob
 end
 
 --- Starts the cp driver at the first waypoint.

@@ -106,7 +106,7 @@ function CpAISiloLoaderWorker:getCpStartableJob(superFunc, isStartedByHud)
     if isStartedByHud and self:cpIsHudSiloLoaderJobSelected() then 
         return self:getCanStartCpSiloLoaderWorker() and spec.cpJob
     end
-	return superFunc(self, isStartedByHud) or self:getCanStartCpSiloLoaderWorker() and spec.cpJob
+	return superFunc(self, isStartedByHud) or not isStartedByHud and self:getCanStartCpSiloLoaderWorker() and spec.cpJob
 end
 
 function CpAISiloLoaderWorker:getCpSiloLoaderWorkerJobParameters()

@@ -109,7 +109,7 @@ function CpAIBunkerSiloWorker:getCpStartableJob(superFunc, isStartedByHud)
     if isStartedByHud and self:cpIsHudBunkerSiloJobSelected() then 
         return self:getCanStartCpBunkerSiloWorker() and spec.cpJob
     end
-	return superFunc(self, isStartedByHud) or self:getCanStartCpBunkerSiloWorker() and spec.cpJob
+	return superFunc(self, isStartedByHud) or not isStartedByHud and self:getCanStartCpBunkerSiloWorker() and spec.cpJob
 end
 
 function CpAIBunkerSiloWorker:getCpBunkerSiloWorkerJobParameters()
