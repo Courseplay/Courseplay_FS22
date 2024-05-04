@@ -639,8 +639,8 @@ E: Użyj symbolu po prawej stronie, aby skopiować bieżący kurs do schowka. Na
     <text name="CP_help_page_minihud_combineunload_text" text="
 A: Wybierz typ pojazdu, który Pracownik SI ma rozładować. Jest to przydatne, jeśli na tym samym polu pracują różne typy pojazdów, np. kombajn i oczyszczarka (jak ROPA Maus).
 B: Ustaw poziom napełnienia (40% - 100%), z jakim Pracownik SI powinien dojechać do miejsca rozładunku. Kliknij przycisk +/- lub użyj kółka przewijania nad liczbą, aby ją zmienić.
-C: Czasami pozycja rozładunku pod rurą nie jest idealna. Może to być spowodowane przez przyczepę lub rurę kombajnu, a czasem przez nachylenie pola. W tym miejscu można ręcznie skorygować odległość od kombajnu.
-D: To samo, co powyżej, ale tutaj można dostosować położenie rozładunku w przód/tył względem rury.
+C: Czasami pozycja rozładunku pod rurą nie jest idealna. Może to być spowodowane przez przyczepę lub rurę kombajnu, a czasem przez nachylenie pola. W tym miejscu można ręcznie skorygować odległość od kombajnu.
+D: To samo, co powyżej, ale tutaj można dostosować położenie rozładunku w przód/tył względem rury.
 E: Podobnie jak w przypadku kopiowania kursu, w tym miejscu można skopiować pozycje znaczników do innego pojazdu.
 "/>
     <text name="CP_help_page_minihud_balecollect_title" text="Zbieranie/Owijanie bel"/>
