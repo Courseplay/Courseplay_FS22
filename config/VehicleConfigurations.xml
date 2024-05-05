@@ -154,6 +154,10 @@ You can define the following custom settings:
     This is useful for combines with a pipe that folds up from below, making sure by the time the harvester
     reaches the trailer, the pipe is already open.
 
+- tipSideIndex: int
+    Forced tip side index for unloading. For now only for an auger wagon.
+    As an example the Hawe SUW 5000 has two tipside, but only the one with the pipe is needed. 
+
 -->
 <VehicleConfigurations>
 	<Configurations>
@@ -184,6 +188,7 @@ You can define the following custom settings:
 		<Configuration type="FLOAT">unloadOffsetX</Configuration>
         <Configuration type="FLOAT">tightTurnOffsetDistanceInTurns</Configuration>
         <Configuration type="BOOL">openPipeEarly</Configuration>
+        <Configuration type="INT">tipSideIndex</Configuration>
 	</Configurations>
     <!--[GIANTS]-->
 
@@ -345,6 +350,10 @@ You can define the following custom settings:
     />
     <Vehicle name="th1400.xml"
              noReverse = "true"
+    />
+    <!--\vehicles\hawe-->
+    <Vehicle name="suw5000.xml"
+             tipSideIndex = "2"
     />
     <!--\vehicles\flexicoil-->
     <Vehicle name="st820.xml"

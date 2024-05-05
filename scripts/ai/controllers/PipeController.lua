@@ -30,6 +30,13 @@ function PipeController:init(vehicle, implement, isConsoleCommand)
     self.isDischargingTimer = CpTemporaryObject(false)
     self.isDischargingToGround = false
     self.dischargeData = {}
+
+    local ix = g_vehicleConfigurations:get(self.implement, "tipSideIndex")
+    if ix and self.implement.setPreferedTipSide then 
+        self.implement:setPreferedTipSide(ix)
+    end
+    self.oldAutomaticDischarge = self.pipeSpec.automaticDischarge
+    self.pipeSpec.automaticDischarge = true
 end
 
 function PipeController:getDriveData()
@@ -658,6 +665,7 @@ end
 function PipeController:delete()
     CpUtil.destroyNode(self.tempBaseNode)
     CpUtil.destroyNode(self.tempDependedNode)
+    self.pipeSpec.automaticDischarge = self.oldAutomaticDischarge
 end
 
 --------------------------------------------------------------------
