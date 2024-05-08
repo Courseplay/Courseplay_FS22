@@ -50,6 +50,8 @@ function CpHud.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "cpUpdateMouseAction", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onWriteUpdateStream", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onReadUpdateStream", CpHud)
+    SpecializationUtil.registerEventListener(vehicleType, "onWriteStream", CpHud)
+    SpecializationUtil.registerEventListener(vehicleType, "onReadStream", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onStateChange", CpHud)
 end
 
@@ -202,6 +204,20 @@ function CpHud:onLoad(savegame)
     if savegame == nil or savegame.resetVehicles then return end
     CpSettingsUtil.loadFromXmlFile(spec.hudSettings, savegame.xmlFile, 
                         savegame.key .. CpHud.KEY .. CpHud.SETTINGS_KEY, self)
+end
+
+function CpHud:onReadStream(streamId, connection)
+    local spec = self.spec_cpHud
+    for _, setting in ipairs(spec.hudSettings.settings) do
+        setting:readStream(streamId, connection)
+    end
+end
+
+function CpHud:onWriteStream(streamId, connection)
+    local spec = self.spec_cpHud
+    for _, setting in ipairs(spec.hudSettings.settings) do
+        setting:writeStream(streamId, connection)
+    end
 end
 
 function CpHud:onWriteUpdateStream(streamId, connection, dirtyMask)
