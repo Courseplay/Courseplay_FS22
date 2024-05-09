@@ -25,6 +25,7 @@ function CpJobSyncOnLeaveEvent:readStream(streamId, connection)
 	CpAICombineUnloader.onReadStream(self.vehicle, streamId, connection)
 	CpAIBaleFinder.onReadStream(self.vehicle, streamId, connection)
 	CpAISiloLoaderWorker.onReadStream(self.vehicle, streamId, connection)
+	CpHud.onReadStream(self.vehicle, streamId, connection)
 
 	self:run(connection)
 end
@@ -36,6 +37,7 @@ function CpJobSyncOnLeaveEvent:writeStream(streamId, connection)
 	CpAICombineUnloader.onWriteStream(self.vehicle, streamId, connection)
 	CpAIBaleFinder.onWriteStream(self.vehicle, streamId, connection)
 	CpAISiloLoaderWorker.onWriteStream(self.vehicle, streamId, connection)
+	CpHud.onWriteStream(self.vehicle, streamId, connection)
 
 end
 
