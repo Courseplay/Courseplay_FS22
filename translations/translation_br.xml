@@ -648,8 +648,7 @@ E: Semelhante a copiar um percurso, aqui você pode copiar as posições dos mar
     <text name="CP_help_page_minihud_balecollect_text" text="
 A: Fardos restantes no campo.
 B: Tipo de fardos a recolher/embalar.
-C: Deslocamento entre a linha central do trator e a linha central do braço da carregadeira. Pode ser necessário ajustar isso para tratores maiores (por exemplo, com pneus mais largos)."
-/>
+C: Deslocamento entre a linha central do trator e a linha central do braço da carregadeira. Pode ser necessário ajustar isso para tratores maiores (por exemplo, com pneus mais largos)."/>
     <text name="CP_help_page_minihud_siloloader_title" text="Carregar silo"/>
     <text name="CP_help_page_minihud_siloloader_text" text="
 A: Tamanho restante da pilha em litros.
