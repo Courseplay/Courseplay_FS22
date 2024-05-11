@@ -25,7 +25,7 @@ CpShovelPositions = {
 			0.1
 		},
 		SHOVEL_LIMITS = {
-			88,
+			91,
 			92
 		},
 	},
