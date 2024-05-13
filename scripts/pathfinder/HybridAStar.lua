@@ -800,7 +800,8 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
         elseif self.phase == self.MIDDLE then
             self.constraints:resetStrictMode()
             if not path then
-                return PathfinderResult(true, nil, goalNodeInvalid)
+                return PathfinderResult(true, nil, goalNodeInvalid,
+                        self.currentPathfinder.nodes.highestDistance, self.constraints:trailerCollisionsOnly())
             end
             local lMiddlePath = HybridAStar.length(path)
             self:debug('Direct path is %d m', lMiddlePath)
@@ -813,7 +814,8 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
             HybridAStar.shortenStart(self.middlePath, self.hybridRange)
             HybridAStar.shortenEnd(self.middlePath, self.hybridRange)
             if #self.middlePath < 2 then
-                return PathfinderResult(true, nil)
+                return PathfinderResult(true, nil, goalNodeInvalid,
+                        self.currentPathfinder.nodes.highestDistance, self.constraints:trailerCollisionsOnly())
             end
             State3D.smooth(self.middlePath)
             State3D.setAllHeadings(self.middlePath)
@@ -850,13 +852,13 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
                     table.insert(self.path, path[i])
                 end
                 State3D.smooth(self.path)
+                self.constraints:showStatistics()
+                return PathfinderResult(true, self.path)
             else
                 self:debug('middle to end: no path found')
                 return PathfinderResult(true, nil, goalNodeInvalid,
                         self.currentPathfinder.nodes.highestDistance, self.constraints:trailerCollisionsOnly())
             end
-            self.constraints:showStatistics()
-            return PathfinderResult(true, self.path)
         end
     end
     return PathfinderResult(false)
