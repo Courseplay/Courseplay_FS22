@@ -99,18 +99,21 @@ PathfinderResult = CpObject()
 ---@param goalNodeInvalid boolean if true, the goal node is invalid (for instance a vehicle or obstacle is there) so
 ---                the pathfinding can never succeed.
 ---@param maxDistance number the furthest distance the pathfinding tried from the start, only when no path found
----@param trailerCollisionsOnly boolean only collisions with the trailer was detected.
-function PathfinderResult:init(done, path, goalNodeInvalid, maxDistance, trailerCollisionsOnly)
+---@param constraints PathfinderConstraints detailed statistics.
+function PathfinderResult:init(done, path, goalNodeInvalid, maxDistance, constraints)
     self.done = done
     self.path = path
     self.goalNodeInvalid = goalNodeInvalid or false
     self.maxDistance = maxDistance or 0
-    self.trailerCollisionsOnly = trailerCollisionsOnly or false
+    self.trailerCollisionsOnly = constraints and constraints:trailerCollisionsOnly() or false
+    self.fruitPenaltyNodePercent = constraints and constraints:getFruitPenaltyNodePercent() or 0
+    self.offFieldPenaltyNodePercent = constraints and constraints:getOffFieldPenaltyNodePercent() or 0
 end
 
 function PathfinderResult:__tostring()
-    return string.format('[done: %s, path waypoints: %d, goalNodeInvalid: %s, maxDistance: %.1f, trailerCollisionOnly: %s]',
-            self.done, self.path and #self.path or - 1, self.goalNodeInvalid, self.maxDistance, self.trailerCollisionsOnly)
+    return string.format('[done: %s, path waypoints: %d, goalNodeInvalid: %s, maxDistance: %.1f, trailerCollisionOnly: %s, fruit/off-field penalty %.1f/%.1f]',
+            self.done, self.path and #self.path or - 1, self.goalNodeInvalid, self.maxDistance,
+            self.trailerCollisionsOnly, self.fruitPenaltyNodePercent, self.offFieldPenaltyNodePercent)
 end
 
 --- Interface definition for pathfinder constraints (for dependency injection of node penalty/validity checks
@@ -779,8 +782,8 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
         print(done)
         printCallstack()
         self.coroutine = nil
-        return PathfinderResult(true, nil, goalNodeInvalid,
-                self.currentPathfinder.nodes.highestDistance, self.constraints:trailerCollisionsOnly())
+        return PathfinderResult(true, nil, goalNodeInvalid, self.currentPathfinder.nodes.highestDistance,
+                self.constraints)
     end
     if done then
         self.coroutine = nil
@@ -794,14 +797,14 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
                 return PathfinderResult(true, result)
             else
                 self:debug('all hybrid: no path found')
-                return PathfinderResult(true, nil, goalNodeInvalid,
-                        self.currentPathfinder.nodes.highestDistance, self.constraints:trailerCollisionsOnly())
+                return PathfinderResult(true, nil, goalNodeInvalid, self.currentPathfinder.nodes.highestDistance,
+                        self.constraints)
             end
         elseif self.phase == self.MIDDLE then
             self.constraints:resetStrictMode()
             if not path then
-                return PathfinderResult(true, nil, goalNodeInvalid,
-                        self.currentPathfinder.nodes.highestDistance, self.constraints:trailerCollisionsOnly())
+                return PathfinderResult(true, nil, goalNodeInvalid, self.currentPathfinder.nodes.highestDistance,
+                        self.constraints)
             end
             local lMiddlePath = HybridAStar.length(path)
             self:debug('Direct path is %d m', lMiddlePath)
@@ -814,8 +817,8 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
             HybridAStar.shortenStart(self.middlePath, self.hybridRange)
             HybridAStar.shortenEnd(self.middlePath, self.hybridRange)
             if #self.middlePath < 2 then
-                return PathfinderResult(true, nil, goalNodeInvalid,
-                        self.currentPathfinder.nodes.highestDistance, self.constraints:trailerCollisionsOnly())
+                return PathfinderResult(true, nil, goalNodeInvalid, self.currentPathfinder.nodes.highestDistance,
+                        self.constraints)
             end
             State3D.smooth(self.middlePath)
             State3D.setAllHeadings(self.middlePath)
@@ -838,8 +841,8 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
                 return self:findPathFromMiddleToEnd()
             else
                 self:debug('start to middle: no path found')
-                return PathfinderResult(true, nil, goalNodeInvalid,
-                        self.currentPathfinder.nodes.highestDistance, self.constraints:trailerCollisionsOnly())
+                return PathfinderResult(true, nil, goalNodeInvalid, self.currentPathfinder.nodes.highestDistance,
+                        self.constraints)
             end
         elseif self.phase == self.MIDDLE_TO_END then
             if path then
@@ -856,8 +859,8 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
                 return PathfinderResult(true, self.path)
             else
                 self:debug('middle to end: no path found')
-                return PathfinderResult(true, nil, goalNodeInvalid,
-                        self.currentPathfinder.nodes.highestDistance, self.constraints:trailerCollisionsOnly())
+                return PathfinderResult(true, nil, goalNodeInvalid, self.currentPathfinder.nodes.highestDistance,
+                        self.constraints)
             end
         end
     end
