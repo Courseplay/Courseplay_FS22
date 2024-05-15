@@ -216,6 +216,14 @@ function PathfinderConstraints:trailerCollisionsOnly()
     return self.trailerCollisionNodeCount > 0 and self.collisionNodeCount == self.trailerCollisionNodeCount
 end
 
+function PathfinderConstraints:getFruitPenaltyNodePercent()
+    return self.totalNodeCount > 0 and (self.fruitPenaltyNodeCount / self.totalNodeCount) or 0
+end
+
+function PathfinderConstraints:getOffFieldPenaltyNodePercent()
+    return self.totalNodeCount > 0 and (self.offFieldPenaltyNodeCount / self.totalNodeCount) or 0
+end
+
 function PathfinderConstraints:debug(...)
     self.vehicleData:debug(...)
 end
