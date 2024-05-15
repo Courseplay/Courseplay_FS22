@@ -210,7 +210,8 @@ function PathfinderController:handleFailedPathfinding(result)
             --- Retrying the path finding
             self.failCount = self.failCount + 1
             self:callCallback(self.callbackFailedFunction,
-                    self.currentContext, self.failCount == self.numRetries, self.failCount, false)
+                    self.currentContext, self.failCount == self.numRetries, self.failCount, false,
+                    result.fruitPenaltyNodePercent, result.offFieldPenaltyNodePercent)
             return
         elseif self.numRetries > 0 then
             self:debug("Max number of retries already reached!")
