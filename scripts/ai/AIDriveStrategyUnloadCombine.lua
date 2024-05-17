@@ -1522,12 +1522,18 @@ function AIDriveStrategyUnloadCombine:onPathfindingObstacleAtStart(controller, l
 end
 
 function AIDriveStrategyUnloadCombine:onPathfindingFailed(giveUpFunc, controller, lastContext, wasLastRetry,
-                                                          currentRetryAttempt)
+                                                          currentRetryAttempt, trailerCollisionsOnly,
+                                                          fruitPenaltyNodePercent, offFieldPenaltyNodePercent)
     if wasLastRetry then
         giveUpFunc()
     elseif currentRetryAttempt == 1 then
-        self:debug('First attempt to find path failed, trying with reduced off-field penalty')
-        lastContext:offFieldPenalty(PathfinderContext.defaultOffFieldPenalty / 2)
+        if fruitPenaltyNodePercent > offFieldPenaltyNodePercent then
+            self:debug('First attempt to find path failed, trying with reduced fruit percent')
+            lastContext:maxFruitPercent(self:getMaxFruitPercent() / 2)
+        else
+            self:debug('First attempt to find path failed, trying with reduced off-field penalty')
+            lastContext:offFieldPenalty(PathfinderContext.defaultOffFieldPenalty / 2)
+        end
         controller:retry(lastContext)
     elseif currentRetryAttempt == 2 then
         self:debug('Second attempt to find path failed, trying with reduced off-field penalty and fruit percent')
