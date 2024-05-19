@@ -1508,7 +1508,9 @@ function AIDriveStrategyUnloadCombine:onPathfindingFailedToMovingTarget(...)
             end, ...)
 end
 
-function AIDriveStrategyUnloadCombine:onPathfindingObstacleAtStart(controller, lastContext, maxDistance, trailerCollisionsOnly)
+function AIDriveStrategyUnloadCombine:onPathfindingObstacleAtStart(controller, lastContext, maxDistance,
+                                                                   trailerCollisionsOnly, fruitPenaltyNodePercent,
+                                                                   offFieldPenaltyNodePercent)
     if trailerCollisionsOnly then
         self:debug('Pathfinding detected obstacle at start, trailer collisions only, retry with ignoring the trailer')
         lastContext:ignoreTrailerAtStartRange(1.5 * self.turningRadius)
@@ -1520,12 +1522,18 @@ function AIDriveStrategyUnloadCombine:onPathfindingObstacleAtStart(controller, l
 end
 
 function AIDriveStrategyUnloadCombine:onPathfindingFailed(giveUpFunc, controller, lastContext, wasLastRetry,
-                                                          currentRetryAttempt)
+                                                          currentRetryAttempt, trailerCollisionsOnly,
+                                                          fruitPenaltyNodePercent, offFieldPenaltyNodePercent)
     if wasLastRetry then
         giveUpFunc()
     elseif currentRetryAttempt == 1 then
-        self:debug('First attempt to find path failed, trying with reduced off-field penalty')
-        lastContext:offFieldPenalty(PathfinderContext.defaultOffFieldPenalty / 2)
+        if fruitPenaltyNodePercent > offFieldPenaltyNodePercent then
+            self:debug('First attempt to find path failed, trying with reduced fruit percent')
+            lastContext:maxFruitPercent(self:getMaxFruitPercent() / 2)
+        else
+            self:debug('First attempt to find path failed, trying with reduced off-field penalty')
+            lastContext:offFieldPenalty(PathfinderContext.defaultOffFieldPenalty / 2)
+        end
         controller:retry(lastContext)
     elseif currentRetryAttempt == 2 then
         self:debug('Second attempt to find path failed, trying with reduced off-field penalty and fruit percent')
@@ -2459,18 +2467,28 @@ function AIDriveStrategyUnloadCombine:startSelfUnload(ignoreFruit)
         self.pathfinderController:registerListeners(self,
                 self.onPathfindingDoneBeforeSelfUnload,
                 self.onPathfindingFailedBeforeSelfUnload, self.onPathfindingObstacleAtStart)
-        self.pathfinderController:findPathToNode(context, self.selfUnloadTargetNode, offsetX, -alignLength, 1)
+        self.pathfinderController:findPathToNode(context, self.selfUnloadTargetNode, offsetX, -alignLength, 2)
     else
         self:debug('Pathfinder already active')
     end
     return true
 end
 
-function AIDriveStrategyUnloadCombine:onPathfindingFailedBeforeSelfUnload(controller, lastContext,
-                                                                          wasLastRetry, currentRetryAttempt)
+function AIDriveStrategyUnloadCombine:onPathfindingFailedBeforeSelfUnload(controller, lastContext, wasLastRetry,
+                                                                          currentRetryAttempt, trailerCollisionsOnly,
+                                                                          fruitPenaltyNodePercent, offFieldPenaltyNodePercent)
     if currentRetryAttempt == 1 then
-        self:debug('Pathfinding to self unload failed once, retry with fruit avoidance disabled')
-        lastContext:maxFruitPercent(math.huge)
+        if fruitPenaltyNodePercent > offFieldPenaltyNodePercent then
+            self:debug('Pathfinding to self unload failed once, retry with fruit avoidance disabled')
+            lastContext:ignoreFruit()
+        else
+            self:debug('Pathfinding to self unload failed once, retry with off field penalty disabled')
+            lastContext:offFieldPenalty(0)
+        end
+        controller:retry(lastContext)
+    else
+        self:debug('Pathfinding to self unload failed again, retry with all penalties disabled')
+        lastContext:offFieldPenalty(0):ignoreFruit()
         controller:retry(lastContext)
     end
 end

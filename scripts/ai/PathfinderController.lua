@@ -62,9 +62,10 @@ function Strategy:onPathfindingFinished(controller : PathfinderController, succe
 end
 
 function Strategy:onPathfindingFailed(controller : PathfinderController, currentContext : PathfinderContext,
-	wasLastRetry : boolean, currentRetryAttempt : number)
+	wasLastRetry : boolean, currentRetryAttempt : number, trailerCollisionsOnly : boolean,
+	fruitPenaltyNodePercent : number, offFieldPenaltyNodePercent : number)
 	if currentRetryAttempt == 1 then 
-		// Reduced fruit impact:
+		// try whatever has better chances:
 		currentContext:ignoreFruit()
 		self.pathfinderController:findPathToNode(currentContext, ...)
 	else 
@@ -72,6 +73,20 @@ function Strategy:onPathfindingFailed(controller : PathfinderController, current
 		self.pathfinderController:findPathToNode(currentContext, ...)
 	end
 end
+
+
+function onPathfindingObstacleAtStart(controller, lastContext, maxDistance,
+                                      trailerCollisionsOnly, fruitPenaltyNodePercent, offFieldPenaltyNodePercent)
+    if trailerCollisionsOnly then
+        self:debug('Pathfinding detected obstacle at start, trailer collisions only, retry with ignoring the trailer')
+        lastContext:ignoreTrailerAtStartRange(1.5 * self.turningRadius)
+        controller:retry(lastContext)
+    else
+        self:debug('Pathfinding detected obstacle at start, back up and retry')
+        self:startMovingBackBeforePathfinding(controller, lastContext)
+    end
+end
+
 ]]
 
 ---@class DefaultFieldPathfinderControllerContext : PathfinderContext
@@ -141,12 +156,18 @@ end
 --- TODO: Decide if multiple registered listeners are needed or not?
 ---@param object table
 ---@param successFunc function func(PathfinderController, success, Course, goalNodeInvalid)
----@param failedFunc function func(PathfinderController, last context, was last retry, retry attempt number)
----@param obstacleAtStartFunc function|nil func(PathfinderController, last context, maxDistance, trailerCollisionsOnly),
+---@param failedFunc function
+---func(PathfinderController, last context, was last retry, retry attempt number, trailerCollisionsOnly, fruitPenaltyNodePercent, offFieldPenaltyNodePercent)
+---@param obstacleAtStartFunc function|nil
+--- func(PathfinderController, last context, maxDistance, trailerCollisionsOnly, fruitPenaltyNodePercent, offFieldPenaltyNodePercent),
 --- called when the pathfinding failed within maxDistance (there is an obstacle ahead of the vehicle) so it can't even
 --- start driving anywhere forward. In this case pathfinding makes no sense. No check if no callback is registered.
+---
 --- trailerCollisionsOnly will be set to true if there were no other collisions other then between the trailer and
 --- some other obstacle.
+---
+--- fruitPenaltyNodePercent and offFieldPenaltyNodePercent can be used to determine the most likely reason the pathfinding
+--- failed, returning the percent of nodes with fruit/off-field penalty (of total nodes searched)
 function PathfinderController:registerListeners(object, successFunc, failedFunc, obstacleAtStartFunc)
     self.callbackObject = object
     self.callbackSuccessFunction = successFunc
@@ -186,10 +207,12 @@ function PathfinderController:handleFailedPathfinding(result)
         --- Retry is allowed, so check if any tries are leftover
         if self.failCount < self.numRetries then
             self:debug("Failed with try %d of %d.", self.failCount, self.numRetries)
-            --- Retrying the path finding
+            local wasLastRetry = self.failCount == self.numRetries
             self.failCount = self.failCount + 1
+            --- Let the callback decide what next: retry or give up
             self:callCallback(self.callbackFailedFunction,
-                    self.currentContext, self.failCount == self.numRetries, self.failCount, false)
+                    self.currentContext, wasLastRetry, self.failCount, false,
+                    result.fruitPenaltyNodePercent, result.offFieldPenaltyNodePercent)
             return
         elseif self.numRetries > 0 then
             self:debug("Max number of retries already reached!")
