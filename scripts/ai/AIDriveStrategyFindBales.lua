@@ -628,7 +628,9 @@ function AIDriveStrategyFindBales:update(dt)
         end
     end
     if self.state ~= self.states.DRIVING_TO_START_MARKER then
-        self:setFinished()
+        if self:areBaleLoadersFull() then
+            self:setFinished()
+        end
     end
     --- Ignores the loaded auto loader bales.
     --- TODO: Maybe add a delay here?
