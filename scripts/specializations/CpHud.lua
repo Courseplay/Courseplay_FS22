@@ -62,6 +62,7 @@ function CpHud.registerFunctions(vehicleType)
 	SpecializationUtil.registerFunction(vehicleType, 'resetCpHud', CpHud.resetCpHud)
 	SpecializationUtil.registerFunction(vehicleType, 'closeCpHud', CpHud.closeCpHud)
 	SpecializationUtil.registerFunction(vehicleType, 'getCpHud', CpHud.getCpHud)
+    SpecializationUtil.registerFunction(vehicleType, 'getCpHudSettings', CpHud.getCpHudSettings)
 
     SpecializationUtil.registerFunction(vehicleType, 'showCpBunkerSiloWorkWidth', CpHud.showCpBunkerSiloWorkWidth)
     SpecializationUtil.registerFunction(vehicleType, 'showCpCombineUnloaderWorkWidth', CpHud.showCpCombineUnloaderWorkWidth)
@@ -349,6 +350,15 @@ end
 --------------------------------------
 --- Hud Settings
 --------------------------------------
+
+function CpHud:raiseDirtyFlag(setting)
+    HudSettingsEvent.sendEvent(self, setting)
+end 
+
+function CpHud:getCpHudSettings()
+    local spec = self.spec_cpHud
+    return spec.hudSettings
+end
 
 function CpHud:isFieldWorkModeDisabled()
     return not self:getCanStartCpFieldWork()
