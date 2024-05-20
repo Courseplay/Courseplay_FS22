@@ -25,7 +25,7 @@ CpShovelPositions = {
 			0.1
 		},
 		SHOVEL_LIMITS = {
-			88,
+			91,
 			92
 		},
 	},
@@ -49,6 +49,8 @@ CpShovelPositions = {
 			47
 		},
 	},
+	TEMP_MOVING_TOOL_MIN_NEEDED_DIFF = 0.015, 	--- Overrides the min difference needed to change the shovel position, 
+									         	--- as changing the height in the hud is less likley to swing up the system.
 	DEBUG = true
 }
 CpShovelPositions.MOD_NAME = g_currentModName
@@ -260,11 +262,13 @@ function CpShovelPositions:controlShovelPosition(dt, targetAngle)
 				if spec.state == CpShovelPositions.LOADING or spec.state == CpShovelPositions.UNLOADING then 
 					--- Opens the shovel for loading and unloading
 					isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt,
-						tool.invertAxis and tool.rotMin or tool.rotMax)
+						tool.invertAxis and tool.rotMin or tool.rotMax,
+						CpShovelPositions.getMovingToolMinDiffNeeded(self))
 				else 
 					--- Closes the shovel after loading or unloading
 					isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt,
-						tool.invertAxis and tool.rotMax or tool.rotMin) 
+						tool.invertAxis and tool.rotMax or tool.rotMin,
+						CpShovelPositions.getMovingToolMinDiffNeeded(self))
 				end
 				break
 			end
@@ -275,7 +279,8 @@ function CpShovelPositions:controlShovelPosition(dt, targetAngle)
 	local oldShovelRot = curRot[spec.shovelTool.rotationAxis]
 	local goalAngle = MathUtil.clamp(oldShovelRot + targetAngle, spec.shovelTool.rotMin, spec.shovelTool.rotMax)
 	return ImplementUtil.moveMovingToolToRotation(spec.shovelVehicle, 
-	spec.shovelTool, dt, goalAngle) or isDirty
+		spec.shovelTool, dt, goalAngle,
+		CpShovelPositions.getMovingToolMinDiffNeeded(self)) or isDirty
 end
 
 --- Performs the unloading with a high dump shovel.
@@ -293,7 +298,8 @@ function CpShovelPositions:unfoldHighDumpShovel(dt)
 		return true, angle, targetAngle
 	end
 	local isDirty = ImplementUtil.moveMovingToolToRotation(self, highDumpShovelTool, dt,
-		highDumpShovelTool.invertAxis and highDumpShovelTool.rotMin  or highDumpShovelTool.rotMax)
+		highDumpShovelTool.invertAxis and highDumpShovelTool.rotMin  or highDumpShovelTool.rotMax,
+		CpShovelPositions.getMovingToolMinDiffNeeded(self))
 	return isDirty, angle, targetAngle
 end
 
@@ -303,7 +309,8 @@ end
 function CpShovelPositions:foldHighDumpShovel(dt)
 	local highDumpShovelTool = self.spec_cylindered.movingTools[self.spec_cpShovelPositions.highDumpMovingToolIx]
 	return ImplementUtil.moveMovingToolToRotation(self, highDumpShovelTool, dt,
-		highDumpShovelTool.invertAxis and highDumpShovelTool.rotMax or highDumpShovelTool.rotMin)
+		highDumpShovelTool.invertAxis and highDumpShovelTool.rotMax or highDumpShovelTool.rotMin,
+		CpShovelPositions.getMovingToolMinDiffNeeded(self))
 end
 
 --- Sets the current shovel position values, like the arm and shovel rotations.
@@ -452,7 +459,8 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, height
 			alpha, oldRotRelativeArmRot), armTool.rotMin, armTool.rotMax)
 		if not skipArm then
 			isDirty = ImplementUtil.moveMovingToolToRotation(
-				armVehicle, armTool, dt, a) or isDirty
+				armVehicle, armTool, dt, a,
+				CpShovelPositions.getMovingToolMinDiffNeeded(self)) or isDirty
 		end
 	end
 
@@ -592,6 +600,13 @@ end
 function CpShovelPositions:setCpShovelMinimalUnloadHeight(height)
 	local spec = self.spec_cpShovelPositions
 	spec.minimalShovelUnloadHeight = height
+end
+
+function CpShovelPositions:getMovingToolMinDiffNeeded()
+	local spec = self.spec_cpShovelPositions
+	if spec.resetStateWhenReached then 
+		return CpShovelPositions.TEMP_MOVING_TOOL_MIN_NEEDED_DIFF
+	end
 end
 
 --- Gets all relevant shovel data.
