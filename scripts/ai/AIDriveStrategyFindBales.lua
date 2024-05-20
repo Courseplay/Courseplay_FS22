@@ -550,6 +550,8 @@ function AIDriveStrategyFindBales:getDriveData(dt, vX, vY, vZ)
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
     elseif self.state == self.states.REVERSING_DUE_TO_OBSTACLE_AHEAD then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
+    elseif self.state == self.states.DRIVING_TO_START_MARKER then
+        self:setMaxSpeed(self.settings.fieldSpeed:getValue())
     end
 
     local moveForwards = not self.ppc:isReversing()
