@@ -326,9 +326,13 @@ function AIDriveStrategyFindBales:getBaleTarget(bale)
     return State3D(xb, -zb, CourseGenerator.fromCpAngle(yRot))
 end
 
+--- Sets the driver as finished, so either a path 
+--- to the start marker as a park position can be used
+--- or the driver stops directly.
 function AIDriveStrategyFindBales:setFinished()
     if not self:isReadyToFoldImplements() then
         -- Watiting until the folding has finished..
+        self:debugSparse("Waiting until an animation has finish, so the driver can be released ..")
         return
     end 
     if self.invertedStartPositionMarkerNode then 
@@ -339,6 +343,8 @@ function AIDriveStrategyFindBales:setFinished()
     end
 end
 
+--- Finishes the job with the correct stop reason, as 
+--- the correct reason is needed for a possible AD takeover.
 function AIDriveStrategyFindBales:finishJob()
     if self:areBaleLoadersFull() then 
         self:debug('Bale loader is full, stopping job.')
@@ -449,6 +455,7 @@ function AIDriveStrategyFindBales:startPathfindingToBale(bale)
     self.pathfinderController:findPathToGoal(context, self:getPathfinderBaleTargetAsGoalNode(bale))
 end
 
+--- Searches for a path to the start marker in the inverted direction.
 function AIDriveStrategyFindBales:startPathfindingToStartMarker()
     self.state = self.states.DRIVING_TO_START_MARKER
     local context = PathfinderContext(self.vehicle):objectsToIgnore(self:getBalesToIgnore())
@@ -501,6 +508,7 @@ function AIDriveStrategyFindBales:onWaypointPassed(ix, course)
             self:debug('backed due to obstacle, trying again')
             self.state = self.states.SEARCHING_FOR_NEXT_BALE
         elseif self.state == self.states.DRIVING_TO_START_MARKER then
+            self:debug("Inverted start marker position is reached.")
             self:finishJob()
         end
     end
