@@ -366,8 +366,12 @@ end
 ---@param tool table moving tool
 ---@param dt number
 ---@param rotTarget number target rotation in radiant
+---@param minDiffNeeded number|nil if the difference is smaller than the moving tool is stopped.
 ---@return boolean
-function ImplementUtil.moveMovingToolToRotation(implement, tool, dt, rotTarget)
+function ImplementUtil.moveMovingToolToRotation(implement, tool, dt, rotTarget, minDiffNeeded)
+    if minDiffNeeded == nil then
+        minDiffNeeded = 0.03
+    end
     if tool.rotSpeed == nil then
 		return false
 	end
@@ -378,7 +382,7 @@ function ImplementUtil.moveMovingToolToRotation(implement, tool, dt, rotTarget)
     local dir = MathUtil.sign(diff)
 	local rotSpeed = MathUtil.clamp( math.abs(diff) * math.abs(tool.rotSpeed), math.abs(tool.rotSpeed)/3, 0.5 )
     rotSpeed = dir * rotSpeed
-	if math.abs(diff) < 0.02 or rotSpeed == 0 then
+	if math.abs(diff) < minDiffNeeded or rotSpeed == 0 then
 		ImplementUtil.stopMovingTool(implement, tool)
 		return false
 	end
