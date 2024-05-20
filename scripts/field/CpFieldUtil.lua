@@ -157,3 +157,9 @@ function CpFieldUtil.getFieldPolygonAtWorldPosition(x, z)
     end
     return fieldPolygon, isCustomField
 end
+
+---@param fieldId number
+---@return boolean true if this field is a mission field
+function CpFieldUtil.isMissionField(fieldId)
+    return g_missionManager.fieldToMission[fieldId] ~= nil
+end

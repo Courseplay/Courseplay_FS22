@@ -98,8 +98,9 @@ function PathfinderConstraints:getNodePenalty(node)
     local offField = not CpFieldUtil.isOnField(node.x, -node.y)
     if self.fieldNum ~= 0 and not offField then
         -- if there's a preferred field and we are on a field
-        if not PathfinderUtil.isWorldPositionOwned(node.x, -node.y) then
-            -- the field we are on is not ours, more penalty!
+        if not PathfinderUtil.isWorldPositionOwned(node.x, -node.y) or
+                not CpFieldUtil.isMissionField(self.fieldNum) then
+            -- the field we are on is not ours and not a mission field, more penalty!
             offField = true
             offFieldPenalty = self.offFieldPenalty * 1.2
         end
