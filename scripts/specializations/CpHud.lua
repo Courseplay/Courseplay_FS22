@@ -283,6 +283,12 @@ function CpHud:onUpdate(dt)
     local spec = self.spec_cpHud
     local strategy = self:getCpDriveStrategy()
     spec.status:update(dt, self:getIsCpActive(), strategy)
+    if not spec.finishedFirstUpdate then
+        for _, setting in ipairs(spec.hudSettings.settings) do
+            setting:refresh()
+        end
+    end
+    spec.finishedFirstUpdate = true
 end
 
 function CpHud:onDraw()
