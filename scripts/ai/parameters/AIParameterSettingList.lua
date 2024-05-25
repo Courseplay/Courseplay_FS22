@@ -456,7 +456,7 @@ end
 function AIParameterSettingList:resetToLoadedValue()
 	if self.loadedValue ~= nil then 
 		self:setFloatValue(self.loadedValue)
-		self:debug("Resetting value to loaded value: ", tostring(self:getValue()))
+		self:debug("Resetting value to loaded value: %s", tostring(self:getValue()))
 	end
 end
 
