@@ -137,6 +137,10 @@ function CpJobParameters:debug(...)
     self.job:debug(...)
 end
 
+function CpJobParameters:isCpActive()
+    return self.job:getVehicle() and self.job:getVehicle():getIsCpActive()
+end
+
 ---@class CpFieldWorkJobParameters : CpJobParameters
 CpFieldWorkJobParameters = CpObject(CpJobParameters)
 function CpFieldWorkJobParameters:init(job)
@@ -319,11 +323,6 @@ function CpBunkerSiloJobParameters:isDrivingForwardsIntoSiloSettingVisible()
     end
     return true
 end
-
-function CpBunkerSiloJobParameters:isCpActive()
-    return self.job:getVehicle() and self.job:getVehicle():getIsCpActive()
-end
-
 
 --- AI parameters for the bunker silo job.
 ---@class CpSiloLoaderJobParameters : CpJobParameters
