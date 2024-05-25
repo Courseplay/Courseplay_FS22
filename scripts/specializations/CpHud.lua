@@ -284,6 +284,14 @@ function CpHud:onUpdate(dt)
     local spec = self.spec_cpHud
     local strategy = self:getCpDriveStrategy()
     spec.status:update(dt, self:getIsCpActive(), strategy)
+    if not spec.finishedFirstUpdate then
+        --- Attach/Detach only happens after the synchronizing
+        for _, setting in ipairs(spec.hudSettings.settings) do
+            setting:refresh()
+            setting:resetToLoadedValue()
+        end
+    end
+    spec.finishedFirstUpdate = true
 end
 
 function CpHud:onDraw()
