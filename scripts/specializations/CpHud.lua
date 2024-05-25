@@ -286,6 +286,7 @@ function CpHud:onUpdate(dt)
     if not spec.finishedFirstUpdate then
         for _, setting in ipairs(spec.hudSettings.settings) do
             setting:refresh()
+            setting:resetToLoadedValue()
         end
     end
     spec.finishedFirstUpdate = true

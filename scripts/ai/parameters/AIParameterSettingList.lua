@@ -269,6 +269,7 @@ end
 
 function AIParameterSettingList:readStreamInternal(streamId, connection)
 	local setupIx = streamReadInt32(streamId)
+	self.loadedValue = self.data.values[setupIx]
 	self:setToIx(self:getClosestIxFromSetup(setupIx))
 	self:debug("set to %s from stream.", tostring(self:getString()))
 end
