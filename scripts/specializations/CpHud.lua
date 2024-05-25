@@ -42,6 +42,7 @@ function CpHud.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onPostLoad", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpHud)
+    SpecializationUtil.registerEventListener(vehicleType, "onPostUpdate", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onDraw", CpHud)
@@ -284,6 +285,10 @@ function CpHud:onUpdate(dt)
     local spec = self.spec_cpHud
     local strategy = self:getCpDriveStrategy()
     spec.status:update(dt, self:getIsCpActive(), strategy)
+end
+
+function CpHud:onPostUpdate(dt)
+    local spec = self.spec_cpHud
     if not spec.finishedFirstUpdate then
         --- Attach/Detach only happens after the synchronizing
         for _, setting in ipairs(spec.hudSettings.settings) do
