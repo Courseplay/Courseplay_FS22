@@ -347,21 +347,21 @@ end
 --- the correct reason is needed for a possible AD takeover.
 function AIDriveStrategyFindBales:finishJob()
     if self:areBaleLoadersFull() then 
-        self:debug('Bale loader is full, stopping job.')
+        self:debug('All the bale loaders are full, so stopping the job.')
         self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
     elseif self:hasBalesLoaded() then 
         if self.baleLoaderController and self.baleLoaderController:isChangingBaleSize() then 
-            self:debug('There really are no more bales on the field')
+            self:debug('There really are no more bales on the field, so stopping the job')
             self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
         else            
-            self:debug('There really are no more bales on the field')
+            self:debug('No more bales found on the field, so stopping the job and sending the loader to unload the bales.')
             self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
         end
     elseif self.baleLoader and self.wrongWrapTypeFound then 
-        self:debug('Only bales with a wrong wrap type left.')
+        self:debug('Only bales with a wrong wrap type are left on the field.')
         self.vehicle:stopCurrentAIJob(AIMessageErrorWrongBaleWrapType.new())
     else
-        self:debug('There really are no more bales on the field')
+        self:debug('No more bales left on the field and no bales are loader and so on ..')
         self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
     end
 end
