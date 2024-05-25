@@ -354,6 +354,7 @@ You can define the following custom settings:
     <!--\vehicles\hawe-->
     <Vehicle name="suw5000.xml"
              tipSideIndex = "2"
+             turnRadius = "10"
     />
     <!--\vehicles\flexicoil-->
     <Vehicle name="st820.xml"
