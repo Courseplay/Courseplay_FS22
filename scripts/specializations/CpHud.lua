@@ -210,6 +210,7 @@ end
 function CpHud:onReadStream(streamId, connection)
     local spec = self.spec_cpHud
     for _, setting in ipairs(spec.hudSettings.settings) do
+        setting:refresh()
         setting:readStream(streamId, connection)
     end
 end
