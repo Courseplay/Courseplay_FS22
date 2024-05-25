@@ -42,7 +42,6 @@ function CpHud.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onPostLoad", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpHud)
-    SpecializationUtil.registerEventListener(vehicleType, "onPostUpdate", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onDraw", CpHud)
@@ -257,6 +256,18 @@ function CpHud:onEnterVehicle(isControlling)
                 self.spec_cpHud.savedCameraRotatableInfo)
         local spec = self.spec_cpHud
         spec.hud:openClose(CpHud.isHudActive)
+
+        if not spec.firstTimeEntered then
+            --- Attach/Detach only happens after the synchronizing is done.
+            --- For some reason the detection of the inital attach/detach event
+            --- is not corresponding to Vehicle:getIsSynchronized() function,
+            --- so we only do it after the first time entering the vehicle. 
+            for _, setting in ipairs(spec.hudSettings.settings) do
+                setting:refresh()
+                setting:resetToLoadedValue()
+            end
+        end
+        spec.firstTimeEntered = true
     end
 end
 
@@ -285,18 +296,6 @@ function CpHud:onUpdate(dt)
     local spec = self.spec_cpHud
     local strategy = self:getCpDriveStrategy()
     spec.status:update(dt, self:getIsCpActive(), strategy)
-end
-
-function CpHud:onPostUpdate(dt)
-    local spec = self.spec_cpHud
-    if not spec.finishedFirstUpdate and self:getIsSynchronized() then
-        --- Attach/Detach only happens after the synchronizing
-        for _, setting in ipairs(spec.hudSettings.settings) do
-            setting:refresh()
-            setting:resetToLoadedValue()
-        end
-    end
-    spec.finishedFirstUpdate = true
 end
 
 function CpHud:onDraw()
