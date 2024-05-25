@@ -289,7 +289,7 @@ end
 
 function CpHud:onPostUpdate(dt)
     local spec = self.spec_cpHud
-    if not spec.finishedFirstUpdate then
+    if not spec.finishedFirstUpdate and self:getIsSynchronized() then
         --- Attach/Detach only happens after the synchronizing
         for _, setting in ipairs(spec.hudSettings.settings) do
             setting:refresh()
