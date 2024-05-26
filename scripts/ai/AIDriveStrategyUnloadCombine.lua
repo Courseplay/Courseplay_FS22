@@ -1465,7 +1465,7 @@ function AIDriveStrategyUnloadCombine:startPathfindingToWaitingCombine(xOffset, 
     context:vehiclesToIgnore({})
     self.pathfinderController:registerListeners(self, self.onPathfindingDoneToWaitingCombine,
             self.onPathfindingFailedToStationaryTarget, self.onPathfindingObstacleAtStart)
-    self.pathfinderController:findPathToNode(context, self:getPipeOffsetReferenceNode(), xOffset or 0, zOffset or 0, 2)
+    self.pathfinderController:findPathToNode(context, self:getPipeOffsetReferenceNode(), xOffset or 0, zOffset or 0, 3)
 end
 
 function AIDriveStrategyUnloadCombine:onPathfindingDoneToWaitingCombine(controller, success, course, goalNodeInvalid)
@@ -2396,7 +2396,7 @@ function AIDriveStrategyUnloadCombine:startPathfindingToInvertedGoalPositionMark
     self.pathfinderController:registerListeners(self, self.onPathfindingDoneToInvertedGoalPositionMarker,
             self.onPathfindingFailedToStationaryTarget, self.onPathfindingObstacleAtStart)
     self.pathfinderController:findPathToNode(context, self.invertedStartPositionMarkerNode,
-            self.invertedGoalPositionOffset, -1.5 * AIUtil.getLength(self.vehicle), 2)
+            self.invertedGoalPositionOffset, -1.5 * AIUtil.getLength(self.vehicle), 3)
 end
 
 --- Path to the start position was found.
@@ -2465,7 +2465,7 @@ function AIDriveStrategyUnloadCombine:startSelfUnload(ignoreFruit)
         self.pathfinderController:registerListeners(self,
                 self.onPathfindingDoneBeforeSelfUnload,
                 self.onPathfindingFailedBeforeSelfUnload, self.onPathfindingObstacleAtStart)
-        self.pathfinderController:findPathToNode(context, self.selfUnloadTargetNode, offsetX, -alignLength, 2)
+        self.pathfinderController:findPathToNode(context, self.selfUnloadTargetNode, offsetX, -alignLength, 3)
     else
         self:debug('Pathfinder already active')
     end
@@ -2728,7 +2728,7 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
     self.pathfinderController:registerListeners(self, self.onPathfindingDoneBeforeUnloadingOnField,
             self.onPathfindingFailedToStationaryTarget, self.onPathfindingObstacleAtStart)
     self.pathfinderController:findPathToNode(context, self.fieldUnloadPositionNode,
-            -self.fieldUnloadData.xOffset, -AIUtil.getLength(self.vehicle) * 1.3, 2)
+            -self.fieldUnloadData.xOffset, -AIUtil.getLength(self.vehicle) * 1.3, 3)
 end
 
 --- Moves the field unload position to the center front of the heap.
@@ -2935,7 +2935,7 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadingFinished()
     self.pathfinderController:registerListeners(self, self.onPathfindingDoneBeforeDrivingToFieldUnloadParkPosition,
             self.onPathfindingFailedToStationaryTarget, self.onPathfindingObstacleAtStart)
     self.pathfinderController:findPathToNode(context, self.fieldUnloadTurnEndNode,
-            -self.fieldUnloadData.xOffset * 1.5, -AIUtil.getLength(self.vehicle), 2)
+            -self.fieldUnloadData.xOffset * 1.5, -AIUtil.getLength(self.vehicle), 3)
 end
 
 --- Course to the park position found.
