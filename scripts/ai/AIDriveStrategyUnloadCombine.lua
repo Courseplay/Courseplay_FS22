@@ -2472,9 +2472,7 @@ function AIDriveStrategyUnloadCombine:startSelfUnload(ignoreFruit)
     return true
 end
 
-function AIDriveStrategyUnloadCombine:onPathfindingFailedBeforeSelfUnload(controller, lastContext, wasLastRetry,
-                                                                          currentRetryAttempt, trailerCollisionsOnly,
-                                                                          fruitPenaltyNodePercent, offFieldPenaltyNodePercent)
+function AIDriveStrategyUnloadCombine:onPathfindingFailedBeforeSelfUnload(...)
     self:debug('Pathfinding before self unload failed.')
     self:onPathfindingFailed(function()
         self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
