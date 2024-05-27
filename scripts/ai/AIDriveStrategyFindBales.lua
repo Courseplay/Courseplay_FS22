@@ -30,8 +30,11 @@ AIDriveStrategyFindBales.myStates = {
     APPROACHING_BALE = {},
     WORKING_ON_BALE = {},
     REVERSING_AFTER_PATHFINDER_FAILURE = {},
-    REVERSING_DUE_TO_OBSTACLE_AHEAD = {}
+    REVERSING_DUE_TO_OBSTACLE_AHEAD = {},
+    DRIVING_TO_START_MARKER = {}
 }
+--- Offset to apply at the goal marker, so we don't crash with an empty unloader waiting there with the same position.
+AIDriveStrategyFindBales.invertedGoalPositionOffset = -4.5
 
 function AIDriveStrategyFindBales:init(task, job)
     AIDriveStrategyCourse.init(self, task, job)
@@ -44,6 +47,9 @@ end
 function AIDriveStrategyFindBales:delete()
     AIDriveStrategyCourse.delete(self)
     g_baleToCollectManager:unlockBalesByDriver(self)
+    if self.invertedStartPositionMarkerNode then
+        CpUtil.destroyNode(self.invertedStartPositionMarkerNode)
+    end
 end
 
 function AIDriveStrategyFindBales:getGeneratedCourse(jobParameters)
@@ -70,26 +76,13 @@ function AIDriveStrategyFindBales:collectNextBale()
         self:findPathToNextBale()
     else
         self:debug('No bales found, scan the field once more before leaving for the unload course.')
-        local wrongWrapType
-        self.bales, wrongWrapType = self:findBales()
+        self.bales, self.wrongWrapTypeFound = self:findBales()
         if #self.bales > 0 then
             self:debug('Found more bales, collecting them')
             self:findPathToNextBale()
             return
         end
-        if self.baleLoader and self:hasBalesLoaded() and not (self.baleLoaderController and self.baleLoaderController:isChangingBaleSize()) then
-            if self:isReadyToFoldImplements() then
-                --- Wait until the animations have finished and then make sure the bale loader can be send back with auto drive.
-                self:debug('There really are no more bales on the field')
-                self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
-            end
-        elseif self.baleLoader and wrongWrapType then 
-            self:debug('Only bales with a wrong wrap type left.')
-            self.vehicle:stopCurrentAIJob(AIMessageErrorWrongBaleWrapType.new())
-        else
-            self:debug('There really are no more bales on the field')
-            self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
-        end
+        self:setFinished()
     end
 end
 
@@ -198,6 +191,23 @@ function AIDriveStrategyFindBales:setAIVehicle(vehicle, jobParameters)
     AIDriveStrategyCourse.setAIVehicle(self, vehicle, jobParameters)
     self.baleWrapType = jobParameters.baleWrapType:getValue()
     self:debug("Bale type selected: %s", tostring(self.baleWrapType))
+
+    local x, z = jobParameters.startPosition:getPosition()
+    local angle = jobParameters.startPosition:getAngle()
+    if x ~= nil and z ~= nil and angle ~= nil then
+        --- Additionally safety check, if the position is on the field or near it.
+        if CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z)
+                or CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < 2 * CpAIJobBaleFinder.minStartDistanceToField then
+            --- Goal position marker set in the ai menu rotated by 180 degree.
+            self.invertedStartPositionMarkerNode = CpUtil.createNode("Inverted Start position marker",
+                    x, z, angle + math.pi)
+            self:debug("Valid goal position marker was set.")
+        else
+            self:debug("Start position is too far away from the field for a valid goal position!")
+        end
+    else
+        self:debug("Invalid start position found!")
+    end
 end
 -----------------------------------------------------------------------------------------------------------------------
 --- Bale finding
@@ -316,6 +326,46 @@ function AIDriveStrategyFindBales:getBaleTarget(bale)
     return State3D(xb, -zb, CourseGenerator.fromCpAngle(yRot))
 end
 
+--- Sets the driver as finished, so either a path 
+--- to the start marker as a park position can be used
+--- or the driver stops directly.
+function AIDriveStrategyFindBales:setFinished()
+    if not self:isReadyToFoldImplements() then
+        -- Watiting until the folding has finished..
+        self:debugSparse("Waiting until an animation has finish, so the driver can be released ..")
+        return
+    end 
+    if self.invertedStartPositionMarkerNode then 
+        self:debug("A valid start position is found, so the driver tries to finish at the invered goal node")
+        self:startPathfindingToStartMarker()
+    else
+        self:finishJob()
+    end
+end
+
+--- Finishes the job with the correct stop reason, as 
+--- the correct reason is needed for a possible AD takeover.
+function AIDriveStrategyFindBales:finishJob()
+    if self:areBaleLoadersFull() then 
+        self:debug('All the bale loaders are full, so stopping the job.')
+        self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
+    elseif self:hasBalesLoaded() then 
+        if self.baleLoaderController and self.baleLoaderController:isChangingBaleSize() then 
+            self:debug('There really are no more bales on the field, so stopping the job')
+            self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
+        else            
+            self:debug('No more bales found on the field, so stopping the job and sending the loader to unload the bales.')
+            self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
+        end
+    elseif self.baleLoader and self.wrongWrapTypeFound then 
+        self:debug('Only bales with a wrong wrap type are left on the field.')
+        self.vehicle:stopCurrentAIJob(AIMessageErrorWrongBaleWrapType.new())
+    else
+        self:debug('No more bales left on the field and no bales are loader and so on ..')
+        self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
+    end
+end
+
 -----------------------------------------------------------------------------------------------------------------------
 --- Pathfinding
 -----------------------------------------------------------------------------------------------------------------------
@@ -351,6 +401,18 @@ function AIDriveStrategyFindBales:onPathfindingFinished(controller,
                 self:info('Pathfinding failed five times, giving up')
                 self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
             end
+        end
+    elseif self.state == self.states.DRIVING_TO_START_MARKER then
+        if success then
+               --- Append a straight alignment segment
+            local x, _, z = course:getWaypointPosition(course:getNumberOfWaypoints())
+            local dx, _, dz = localToWorld(self.invertedStartPositionMarkerNode, self.invertedGoalPositionOffset, 0, 0)
+
+            course:append(Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz,
+                0, 0, 0, 3, false))
+            self:startCourse(course, 1)
+        else
+            self:finishJob()
         end
     end
 end
@@ -391,6 +453,15 @@ function AIDriveStrategyFindBales:startPathfindingToBale(bale)
     self.pathfinderController:registerListeners(self, self.onPathfindingFinished, nil,
             self.onPathfindingObstacleAtStart)
     self.pathfinderController:findPathToGoal(context, self:getPathfinderBaleTargetAsGoalNode(bale))
+end
+
+--- Searches for a path to the start marker in the inverted direction.
+function AIDriveStrategyFindBales:startPathfindingToStartMarker()
+    self.state = self.states.DRIVING_TO_START_MARKER
+    local context = PathfinderContext(self.vehicle):objectsToIgnore(self:getBalesToIgnore())
+    context:allowReverse(false):maxFruitPercent(self.settings.avoidFruit:getValue() and 10 or math.huge)
+    self.pathfinderController:findPathToNode(context, self.invertedStartPositionMarkerNode,
+            self.invertedGoalPositionOffset, -1.5 * AIUtil.getLength(self.vehicle), 2)
 end
 
 function AIDriveStrategyFindBales:onPathfindingObstacleAtStart(controller, lastContext, maxDistance, trailerCollisionsOnly)
@@ -436,6 +507,9 @@ function AIDriveStrategyFindBales:onWaypointPassed(ix, course)
         elseif self.state == self.states.REVERSING_DUE_TO_OBSTACLE_AHEAD then
             self:debug('backed due to obstacle, trying again')
             self.state = self.states.SEARCHING_FOR_NEXT_BALE
+        elseif self.state == self.states.DRIVING_TO_START_MARKER then
+            self:debug("Inverted start marker position is reached.")
+            self:finishJob()
         end
     end
 end
@@ -484,6 +558,8 @@ function AIDriveStrategyFindBales:getDriveData(dt, vX, vY, vZ)
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
     elseif self.state == self.states.REVERSING_DUE_TO_OBSTACLE_AHEAD then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
+    elseif self.state == self.states.DRIVING_TO_START_MARKER then
+        self:setMaxSpeed(self.settings.fieldSpeed:getValue())
     end
 
     local moveForwards = not self.ppc:isReversing()
@@ -561,12 +637,11 @@ function AIDriveStrategyFindBales:update(dt)
             self.ppc:getCourse():draw()
         end
     end
-
-    if self:areBaleLoadersFull() and self:isReadyToFoldImplements() then
-        self:debug('Bale loader is full, stopping job.')
-        self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
+    if self.state ~= self.states.DRIVING_TO_START_MARKER then
+        if self:areBaleLoadersFull() then
+            self:setFinished()
+        end
     end
-
     --- Ignores the loaded auto loader bales.
     --- TODO: Maybe add a delay here?
     local loadedBales = self:getBalesToIgnore()

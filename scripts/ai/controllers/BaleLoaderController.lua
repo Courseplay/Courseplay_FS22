@@ -50,7 +50,10 @@ function BaleLoaderController:isFull()
 end
 
 function BaleLoaderController:canBeFolded()
-    return not self:isGrabbingBale() and self.baleLoaderSpec.emptyState == BaleLoader.EMPTY_NONE and not (self:isChangingBaleSize() and self:hasBales())
+    if self:isChangingBaleSize() then 
+        return true
+    end
+    return not self:isGrabbingBale() and self.baleLoaderSpec.emptyState == BaleLoader.EMPTY_NONE
 end
 
 function BaleLoaderController:update()

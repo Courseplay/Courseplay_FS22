@@ -226,6 +226,10 @@ function AIDriveStrategyUnloadCombine:delete()
         CpUtil.destroyNode(self.fieldUnloadTurnStartNode)
         CpUtil.destroyNode(self.fieldUnloadTurnEndNode)
     end
+    if self.invertedStartPositionMarkerNode then
+        CpUtil.destroyNode(self.invertedStartPositionMarkerNode)
+    end
+
     self:releaseCombine()
     AIDriveStrategyUnloadCombine.activeUnloaders[self] = nil
     AIDriveStrategyCourse.delete(self)
