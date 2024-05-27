@@ -261,7 +261,7 @@ function AIDriveStrategyUnloadCombine:setJobParameterValues(jobParameters)
     x, z = jobParameters.startPosition:getPosition()
     local angle = jobParameters.startPosition:getAngle()
     if x ~= nil and z ~= nil and angle ~= nil then
-        --- Additionally safety check, if the position is on the field or near it.
+        --- Additional safety check, if the position is on the field or near it.
         if CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z)
                 or CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < 2 * CpAIJobCombineUnloader.minStartDistanceToField then
             --- Goal position marker set in the ai menu rotated by 180 degree.
@@ -1423,6 +1423,7 @@ function AIDriveStrategyUnloadCombine:startPathfindingToMovingCombine(waypoint, 
     context:offFieldPenalty(self:getOffFieldPenalty(self.combineToUnload))
     context:useFieldNum(CpFieldUtil.getFieldNumUnderVehicle(self.combineToUnload))
     context:areaToAvoid(nil):vehiclesToIgnore({ self.combineToUnload })
+    context:maxIterations(PathfinderUtil.getMaxIterationsForFieldPolygon(self.fieldPolygon))
     self.pathfinderController:registerListeners(self, self.onPathfindingDoneToMovingCombine,
             self.onPathfindingFailedToMovingTarget, self.onPathfindingObstacleAtStart)
     -- TODO: consider creating a variation of findPathToWaypoint() which accepts a Waypoint instead of Course/ix
@@ -1462,7 +1463,7 @@ function AIDriveStrategyUnloadCombine:startPathfindingToWaitingCombine(xOffset, 
     context:offFieldPenalty(self:getOffFieldPenalty(self.combineToUnload))
     context:useFieldNum(CpFieldUtil.getFieldNumUnderVehicle(self.combineToUnload))
     context:areaToAvoid(self.combineToUnload:getCpDriveStrategy():getAreaToAvoid())
-    context:vehiclesToIgnore({})
+    context:vehiclesToIgnore({}):maxIterations(PathfinderUtil.getMaxIterationsForFieldPolygon(self.fieldPolygon))
     self.pathfinderController:registerListeners(self, self.onPathfindingDoneToWaitingCombine,
             self.onPathfindingFailedToStationaryTarget, self.onPathfindingObstacleAtStart)
     self.pathfinderController:findPathToNode(context, self:getPipeOffsetReferenceNode(), xOffset or 0, zOffset or 0, 3)
@@ -2393,6 +2394,7 @@ function AIDriveStrategyUnloadCombine:startPathfindingToInvertedGoalPositionMark
     local context = PathfinderContext(self.vehicle)
     context:maxFruitPercent(self:getMaxFruitPercent()):offFieldPenalty(PathfinderContext.defaultOffFieldPenalty)
     context:useFieldNum(fieldNum):allowReverse(self:getAllowReversePathfinding())
+    context:maxIterations(PathfinderUtil.getMaxIterationsForFieldPolygon(self.fieldPolygon))
     self.pathfinderController:registerListeners(self, self.onPathfindingDoneToInvertedGoalPositionMarker,
             self.onPathfindingFailedToStationaryTarget, self.onPathfindingObstacleAtStart)
     self.pathfinderController:findPathToNode(context, self.invertedStartPositionMarkerNode,
@@ -2462,6 +2464,7 @@ function AIDriveStrategyUnloadCombine:startSelfUnload(ignoreFruit)
         -- field and the trailer
         context:areaToIgnoreOffFieldPenalty(
                 PathfinderUtil.NodeArea.createVehicleArea(self.unloadTrailer, 1.5 * SelfUnloadHelper.maxDistanceFromField))
+        context:maxIterations(PathfinderUtil.getMaxIterationsForFieldPolygon(self.fieldPolygon))
         self.pathfinderController:registerListeners(self,
                 self.onPathfindingDoneBeforeSelfUnload,
                 self.onPathfindingFailedBeforeSelfUnload, self.onPathfindingObstacleAtStart)
@@ -2725,6 +2728,7 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
     context:maxFruitPercent(self:getMaxFruitPercent()):offFieldPenalty(PathfinderContext.defaultOffFieldPenalty)
     context:useFieldNum(CpFieldUtil.getFieldNumUnderVehicle(self.vehicle))
     context:allowReverse(self:getAllowReversePathfinding())
+    context:maxIterations(PathfinderUtil.getMaxIterationsForFieldPolygon(self.fieldPolygon))
     self.pathfinderController:registerListeners(self, self.onPathfindingDoneBeforeUnloadingOnField,
             self.onPathfindingFailedToStationaryTarget, self.onPathfindingObstacleAtStart)
     self.pathfinderController:findPathToNode(context, self.fieldUnloadPositionNode,
@@ -2932,6 +2936,7 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadingFinished()
     context:maxFruitPercent(self:getMaxFruitPercent()):offFieldPenalty(0)
     context:useFieldNum(CpFieldUtil.getFieldNumUnderVehicle(self.vehicle))
     context:allowReverse(self:getAllowReversePathfinding())
+    context:maxIterations(PathfinderUtil.getMaxIterationsForFieldPolygon(self.fieldPolygon))
     self.pathfinderController:registerListeners(self, self.onPathfindingDoneBeforeDrivingToFieldUnloadParkPosition,
             self.onPathfindingFailedToStationaryTarget, self.onPathfindingObstacleAtStart)
     self.pathfinderController:findPathToNode(context, self.fieldUnloadTurnEndNode,

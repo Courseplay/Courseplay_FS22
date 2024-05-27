@@ -39,6 +39,10 @@ local context = PathfinderContext():maxFruitPercent(100):useFieldNum(10):vehicle
 ---@field mustBeAccurate function
 ---@field areaToIgnoreFruit function
 ---@field areaToIgnoreOffFieldPenalty function
+---@field ignoreFruitHeaps function
+---@field maxIterations function
+---@field obstacleAtStartRange function
+---@field ignoreTrailerAtStartRange function
 ---@field _maxFruitPercent number
 ---@field _offFieldPenalty number
 ---@field _useFieldNum number
@@ -50,6 +54,9 @@ local context = PathfinderContext():maxFruitPercent(100):useFieldNum(10):vehicle
 ---@field _areaToIgnoreFruit PathfinderUtil.Area|nil
 ---@field _areaToIgnoreOffFieldPenalty PathfinderUtil.NodeArea|nil
 ---@field _ignoreFruitHeaps boolean
+---@field _maxIterations number
+---@field _obstacleAtStartRange number
+---@field _ignoreTrailerAtStartRange number
 PathfinderContext = CpObject()
 PathfinderContext.defaultOffFieldPenalty = 7.5
 PathfinderContext.attributesToDefaultValue = {
@@ -89,7 +96,10 @@ PathfinderContext.attributesToDefaultValue = {
     -- This is useful when there's another vehicle close to the starting point, and the trailer (with the
     -- buffer area around it) often triggers a collision which, when the vehicle drives the path, isn't
     -- really a problem.
-    ["ignoreTrailerAtStartRange"] = 0
+    ["ignoreTrailerAtStartRange"] = 0,
+    -- Maximum number of iterations before the hybrid A* pathfinding gives up. The default works well
+    -- for normal sized fields, on bigger maps with huge fields you may want to double or triple this
+    ["maxIterations"] = HybridAStar.defaultMaxIterations
 }
 
 function PathfinderContext:init(vehicle)
