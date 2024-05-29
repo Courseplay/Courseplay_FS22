@@ -146,6 +146,21 @@ function CpMathUtil.getAreaOfPolygon(polygon)
 	return math.abs(area)
 end
 
+--- Get the circumference of a polygon in meters (the class Polygon has its own calculation, this is to be
+--- used for a very generic case with polygons in game or normal coordinate systems)
+---@param polygon [] array elements can be {x, z}, {x, y, z} or {x, y}
+function CpMathUtil.getCircumferenceOfPolygon(polygon)
+	local circumference = 0
+	for i = 1, #polygon - 1 do
+		local x1, y1 = polygon[i].x, polygon[i].z and -polygon[i].z or polygon[i].y
+		local x2, y2 = polygon[i + 1].x, polygon[i + 1].z and -polygon[i + 1].z or polygon[i + 1].y
+		local dx, dy  = x2 - x1, y2 - y1
+		circumference = circumference + math.sqrt(dx * dx + dy * dy)
+	end
+	return circumference
+end
+
+
 --- De-Casteljau algorithm for bezier curves.
 --- https://en.wikipedia.org/wiki/De_Casteljau%27s_algorithm
 function CpMathUtil.de_casteljau(t, points)

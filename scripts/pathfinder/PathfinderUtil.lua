@@ -554,10 +554,11 @@ end
 ---@param goal State3D goal node
 ---@param constraints PathfinderConstraints
 ---@param allowReverse boolean allow reverse driving
----@param mustBeAccurate boolean must be accurately find the goal position/angle (optional)
-function PathfinderUtil.startPathfinding(vehicle, start, goal, constraints, allowReverse, mustBeAccurate)
+---@param mustBeAccurate boolean must be accurately find the goal position/angle
+---@param maxIterations number maximum number of iterations
+function PathfinderUtil.startPathfinding(vehicle, start, goal, constraints, allowReverse, mustBeAccurate, maxIterations)
     PathfinderUtil.overlapBoxes = {}
-    local pathfinder = HybridAStarWithAStarInTheMiddle(vehicle, constraints.turnRadius * 4, 100, 40000, mustBeAccurate)
+    local pathfinder = HybridAStarWithAStarInTheMiddle(vehicle, constraints.turnRadius * 4, 100, maxIterations, mustBeAccurate)
     return pathfinder, pathfinder:start(start, goal, constraints.turnRadius, allowReverse,
             constraints, constraints.trailerHitchLength)
 end
@@ -703,7 +704,8 @@ function PathfinderUtil.startPathfindingFromVehicleToGoal(goal, context)
     local constraints = PathfinderConstraints(context)
     PathfinderUtil.initializeTrailerHeading(start, constraints.vehicleData)
 
-    return PathfinderUtil.startPathfinding(context._vehicle, start, goal, constraints, context._allowReverse, context._mustBeAccurate)
+    return PathfinderUtil.startPathfinding(context._vehicle, start, goal, constraints, context._allowReverse,
+            context._mustBeAccurate, context._maxIterations)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -758,6 +760,21 @@ function PathfinderUtil.startAStarPathfindingFromVehicleToNode(goalNode, xOffset
 
     local pathfinder = AStar(context._vehicle, 100, 10000)
     return pathfinder, pathfinder:start(start, goal, constraints.turnRadius, false, constraints, constraints.trailerHitchLength)
+end
+
+--- Helper function to find a reasonable number of maximum iterations based on a field polygon
+---@param fieldPolygon Polygon
+---@return number maximum iterations we think has a good chance to succeed on the above polygon
+function PathfinderUtil.getMaxIterationsForFieldPolygon(fieldPolygon)
+    if fieldPolygon then
+        local circumference = fieldPolygon.circumference
+        if not circumference then
+            circumference = CpMathUtil.getCircumferenceOfPolygon(fieldPolygon)
+        end
+        return math.floor(math.max(HybridAStar.defaultMaxIterations, 20 * circumference))
+    else
+        return HybridAStar.defaultMaxIterations
+    end
 end
 
 ------------------------------------------------------------------------------------------------------------------------

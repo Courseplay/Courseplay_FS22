@@ -83,6 +83,7 @@ function PathfinderConstraints:resetCounts()
     self.totalNodeCount = 0
     self.fruitPenaltyNodeCount = 0
     self.offFieldPenaltyNodeCount = 0
+    self.notOwnedFieldPenaltyNodeCount = 0
     self.collisionNodeCount = 0
     self.trailerCollisionNodeCount = 0
     self.areaToAvoidPenaltyCount = 0
@@ -96,12 +97,17 @@ function PathfinderConstraints:getNodePenalty(node)
     -- not on any field
     local offFieldPenalty = self.offFieldPenalty
     local offField = not CpFieldUtil.isOnField(node.x, -node.y)
-    if self.fieldNum ~= 0 and not offField then
-        -- if there's a preferred field and we are on a field
+    if not offField then
+        -- we are on a field
         if not PathfinderUtil.isWorldPositionOwned(node.x, -node.y) then
-            -- the field we are on is not ours, more penalty!
-            offField = true
-            offFieldPenalty = self.offFieldPenalty * 1.2
+            -- but we do not own this field
+            local fieldIdUnderNode = CpFieldUtil.getFieldIdAtWorldPosition(node.x, -node.y)
+            if not CpFieldUtil.isActiveMissionField(fieldIdUnderNode) then
+                -- the field we are on is not ours and not a mission field, more penalty!
+                offField = true
+                offFieldPenalty = self.offFieldPenalty * 1.2
+                self.notOwnedFieldPenaltyNodeCount = self.notOwnedFieldPenaltyNodeCount + 1
+            end
         end
     end
     if offField and (self.areaToIgnoreOffFieldPenalty == nil or (self.areaToIgnoreOffFieldPenalty ~= nil and
@@ -205,9 +211,9 @@ function PathfinderConstraints:resetStrictMode()
 end
 
 function PathfinderConstraints:showStatistics()
-    self:debug('Nodes: %d, Penalties: fruit: %d, off-field: %d, collisions: %d, trailer collisions: %d, area to avoid: %d',
-            self.totalNodeCount, self.fruitPenaltyNodeCount, self.offFieldPenaltyNodeCount, self.collisionNodeCount,
-            self.trailerCollisionNodeCount, self.areaToAvoidPenaltyCount)
+    self:debug('Nodes: %d, Penalties: fruit: %d, off-field: %d, not owned field: %d, collisions: %d, trailer collisions: %d, area to avoid: %d',
+            self.totalNodeCount, self.fruitPenaltyNodeCount, self.offFieldPenaltyNodeCount, self.notOwnedFieldPenaltyNodeCount,
+            self.collisionNodeCount, self.trailerCollisionNodeCount, self.areaToAvoidPenaltyCount)
     self:debug('  max fruit %.1f %%, off-field penalty: %.1f',
             self.maxFruitPercent, self.offFieldPenalty)
 end
