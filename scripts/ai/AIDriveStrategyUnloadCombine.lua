@@ -1530,22 +1530,23 @@ function AIDriveStrategyUnloadCombine:onPathfindingFailed(giveUpFunc, controller
                                                           currentRetryAttempt, trailerCollisionsOnly,
                                                           fruitPenaltyNodePercent, offFieldPenaltyNodePercent)
     -- first, apply 70% of the original penalty, second retry: 40% and last one: 10%
-    local relaxingSteps = {0.7, 0.4, 0.1}
+    local offFieldPenaltyRelaxingSteps = { 0.7, 0.4, 0.1}
+    local fruitPenaltyRelaxingSteps = { 2, 4, 8 }
     if wasLastRetry then
         giveUpFunc()
     elseif currentRetryAttempt < 3 then
         if fruitPenaltyNodePercent > offFieldPenaltyNodePercent then
-            self:debug('%d. attempt to find path failed, trying with reduced fruit percent', currentRetryAttempt)
-            lastContext:maxFruitPercent(relaxingSteps[currentRetryAttempt] * self:getMaxFruitPercent())
+            self:debug('%d. attempt to find path failed, trying with reduced fruit penalty', currentRetryAttempt)
+            lastContext:maxFruitPercent(fruitPenaltyRelaxingSteps[currentRetryAttempt] * self:getMaxFruitPercent())
         else
             self:debug('%d. attempt to find path failed, trying with reduced off-field penalty', currentRetryAttempt)
-            lastContext:offFieldPenalty(relaxingSteps[currentRetryAttempt] * PathfinderContext.defaultOffFieldPenalty)
+            lastContext:offFieldPenalty(offFieldPenaltyRelaxingSteps[currentRetryAttempt] * PathfinderContext.defaultOffFieldPenalty)
         end
         controller:retry(lastContext)
     elseif currentRetryAttempt == 3 then
         self:debug('Last attempt to find path failed, trying off-field penalty and fruit avoidance disabled')
         -- On the last try, only disable off-field penalty and keep a bit fruit penalty
-        lastContext:maxFruitPercent(relaxingSteps[currentRetryAttempt] * self:getMaxFruitPercent()):offFieldPenalty(0)
+        lastContext:maxFruitPercent(fruitPenaltyRelaxingSteps[currentRetryAttempt] * self:getMaxFruitPercent()):offFieldPenalty(0)
         controller:retry(lastContext)
     else
         giveUpFunc()
