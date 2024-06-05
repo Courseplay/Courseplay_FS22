@@ -363,7 +363,11 @@ end
 
 PathfinderUtil.collisionDetector = PathfinderUtil.CollisionDetector()
 
+--- Is there harvestable fruit at x, z?
 ---@param areaToIgnoreFruit PathfinderUtil.Area|nil
+---@return boolean true if there's fruit in the length * width area around x, z
+---@return number percentage of area covered by fruit
+---@return string name of fruit
 function PathfinderUtil.hasFruit(x, z, length, width, areaToIgnoreFruit)
     if areaToIgnoreFruit and areaToIgnoreFruit:contains(x, z) then
         return false
@@ -379,12 +383,12 @@ function PathfinderUtil.hasFruit(x, z, length, width, areaToIgnoreFruit)
         end
         if not ignoreThis then
             -- if the last boolean parameter is true then it returns fruitValue > 0 for fruits/states ready for forage also
-            local fruitValue, a, b, c = FSDensityMapUtil.getFruitArea(fruitType.index, x - width / 2, z - length / 2, x + width / 2, z, x, z + length / 2, true, true)
+            local fruitValue, numPixels, totalNumPixels, c = FSDensityMapUtil.getFruitArea(fruitType.index, x - width / 2, z - length / 2, x + width / 2, z, x, z + length / 2, true, true)
             --if g_updateLoopIndex % 200 == 0 then
             --CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, '%.1f, %s, %s, %s %s', fruitValue, tostring(a), tostring(b), tostring(c), g_fruitTypeManager:getFruitTypeByIndex(fruitType.index).name)
             --end
             if fruitValue > 0 then
-                return true, fruitValue, g_fruitTypeManager:getFruitTypeByIndex(fruitType.index).name
+                return true, 100 * numPixels / totalNumPixels, g_fruitTypeManager:getFruitTypeByIndex(fruitType.index).name
             end
         end
     end
