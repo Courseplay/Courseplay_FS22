@@ -237,7 +237,6 @@ function CpAIWorker:cpStartStopDriver(isStartedByHud)
         self:stopCurrentAIJob(AIMessageSuccessStoppedByUser.new())
         CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Stopped current helper.")
     else
-        self:updateAIFieldWorkerImplementData()
         local job = self:getCpStartableJob(isStartedByHud)
         if job == nil then
             CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Could not find a CP job to start!")

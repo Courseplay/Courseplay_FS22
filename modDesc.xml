@@ -457,6 +457,7 @@ Changelog 7.1.0.0:
 		<specialization name="cpCourseGeneratorSettings" className="CpCourseGeneratorSettings" filename="scripts/specializations/CpCourseGeneratorSettings.lua" />
 		<specialization name="cpCourseManager" className="CpCourseManager" filename="scripts/specializations/CpCourseManager.lua"/>
 		<specialization name="cpAIWorker" className="CpAIWorker" filename="scripts/specializations/CpAIWorker.lua"/>
+		<specialization name="cpAIImplement" className="CpAIImplement" filename="scripts/specializations/CpAIImplement.lua"/>
 		<specialization name="cpAIFieldWorker" className="CpAIFieldWorker" filename="scripts/specializations/CpAIFieldWorker.lua"/>
 		<specialization name="cpAIBaleFinder" className="CpAIBaleFinder" filename="scripts/specializations/CpAIBaleFinder.lua"/>
 		<specialization name="cpAICombineUnloader" className="CpAICombineUnloader" filename="scripts/specializations/CpAICombineUnloader.lua"/>
