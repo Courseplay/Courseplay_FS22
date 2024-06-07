@@ -69,6 +69,7 @@ function CpAIFieldWorker.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanStartCp', CpAIFieldWorker.getCanStartCp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartableJob', CpAIFieldWorker.getCpStartableJob)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpDriveStrategy', CpAIFieldWorker.getCpDriveStrategy)
+    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'updateAIFieldWorkerImplementData', CpAIFieldWorker.updateAIFieldWorkerImplementData)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -87,6 +88,8 @@ function CpAIFieldWorker:onLoad(savegame)
     spec.cpJobStartAtFirstWp:getCpJobParameters().startAt:setValue(CpFieldWorkJobParameters.START_AT_FIRST_POINT)
     spec.cpJobStartAtLastWp = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
     spec.cpJobStartAtLastWp:getCpJobParameters().startAt:setValue(CpFieldWorkJobParameters.START_AT_LAST_POINT)
+
+    spec.aiImplementList = {}
 end
 
 function CpAIFieldWorker:onLoadFinished(savegame)
@@ -194,7 +197,6 @@ end
 --- Starts the cp driver at the first waypoint.
 function CpAIFieldWorker:startCpAtFirstWp()
     local spec = self.spec_cpAIFieldWorker
-    self:updateAIFieldWorkerImplementData()
     if self:hasCpCourse() and self:getCanStartCpFieldWork() then
         spec.cpJobStartAtFirstWp:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
         --- Applies the lane offset set in the hud, so ad can start with the correct lane offset.
@@ -211,7 +213,6 @@ end
 --- Starts the cp driver at the last driven waypoint.
 function CpAIFieldWorker:startCpAtLastWp()
     local spec = self.spec_cpAIFieldWorker
-    self:updateAIFieldWorkerImplementData()
     if self:hasCpCourse() and self:getCanStartCpFieldWork() then
         spec.cpJobStartAtLastWp:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
         spec.cpJobStartAtLastWp:setValues()
@@ -251,7 +252,19 @@ function CpAIFieldWorker:onCpFinished()
  
 end
 
+function CpAIFieldWorker:updateAIFieldWorkerImplementData(superFunc)
+    superFunc(self)
+    local spec = self.spec_cpAIFieldWorker
+	spec.aiImplementList = {}
+    setmetatable(spec.aiImplementList, CpAIImplement.AIIMPLEMENT_MT)
+	self:addVehicleToAIImplementList(spec.aiImplementList)
+end
+
 function CpAIFieldWorker:getCanStartCpFieldWork()
+    local spec = self.spec_cpAIFieldWorker
+    if #spec.aiImplementList > 0 then
+        return true
+    end
     self:updateAIFieldWorkerImplementData()
     -- built in helper can't handle it, but we may be able to ...
     if AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_pdlc_goeweilPack.balerStationary") then 
