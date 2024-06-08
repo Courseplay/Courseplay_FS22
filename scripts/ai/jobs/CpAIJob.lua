@@ -76,6 +76,10 @@ function CpAIJob:getStartTaskIndex()
 		-- TODO: this isn't very nice as we rely here on the derived classes to add more tasks
 		return 2
 	end
+	if self.driveToTask.x == nil then 
+		CpUtil.info("Drive to task was skipped, as no valid start position is set!")
+		return 2
+	end
 	return 1
 end
 

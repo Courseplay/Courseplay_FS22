@@ -298,7 +298,8 @@ end
 
 function CpAIJobCombineUnloader:getNextTaskIndex(isSkipTask)
 	--- Giants unload, sets the correct dischargeNode and vehicle and unload target information.
-	return AIJobDeliver.getNextTaskIndex(self, isSkipTask)
+	local index = AIJobDeliver.getNextTaskIndex(self, isSkipTask)
+	return index
 end
 
 function CpAIJobCombineUnloader:canContinueWork()
@@ -323,6 +324,10 @@ function CpAIJobCombineUnloader:canContinueWork()
 			end
 			if not hasSupportedFillTypeLoaded then
 				return false, AIMessageErrorNoValidFillTypeLoaded.new()
+			end
+			if self.driveToUnloadingTask.x == nil then 
+				CpUtil.errorVehicle(self.vehicle, "No valid drive to unload task position set!")
+				return false, AIMessageCpError.new()
 			end
 		end
 	end
@@ -352,14 +357,9 @@ function CpAIJobCombineUnloader:getStartTaskIndex()
 	local vehicle = self:getVehicle()
 	local fieldPolygon = self:getFieldPolygon()
 	local x, _, z = getWorldTranslation(vehicle.rootNode)
-	if CpMathUtil.isPointInPolygon(fieldPolygon, x, z) or 
-		CpMathUtil.getClosestDistanceToPolygonEdge(fieldPolygon, x, z) < 2*self.minStartDistanceToField then
-		CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Close to the field, start cp drive strategy.")
-		return startTask
-	end
 	local fillLevelPercentage = FillLevelManager.getTotalTrailerFillLevelPercentage(vehicle)
-	local readyToDriveUnloading = vehicle:getCpSettings().fullThreshold:getValue() < fillLevelPercentage
-	if readyToDriveUnloading and self:canContinueWork() then 
+	local readyToDriveUnloading = vehicle:getCpSettings().fullThreshold:getValue() <= fillLevelPercentage
+	if readyToDriveUnloading then 
 		CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Not close to the field and vehicle is full, so start driving to unload.")
 		--- Small hack, so we can use the giants function and don't need to do copy & paste.
 		local oldTaskIx = self.currentTaskIndex
@@ -367,7 +367,16 @@ function CpAIJobCombineUnloader:getStartTaskIndex()
 		--- Needs to be used to set the unload target coordinates.
 		self:getNextTaskIndex()
 		self.currentTaskIndex = oldTaskIx
+		if self.driveToUnloadingTask.x == nil then 
+			CpUtil.errorVehicle(self.vehicle, "No valid drive to unload task position set!")
+			return startTask
+		end
 		return self.driveToUnloadingTask.taskIndex
+	end
+	if CpMathUtil.isPointInPolygon(fieldPolygon, x, z) or 
+		CpMathUtil.getClosestDistanceToPolygonEdge(fieldPolygon, x, z) < 2*self.minStartDistanceToField then
+		CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Close to the field, start cp drive strategy.")
+		return startTask
 	end
 	return startTask
 end
