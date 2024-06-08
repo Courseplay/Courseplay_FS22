@@ -46,6 +46,7 @@ end
 function CpAIBunkerSiloWorker.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanStartCp', CpAIBunkerSiloWorker.getCanStartCp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartableJob', CpAIBunkerSiloWorker.getCpStartableJob)
+    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'updateAIFieldWorkerImplementData', CpAIBunkerSiloWorker.updateAIFieldWorkerImplementData)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtFirstWp', CpAIBunkerSiloWorker.startCpAtFirstWp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtLastWp', CpAIBunkerSiloWorker.startCpAtLastWp)
 end
@@ -59,6 +60,7 @@ function CpAIBunkerSiloWorker:onLoad(savegame)
     --- This job is for starting the driving with a key bind or the mini gui.
     spec.cpJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.BUNKER_SILO_CP)
     spec.cpJob:setVehicle(self, true)
+    spec.aiImplementList = {}
 end
 
 
@@ -89,15 +91,19 @@ function CpAIBunkerSiloWorker:onUpdate(dt)
 
 end
 
+function CpAIBunkerSiloWorker:updateAIFieldWorkerImplementData(superFunc)
+    superFunc(self)
+    local spec = self.spec_cpAIBunkerSiloWorker
+	spec.aiImplementList = {}
+    setmetatable(spec.aiImplementList, CpAIImplement.JOB_TABLES_MT.BUNKER_SILO)
+	self:addVehicleToAIImplementList(spec.aiImplementList)
+end
+
 --- Is the bunker silo allowed?
 function CpAIBunkerSiloWorker:getCanStartCpBunkerSiloWorker()
-    if AIUtil.hasChildVehicleWithSpecialization(self, Shovel) then 
-        return false
-    end
-	return not self:getCanStartCpFieldWork() 
-        and not self:getCanStartCpBaleFinder() 
-        and not self:getCanStartCpCombineUnloader()
-        and not self:getCanStartCpSiloLoaderWorker()
+    local spec = self.spec_cpAIBunkerSiloWorker
+    return #spec.aiImplementList > 0 and not self:getCanStartCpFieldWork() and 
+        not self:getCanStartCpCombineUnloader() and not self:getCanStartCpBaleFinder()
 end
 
 function CpAIBunkerSiloWorker:getCanStartCp(superFunc)

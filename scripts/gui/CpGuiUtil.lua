@@ -475,7 +475,6 @@ function CpGuiUtil.openCourseGeneratorGui(vehicle)
 		return
     end
 	CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, "opened ai inGame job creation.")
-    vehicle:updateAIFieldWorkerImplementData()
     pageAI.currentJobTypes = {}
 	local currentJobTypesTexts = {}
 	local currentJobTypeIndex, currentIndex = nil, nil

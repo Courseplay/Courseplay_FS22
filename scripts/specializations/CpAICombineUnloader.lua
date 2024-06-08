@@ -141,7 +141,7 @@ end
 function CpAICombineUnloader.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanStartCp', CpAICombineUnloader.getCanStartCp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartableJob', CpAICombineUnloader.getCpStartableJob)
-
+    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'updateAIFieldWorkerImplementData', CpAICombineUnloader.updateAIFieldWorkerImplementData)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtFirstWp', CpAICombineUnloader.startCpAtFirstWp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtLastWp', CpAICombineUnloader.startCpAtLastWp)
 end
@@ -155,6 +155,7 @@ function CpAICombineUnloader:onLoad(savegame)
     --- This job is for starting the driving with a key bind or the mini gui.
     spec.cpJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.COMBINE_UNLOADER_CP)
     spec.cpJob:setVehicle(self)
+    spec.aiImplementList = {}
 end
 
 function CpAICombineUnloader:onLoadFinished(savegame)
@@ -238,8 +239,18 @@ function CpAICombineUnloader:isOnlyOneTrailerAttached()
 end
 
 --- If we have a trailer which can be emptied, we can unload a combine
+
+function CpAICombineUnloader:updateAIFieldWorkerImplementData(superFunc)
+    superFunc(self)
+    local spec = self.spec_cpAICombineUnloader
+	spec.aiImplementList = {}
+    setmetatable(spec.aiImplementList, CpAIImplement.JOB_TABLES_MT.COMBINE_UNLOADER)
+	self:addVehicleToAIImplementList(spec.aiImplementList)
+end
+
 function CpAICombineUnloader:getCanStartCpCombineUnloader()
-	return not self:getCanStartCpFieldWork() and CpAICombineUnloader.isOnlyOneTrailerAttached(self)
+    local spec = self.spec_cpAICombineUnloader
+    return #spec.aiImplementList > 0 and #spec.aiImplementList < 2 and not self:getCanStartCpFieldWork()
 end
 
 function CpAICombineUnloader:getCanStartCp(superFunc)

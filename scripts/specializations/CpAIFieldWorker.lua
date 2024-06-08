@@ -69,6 +69,7 @@ function CpAIFieldWorker.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanStartCp', CpAIFieldWorker.getCanStartCp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartableJob', CpAIFieldWorker.getCpStartableJob)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpDriveStrategy', CpAIFieldWorker.getCpDriveStrategy)
+    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'updateAIFieldWorkerImplementData', CpAIFieldWorker.updateAIFieldWorkerImplementData)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -87,6 +88,8 @@ function CpAIFieldWorker:onLoad(savegame)
     spec.cpJobStartAtFirstWp:getCpJobParameters().startAt:setValue(CpFieldWorkJobParameters.START_AT_FIRST_POINT)
     spec.cpJobStartAtLastWp = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
     spec.cpJobStartAtLastWp:getCpJobParameters().startAt:setValue(CpFieldWorkJobParameters.START_AT_LAST_POINT)
+
+    spec.aiImplementList = {}
 end
 
 function CpAIFieldWorker:onLoadFinished(savegame)
@@ -194,7 +197,6 @@ end
 --- Starts the cp driver at the first waypoint.
 function CpAIFieldWorker:startCpAtFirstWp()
     local spec = self.spec_cpAIFieldWorker
-    self:updateAIFieldWorkerImplementData()
     if self:hasCpCourse() and self:getCanStartCpFieldWork() then
         spec.cpJobStartAtFirstWp:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
         --- Applies the lane offset set in the hud, so ad can start with the correct lane offset.
@@ -211,7 +213,6 @@ end
 --- Starts the cp driver at the last driven waypoint.
 function CpAIFieldWorker:startCpAtLastWp()
     local spec = self.spec_cpAIFieldWorker
-    self:updateAIFieldWorkerImplementData()
     if self:hasCpCourse() and self:getCanStartCpFieldWork() then
         spec.cpJobStartAtLastWp:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
         spec.cpJobStartAtLastWp:setValues()
@@ -251,41 +252,19 @@ function CpAIFieldWorker:onCpFinished()
  
 end
 
-function CpAIFieldWorker:getCanStartCpFieldWork()
-    self:updateAIFieldWorkerImplementData()
-    -- built in helper can't handle it, but we may be able to ...
-    if AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_pdlc_goeweilPack.balerStationary") then 
-        --- Make sure stationary balers are ignored!
-        return false
-    end
-    if AIUtil.hasChildVehicleWithSpecialization(self, Baler) or
-            AIUtil.hasChildVehicleWithSpecialization(self, StonePicker) or
-            AIUtil.hasImplementWithSpecialization(self, BaleWrapper) or
-            AIUtil.hasImplementWithSpecialization(self, BaleLoader) or
-            AIUtil.hasChildVehicleWithSpecialization(self, ForageWagon) or
-            -- built in helper can't handle forage harvesters.
-            AIUtil.hasImplementWithSpecialization(self, Cutter) or
-            AIUtil.hasChildVehicleWithSpecialization(self, VineCutter) or
-            AIUtil.hasChildVehicleWithSpecialization(self, VinePrepruner) or
-            --- This also allows the use of stump cutters, that work like a mulcher.
-            AIUtil.hasChildVehicleWithSpecialization(self, Plow) or
-            --- A few mowers can't be used by the giants fieldworker 
-            AIUtil.hasChildVehicleWithSpecialization(self, Mower) or
-            --- Pushed hand tools can't be used by the giants fieldworker 
-            AIUtil.hasChildVehicleWithSpecialization(self, PushHandTool) or
-            -- Harvester with cutter on trailer attached.
-            AIUtil.hasCutterOnTrailerAttached(self) or
-            --- precision farming
-            AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_soilSampler") or 
-            --- FS22_aPalletAutoLoader from Achimobil: https://bitbucket.org/Achimobil79/ls22_palletautoloader/src/master/
-            AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_aPalletAutoLoader")  or 
-            --- FS22_UniversalAutoload from Loki79uk: https://github.com/loki79uk/FS22_UniversalAutoload
-            AIUtil.hasValidUniversalTrailerAttached(self) then
-                
-        return true
-    end
-    return self:getCanStartFieldWork()
+function CpAIFieldWorker:updateAIFieldWorkerImplementData(superFunc)
+    superFunc(self)
+    local spec = self.spec_cpAIFieldWorker
+	spec.aiImplementList = {}
+    setmetatable(spec.aiImplementList, CpAIImplement.JOB_TABLES_MT.FIELDWORK)
+	self:addVehicleToAIImplementList(spec.aiImplementList)
 end
+
+function CpAIFieldWorker:getCanStartCpFieldWork()
+    local spec = self.spec_cpAIFieldWorker
+    return #spec.aiImplementList > 0
+end
+
 
 --- Only allow the basic field work job to start, if a course is assigned.
 function CpAIFieldWorker:getCanStartCp(superFunc)
