@@ -199,9 +199,6 @@ function CpHud:onLoad(savegame)
     spec.hudSettings = {}
     --- Clones the generic settings to create different settings containers for each vehicle. 
     CpSettingsUtil.cloneSettingsTable(spec.hudSettings, CpHud.hudSettings.settings, self, CpHud)
-    for _, setting in ipairs(spec.hudSettings.settings) do
-        setting:refresh()
-    end
     if savegame == nil or savegame.resetVehicles then return end
     CpSettingsUtil.loadFromXmlFile(spec.hudSettings, savegame.xmlFile, 
                         savegame.key .. CpHud.KEY .. CpHud.SETTINGS_KEY, self)
@@ -210,7 +207,6 @@ end
 function CpHud:onReadStream(streamId, connection)
     local spec = self.spec_cpHud
     for _, setting in ipairs(spec.hudSettings.settings) do
-        setting:refresh()
         setting:readStream(streamId, connection)
     end
 end
@@ -257,17 +253,17 @@ function CpHud:onEnterVehicle(isControlling)
         local spec = self.spec_cpHud
         spec.hud:openClose(CpHud.isHudActive)
 
-        if not spec.firstTimeEntered then
-            --- Attach/Detach only happens after the synchronizing is done.
-            --- For some reason the detection of the inital attach/detach event
-            --- is not corresponding to Vehicle:getIsSynchronized() function,
-            --- so we only do it after the first time entering the vehicle. 
-            for _, setting in ipairs(spec.hudSettings.settings) do
-                setting:refresh()
-                setting:resetToLoadedValue()
-            end
-        end
-        spec.firstTimeEntered = true
+        -- if not spec.firstTimeEntered then
+        --     --- Attach/Detach only happens after the synchronizing is done.
+        --     --- For some reason the detection of the inital attach/detach event
+        --     --- is not corresponding to Vehicle:getIsSynchronized() function,
+        --     --- so we only do it after the first time entering the vehicle. 
+        --     for _, setting in ipairs(spec.hudSettings.settings) do
+        --         setting:refresh()
+        --         setting:resetToLoadedValue()
+        --     end
+        -- end
+        -- spec.firstTimeEntered = true
     end
 end
 
@@ -280,14 +276,8 @@ end
 
 function CpHud:onStateChange(state, data)
     local spec = self.spec_cpHud
-    if state == Vehicle.STATE_CHANGE_ATTACH then 
-        for _, setting in ipairs(spec.hudSettings.settings) do
-            setting:refresh()
-        end
-    elseif state == Vehicle.STATE_CHANGE_DETACH then
-        for _, setting in ipairs(spec.hudSettings.settings) do
-            setting:refresh()
-        end
+    if state == Vehicle.STATE_CHANGE_ATTACH or state == Vehicle.STATE_CHANGE_DETACH then
+        spec.needsRefresh = true
     end
 end
 
@@ -296,6 +286,12 @@ function CpHud:onUpdate(dt)
     local spec = self.spec_cpHud
     local strategy = self:getCpDriveStrategy()
     spec.status:update(dt, self:getIsCpActive(), strategy)
+    if spec.needsRefresh then 
+        for _, setting in ipairs(spec.hudSettings.settings) do
+            setting:refresh()
+        end
+        spec.needsRefresh = false
+    end
 end
 
 function CpHud:onDraw()
