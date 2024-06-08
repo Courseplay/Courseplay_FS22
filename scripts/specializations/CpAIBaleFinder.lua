@@ -50,7 +50,7 @@ end
 function CpAIBaleFinder.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanStartCp', CpAIBaleFinder.getCanStartCp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartableJob', CpAIBaleFinder.getCpStartableJob)
-
+    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'updateAIFieldWorkerImplementData', CpAIBaleFinder.updateAIFieldWorkerImplementData)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtFirstWp', CpAIBaleFinder.startCpAtFirstWp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtLastWp', CpAIBaleFinder.startCpAtLastWp)
 end
@@ -71,6 +71,7 @@ function CpAIBaleFinder:onLoad(savegame)
     spec.cpJob:setVehicle(self, true)
     spec.cpJobStartAtLastWp = g_currentMission.aiJobTypeManager:createJob(AIJobType.BALE_FINDER_CP)
     spec.cpJobStartAtLastWp:setVehicle(self, true)
+    spec.aiImplementList = {}
 end
 
 function CpAIBaleFinder:onLoadFinished(savegame)
@@ -118,14 +119,18 @@ function CpAIBaleFinder:getCpDriveStrategy(superFunc)
     return superFunc(self) or self.spec_cpAIBaleFinder.driveStrategy
 end
 
+function CpAIBaleFinder:updateAIFieldWorkerImplementData(superFunc)
+    superFunc(self)
+    local spec = self.spec_cpAIBaleFinder
+	spec.aiImplementList = {}
+    setmetatable(spec.aiImplementList, CpAIImplement.JOB_TABLES_MT.BALE_LOADER)
+	self:addVehicleToAIImplementList(spec.aiImplementList)
+end
+
 --- Is the bale finder allowed?
 function CpAIBaleFinder:getCanStartCpBaleFinder()
-	return (AIUtil.hasImplementWithSpecialization(self, BaleWrapper) and not AIUtil.hasImplementWithSpecialization(self, Baler)) or
-			AIUtil.hasImplementWithSpecialization(self, BaleLoader) or 
-            --- FS22_aPalletAutoLoader from Achimobil: https://bitbucket.org/Achimobil79/ls22_palletautoloader/src/master/
-            AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_aPalletAutoLoader") or 
-            --- FS22_UniversalAutoload form loki79uk: https://github.com/loki79uk/FS22_UniversalAutoload
-            AIUtil.hasValidUniversalTrailerAttached(self)
+    local spec = self.spec_cpAIBaleFinder
+    return #spec.aiImplementList > 0
 end
 
 function CpAIBaleFinder:getCanStartCp(superFunc)

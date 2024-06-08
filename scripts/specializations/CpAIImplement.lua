@@ -9,21 +9,35 @@ CpAIImplement.NAME = ".cpAIImplement"
 CpAIImplement.SPEC_NAME = CpAIImplement.MOD_NAME .. CpAIImplement.NAME
 CpAIImplement.KEY = "."..CpAIImplement.MOD_NAME..CpAIImplement.NAME
 CpAIImplement.AIIMPLEMENT_MT = {}
+CpAIImplement.JOB_TABLES_MT = {
+    FIELDWORK = {},
+    BALE_LOADER = {},
+    SILO_LOADER = {},
+    COMBINE_UNLOADER = {},
+    BUNKER_SILO = {}
+}
 
-CpAIImplement.ADDITIONAL_SPECS = {
-    "spec_baler",
-    "spec_stonePicker",
-    "spec_baleWrapper",
-    "spec_baleLoader",
-    "spec_forageWagon",
-    "spec_cutter",
-    "spec_vineCutter",
-    "spec_vinePrepruner",
-    "spec_plow",
-    "spec_mower",
-    "spec_pushHandTool",
-    "spec_soilSampler",
-    "spec_aPalletAutoLoader"
+CpAIImplement.SPECS = {
+    FIELDWORK = {
+        "spec_baler",
+        "spec_stonePicker",
+        "spec_baleWrapper",
+        "spec_baleLoader",
+        "spec_forageWagon",
+        "spec_cutter",
+        "spec_vineCutter",
+        "spec_vinePrepruner",
+        "spec_plow",
+        "spec_mower",
+        "spec_pushHandTool",
+        "spec_soilSampler",
+        "spec_aPalletAutoLoader"
+    },
+    BALE_LOADER = {
+        "spec_baleWrapper",
+        "spec_baleLoader",
+        "spec_aPalletAutoLoader",
+    }
 }
 
 
@@ -60,6 +74,7 @@ end
 
 function CpAIImplement.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanImplementBeUsedForAI', CpAIImplement.getCanImplementBeUsedForAI)
+    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'addVehicleToAIImplementList', CpAIImplement.addVehicleToAIImplementList)
     
 end
 
@@ -72,29 +87,106 @@ function CpAIImplement:onLoad(savegame)
     local spec = self.spec_cpAIImplement
 end
 
-function CpAIImplement:getCanImplementBeUsedForAI(superFunc, isCpJob)
-    if isCpJob then 
-        for _, value in ipairs(CpAIImplement.ADDITIONAL_SPECS) do
+function CpAIImplement:getCanImplementBeUsedForAI(superFunc, list)
+    if not list then 
+        return superFunc(self)
+    end
+    if self["spec_attachable"] then 
+        if self["spec_attachable"].detachingInProgress then
+            return false
+        end
+    end
+
+    if getmetatable(list) == CpAIImplement.JOB_TABLES_MT.FIELDWORK then 
+        CpUtil.debugImplement(CpDebug.DBG_IMPLEMENTS, self, "Check if the implement can be used for fieldwork ...")
+        local found, foundSpec = false, "---"
+        for _, value in ipairs(CpAIImplement.SPECS.FIELDWORK) do
             if self[value] then 
-                return true
+                foundSpec = value
+                found = true
             end
         end
-        if AIUtil.hasValidUniversalTrailerAttached(self) then 
+        if self["spec_universalAutoload"] and self["spec_universalAutoload"].isAutoloadEnabled then 
+            foundSpec = "spec_universalAutoload"
+            found = true
+        end
+
+        --- Checks if cutter on an trailer is attached.
+        if self["spec_dynamicMountAttacher"] and 
+            next(self["spec_dynamicMountAttacher"].dynamicMountedObjects) ~= nil and 
+            next(self["spec_dynamicMountAttacher"].dynamicMountedObjects)["spec_cutter"] ~= nil then 
+
+            foundSpec = "spec_dynamicMountAttacher"
+            found = true
+        end
+        if found then 
             return true
         end
-        if AIUtil.hasCutterOnTrailerAttached(self) then 
+    elseif getmetatable(list) == CpAIImplement.JOB_TABLES_MT.BALE_LOADER then
+        CpUtil.debugImplement(CpDebug.DBG_IMPLEMENTS, self, "Check if the implement can be used for the baleloader ...")
+        local found, foundSpec = false, "---"
+        for _, value in ipairs(CpAIImplement.SPECS.BALE_LOADER) do
+            if self[value] then 
+                found = true
+                foundSpec = value
+            end
+        end
+        if self["spec_baleWrapper"] and self["spec_baler"] then 
+            --- Disabled!
+            return false
+        end
+        if self["spec_universalAutoload"] and self["spec_universalAutoload"].isAutoloadEnabled then 
+            foundSpec = "spec_universalAutoload"
+            found = true
+        end
+        if found then 
+            CpUtil.debugImplement(CpDebug.DBG_IMPLEMENTS, self, "Found valid spec: %s", foundSpec)
+            return true
+        end
+
+    elseif getmetatable(list) == CpAIImplement.JOB_TABLES_MT.BUNKER_SILO then
+        CpUtil.debugImplement(CpDebug.DBG_IMPLEMENTS, self, "Check if the implement can be used for the bunker silo mode ...")
+        return true
+    elseif getmetatable(list) == CpAIImplement.JOB_TABLES_MT.SILO_LOADER then
+        CpUtil.debugImplement(CpDebug.DBG_IMPLEMENTS, self, "Check if the implement can be used for the silo loader ...")
+        local found, foundSpec = false, "---"
+        if self["spec_shovel"] then
+            foundSpec = "spec_shovel"
+            found = true   
+        end
+        if found then 
+            return true
+        end
+    elseif getmetatable(list) == CpAIImplement.JOB_TABLES_MT.COMBINE_UNLOADER then
+        CpUtil.debugImplement(CpDebug.DBG_IMPLEMENTS, self, "Check if the implement can be used for the combine unloader ...")
+        local found, foundSpec = false, "---"
+        if self["spec_trailer"] and 
+            self["spec_dischargeable"] and
+            #self["spec_dischargeable"].dischargeNodes > 0 then 
+            foundSpec = "spec_shovel"
+            found = true   
+        end
+        if found then 
             return true
         end
     end
-    return superFunc(self)
+    return false
 end
 
 function CpAIImplement:addVehicleToAIImplementList(superFunc, list)
-    if self:getCanImplementBeUsedForAI(getmetatable(list) == CpAIImplement.AIIMPLEMENT_MT) then
+    if self:getCanImplementBeUsedForAI(list) then
         table.insert(list, {
             object = self
         })
     end
-    superFunc(self, list)
+    if self["spec_attacherJoints"] then 
+        --AttacherJoints.addVehicleToAIImplementList(self, function () end, list)
+        for _, implement in pairs(self:getAttachedImplements()) do
+            local object = implement.object
+
+            if object ~= nil and object.addVehicleToAIImplementList ~= nil then
+                object:addVehicleToAIImplementList(list)
+            end
+        end
+    end
 end
-AIImplement.addVehicleToAIImplementList = CpAIImplement.addVehicleToAIImplementList

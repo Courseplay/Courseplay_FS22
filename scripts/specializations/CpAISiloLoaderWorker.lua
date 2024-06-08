@@ -48,6 +48,7 @@ end
 function CpAISiloLoaderWorker.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanStartCp', CpAISiloLoaderWorker.getCanStartCp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartableJob', CpAISiloLoaderWorker.getCpStartableJob)
+    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'updateAIFieldWorkerImplementData', CpAISiloLoaderWorker.updateAIFieldWorkerImplementData)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtFirstWp', CpAISiloLoaderWorker.startCpAtFirstWp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtLastWp', CpAISiloLoaderWorker.startCpAtLastWp)
 end
@@ -61,6 +62,7 @@ function CpAISiloLoaderWorker:onLoad(savegame)
     --- This job is for starting the driving with a key bind or the mini gui.
     spec.cpJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.SILO_LOADER_CP)
     spec.cpJob:setVehicle(self, true)
+    spec.aiImplementList = {}
 end
 
 
@@ -90,11 +92,16 @@ function CpAISiloLoaderWorker:onUpdate(dt)
     local spec = self.spec_cpAISiloLoaderWorker
 end
 
+function CpAISiloLoaderWorker:updateAIFieldWorkerImplementData(superFunc)
+    superFunc(self)
+    local spec = self.spec_cpAISiloLoaderWorker
+	spec.aiImplementList = {}
+    setmetatable(spec.aiImplementList, CpAIImplement.JOB_TABLES_MT.SILO_LOADER)
+	self:addVehicleToAIImplementList(spec.aiImplementList)
+end
 function CpAISiloLoaderWorker:getCanStartCpSiloLoaderWorker()
-	return not self:getCanStartCpFieldWork() 
-        and not self:getCanStartCpBaleFinder() 
-        and not self:getCanStartCpCombineUnloader() 
-        and AIUtil.hasChildVehicleWithSpecialization(self, Shovel) 
+	local spec = self.spec_cpAISiloLoaderWorker
+    return #spec.aiImplementList > 0
 end
 
 function CpAISiloLoaderWorker:getCanStartCp(superFunc)
