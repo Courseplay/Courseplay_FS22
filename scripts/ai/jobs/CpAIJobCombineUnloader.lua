@@ -313,6 +313,10 @@ function CpAIJobCombineUnloader:canContinueWork()
 		if not canContinue then 
 			return canContinue, errorMessage
 		end
+		if self.driveToUnloadingTask.x == nil then 
+			CpUtil.errorVehicle(self.vehicle, "No valid drive to unload task position set!")
+			return false, AIMessageCpError.new()
+		end
 		if self.currentTaskIndex == self.driveToUnloadingTask.taskIndex then
 			local hasSupportedFillTypeLoaded = false
 			for _, dischargeNodeInfo in ipairs(self.dischargeNodeInfos) do
@@ -349,6 +353,11 @@ function CpAIJobCombineUnloader:getStartTaskIndex()
 	if not self.cpJobParameters.useGiantsUnload:getValue() then 
 		return startTask
 	end
+	if self.driveToUnloadingTask.x == nil then 
+		CpUtil.errorVehicle(self.vehicle, "No valid drive to unload task position set!")
+		return startTask
+	end
+
 	local vehicle = self:getVehicle()
 	local fieldPolygon = self:getFieldPolygon()
 	local x, _, z = getWorldTranslation(vehicle.rootNode)
