@@ -195,7 +195,7 @@ function CpTextHudElement.new(parentHudElement,posX, posY, textSize, textAlignme
 
 	backgroundOverlay:setColor(1, 1, 1, 1)
     local self = CpHudButtonElement.new(backgroundOverlay, parentHudElement, customMt)
- 
+    self.maxWidth = 0.9
     self.text = ""
 	self.textSize = textSize or 0
 	self.screenTextSize = self:scalePixelToScreenHeight(self.textSize)
@@ -222,13 +222,14 @@ function CpTextHudElement.new(parentHudElement,posX, posY, textSize, textAlignme
     return self
 end
 
-function CpTextHudElement:setTextDetails(text, textSize, textAlignment, textColor, textBold)
+function CpTextHudElement:setTextDetails(text, textSize, textAlignment, textColor, textBold, maxWidth)
 	self.text = text or self.text
 	self.textSize = textSize or self.textSize
 	self.screenTextSize = self:scalePixelToScreenHeight(self.textSize)
 	self.textAlignment = textAlignment or self.textAlignment
 	self.textColor = textColor or self.textColor
 	self.textBold = textBold or self.textBold
+    self.maxWidth = maxWidth or self.maxWidth
 	local width = getTextWidth(self.screenTextSize, self.text)
 	local height = getTextHeight(self.screenTextSize, self.text)
 
@@ -293,8 +294,9 @@ function CpTextHudElement:draw()
 	local posX, posY = self:getPosition()
 
 	setTextAlignment(self.textAlignment)
-	setTextWrapWidth(0.9)
-
+    setTextWrapWidth(self.maxWidth)
+    setTextLineBounds(0,2)
+   -- setTextLineHeightScale(HUDPopupMessage.TEXT_LINE_HEIGHT_SCALE)
 	if self.hasShadow then
 		local offset = self.screenTextSize * CpTextHudElement.SHADOW_OFFSET_FACTOR
 		local r, g, b, a = unpack(self.shadowColor)
@@ -317,6 +319,7 @@ function CpTextHudElement:draw()
 	setTextWrapWidth(0)
 	setTextBold(false)
 	setTextColor(1, 1, 1, 1)
+ --   setTextLineHeightScale(RenderText.DEFAULT_LINE_HEIGHT_SCALE)
     CpTextHudElement:superClass().draw(self)
 end
 
@@ -449,9 +452,9 @@ function CpHudSettingElement:setTextDetails(labelText, text, labelTextDetails, t
     labelTextDetails = labelTextDetails or {}
     textDetails = textDetails or {}
     self.textElement:setTextDetails(text, textDetails.textSize, textDetails.textAlignment,
-                                     textDetails.textColor, textDetails.textBold)
+                                     textDetails.textColor, textDetails.textBold, textDetails.maxWidth)
     self.labelElement:setTextDetails(labelText, labelTextDetails.textSize, labelTextDetails.textAlignment,
-                                     labelTextDetails.textColor, labelTextDetails.textBold)
+                                     labelTextDetails.textColor, labelTextDetails.textBold, labelTextDetails.maxWidth)
     
 end
 
