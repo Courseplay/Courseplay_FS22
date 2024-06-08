@@ -18,7 +18,6 @@
 CpAIJob = {
 	name = "",
 	jobName = "",
-	targetPositionParameterText = "ai_parameterGroupTitlePosition"
 }
 local AIJobCp_mt = Class(CpAIJob, AIJob)
 
