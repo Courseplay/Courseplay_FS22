@@ -256,49 +256,15 @@ function CpAIFieldWorker:updateAIFieldWorkerImplementData(superFunc)
     superFunc(self)
     local spec = self.spec_cpAIFieldWorker
 	spec.aiImplementList = {}
-    setmetatable(spec.aiImplementList, CpAIImplement.AIIMPLEMENT_MT)
+    setmetatable(spec.aiImplementList, CpAIImplement.JOB_TABLES_MT.FIELDWORK)
 	self:addVehicleToAIImplementList(spec.aiImplementList)
 end
 
 function CpAIFieldWorker:getCanStartCpFieldWork()
     local spec = self.spec_cpAIFieldWorker
-    if #spec.aiImplementList > 0 then
-        return true
-    end
-    self:updateAIFieldWorkerImplementData()
-    -- built in helper can't handle it, but we may be able to ...
-    if AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_pdlc_goeweilPack.balerStationary") then 
-        --- Make sure stationary balers are ignored!
-        return false
-    end
-    if AIUtil.hasChildVehicleWithSpecialization(self, Baler) or
-            AIUtil.hasChildVehicleWithSpecialization(self, StonePicker) or
-            AIUtil.hasImplementWithSpecialization(self, BaleWrapper) or
-            AIUtil.hasImplementWithSpecialization(self, BaleLoader) or
-            AIUtil.hasChildVehicleWithSpecialization(self, ForageWagon) or
-            -- built in helper can't handle forage harvesters.
-            AIUtil.hasImplementWithSpecialization(self, Cutter) or
-            AIUtil.hasChildVehicleWithSpecialization(self, VineCutter) or
-            AIUtil.hasChildVehicleWithSpecialization(self, VinePrepruner) or
-            --- This also allows the use of stump cutters, that work like a mulcher.
-            AIUtil.hasChildVehicleWithSpecialization(self, Plow) or
-            --- A few mowers can't be used by the giants fieldworker 
-            AIUtil.hasChildVehicleWithSpecialization(self, Mower) or
-            --- Pushed hand tools can't be used by the giants fieldworker 
-            AIUtil.hasChildVehicleWithSpecialization(self, PushHandTool) or
-            -- Harvester with cutter on trailer attached.
-            AIUtil.hasCutterOnTrailerAttached(self) or
-            --- precision farming
-            AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_soilSampler") or 
-            --- FS22_aPalletAutoLoader from Achimobil: https://bitbucket.org/Achimobil79/ls22_palletautoloader/src/master/
-            AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_aPalletAutoLoader")  or 
-            --- FS22_UniversalAutoload from Loki79uk: https://github.com/loki79uk/FS22_UniversalAutoload
-            AIUtil.hasValidUniversalTrailerAttached(self) then
-                
-        return true
-    end
-    return self:getCanStartFieldWork()
+    return #spec.aiImplementList > 0
 end
+
 
 --- Only allow the basic field work job to start, if a course is assigned.
 function CpAIFieldWorker:getCanStartCp(superFunc)
