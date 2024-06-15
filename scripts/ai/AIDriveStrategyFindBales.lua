@@ -335,7 +335,7 @@ function AIDriveStrategyFindBales:setFinished()
         self:debugSparse("Waiting until an animation has finish, so the driver can be released ..")
         return
     end 
-    self:prepareForAIDriving()
+    self.vehicle:prepareForAIDriving()
     if self.invertedStartPositionMarkerNode then 
         self:debug("A valid start position is found, so the driver tries to finish at the invered goal node")
         self:startPathfindingToStartMarker()
