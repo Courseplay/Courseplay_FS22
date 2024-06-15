@@ -46,6 +46,9 @@ function BaleLoaderController:hasBales()
 end
 
 function BaleLoaderController:isFull()
+    if self:isChangingBaleSize() then 
+        return false
+    end
     return self.baleLoader:getFillUnitFreeCapacity(self.baleLoaderSpec.fillUnitIndex) <= 0.01
 end
 
