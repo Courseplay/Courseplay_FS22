@@ -468,7 +468,7 @@
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="不能卸载到地面"/>
     <text name="CP_infoTexts_errorCutterNotSupported" text="不支持的收割台"/>
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="收割台连接已停用"/>
-    <text name="CP_infoTexts_errorWrongSeason" text="作物收获的季节不合适/>
+    <text name="CP_infoTexts_errorWrongSeason" text="作物收获的季节不合适"/>
     <text name="CP_infoTexts_errorWrongMissionFruitType" text="为任务选择了错误的作物"/>
     <text name="CP_infoTexts_errorPalletsAreFull" text="托盘满"/>
     <text name="CP_infoTexts_errorPalletsAreEmpty" text="无托盘"/>
@@ -876,7 +876,7 @@ Courseplay能够在料仓中压实或分配箔条，或在楔形料仓中推动�
 标记检测堆或竖井，并在地图上高亮显示它们。
 现在可以启动辅助程序了。
 "/>
-    <text name="CP_help_page_shovelLoader_title" text="轮式装载机、铲车驾驶/>
+    <text name="CP_help_page_shovelLoader_title" text="轮式装载机、铲车驾驶"/>
     <text name="CP_help_page_shovelLoaderGeneral_text" text="
 此模式启用轮式装载机和带前装载机的拖拉机。
 通过连接铲子，可以从地面拾取堆料，也可以从料仓中装载。
