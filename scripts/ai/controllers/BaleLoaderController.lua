@@ -45,7 +45,10 @@ function BaleLoaderController:hasBales()
     return self.baleLoader:getFillUnitFillLevelPercentage(self.baleLoaderSpec.fillUnitIndex) >= 0.01
 end
 
-function BaleLoaderController:isFull()
+function BaleLoaderController:isFull(ignoreBaleChanger)
+    if self:isChangingBaleSize() and not ignoreBaleChanger then 
+        return false
+    end
     return self.baleLoader:getFillUnitFreeCapacity(self.baleLoaderSpec.fillUnitIndex) <= 0.01
 end
 
@@ -57,7 +60,7 @@ function BaleLoaderController:canBeFolded()
 end
 
 function BaleLoaderController:update()
-    if self:isFull() then 
+    if self:isFull(true) then 
         if self:isChangingBaleSize() then 
             if self.baleLoaderSpec.emptyState == BaleLoader.EMPTY_NONE then
                 self.baleLoader:startAutomaticBaleUnloading()
