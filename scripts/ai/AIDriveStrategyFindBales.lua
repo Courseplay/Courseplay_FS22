@@ -335,6 +335,7 @@ function AIDriveStrategyFindBales:setFinished()
         self:debugSparse("Waiting until an animation has finish, so the driver can be released ..")
         return
     end 
+    self.vehicle:prepareForAIDriving()
     if self.invertedStartPositionMarkerNode then 
         self:debug("A valid start position is found, so the driver tries to finish at the invered goal node")
         self:startPathfindingToStartMarker()
@@ -559,7 +560,11 @@ function AIDriveStrategyFindBales:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.REVERSING_DUE_TO_OBSTACLE_AHEAD then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
     elseif self.state == self.states.DRIVING_TO_START_MARKER then
-        self:setMaxSpeed(self.settings.fieldSpeed:getValue())
+        if self.vehicle:getIsAIPreparingToDrive() then 
+            self:setMaxSpeed(0) --- folding
+        else
+            self:setMaxSpeed(self.settings.fieldSpeed:getValue())
+        end
     end
 
     local moveForwards = not self.ppc:isReversing()
