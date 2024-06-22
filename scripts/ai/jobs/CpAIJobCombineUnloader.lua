@@ -195,6 +195,7 @@ function CpAIJobCombineUnloader:validate(farmId)
 		if not AIJobDeliver.getIsAvailableForVehicle(self, vehicle) then 
 			return false, g_i18n:getText("CP_error_giants_unloader_not_available")
 		end
+		isValid, message = self.cpJobParameters.startPosition:validate()
 	end
 	if not isValid then
 		return isValid, errorMessage
@@ -291,9 +292,6 @@ function CpAIJobCombineUnloader:setupGiantsUnloaderData(vehicle)
 		return
 	end
 	self.supportedFillTypes = unloadingStation:getAISupportedFillTypes()
-
-
-
 end
 
 function CpAIJobCombineUnloader:getNextTaskIndex(isSkipTask)
