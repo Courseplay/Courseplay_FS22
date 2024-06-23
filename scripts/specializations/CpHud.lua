@@ -50,6 +50,8 @@ function CpHud.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "cpUpdateMouseAction", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onWriteUpdateStream", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onReadUpdateStream", CpHud)
+    SpecializationUtil.registerEventListener(vehicleType, "onWriteStream", CpHud)
+    SpecializationUtil.registerEventListener(vehicleType, "onReadStream", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onStateChange", CpHud)
 end
 
@@ -60,6 +62,7 @@ function CpHud.registerFunctions(vehicleType)
 	SpecializationUtil.registerFunction(vehicleType, 'resetCpHud', CpHud.resetCpHud)
 	SpecializationUtil.registerFunction(vehicleType, 'closeCpHud', CpHud.closeCpHud)
 	SpecializationUtil.registerFunction(vehicleType, 'getCpHud', CpHud.getCpHud)
+    SpecializationUtil.registerFunction(vehicleType, 'getCpHudSettings', CpHud.getCpHudSettings)
 
     SpecializationUtil.registerFunction(vehicleType, 'showCpBunkerSiloWorkWidth', CpHud.showCpBunkerSiloWorkWidth)
     SpecializationUtil.registerFunction(vehicleType, 'showCpCombineUnloaderWorkWidth', CpHud.showCpCombineUnloaderWorkWidth)
@@ -196,12 +199,23 @@ function CpHud:onLoad(savegame)
     spec.hudSettings = {}
     --- Clones the generic settings to create different settings containers for each vehicle. 
     CpSettingsUtil.cloneSettingsTable(spec.hudSettings, CpHud.hudSettings.settings, self, CpHud)
-    for _, setting in ipairs(spec.hudSettings.settings) do
-        setting:refresh()
-    end
     if savegame == nil or savegame.resetVehicles then return end
     CpSettingsUtil.loadFromXmlFile(spec.hudSettings, savegame.xmlFile, 
                         savegame.key .. CpHud.KEY .. CpHud.SETTINGS_KEY, self)
+end
+
+function CpHud:onReadStream(streamId, connection)
+    local spec = self.spec_cpHud
+    for _, setting in ipairs(spec.hudSettings.settings) do
+        setting:readStream(streamId, connection)
+    end
+end
+
+function CpHud:onWriteStream(streamId, connection)
+    local spec = self.spec_cpHud
+    for _, setting in ipairs(spec.hudSettings.settings) do
+        setting:writeStream(streamId, connection)
+    end
 end
 
 function CpHud:onWriteUpdateStream(streamId, connection, dirtyMask)
@@ -238,6 +252,18 @@ function CpHud:onEnterVehicle(isControlling)
                 self.spec_cpHud.savedCameraRotatableInfo)
         local spec = self.spec_cpHud
         spec.hud:openClose(CpHud.isHudActive)
+
+        -- if not spec.firstTimeEntered then
+        --     --- Attach/Detach only happens after the synchronizing is done.
+        --     --- For some reason the detection of the inital attach/detach event
+        --     --- is not corresponding to Vehicle:getIsSynchronized() function,
+        --     --- so we only do it after the first time entering the vehicle. 
+        --     for _, setting in ipairs(spec.hudSettings.settings) do
+        --         setting:refresh()
+        --         setting:resetToLoadedValue()
+        --     end
+        -- end
+        -- spec.firstTimeEntered = true
     end
 end
 
@@ -250,14 +276,8 @@ end
 
 function CpHud:onStateChange(state, data)
     local spec = self.spec_cpHud
-    if state == Vehicle.STATE_CHANGE_ATTACH then 
-        for _, setting in ipairs(spec.hudSettings.settings) do
-            setting:refresh()
-        end
-    elseif state == Vehicle.STATE_CHANGE_DETACH then
-        for _, setting in ipairs(spec.hudSettings.settings) do
-            setting:refresh()
-        end
+    if state == Vehicle.STATE_CHANGE_ATTACH or state == Vehicle.STATE_CHANGE_DETACH then
+        spec.needsRefresh = true
     end
 end
 
@@ -266,6 +286,12 @@ function CpHud:onUpdate(dt)
     local spec = self.spec_cpHud
     local strategy = self:getCpDriveStrategy()
     spec.status:update(dt, self:getIsCpActive(), strategy)
+    if spec.needsRefresh then 
+        for _, setting in ipairs(spec.hudSettings.settings) do
+            setting:refresh()
+        end
+        spec.needsRefresh = false
+    end
 end
 
 function CpHud:onDraw()
@@ -333,6 +359,15 @@ end
 --------------------------------------
 --- Hud Settings
 --------------------------------------
+
+function CpHud:raiseDirtyFlag(setting)
+    HudSettingsEvent.sendEvent(self, setting)
+end 
+
+function CpHud:getCpHudSettings()
+    local spec = self.spec_cpHud
+    return spec.hudSettings
+end
 
 function CpHud:isFieldWorkModeDisabled()
     return not self:getCanStartCpFieldWork()

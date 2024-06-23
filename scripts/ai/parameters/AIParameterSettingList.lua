@@ -269,8 +269,9 @@ end
 
 function AIParameterSettingList:readStreamInternal(streamId, connection)
 	local setupIx = streamReadInt32(streamId)
+	self.loadedValue = self.data.values[setupIx]
 	self:setToIx(self:getClosestIxFromSetup(setupIx))
-	self:debug("set to %s from stream.", tostring(self:getString()))
+	self:debug("set to %s(ix: %d) from stream.", tostring(self:getString()), setupIx)
 end
 
 function AIParameterSettingList:readStream(streamId, connection)
@@ -455,7 +456,7 @@ end
 function AIParameterSettingList:resetToLoadedValue()
 	if self.loadedValue ~= nil then 
 		self:setFloatValue(self.loadedValue)
-		self:raiseDirtyFlag()
+		self:debug("Resetting value to loaded value: %s", tostring(self:getValue()))
 	end
 end
 

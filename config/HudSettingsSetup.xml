@@ -30,7 +30,7 @@
 				<Text prefix="false">CP_job_bunkerSilo</Text>
 				<Text prefix="false">CP_job_siloLoader</Text>
 				<Text prefix="false">CP_job_combineUnload</Text>
-				<Text prefix="false">CP_job_street</Text>
+				<!-- <Text prefix="false">CP_job_street</Text> -->
 			</Texts>
 		</Setting>
 	</SettingSubTitle>

@@ -28,6 +28,9 @@ function CpVehicleSettings.initSpecialization()
     CpSettingsUtil.registerXmlSchema(schema, 
         "vehicles.vehicle(?)" .. CpVehicleSettings.KEY .. CpVehicleSettings.USER_KEY .. "(?)")
 
+    -- Debug 
+    schema:register(XMLValueType.BOOL,"vehicles.vehicle(?)" .. CpVehicleSettings.KEY .. "#debugActive", "Vehicle debug active ?", true)
+
     CpVehicleSettings.loadSettingsSetup()
 
     CpVehicleSettings.registerConsoleCommands()
@@ -50,7 +53,7 @@ end
 
 
 function CpVehicleSettings.registerEventListeners(vehicleType)	
---	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpVehicleSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onPreLoad", CpVehicleSettings)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onCpUnitChanged", CpVehicleSettings)
@@ -80,14 +83,19 @@ function CpVehicleSettings:getSettingsTable()
     return spec.settings
 end
 
-function CpVehicleSettings:onLoad(savegame)
-	--- Register the spec: spec_CpVehicleSettings
+function CpVehicleSettings:onPreLoad(savegame)
     self.spec_cpVehicleSettings = self["spec_" .. CpVehicleSettings.SPEC_NAME]
     local spec = self.spec_cpVehicleSettings
-
     --- Clones the generic settings to create different settings containers for each vehicle. 
     CpSettingsUtil.cloneSettingsTable(spec, CpVehicleSettings.settings, self, CpVehicleSettings)
-    CpVehicleSettings.validateSettings(self)
+    if savegame ~= nil then
+        local key = savegame.key .. CpVehicleSettings.KEY
+        spec.debugActive:setValue(savegame.xmlFile:getValue(key.."#debugActive"))
+    end
+end
+
+function CpVehicleSettings:onLoad(savegame)
+    local spec = self.spec_cpVehicleSettings
     spec.userSettings = {}
     CpVehicleSettings.loadSettings(self, savegame)
 end
@@ -106,6 +114,10 @@ function CpVehicleSettings:onUpdate()
         spec.loadingShovelHeightOffset:resetToLoadedValue()
     end
     spec.finishedFirstUpdate = true
+    if spec.needsRefresh then 
+        CpVehicleSettings.validateSettings(self)
+        spec.needsRefresh = false
+    end
 end
 
 --- Changes the sprayer work width on fill type change, as it might depend on the loaded fill type.
@@ -134,8 +146,7 @@ function CpVehicleSettings:onStateChange(state, data)
             spec.bunkerSiloWorkWidth, 'workingWidth')
         CpVehicleSettings.setFromVehicleConfiguration(self, data.attachedVehicle, 
             spec.loadingShovelHeightOffset, 'loadingShovelOffset')
-
-        CpVehicleSettings.validateSettings(self)
+        spec.needsRefresh = true
     elseif state == Vehicle.STATE_CHANGE_DETACH then
         CpVehicleSettings.setAutomaticWorkWidthAndOffset(self, data.attachedVehicle)
         CpVehicleSettings.setAutomaticBunkerSiloWorkWidth(self, data.attachedVehicle)
@@ -144,7 +155,7 @@ function CpVehicleSettings:onStateChange(state, data)
             'raiseLate', false)
         CpVehicleSettings.resetToDefault(self, data.attachedVehicle, spec.lowerImplementEarly, 
             'lowerEarly', false)
-        CpVehicleSettings.validateSettings(self)
+        spec.needsRefresh = true
     end
 end
 
@@ -238,6 +249,8 @@ function CpVehicleSettings:saveToXMLFile(xmlFile, baseKey, usedModNames)
             ix = ix + 1
         end
     end
+    --- Saves debug 
+    xmlFile:setValue(baseKey.."#debugActive", spec.debugActive:getValue())
 end
 
 --- Callback raised by a setting and executed as an vehicle event.

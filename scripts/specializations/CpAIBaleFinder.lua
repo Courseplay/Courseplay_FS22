@@ -31,6 +31,8 @@ end
 function CpAIBaleFinder.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, 'onLoad', CpAIBaleFinder)
     SpecializationUtil.registerEventListener(vehicleType, 'onLoadFinished', CpAIBaleFinder)
+    SpecializationUtil.registerEventListener(vehicleType, 'onReadStream', CpAIBaleFinder)
+    SpecializationUtil.registerEventListener(vehicleType, 'onWriteStream', CpAIBaleFinder)
     SpecializationUtil.registerEventListener(vehicleType, "onCpWrapTypeSettingChanged", CpAIBaleFinder)
 
     SpecializationUtil.registerEventListener(vehicleType, 'onCpADStartedByPlayer', CpAIBaleFinder)
