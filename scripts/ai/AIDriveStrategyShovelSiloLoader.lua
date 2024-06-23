@@ -741,7 +741,7 @@ end
 --- Starts reverse straight to make some space to the trailer or unload trigger.
 function AIDriveStrategyShovelSiloLoader:startReversingAwayFromUnloading()
     local _, _, spaceToTrailer = localToLocal(self.shovelController:getShovelNode(), self.vehicle:getAIDirectionNode(), 0, 0, 0)
-    local course = Course.createStraightReverseCourse(self.vehicle, 2 * spaceToTrailer,
+    local course = Course.createStraightReverseCourse(self.vehicle, 1.5 * spaceToTrailer + self.turningRadius,
             0, self.vehicle:getAIDirectionNode())
     self:startCourse(course, 1)
     self:setNewState(self.states.REVERSING_AWAY_FROM_UNLOAD)
