@@ -25,8 +25,7 @@ local module = {
   ]]
 }
 
----@class Vector
-Vector = CpObject()
+local Vector = CpObject()
 
 -- get a random function from Love2d or base lua, in that order.
 local rand = math.random
@@ -74,6 +73,19 @@ end
 function Vector:lengthSquared()
     return self.x^2 + self.y^2
 end
+
+-- fast, convenient way to calculate distance between two vectors
+-- (instead of (v1 - v2):length() as that seems to take a lot of CPU)
+function Vector.getDistance(v1, v2)
+    return math.sqrt(Vector.getDistanceSquared(v1, v2))
+end
+
+-- even faster is we just need to compare, no need to square root
+function Vector.getDistanceSquared(v1, v2)
+    local dx, dy = v1.x - v2.x, v1.y - v2.y
+    return dx * dx + dy * dy
+end
+
 
 -- set the magnitude of a Vector
 function Vector:setLength(mag)
@@ -144,6 +156,22 @@ function Vector:dot(v)
     return self.x * v.x + self.y * v.y
 end
 
+-- return the scalar projection of v on self
+---@return number
+function Vector:scalarProjection(v)
+    return self:dot(v) / self:length()
+end
+
+---@return Vector
+function Vector:projection(v)
+    return (v:dot(self) / self:dot(self)) * self
+end
+
+---@return Vector
+function Vector:rejection(v)
+    return v - self:projection(v)
+end
+
 -- normalize the Vector (give it a magnitude of 1)
 function Vector:norm()
     local m = self:length()
@@ -177,7 +205,7 @@ function Vector:heading()
     return math.atan2(self.y, self.x)
 end
 
--- rotate a Vector by a certain number of degrees
+-- rotate a Vector by a certain number of radians
 function Vector:rotate(theta)
     local m = self:length()
     self:replace(fromAngle(self:heading() + theta))
@@ -192,6 +220,10 @@ function Vector:setHeading(theta)
 	return self
 end
 
+function Vector:setRotation(theta)
+    return self:setHeading(theta)
+end
+
 -- return x and y of Vector as a regular array
 function Vector:array()
     return {self.x, self.y}
@@ -201,3 +233,20 @@ end
 function Vector:unpack()
     return self.x, self.y
 end
+
+-- for tests only
+function Vector:almostEquals(other)
+    -- if luaunit is used, use the epsilon defined there
+    local margin = (lu and lu.EPS) or 0.001
+    return math.abs(self.x - other.x) <= margin and math.abs(self.y - other.y) <= margin
+end
+
+-- for tests only
+function Vector:assertAlmostEquals(other)
+    if not self:almostEquals(other) then
+        error(string.format('FAILURE: expected: %s, actual: %s', other, self), 1)
+    end
+end
+
+---@class cg.Vector
+cg.Vector = Vector
