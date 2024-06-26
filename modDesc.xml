@@ -253,6 +253,7 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/CpObject.lua"/>
 		<sourceFile filename="Courseplay.lua"/>
 
+		<sourceFile filename="scripts/Logger.lua"/>
 		<sourceFile filename="scripts/CpUtil.lua"/>
 
 		<sourceFile filename="scripts/debug/CpDebug.lua"/>
@@ -272,15 +273,39 @@ Changelog 7.1.0.0:
 
 		<sourceFile filename="scripts/courseManager/FileSystem.lua"/>
 		<sourceFile filename="scripts/courseManager/AssignedCoursesManager.lua"/>
+
+		<sourceFile filename="scripts/courseGenerator/Geometry/Intersection.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Geometry/LineSegment.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Geometry/Offset.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Geometry/Polygon.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Geometry/Polyline.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Geometry/Slider.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Geometry/Vector.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Geometry/Vertex.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Geometry/WrapAroundIndex.lua"/>
+
 		<sourceFile filename="scripts/courseGenerator/CourseGenerator.lua"/>
-		<sourceFile filename="scripts/courseGenerator/CourseGeneratorInterface.lua"/>
-		<sourceFile filename="scripts/courseGenerator/Genetic.lua"/>
-		<sourceFile filename="scripts/courseGenerator/center.lua"/>
-		<sourceFile filename="scripts/courseGenerator/headland.lua"/>
+		<sourceFile filename="scripts/courseGenerator/WaypointAttributes.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Util.lua"/>
+		<sourceFile filename="scripts/courseGenerator/CacheMap.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Math.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Field.lua"/>
+		<sourceFile filename="scripts/courseGenerator/FieldworkContext.lua"/>
+		<sourceFile filename="scripts/courseGenerator/FieldworkCourse.lua"/>
+		<sourceFile filename="scripts/courseGenerator/FieldworkCourseHelper.lua"/>
+		<sourceFile filename="scripts/courseGenerator/HeadlandConnector.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Row.lua"/>
+		<sourceFile filename="scripts/courseGenerator/RowPattern.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Block.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Headland.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Center.lua"/>
 		<sourceFile filename="scripts/courseGenerator/Island.lua"/>
-		<sourceFile filename="scripts/courseGenerator/track.lua"/>
-		<sourceFile filename="scripts/courseGenerator/geo.lua"/>
-		<sourceFile filename="scripts/courseGenerator/Vector.lua"/>
+		<sourceFile filename="scripts/courseGenerator/SplineHelper.lua"/>
+		<sourceFile filename="scripts/courseGenerator/AnalyticHelper.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Genetic/Genetic.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Genetic/BlockSequencer.lua"/>
+		<sourceFile filename="scripts/courseGenerator/CenterTwoSided.lua"/>
+		<sourceFile filename="scripts/courseGenerator/CourseGeneratorInterface.lua"/>
 
 		<sourceFile filename="scripts/field/CpFieldUtil.lua"/>
 		<sourceFile filename="scripts/field/CustomField.lua"/>

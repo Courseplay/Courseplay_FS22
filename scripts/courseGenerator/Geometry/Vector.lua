@@ -25,7 +25,8 @@ local module = {
   ]]
 }
 
-local Vector = CpObject()
+---@class Vector
+Vector = CpObject()
 
 -- get a random function from Love2d or base lua, in that order.
 local rand = math.random
