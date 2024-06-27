@@ -356,7 +356,7 @@ function Polygon:_getDeltaAngle()
     if not self.deltaAngle then
         self.deltaAngle = 0
         for i = 1, #self do
-            self.deltaAngle = self.deltaAngle + cg.Math.getDeltaAngle(self:at(i):getExitHeading(), self:at(i):getEntryHeading())
+            self.deltaAngle = self.deltaAngle + CpMathUtil.getDeltaAngle(self:at(i):getExitHeading(), self:at(i):getEntryHeading())
         end
     end
     return self.deltaAngle

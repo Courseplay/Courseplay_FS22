@@ -24,7 +24,7 @@ end
 
 ---@return number The angle (in radians) at the intersecting edges meet
 function Intersection:getAngle()
-    return cg.Math.getDeltaAngle(self.edgeA:getHeading(), self.edgeB:getHeading())
+    return CpMathUtil.getDeltaAngle(self.edgeA:getHeading(), self.edgeB:getHeading())
 end
 
 function Intersection.__lt(a, b)

@@ -274,7 +274,7 @@ function Center:_findBestRowAngle()
         local smallBlockPenalty = self:_calculateSmallBlockPenalty(blocks, #rows)
         -- Prefer angles closest to the direction of the longest edge of the field
         -- sin(a - longestEdgeDirection) will be 0 when angle is the closest.
-        local notLongestEdgePenalty = 5 * math.abs(math.sin(cg.Math.getDeltaAngle(math.rad(a), longestEdgeDirection)))
+        local notLongestEdgePenalty = 5 * math.abs(math.sin(CpMathUtil.getDeltaAngle(math.rad(a), longestEdgeDirection)))
         local score = 6 * #blocks + #rows + smallBlockPenalty + notLongestEdgePenalty
         self.logger:trace('  %dº - rows: %d blocks: %d small block penalty: %.1f not longest edge penalty: %.1f score: %.3f',
                 a, #rows, #blocks, smallBlockPenalty, notLongestEdgePenalty, score)

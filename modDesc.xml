@@ -274,6 +274,8 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/courseManager/FileSystem.lua"/>
 		<sourceFile filename="scripts/courseManager/AssignedCoursesManager.lua"/>
 
+		<sourceFile filename="scripts/courseGenerator/CourseGenerator.lua"/>
+
 		<sourceFile filename="scripts/courseGenerator/Geometry/Intersection.lua"/>
 		<sourceFile filename="scripts/courseGenerator/Geometry/LineSegment.lua"/>
 		<sourceFile filename="scripts/courseGenerator/Geometry/Offset.lua"/>
@@ -284,11 +286,9 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/courseGenerator/Geometry/Vertex.lua"/>
 		<sourceFile filename="scripts/courseGenerator/Geometry/WrapAroundIndex.lua"/>
 
-		<sourceFile filename="scripts/courseGenerator/CourseGenerator.lua"/>
 		<sourceFile filename="scripts/courseGenerator/WaypointAttributes.lua"/>
 		<sourceFile filename="scripts/courseGenerator/Util.lua"/>
 		<sourceFile filename="scripts/courseGenerator/CacheMap.lua"/>
-		<sourceFile filename="scripts/courseGenerator/Math.lua"/>
 		<sourceFile filename="scripts/courseGenerator/Field.lua"/>
 		<sourceFile filename="scripts/courseGenerator/FieldworkContext.lua"/>
 		<sourceFile filename="scripts/courseGenerator/FieldworkCourse.lua"/>

@@ -53,7 +53,7 @@ function Corner.getAngles(startAngleDeg, endAngleDeg)
 	-- the startAngle reversed by 180
 	local reverseStartAngle = startAngleDeg > 0 and startAngleDeg - 180 or startAngleDeg + 180
 	-- this is the corner angle
-	local alpha = getDeltaAngle(math.rad(endAngleDeg), math.rad(reverseStartAngle))
+	local alpha = CpMathUtil.getDeltaAngle(math.rad(endAngleDeg), math.rad(reverseStartAngle))
 	return alpha, reverseStartAngle
 end
 
