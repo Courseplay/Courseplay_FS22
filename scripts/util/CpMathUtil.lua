@@ -182,3 +182,18 @@ function CpMathUtil.de_casteljau(t, points)
 	
 	return (1-t)*q0_x + t*q1_x, (1-t)*q0_y + t*q1_y
 end
+
+
+local function normalizeAngle( a )
+	return a >= 0 and a or 2 * math.pi + a
+end
+
+function CpMathUtil.getDeltaAngle(a, b)
+	-- convert the 0 - -180 range into 180 - 360
+	if math.abs( a - b ) > math.pi then
+		a = normalizeAngle( a )
+		b = normalizeAngle( b )
+	end
+	-- calculate difference in this range
+	return b - a
+end

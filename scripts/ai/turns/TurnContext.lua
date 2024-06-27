@@ -67,7 +67,7 @@ function TurnContext:init(vehicle, course, turnStartIx, turnEndIx, turnNodes, wo
     self.turnEndWpIx = turnEndIx
     ---@type Waypoint
     self.afterTurnEndWp = course.waypoints[math.min(course:getNumberOfWaypoints(), turnEndIx + 1)]
-    self.directionChangeDeg = math.deg( getDeltaAngle( math.rad(self.turnEndWp.angle), math.rad(self.beforeTurnStartWp.angle)))
+    self.directionChangeDeg = math.deg( CpMathUtil.getDeltaAngle( math.rad(self.turnEndWp.angle), math.rad(self.beforeTurnStartWp.angle)))
 
     self:setupTurnStart(course, turnNodes)
 
@@ -237,7 +237,7 @@ function TurnContext:isHeadlandCorner()
 	-- both the turn start and end waypoints
     -- a turn is a headland turn only when there is minimal direction change at the turn start and the total direction
     -- change is less than 150 degrees
-	return math.abs(getDeltaAngle(math.rad(self.turnStartWp.angle), math.rad(self.beforeTurnStartWp.angle))) < (math.pi / 6) and
+	return math.abs(CpMathUtil.getDeltaAngle(math.rad(self.turnStartWp.angle), math.rad(self.beforeTurnStartWp.angle))) < (math.pi / 6) and
             math.abs( self.directionChangeDeg ) < 150
 end
 
@@ -342,7 +342,7 @@ end
 --- @return number the angle to turn in this corner (if the corner is less than 90 degrees, you'll have to turn > 90 degrees)
 function TurnContext:getCornerAngleToTurn()
     local endAngleDeg = self:getAverageEndAngleDeg()
-    return getDeltaAngle(math.rad(endAngleDeg), math.rad(self.turnStartWp.angle))
+    return CpMathUtil.getDeltaAngle(math.rad(endAngleDeg), math.rad(self.turnStartWp.angle))
 end
 
 --- Create a corner based on the turn context's start and end waypoints

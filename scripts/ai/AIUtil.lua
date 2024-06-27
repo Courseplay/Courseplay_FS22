@@ -96,7 +96,7 @@ function AIUtil.calculateTightTurnOffset(vehicle, vehicleTurningRadius, course, 
 		return smoothOffset(0)
 	end
 
-	if getDeltaAngle(math.rad(nextAngle), math.rad(currentAngle)) > 0 then offset = -offset end
+	if CpMathUtil.getDeltaAngle(math.rad(nextAngle), math.rad(currentAngle)) > 0 then offset = -offset end
 
 	-- smooth the offset a bit to avoid sudden changes
 	tightTurnOffset = smoothOffset(offset)

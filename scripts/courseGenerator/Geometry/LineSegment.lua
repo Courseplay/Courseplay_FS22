@@ -226,7 +226,7 @@ end
 ---@param other cg.LineSegment
 ---@return number radius to reach other, 0 if can't be found
 function LineSegment:getRadiusTo(other)
-    local dA = cg.Math.getDeltaAngle(other:getHeading(), self:getHeading())
+    local dA = CpMathUtil.getDeltaAngle(other:getHeading(), self:getHeading())
     --if math.abs( dA ) < 0.05 then return math.huge end
     local s, t = self:calculateIntersectionParameters(other)
     -- they are parallel
@@ -259,7 +259,7 @@ end
 ---@return boolean is point on the left side of the line segment (looking towards the end of the line segment)
 function LineSegment:isPointOnLeft(point)
     local v = point - self.base
-    return cg.Math.getDeltaAngle(v:heading(), self.slope:heading()) <= 0
+    return CpMathUtil.getDeltaAngle(v:heading(), self.slope:heading()) <= 0
 end
 
 --- Assuming that this segment intersects the other, and the other is part of a polygon with the given

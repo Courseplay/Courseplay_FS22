@@ -224,7 +224,7 @@ function AIReverseDriver:calculateErrors(tractorNode, trailerNode)
     local dx, _, dz = localDirectionToWorld(trailerNode, 0, 0, -1)
     local trailerAngle = MathUtil.getYRotationFromDirection(dx, dz)
 
-    local orientationError = getDeltaAngle(trailerAngle, referencePathAngle)
+    local orientationError = CpMathUtil.getDeltaAngle(trailerAngle, referencePathAngle)
 
     -- The curvature (1/r) error is between the curvature of the path and the curvature of the tractor-trailer.
     -- This is really needed only when we are trying to follow a curved path in reverse
@@ -232,7 +232,7 @@ function AIReverseDriver:calculateErrors(tractorNode, trailerNode)
     dx, _, dz = localDirectionToWorld(tractorNode, 0, 0, -1)
     tractorAngle = MathUtil.getYRotationFromDirection(dx, dz)
 
-    local currentHitchAngle = getDeltaAngle(tractorAngle, trailerAngle)
+    local currentHitchAngle = CpMathUtil.getDeltaAngle(tractorAngle, trailerAngle)
 
     local curvature = (2 * math.sin(currentHitchAngle / 2)) / calcDistanceFrom(tractorNode, trailerNode)
     local currentWp = self.ppc:getCurrentWaypoint()

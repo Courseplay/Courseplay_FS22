@@ -310,7 +310,7 @@ function Course:enrichWaypointData(startIx)
 end
 
 function Course:calculateSignedRadius(ix)
-    local deltaAngle = getDeltaAngle(self.waypoints[ix].yRot, self.waypoints[ix - 1].yRot)
+    local deltaAngle = CpMathUtil.getDeltaAngle(self.waypoints[ix].yRot, self.waypoints[ix - 1].yRot)
     return self:getDistanceToNextWaypoint(ix) / (2 * math.sin(deltaAngle / 2))
 end
 
@@ -1313,7 +1313,7 @@ end
 function Course:addReverseForAutoDriveCourse()
     local reverse = false
     for i = 2, #self.waypoints do
-        local deltaAngleDeg = math.abs(math.deg(getDeltaAngle(self.waypoints[i].yRot, self.waypoints[i - 1].yRot)))
+        local deltaAngleDeg = math.abs(math.deg(CpMathUtil.getDeltaAngle(self.waypoints[i].yRot, self.waypoints[i - 1].yRot)))
         if deltaAngleDeg >= 100 then
             reverse = not reverse
             CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle,
@@ -1601,7 +1601,7 @@ function Course:getNearestWaypoints(node)
             dClosest = d
             ixClosest = i
         end
-        local deltaAngle = math.abs(getDeltaAngle(math.rad(p.angle), nodeAngle))
+        local deltaAngle = math.abs(CpMathUtil.getDeltaAngle(math.rad(p.angle), nodeAngle))
         if d < dClosestRightDirection and deltaAngle < maxDeltaAngle then
             dClosestRightDirection = d
             ixClosestRightDirection = i

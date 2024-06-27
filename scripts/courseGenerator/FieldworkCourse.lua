@@ -328,7 +328,7 @@ function FieldworkCourse:findPathToNextRow(boundaryId, rowEnd, rowStart, minDist
     local headlands = self:_getCachedHeadlands(boundaryId)
     local headlandWidth = #headlands * self.context.workingWidth
     local usableHeadlandWidth = headlandWidth - (minDistanceFromRowEnd or 0)
-    local headlandPassNumber = cg.Math.clamp(math.floor(usableHeadlandWidth / self.context.workingWidth), 1, #headlands)
+    local headlandPassNumber = MathUtil.clamp(math.floor(usableHeadlandWidth / self.context.workingWidth), 1, #headlands)
     local headland = headlands[headlandPassNumber]
     local vx1 = headland:findClosestVertexToPoint(rowEnd)
     local vx2 = headland:findClosestVertexToPoint(rowStart)
