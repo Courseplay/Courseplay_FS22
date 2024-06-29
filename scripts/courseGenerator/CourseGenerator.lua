@@ -44,6 +44,17 @@ CourseGenerator.cSmallBlockRowPercentageLimit = 5
 -- will just simple drive around it. No rows intersecting the island will be split at the island.
 CourseGenerator.maxRowsToBypassIsland = 5
 
+--- Return true when running in the game
+-- used by file and log functions to determine how exactly to do things,
+-- for example, io.flush is not available from within the game.
+--
+function CourseGenerator.isRunningInGame()
+    return g_currentMission ~= nil and not g_currentMission.mock;
+end
+
+-------------------------------------------------------------------------------
+--- Debugging when not running in the game
+-------------------------------------------------------------------------------
 function CourseGenerator.clearDebugObjects()
     CourseGenerator.debugPoints = {}
     CourseGenerator.debugPolylines = {}
@@ -54,6 +65,9 @@ end
 ---@param text|nil optional debug text
 ---@param color table|nil color in form of {r, g, b}, each in the 0..1 range
 function CourseGenerator.addDebugPoint(v, text, color)
+    if CourseGenerator.isRunningInGame then
+        return
+    end
     if not CourseGenerator.debugPoints then
         CourseGenerator.debugPoints = {}
     end
@@ -72,6 +86,9 @@ function CourseGenerator.getDebugId()
 end
 
 function CourseGenerator.addSmallDebugPoint(v, text, color)
+    if CourseGenerator.isRunningInGame then
+        return
+    end
     CourseGenerator.addDebugPoint(v, text, color)
     CourseGenerator.debugPoints[#CourseGenerator.debugPoints].small = true
 end
@@ -80,6 +97,9 @@ end
 ---@param p Polyline
 ---@param color table|nil color in form of {r, g, b}, each in the 0..1 range
 function CourseGenerator.addDebugPolyline(p, color)
+    if CourseGenerator.isRunningInGame then
+        return
+    end
     if not CourseGenerator.debugPolylines then
         CourseGenerator.debugPolylines = {}
     end
@@ -87,10 +107,3 @@ function CourseGenerator.addDebugPolyline(p, color)
     table.insert(CourseGenerator.debugPolylines, p)
 end
 
---- Return true when running in the game
--- used by file and log functions to determine how exactly to do things,
--- for example, io.flush is not available from within the game.
---
-function CourseGenerator.isRunningInGame()
-    return g_currentMission ~= nil and not g_currentMission.mock;
-end
