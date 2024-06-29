@@ -266,6 +266,11 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/util/MovingAverage.lua"/>
 		<sourceFile filename="scripts/util/CpRemainingTime.lua"/>
 
+		<sourceFile filename="scripts/geometry/Polygon.lua"/>
+		<sourceFile filename="scripts/geometry/Polyline.lua"/>
+		<sourceFile filename="scripts/geometry/Vector.lua"/>
+		<sourceFile filename="scripts/geometry/Vertex.lua"/>
+
 		<sourceFile filename="scripts/CpSettingsUtil.lua"/>
 		<sourceFile filename="scripts/Waypoint.lua"/>
 		<sourceFile filename="scripts/Course.lua"/>
@@ -276,15 +281,11 @@ Changelog 7.1.0.0:
 
 		<sourceFile filename="scripts/courseGenerator/CourseGenerator.lua"/>
 
-		<sourceFile filename="scripts/courseGenerator/Geometry/Intersection.lua"/>
-		<sourceFile filename="scripts/courseGenerator/Geometry/LineSegment.lua"/>
-		<sourceFile filename="scripts/courseGenerator/Geometry/Offset.lua"/>
-		<sourceFile filename="scripts/courseGenerator/Geometry/Polygon.lua"/>
-		<sourceFile filename="scripts/courseGenerator/Geometry/Polyline.lua"/>
-		<sourceFile filename="scripts/courseGenerator/Geometry/Slider.lua"/>
-		<sourceFile filename="scripts/courseGenerator/Geometry/Vector.lua"/>
-		<sourceFile filename="scripts/courseGenerator/Geometry/Vertex.lua"/>
-		<sourceFile filename="scripts/courseGenerator/Geometry/WrapAroundIndex.lua"/>
+		<sourceFile filename="scripts/courseGenerator/geometry/Intersection.lua"/>
+		<sourceFile filename="scripts/courseGenerator/geometry/LineSegment.lua"/>
+		<sourceFile filename="scripts/courseGenerator/geometry/Offset.lua"/>
+		<sourceFile filename="scripts/courseGenerator/geometry/Slider.lua"/>
+		<sourceFile filename="scripts/courseGenerator/geometry/WrapAroundIndex.lua"/>
 
 		<sourceFile filename="scripts/courseGenerator/WaypointAttributes.lua"/>
 		<sourceFile filename="scripts/courseGenerator/Util.lua"/>
@@ -302,8 +303,8 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/courseGenerator/Island.lua"/>
 		<sourceFile filename="scripts/courseGenerator/SplineHelper.lua"/>
 		<sourceFile filename="scripts/courseGenerator/AnalyticHelper.lua"/>
-		<sourceFile filename="scripts/courseGenerator/Genetic/Genetic.lua"/>
-		<sourceFile filename="scripts/courseGenerator/Genetic/BlockSequencer.lua"/>
+		<sourceFile filename="scripts/courseGenerator/genetic/Genetic.lua"/>
+		<sourceFile filename="scripts/courseGenerator/genetic/BlockSequencer.lua"/>
 		<sourceFile filename="scripts/courseGenerator/CenterTwoSided.lua"/>
 		<sourceFile filename="scripts/courseGenerator/CourseGeneratorInterface.lua"/>
 
