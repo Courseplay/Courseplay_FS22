@@ -2,7 +2,7 @@
 --- to generate
 local FieldworkContext = CpObject()
 
----@param field cg.Field
+---@param field CourseGenerator.Field
 ---@param workingWidth number working width
 ---@param turningRadius number minimum turning radius of the equipment
 ---@param nHeadlands number of headland passes
@@ -23,7 +23,7 @@ function FieldworkContext:init(field, workingWidth, turningRadius, nHeadlands)
     self.nIslandHeadlands = 1
     self.islandHeadlandClockwise = true
 
-    self.rowPattern = cg.RowPatternAlternating()
+    self.rowPattern = CourseGenerator.RowPatternAlternating()
     self.autoRowAngle = true
     self.rowAngle = 0
     self.evenRowDistribution = false
@@ -167,7 +167,7 @@ function FieldworkContext:setUseBaselineEdge(use)
 end
 
 --- What pattern to use to determine in which order the rows within a block are worked on.
----@param rowPattern cg.RowPattern
+---@param rowPattern CourseGenerator.RowPattern
 function FieldworkContext:setRowPattern(rowPattern)
     self.rowPattern = rowPattern
     return self
@@ -182,5 +182,5 @@ function FieldworkContext:setEnableSmallOverlapsWithHeadland(enableSmallOverlaps
     return self
 end
 
----@class cg.FieldworkContext
-cg.FieldworkContext = FieldworkContext
+---@class CourseGenerator.FieldworkContext
+CourseGenerator.FieldworkContext = FieldworkContext

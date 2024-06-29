@@ -68,14 +68,14 @@ function Polygon:vertices(from, to, step)
     step = (step == nil or step > 0) and 1 or -1
     local i, stop
     if step > 0 then
-        i = cg.WrapAroundIndex(self, (from or 1) - 1)
+        i = CourseGenerator.WrapAroundIndex(self, (from or 1) - 1)
         -- if there is a start index and no end given, we stop after we wrapped around, that is,
         -- we are again at the starting point. If there is no start index (from) given, then we
         -- start at 1 and stop at 1 after wrapping around the end
-        stop = cg.WrapAroundIndex(self, (to and (to + 1) or (from or 1)))
+        stop = CourseGenerator.WrapAroundIndex(self, (to and (to + 1) or (from or 1)))
     else
-        i = cg.WrapAroundIndex(self, (from or #self) + 1)
-        stop = cg.WrapAroundIndex(self, (to and (to - 1) or (from or #self)))
+        i = CourseGenerator.WrapAroundIndex(self, (from or #self) + 1)
+        stop = CourseGenerator.WrapAroundIndex(self, (to and (to - 1) or (from or #self)))
     end
     local firstIteration = true
     return function()
@@ -92,7 +92,7 @@ function Polygon:vertices(from, to, step)
 end
 
 --- edge iterator, will wrap through the end to close the polygon
----@return number, cg.LineSegment, Vertex
+---@return number, CourseGenerator.LineSegment, Vertex
 function Polygon:edges(startIx)
     local i = startIx and startIx - 1 or 0
     return function()
@@ -100,13 +100,13 @@ function Polygon:edges(startIx)
         if i > #self then
             return nil, nil
         else
-            return i, self[i]:getExitEdge() or cg.LineSegment.fromVectors(self[i], self[(i + 1) > #self and 1 or i + 1]), self[i]
+            return i, self[i]:getExitEdge() or CourseGenerator.LineSegment.fromVectors(self[i], self[(i + 1) > #self and 1 or i + 1]), self[i]
         end
     end
 end
 
 --- edge iterator backwards
----@return number, cg.LineSegment, Vertex
+---@return number, CourseGenerator.LineSegment, Vertex
 function Polygon:edgesBackwards(startIx)
     local i = startIx and (startIx + 1) or (#self + 1)
     return function()
@@ -114,7 +114,7 @@ function Polygon:edgesBackwards(startIx)
         if i <= 2 then
             return nil, nil
         else
-            return i, self[i]:getEntryEdge() or cg.LineSegment.fromVectors(self[i], self[(i - 1) < 1 and #self or (i - 1)]), self[i]
+            return i, self[i]:getEntryEdge() or CourseGenerator.LineSegment.fromVectors(self[i], self[(i - 1) < 1 and #self or (i - 1)]), self[i]
         end
     end
 end
@@ -127,7 +127,7 @@ end
 function Polygon:isInside(x, y)
     -- TODO: this obviously limits the size of polygons and position of the point relative to
     -- the polygon but for our practical purposes should be fine
-    local ray = cg.LineSegment(x, y, 10000000, y)
+    local ray = CourseGenerator.LineSegment(x, y, 10000000, y)
     local nIntersections = 0
     local windingNumber = 0
     for i = 1, #self do
@@ -236,7 +236,7 @@ end
 
 --- Make sure the edges are properly connected, their ends touch nicely without gaps and never
 --- extend beyond the vertex
----@param edges cg.LineSegment[]
+---@param edges CourseGenerator.LineSegment[]
 function Polygon:cleanEdges(edges, minEdgeLength, preserveCorners)
     return self:_cleanEdges(edges, 1, {}, edges[#edges], minEdgeLength, preserveCorners)
 end
@@ -254,7 +254,7 @@ function Polygon:createOffset(offsetVector, minEdgeLength, preserveCorners)
     end
     -- So far, same as the polyline, but now we need to take care of the connection between the
     -- last and the first edge.
-    local gapFiller = cg.LineSegment.connect(cleanOffsetEdges[#cleanOffsetEdges], cleanOffsetEdges[1],
+    local gapFiller = CourseGenerator.LineSegment.connect(cleanOffsetEdges[#cleanOffsetEdges], cleanOffsetEdges[1],
             minEdgeLength, preserveCorners)
     if gapFiller then
         table.insert(cleanOffsetEdges, gapFiller)
@@ -328,13 +328,13 @@ end
 ---@return Polyline, Polyline
 function Polygon:_getPathBetween(fromIx, toIx)
     local forward = Polyline({ self:at(fromIx) })
-    local fwdIx = cg.WrapAroundIndex(self, fromIx)
+    local fwdIx = CourseGenerator.WrapAroundIndex(self, fromIx)
     while fwdIx:get() ~= toIx do
         fwdIx = fwdIx + 1
         forward:append(self:at(fwdIx:get()))
     end
     local backward = Polyline({ self:at(fromIx) })
-    local bwdIx = cg.WrapAroundIndex(self, fromIx)
+    local bwdIx = CourseGenerator.WrapAroundIndex(self, fromIx)
     while bwdIx:get() ~= toIx do
         bwdIx = bwdIx - 1
         backward:append(self:at(bwdIx:get()))

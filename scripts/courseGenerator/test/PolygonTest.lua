@@ -5,10 +5,10 @@ function testPolygon()
     for _, edge in p:edges() do
         table.insert(e, edge)
     end
-    lu.assertEquals(e[1], cg.LineSegment(0, 0, 0, 1))
-    lu.assertEquals(e[2], cg.LineSegment(0, 1, 0, 2))
-    lu.assertEquals(e[3], cg.LineSegment(0, 2, 1, 2))
-    lu.assertEquals(e[4], cg.LineSegment(1, 2, 0, 0))
+    lu.assertEquals(e[1], CourseGenerator.LineSegment(0, 0, 0, 1))
+    lu.assertEquals(e[2], CourseGenerator.LineSegment(0, 1, 0, 2))
+    lu.assertEquals(e[3], CourseGenerator.LineSegment(0, 2, 1, 2))
+    lu.assertEquals(e[4], CourseGenerator.LineSegment(1, 2, 0, 0))
 
     lu.assertEquals(p:getLength(), 3 + e[4]:getLength())
 
@@ -227,9 +227,9 @@ function testPolygon()
     p = Polygon({ Vector(5, 0), Vector(5, 5), Vector(0, 5), Vector(0, 0) })
     lu.assertIsFalse(p:isClockwise())
     p:calculateProperties()
-    p[1]:getEntryEdge():assertAlmostEquals(cg.LineSegment(0, 0, 5, 0))
-    p[1]:getExitEdge():assertAlmostEquals(cg.LineSegment(5, 0, 5, 5))
-    p[4]:getExitEdge():assertAlmostEquals(cg.LineSegment(0, 0, 5, 0))
+    p[1]:getEntryEdge():assertAlmostEquals(CourseGenerator.LineSegment(0, 0, 5, 0))
+    p[1]:getExitEdge():assertAlmostEquals(CourseGenerator.LineSegment(5, 0, 5, 5))
+    p[4]:getExitEdge():assertAlmostEquals(CourseGenerator.LineSegment(0, 0, 5, 0))
 
     -- point in polygon
     p = Polygon({ Vector(-10, -10), Vector(10, -10), Vector(10, 10), Vector(-10, 10) })
@@ -290,8 +290,8 @@ function testPolygon()
 
     -- goAround()
     -- disable smoothing so assertions are easier
-    local minSmoothingAngle = cg.cMinSmoothingAngle
-    cg.cMinSmoothingAngle = math.huge
+    local minSmoothingAngle = CourseGenerator.cMinSmoothingAngle
+    CourseGenerator.cMinSmoothingAngle = math.huge
     local function assertGoAroundTop(line)
         lu.EPS = 0.01
         line[1]:assertAlmostEquals(Vector(-12, 8))
@@ -385,7 +385,7 @@ function testPolygon()
     o:goAround(pCcw, nil, true)
     assertGoAroundBottomWithCircle(o)
     -- restore smoothing angle to re-enable smoothing
-    cg.cMinSmoothingAngle = minSmoothingAngle
+    CourseGenerator.cMinSmoothingAngle = minSmoothingAngle
 
     -- rebase
     p = Polygon({ Vector(-10, -10), Vector(10, -10), Vector(10, 10), Vector(-10, 10) })

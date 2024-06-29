@@ -126,7 +126,7 @@ end
 --- edge iterator
 ---@param startIx number|nil start the iteration at the edge starting at the startIx vertex (or at the first)
 ---@param endIx number|nil the last edge to return is the one starting at endIx (or the last vertex)
----@return number, cg.LineSegment, Vertex
+---@return number, CourseGenerator.LineSegment, Vertex
 function Polyline:edges(startIx, endIx)
     local i = startIx and startIx - 1 or 0
     local last = endIx or #self
@@ -135,13 +135,13 @@ function Polyline:edges(startIx, endIx)
         if i >= last then
             return nil, nil, nil
         else
-            return i, self[i]:getExitEdge() or cg.LineSegment.fromVectors(self[i], self[i + 1]), self[i]
+            return i, self[i]:getExitEdge() or CourseGenerator.LineSegment.fromVectors(self[i], self[i + 1]), self[i]
         end
     end
 end
 
 --- edge iterator backwards
----@return number, cg.LineSegment, Vertex
+---@return number, CourseGenerator.LineSegment, Vertex
 function Polyline:edgesBackwards(startIx)
     local i = startIx and (startIx + 1) or (#self + 1)
     return function()
@@ -149,7 +149,7 @@ function Polyline:edgesBackwards(startIx)
         if i < 2 then
             return nil, nil, nil
         else
-            return i, self[i]:getEntryEdge() or cg.LineSegment.fromVectors(self[i], self[i - 1]), self[i]
+            return i, self[i]:getEntryEdge() or CourseGenerator.LineSegment.fromVectors(self[i], self[i - 1]), self[i]
         end
     end
 end
@@ -165,7 +165,7 @@ function Polyline:getShortestEdgeLength()
 end
 
 function Polyline:reverse()
-    cg.reverseArray(self)
+    CourseGenerator.reverseArray(self)
     self:calculateProperties()
     return self
 end
@@ -344,14 +344,14 @@ end
 --- Use this to fix a polyline with many vertices where some edges may be slightly longer than the
 --- maximum. Use splitEdges() instead if you have just a few (as little as 2) vertices and
 --- need a vertex at every given distance
----@param maximumLength number|nil default cg.cMaxEdgeLength,
----@param maxDeltaAngleForOffset number|nil default cg.cMaxDeltaAngleForMaxEdgeLength
+---@param maximumLength number|nil default CourseGenerator.cMaxEdgeLength,
+---@param maxDeltaAngleForOffset number|nil default CourseGenerator.cMaxDeltaAngleForMaxEdgeLength
 function Polyline:ensureMaximumEdgeLength(maximumLength, maxDeltaAngleForOffset)
-    maximumLength = maximumLength or cg.cMaxEdgeLength
-    maxDeltaAngleForOffset = maxDeltaAngleForOffset or cg.cMaxDeltaAngleForMaxEdgeLength
+    maximumLength = maximumLength or CourseGenerator.cMaxEdgeLength
+    maxDeltaAngleForOffset = maxDeltaAngleForOffset or CourseGenerator.cMaxDeltaAngleForMaxEdgeLength
     local i = 1
     while i <= self:fwdIterationLimit() do
-        local exitEdge = cg.LineSegment.fromVectors(self:at(i), self:at(i + 1))
+        local exitEdge = CourseGenerator.LineSegment.fromVectors(self:at(i), self:at(i + 1))
         if exitEdge:getLength() > maximumLength then
             if math.abs(self:at(i).dA) < maxDeltaAngleForOffset then
                 -- for higher angles, like corners, we don't want to round them out here.
@@ -376,7 +376,7 @@ end
 function Polyline:splitEdges(maximumLength)
     local i = 1
     while i <= self:fwdIterationLimit() do
-        local exitEdge = cg.LineSegment.fromVectors(self:at(i), self:at(i + 1))
+        local exitEdge = CourseGenerator.LineSegment.fromVectors(self:at(i), self:at(i + 1))
         local totalLength = exitEdge:getLength()
         if totalLength > maximumLength then
             -- edge too long, will replace it with nEdges number of shorter edges
@@ -399,7 +399,7 @@ function Polyline:splitEdges(maximumLength)
 end
 
 ---@param offsetVector Vector offset to move the edges, relative to the edge's direction
----@return cg.LineSegment[] an array of edges parallel to the existing ones, same length
+---@return CourseGenerator.LineSegment[] an array of edges parallel to the existing ones, same length
 --- but offset by offsetVector
 function Polyline:generateOffsetEdges(offsetVector)
     local offsetEdges = {}
@@ -414,7 +414,7 @@ end
 function Polyline:_cleanEdges(edges, startIx, cleanEdges, previousEdge, minEdgeLength, preserveCorners)
     for i = startIx, #edges do
         local currentEdge = edges[i]
-        local gapFiller = cg.LineSegment.connect(previousEdge, currentEdge, minEdgeLength, preserveCorners)
+        local gapFiller = CourseGenerator.LineSegment.connect(previousEdge, currentEdge, minEdgeLength, preserveCorners)
         if gapFiller then
             table.insert(cleanEdges, gapFiller)
         end
@@ -426,14 +426,14 @@ end
 
 --- Make sure the edges are properly connected, their ends touch nicely without gaps and never
 --- extend beyond the vertex
----@param edges cg.LineSegment[]
+---@param edges CourseGenerator.LineSegment[]
 function Polyline:cleanEdges(edges, minEdgeLength, preserveCorners)
     return self:_cleanEdges(edges, 2, { edges[1] }, edges[1], minEdgeLength, preserveCorners)
 end
 
 --- Generate a polyline parallel to this one, offset by the offsetVector. Note that this works only
 --- with either very low offsets or simple polylines with vertices far apart when using bigger offsets.
---- Use cg.Offset.generate() if you want to avoid creating loops on the offset polyline.
+--- Use CourseGenerator.Offset.generate() if you want to avoid creating loops on the offset polyline.
 ---@param offsetVector Vector offset to move the edges, relative to the edge's direction
 ---@param minEdgeLength number see LineSegment.connect()
 ---@param preserveCorners number see LineSegment.connect()
@@ -451,16 +451,16 @@ end
 ---@param makeCorners boolean if true, make corners for turn maneuvers instead of rounding them.
 function Polyline:ensureMinimumRadius(r, makeCorners)
 
-    ---@param entry cg.Slider
-    ---@param exit cg.Slider
+    ---@param entry CourseGenerator.Slider
+    ---@param exit CourseGenerator.Slider
     local function makeArc(entry, exit)
         local from = entry:getBaseAsState3D()
         local to = exit:getBaseAsState3D()
-        return cg.AnalyticHelper.getDubinsSolutionAsVertices(from, to, r)
+        return CourseGenerator.AnalyticHelper.getDubinsSolutionAsVertices(from, to, r)
     end
 
-    ---@param entry cg.Slider
-    ---@param exit cg.Slider
+    ---@param entry CourseGenerator.Slider
+    ---@param exit CourseGenerator.Slider
     local function makeCorner(entry, exit)
         entry:extendTo(exit)
         local corner = Vertex.fromVector(entry:getEnd())
@@ -472,15 +472,15 @@ function Polyline:ensureMinimumRadius(r, makeCorners)
     local currentIx
     local nextIx = 1
     repeat
-        local debugId = cg.getDebugId()
+        local debugId = CourseGenerator.getDebugId()
         currentIx = nextIx
         nextIx = currentIx + 1
         local xte = self:at(currentIx):getXte(r)
-        if xte > cg.cMaxCrossTrackError then
+        if xte > CourseGenerator.cMaxCrossTrackError then
             self.logger:debug('ensureMinimumRadius (%s): found a corner at %d, r: %.1f, xte: %.1f', debugId, currentIx, r, xte)
             -- looks like we can't make this turn without deviating too much from the course,
-            local entry = cg.Slider(self, currentIx, 0)
-            local exit = cg.Slider(self, currentIx, 0)
+            local entry = CourseGenerator.Slider(self, currentIx, 0)
+            local exit = CourseGenerator.Slider(self, currentIx, 0)
             local rMin
             -- we can move back a lot when rounding corners, but otherwise, limit that as we may end up
             -- being outside of the field with the corner...
@@ -508,9 +508,9 @@ function Polyline:ensureMinimumRadius(r, makeCorners)
                     self.logger:warning(
                             'ensureMinimumRadius (%s): will not sharpen this corner, had to move too far (%.1f) back',
                             debugId, totalMoved)
-                    cg.addDebugPoint(entry:getBase(), debugId .. ' entry')
-                    cg.addDebugPoint(exit:getBase(), debugId .. ' exit')
-                    cg.addDebugPoint(self[currentIx], debugId .. ' center')
+                    CourseGenerator.addDebugPoint(entry:getBase(), debugId .. ' entry')
+                    CourseGenerator.addDebugPoint(exit:getBase(), debugId .. ' exit')
+                    CourseGenerator.addDebugPoint(self[currentIx], debugId .. ' center')
                 end
             else
                 adjustedCornerVertices = makeArc(entry, exit)
@@ -533,9 +533,9 @@ function Polyline:ensureMinimumRadius(r, makeCorners)
         end
     until wrappedAround or currentIx >= #self
 
-    self:ensureMinimumEdgeLength(cg.cMinEdgeLength)
+    self:ensureMinimumEdgeLength(CourseGenerator.cMinEdgeLength)
     if makeCorners then
-        self:ensureMaximumEdgeLength(cg.cMaxEdgeLength)
+        self:ensureMaximumEdgeLength(CourseGenerator.cMaxEdgeLength)
     end
     self:calculateProperties()
 end
@@ -570,17 +570,17 @@ function Polyline:goAroundBetweenIntersections(other, circle, is1, is2)
         local shortPath = pathA:getLength() < pathB:getLength() and pathA or pathB
         local longPath = pathA:getLength() >= pathB:getLength() and pathA or pathB
         self.logger:debug('path A: %.1f, path B: %.1f', pathA:getLength(), pathB:getLength())
-        shortPath:setAttribute(nil, cg.WaypointAttributes.setHeadlandPassNumber,
+        shortPath:setAttribute(nil, CourseGenerator.WaypointAttributes.setHeadlandPassNumber,
                 self:at(is1.ixA):getAttributes():getHeadlandPassNumber())
-        longPath:setAttribute(nil, cg.WaypointAttributes.setHeadlandPassNumber,
+        longPath:setAttribute(nil, CourseGenerator.WaypointAttributes.setHeadlandPassNumber,
                 self:at(is1.ixA):getAttributes():getHeadlandPassNumber())
         if circle then
             path = shortPath:clone()
-            path:setAttribute(nil, cg.WaypointAttributes.setIslandBypass)
+            path:setAttribute(nil, CourseGenerator.WaypointAttributes.setIslandBypass)
             longPath:reverse()
             path:appendMany(longPath)
             -- mark this roundtrip as island bypass
-            path:setAttributes(#path - #longPath, #path, cg.WaypointAttributes.setIslandBypass)
+            path:setAttributes(#path - #longPath, #path, CourseGenerator.WaypointAttributes.setIslandBypass)
             path:appendMany(shortPath)
             self.logger:debug('Circled around, %d waypoints', #path)
         else
@@ -598,7 +598,7 @@ function Polyline:goAroundBetweenIntersections(other, circle, is1, is2)
         self:calculateProperties()
         -- size may change after smoothing
         local oldSize = #self
-        lastIx = cg.SplineHelper.smooth(self, 1, is1.ixA, lastIx)
+        lastIx = CourseGenerator.SplineHelper.smooth(self, 1, is1.ixA, lastIx)
         self:calculateProperties()
         return true, lastIx
     else
@@ -607,7 +607,7 @@ function Polyline:goAroundBetweenIntersections(other, circle, is1, is2)
     end
 end
 
----@param lineSegment cg.LineSegment
+---@param lineSegment CourseGenerator.LineSegment
 ---@return Vertex, number, Vertex, number the vertex closest to lineSegment, its distance, the vertex
 --- farthest from the lineSegment, its distance
 function Polyline:findClosestAndFarthestVertexToLineSegment(lineSegment)
@@ -682,7 +682,7 @@ end
 ---@param other Polyline
 ---@param startIx number index to start looking for intersections with other
 ---@param userData any user data to add to the Intersection objects (to later identify them)
----@return cg.Intersection[] list of intersections
+---@return CourseGenerator.Intersection[] list of intersections
 function Polyline:getIntersections(other, startIx, userData)
     local intersections = {}
     for i, edge, _ in self:edges(startIx) do
@@ -691,7 +691,7 @@ function Polyline:getIntersections(other, startIx, userData)
             if is then
                 -- do not add an intersection twice if it goes exactly through a vertex
                 if #intersections == 0 or (intersections[#intersections].is ~= is) then
-                    table.insert(intersections, cg.Intersection(i, j, is, edge, otherEdge, userData))
+                    table.insert(intersections, CourseGenerator.Intersection(i, j, is, edge, otherEdge, userData))
                 end
             end
         end
@@ -702,7 +702,7 @@ end
 
 --- Is this polyline entering the other polygon at intersection point is?
 ---@param other Polygon
----@param is cg.Intersection
+---@param is CourseGenerator.Intersection
 ---@param clockwiseOverride boolean use this clockwise setting instead of other's isClockwise() function
 ---@return boolean true if self is entering the other polygon, false when exiting, when moving in
 --- the direction of increasing indexes
@@ -725,7 +725,7 @@ function Polyline:replace(fromIx, toIx, vertices)
     end
 
     local sourceIx = 1
-    local destIx = cg.WrapAroundIndex(self, fromIx + 1)
+    local destIx = CourseGenerator.WrapAroundIndex(self, fromIx + 1)
     while self[destIx:get()] and self[destIx:get()].toBeReplaced do
         if sourceIx <= #vertices then
             local newVertex = vertices[sourceIx]:clone()
@@ -786,7 +786,7 @@ end
 --- Set an attribute for a series of vertices
 ---@param first number | nil index of first vertex to set the attribute for
 ---@param last number | nil index of last vertex
----@param setter cg.WaypointAttributes function to call on each vertex' attributes
+---@param setter CourseGenerator.WaypointAttributes function to call on each vertex' attributes
 ---@param ... any arguments for setter
 function Polyline:setAttributes(first, last, setter, ...)
     first = first or 1
@@ -798,7 +798,7 @@ end
 
 --- Set an attribute for a single vertex (or all)
 ---@param ix number|nil index of vertex to set the attribute for, if nil, the attribute is set for all vertices
----@param setter cg.WaypointAttributes function to call on each vertex' attributes
+---@param setter CourseGenerator.WaypointAttributes function to call on each vertex' attributes
 ---@param ... any arguments for setter
 function Polyline:setAttribute(ix, setter, ...)
     self:setAttributes(ix, ix, setter, ...)
@@ -831,8 +831,8 @@ end
 
 ------ Cut a polyline at is1 and is2, keeping the section between the two. is1 and is2 becomes the start and
 --- end of the cut polyline.
----@param is1 cg.Intersection
----@param is2 cg.Intersection
+---@param is1 CourseGenerator.Intersection
+---@param is2 CourseGenerator.Intersection
 ---@param section Polyline|nil an optional, initialized object that will become the section
 ---@return Polyline
 function Polyline:_cutAtIntersections(is1, is2, section)

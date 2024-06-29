@@ -65,22 +65,22 @@ function FieldworkCourseHelper.bypassSmallIsland(polyline, workingWidth, other, 
         if other:isVectorInside(polyline[#polyline]) then
             polyline.logger:debug('End of row is on an island, removing all vertices after index %d (of %d)',
                     is1.ixA, #polyline)
-            cg.addDebugPoint(polyline[is1.ixA], tostring(is1.ixA))
-            cg.addDebugPoint(polyline[#polyline], tostring(polyline[#polyline]))
+            CourseGenerator.addDebugPoint(polyline[is1.ixA], tostring(is1.ixA))
+            CourseGenerator.addDebugPoint(polyline[#polyline], tostring(polyline[#polyline]))
             polyline:cutEndAtIx(is1.ixA)
             polyline:append(is1.is)
             polyline:calculateProperties()
             FieldworkCourseHelper.adjustLengthAtEnd(polyline, workingWidth, is1:getAngle())
-            polyline:setAttribute(#polyline, cg.WaypointAttributes.setUsePathfinderToNextWaypoint)
+            polyline:setAttribute(#polyline, CourseGenerator.WaypointAttributes.setUsePathfinderToNextWaypoint)
         else
             polyline.logger:debug('Start of row is on an island, removing all vertices up to index %d (of %d)',
                     is1.ixA, #polyline)
-            cg.addDebugPoint(polyline[is1.ixA], tostring(is1.ixA))
+            CourseGenerator.addDebugPoint(polyline[is1.ixA], tostring(is1.ixA))
             polyline:cutStartAtIx(is1.ixA + 1)
             polyline:prepend(is1.is)
             polyline:calculateProperties()
             FieldworkCourseHelper.adjustLengthAtStart(polyline, workingWidth, is1:getAngle())
-            polyline:setAttribute(1, cg.WaypointAttributes.setUsePathfinderToThisWaypoint)
+            polyline:setAttribute(1, CourseGenerator.WaypointAttributes.setUsePathfinderToThisWaypoint)
         end
         return false
     end
@@ -95,7 +95,7 @@ function FieldworkCourseHelper.createUsableBoundary(originalBoundary, clockwise)
     local usableBoundary = originalBoundary:clone()
     -- some field scans are not perfect and have sudden direction changes which screws up the clockwise calculation
     usableBoundary:removeGlitches()
-    usableBoundary:ensureMinimumEdgeLength(cg.cMinEdgeLength)
+    usableBoundary:ensureMinimumEdgeLength(CourseGenerator.cMinEdgeLength)
     if usableBoundary:isClockwise() ~= clockwise then
         -- all headlands are generated in the same direction as the field boundary,
         -- so if it does not match the required cw/ccw, reverse it
@@ -110,8 +110,8 @@ function FieldworkCourseHelper.createVirtualHeadland(fieldBoundary, isClockwise,
     -- know if the boundary is a headland or the actual field boundary. The virtual headland is half working
     -- width wider than the field boundary so the rows in the center cover the area between the original
     -- field boundaries.
-    return cg.Headland(fieldBoundary, isClockwise, 0, workingWidth / 2, true)
+    return CourseGenerator.Headland(fieldBoundary, isClockwise, 0, workingWidth / 2, true)
 end
 
----@class cg.FieldworkCourseHelper
-cg.FieldworkCourseHelper = FieldworkCourseHelper
+---@class CourseGenerator.FieldworkCourseHelper
+CourseGenerator.FieldworkCourseHelper = FieldworkCourseHelper

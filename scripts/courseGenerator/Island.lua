@@ -1,7 +1,7 @@
 local Island = CpObject()
 
----@class cg.Island
-cg.Island = Island
+---@class CourseGenerator.Island
+CourseGenerator.Island = Island
 
 -- grid spacing used for island detection. Consequently, this will be the grid spacing
 -- of the island points.
@@ -100,23 +100,23 @@ end
 
 --- Generate headlands around the island. May generate less than what the context requests if the island headland
 --- would go outside the field boundary
----@param context cg.FieldworkContext
+---@param context CourseGenerator.FieldworkContext
 ---@param mustNotCross Polygon outermost headland of field or field boundary: island headlands must not cross this
 --- otherwise the island headland will be out of the field
 function Island:generateHeadlands(context, mustNotCross)
     self.context = context
     self.logger:debug('generating %d headland(s)', self.context.nIslandHeadlands, self.context.turningRadius)
     local headlands = {}
-    self.boundary = cg.FieldworkCourseHelper.createUsableBoundary(self.boundary, self.context.islandHeadlandClockwise)
+    self.boundary = CourseGenerator.FieldworkCourseHelper.createUsableBoundary(self.boundary, self.context.islandHeadlandClockwise)
     -- innermost headland is offset from the island by half width
-    headlands[1] = cg.IslandHeadland(self, self.boundary, self.context.islandHeadlandClockwise, 1, self.context.workingWidth / 2)
+    headlands[1] = CourseGenerator.IslandHeadland(self, self.boundary, self.context.islandHeadlandClockwise, 1, self.context.workingWidth / 2)
     for i = 2, self.context.nIslandHeadlands do
         if not headlands[i - 1]:isValid() then
             self.logger:warning('headland %d is invalid, removing', i - 1)
             headlands[i - 1] = nil
             break
         end
-        headlands[i] = cg.IslandHeadland(self, headlands[i - 1]:getPolygon(), self.context.islandHeadlandClockwise, i, self.context.workingWidth)
+        headlands[i] = CourseGenerator.IslandHeadland(self, headlands[i - 1]:getPolygon(), self.context.islandHeadlandClockwise, i, self.context.workingWidth)
     end
     if headlands[1]:getPolygon():intersects(mustNotCross) then
         self.logger:error('First headland intersects field boundary!')

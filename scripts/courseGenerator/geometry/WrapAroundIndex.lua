@@ -41,5 +41,5 @@ function WrapAroundIndex.__sub(a, b)
     return a
 end
 
----@class cg.WrapAroundIndex
-cg.WrapAroundIndex = WrapAroundIndex
+---@class CourseGenerator.WrapAroundIndex
+CourseGenerator.WrapAroundIndex = WrapAroundIndex

@@ -1,7 +1,7 @@
 require('include')
 lu.EPS = 0.01
 function testField()
-    local fields = cg.Field.loadSavedFields('fields/Coldborough.xml')
+    local fields = CourseGenerator.Field.loadSavedFields('fields/Coldborough.xml')
     lu.assertEquals(#fields, 9)
     lu.assertEquals(#fields[8].boundary, 135)
     local field = fields[8]

@@ -35,7 +35,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---@class FieldBlockChromosome
 local FieldBlockChromosome = Genetic.newClass()
 
----@param blocks cg.Block[]
+---@param blocks CourseGenerator.Block[]
 function FieldBlockChromosome:new(blocks)
     local instance = {}
     -- this chromosome has the sequence of blocks encoded
@@ -100,7 +100,7 @@ function FieldBlockChromosome:mutate(mutationRate)
     self.entries[self.blocks[math.random(#self.blocks)]]:mutate(mutationRate)
 end
 
----@return cg.Block[], cg.RowPattern.Entry[] blocks in the sequence they should be worked on, entries
+---@return CourseGenerator.Block[], CourseGenerator.RowPattern.Entry[] blocks in the sequence they should be worked on, entries
 --- for each block are in the entries table, indexed by the block itself
 function FieldBlockChromosome:getBlockSequenceAndEntries()
     local blocksInSequence = {}
@@ -136,7 +136,7 @@ Genetic.FieldBlockChromosome = FieldBlockChromosome
 
 local BlockSequencer = CpObject()
 
----@param blocks cg.Block[]
+---@param blocks CourseGenerator.Block[]
 function BlockSequencer:init(blocks)
     self.blocks = blocks
     self.logger = Logger('BlockSequencer')
@@ -183,5 +183,5 @@ function BlockSequencer:findBlockSequence(fitnessFunction)
     end
 end
 
----@class cg.BlockSequencer
-cg.BlockSequencer = BlockSequencer
+---@class CourseGenerator.BlockSequencer
+CourseGenerator.BlockSequencer = BlockSequencer

@@ -28,7 +28,7 @@ function Row:getOriginalSequenceNumber()
 end
 
 function Row:clone()
-    local clone = cg.Row(self.workingWidth)
+    local clone = CourseGenerator.Row(self.workingWidth)
     for _, v in ipairs(self) do
         clone:append(v:clone())
     end
@@ -45,26 +45,26 @@ end
 --- (looking at increasing vertex indices) when offset > 0, right side otherwise.
 function Row:createNext(offset)
     if offset >= 0 then
-        return cg.Offset.generate(self, Vector(0, 1), offset)
+        return CourseGenerator.Offset.generate(self, Vector(0, 1), offset)
     else
-        return cg.Offset.generate(self, Vector(0, -1), -offset)
+        return CourseGenerator.Offset.generate(self, Vector(0, -1), -offset)
     end
 end
 
 --- Override Polyline:createOffset() to make sure the offset is an instance of Row
 function Row:createOffset(offsetVector, minEdgeLength, preserveCorners)
-    local offsetRow = cg.Row(self.workingWidth)
+    local offsetRow = CourseGenerator.Row(self.workingWidth)
     return self:_createOffset(offsetRow, offsetVector, minEdgeLength, preserveCorners)
 end
 
 --- Does the other row overlap this one?
----@param other cg.Row
+---@param other CourseGenerator.Row
 ---@return boolean
 function Row:overlaps(other)
     -- for simplicity, use a simple line segment instead of a polyline, rows are
     -- more or less straight anyway
-    local myEndToEnd = cg.LineSegment.fromVectors(self[1], self[#self])
-    local otherEndToEnd = cg.LineSegment.fromVectors(other[1], other[#other])
+    local myEndToEnd = CourseGenerator.LineSegment.fromVectors(self[1], self[#self])
+    local otherEndToEnd = CourseGenerator.LineSegment.fromVectors(other[1], other[#other])
     return myEndToEnd:overlaps(otherEndToEnd)
 end
 
@@ -79,15 +79,15 @@ end
 --- Big islands in the field also split a row which intersects them. We just drive around
 --- smaller islands but at bigger ones it is better to end the row and turn around into the next.
 ---
----@param headland cg.Headland the field boundary (or innermost headland)
----@param bigIslands cg.Island[] islands big enough to split a row (we'll not just drive around them but turn)
+---@param headland CourseGenerator.Headland the field boundary (or innermost headland)
+---@param bigIslands CourseGenerator.Island[] islands big enough to split a row (we'll not just drive around them but turn)
 ---@param onlyFirstAndLastIntersections boolean|nil ignore all intersections between the first and the last. This makes
 --- only sense if there are no islands.
 ---@param enableSmallOverlaps boolean|nil if true, and the row is almost parallel to the boundary and crosses it
 --- multiple times (for instance a slightly zigzagging headland), do not split the row unless it is getting too
 --- far from the boundary (it is like a smart version of onlyFirstAndLastInterSections, but significantly will slow
 --- down the generation)
----@return cg.Row[]
+---@return CourseGenerator.Row[]
 function Row:split(headland, bigIslands, onlyFirstAndLastIntersections, enableSmallOverlaps)
     -- get all the intersections with the field boundary
     local intersections = self:getIntersections(headland:getPolygon(), 1,
@@ -219,22 +219,22 @@ end
 --- or not. The attributes are set when the row is split at headlands but may need to be reapplied when
 --- we adjust the end of the row as we may remove the first/last vertex.
 function Row:setEndAttributes()
-    self:setAttribute(1, cg.WaypointAttributes.setRowStart)
-    self:setAttribute(1, cg.WaypointAttributes._setAtHeadland, self.startsAtHeadland)
-    self:setAttribute(1, cg.WaypointAttributes.setAtBoundaryId, self.startsAtHeadland:getBoundaryId())
-    self:setAttribute(#self, cg.WaypointAttributes.setRowEnd)
-    self:setAttribute(#self, cg.WaypointAttributes._setAtHeadland, self.endsAtHeadland)
-    self:setAttribute(#self, cg.WaypointAttributes.setAtBoundaryId, self.endsAtHeadland:getBoundaryId())
+    self:setAttribute(1, CourseGenerator.WaypointAttributes.setRowStart)
+    self:setAttribute(1, CourseGenerator.WaypointAttributes._setAtHeadland, self.startsAtHeadland)
+    self:setAttribute(1, CourseGenerator.WaypointAttributes.setAtBoundaryId, self.startsAtHeadland:getBoundaryId())
+    self:setAttribute(#self, CourseGenerator.WaypointAttributes.setRowEnd)
+    self:setAttribute(#self, CourseGenerator.WaypointAttributes._setAtHeadland, self.endsAtHeadland)
+    self:setAttribute(#self, CourseGenerator.WaypointAttributes.setAtBoundaryId, self.endsAtHeadland:getBoundaryId())
 end
 
 function Row:setAllAttributes()
     self:setEndAttributes()
-    self:setAttribute(nil, cg.WaypointAttributes.setRowNumber, self.rowNumber)
-    self:setAttribute(nil, cg.WaypointAttributes.setBlockNumber, self.blockNumber)
-    self:setAttribute(nil, cg.WaypointAttributes.setLeftSideWorked, self.rowOnLeftWorked)
-    self:setAttribute(nil, cg.WaypointAttributes.setRightSideWorked, self.rowOnRightWorked)
-    self:setAttribute(nil, cg.WaypointAttributes.setLeftSideBlockBoundary, self.leftSideBlockBoundary)
-    self:setAttribute(nil, cg.WaypointAttributes.setRightSideBlockBoundary, self.rightSideBlockBoundary)
+    self:setAttribute(nil, CourseGenerator.WaypointAttributes.setRowNumber, self.rowNumber)
+    self:setAttribute(nil, CourseGenerator.WaypointAttributes.setBlockNumber, self.blockNumber)
+    self:setAttribute(nil, CourseGenerator.WaypointAttributes.setLeftSideWorked, self.rowOnLeftWorked)
+    self:setAttribute(nil, CourseGenerator.WaypointAttributes.setRightSideWorked, self.rowOnRightWorked)
+    self:setAttribute(nil, CourseGenerator.WaypointAttributes.setLeftSideBlockBoundary, self.leftSideBlockBoundary)
+    self:setAttribute(nil, CourseGenerator.WaypointAttributes.setRightSideBlockBoundary, self.rightSideBlockBoundary)
 end
 
 function Row:reverse()
@@ -252,8 +252,8 @@ end
 --- In case of a field boundary we have to drive up all the way to the boundary.
 --- The value obviously depends on the angle.
 function Row:adjustLength()
-    cg.FieldworkCourseHelper.adjustLengthAtStart(self, self.workingWidth, self.startHeadlandAngle)
-    cg.FieldworkCourseHelper.adjustLengthAtEnd(self, self.workingWidth, self.endHeadlandAngle)
+    CourseGenerator.FieldworkCourseHelper.adjustLengthAtStart(self, self.workingWidth, self.startHeadlandAngle)
+    CourseGenerator.FieldworkCourseHelper.adjustLengthAtEnd(self, self.workingWidth, self.endHeadlandAngle)
 end
 
 --- Find the first two intersections with another polyline or polygon and replace the section
@@ -264,7 +264,7 @@ end
 ---@return boolean, number true if there was an intersection and we actually went around, index of last vertex
 --- after the bypass
 function Row:bypassSmallIsland(other, startIx, circle)
-    cg.FieldworkCourseHelper.bypassSmallIsland(self, self.workingWidth, other, startIx, circle)
+    CourseGenerator.FieldworkCourseHelper.bypassSmallIsland(self, self.workingWidth, other, startIx, circle)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -272,7 +272,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 
 function Row:_cutAtIntersections(is1, is2)
-    local section = cg.Row(self.workingWidth)
+    local section = CourseGenerator.Row(self.workingWidth)
     -- want a Row to be returned, not a Polyline
     return Polyline._cutAtIntersections(self, is1, is2, section)
 end
@@ -284,8 +284,8 @@ end
 --- value in this case.
 --- "Close" means never further away than half the working width.
 ---@param headland Polygon
----@param is1 cg.Intersection
----@param is2 cg.Intersection
+---@param is1 CourseGenerator.Intersection
+---@param is2 CourseGenerator.Intersection
 function Row:_isSectionCloseToHeadland(headland, is1, is2)
     if is1 == nil or is2 == nil or headland == nil then
         return false
@@ -303,8 +303,8 @@ function Row:_isSectionCloseToHeadland(headland, is1, is2)
     headlandSection:append(is2.is)
     headlandSection:calculateProperties()
     -- now run along both paths and see how far we get from each other
-    local rowSlider = cg.Slider(rowSection, 1)
-    local headlandSlider = cg.Slider(headlandSection, 1)
+    local rowSlider = CourseGenerator.Slider(rowSection, 1)
+    local headlandSlider = CourseGenerator.Slider(headlandSection, 1)
     while rowSlider:move(1) and headlandSlider:move(1) do
         local d = (rowSlider:getBase() - headlandSlider:getBase()):length()
         if d > self.workingWidth / 2 then
@@ -314,5 +314,5 @@ function Row:_isSectionCloseToHeadland(headland, is1, is2)
     return true
 end
 
----@class cg.Row
-cg.Row = Row
+---@class CourseGenerator.Row
+CourseGenerator.Row = Row

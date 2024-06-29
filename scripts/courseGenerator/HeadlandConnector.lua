@@ -3,7 +3,7 @@
 ---@class HeadlandConnector
 local HeadlandConnector = {}
 
----@param headlands cg.Headland[] array of headland passes, the first being the closest to the boundary (so for a field,
+---@param headlands CourseGenerator.Headland[] array of headland passes, the first being the closest to the boundary (so for a field,
 --- index 1 is the outermost headland pass, for an island, index 1 is the innermost)
 ---@param startLocation Vector|number will start working on the outermost headland as close as possible to
 ---startLocation. If number, will start at that index
@@ -37,7 +37,7 @@ function HeadlandConnector.connectHeadlandsFromOutside(headlands, startLocation,
     return headlandPath
 end
 
----@param headlands cg.Headland[] array of headland passes, the first being the closest to the boundary (so for a field,
+---@param headlands CourseGenerator.Headland[] array of headland passes, the first being the closest to the boundary (so for a field,
 --- index 1 is the outermost headland pass, for an island, index 1 is the innermost)
 ---@param startLocation Vector|number if Vector, will start working on the innermost headland as close as possible
 --- to startLocation. If number, will start at that index
@@ -85,5 +85,5 @@ function HeadlandConnector.getTransitionLength(workingWidth, turningRadius)
     end
     return transitionLength
 end
----@class cg.HeadlandConnector
-cg.HeadlandConnector = HeadlandConnector
+---@class CourseGenerator.HeadlandConnector
+CourseGenerator.HeadlandConnector = HeadlandConnector

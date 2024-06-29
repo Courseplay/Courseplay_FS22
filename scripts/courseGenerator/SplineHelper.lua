@@ -8,7 +8,7 @@ local SplineHelper = {}
 local function tuck(p, from, to, s)
     for _, cv, pv, nv in p:vertices(from, to) do
         if pv and cv and nv then
-            if not cv.isCorner and cv.dA and math.abs(cv.dA) > cg.cMinSmoothingAngle then
+            if not cv.isCorner and cv.dA and math.abs(cv.dA) > CourseGenerator.cMinSmoothingAngle then
                 local m = (pv + nv) / 2
                 local cm = m - cv
                 cv.x, cv.y = cv.x + s * cm.x, cv.y + s * cm.y
@@ -28,7 +28,7 @@ local function refine(p, from, to)
     for i, cv, _, nv in p:vertices(from, to) do
         -- initialize ix to the first value of i
         if nv and cv then
-            if not cv.isCorner and cv.dA and math.abs(cv.dA) > cg.cMinSmoothingAngle then
+            if not cv.isCorner and cv.dA and math.abs(cv.dA) > CourseGenerator.cMinSmoothingAngle then
                 local m = (nv + cv) / 2
                 local newVertex = cv:clone()
                 newVertex.x, newVertex.y = m.x, m.y
@@ -60,4 +60,4 @@ function SplineHelper.smooth(p, order, from, to)
 end
 
 ---@class SplineHelper
-cg.SplineHelper = SplineHelper
+CourseGenerator.SplineHelper = SplineHelper

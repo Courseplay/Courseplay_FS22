@@ -1,13 +1,13 @@
 require('include')
 function testCacheMap()
-    local c = cg.CacheMap()
+    local c = CourseGenerator.CacheMap()
 
     lu.assertNil(c:get(1))
     lu.assertEquals(c:getWithLambda(1, function () return 100 end), 100)
     lu.assertEquals(c:get(1), 100)
     lu.assertEquals(c:getWithLambda(1, function () return 200 end), 100)
 
-    c = cg.CacheMap(2)
+    c = CourseGenerator.CacheMap(2)
     lu.assertNil(c:get(1, 1))
     lu.assertEquals(c:getWithLambda(1, 1, function () return 100 end), 100)
     lu.assertEquals(c:get(1, 1), 100)
@@ -19,7 +19,7 @@ function testCacheMap()
     lu.assertEquals(c:get(1, 1), 100)
 
     local key = {}
-    c = cg.CacheMap(3)
+    c = CourseGenerator.CacheMap(3)
     lu.assertNil(c:get('a', 1, key))
     lu.assertEquals(c:getWithLambda('a', 1, key, function () return 100 end), 100)
     lu.assertEquals(c:get('a', 1, key), 100)

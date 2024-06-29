@@ -8,13 +8,13 @@
 ---@class FieldworkCourse
 local FieldworkCourse = CpObject()
 
----@param context cg.FieldworkContext
+---@param context CourseGenerator.FieldworkContext
 function FieldworkCourse:init(context)
     self.logger = Logger('FieldworkCourse')
     self:_setContext(context)
     self.headlandPath = Polyline()
     self.circledIslands = {}
-    self.headlandCache = cg.CacheMap()
+    self.headlandCache = CourseGenerator.CacheMap()
 
     self.logger:debug('### Generating headlands around the field perimeter ###')
     self:generateHeadlands()
@@ -28,7 +28,7 @@ function FieldworkCourse:init(context)
     if self.context.headlandFirst then
         -- connect the headlands first as the center needs to start where the headlands finish
         self.logger:debug('### Connecting headlands (%d) from the outside towards the inside ###', #self.headlands)
-        self.headlandPath = cg.HeadlandConnector.connectHeadlandsFromOutside(self.headlands,
+        self.headlandPath = CourseGenerator.HeadlandConnector.connectHeadlandsFromOutside(self.headlands,
                 context.startLocation, self.context.workingWidth, self.context.turningRadius)
         self:routeHeadlandsAroundSmallIslands()
         self.logger:debug('### Generating up/down rows ###')
@@ -38,7 +38,7 @@ function FieldworkCourse:init(context)
         self.logger:debug('### Generating up/down rows ###')
         local endOfLastRow = self:generateCenter()
         self.logger:debug('### Connecting headlands (%d) from the inside towards the outside ###', #self.headlands)
-        self.headlandPath = cg.HeadlandConnector.connectHeadlandsFromInside(self.headlands,
+        self.headlandPath = CourseGenerator.HeadlandConnector.connectHeadlandsFromInside(self.headlands,
                 endOfLastRow, self.context.workingWidth, self.context.turningRadius)
         self:routeHeadlandsAroundSmallIslands()
     end
@@ -92,12 +92,12 @@ function FieldworkCourse:getHeadlandPath()
     return self.headlandPath
 end
 
----@return cg.Headland[]
+---@return CourseGenerator.Headland[]
 function FieldworkCourse:getHeadlands()
     return self.headlands
 end
 
----@return cg.Center
+---@return CourseGenerator.Center
 function FieldworkCourse:getCenter()
     return self.center
 end
@@ -137,7 +137,7 @@ function FieldworkCourse:generateHeadlandsFromOutside(boundary, firstHeadlandWid
     self.logger:debug('generating %d sharp headlands from the outside, min radius %.1f',
             self.nHeadlands - startIx + 1, self.context.turningRadius)
     -- outermost headland is offset from the field boundary by half width
-    self.headlands[startIx] = cg.Headland(boundary, self.context.headlandClockwise, startIx, firstHeadlandWidth, false, nil)
+    self.headlands[startIx] = CourseGenerator.Headland(boundary, self.context.headlandClockwise, startIx, firstHeadlandWidth, false, nil)
     if not self.headlands[startIx]:isValid() then
         self:_removeHeadland(startIx)
         return
@@ -146,7 +146,7 @@ function FieldworkCourse:generateHeadlandsFromOutside(boundary, firstHeadlandWid
         self.headlands[startIx]:sharpenCorners(self.context.turningRadius)
     end
     for i = startIx + 1, self.nHeadlands do
-        self.headlands[i] = cg.Headland(self.headlands[i - 1]:getPolygon(), self.context.headlandClockwise, i,
+        self.headlands[i] = CourseGenerator.Headland(self.headlands[i - 1]:getPolygon(), self.context.headlandClockwise, i,
                 self.context.workingWidth, false, self.headlands[1]:getPolygon())
         if self.headlands[i]:isValid() then
             if self.context.sharpenCorners then
@@ -169,7 +169,7 @@ function FieldworkCourse:generateHeadlandsFromInside()
     -- start with the innermost headland, try until it can fit in the field (as the required number of
     -- headlands may be more than what actually fits into the field)
     while self.nHeadlandsWithRoundCorners > 0 do
-        self.headlands[self.nHeadlandsWithRoundCorners] = cg.Headland(self.boundary, self.context.headlandClockwise,
+        self.headlands[self.nHeadlandsWithRoundCorners] = CourseGenerator.Headland(self.boundary, self.context.headlandClockwise,
                 self.nHeadlandsWithRoundCorners, (self.nHeadlandsWithRoundCorners - 0.5) * self.context.workingWidth,
                 false, self.boundary)
         if self.headlands[self.nHeadlandsWithRoundCorners]:isValid() then
@@ -182,7 +182,7 @@ function FieldworkCourse:generateHeadlandsFromInside()
         end
     end
     for i = self.nHeadlandsWithRoundCorners - 1, 1, -1 do
-        self.headlands[i] = cg.Headland(self.headlands[i + 1]:getPolygon(), self.context.headlandClockwise, i,
+        self.headlands[i] = CourseGenerator.Headland(self.headlands[i + 1]:getPolygon(), self.context.headlandClockwise, i,
                 self.context.workingWidth, true, self.boundary)
         self.headlands[i]:roundCorners(self.context.turningRadius)
     end
@@ -195,10 +195,10 @@ function FieldworkCourse:generateCenter()
     -- if there are no headlands, or there are, but we start working in the middle, then use the
     -- designated start location, otherwise the point where the innermost headland ends.
     if #self.headlands == 0 then
-        self.center = cg.Center(self.context, self.boundary, nil, self.context.startLocation, self.bigIslands)
+        self.center = CourseGenerator.Center(self.context, self.boundary, nil, self.context.startLocation, self.bigIslands)
     else
         local innerMostHeadlandPolygon = self.headlands[#self.headlands]:getPolygon()
-        self.center = cg.Center(self.context, self.boundary, self.headlands[#self.headlands],
+        self.center = CourseGenerator.Center(self.context, self.boundary, self.headlands[#self.headlands],
                 self.context.headlandFirst and
                         innerMostHeadlandPolygon[#innerMostHeadlandPolygon] or
                         self.context.startLocation,
@@ -285,18 +285,18 @@ function FieldworkCourse:circleBigIslands()
             local outermostHeadlandPolygon = island:getOutermostHeadland():getPolygon()
             -- find a vertex on the outermost headland to start working on the island headlands,
             -- far enough that we can generate a Dubins path to it
-            local slider = cg.Slider(outermostHeadlandPolygon,
+            local slider = CourseGenerator.Slider(outermostHeadlandPolygon,
                     outermostHeadlandPolygon:findClosestVertexToPoint(path[i]).ix, 3 * self.context.turningRadius)
 
             -- 'inside' since with islands, everything is backwards
-            local headlandPath = cg.HeadlandConnector.connectHeadlandsFromInside(island:getHeadlands(),
+            local headlandPath = CourseGenerator.HeadlandConnector.connectHeadlandsFromInside(island:getHeadlands(),
                     slider.ix, self.context.workingWidth, self.context.turningRadius)
 
             -- from the row end to the start of the headland, we instruct the driver to use
             -- the pathfinder.
-            path:setAttribute(i, cg.WaypointAttributes.setUsePathfinderToNextWaypoint)
-            headlandPath:setAttribute(#headlandPath, cg.WaypointAttributes.setUsePathfinderToNextWaypoint)
-            headlandPath:setAttribute(nil, cg.WaypointAttributes.setIslandHeadland)
+            path:setAttribute(i, CourseGenerator.WaypointAttributes.setUsePathfinderToNextWaypoint)
+            headlandPath:setAttribute(#headlandPath, CourseGenerator.WaypointAttributes.setUsePathfinderToNextWaypoint)
+            headlandPath:setAttribute(nil, CourseGenerator.WaypointAttributes.setIslandHeadland)
 
             self.logger:debug('Added headland path around island %d with %d points', island:getId(), #headlandPath)
             for j = #headlandPath, 1, -1 do
@@ -346,7 +346,7 @@ function FieldworkCourse:_setContext(context)
     self.nHeadlands = self.context.nHeadlands
     self.nHeadlandsWithRoundCorners = self.context.nHeadlandsWithRoundCorners
     ---@type Polygon
-    self.boundary = cg.FieldworkCourseHelper.createUsableBoundary(context.field:getBoundary(), self.context.headlandClockwise)
+    self.boundary = CourseGenerator.FieldworkCourseHelper.createUsableBoundary(context.field:getBoundary(), self.context.headlandClockwise)
     if self.context.fieldCornerRadius > 0 then
         self.logger:debug('sharpening field boundary corners')
         self.boundary:ensureMinimumRadius(self.context.fieldCornerRadius, true)
@@ -389,5 +389,5 @@ function FieldworkCourse:_getCachedHeadlands(boundaryId)
     return headlands
 end
 
----@class cg.FieldworkCourse
-cg.FieldworkCourse = FieldworkCourse
+---@class CourseGenerator.FieldworkCourse
+CourseGenerator.FieldworkCourse = FieldworkCourse

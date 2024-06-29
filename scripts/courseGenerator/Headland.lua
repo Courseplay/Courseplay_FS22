@@ -31,10 +31,10 @@ function Headland:init(basePolygon, clockwise, passNumber, width, outward, mustN
         self.offsetVector = -self.offsetVector
     end
     ---@type Polygon
-    self.polygon = cg.Offset.generate(basePolygon, self.offsetVector, width)
+    self.polygon = CourseGenerator.Offset.generate(basePolygon, self.offsetVector, width)
     if self.polygon then
         self.polygon:calculateProperties()
-        self.polygon:ensureMaximumEdgeLength(cg.cMaxEdgeLength)
+        self.polygon:ensureMaximumEdgeLength(CourseGenerator.cMaxEdgeLength)
         self.polygon:calculateProperties()
         if mustNotCross and self.polygon:intersects(mustNotCross) then
             self.polygon = nil
@@ -71,8 +71,8 @@ end
 ---@return Polyline Headland vertices with waypoint attributes
 function Headland:getPath()
     -- make sure all attributes are set correctly
-    self.polygon:setAttribute(nil, cg.WaypointAttributes.setHeadlandPassNumber, self.passNumber)
-    self.polygon:setAttribute(nil, cg.WaypointAttributes.setBoundaryId, self:getBoundaryId())
+    self.polygon:setAttribute(nil, CourseGenerator.WaypointAttributes.setHeadlandPassNumber, self.passNumber)
+    self.polygon:setAttribute(nil, CourseGenerator.WaypointAttributes.setBoundaryId, self:getBoundaryId())
     -- mark corners as headland turns
     for _, v in ipairs(self.polygon) do
         if v.isCorner then
@@ -144,7 +144,7 @@ end
 
 --- Generate a path to switch from this headland to the other, starting as close as possible to the
 --- given vertex on this headland and append this path to headland
----@param other cg.Headland
+---@param other CourseGenerator.Headland
 ---@param ix number vertex index to start the transition at
 ---@param workingWidth number
 ---@param turningRadius number
@@ -157,7 +157,7 @@ function Headland:connectTo(other, ix, workingWidth, turningRadius, headlandFirs
     end
     local transitionPathTypes = self:_getTransitionPathTypes(headlandFirst)
     -- determine the theoretical minimum length of the transition (depending on the width and radius)
-    local transitionLength = cg.HeadlandConnector.getTransitionLength(workingWidth, turningRadius)
+    local transitionLength = CourseGenerator.HeadlandConnector.getTransitionLength(workingWidth, turningRadius)
     local transition = self:_continueUntilStraightSection(ix, transitionLength)
     -- index on the other polygon closest to the location where the transition will start
     local otherClosest = other:getPolygon():findClosestVertexToPoint(self.polygon:at(ix + #transition), ignoreIslandBypass)
@@ -169,14 +169,14 @@ function Headland:connectTo(other, ix, workingWidth, turningRadius, headlandFirs
         -- In that case, the Dubins path generated will end up in a loop, so we use a target further ahead on the next headland.
         local tries = 5
         for i = 1, tries do
-            cg.addDebugPoint(self.polygon:at(ix + #transition))
-            cg.addDebugPoint(other.polygon:at(transitionEndIx))
-            local connector, length = cg.AnalyticHelper.getDubinsSolutionAsVertices(
+            CourseGenerator.addDebugPoint(self.polygon:at(ix + #transition))
+            CourseGenerator.addDebugPoint(other.polygon:at(transitionEndIx))
+            local connector, length = CourseGenerator.AnalyticHelper.getDubinsSolutionAsVertices(
                     self.polygon:at(ix + #transition):getExitEdge():getBaseAsState3D(),
                     other.polygon:at(transitionEndIx):getExitEdge():getBaseAsState3D(),
                     -- enable any path type on the very last try
                     turningRadius, i < tries and transitionPathTypes or nil)
-            cg.addDebugPolyline(Polyline(connector))
+            CourseGenerator.addDebugPolyline(Polyline(connector))
             -- maximum length without loops
             local maxPlausiblePathLength = workingWidth + 4 * turningRadius
             if length < maxPlausiblePathLength or i == tries then
@@ -185,7 +185,7 @@ function Headland:connectTo(other, ix, workingWidth, turningRadius, headlandFirs
                 transition:appendMany(connector)
                 self.polygon:appendMany(transition)
                 self.polygon:setAttributes(#self.polygon - #transition, #self.polygon,
-                        cg.WaypointAttributes.setHeadlandTransition)
+                        CourseGenerator.WaypointAttributes.setHeadlandTransition)
                 self.polygon:calculateProperties()
                 self.logger:debug('Transition to next headland added, length %.1f, ix on next %d, try %d.',
                         length, transitionEndIx, i)
@@ -261,12 +261,12 @@ function Headland:__tostring()
     return 'Headland ' .. self.passNumber
 end
 
----@class cg.Headland
-cg.Headland = Headland
+---@class CourseGenerator.Headland
+CourseGenerator.Headland = Headland
 
 --- For headlands around islands, as there everything is backwards, at least the transitions
 ---@class IslandHeadland
-local IslandHeadland = CpObject(cg.Headland)
+local IslandHeadland = CpObject(CourseGenerator.Headland)
 
 --- Create an island headland around a base polygon. The headland is a new polygon, offset by width, that is, outside
 --- of the base polygon.
@@ -279,14 +279,14 @@ local IslandHeadland = CpObject(cg.Headland)
 --- the outermost headland around the field, as when anything crosses that, it'll be at least partly outside of the field.
 function IslandHeadland:init(island, basePolygon, clockwise, passNumber, width, mustNotCross)
     self.island = island
-    cg.Headland.init(self, basePolygon, clockwise, passNumber, width, true, mustNotCross)
+    CourseGenerator.Headland.init(self, basePolygon, clockwise, passNumber, width, true, mustNotCross)
 end
 ---@return boolean true if this headland is around an island
 function IslandHeadland:isIslandHeadland()
     return true
 end
 
----@return cg.Island the island this headland is around
+---@return CourseGenerator.Island the island this headland is around
 function IslandHeadland:getIsland()
     return self.island
 end
@@ -315,5 +315,5 @@ function IslandHeadland:__tostring()
     return 'Island ' .. self.island:getId() .. ' headland ' .. self.passNumber
 end
 
----@class cg.IslandHeadland
-cg.IslandHeadland = IslandHeadland
+---@class CourseGenerator.IslandHeadland
+CourseGenerator.IslandHeadland = IslandHeadland

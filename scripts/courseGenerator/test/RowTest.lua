@@ -17,7 +17,7 @@ local headland = Polygon({
 
 function testRowCloseToHeadland()
     ---@type Polyline
-    local row = cg.Row(10, { Vertex(0, 1), Vertex(40, 1)})
+    local row = CourseGenerator.Row(10, { Vertex(0, 1), Vertex(40, 1)})
     local is = row:getIntersections(headland, 1)
     lu.assertTrue(row:_isSectionCloseToHeadland(headland, is[1], is[2]))
     row:reverse()
@@ -27,7 +27,7 @@ end
 
 function testRowFarFromHeadland()
     ---@type Polyline
-    local row = cg.Row(1, { Vertex(0, 1), Vertex(50, 1)})
+    local row = CourseGenerator.Row(1, { Vertex(0, 1), Vertex(50, 1)})
     local is = row:getIntersections(headland, 1)
     lu.assertFalse(row:_isSectionCloseToHeadland(headland, is[1], is[2]))
     row:reverse()

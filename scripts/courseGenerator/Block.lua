@@ -19,7 +19,7 @@
 
 local Block = CpObject()
 
----@param rowPattern cg.RowPattern pattern to use for the up/down rows
+---@param rowPattern CourseGenerator.RowPattern pattern to use for the up/down rows
 function Block:init(rowPattern, id)
     self.id = id or 0
     self.logger = Logger('Block ' .. self.id)
@@ -28,7 +28,7 @@ function Block:init(rowPattern, id)
     -- rows in the order they will be worked on, every second row in this sequence is reversed
     -- so we remain on the same side of the block when switching to the next row
     self.rowsInWorkSequence = {}
-    self.rowPattern = rowPattern or cg.RowPatternAlternating()
+    self.rowPattern = rowPattern or CourseGenerator.RowPatternAlternating()
 end
 
 function Block:getId()
@@ -58,7 +58,7 @@ function Block:getNumberOfRows()
 end
 
 --- Does this row overlap with this block, that is, with the last row of this block.
----@param row cg.Row
+---@param row CourseGenerator.Row
 ---@return boolean true if row overlaps this block or if the block has no rows
 function Block:overlaps(row)
     return #self.rows == 0 or self.rows[#self.rows]:overlaps(row)
@@ -74,23 +74,23 @@ function Block:getPolygon()
     return self.polygon
 end
 
----@return cg.Row[] rows in the order they should be worked on. Every other row is reversed, so it starts at the
+---@return CourseGenerator.Row[] rows in the order they should be worked on. Every other row is reversed, so it starts at the
 --- end where the previous one ends.
 function Block:getRows()
     return self.rowsInWorkSequence
 end
 
----@return cg.Row first row of the block in the work sequence
+---@return CourseGenerator.Row first row of the block in the work sequence
 function Block:getFirstRow()
     return self.rowsInWorkSequence[1]
 end
 
----@return cg.Row last row of the block in the work sequence
+---@return CourseGenerator.Row last row of the block in the work sequence
 function Block:getLastRow()
     return self.rowsInWorkSequence[#self.rowsInWorkSequence]
 end
 
----@return cg.RowPattern.Entry[]
+---@return CourseGenerator.RowPattern.Entry[]
 function Block:getPossibleEntries()
     if not self.possibleEntries then
         -- cache this as the genetic algorithm needs it frequently, also, this way
@@ -102,7 +102,7 @@ end
 
 --- Finalize this block, set the entry we will be using, rearrange rows accordingly, set all row attributes and create
 --- a sequence in which the rows must be worked on
----@param entry cg.RowPattern.Entry the entry to be used for this block
+---@param entry CourseGenerator.RowPattern.Entry the entry to be used for this block
 ---@return Vertex the last vertex of the last row, the exit point from this block (to be used to find the entry
 --- to the next one.
 function Block:finalize(entry)
@@ -122,7 +122,7 @@ function Block:finalize(entry)
         self.logger:debug('row %d is now at position %d, left/right worked %s/%s, headland %s/%s',
                 row:getOriginalSequenceNumber(), i, rowOnLeftWorked, rowOnRightWorked, leftSideBlockBoundary, rightSideBlockBoundary)
         -- need vertices close enough so the smoothing in goAround() only starts close to the island
-        row:splitEdges(cg.cRowWaypointDistance)
+        row:splitEdges(CourseGenerator.cRowWaypointDistance)
         row:adjustLength()
         row:setRowNumber(i)
         row:setAllAttributes()
@@ -211,5 +211,5 @@ function Block:_getAdjacentRowInfo(originalIx, reversed, rows, previousRowsInWor
     return rowOnLeftWorked, rowOnRightWorked, rowLeftIx == 0 or rowLeftIx > #rows, rowRightIx == 0 or rowRightIx > #rows
 end
 
----@class cg.Block
-cg.Block = Block
+---@class CourseGenerator.Block
+CourseGenerator.Block = Block

@@ -14,19 +14,19 @@ function testIterators()
     for _, edge in p:edges() do
         table.insert(e, edge)
     end
-    lu.assertEquals(e[1], cg.LineSegment(0, 0, 0, 1))
-    lu.assertEquals(e[2], cg.LineSegment(0, 1, 0, 2))
-    lu.assertEquals(e[3], cg.LineSegment(0, 2, 1, 2))
-    lu.assertEquals(e[4], cg.LineSegment(1, 2, 2, 2))
+    lu.assertEquals(e[1], CourseGenerator.LineSegment(0, 0, 0, 1))
+    lu.assertEquals(e[2], CourseGenerator.LineSegment(0, 1, 0, 2))
+    lu.assertEquals(e[3], CourseGenerator.LineSegment(0, 2, 1, 2))
+    lu.assertEquals(e[4], CourseGenerator.LineSegment(1, 2, 2, 2))
 
     e = {}
     for _, edge in p:edgesBackwards() do
         table.insert(e, edge)
     end
-    lu.assertEquals(e[1], cg.LineSegment(1, 2, 2, 2))
-    lu.assertEquals(e[2], cg.LineSegment(0, 2, 1, 2))
-    lu.assertEquals(e[3], cg.LineSegment(0, 1, 0, 2))
-    lu.assertEquals(e[4], cg.LineSegment(0, 0, 0, 1))
+    lu.assertEquals(e[1], CourseGenerator.LineSegment(1, 2, 2, 2))
+    lu.assertEquals(e[2], CourseGenerator.LineSegment(0, 2, 1, 2))
+    lu.assertEquals(e[3], CourseGenerator.LineSegment(0, 1, 0, 2))
+    lu.assertEquals(e[4], CourseGenerator.LineSegment(0, 0, 0, 1))
 
 
     -- index
@@ -89,8 +89,8 @@ function testEdgeLength()
     p = Polyline({ Vertex(0, 0), Vertex(5, 0), Vertex(10, 5), Vertex(10, 10) })
     p:calculateProperties()
     lu.assertIsNil(p[1]:getEntryEdge())
-    p[1]:getExitEdge():assertAlmostEquals(cg.LineSegment(0, 0, 5, 0))
-    p[4]:getEntryEdge():assertAlmostEquals(cg.LineSegment(10, 5, 10, 10))
+    p[1]:getExitEdge():assertAlmostEquals(CourseGenerator.LineSegment(0, 0, 5, 0))
+    p[4]:getEntryEdge():assertAlmostEquals(CourseGenerator.LineSegment(10, 5, 10, 10))
     lu.assertIsNil(p[4]:getExitEdge())
 
     p = Polyline({ Vertex(0, 0), Vertex(5, 0), Vertex(10, 5), Vertex(10, 10), Vertex(10, 15) })
@@ -101,9 +101,9 @@ function testEdgeLength()
     lu.assertAlmostEquals(p[4]:getDistance(), 10 + math.sqrt(2) * 5)
     lu.assertAlmostEquals(p[5]:getDistance(), 15 + math.sqrt(2) * 5)
     lu.assertIsNil(p[1]:getEntryEdge())
-    p[1]:getExitEdge():assertAlmostEquals(cg.LineSegment(0, 0, 5, 0))
-    p[4]:getEntryEdge():assertAlmostEquals(cg.LineSegment(10, 5, 10, 10))
-    p[4]:getExitEdge():assertAlmostEquals(cg.LineSegment(10, 10, 10, 15))
+    p[1]:getExitEdge():assertAlmostEquals(CourseGenerator.LineSegment(0, 0, 5, 0))
+    p[4]:getEntryEdge():assertAlmostEquals(CourseGenerator.LineSegment(10, 5, 10, 10))
+    p[4]:getExitEdge():assertAlmostEquals(CourseGenerator.LineSegment(10, 10, 10, 15))
     lu.assertIsNil(p[5]:getExitEdge())
 
     p = Polyline({ Vertex(0, 0), Vertex(0, 5), Vertex(0, 10), Vertex(5, 10), Vertex(10, 10), Vertex(15, 10), Vertex(20, 10) })
@@ -116,7 +116,7 @@ function testEdgeLength()
     p = Polyline({ Vertex(0, 0), Vertex(0, 6) })
     p:ensureMaximumEdgeLength(5, math.rad(45))
     lu.assertEquals(#p, 3)
-    p[1]:getExitEdge():assertAlmostEquals(cg.LineSegment(0, 0, 0, 3))
+    p[1]:getExitEdge():assertAlmostEquals(CourseGenerator.LineSegment(0, 0, 0, 3))
     p:ensureMaximumEdgeLength(5, math.rad(45))
     lu.assertEquals(#p, 3)
     -- left turn
@@ -190,17 +190,17 @@ function testIntersections()
     lu.assertEquals(is.ixA, 1)
     lu.assertEquals(is.ixB, 3)
     is.is:assertAlmostEquals(Vector(-3.5, 0))
-    is.edgeA:assertAlmostEquals(cg.LineSegment(-5, 0, 0, 0))
+    is.edgeA:assertAlmostEquals(CourseGenerator.LineSegment(-5, 0, 0, 0))
     is = iss[2]
     lu.assertEquals(is.ixA, 1)
     lu.assertEquals(is.ixB, 2)
     is.is:assertAlmostEquals(Vector(-1, 0))
-    is.edgeA:assertAlmostEquals(cg.LineSegment(-5, 0, 0, 0))
+    is.edgeA:assertAlmostEquals(CourseGenerator.LineSegment(-5, 0, 0, 0))
     is = iss[3]
     lu.assertEquals(is.ixA, 2)
     lu.assertEquals(is.ixB, 1)
     is.is:assertAlmostEquals(Vector(1.5, 0))
-    is.edgeA:assertAlmostEquals(cg.LineSegment(0, 0, 5, 0))
+    is.edgeA:assertAlmostEquals(CourseGenerator.LineSegment(0, 0, 5, 0))
     -- same intersections just different index on o (b)
     o = Polyline({ Vertex(-5, 1), Vertex(-2, -1), Vertex(0, 1), Vertex(3, -1) })
     iss = p:getIntersections(o)
@@ -208,25 +208,25 @@ function testIntersections()
     lu.assertEquals(is.ixA, 1)
     lu.assertEquals(is.ixB, 1)
     is.is:assertAlmostEquals(Vector(-3.5, 0))
-    is.edgeA:assertAlmostEquals(cg.LineSegment(-5, 0, 0, 0))
+    is.edgeA:assertAlmostEquals(CourseGenerator.LineSegment(-5, 0, 0, 0))
     is = iss[2]
     lu.assertEquals(is.ixA, 1)
     lu.assertEquals(is.ixB, 2)
     is.is:assertAlmostEquals(Vector(-1, 0))
-    is.edgeA:assertAlmostEquals(cg.LineSegment(-5, 0, 0, 0))
+    is.edgeA:assertAlmostEquals(CourseGenerator.LineSegment(-5, 0, 0, 0))
     is = iss[3]
     lu.assertEquals(is.ixA, 2)
     lu.assertEquals(is.ixB, 3)
     is.is:assertAlmostEquals(Vector(1.5, 0))
-    is.edgeA:assertAlmostEquals(cg.LineSegment(0, 0, 5, 0))
+    is.edgeA:assertAlmostEquals(CourseGenerator.LineSegment(0, 0, 5, 0))
 end
 
 function testGoAround()
 
     -- goAround()
     -- disable smoothing so assertions are easier
-    local minSmoothingAngle = cg.cMinSmoothingAngle
-    cg.cMinSmoothingAngle = math.huge
+    local minSmoothingAngle = CourseGenerator.cMinSmoothingAngle
+    CourseGenerator.cMinSmoothingAngle = math.huge
 
     local p = Polyline({ Vertex(-5, 0), Vertex(0, 0), Vertex(5, 0) })
     local o = Polyline({ Vertex(-5, 1), Vertex(-2, -1), Vertex(0, 1), Vertex(3, -1) })
@@ -248,7 +248,7 @@ function testGoAround()
     p[4]:assertAlmostEquals(Vector(-1, 0))
     p[6]:assertAlmostEquals(Vector(5, 0))
     -- restore smoothing angle to re-enable smoothing
-    cg.cMinSmoothingAngle = minSmoothingAngle
+    CourseGenerator.cMinSmoothingAngle = minSmoothingAngle
 
     p = Polyline({ Vertex(0, 0), Vertex(0, 1), Vertex(0, 2), Vertex(0, 3), Vertex(0, 4), Vertex(0, 5), Vertex(0, 6) })
     lu.assertEquals(p:moveForward(1, 3), 4)

@@ -3,23 +3,23 @@
 --- With that pattern, we always use baseline edges, that is, the rows following the
 --- field edge (instead of always being straight) and do not allow multiple blocks.
 
----@class CenterTwoSided : cg.Center
-local CenterTwoSided = CpObject(cg.Center)
+---@class CenterTwoSided : CourseGenerator.Center
+local CenterTwoSided = CpObject(CourseGenerator.Center)
 
----@param context cg.FieldworkContext
+---@param context CourseGenerator.FieldworkContext
 ---@param boundary Polygon the field boundary
----@param headland cg.Headland|nil the innermost headland if exists
+---@param headland CourseGenerator.Headland|nil the innermost headland if exists
 ---@param startLocation Vector location of the vehicle before it starts working on the center.
----@param bigIslands cg.Island[] islands too big to circle
----@param lastRow cg.Row the last row of the center (before cut), this will be added to the ones generated
+---@param bigIslands CourseGenerator.Island[] islands too big to circle
+---@param lastRow CourseGenerator.Row the last row of the center (before cut), this will be added to the ones generated
 function CenterTwoSided:init(context, boundary, headland, startLocation, bigIslands, lastRow)
-    cg.Center.init(self, context, boundary, headland, startLocation, bigIslands, lastRow)
+    CourseGenerator.Center.init(self, context, boundary, headland, startLocation, bigIslands, lastRow)
     -- force using the baseline edge, no matter what the context is
     self.useBaselineEdge = true
 end
 
 function CenterTwoSided:_splitIntoBlocks(rows)
-    local block = cg.Block(self.context.rowPattern)
+    local block = CourseGenerator.Block(self.context.rowPattern)
     for _, row in ipairs(rows) do
         local sections = row:split(self.headland, {}, true)
         if #sections == 1 then
@@ -37,5 +37,5 @@ function CenterTwoSided:_wrapUpConnectingPaths()
     self.blocks[1]:getEntryVertex():getAttributes():setUsePathfinderToThisWaypoint()
 end
 
----@class cg.CenterTwoSided : cg.Center
-cg.CenterTwoSided = CenterTwoSided
+---@class CourseGenerator.CenterTwoSided : CourseGenerator.Center
+CourseGenerator.CenterTwoSided = CenterTwoSided

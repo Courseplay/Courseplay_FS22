@@ -5,7 +5,7 @@
 local WaypointAttributes = CpObject()
 
 function WaypointAttributes:clone()
-    local a = cg.WaypointAttributes()
+    local a = CourseGenerator.WaypointAttributes()
     for attribute, value in pairs(self) do
         a[attribute] = value
     end
@@ -240,21 +240,21 @@ function WaypointAttributes:_getBlockNumber()
     return self.blockNumber
 end
 
----@param headland cg.Headland
+---@param headland CourseGenerator.Headland
 function WaypointAttributes:_setAtHeadland(headland)
     self.atHeadland = headland
 end
 
 --- For generator internal use only, this is set for row end and start waypoints, storing the Headland object
 --- terminating the row
----@return cg.Headland
+---@return CourseGenerator.Headland
 function WaypointAttributes:_getAtHeadland()
     return self.atHeadland
 end
 
 --- For generator internal use only, this is set for row end and start waypoints, storing the Island object
 --- terminating the row
----@return cg.Island|nil
+---@return CourseGenerator.Island|nil
 function WaypointAttributes:_getAtIsland()
     return self.atHeadland and self.atHeadland:isIslandHeadland() and self.atHeadland:getIsland()
 end
@@ -277,5 +277,5 @@ function WaypointAttributes:__tostring()
     return str
 end
 
----@class cg.WaypointAttributes
-cg.WaypointAttributes = WaypointAttributes
+---@class CourseGenerator.WaypointAttributes
+CourseGenerator.WaypointAttributes = WaypointAttributes

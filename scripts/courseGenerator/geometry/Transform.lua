@@ -100,5 +100,5 @@ x, y, z = worldToLocal(node1, wx, wy, wz)
 RootTransform = Transform('root')
 RootTransform:setParent(nil)
 
----@class cg.Transform
-cg.Transform = Transform
+---@class CourseGenerator.Transform
+CourseGenerator.Transform = Transform
