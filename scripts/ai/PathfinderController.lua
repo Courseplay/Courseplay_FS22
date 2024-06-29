@@ -349,7 +349,7 @@ function PathfinderController:findAnalyticPathFromVehicleToGoal(goal, allowRever
 end
 
 function PathfinderController:getTemporaryCourseFromPath(path)
-    return Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+    return Course(self.vehicle, CpMathUtil.pointsToGameInPlace(path), true)
 end
 
 function PathfinderController:drawNodes()

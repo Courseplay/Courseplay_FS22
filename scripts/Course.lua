@@ -1524,7 +1524,7 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
         if origHeadlandsCourse:getNumberOfWaypoints() > 0 then
             if origHeadlandsCourse:getNumberOfWaypoints() > 2 then
                 CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Headland section to %d', ix)
-                CourseGenerator.pointsToXyInPlace(origHeadlandsCourse.waypoints)
+                CpMathUtil.pointsFromGameInPlace(origHeadlandsCourse.waypoints)
                 local origHeadlands = Polyline:new(origHeadlandsCourse.waypoints)
                 origHeadlands:calculateData()
                 -- generating inward when on the right side and clockwise or when on the left side ccw
@@ -1543,7 +1543,7 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
                         offsetHeadlands[#offsetHeadlands].turnStart = true
                     end
                     addTurnsToCorners(offsetHeadlands, math.rad(60), true)
-                    local newHeadlandCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(offsetHeadlands), true)
+                    local newHeadlandCourse = Course(self.vehicle, CpMathUtil.pointsToGameInPlace(offsetHeadlands), true)
                     --- Applies the original field work course reference
                     Waypoint.applyOriginalMultiToolReference(newHeadlandCourse.waypoints, sIx, origHeadlandsCourse:getNumberOfWaypoints())
                     offsetCourse:append(newHeadlandCourse)
@@ -1949,10 +1949,10 @@ end
 
 --- When creating a course from an analytic path, we want to have the direction of the last waypoint correct
 function Course.createFromAnalyticPath(vehicle, path, isTemporary)
-    local course = Course(vehicle, CourseGenerator.pointsToXzInPlace(path), isTemporary)
+    local course = Course(vehicle, CpMathUtil.pointsToGameInPlace(path), isTemporary)
     -- enrichWaypointData rotated the last waypoint in the direction of the second to last,
     -- correct that according to the analytic path's last waypoint
-    local yRot = CourseGenerator.toCpAngle(path[#path].t)
+    local yRot = CpMathUtil.angleToGame(path[#path].t)
     course.waypoints[#course.waypoints].yRot = yRot
     course.waypoints[#course.waypoints].angle = math.deg(yRot)
     course.waypoints[#course.waypoints].dx, course.waypoints[#course.waypoints].dz = MathUtil.getDirectionFromYRotation(yRot)

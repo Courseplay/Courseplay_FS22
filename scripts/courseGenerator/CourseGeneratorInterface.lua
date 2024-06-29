@@ -54,7 +54,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 		isClockwise = isClockwise == CourseGenerator.HEADLAND_COUNTERCLOCKWISE
 	end
 	local headlandSettings = {
-		startLocation = CourseGenerator.pointToXy(startPosition),
+		startLocation = CpMathUtil.pointFromGame(startPosition),
 		-- use some overlap between headland passes to get better results
 		-- (=less fruit missed) at smooth headland corners
 		overlapPercent = headlandOverlapPercent,
@@ -70,7 +70,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	local centerSettings = {
 		useBestAngle = rowDirection == CourseGenerator.ROW_DIRECTION_AUTOMATIC,
 		useLongestEdgeAngle = rowDirection == CourseGenerator.ROW_DIRECTION_LONGEST_EDGE,
-		rowAngle = CourseGenerator.fromCpAngleDeg(manualRowAngleDeg),
+		rowAngle = CpMathUtil.angleFromGameDeg(manualRowAngleDeg),
 		nRowsToSkip = rowsToSkip,
 		leaveSkippedRowsUnworked = leaveSkippedRowsUnworked,
 		mode = centerMode,
@@ -81,7 +81,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	--------------------------------------------------------------------------------------------------------------------
 	-- Detect islands
 	-----------------------------------------------------------------------------------------------------------------------
-	local islandNodes = Island.findIslands(Polygon:new(CourseGenerator.pointsToXy(fieldPolygon)))
+	local islandNodes = Island.findIslands(Polygon:new(CpMathUtil.pointsFromGame(fieldPolygon)))
 
 	--------------------------------------------------------------------------------------------------------------------
 	-- General settings
@@ -89,7 +89,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	local minDistanceBetweenPoints = 0.5
 
 	local field = {}
-	field.boundary = Polygon:new(CourseGenerator.pointsToXy(fieldPolygon))
+	field.boundary = Polygon:new(CpMathUtil.pointsFromGame(fieldPolygon))
 	field.boundary:calculateData()
 
 	--- Multiplies the workWidth with the number of targeted vehicles.

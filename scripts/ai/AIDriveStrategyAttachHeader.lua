@@ -256,7 +256,7 @@ end
 
 function AIDriveStrategyAttachHeader:onPathfindingDoneToCutter(result)
     if result.path and #result.path > 2 then
-        local course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(result.path), true)
+        local course = Course(self.vehicle, CpMathUtil.pointsToGameInPlace(result.path), true)
         self:startCourse(course, 1)
         self.state = self.states.DRIVING_TO_HEADER
         return true

@@ -132,7 +132,7 @@ function DevHelper:keyEvent(unicode, sym, modifier, isDown)
     if not self.isEnabled then return end
     if bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_period then
         -- Left Alt + > mark goal
-        self.goal = State3D(self.data.x, -self.data.z, CourseGenerator.fromCpAngleDeg(self.data.yRotDeg))
+        self.goal = State3D(self.data.x, -self.data.z, CpMathUtil.angleFromGameDeg(self.data.yRotDeg))
 
         local x, y, z = getWorldTranslation(self.node)
         local _, yRot, _ = getRotation(self.node)

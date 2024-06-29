@@ -1657,7 +1657,7 @@ function AIDriveStrategyCombineCourse:onPathfindingDoneBeforeSelfUnload(path)
     if path and #path > 2 then
         self:debug('Pathfinding to self unload finished with %d waypoints (%d ms)',
                 #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
-        local selfUnloadCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        local selfUnloadCourse = Course(self.vehicle, CpMathUtil.pointsToGameInPlace(path), true)
         if self.selfUnloadAlignCourse then
             selfUnloadCourse:append(self.selfUnloadAlignCourse)
             self.selfUnloadAlignCourse = nil
@@ -1719,7 +1719,7 @@ function AIDriveStrategyCombineCourse:onPathfindingDoneAfterSelfUnload(path)
         self.ppc:setShortLookaheadDistance()
         self:debug('Pathfinding to return to fieldwork after self unload finished with %d waypoints (%d ms)',
                 #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
-        local returnCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        local returnCourse = Course(self.vehicle, CpMathUtil.pointsToGameInPlace(path), true)
         returnCourse:adjustForTowedImplements(2)
         self.workStarter = StartRowOnly(self.vehicle, self, self.ppc, self.turnContext, returnCourse)
         self:startCourse(self.workStarter:getCourse(), 1)

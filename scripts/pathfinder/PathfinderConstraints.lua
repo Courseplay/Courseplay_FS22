@@ -172,7 +172,7 @@ function PathfinderConstraints:isValidNode(node, ignoreTrailer, offFieldValid)
     end
     ensureHelperNode()
     PathfinderUtil.setWorldPositionAndRotationOnTerrain(PathfinderUtil.helperNode,
-            node.x, -node.y, CourseGenerator.toCpAngle(node.t), 0.5)
+            node.x, -node.y, CpMathUtil.angleToGame(node.t), 0.5)
 
     -- for debug purposes only, store validity info on node
     node.collidingShapes = PathfinderUtil.collisionDetector:findCollidingShapes(
@@ -184,7 +184,7 @@ function PathfinderConstraints:isValidNode(node, ignoreTrailer, offFieldValid)
         local x, y, z = localToWorld(PathfinderUtil.helperNode, 0, 0, self.vehicleData.trailerHitchOffset)
 
         PathfinderUtil.setWorldPositionAndRotationOnTerrain(PathfinderUtil.helperNode, x, z,
-                CourseGenerator.toCpAngle(node.tTrailer), 0.5)
+                CpMathUtil.angleToGame(node.tTrailer), 0.5)
 
         node.collidingShapes = node.collidingShapes + PathfinderUtil.collisionDetector:findCollidingShapes(
                 PathfinderUtil.helperNode, self.vehicleData.trailerRectangle, self.vehiclesToIgnore,
