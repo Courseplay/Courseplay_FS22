@@ -477,7 +477,7 @@ function PathfinderUtil.initializeTrailerHeading(start, vehicleData)
     -- initialize the trailer's heading for the starting point
     if vehicleData.trailer then
         local _, _, yRot = PathfinderUtil.getNodePositionAndDirection(vehicleData.trailer.rootNode, 0, 0)
-        start:setTrailerHeading(CourseGenerator.fromCpAngle(yRot))
+        start:setTrailerHeading(CpMathUtil.angleFromGame(yRot))
     end
 end
 
@@ -589,9 +589,9 @@ end
 function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode, goalOffset, turnRadius, allowReverse,
                                         courseWithHeadland, workingWidth, backMarkerDistance, turnOnField)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(vehicle:getAIDirectionNode(), 0, startOffset or 0)
-    local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
+    local start = State3D(x, -z, CpMathUtil.angleFromGame(yRot))
     x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalReferenceNode, 0, goalOffset or 0)
-    local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
+    local goal = State3D(x, -z, CpMathUtil.angleFromGame(yRot))
 
     -- use an analyticSolver which only yields courses ending in forward gear. This is to
     -- avoid reaching the end of turn in reverse. Implement lowering at turn end in reverse works only properly
@@ -642,9 +642,9 @@ end
 function PathfinderUtil.findAnalyticPath(solver, vehicleDirectionNode, startOffset, goalReferenceNode,
                                          xOffset, zOffset, turnRadius)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(vehicleDirectionNode, 0, startOffset or 0)
-    local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
+    local start = State3D(x, -z, CpMathUtil.angleFromGame(yRot))
     x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalReferenceNode, xOffset or 0, zOffset or 0)
-    local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
+    local goal = State3D(x, -z, CpMathUtil.angleFromGame(yRot))
     return PathfinderUtil.findAnalyticPathFromStartToGoal(solver, start, goal, turnRadius)
 end
 
@@ -676,7 +676,7 @@ end
 ---@return State3D position/heading of vehicle
 function PathfinderUtil.getVehiclePositionAsState3D(vehicle, xOffset, zOffset)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(AIUtil.getDirectionNode(vehicle), xOffset, zOffset)
-    return State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
+    return State3D(x, -z, CpMathUtil.angleFromGame(yRot))
 end
 
 --- Creates a State3D Vector from a given Waypoint.
@@ -685,7 +685,7 @@ end
 ---@param zOffset number
 ---@return State3D
 function PathfinderUtil.getWaypointAsState3D(waypoint, xOffset, zOffset)
-    local result = State3D(waypoint.x, -waypoint.z, CourseGenerator.fromCpAngleDeg(waypoint.angle))
+    local result = State3D(waypoint.x, -waypoint.z, CpMathUtil.angleFromGameDeg(waypoint.angle))
     if waypoint:getIsReverse() then
         --- If it's a reverse driven waypoint, then the target heading needs to be inverted. 
         result:reverseHeading()
@@ -740,7 +740,7 @@ end
 ---@return PathfinderResult
 function PathfinderUtil.startPathfindingFromVehicleToNode(goalNode, xOffset, zOffset, context)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalNode, xOffset, zOffset)
-    local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
+    local goal = State3D(x, -z, CpMathUtil.angleFromGame(yRot))
     return PathfinderUtil.startPathfindingFromVehicleToGoal(goal, context)
 end
 
@@ -755,9 +755,9 @@ end
 ---@return PathfinderResult
 function PathfinderUtil.startAStarPathfindingFromVehicleToNode(goalNode, xOffset, zOffset, context)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(context._vehicle:getAIDirectionNode())
-    local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
+    local start = State3D(x, -z, CpMathUtil.angleFromGame(yRot))
     x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalNode, xOffset, zOffset)
-    local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
+    local goal = State3D(x, -z, CpMathUtil.angleFromGame(yRot))
 
     local constraints = PathfinderConstraints(context)
     PathfinderUtil.initializeTrailerHeading(start, constraints.vehicleData)

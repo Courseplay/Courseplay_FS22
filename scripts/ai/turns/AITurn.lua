@@ -727,7 +727,7 @@ end
 function CourseTurn:onPathfindingDone(path)
     if path and #path > 2 then
         self:debug('Pathfinding finished with %d waypoints (%d ms)', #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
-        self.turnCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        self.turnCourse = Course(self.vehicle, CpMathUtil.pointsToGameInPlace(path), true)
         -- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
         self.turnCourse:setUseTightTurnOffsetForLastWaypoints(15)
         local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.turnCourse, nil, true)

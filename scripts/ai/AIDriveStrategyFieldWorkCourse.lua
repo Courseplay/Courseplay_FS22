@@ -638,7 +638,7 @@ function AIDriveStrategyFieldWorkCourse:onPathfindingDoneToReturnToStart(path)
     if path and #path > 2 then
         self:debug('Pathfinding to return to start finished with %d waypoints (%d ms)',
                 #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
-        local returnCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        local returnCourse = Course(self.vehicle, CpMathUtil.pointsToGameInPlace(path), true)
         self.state = self.states.RETURNING_TO_START
         self.waitingForPrepare:set(true, 10000)
         self:startCourse(returnCourse, 1)

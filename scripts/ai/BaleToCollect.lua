@@ -126,7 +126,7 @@ end
 function BaleToCollect:getPositionAsState3D()
 	local xb, _, zb = self:getPosition()
 	local _, yRot, _ = getWorldRotation(self.bale.nodeId)
-	return State3D(xb, -zb, CourseGenerator.fromCpAngle(yRot))
+	return State3D(xb, -zb, CpMathUtil.angleFromGame(yRot))
 end
 
 --- Minimum distance from the bale's center (node) to avoid hitting the bale

@@ -323,7 +323,7 @@ function AIDriveStrategyFindBales:getBaleTarget(bale)
     -- first figure out the direction at the goal, as the pathfinder needs that.
     -- for now, just use the direction from our location towards the bale
     local xb, zb, yRot, d = bale:getPositionInfoFromNode(self.vehicle:getAIDirectionNode())
-    return State3D(xb, -zb, CourseGenerator.fromCpAngle(yRot))
+    return State3D(xb, -zb, CpMathUtil.angleFromGame(yRot))
 end
 
 --- Sets the driver as finished, so either a path 
