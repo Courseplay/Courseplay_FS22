@@ -5,8 +5,8 @@ local Intersection = CpObject()
 ---@param ixA number the start index of the intersecting edge (edgeA) of polyline A
 ---@param ixB number the start index of the intersecting edge (edgeB) of polyline B
 ---@param is Vector the intersection point.
----@param edgeA cg.LineSegment the edge of polygon A where where the intersection point is
----@param edgeB cg.LineSegment the edge of polygon B where where the intersection point is
+---@param edgeA CourseGenerator.LineSegment the edge of polygon A where where the intersection point is
+---@param edgeB CourseGenerator.LineSegment the edge of polygon B where where the intersection point is
 ---@param userData any user data to add to the Intersection objects (to later identify them)
 function Intersection:init(ixA, ixB, is, edgeA, edgeB, userData)
     self.ixA = ixA
@@ -52,5 +52,5 @@ function Intersection:__tostring()
     return str
 end
 
----@class cg.Intersection
-cg.Intersection = Intersection
+---@class CourseGenerator.Intersection
+CourseGenerator.Intersection = Intersection

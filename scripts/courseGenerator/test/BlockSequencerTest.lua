@@ -3,8 +3,8 @@ lu.EPS = 0.01
 
 ---@param startCorner Vector
 local function createBlock(pattern, id, nRows, startCorner)
-    local block = cg.Block(pattern, id)
-    local row = cg.Row(5, {startCorner, startCorner + Vector(200, 0)})
+    local block = CourseGenerator.Block(pattern, id)
+    local row = CourseGenerator.Row(5, {startCorner, startCorner + Vector(200, 0)})
     for _ = 1, nRows do
         block:addRow(row)
         row = row:createNext(5)
@@ -13,7 +13,7 @@ local function createBlock(pattern, id, nRows, startCorner)
 end
 
 function testBlockSequence()
-    local p = cg.RowPatternAlternating()
+    local p = CourseGenerator.RowPatternAlternating()
 
     local b1 = createBlock(p, 1, 10, Vector(0, 1))
     local b2 = createBlock(p, 2, 9, Vector(0, 101))
@@ -45,7 +45,7 @@ function testBlockSequence()
 
     local hits1 = 0
     for i = 1, 100 do -- entry point in the lower right corner
-        bs = cg.BlockSequencer({b3, b2, b1})
+        bs = CourseGenerator.BlockSequencer({b3, b2, b1})
         blocksInSequence, entries, distance = bs:findBlockSequence(calculateFitness)
         if distance < 120 then
             hits1 = hits1 + 1
@@ -57,7 +57,7 @@ function testBlockSequence()
 
     local hits2 = 0
     for i = 1, 100 do -- entry point in the lower right corner
-        bs = cg.BlockSequencer({b3, b2, b1})
+        bs = CourseGenerator.BlockSequencer({b3, b2, b1})
         blocksInSequence, entries, distance = bs:findBlockSequence(calculateFitness)
         if distance < 120 then
             hits2 = hits2 + 1
@@ -70,7 +70,7 @@ function testBlockSequence()
 
     local hits3 = 0
     for i = 1, 100 do -- entry point in the lower right corner
-        bs = cg.BlockSequencer({b3, b2, b1})
+        bs = CourseGenerator.BlockSequencer({b3, b2, b1})
         blocksInSequence, entries, distance = bs:findBlockSequence(calculateFitness)
         if distance < 220 then
             hits3 = hits3 + 1

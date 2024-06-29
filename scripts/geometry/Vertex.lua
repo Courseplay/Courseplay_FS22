@@ -11,7 +11,7 @@ function Vertex:init(x, y, ix)
     self.isCorner = nil
     --- Delta angle at this vertex, angle between the entry and exit edges
     self.dA = nil
-    self.attributes = cg.WaypointAttributes()
+    self.attributes = CourseGenerator.WaypointAttributes()
 end
 
 function Vertex.fromVector(v, ix)
@@ -33,7 +33,7 @@ function Vertex:clone()
     return v
 end
 
----@return cg.LineSegment
+---@return CourseGenerator.LineSegment
 function Vertex:getEntryEdge()
     return self.entryEdge
 end
@@ -42,7 +42,7 @@ function Vertex:getEntryHeading()
     return self.entryHeading
 end
 
----@return cg.LineSegment
+---@return CourseGenerator.LineSegment
 function Vertex:getExitEdge()
     return self.exitEdge
 end
@@ -84,7 +84,7 @@ function Vertex:getDistance()
     return self.d
 end
 
----@return cg.WaypointAttributes
+---@return CourseGenerator.WaypointAttributes
 function Vertex:getAttributes()
     return self.attributes
 end
@@ -94,7 +94,7 @@ end
 ---@param exit Vertex the next vertex in the polyline/polygon
 function Vertex:calculateProperties(entry, exit)
     if entry then
-        self.entryEdge = cg.LineSegment.fromVectors(entry, self)
+        self.entryEdge = CourseGenerator.LineSegment.fromVectors(entry, self)
         self.entryHeading = self.entryEdge:getHeading()
         self.d = (entry.d or 0) + self.entryEdge:getLength()
     else
@@ -102,7 +102,7 @@ function Vertex:calculateProperties(entry, exit)
         self.d = 0
     end
     if exit then
-        self.exitEdge = cg.LineSegment.fromVectors(self, exit)
+        self.exitEdge = CourseGenerator.LineSegment.fromVectors(self, exit)
         self.exitHeading = self.exitEdge:getHeading()
     end
 

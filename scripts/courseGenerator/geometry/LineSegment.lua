@@ -124,7 +124,7 @@ function LineSegment:calculateIntersectionParameters(other)
 end
 
 --- Does this line intersect an other?
----@param other cg.LineSegment
+---@param other CourseGenerator.LineSegment
 ---@return Vector intersection point or nil
 function LineSegment:intersects(other)
     local s, t = self:calculateIntersectionParameters(other)
@@ -156,7 +156,7 @@ end
 --- Extend this segment to intersect an other. Other is considered here as a line, not just a
 --- segment so for the two to actually intersect, you may need to extend other too.
 --- Will extend in any direction, forward or backward.
----@param other cg.LineSegment
+---@param other CourseGenerator.LineSegment
 ---@return boolean true if extended, false if there was no intersection point
 function LineSegment:extendTo(other)
     local s, t = self:calculateIntersectionParameters(other)
@@ -176,11 +176,11 @@ end
 --- If there is a gap between them and preserveCorners is true, extend them until they meet.
 --- If preserveCorners is false, add a new segment filling the gap, unless the gap is less than minLength, in that
 --- case, move first's end and second's start together into the same point.
----@param first cg.LineSegment the first line segment, adjusted in place (input/output)
----@param second cg.LineSegment second line segment, adjusted in place (input/output)
+---@param first CourseGenerator.LineSegment the first line segment, adjusted in place (input/output)
+---@param second CourseGenerator.LineSegment second line segment, adjusted in place (input/output)
 ---@param minLength number
 ---@param preserveCorners boolean
----@return cg.LineSegment if a new segment needs to connect first and second, it is returned here, otherwise nil
+---@return CourseGenerator.LineSegment if a new segment needs to connect first and second, it is returned here, otherwise nil
 function LineSegment.connect(first, second, minLength, preserveCorners)
     local intersectionPoint = second:intersects(first)
     if intersectionPoint then
@@ -215,7 +215,7 @@ function LineSegment.connect(first, second, minLength, preserveCorners)
             second:extendTo(first)
         else
             -- #2: add a segment in between
-            return cg.LineSegment.fromVectors(first:getEnd(), second:getBase())
+            return CourseGenerator.LineSegment.fromVectors(first:getEnd(), second:getBase())
         end
     end
 end
@@ -223,7 +223,7 @@ end
 --- Get the theoretical turn radius to get to 'to', where we start at our end point in our direction
 --- and end up at the base of 'other', pointing to other's direction
 --- In other words, get the radius of a circle where self and other are both tangents
----@param other cg.LineSegment
+---@param other CourseGenerator.LineSegment
 ---@return number radius to reach other, 0 if can't be found
 function LineSegment:getRadiusTo(other)
     local dA = CpMathUtil.getDeltaAngle(other:getHeading(), self:getHeading())
@@ -265,7 +265,7 @@ end
 --- Assuming that this segment intersects the other, and the other is part of a polygon with the given
 --- chirality, is this segment entering the polygon? (its start is outside of the polygon, its end is inside)
 ---@param clockwise boolean is the polygon clockwise?
----@param other cg.LineSegment and edge of the polygon
+---@param other CourseGenerator.LineSegment and edge of the polygon
 ---@return boolean if this segment is entering the polygon
 function LineSegment:isEntering(clockwise, other)
     if clockwise then
@@ -291,7 +291,7 @@ end
 --- on the other segment, so the segments need to be more or less parallel to get
 --- useful results.
 --- Also note that if a:overlaps(b) is true then b:overlaps(a) is also true
----@param other cg.LineSegment
+---@param other CourseGenerator.LineSegment
 ---@return boolean
 function LineSegment:overlaps(other)
     local function isPointOverLineSegment(p, s)
@@ -313,5 +313,5 @@ function LineSegment:overlaps(other)
     return false
 end
 
----@class cg.LineSegment
-cg.LineSegment = LineSegment
+---@class CourseGenerator.LineSegment
+CourseGenerator.LineSegment = LineSegment

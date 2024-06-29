@@ -15,5 +15,5 @@ function AnalyticHelper.getDubinsSolutionAsVertices(from, to, r, enabledPathType
     return path, solution:getLength(r), type
 end
 
----@class cg.AnalyticHelper
-cg.AnalyticHelper = AnalyticHelper
+---@class CourseGenerator.AnalyticHelper
+CourseGenerator.AnalyticHelper = AnalyticHelper

@@ -12,7 +12,7 @@ function Field:init(id, num)
 	self.boundary = Polygon()
 	---@type Polygon
 	self.islandPoints = Polygon()
-	---@type cg.Island[]
+	---@type CourseGenerator.Island[]
 	self.islands = {}
 end
 
@@ -73,7 +73,7 @@ function Field:getBoundary()
 	return self.boundary
 end
 
----@return cg.Island[]
+---@return CourseGenerator.Island[]
 function Field:getIslands()
 	return self.islands
 end
@@ -88,7 +88,7 @@ end
 
 -- set up all island related data for the field
 function Field:setupIslands()
-	local islandPerimeterPoints = cg.Island.getIslandPerimeterPoints(self.islandPoints)
+	local islandPerimeterPoints = CourseGenerator.Island.getIslandPerimeterPoints(self.islandPoints)
 	-- remember them for debug
 	self.islandPerimeterPoints = {}
 	if (#islandPerimeterPoints) > 0 then
@@ -97,7 +97,7 @@ function Field:setupIslands()
 	for _, p in ipairs(islandPerimeterPoints) do table.insert(self.islandPerimeterPoints, p:clone()) end
 	local islandId = 1
 	while #islandPerimeterPoints > 0 do
-		local island = cg.Island(islandId, islandPerimeterPoints)
+		local island = CourseGenerator.Island(islandId, islandPerimeterPoints)
 		-- ignore too really small islands (under 5 sqm), there are too many issues with the
 		-- headland generation for them
 		if island:getBoundary():getArea() > 5 then
@@ -108,5 +108,5 @@ function Field:setupIslands()
 end
 
 
----@class cg.Field
-cg.Field = Field
+---@class CourseGenerator.Field
+CourseGenerator.Field = Field

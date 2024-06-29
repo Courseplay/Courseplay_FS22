@@ -7,24 +7,24 @@
 ---@class Center
 local Center = CpObject()
 
----@param context cg.FieldworkContext
+---@param context CourseGenerator.FieldworkContext
 ---@param boundary Polygon the field boundary
----@param headland cg.Headland|nil the innermost headland if exists
+---@param headland CourseGenerator.Headland|nil the innermost headland if exists
 ---@param startLocation Vector location of the vehicle before it starts working on the center.
----@param bigIslands cg.Island[] islands too big to circle
+---@param bigIslands CourseGenerator.Island[] islands too big to circle
 function Center:init(context, boundary, headland, startLocation, bigIslands)
     self.logger = Logger('Center', Logger.level.debug)
     self.context = context
     if headland == nil then
         -- if there are no headlands, we generate a virtual one, from the field boundary
         -- so using this later is equivalent of having an actual headland
-        local virtualHeadland = cg.FieldworkCourseHelper.createVirtualHeadland(boundary, self.context.headlandClockwise,
+        local virtualHeadland = CourseGenerator.FieldworkCourseHelper.createVirtualHeadland(boundary, self.context.headlandClockwise,
                 self.context.workingWidth)
         if self.context.sharpenCorners then
             virtualHeadland:sharpenCorners(self.context.turningRadius)
         end
         self.headlandPolygon = virtualHeadland:getPolygon()
-        cg.addDebugPolyline(self.headlandPolygon, { 1, 1, 0, 0.5 })
+        CourseGenerator.addDebugPolyline(self.headlandPolygon, { 1, 1, 0, 0.5 })
         self.headland = virtualHeadland
         self.mayOverlapHeadland = false
     else
@@ -57,7 +57,7 @@ function Center:getPath()
     return self.path
 end
 
----@return cg.Block[]
+---@return CourseGenerator.Block[]
 function Center:getBlocks()
     return self.blocks
 end
@@ -74,7 +74,7 @@ function Center:getConnectingPaths()
 end
 
 --- Return the set of rows covering the entire field center, uncut. For debug purposes only.
----@return cg.Row[]
+---@return CourseGenerator.Row[]
 function Center:getDebugRows()
     return self.rows
 end
@@ -84,7 +84,7 @@ function Center:generate()
     -- first, we split the field into blocks. Simple convex fields have just one block only,
     -- but odd shaped, concave fields or fields with island may have more blocks
     if self.useBaselineEdge then
-        self.rows = cg.CurvedPathHelper.generateCurvedUpDownRows(self.headlandPolygon, self.context.baselineEdge,
+        self.rows = CourseGenerator.CurvedPathHelper.generateCurvedUpDownRows(self.headlandPolygon, self.context.baselineEdge,
                 self.context.workingWidth, self.context.turningRadius, nil)
     else
         local angle = self.context.autoRowAngle and self:_findBestRowAngle() or self.context.rowAngle
@@ -103,7 +103,7 @@ function Center:generate()
     -- headland from one block to the other
 
     -- clear cache for the block sequencer
-    self.closestVertexCache, self.pathCache = cg.CacheMap(2), cg.CacheMap(3)
+    self.closestVertexCache, self.pathCache = CourseGenerator.CacheMap(2), CourseGenerator.CacheMap(3)
 
     -- first run of the genetic search will restrict connecting path between blocks to the same
     -- headland, that is, the entry to the next block must be adjacent to the headland where the
@@ -114,8 +114,8 @@ function Center:generate()
     -- or may not work, but most likely won't be a pretty one.
     local strict = true
 
-    ---@param sequencedBlocks cg.Block[] an array of blocks in the sequence they should be worked on
-    ---@param entries cg.RowPattern.Entry[] entries for each block are in the entries table, indexed by
+    ---@param sequencedBlocks CourseGenerator.Block[] an array of blocks in the sequence they should be worked on
+    ---@param entries CourseGenerator.RowPattern.Entry[] entries for each block are in the entries table, indexed by
     --- the block itself
     ---@return number, Polyline[] total distance to travel on the headland (from the start location to the
     --- entry of the first block, then from the exit of the first block to the entry of the second block, etc.)
@@ -166,11 +166,11 @@ function Center:generate()
         chromosome:setFitness(10000 / distance)
     end
 
-    local blocksInSequence, entries, _ = cg.BlockSequencer(blocks):findBlockSequence(calculateFitness)
+    local blocksInSequence, entries, _ = CourseGenerator.BlockSequencer(blocks):findBlockSequence(calculateFitness)
     if blocksInSequence == nil then
         self.logger:warning('Could not find a valid path on headland between blocks, retry with allowing connections between different headland')
         strict = false
-        blocksInSequence, entries, _ = cg.BlockSequencer(blocks):findBlockSequence(calculateFitness)
+        blocksInSequence, entries, _ = CourseGenerator.BlockSequencer(blocks):findBlockSequence(calculateFitness)
     end
     _, self.connectingPaths = calculateDistanceAndConnectingPaths(blocksInSequence, entries)
     self.blocks = blocksInSequence
@@ -198,7 +198,7 @@ function Center:bypassSmallIsland(islandHeadlandPolygon, circle)
     -- and then we have those connecting paths between the blocks
     for _, connectingPath in ipairs(self.connectingPaths) do
         if #connectingPath > 1 then
-            thisIslandCircled = cg.FieldworkCourseHelper.bypassSmallIsland(connectingPath, self.context.workingWidth,
+            thisIslandCircled = CourseGenerator.FieldworkCourseHelper.bypassSmallIsland(connectingPath, self.context.workingWidth,
                     islandHeadlandPolygon, 1, not thisIslandCircled) or thisIslandCircled
         end
     end
@@ -208,7 +208,7 @@ end
 function Center:bypassBigIsland(islandHeadlandPolygon)
     for _, connectingPath in ipairs(self.connectingPaths) do
         if #connectingPath > 1 then
-            cg.FieldworkCourseHelper.bypassSmallIsland(connectingPath, self.context.workingWidth,
+            CourseGenerator.FieldworkCourseHelper.bypassSmallIsland(connectingPath, self.context.workingWidth,
                     islandHeadlandPolygon, 1, false)
         end
     end
@@ -257,8 +257,8 @@ function Center:_calculateSmallBlockPenalty(blocks, nTotalRows)
     end
     for _, b in ipairs(blocks) do
         local percentageOfRowsInBlock = 100 * (b:getNumberOfRows() / nTotalRows)
-        if percentageOfRowsInBlock < cg.cSmallBlockRowPercentageLimit then
-            nResult = nResult + cg.cSmallBlockRowPercentageLimit - percentageOfRowsInBlock
+        if percentageOfRowsInBlock < CourseGenerator.cSmallBlockRowPercentageLimit then
+            nResult = nResult + CourseGenerator.cSmallBlockRowPercentageLimit - percentageOfRowsInBlock
         end
     end
     return nResult
@@ -287,7 +287,7 @@ function Center:_findBestRowAngle()
     return bestAngle
 end
 
----@return cg.Row
+---@return CourseGenerator.Row
 function Center:_createStraightBaseline(rowAngle)
     -- Set up a baseline. This goes through the lower left or right corner of the bounding box, at the requested
     -- angle, and long enough that when shifted (offset copies are created), will cover the field at any angle.
@@ -307,7 +307,7 @@ function Center:_createStraightBaseline(rowAngle)
         baselineStart = lowerRight - Vector(w * math.cos(rowAngle), 0):setHeading(-rowAngle)
         baselineEnd = lowerRight + Vector(h * math.sin(rowAngle), 0):setHeading(-rowAngle)
     end
-    return cg.Row(self.context.workingWidth, { baselineStart, baselineEnd })
+    return CourseGenerator.Row(self.context.workingWidth, { baselineStart, baselineEnd })
 end
 
 --- Calculate how many rows we need with a given work width to fully cover a field and how far apart those
@@ -378,8 +378,8 @@ function Center:_calculateRowDistribution(workingWidth, fieldWidth, sameWidth, o
     end
 end
 
----@param rows cg.Row[]
----@param headland cg.Headland
+---@param rows CourseGenerator.Row[]
+---@param headland CourseGenerator.Headland
 function Center:_splitIntoBlocks(rows, headland)
     local blocks
     local openBlocks = {}
@@ -431,7 +431,7 @@ function Center:_splitIntoBlocks(rows, headland)
             self.logger:trace('  %.1f m, %d vertices, overlaps with %d block(s)',
                     section:getLength(), #section, #overlappedBlocks)
             if #overlappedBlocks == 0 or #overlappedBlocks > 1 then
-                local newBlock = cg.Block(self.context.rowPattern, blockId)
+                local newBlock = CourseGenerator.Block(self.context.rowPattern, blockId)
                 blockId = blockId + 1
                 newBlock:addRow(section)
                 -- remember that we added a section for row #i
@@ -458,7 +458,7 @@ end
 --- generations are calculated. As the population consists of the same blocks and same entry/exit
 --- points (and thus, same paths), just in different order, we cache the entries/exits/paths for
 --- a better performance.
----@param headland cg.Headland
+---@param headland CourseGenerator.Headland
 ---@param v1 Vector
 ---@param v2 Vector
 ---@return Polyline always has at least one vertex
@@ -488,11 +488,11 @@ function Center:_wrapUpConnectingPaths()
         end
     else
         for _, c in ipairs(self.connectingPaths) do
-            c:setAttribute(nil, cg.WaypointAttributes.setOnConnectingPath)
-            c:setAttribute(nil, cg.WaypointAttributes.setHeadlandTurn, nil)
+            c:setAttribute(nil, CourseGenerator.WaypointAttributes.setOnConnectingPath)
+            c:setAttribute(nil, CourseGenerator.WaypointAttributes.setHeadlandTurn, nil)
         end
     end
 end
 
----@class cg.Center
-cg.Center = Center
+---@class CourseGenerator.Center
+CourseGenerator.Center = Center

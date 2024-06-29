@@ -2,7 +2,7 @@ require('include')
 function testWraparoundIndex()
     local t = { 1, 2, 3, 4, 5, 6 }
 
-    local i = cg.WrapAroundIndex(t, 1)
+    local i = CourseGenerator.WrapAroundIndex(t, 1)
     lu.assertEquals(i:get(), 1)
     i:set(7)
     lu.assertEquals(i:get(), 1)

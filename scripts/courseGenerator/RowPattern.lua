@@ -10,16 +10,16 @@ RowPattern.LANDS = 4
 RowPattern.RACETRACK = 5
 
 function RowPattern.create(pattern, ...)
-    if pattern == cg.RowPattern.ALTERNATING then
-        return cg.RowPatternAlternating(...)
-    elseif pattern == cg.RowPattern.SKIP then
-        return cg.RowPatternSkip(...)
-    elseif pattern == cg.RowPattern.SPIRAL then
-        return cg.RowPatternSpiral(...)
-    elseif pattern == cg.RowPattern.LANDS then
-        return cg.RowPatternLands(...)
-    elseif pattern == cg.RowPattern.RACETRACK then
-        return cg.RowPatternRacetrack(...)
+    if pattern == CourseGenerator.RowPattern.ALTERNATING then
+        return CourseGenerator.RowPatternAlternating(...)
+    elseif pattern == CourseGenerator.RowPattern.SKIP then
+        return CourseGenerator.RowPatternSkip(...)
+    elseif pattern == CourseGenerator.RowPattern.SPIRAL then
+        return CourseGenerator.RowPatternSpiral(...)
+    elseif pattern == CourseGenerator.RowPattern.LANDS then
+        return CourseGenerator.RowPatternLands(...)
+    elseif pattern == CourseGenerator.RowPattern.RACETRACK then
+        return CourseGenerator.RowPatternRacetrack(...)
     end
 end
 
@@ -54,7 +54,7 @@ function RowPattern:_generateSequence(nRows)
 end
 
 --- Iterate through rows in the order they need to be worked on.
----@param rows cg.Row[] rows to work on
+---@param rows CourseGenerator.Row[] rows to work on
 function RowPattern:iterator(rows)
     local i = 0
     local sequence = self:_getSequence(#rows)
@@ -69,7 +69,7 @@ function RowPattern:iterator(rows)
 end
 
 --- Iterate through rows in the sequence according to the generated sequence,
----@param rows cg.Row[]
+---@param rows CourseGenerator.Row[]
 function RowPattern:__tostring()
     return 'default'
 end
@@ -78,14 +78,14 @@ end
 --- the first or last row to enter the pattern, work through the pattern, and exit at the opposite end.
 --- Which of the four possible ends are valid, and, if a given entry is selected, which will be the exit, depends
 --- on the pattern and the number of rows.
----@param rows cg.Row[]
----@return cg.RowPattern.Entry[] list of entries that can be used to enter this pattern
+---@param rows CourseGenerator.Row[]
+---@return CourseGenerator.RowPattern.Entry[] list of entries that can be used to enter this pattern
 function RowPattern:getPossibleEntries(rows)
     -- by default, return both ends of the first row only
     if #rows > 0 then
         return {
-            cg.RowPattern.Entry(rows[1][1], false, false, false),
-            cg.RowPattern.Entry(rows[1][#rows[1]], false, false, true)
+            CourseGenerator.RowPattern.Entry(rows[1][1], false, false, false),
+            CourseGenerator.RowPattern.Entry(rows[1][#rows[1]], false, false, true)
         }
     else
         return {}
@@ -123,7 +123,7 @@ function RowPattern:getWorkSequenceAndExit(rows, entry)
         table.insert(rowInfosInWorkSequence, rowInfo)
     end
     if entry.reverseRowOrderAfter then
-        cg.reverseArray(rowInfosInWorkSequence)
+        CourseGenerator.reverseArray(rowInfosInWorkSequence)
     end
     -- rowInfosInWorkSequence now contains the row indices in the order they should be worked on
     -- and if they should be reversed
@@ -132,8 +132,8 @@ function RowPattern:getWorkSequenceAndExit(rows, entry)
     return rowInfosInWorkSequence, lastRow[lastRowInfo.reverse and 1 or #lastRow]
 end
 
----@class cg.RowPattern
-cg.RowPattern = RowPattern
+---@class CourseGenerator.RowPattern
+CourseGenerator.RowPattern = RowPattern
 
 --- An entry point into the pattern. The entry has a position and instructions to sequence the rows in
 --- case this entry is selected.
@@ -162,48 +162,48 @@ function RowPattern.Entry:__tostring()
             self.position, self.reverseRowOrderBefore, self.reverseRowOrderAfter, self.reverseOddRows)
 end
 
----@class cg.RowPattern.Entry
-cg.RowPattern.Entry = RowPattern.Entry
+---@class CourseGenerator.RowPattern.Entry
+CourseGenerator.RowPattern.Entry = RowPattern.Entry
 
 --- Alternating pattern, entry only possible at the first row
 ---@class RowPatternAlternatingFirstRowEntryOnly : RowPattern
 local RowPatternAlternatingFirstRowEntryOnly = CpObject(RowPattern)
----@class cg.RowPatternAlternatingFirstRowEntryOnly : cg.RowPattern
-cg.RowPatternAlternatingFirstRowEntryOnly = RowPatternAlternatingFirstRowEntryOnly
+---@class CourseGenerator.RowPatternAlternatingFirstRowEntryOnly : CourseGenerator.RowPattern
+CourseGenerator.RowPatternAlternatingFirstRowEntryOnly = RowPatternAlternatingFirstRowEntryOnly
 
 --- Alternating pattern, entry only possible at the last row
 ---@class RowPatternAlternatingLastRowEntryOnly : RowPattern
 local RowPatternAlternatingLastRowEntryOnly = CpObject(RowPattern)
----@param rows cg.Row[]
----@return cg.RowPattern.Entry[] list of entries usable for this pattern
+---@param rows CourseGenerator.Row[]
+---@return CourseGenerator.RowPattern.Entry[] list of entries usable for this pattern
 function RowPatternAlternatingLastRowEntryOnly:getPossibleEntries(rows)
     local lastRow = rows[#rows]
     local entries = {
-        cg.RowPattern.Entry(lastRow[1], true, false, false),
-        cg.RowPattern.Entry(lastRow[#lastRow], true, false, true),
+        CourseGenerator.RowPattern.Entry(lastRow[1], true, false, false),
+        CourseGenerator.RowPattern.Entry(lastRow[#lastRow], true, false, true),
     }
     return entries
 end
 
----@class cg.RowPatternAlternatingLastRowEntryOnly : cg.RowPattern
-cg.RowPatternAlternatingLastRowEntryOnly = RowPatternAlternatingLastRowEntryOnly
+---@class CourseGenerator.RowPatternAlternatingLastRowEntryOnly : CourseGenerator.RowPattern
+CourseGenerator.RowPatternAlternatingLastRowEntryOnly = RowPatternAlternatingLastRowEntryOnly
 
 --- Default alternating pattern, entry at either end
 ---@class RowPatternAlternating : RowPattern
 local RowPatternAlternating = CpObject(RowPattern)
----@class cg.RowPatternAlternating : cg.RowPattern
-cg.RowPatternAlternating = RowPatternAlternating
+---@class CourseGenerator.RowPatternAlternating : CourseGenerator.RowPattern
+CourseGenerator.RowPatternAlternating = RowPatternAlternating
 
 --- An alternating pattern can be started at either end of the first or last row
----@param rows cg.Row[]
----@return cg.RowPattern.Entry[] list of entries usable for this pattern
+---@param rows CourseGenerator.Row[]
+---@return CourseGenerator.RowPattern.Entry[] list of entries usable for this pattern
 function RowPatternAlternating:getPossibleEntries(rows)
     local firstRow, lastRow = rows[1], rows[#rows]
     local entries = {
-        cg.RowPattern.Entry(firstRow[1], false, false, false),
-        cg.RowPattern.Entry(firstRow[#firstRow], false, false, true),
-        cg.RowPattern.Entry(lastRow[1], true, false, false),
-        cg.RowPattern.Entry(lastRow[#lastRow], true, false, true),
+        CourseGenerator.RowPattern.Entry(firstRow[1], false, false, false),
+        CourseGenerator.RowPattern.Entry(firstRow[#firstRow], false, false, true),
+        CourseGenerator.RowPattern.Entry(lastRow[1], true, false, false),
+        CourseGenerator.RowPattern.Entry(lastRow[#lastRow], true, false, true),
     }
     return entries
 end
@@ -221,13 +221,13 @@ local RowPatternSkip = CpObject(RowPattern)
 --- the skipped rows unworked. Otherwise, it will work on the skipped rows backwards to the beginning, and then
 --- back and forth until all rows are covered.
 function RowPatternSkip:init(nRowsToSkip, leaveSkippedRowsUnworked)
-    cg.RowPattern.init(self, 'RowPatternSkip')
+    CourseGenerator.RowPattern.init(self, 'RowPatternSkip')
     self.nRowsToSkip = nRowsToSkip
     self.leaveSkippedRowsUnworked = leaveSkippedRowsUnworked
 end
 
----@param rows cg.Row[]
----@return cg.RowPattern.Entry[] list of entries usable for this pattern
+---@param rows CourseGenerator.Row[]
+---@return CourseGenerator.RowPattern.Entry[] list of entries usable for this pattern
 function RowPatternSkip:getPossibleEntries(rows)
     local sequence = self:_getSequence(#rows)
     self.logger:debug('%d rows, first row is %d, last %d', #rows, sequence[1], sequence[#sequence])
@@ -238,19 +238,19 @@ function RowPatternSkip:getPossibleEntries(rows)
     local lastRowAfterReversed = rows[#rows - sequence[#sequence] + 1]
     local entries = {
         -- we can start at either end of the first or the last row
-        cg.RowPattern.Entry(firstRowBefore[1], false, false, false),
-        cg.RowPattern.Entry(firstRowBefore[#firstRowBefore], false, false, true),
-        cg.RowPattern.Entry(lastRowBefore[1], true, false, false),
-        cg.RowPattern.Entry(lastRowBefore[#lastRowBefore], true, false, true),
+        CourseGenerator.RowPattern.Entry(firstRowBefore[1], false, false, false),
+        CourseGenerator.RowPattern.Entry(firstRowBefore[#firstRowBefore], false, false, true),
+        CourseGenerator.RowPattern.Entry(lastRowBefore[1], true, false, false),
+        CourseGenerator.RowPattern.Entry(lastRowBefore[#lastRowBefore], true, false, true),
         -- as opposed to the alternating pattern, where all four entry points are also
         -- exits (on the diagonally opposite corner), where do we exit when using one of the
         -- above entries, depends on the total number of rows and the number of rows skipped
         -- now, we can also drive the whole pattern in the opposite direction, that is what
         -- these entries are for.
-        cg.RowPattern.Entry(lastRowAfterReversed[1], true, true, false),
-        cg.RowPattern.Entry(lastRowAfterReversed[#lastRowAfterReversed], true, true, true),
-        cg.RowPattern.Entry(lastRowAfter[1], false, true, false),
-        cg.RowPattern.Entry(lastRowAfter[#lastRowAfter], false, true, true),
+        CourseGenerator.RowPattern.Entry(lastRowAfterReversed[1], true, true, false),
+        CourseGenerator.RowPattern.Entry(lastRowAfterReversed[#lastRowAfterReversed], true, true, true),
+        CourseGenerator.RowPattern.Entry(lastRowAfter[1], false, true, false),
+        CourseGenerator.RowPattern.Entry(lastRowAfter[#lastRowAfter], false, true, true),
     }
     return entries
 end
@@ -293,8 +293,8 @@ function RowPatternSkip:_generateSequence(nRows)
     return self.sequence
 end
 
----@class cg.RowPatternSkip : cg.RowPattern
-cg.RowPatternSkip = RowPatternSkip
+---@class CourseGenerator.RowPatternSkip : CourseGenerator.RowPattern
+CourseGenerator.RowPatternSkip = RowPatternSkip
 
 --- A spiral pattern, clockwise or not, starting from inside or outside
 ---@class RowPatternSpiral : RowPattern
@@ -304,7 +304,7 @@ local RowPatternSpiral = CpObject(RowPattern)
 ---@param fromInside boolean if true, start in the middle and continue outwards. If false,
 --- start from one of the outermost rows and continue inwards
 function RowPatternSpiral:init(clockwise, fromInside)
-    cg.RowPattern.init(self, 'RowPatternSpiral')
+    CourseGenerator.RowPattern.init(self, 'RowPatternSpiral')
     self.clockwise = clockwise
     self.fromInside = fromInside
 end
@@ -324,13 +324,13 @@ function RowPatternSpiral:_generateSequence(nRows)
     end
     if self.fromInside then
         -- flip if starting from the inside
-        cg.reverseArray(self.sequence)
+        CourseGenerator.reverseArray(self.sequence)
     end
     return self.sequence
 end
 
----@param rows cg.Row[]
----@return cg.RowPattern.Entry[] list of entries usable for this pattern
+---@param rows CourseGenerator.Row[]
+---@return CourseGenerator.RowPattern.Entry[] list of entries usable for this pattern
 function RowPatternSpiral:getPossibleEntries(rows)
     if #rows < 2 then
         return RowPattern.getPossibleEntries(self, rows)
@@ -354,26 +354,26 @@ function RowPatternSpiral:getPossibleEntries(rows)
             -- from inside, clockwise
             if odd then
                 return {
-                    cg.RowPattern.Entry(firstRow[1], false, false, false),
-                    cg.RowPattern.Entry(firstRow[#firstRow], true, false, true),
+                    CourseGenerator.RowPattern.Entry(firstRow[1], false, false, false),
+                    CourseGenerator.RowPattern.Entry(firstRow[#firstRow], true, false, true),
                 }
             else
                 return {
-                    cg.RowPattern.Entry(firstRow[#firstRow], false, false, true),
-                    secondRow and cg.RowPattern.Entry(secondRow[1], true, false, false),
+                    CourseGenerator.RowPattern.Entry(firstRow[#firstRow], false, false, true),
+                    secondRow and CourseGenerator.RowPattern.Entry(secondRow[1], true, false, false),
                 }
             end
         else
             -- from inside, counterclockwise
             if odd then
                 return {
-                    cg.RowPattern.Entry(firstRow[1], true, false, false),
-                    cg.RowPattern.Entry(firstRow[#firstRow], false, false, true),
+                    CourseGenerator.RowPattern.Entry(firstRow[1], true, false, false),
+                    CourseGenerator.RowPattern.Entry(firstRow[#firstRow], false, false, true),
                 }
             else
                 return {
-                    cg.RowPattern.Entry(firstRow[1], false, false, false),
-                    secondRow and cg.RowPattern.Entry(secondRow[#secondRow], true, false, true)
+                    CourseGenerator.RowPattern.Entry(firstRow[1], false, false, false),
+                    secondRow and CourseGenerator.RowPattern.Entry(secondRow[#secondRow], true, false, true)
                 }
             end
 
@@ -382,27 +382,27 @@ function RowPatternSpiral:getPossibleEntries(rows)
         if self.clockwise then
             -- from outside, clockwise
             return {
-                cg.RowPattern.Entry(firstRow[1], false, false, false),
+                CourseGenerator.RowPattern.Entry(firstRow[1], false, false, false),
                 -- if there is only one row we can enter either end of it
-                secondRow and cg.RowPattern.Entry(secondRow[#secondRow], true, false, true) or
-                        cg.RowPattern.Entry(firstRow[#firstRow], false, false, true),
+                secondRow and CourseGenerator.RowPattern.Entry(secondRow[#secondRow], true, false, true) or
+                        CourseGenerator.RowPattern.Entry(firstRow[#firstRow], false, false, true),
 
             }
         else
             -- from outside, counterclockwise
             return {
-                cg.RowPattern.Entry(firstRow[#firstRow], false, false, true),
+                CourseGenerator.RowPattern.Entry(firstRow[#firstRow], false, false, true),
                 -- if there is only one row we can enter either end of it
-                secondRow and cg.RowPattern.Entry(secondRow[1], true, false, false) or
-                        cg.RowPattern.Entry(firstRow[1], false, false, false),
+                secondRow and CourseGenerator.RowPattern.Entry(secondRow[1], true, false, false) or
+                        CourseGenerator.RowPattern.Entry(firstRow[1], false, false, false),
             }
         end
     end
     -- phuu. that was a long one ...
 end
 
----@class cg.RowPatternSpiral : RowPattern
-cg.RowPatternSpiral = RowPatternSpiral
+---@class CourseGenerator.RowPatternSpiral : RowPattern
+CourseGenerator.RowPatternSpiral = RowPatternSpiral
 
 --- A lands pattern, clockwise or not, dividing the field into "lands" which are
 --- individually being worked on in a fashion that the pipe of a combine is over
@@ -414,7 +414,7 @@ local RowPatternLands = CpObject(RowPattern)
 --- left side out of the fruit, counterclockwise is for pipe on the right size
 ---@param nRowsInLands boolean number of rows in each "land"
 function RowPatternLands:init(clockwise, nRowsInLands)
-    cg.RowPattern.init(self)
+    CourseGenerator.RowPattern.init(self)
     self.clockwise = clockwise
     self.nRowsInLands = nRowsInLands
 end
@@ -506,8 +506,8 @@ function RowPatternLands:_generateSequence(nRows)
     return self.sequence
 end
 
----@param rows cg.Row[]
----@return cg.RowPattern.Entry[] list of entries usable for this pattern
+---@param rows CourseGenerator.Row[]
+---@return CourseGenerator.RowPattern.Entry[] list of entries usable for this pattern
 function RowPatternLands:getPossibleEntries(rows)
     local sequence = self:_getSequence(#rows)
     local firstRow = rows[sequence[1]]
@@ -516,13 +516,13 @@ function RowPatternLands:getPossibleEntries(rows)
         return RowPattern.getPossibleEntries(self, rows)
     end
     return {
-        cg.RowPattern.Entry(firstRow[1], false, false, false),
-        cg.RowPattern.Entry(lastRow[#lastRow], true, false, true)
+        CourseGenerator.RowPattern.Entry(firstRow[1], false, false, false),
+        CourseGenerator.RowPattern.Entry(lastRow[#lastRow], true, false, true)
     }
 end
 
----@class cg.RowPatternLands : RowPattern
-cg.RowPatternLands = RowPatternLands
+---@class CourseGenerator.RowPatternLands : RowPattern
+CourseGenerator.RowPatternLands = RowPatternLands
 
 --- A racetrack (circular) pattern
 -- Circular mode: the area is split into multiple blocks which are then worked one by one. Work in each
@@ -548,7 +548,7 @@ local RowPatternRacetrack = CpObject(RowPattern)
 ---@param nSkip number the number of rows to skip when beginning work. This determines the size of the block, which
 --- will be 2 * nSkip rows
 function RowPatternRacetrack:init(nSkip)
-    cg.RowPattern.init(self, 'RowPatternRaceTrack')
+    CourseGenerator.RowPattern.init(self, 'RowPatternRaceTrack')
     -- by default we skip the first four rows when starting
     self.nSkip = nSkip or 4
 end
@@ -610,8 +610,8 @@ end
 
 --- We start the racetrack by skipping nSkip rows from either the first or the last row. Each of these two rows can
 --- be started at either end.
----@param rows cg.Row[]
----@return cg.RowPattern.Entry[] list of entries usable for this pattern
+---@param rows CourseGenerator.Row[]
+---@return CourseGenerator.RowPattern.Entry[] list of entries usable for this pattern
 function RowPatternRacetrack:getPossibleEntries(rows)
     local firstRow, lastRow = rows[self.nSkip + 1], rows[#rows - (self.nSkip + 1)]
 
@@ -621,13 +621,13 @@ function RowPatternRacetrack:getPossibleEntries(rows)
 
     local entries = {
         -- reverseRowOrderBefore, reverseRowOrderAfter, reverseOddRows
-        cg.RowPattern.Entry(firstRow[1], false, false, false),
-        cg.RowPattern.Entry(firstRow[#firstRow], false, false, true),
-        cg.RowPattern.Entry(lastRow[1], true, false, false),
-        cg.RowPattern.Entry(lastRow[#lastRow], true, false, true),
+        CourseGenerator.RowPattern.Entry(firstRow[1], false, false, false),
+        CourseGenerator.RowPattern.Entry(firstRow[#firstRow], false, false, true),
+        CourseGenerator.RowPattern.Entry(lastRow[1], true, false, false),
+        CourseGenerator.RowPattern.Entry(lastRow[#lastRow], true, false, true),
     }
     return entries
 end
 
----@class cg.RowPatternRacetrack : cg.RowPattern
-cg.RowPatternRacetrack = RowPatternRacetrack
+---@class CourseGenerator.RowPatternRacetrack : CourseGenerator.RowPattern
+CourseGenerator.RowPatternRacetrack = RowPatternRacetrack

@@ -1,5 +1,5 @@
 --- This is a point which can move along a polyline or polygon
-local Slider = CpObject(cg.LineSegment)
+local Slider = CpObject(CourseGenerator.LineSegment)
 
 ---@param polyline Polyline the polyline (or polygon) the slider can be moved along
 ---@param ix number index of the vertex we want to base our initial position on
@@ -85,5 +85,5 @@ function Slider:move(d)
     return not endReached
 end
 
----@class cg.Slider : cg.LineSegment
-cg.Slider = Slider
+---@class CourseGenerator.Slider : CourseGenerator.LineSegment
+CourseGenerator.Slider = Slider

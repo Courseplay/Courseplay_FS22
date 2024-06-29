@@ -66,7 +66,7 @@ end
 --- Debug print, will either just call print when running standalone
 --  or use the CP debug channel when running in the game.
 function Logger:log(...)
-    if cg.isRunningInGame() then
+    if CourseGenerator.isRunningInGame() then
         CpUtil.debugVehicle(CpDebug.DBG_COURSES, g_currentMission.controlledVehicle, ...)
     else
         local message = self:_getCurrentTimeStr() .. ' ' .. string.format(...)
@@ -80,7 +80,7 @@ function Logger:log(...)
 end
 
 function Logger:_getCurrentTimeStr()
-    if cg.isRunningInGame() then
+    if CourseGenerator.isRunningInGame() then
         -- the game logs hour minute, just add the seconds
         return getDate(':%S')
     else

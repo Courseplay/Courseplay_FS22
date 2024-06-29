@@ -68,5 +68,5 @@ function CacheMap:_getMap(...)
     return map
 end
 
----@class cg.CacheMap
-cg.CacheMap = CacheMap
+---@class CourseGenerator.CacheMap
+CourseGenerator.CacheMap = CacheMap

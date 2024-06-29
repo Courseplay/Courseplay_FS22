@@ -40,7 +40,7 @@ function CurvedPathHelper.generateCurvedUpDownRows(boundary, baselineLocation, w
     --- Create a baseline for the up/down rows, which is not necessarily straight, instead, it follows a section
     --- of the field boundary. This way some odd-shaped fields can be covered with less turns.
     local closest = boundary:findClosestVertexToPoint(baselineLocation or boundary:at(1))
-    local baseline = cg.Row(workingWidth)
+    local baseline = CourseGenerator.Row(workingWidth)
     CurvedPathHelper.findLongestStraightSection(boundary, closest.ix, turningRadius, baseline)
 
     baseline:extendStart(50)
@@ -67,19 +67,19 @@ end
 ---@param boundary Polyline
 ---@param ix number the vertex of the boundary to start the search at
 ---@param radiusThreshold number straight section ends when the radius is under this threshold
----@param section cg.Row empty row passed in to hold the straight section around ix
----@return cg.Row the straight section as a row, same object as passed in as the section
+---@param section CourseGenerator.Row empty row passed in to hold the straight section around ix
+---@return CourseGenerator.Row the straight section as a row, same object as passed in as the section
 function CurvedPathHelper.findLongestStraightSection(boundary, ix, radiusThreshold, section)
     local i, n, j = ix, 1
     -- max one round only (n <) self:at(currentIx):getXte(r)
-    while n < #boundary and boundary:at(i):getXte(radiusThreshold) < cg.cMaxCrossTrackErrorForCurvedRows do
+    while n < #boundary and boundary:at(i):getXte(radiusThreshold) < CourseGenerator.cMaxCrossTrackErrorForCurvedRows do
         section:append((boundary:at(i)):clone())
         i = i - 1
         n = n + 1
     end
     section:reverse()
     j, n = ix + 1, 1
-    while n < #boundary and boundary:at(j):getXte(radiusThreshold) < cg.cMaxCrossTrackErrorForCurvedRows do
+    while n < #boundary and boundary:at(j):getXte(radiusThreshold) < CourseGenerator.cMaxCrossTrackErrorForCurvedRows do
         section:append((boundary:at(j)):clone())
         j = j + 1
         n = n + 1
@@ -88,9 +88,9 @@ function CurvedPathHelper.findLongestStraightSection(boundary, ix, radiusThresho
     -- no straight section found, bail out here
     logger:debug('Longest straight section found %d vertices, %.1f m (%d - %d - %d)',
             #section, section:getLength(), i, ix, j)
-    cg.addDebugPolyline(section)
+    CourseGenerator.addDebugPolyline(section)
     return section
 end
 
----@class cg.CurvedPathHelper
-cg.CurvedPathHelper = CurvedPathHelper
+---@class CourseGenerator.CurvedPathHelper
+CourseGenerator.CurvedPathHelper = CurvedPathHelper

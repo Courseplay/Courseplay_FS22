@@ -11,7 +11,7 @@ lu.EPS = 0.01
 --- In the Giants editor, these calls are executed by the Giants engine and should deliver the same results.
 ---
 function testTransform()
-    local t = cg.Transform('test')
+    local t = CourseGenerator.Transform('test')
     t:setTranslation(10, 11)
     local x, y = t:getWorldTranslation()
     lu.assertAlmostEquals(x, 10)

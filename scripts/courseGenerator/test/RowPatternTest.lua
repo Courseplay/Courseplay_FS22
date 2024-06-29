@@ -3,7 +3,7 @@ lu.EPS = 0.01
 
 local function generateTenRows()
     local rows = {}
-    local row = cg.Row(5, { Vector(0, 1), Vector(20, 1) })
+    local row = CourseGenerator.Row(5, { Vector(0, 1), Vector(20, 1) })
     for _ = 1, 10 do
         table.insert(rows, row)
         row = row:createNext(1)
@@ -19,7 +19,7 @@ function testRowPatternSkip()
     rows[10][1]:assertAlmostEquals(Vector(0, 10))
 
     -----------------------------------------------------------------------------------
-    local p = cg.RowPatternSkip(1)
+    local p = CourseGenerator.RowPatternSkip(1)
     local orderedRows = {}
     for _, r in p:iterator(rows) do
         table.insert(orderedRows, r)
@@ -64,7 +64,7 @@ function testRowPatternSkip()
 
     -----------------------------------------------------------------------------------
 
-    p = cg.RowPatternSkip(2)
+    p = CourseGenerator.RowPatternSkip(2)
     orderedRows = {}
     for _, r in p:iterator(rows) do
         table.insert(orderedRows, r)
@@ -96,7 +96,7 @@ function testRowPatternSkip()
     table.insert(rows, rows[#rows]:createNext(1))
     --------------------------------------------------------------------------------------
 
-    p = cg.RowPatternSkip(1)
+    p = CourseGenerator.RowPatternSkip(1)
     orderedRows = {}
     for _, r in p:iterator(rows) do
         table.insert(orderedRows, r)
@@ -127,7 +127,7 @@ function testRowPatternSkip()
 
     -----------------------------------------------------------------------------------
 
-    p = cg.RowPatternSkip(2)
+    p = CourseGenerator.RowPatternSkip(2)
     orderedRows = {}
     for _, r in p:iterator(rows) do
         table.insert(orderedRows, r)
@@ -159,7 +159,7 @@ end
 
 function testRowPatternExit()
     local rows = generateTenRows()
-    local p = cg.RowPatternAlternating()
+    local p = CourseGenerator.RowPatternAlternating()
     local entries = p:getPossibleEntries(rows)
     entries[1].position:assertAlmostEquals(Vector(0, 1))
     local _, exit = p:getWorkSequenceAndExit(rows, entries[1])
@@ -173,12 +173,12 @@ function testRowPatternExit()
 
     -- odd number of rows
     rows = {}
-    local row = cg.Row(5, { Vector(0, 1), Vector(20, 1) })
+    local row = CourseGenerator.Row(5, { Vector(0, 1), Vector(20, 1) })
     for _ = 1, 3 do
         table.insert(rows, row)
         row = row:createNext(1)
     end
-    p = cg.RowPatternAlternatingFirstRowEntryOnly()
+    p = CourseGenerator.RowPatternAlternatingFirstRowEntryOnly()
     entries = p:getPossibleEntries(rows)
     entries[1].position:assertAlmostEquals(Vector(0, 1))
     _, exit = p:getWorkSequenceAndExit(rows, entries[1])
@@ -189,7 +189,7 @@ function testRowPatternExit()
 end
 
 local function singleRowWithSpiral(rows, clockwise, fromInside)
-    local p = cg.RowPatternSpiral(clockwise, fromInside)
+    local p = CourseGenerator.RowPatternSpiral(clockwise, fromInside)
     local wse = p:getWorkSequenceAndExit(rows, Vector(0, 1))
     lu.assertEquals(wse[1].rowIx, 1); lu.assertFalse(wse[1].reverse)
     local entries = p:getPossibleEntries(rows)
@@ -201,7 +201,7 @@ local function singleRowWithSpiral(rows, clockwise, fromInside)
 end
 
 local function fourRowsWithSpiral(rows, clockwise, fromInside)
-    local p = cg.RowPatternSpiral(clockwise, fromInside)
+    local p = CourseGenerator.RowPatternSpiral(clockwise, fromInside)
     local entries = p:getPossibleEntries(rows)
     lu.assertEquals(#entries, 2)
 end
@@ -222,7 +222,7 @@ end
 
 function testRowPatternSpiralEven()    -- even, clockwise, from inside
     local rows = generateTenRows()
-    local p = cg.RowPatternSpiral(true, true)
+    local p = CourseGenerator.RowPatternSpiral(true, true)
     local fourRows = {rows[1], rows[2], rows[3], rows[4]}
     local entries = p:getPossibleEntries(fourRows)
     lu.assertEquals(#entries, 2)
@@ -248,7 +248,7 @@ function testRowPatternSpiralEven()    -- even, clockwise, from inside
     exit:assertAlmostEquals(Vector(0, 1))
 
     -- even, counterclockwise, from inside
-    p = cg.RowPatternSpiral(false, true)
+    p = CourseGenerator.RowPatternSpiral(false, true)
     fourRows = {rows[1], rows[2], rows[3], rows[4]}
     entries = p:getPossibleEntries(fourRows)
     lu.assertEquals(#entries, 2)
@@ -277,7 +277,7 @@ end
 
 function testRowPatternSpiralOdd()    -- even, clockwise, from inside
     local rows = generateTenRows()
-    local p = cg.RowPatternSpiral(true, true)
+    local p = CourseGenerator.RowPatternSpiral(true, true)
     local fourRows = {rows[1], rows[2], rows[3], rows[4], rows[5]}
     local entries = p:getPossibleEntries(fourRows)
     lu.assertEquals(#entries, 2)
@@ -303,7 +303,7 @@ function testRowPatternSpiralOdd()    -- even, clockwise, from inside
     exit:assertAlmostEquals(Vector(0, 1))
 
     -- odd, counterclockwise, from inside
-    p = cg.RowPatternSpiral(false, true)
+    p = CourseGenerator.RowPatternSpiral(false, true)
     fourRows = {rows[1], rows[2], rows[3], rows[4], rows[5]}
     entries = p:getPossibleEntries(fourRows)
     lu.assertEquals(#entries, 2)

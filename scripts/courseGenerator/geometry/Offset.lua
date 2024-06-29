@@ -28,10 +28,10 @@ function Offset.generate(polygon, offsetVector, targetOffset, currentOffset)
         recursionCount = 0
         return nil
     end
-    polygon:ensureMinimumEdgeLength(cg.cMinEdgeLength)
+    polygon:ensureMinimumEdgeLength(CourseGenerator.cMinEdgeLength)
     polygon:calculateProperties()
     return Offset.generate(polygon, offsetVector, targetOffset, currentOffset)
 end
 
----@class cg.Offset
-cg.Offset = Offset
+---@class CourseGenerator.Offset
+CourseGenerator.Offset = Offset
