@@ -7,9 +7,9 @@
 local CenterTwoSided = CpObject(cg.Center)
 
 ---@param context cg.FieldworkContext
----@param boundary cg.Polygon the field boundary
+---@param boundary Polygon the field boundary
 ---@param headland cg.Headland|nil the innermost headland if exists
----@param startLocation cg.Vector location of the vehicle before it starts working on the center.
+---@param startLocation Vector location of the vehicle before it starts working on the center.
 ---@param bigIslands cg.Island[] islands too big to circle
 ---@param lastRow cg.Row the last row of the center (before cut), this will be added to the ones generated
 function CenterTwoSided:init(context, boundary, headland, startLocation, bigIslands, lastRow)

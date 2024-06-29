@@ -4,7 +4,7 @@ local Intersection = CpObject()
 --- Create an intersection point between two edges of the polylines A and B
 ---@param ixA number the start index of the intersecting edge (edgeA) of polyline A
 ---@param ixB number the start index of the intersecting edge (edgeB) of polyline B
----@param is cg.Vector the intersection point.
+---@param is Vector the intersection point.
 ---@param edgeA cg.LineSegment the edge of polygon A where where the intersection point is
 ---@param edgeB cg.LineSegment the edge of polygon B where where the intersection point is
 ---@param userData any user data to add to the Intersection objects (to later identify them)

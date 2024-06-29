@@ -12,7 +12,7 @@ local FieldworkCourse = CpObject()
 function FieldworkCourse:init(context)
     self.logger = Logger('FieldworkCourse')
     self:_setContext(context)
-    self.headlandPath = cg.Polyline()
+    self.headlandPath = Polyline()
     self.circledIslands = {}
     self.headlandCache = cg.CacheMap()
 
@@ -54,10 +54,10 @@ end
 --- path a vehicle would follow to complete work on the field.
 --- The vertices of the path contain WaypointAttributes which provide additional navigation information
 --- for the vehicle.
----@return cg.Polyline
+---@return Polyline
 function FieldworkCourse:getPath()
     if not self.path then
-        self.path = cg.Polyline()
+        self.path = Polyline()
         if self.context.headlandFirst then
             self.path:appendMany(self:getHeadlandPath())
             self.path:appendMany(self:getCenterPath())
@@ -87,7 +87,7 @@ function FieldworkCourse:reverse()
     end
 end
 
----@return cg.Polyline
+---@return Polyline
 function FieldworkCourse:getHeadlandPath()
     return self.headlandPath
 end
@@ -102,9 +102,9 @@ function FieldworkCourse:getCenter()
     return self.center
 end
 
----@return cg.Polyline
+---@return Polyline
 function FieldworkCourse:getCenterPath()
-    return self.center and self.center:getPath() or cg.Polyline()
+    return self.center and self.center:getPath() or Polyline()
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -315,13 +315,13 @@ end
 --- Find the path to the next row on the headland.
 ---@param boundaryId string the boundary ID, telling if this is a boundary around the field or around an island. Will
 --- only return a path when the next row can be reached while staying on the same boundary.
----@param rowEnd cg.Vector Last waypoint of the row
----@param rowStart cg.Vector First waypoint of the next row
+---@param rowEnd Vector Last waypoint of the row
+---@param rowStart Vector First waypoint of the next row
 ---@param minDistanceFromRowEnd number|nil minimum distance of the headland (default 0)we choose for the path,
 --- from the row end, this should be set so that the vehicle can make the turn from the position where it ended the
 --- work on the row into the headland. In case of a headland perpendicular to the rows, this is approximately the turn
 --- radius, at other angles it could be bigger or smaller, which we currently do not take into account
----@return cg.Polyline The path on the headland to the next row. Users should consider shortening both ends of the
+---@return Polyline The path on the headland to the next row. Users should consider shortening both ends of the
 --- path with the turning radius to leave enough room for the vehicle to cleanly make the turn from the row end into
 --- the headland path and from the headland into the next row
 function FieldworkCourse:findPathToNextRow(boundaryId, rowEnd, rowStart, minDistanceFromRowEnd)
@@ -345,7 +345,7 @@ function FieldworkCourse:_setContext(context)
     self.context:log()
     self.nHeadlands = self.context.nHeadlands
     self.nHeadlandsWithRoundCorners = self.context.nHeadlandsWithRoundCorners
-    ---@type cg.Polygon
+    ---@type Polygon
     self.boundary = cg.FieldworkCourseHelper.createUsableBoundary(context.field:getBoundary(), self.context.headlandClockwise)
     if self.context.fieldCornerRadius > 0 then
         self.logger:debug('sharpening field boundary corners')
@@ -375,7 +375,7 @@ function FieldworkCourse:_getCachedHeadlands(boundaryId)
                     not a:isOnConnectingPath() then
                 local pass = a:getHeadlandPassNumber()
                 if headlands[pass] == nil then
-                    headlands[pass] = cg.Polygon()
+                    headlands[pass] = Polygon()
                 end
                 headlands[pass]:append(v)
             end

@@ -14,16 +14,16 @@ Transform = CpObject()
 function Transform:init(name, parent)
     self.name = name
     -- a unit vector representing the rotation (heading or direction or orientation)
-    self.rotation = cg.Vector(1, 0)
+    self.rotation = Vector(1, 0)
     -- this is my translation in the world
-    self.translation = cg.Vector(0, 0)
+    self.translation = Vector(0, 0)
     self.parentTransform = parent or RootTransform
 end
 
 --- Get world translation (with all the parents) in the x, y system
 function Transform:getWorldTranslationVector()
 
-    local worldVector = self.parentTransform and self.parentTransform:getWorldTranslationVector() or cg.Vector(0, 0)
+    local worldVector = self.parentTransform and self.parentTransform:getWorldTranslationVector() or Vector(0, 0)
     local localVector = self.translation:clone()
     localVector:rotate(self.parentTransform and self.parentTransform:getWorldRotation() or 0)
     return worldVector + localVector
@@ -57,10 +57,10 @@ end
 ---@param transform : Transform
 function Transform:localToWorld(dx, dy)
     local worldVector = self:getWorldTranslationVector()
-    local xVector = cg.Vector(1, 0)
+    local xVector = Vector(1, 0)
     xVector:setHeading(self:getWorldRotation())
     xVector:setLength(dx)
-    local yVector = cg.Vector(1, 0)
+    local yVector = Vector(1, 0)
     yVector:setHeading(self:getWorldRotation())
     yVector:rotate(math.pi / 2)
     yVector:setLength(dy)
@@ -79,7 +79,7 @@ function Transform:worldToLocal(x, y)
 end
 
 function Transform:localDirectionToWorld(dx, dy)
-    local v = cg.Vector(dx, dy)
+    local v = Vector(dx, dy)
     local rot = self:getWorldRotation()
     v:setHeading(rot)
     return v.x, v.y

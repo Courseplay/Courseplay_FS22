@@ -8,7 +8,7 @@ local FieldworkContext = CpObject()
 ---@param nHeadlands number of headland passes
 function FieldworkContext:init(field, workingWidth, turningRadius, nHeadlands)
     self.field = field
-    self.startLocation = cg.Vector(0, 0)
+    self.startLocation = Vector(0, 0)
     self.workingWidth = workingWidth
     self.turningRadius = turningRadius
 
@@ -122,8 +122,8 @@ end
 
 --- The (approximate) location where we want to start working on the headland when progressing inwards.
 function FieldworkContext:setStartLocation(x, y)
-    ---@type cg.Vector
-    self.startLocation = cg.Vector(x, y)
+    ---@type Vector
+    self.startLocation = Vector(x, y)
     return self
 end
 
@@ -155,7 +155,7 @@ end
 --- very long turns.
 --- Making the up/down rows parallel with such an edge may yield better results.
 function FieldworkContext:setBaselineEdge(x, y)
-    self.baselineEdge = cg.Vector(x, y)
+    self.baselineEdge = Vector(x, y)
     return self
 end
 

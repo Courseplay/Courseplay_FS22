@@ -7,14 +7,14 @@ local LineSegment = CpObject()
 ---@param x2 number P2's y coordinate
 function LineSegment:init(x1, y1, x2, y2)
     -- vector from origin to P1 is the base vector
-    self.base = cg.Vector(x1, y1)
+    self.base = Vector(x1, y1)
     -- vector from P1 to P2
-    self.slope = cg.Vector(x2 - x1, y2 - y1)
+    self.slope = Vector(x2 - x1, y2 - y1)
 end
 
 --- Create a line segment from two points (vectors)
----@param p1 cg.Vector to P1
----@param p2 cg.Vector to P2
+---@param p1 Vector to P1
+---@param p2 Vector to P2
 function LineSegment.fromVectors(v1, v2)
     return LineSegment(v1.x, v1.y, v2.x, v2.y)
 end
@@ -27,7 +27,7 @@ function LineSegment:clone()
 end
 
 --- Get the base (starting point) of the line segment
----@return cg.Vector
+---@return Vector
 function LineSegment:getBase()
     return self.base
 end
@@ -39,7 +39,7 @@ function LineSegment:setBase(v)
 end
 
 --- Get the end point of the line segment
----@return cg.Vector
+---@return Vector
 function LineSegment:getEnd()
     return self.base + self.slope
 end
@@ -248,14 +248,14 @@ function LineSegment:getRadiusTo(other)
     end
 end
 
----@param point cg.Vector
+---@param point Vector
 ---@return number distance of point from the line segment (measured perpendicular to the segment, length of the rejection vector)
 function LineSegment:getDistanceFrom(point)
     local v = point - self.base
     return self.slope:rejection(v):length()
 end
 
----@param point cg.Vector
+---@param point Vector
 ---@return boolean is point on the left side of the line segment (looking towards the end of the line segment)
 function LineSegment:isPointOnLeft(point)
     local v = point - self.base
@@ -280,7 +280,7 @@ function LineSegment:isEntering(clockwise, other)
 end
 
 
----@param point cg.Vector
+---@param point Vector
 function LineSegment:getScalarProjection(point)
     local v = point - self.base
     return self.slope:scalarProjection(v)

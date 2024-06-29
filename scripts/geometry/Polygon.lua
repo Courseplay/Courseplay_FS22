@@ -1,7 +1,8 @@
-local Polygon = CpObject(cg.Polyline)
+---@class Polygon:Polyline
+Polygon = CpObject(Polyline)
 
 function Polygon:init(vertices)
-    cg.Polyline.init(self, vertices)
+    Polyline.init(self, vertices)
     self.logger = Logger('Polygon', Logger.level.debug)
 end
 
@@ -61,7 +62,7 @@ end
 ---@param from number index of first vertex
 ---@param to number index of last vertex
 ---@param step number step (1 or -1 only), direction of iteration
----@return number, cg.Vertex, cg.Vertex, cg.Vertex the index, the vertex at index, the previous, and the next vertex.
+---@return number, Vertex, Vertex, Vertex the index, the vertex at index, the previous, and the next vertex.
 --- previous and next may be nil
 function Polygon:vertices(from, to, step)
     step = (step == nil or step > 0) and 1 or -1
@@ -91,7 +92,7 @@ function Polygon:vertices(from, to, step)
 end
 
 --- edge iterator, will wrap through the end to close the polygon
----@return number, cg.LineSegment, cg.Vertex
+---@return number, cg.LineSegment, Vertex
 function Polygon:edges(startIx)
     local i = startIx and startIx - 1 or 0
     return function()
@@ -105,7 +106,7 @@ function Polygon:edges(startIx)
 end
 
 --- edge iterator backwards
----@return number, cg.LineSegment, cg.Vertex
+---@return number, cg.LineSegment, Vertex
 function Polygon:edgesBackwards(startIx)
     local i = startIx and (startIx + 1) or (#self + 1)
     return function()
@@ -148,7 +149,7 @@ function Polygon:isInside(x, y)
 end
 
 --- Same as isInside, but accepts a Vector
----@param v cg.Vector
+---@param v Vector
 ---@return boolean true if v is inside of this
 function Polygon:isVectorInside(v)
     return self:isInside(v.x, v.y)
@@ -188,7 +189,7 @@ function Polygon:getArea()
 end
 
 function Polygon:calculateProperties(from, to)
-    cg.Polyline.calculateProperties(self, from, to)
+    Polyline.calculateProperties(self, from, to)
     -- dirty flag to trigger clockwise/area recalculation
     self.deltaAngle, self.area, self.length, self.longestEdgeDirection = nil, nil, nil, nil
 end
@@ -226,7 +227,7 @@ function Polygon:getLongestEdgeDirection()
 end
 
 function Polygon:ensureMinimumEdgeLength(minimumLength)
-    cg.Polyline.ensureMinimumEdgeLength(self, minimumLength)
+    Polyline.ensureMinimumEdgeLength(self, minimumLength)
     if (self[1] - self[#self]):length() < minimumLength then
         table.remove(self, #self)
     end
@@ -241,7 +242,7 @@ function Polygon:cleanEdges(edges, minEdgeLength, preserveCorners)
 end
 
 --- Generate a polygon parallel to this one, offset by the offsetVector.
----@param offsetVector cg.Vector offset to move the edges, relative to the edge's direction
+---@param offsetVector Vector offset to move the edges, relative to the edge's direction
 ---@param minEdgeLength number see LineSegment.connect()
 ---@param preserveCorners number see LineSegment.connect()
 function Polygon:createOffset(offsetVector, minEdgeLength, preserveCorners)
@@ -258,7 +259,7 @@ function Polygon:createOffset(offsetVector, minEdgeLength, preserveCorners)
     if gapFiller then
         table.insert(cleanOffsetEdges, gapFiller)
     end
-    local offsetPolygon = cg.Polygon()
+    local offsetPolygon = Polygon()
     for _, e in ipairs(cleanOffsetEdges) do
         offsetPolygon:append(e:getBase())
     end
@@ -267,7 +268,7 @@ function Polygon:createOffset(offsetVector, minEdgeLength, preserveCorners)
     return offsetPolygon
 end
 
----@param isValidFunc function optional function accepting a cg.Vertex and returning bool to determine if this
+---@param isValidFunc function optional function accepting a Vertex and returning bool to determine if this
 --- vertex should be considered at all
 ---@return number index of the first vertex which is at least d distance from ix
 ---(can be nil if the end of line reached before d)
@@ -326,13 +327,13 @@ end
 ---@param toIx number index of last vertex in the segment
 ---@return Polyline, Polyline
 function Polygon:_getPathBetween(fromIx, toIx)
-    local forward = cg.Polyline({ self:at(fromIx) })
+    local forward = Polyline({ self:at(fromIx) })
     local fwdIx = cg.WrapAroundIndex(self, fromIx)
     while fwdIx:get() ~= toIx do
         fwdIx = fwdIx + 1
         forward:append(self:at(fwdIx:get()))
     end
-    local backward = cg.Polyline({ self:at(fromIx) })
+    local backward = Polyline({ self:at(fromIx) })
     local bwdIx = cg.WrapAroundIndex(self, fromIx)
     while bwdIx:get() ~= toIx do
         bwdIx = bwdIx - 1
@@ -370,6 +371,3 @@ function Polygon:__tostring()
     end
     return result
 end
-
----@class cg.Polygon:cg.Polyline
-cg.Polygon = Polygon

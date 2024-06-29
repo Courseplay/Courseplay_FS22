@@ -88,7 +88,7 @@ end
 
 --- Remove glitches from a potentially fuzzy field or island boundary, and then align into the same
 --- direction as we want the headlands to be generated
----@param originalBoundary cg.Polygon raw field/island boundary
+---@param originalBoundary Polygon raw field/island boundary
 ---@param clockwise boolean if true, we want to generate headlands based on this boundary in the clockwise direction.
 --- if boundary has a different orientation, it'll be reversed to match the desired direction
 function FieldworkCourseHelper.createUsableBoundary(originalBoundary, clockwise)

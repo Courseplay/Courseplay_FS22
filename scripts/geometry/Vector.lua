@@ -248,6 +248,3 @@ function Vector:assertAlmostEquals(other)
         error(string.format('FAILURE: expected: %s, actual: %s', other, self), 1)
     end
 end
-
----@class cg.Vector
-cg.Vector = Vector

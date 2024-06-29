@@ -1,11 +1,11 @@
 --- An up/down row (swath) in the middle of the field (the area surrounded by the field boundary or the
 --- innermost headland).
 ---@class Row : Polyline
-local Row = CpObject(cg.Polyline)
+local Row = CpObject(Polyline)
 
 ---@param vertices table[] array of tables with x, y (Vector, Vertex, State3D or just plain {x, y}
 function Row:init(workingWidth, vertices)
-    cg.Polyline.init(self, vertices)
+    Polyline.init(self, vertices)
     self.workingWidth = workingWidth
     self.logger = Logger('Row ' .. tostring(self.rowNumber), Logger.level.debug)
 end
@@ -45,9 +45,9 @@ end
 --- (looking at increasing vertex indices) when offset > 0, right side otherwise.
 function Row:createNext(offset)
     if offset >= 0 then
-        return cg.Offset.generate(self, cg.Vector(0, 1), offset)
+        return cg.Offset.generate(self, Vector(0, 1), offset)
     else
-        return cg.Offset.generate(self, cg.Vector(0, -1), -offset)
+        return cg.Offset.generate(self, Vector(0, -1), -offset)
     end
 end
 
@@ -193,7 +193,7 @@ end
 
 --- Get the coordinates in the middle of the row, for instance to display the row number. Assumes
 --- that the vertices are approximately evenly distributed
----@return cg.Vector coordinates of the middle of the row
+---@return Vector coordinates of the middle of the row
 function Row:getMiddle()
     if #self % 2 == 0 then
         -- even number of vertices, return a point between the middle two
@@ -238,7 +238,7 @@ function Row:setAllAttributes()
 end
 
 function Row:reverse()
-    cg.Polyline.reverse(self)
+    Polyline.reverse(self)
     self.startHeadlandAngle, self.endHeadlandAngle = self.endHeadlandAngle, self.startHeadlandAngle
     self.startsAtHeadland, self.endsAtHeadland = self.endsAtHeadland, self.startsAtHeadland
     self.rowOnLeftWorked, self.rowOnRightWorked = self.rowOnRightWorked, self.rowOnLeftWorked
@@ -274,7 +274,7 @@ end
 function Row:_cutAtIntersections(is1, is2)
     local section = cg.Row(self.workingWidth)
     -- want a Row to be returned, not a Polyline
-    return cg.Polyline._cutAtIntersections(self, is1, is2, section)
+    return Polyline._cutAtIntersections(self, is1, is2, section)
 end
 
 --- Does the section of row between the intersections is1 and is2 with the headland remain close to the headland?

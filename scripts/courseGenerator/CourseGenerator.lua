@@ -50,7 +50,7 @@ function NewCourseGenerator.clearDebugObjects()
 end
 
 --- Add a point to the list of debug points we want to show on the test display
----@param v cg.Vector
+---@param v Vector
 ---@param text|nil optional debug text
 ---@param color table|nil color in form of {r, g, b}, each in the 0..1 range
 function NewCourseGenerator.addDebugPoint(v, text, color)
@@ -77,7 +77,7 @@ function NewCourseGenerator.addSmallDebugPoint(v, text, color)
 end
 
 --- Add a point to the list of debug points we want to show on the test display
----@param p cg.Polyline
+---@param p Polyline
 ---@param color table|nil color in form of {r, g, b}, each in the 0..1 range
 function NewCourseGenerator.addDebugPolyline(p, color)
     if not NewCourseGenerator.debugPolylines then

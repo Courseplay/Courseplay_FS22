@@ -1,10 +1,10 @@
 --- Vertex of a polyline or a polygon. Besides the coordinates (as a Vector) it holds
 --- all kinds of other information in the line/polygon context.
-
-local Vertex = CpObject(cg.Vector)
+---@class Vertex:Vector
+Vertex = CpObject(Vector)
 
 function Vertex:init(x, y, ix)
-    cg.Vector.init(self, x, y)
+    Vector.init(self, x, y)
     --- public properties (wish lua was a proper language...)
     self.ix = ix or 0
     --- This is a corner vertex, and should remain a sharp corner (no smoothing)
@@ -90,8 +90,8 @@ function Vertex:getAttributes()
 end
 
 --- Add info related to the neighbouring vertices
----@param entry cg.Vertex the previous vertex in the polyline/polygon
----@param exit cg.Vertex the next vertex in the polyline/polygon
+---@param entry Vertex the previous vertex in the polyline/polygon
+---@param exit Vertex the next vertex in the polyline/polygon
 function Vertex:calculateProperties(entry, exit)
     if entry then
         self.entryEdge = cg.LineSegment.fromVectors(entry, self)
@@ -126,9 +126,6 @@ function Vertex:calculateProperties(entry, exit)
 end
 
 function Vertex:__tostring()
-    return string.format('(%s) %s r: %.1f %s', self.ix, cg.Vector.__tostring(self),
+    return string.format('(%s) %s r: %.1f %s', self.ix, Vector.__tostring(self),
             self:getRadius(), self.attributes:__tostring())
 end
-
----@class cg.Vertex:cg.Vector
-cg.Vertex = Vertex

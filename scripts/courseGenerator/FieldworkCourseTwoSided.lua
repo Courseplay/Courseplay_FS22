@@ -28,7 +28,7 @@ function FieldworkCourseTwoSided:init(context)
     -- clockwise setting really does not matter but the generated headland is expected match the boundary
     self.virtualHeadland = cg.FieldworkCourseHelper.createVirtualHeadland(self.boundary, self.boundary:isClockwise(),
             self.context.workingWidth)
-    self.headlandPath = cg.Polyline()
+    self.headlandPath = Polyline()
 
     self:generateHeadlands()
 
@@ -52,9 +52,9 @@ function FieldworkCourseTwoSided:init(context)
     self.center:generate()
 end
 
----@return cg.Polyline
+---@return Polyline
 function FieldworkCourseTwoSided:getHeadlandPath()
-    local headlandPath = cg.Polyline()
+    local headlandPath = Polyline()
     for _, r in ipairs(self.startHeadlandBlock:getRows()) do
         headlandPath:appendMany(r)
     end
@@ -68,7 +68,7 @@ function FieldworkCourseTwoSided:getHeadlandPath()
     return headlandPath
 end
 
----@return cg.Polyline
+---@return Polyline
 function FieldworkCourseTwoSided:getCenterPath()
     local centerPath = self.center:getPath()
     return centerPath
@@ -180,7 +180,7 @@ end
 function FieldworkCourseTwoSided:_getClosestEntry(block, startLocation)
     local minD, closestEntry = math.huge, nil
     for _, e in pairs(block:getPossibleEntries()) do
-        local d = cg.Vector.getDistance(startLocation, e.position)
+        local d = Vector.getDistance(startLocation, e.position)
         if d < minD then
             minD, closestEntry = d, e
         end
@@ -218,7 +218,7 @@ end
 --- Create the boundary around the center from the headlands we generated on three sides and
 --- from the field boundary
 function FieldworkCourseTwoSided:_createCenterBoundary()
-    local centerBoundary = cg.Polygon()
+    local centerBoundary = Polygon()
     -- connect the start side to the center
     centerBoundary:appendMany(self.startHeadlandBlock:getLastRow())
     centerBoundary:appendMany(self.middleHeadlandBlock:getFirstRow())

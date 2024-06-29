@@ -1,10 +1,10 @@
 require('include')
 lu.EPS = 0.01
 
----@param startCorner cg.Vector
+---@param startCorner Vector
 local function createBlock(pattern, id, nRows, startCorner)
     local block = cg.Block(pattern, id)
-    local row = cg.Row(5, {startCorner, startCorner + cg.Vector(200, 0)})
+    local row = cg.Row(5, {startCorner, startCorner + Vector(200, 0)})
     for _ = 1, nRows do
         block:addRow(row)
         row = row:createNext(5)
@@ -15,15 +15,15 @@ end
 function testBlockSequence()
     local p = cg.RowPatternAlternating()
 
-    local b1 = createBlock(p, 1, 10, cg.Vector(0, 1))
-    local b2 = createBlock(p, 2, 9, cg.Vector(0, 101))
-    local b3 = createBlock(p, 3, 10, cg.Vector(0, 201))
+    local b1 = createBlock(p, 1, 10, Vector(0, 1))
+    local b2 = createBlock(p, 2, 9, Vector(0, 101))
+    local b3 = createBlock(p, 3, 10, Vector(0, 201))
 
     lu.assertEquals(b1:getNumberOfRows(), 10)
     lu.assertEquals(b2:getNumberOfRows(), 9)
     lu.assertEquals(b3:getNumberOfRows(), 10)
 
-    local startPosition = cg.Vector(0, 0)
+    local startPosition = Vector(0, 0)
 
     local function calculateFitness(chromosome)
         local blocks, entries = chromosome:getBlockSequenceAndEntries()
@@ -41,7 +41,7 @@ function testBlockSequence()
     local blocksInSequence, entries, distance, bs
 
     -- entry point in the lower left corner
-    startPosition = cg.Vector(0, 0)
+    startPosition = Vector(0, 0)
 
     local hits1 = 0
     for i = 1, 100 do -- entry point in the lower right corner
@@ -53,7 +53,7 @@ function testBlockSequence()
     end
     lu.assertTrue(hits1 >= 99)
 
-    startPosition = cg.Vector(200, 0)
+    startPosition = Vector(200, 0)
 
     local hits2 = 0
     for i = 1, 100 do -- entry point in the lower right corner
@@ -66,7 +66,7 @@ function testBlockSequence()
     lu.assertTrue(hits2 >= 99)
 
     -- somewhere in the middle on the left
-    startPosition = cg.Vector(0, 150)
+    startPosition = Vector(0, 150)
 
     local hits3 = 0
     for i = 1, 100 do -- entry point in the lower right corner
