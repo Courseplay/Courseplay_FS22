@@ -8,7 +8,7 @@ cg.Island = Island
 Island.gridSpacing = 1
 
 function Island:init(id, perimeterPoints)
-    self.boundary = cg.Polygon()
+    self.boundary = Polygon()
     self.id = id
     self.logger = Logger('Island ' .. self.id)
     self.headlands = {}
@@ -30,7 +30,7 @@ end
 local function getNumberOfIslandNeighbors(point, islandPoints, gridSpacing)
     local nNeighbors = 0
     for _, v in ipairs(islandPoints) do
-        local dSquare = cg.Vector.getDistanceSquared(point, v)
+        local dSquare = Vector.getDistanceSquared(point, v)
         -- 1.5 is around sqrt( 2 ), to find diagonal neighbors too, > 0 to ignore own point
         if dSquare > 0 and dSquare < 2.1 * gridSpacing then
             nNeighbors = nNeighbors + 1
@@ -65,7 +65,7 @@ end
 -- case, it creates one island, removing the vertices used 
 -- for that island from perimeterPoints and returns the
 -- remaining vertices.
----@param perimeterPoints cg.Vector[]
+---@param perimeterPoints Vector[]
 function Island:createFromPerimeterPoints(perimeterPoints)
     if #perimeterPoints < 1 then
         return perimeterPoints
@@ -93,7 +93,7 @@ function Island:createFromPerimeterPoints(perimeterPoints)
     self.logger:debug("created with %d vertices, area %.0f", self.id, #self.boundary, self.boundary:getArea())
 end
 
----@return cg.Polygon
+---@return Polygon
 function Island:getBoundary()
     return self.boundary
 end
@@ -101,7 +101,7 @@ end
 --- Generate headlands around the island. May generate less than what the context requests if the island headland
 --- would go outside the field boundary
 ---@param context cg.FieldworkContext
----@param mustNotCross cg.Polygon outermost headland of field or field boundary: island headlands must not cross this
+---@param mustNotCross Polygon outermost headland of field or field boundary: island headlands must not cross this
 --- otherwise the island headland will be out of the field
 function Island:generateHeadlands(context, mustNotCross)
     self.context = context

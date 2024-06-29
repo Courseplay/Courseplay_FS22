@@ -2,7 +2,7 @@
 ---
 local AnalyticHelper = {}
 
----@return cg.Vertex[] path as vertices
+---@return Vertex[] path as vertices
 ---@return number length of path
 ---@return string path type (see Dubins.lua)
 function AnalyticHelper.getDubinsSolutionAsVertices(from, to, r, enabledPathTypes)
@@ -10,7 +10,7 @@ function AnalyticHelper.getDubinsSolutionAsVertices(from, to, r, enabledPathType
     local solution, type = dubinsSolver:solve(from, to, r, true)
     local path = {}
     for _, v in ipairs(solution:getWaypoints(from, r)) do
-        table.insert(path, cg.Vertex.fromVector(v))
+        table.insert(path, Vertex.fromVector(v))
     end
     return path, solution:getLength(r), type
 end

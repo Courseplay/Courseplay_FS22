@@ -16,9 +16,9 @@ function Slider:set(ix, d)
     self.ix = ix
     -- distance from the base vertex, always positive
     self.d = d
-    self.base = cg.Vector(self:vertex().x, self:vertex().y)
+    self.base = Vector(self:vertex().x, self:vertex().y)
     -- unit vector pointing to the exit heading of the vertex
-    self.slope = cg.Vector(1, 0)
+    self.slope = Vector(1, 0)
     self.slope:setHeading(self:vertex():getExitHeading())
     -- move to the current offset
     self:offset(d, 0)

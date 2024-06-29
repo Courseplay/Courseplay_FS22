@@ -6,9 +6,9 @@ local CurvedPathHelper = {}
 
 local logger = Logger('CurvedPathHelper')
 
----@param boundary cg.Polygon the boundary, usually headland or virtual headland. Rows must cover the area within the
+---@param boundary Polygon the boundary, usually headland or virtual headland. Rows must cover the area within the
 --- boundary - working width / 2
----@param baselineLocation cg.Vector the field edge closest to this location will be the one the generated rows follow
+---@param baselineLocation Vector the field edge closest to this location will be the one the generated rows follow
 ---@param workingWidth number distance
 ---@param nRows number how many rows to generate. If not given, keep generating until the area
 ---@param firstRowWidth number|nil optional width of the first row (offset between the baseline and the first row.
@@ -64,7 +64,7 @@ function CurvedPathHelper.generateCurvedUpDownRows(boundary, baselineLocation, w
     return rows
 end
 
----@param boundary cg.Polyline
+---@param boundary Polyline
 ---@param ix number the vertex of the boundary to start the search at
 ---@param radiusThreshold number straight section ends when the radius is under this threshold
 ---@param section cg.Row empty row passed in to hold the straight section around ix

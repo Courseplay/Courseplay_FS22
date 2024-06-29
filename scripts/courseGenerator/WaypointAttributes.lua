@@ -13,7 +13,7 @@ function WaypointAttributes:clone()
 end
 
 --- Copy the attributes of v
----@param v cg.Vertex the vertex to get the attributes from
+---@param v Vertex the vertex to get the attributes from
 function WaypointAttributes:copy(v)
     for attribute, value in pairs(v:getAttributes()) do
         self[attribute] = value

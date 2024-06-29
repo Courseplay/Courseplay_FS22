@@ -1,10 +1,11 @@
-local Polyline = CpObject()
+---@class Polyline
+Polyline = CpObject()
 
 ---@param vertices table[] array of tables with x, y (Vector, Vertex, State3D or just plain {x, y}
 function Polyline:init(vertices)
     if vertices then
         for i, v in ipairs(vertices) do
-            self[i] = cg.Vertex(v.x, v.y, i)
+            self[i] = Vertex(v.x, v.y, i)
         end
     end
     self.logger = Logger('Polyline', Logger.level.debug)
@@ -13,21 +14,21 @@ end
 
 --- Append a single vertex to the end of the polyline.
 --- Calling calculateProperties() is the responsibility of the caller
----@param v table|cg.Vertex table with x, y (Vector, Vertex, State3D or just plain {x, y}
---- if v is a cg.Vertex, it will be cloned, otherwise a new vertex created
+---@param v table|Vertex table with x, y (Vector, Vertex, State3D or just plain {x, y}
+--- if v is a Vertex, it will be cloned, otherwise a new vertex created
 function Polyline:append(v)
-    if v:is_a(cg.Vertex) then
+    if v:is_a(Vertex) then
         table.insert(self, v:clone())
         self[#self].ix = #self
     else
-        table.insert(self, cg.Vertex(v.x, v.y, #self + 1))
+        table.insert(self, Vertex(v.x, v.y, #self + 1))
     end
 end
 
 --- Append multiple vertices to the end of the polyline.
 --- Calling calculateProperties() is the responsibility of the caller
---- if elements of p are cg.Vertex, they will be cloned, otherwise a new vertex created for each
----@param p table|cg.Vertex[]
+--- if elements of p are Vertex, they will be cloned, otherwise a new vertex created for each
+---@param p table|Vertex[]
 function Polyline:appendMany(p)
     for _, v in ipairs(p) do
         self:append(v)
@@ -38,10 +39,10 @@ end
 --- Calling calculateProperties() is the responsibility of the caller
 ---@param v table table with x, y (Vector, Vertex, State3D or just plain {x, y}
 function Polyline:prepend(v)
-    if v:is_a(cg.Vertex) then
+    if v:is_a(Vertex) then
         table.insert(self, 1, v:clone())
     else
-        table.insert(self, 1, cg.Vertex(v.x, v.y, #self + 1))
+        table.insert(self, 1, Vertex(v.x, v.y, #self + 1))
     end
 end
 
@@ -78,7 +79,7 @@ end
 
 --- Get the center of the polyline (centroid, average of all vertices)
 function Polyline:getCenter()
-    local center = cg.Vector(0, 0)
+    local center = Vector(0, 0)
     for _, v in ipairs(self) do
         center = center + v
     end
@@ -107,7 +108,7 @@ function Polyline:getUnpackedVertices()
 end
 
 --- vertex iterator
----@return number, cg.Vertex, cg.Vertex, cg.Vertex the index, the vertex at index, the previous, and the next vertex.
+---@return number, Vertex, Vertex, Vertex the index, the vertex at index, the previous, and the next vertex.
 --- previous and next may be nil
 function Polyline:vertices(from, to)
     local i = from and from - 1 or 0
@@ -125,7 +126,7 @@ end
 --- edge iterator
 ---@param startIx number|nil start the iteration at the edge starting at the startIx vertex (or at the first)
 ---@param endIx number|nil the last edge to return is the one starting at endIx (or the last vertex)
----@return number, cg.LineSegment, cg.Vertex
+---@return number, cg.LineSegment, Vertex
 function Polyline:edges(startIx, endIx)
     local i = startIx and startIx - 1 or 0
     local last = endIx or #self
@@ -140,7 +141,7 @@ function Polyline:edges(startIx, endIx)
 end
 
 --- edge iterator backwards
----@return number, cg.LineSegment, cg.Vertex
+---@return number, cg.LineSegment, Vertex
 function Polyline:edgesBackwards(startIx)
     local i = startIx and (startIx + 1) or (#self + 1)
     return function()
@@ -208,7 +209,7 @@ end
 function Polyline:extendEnd(length)
     local newEntryEdge = self[#self]:getEntryEdge()
     newEntryEdge:extend(length)
-    self[#self] = cg.Vertex.fromVector(newEntryEdge:getEnd())
+    self[#self] = Vertex.fromVector(newEntryEdge:getEnd())
     self:calculateProperties(#self - 1)
     return self
 end
@@ -217,7 +218,7 @@ end
 function Polyline:extendStart(length)
     local newExitEdge = self[1]:getExitEdge()
     newExitEdge:extend(-length)
-    self[1] = cg.Vertex.fromVector(newExitEdge:getBase())
+    self[1] = Vertex.fromVector(newExitEdge:getBase())
     self:calculateProperties(1, 2)
     return self
 end
@@ -227,7 +228,7 @@ function Polyline:cutEnd(length)
     if #self == 2 then
         local theOnlyEdge = self[1]:getExitEdge()
         theOnlyEdge:setLength(theOnlyEdge:getLength() - length)
-        self[2] = cg.Vertex.fromVector(theOnlyEdge:getEnd())
+        self[2] = Vertex.fromVector(theOnlyEdge:getEnd())
         self:calculateProperties(1, 2)
     else
         local d = length
@@ -244,7 +245,7 @@ function Polyline:cutStart(length)
     if #self == 2 then
         local theOnlyEdge = self[1]:getExitEdge()
         theOnlyEdge:setLength(length)
-        self[1] = cg.Vertex.fromVector(theOnlyEdge:getEnd())
+        self[1] = Vertex.fromVector(theOnlyEdge:getEnd())
     else
         local d, lastEdge = length, self[1]:getExitEdge()
         while d > 0 and #self > 2 do
@@ -253,7 +254,7 @@ function Polyline:cutStart(length)
             table.remove(self, 1)
         end
         lastEdge:setLength(lastEdge:getLength() - (-d))
-        self[1] = cg.Vertex.fromVector(lastEdge:getEnd())
+        self[1] = Vertex.fromVector(lastEdge:getEnd())
     end
     self:calculateProperties(1, 2)
 end
@@ -281,7 +282,7 @@ function Polyline:cutEndAtIx(ix)
 end
 
 --- Cut this polyline where it first intersects with other and keep the longer part
----@param other cg.Polyline
+---@param other Polyline
 function Polyline:trimAtFirstIntersection(other)
     local intersections = self:getIntersections(other)
     if #intersections == 0 then
@@ -358,7 +359,7 @@ function Polyline:ensureMaximumEdgeLength(maximumLength, maxDeltaAngleForOffset)
             end
             exitEdge:setLength(exitEdge:getLength() / 2)
             local v = exitEdge:getEnd()
-            table.insert(self, i + 1, cg.Vertex(v.x, v.y, i + 1))
+            table.insert(self, i + 1, Vertex(v.x, v.y, i + 1))
             self:calculateProperties(i, i + 2)
             self.logger:trace('ensureMaximumEdgeLength: added a vertex after %d', i)
             i = i + 2
@@ -388,7 +389,7 @@ function Polyline:splitEdges(maximumLength)
             local e = exitEdge:clone()
             for _ = 1, nEdges - 1 do
                 e:setBase(e:getEnd())
-                table.insert(self, i + 1, cg.Vertex.fromVector(e:getBase()))
+                table.insert(self, i + 1, Vertex.fromVector(e:getBase()))
                 i = i + 1
             end
         end
@@ -397,7 +398,7 @@ function Polyline:splitEdges(maximumLength)
     self:calculateProperties()
 end
 
----@param offsetVector cg.Vector offset to move the edges, relative to the edge's direction
+---@param offsetVector Vector offset to move the edges, relative to the edge's direction
 ---@return cg.LineSegment[] an array of edges parallel to the existing ones, same length
 --- but offset by offsetVector
 function Polyline:generateOffsetEdges(offsetVector)
@@ -433,11 +434,11 @@ end
 --- Generate a polyline parallel to this one, offset by the offsetVector. Note that this works only
 --- with either very low offsets or simple polylines with vertices far apart when using bigger offsets.
 --- Use cg.Offset.generate() if you want to avoid creating loops on the offset polyline.
----@param offsetVector cg.Vector offset to move the edges, relative to the edge's direction
+---@param offsetVector Vector offset to move the edges, relative to the edge's direction
 ---@param minEdgeLength number see LineSegment.connect()
 ---@param preserveCorners number see LineSegment.connect()
 function Polyline:createOffset(offsetVector, minEdgeLength, preserveCorners)
-    local offsetPolyline = cg.Polyline()
+    local offsetPolyline = Polyline()
     return self:_createOffset(offsetPolyline, offsetVector, minEdgeLength, preserveCorners)
 end
 
@@ -462,7 +463,7 @@ function Polyline:ensureMinimumRadius(r, makeCorners)
     ---@param exit cg.Slider
     local function makeCorner(entry, exit)
         entry:extendTo(exit)
-        local corner = cg.Vertex.fromVector(entry:getEnd())
+        local corner = Vertex.fromVector(entry:getEnd())
         corner.isCorner = true
         return { corner }
     end
@@ -589,8 +590,8 @@ function Polyline:goAroundBetweenIntersections(other, circle, is1, is2)
     else
         path = pathA
     end
-    table.insert(path, 1, cg.Vertex.fromVector(is1.is))
-    table.insert(path, cg.Vertex.fromVector(is2.is))
+    table.insert(path, 1, Vertex.fromVector(is1.is))
+    table.insert(path, Vertex.fromVector(is2.is))
     if path then
         local lastIx = self:replace(is1.ixA, is2.ixA + 1, path)
         -- make the transitions a little smoother
@@ -607,7 +608,7 @@ function Polyline:goAroundBetweenIntersections(other, circle, is1, is2)
 end
 
 ---@param lineSegment cg.LineSegment
----@return cg.Vertex, number, cg.Vertex, number the vertex closest to lineSegment, its distance, the vertex
+---@return Vertex, number, Vertex, number the vertex closest to lineSegment, its distance, the vertex
 --- farthest from the lineSegment, its distance
 function Polyline:findClosestAndFarthestVertexToLineSegment(lineSegment)
     local dMin, closestVertex = math.huge, nil
@@ -627,9 +628,9 @@ function Polyline:findClosestAndFarthestVertexToLineSegment(lineSegment)
 end
 
 ---@param point Vector
----@param isValidFunc function optional function accepting a cg.Vertex and returning bool to determine if this
+---@param isValidFunc function optional function accepting a Vertex and returning bool to determine if this
 --- vertex should be considered at all
----@return cg.Vertex
+---@return Vertex
 ---@return number distance of the closest vertex from point
 ---@return number|nil distance of the point from exit (or if it does not exist, the entry) edge of the closest vertex
 function Polyline:findClosestVertexToPoint(point, isValidFunc)
@@ -659,7 +660,7 @@ end
 --- This is a faster version of getIntersections() for the case where we only want to
 --- know if they intersect or not.
 ---
----@param other cg.Polyline
+---@param other Polyline
 ---@return boolean
 function Polyline:intersects(other)
     for _, edge, _ in self:edges() do
@@ -678,7 +679,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 
 --- Get all intersections with other, in the order we would meet them traversing self in the increasing index direction
----@param other cg.Polyline
+---@param other Polyline
 ---@param startIx number index to start looking for intersections with other
 ---@param userData any user data to add to the Intersection objects (to later identify them)
 ---@return cg.Intersection[] list of intersections
@@ -700,7 +701,7 @@ function Polyline:getIntersections(other, startIx, userData)
 end
 
 --- Is this polyline entering the other polygon at intersection point is?
----@param other cg.Polygon
+---@param other Polygon
 ---@param is cg.Intersection
 ---@param clockwiseOverride boolean use this clockwise setting instead of other's isClockwise() function
 ---@return boolean true if self is entering the other polygon, false when exiting, when moving in
@@ -713,7 +714,7 @@ end
 --- Replace all vertices between fromIx and toIx (excluding) with the entries in vertices
 ---@param fromIx number index of last vertex to keep
 ---@param toIx number index of first vertex to keep, toIx must be >= fromIx, unless wrapping around on a Polygon
----@param vertices cg.Vector[] new vertices to put between fromIx and toIx
+---@param vertices Vector[] new vertices to put between fromIx and toIx
 ---@return number, boolean index of the next vertex after the replaced ones (may be more or less than toIx depending on
 --- how many entries vertices had and how many elements were there originally between fromIx and toIx. The boolean
 --- is true when wrapped around the end (for a polygon)
@@ -814,7 +815,7 @@ end
 
 --- Private function to use derived classes, in order to instantiate a result which is an instance of
 --- the derived class.
----@param result cg.Polyline
+---@param result Polyline
 function Polyline:_createOffset(result, offsetVector, minEdgeLength, preserveCorners)
     local offsetEdges = self:generateOffsetEdges(offsetVector)
     local cleanOffsetEdges = self:cleanEdges(offsetEdges, minEdgeLength, preserveCorners)
@@ -832,10 +833,10 @@ end
 --- end of the cut polyline.
 ---@param is1 cg.Intersection
 ---@param is2 cg.Intersection
----@param section cg.Polyline|nil an optional, initialized object that will become the section
----@return cg.Polyline
+---@param section Polyline|nil an optional, initialized object that will become the section
+---@return Polyline
 function Polyline:_cutAtIntersections(is1, is2, section)
-    section = section or cg.Polyline()
+    section = section or Polyline()
     section:append(is1.is)
     local src = is1.ixA + 1
     while src < is2.ixA do
@@ -854,6 +855,3 @@ function Polyline:__tostring()
     end
     return result
 end
-
----@class cg.Polyline
-cg.Polyline = Polyline

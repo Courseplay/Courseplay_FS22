@@ -69,7 +69,7 @@ function Block:getPolygon()
         -- assuming the first and last row in the array are also the first and last geographically (all other
         -- rows are between these two) and both have the same direction
         local firstRow, lastRow = self.rows[1], self.rows[#self.rows]
-        self.polygon = cg.Polygon({ firstRow[1], firstRow[#firstRow], lastRow[#lastRow], lastRow[1] })
+        self.polygon = Polygon({ firstRow[1], firstRow[#firstRow], lastRow[#lastRow], lastRow[1] })
     end
     return self.polygon
 end
@@ -103,7 +103,7 @@ end
 --- Finalize this block, set the entry we will be using, rearrange rows accordingly, set all row attributes and create
 --- a sequence in which the rows must be worked on
 ---@param entry cg.RowPattern.Entry the entry to be used for this block
----@return cg.Vertex the last vertex of the last row, the exit point from this block (to be used to find the entry
+---@return Vertex the last vertex of the last row, the exit point from this block (to be used to find the entry
 --- to the next one.
 function Block:finalize(entry)
     self.logger:debug('Finalizing, entry %s', entry)
@@ -131,7 +131,7 @@ function Block:finalize(entry)
     return exit
 end
 
----@return cg.Vertex
+---@return Vertex
 function Block:getExit(entry)
     local _, exit = self.rowPattern:getWorkSequenceAndExit(self.rows, entry)
     return exit
@@ -139,7 +139,7 @@ end
 
 function Block:getPath()
     if self.path == nil then
-        self.path = cg.Polyline()
+        self.path = Polyline()
         for _, row in ipairs(self.rowsInWorkSequence) do
             self.path:appendMany(row)
         end

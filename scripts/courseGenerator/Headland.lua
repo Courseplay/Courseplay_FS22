@@ -5,14 +5,14 @@ local Headland = CpObject()
 ---
 --- This is for headlands around a field boundary. For headlands around and island, use IslandHeadland()
 ---
----@param basePolygon cg.Polygon
+---@param basePolygon Polygon
 ---@param clockwise boolean the direction of the headland. We want this explicitly stated and not derived from
 --- basePolygon as on fields with odd shapes (complex polygons) headlands may intersect themselves making
 --- a clear definition of clockwise/counterclockwise impossible. This is the required direction for all headlands.
 ---@param passNumber number of the headland pass, the outermost is 1
 ---@param width number
 ---@param outward boolean if true, the generated headland will be outside of the basePolygon, inside otherwise
----@param mustNotCross|nil cg.Polygon the headland must not cross this polygon, if it does, it is invalid. This is usually
+---@param mustNotCross|nil Polygon the headland must not cross this polygon, if it does, it is invalid. This is usually
 --- the outermost headland around the field, as when anything crosses that, it'll be at least partly outside of the field.
 function Headland:init(basePolygon, clockwise, passNumber, width, outward, mustNotCross)
     self.logger = Logger('Headland ' .. passNumber or '')
@@ -23,14 +23,14 @@ function Headland:init(basePolygon, clockwise, passNumber, width, outward, mustN
     if self.clockwise then
         -- to generate headland inside the polygon we need to offset the polygon to the right if
         -- the polygon is clockwise
-        self.offsetVector = cg.Vector(0, -1)
+        self.offsetVector = Vector(0, -1)
     else
-        self.offsetVector = cg.Vector(0, 1)
+        self.offsetVector = Vector(0, 1)
     end
     if outward then
         self.offsetVector = -self.offsetVector
     end
-    ---@type cg.Polygon
+    ---@type Polygon
     self.polygon = cg.Offset.generate(basePolygon, self.offsetVector, width)
     if self.polygon then
         self.polygon:calculateProperties()
@@ -68,7 +68,7 @@ function Headland:getRequestedClockwise()
     return self.clockwise
 end
 
----@return cg.Polyline Headland vertices with waypoint attributes
+---@return Polyline Headland vertices with waypoint attributes
 function Headland:getPath()
     -- make sure all attributes are set correctly
     self.polygon:setAttribute(nil, cg.WaypointAttributes.setHeadlandPassNumber, self.passNumber)
@@ -176,7 +176,7 @@ function Headland:connectTo(other, ix, workingWidth, turningRadius, headlandFirs
                     other.polygon:at(transitionEndIx):getExitEdge():getBaseAsState3D(),
                     -- enable any path type on the very last try
                     turningRadius, i < tries and transitionPathTypes or nil)
-            cg.addDebugPolyline(cg.Polyline(connector))
+            cg.addDebugPolyline(Polyline(connector))
             -- maximum length without loops
             local maxPlausiblePathLength = workingWidth + 4 * turningRadius
             if length < maxPlausiblePathLength or i == tries then
@@ -212,11 +212,11 @@ end
 ---@param ix number the vertex to start the search
 ---@param straightSectionLength number how long at the minimum the straight section should be
 ---@param searchRange number how far should the search for the straight section should go
----@return cg.Polyline array of vectors (can be empty) from ix to the start of the straight section
+---@return Polyline array of vectors (can be empty) from ix to the start of the straight section
 function Headland:_continueUntilStraightSection(ix, straightSectionLength, searchRange)
     local dTotal = 0
     local count = 0
-    local waypoints = cg.Polyline()
+    local waypoints = Polyline()
     searchRange = searchRange or 100
     while dTotal < searchRange do
         dTotal = dTotal + self.polygon:at(ix):getExitEdge():getLength()
@@ -271,11 +271,11 @@ local IslandHeadland = CpObject(cg.Headland)
 --- Create an island headland around a base polygon. The headland is a new polygon, offset by width, that is, outside
 --- of the base polygon.
 ---
----@param basePolygon cg.Polygon
+---@param basePolygon Polygon
 ---@param clockwise boolean This is the required direction for all headlands.
 ---@param passNumber number of the headland pass, the innermost (directly around the island) is 1
 ---@param width number
----@param mustNotCross cg.Polygon the headland must not cross this polygon, if it does, it is invalid. This is usually
+---@param mustNotCross Polygon the headland must not cross this polygon, if it does, it is invalid. This is usually
 --- the outermost headland around the field, as when anything crosses that, it'll be at least partly outside of the field.
 function IslandHeadland:init(island, basePolygon, clockwise, passNumber, width, mustNotCross)
     self.island = island

@@ -8,9 +8,9 @@
 local Center = CpObject()
 
 ---@param context cg.FieldworkContext
----@param boundary cg.Polygon the field boundary
+---@param boundary Polygon the field boundary
 ---@param headland cg.Headland|nil the innermost headland if exists
----@param startLocation cg.Vector location of the vehicle before it starts working on the center.
+---@param startLocation Vector location of the vehicle before it starts working on the center.
 ---@param bigIslands cg.Island[] islands too big to circle
 function Center:init(context, boundary, headland, startLocation, bigIslands)
     self.logger = Logger('Center', Logger.level.debug)
@@ -44,10 +44,10 @@ function Center:init(context, boundary, headland, startLocation, bigIslands)
     self.connectingPaths = {}
 end
 
----@return cg.Polyline
+---@return Polyline
 function Center:getPath()
     if not self.path then
-        self.path = cg.Polyline()
+        self.path = Polyline()
         for i = 1, #self.blocks do
             self.path:appendMany(self.connectingPaths[i])
             self.path:appendMany(self.blocks[i]:getPath())
@@ -68,7 +68,7 @@ end
 --- There is always a connecting path for each block. The connecting path may be empty or have
 --- just one vertex. An empty path or one with just one vertex can safely be skipped as that vertex
 --- overlaps with the first vertex of the block
-------@return cg.Polyline[]
+------@return Polyline[]
 function Center:getConnectingPaths()
     return self.connectingPaths
 end
@@ -79,7 +79,7 @@ function Center:getDebugRows()
     return self.rows
 end
 
----@return cg.Vertex the location of the last waypoint of the last row worked in the middle.
+---@return Vertex the location of the last waypoint of the last row worked in the middle.
 function Center:generate()
     -- first, we split the field into blocks. Simple convex fields have just one block only,
     -- but odd shaped, concave fields or fields with island may have more blocks
@@ -148,7 +148,7 @@ function Center:generate()
                     return math.huge
                 else
                     distance = distance + 1000
-                    table.insert(path, cg.Polyline())
+                    table.insert(path, Polyline())
                 end
             else
                 local pathOnHeadland = self:_findShortestPathOnHeadland(entryHeadland, exit, entryToNextBlock)
@@ -299,13 +299,13 @@ function Center:_createStraightBaseline(rowAngle)
     local w, h = x2 - x1 + margin, y2 - y1 + margin
     local baselineStart, baselineEnd
     if rowAngle >= 0 then
-        local lowerLeft = cg.Vector(x1 - margin / 2, y1 - margin / 2)
-        baselineStart = lowerLeft - cg.Vector(h * math.sin(rowAngle), 0):setHeading(-rowAngle)
-        baselineEnd = lowerLeft + cg.Vector(w * math.cos(rowAngle), 0):setHeading(-rowAngle)
+        local lowerLeft = Vector(x1 - margin / 2, y1 - margin / 2)
+        baselineStart = lowerLeft - Vector(h * math.sin(rowAngle), 0):setHeading(-rowAngle)
+        baselineEnd = lowerLeft + Vector(w * math.cos(rowAngle), 0):setHeading(-rowAngle)
     else
-        local lowerRight = cg.Vector(x2 + margin / 2, y1 - margin / 2)
-        baselineStart = lowerRight - cg.Vector(w * math.cos(rowAngle), 0):setHeading(-rowAngle)
-        baselineEnd = lowerRight + cg.Vector(h * math.sin(rowAngle), 0):setHeading(-rowAngle)
+        local lowerRight = Vector(x2 + margin / 2, y1 - margin / 2)
+        baselineStart = lowerRight - Vector(w * math.cos(rowAngle), 0):setHeading(-rowAngle)
+        baselineEnd = lowerRight + Vector(h * math.sin(rowAngle), 0):setHeading(-rowAngle)
     end
     return cg.Row(self.context.workingWidth, { baselineStart, baselineEnd })
 end
@@ -459,8 +459,8 @@ end
 --- points (and thus, same paths), just in different order, we cache the entries/exits/paths for
 --- a better performance.
 ---@param headland cg.Headland
----@param v1 cg.Vector
----@param v2 cg.Vector
+---@param v1 Vector
+---@param v2 Vector
 ---@return Polyline always has at least one vertex
 function Center:_findShortestPathOnHeadland(headland, v1, v2)
     local cv1 = self.closestVertexCache:getWithLambda(headland, v1,

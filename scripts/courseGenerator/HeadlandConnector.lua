@@ -5,13 +5,13 @@ local HeadlandConnector = {}
 
 ---@param headlands cg.Headland[] array of headland passes, the first being the closest to the boundary (so for a field,
 --- index 1 is the outermost headland pass, for an island, index 1 is the innermost)
----@param startLocation cg.Vector|number will start working on the outermost headland as close as possible to
+---@param startLocation Vector|number will start working on the outermost headland as close as possible to
 ---startLocation. If number, will start at that index
 ---@param workingWidth
 ---@param turningRadius
----@return cg.Polyline a continuous path covering all headland passes, starting with the outermost (fields)/innermost (islands)
+---@return Polyline a continuous path covering all headland passes, starting with the outermost (fields)/innermost (islands)
 function HeadlandConnector.connectHeadlandsFromOutside(headlands, startLocation, workingWidth, turningRadius)
-    local headlandPath = cg.Polyline()
+    local headlandPath = Polyline()
     if #headlands < 1 then
         return headlandPath
     end
@@ -39,13 +39,13 @@ end
 
 ---@param headlands cg.Headland[] array of headland passes, the first being the closest to the boundary (so for a field,
 --- index 1 is the outermost headland pass, for an island, index 1 is the innermost)
----@param startLocation cg.Vector|number if Vector, will start working on the innermost headland as close as possible
+---@param startLocation Vector|number if Vector, will start working on the innermost headland as close as possible
 --- to startLocation. If number, will start at that index
 ---@param workingWidth
 ---@param turningRadius
----@return cg.Polyline a continuous path covering all headland passes, starting with the innermost (fields)/outermost (islands)
+---@return Polyline a continuous path covering all headland passes, starting with the innermost (fields)/outermost (islands)
 function HeadlandConnector.connectHeadlandsFromInside(headlands, startLocation, workingWidth, turningRadius)
-    local headlandPath = cg.Polyline()
+    local headlandPath = Polyline()
     if #headlands < 1 then
         return headlandPath
     end

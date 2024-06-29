@@ -8,10 +8,10 @@ function Field:init(id, num)
 	self.id = id
 	self.num = num
 	self.logger = Logger('Field ' .. id)
-	---@type cg.Polygon
-	self.boundary = cg.Polygon()
-	---@type cg.Polygon
-	self.islandPoints = cg.Polygon()
+	---@type Polygon
+	self.boundary = Polygon()
+	---@type Polygon
+	self.islandPoints = Polygon()
 	---@type cg.Island[]
 	self.islands = {}
 end
@@ -39,11 +39,11 @@ function Field.loadSavedFields(fileName)
 		end
 		local num, x, z = string.match( line, '<point(%d+).+pos="([%d%.-]+) [%d%.-]+ ([%d%.-]+)"' )
 		if num then
-			fields[ix].boundary:append(cg.Vertex(tonumber(x), -tonumber(z)))
+			fields[ix].boundary:append(Vertex(tonumber(x), -tonumber(z)))
 		end
 		num, x, z = string.match( line, '<islandNode(%d+).+pos="([%d%.-]+) +([%d%.-]+)"' )
 		if num then
-			fields[ix].islandPoints:append(cg.Vertex(tonumber(x ), -tonumber(z)))
+			fields[ix].islandPoints:append(Vertex(tonumber(x ), -tonumber(z)))
 		end
 	end
 	-- initialize all loaded fields
@@ -55,7 +55,7 @@ function Field.loadSavedFields(fileName)
 end
 
 --- Center of the field (centroid)
----@return cg.Vector
+---@return Vector
 function Field:getCenter()
 	if not self.center then
 		self.center = self.boundary:getCenter()
@@ -68,7 +68,7 @@ function Field:getBoundingBox()
 	return self.boundary:getBoundingBox()
 end
 
----@return cg.Polygon
+---@return Polygon
 function Field:getBoundary()
 	return self.boundary
 end

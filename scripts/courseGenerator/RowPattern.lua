@@ -94,7 +94,7 @@ end
 
 --- In what sequence the rows should be worked on when entering this pattern at entry? Use the returned array
 --- to build a sequence, and to reverse rows when needed.
----@return [{number, boolean|nil}], cg.Vertex  array of tables {index of row in rows, reverse}, the exit vertex
+---@return [{number, boolean|nil}], Vertex  array of tables {index of row in rows, reverse}, the exit vertex
 ---   The array defines the order the rows should be worked on, first element of the array points to the index of the
 ---     first row to be worked on in rows[], and if the boolean is true, that row should be reversed.
 ---   The exit vertex is the position where the vehicle exits this pattern when using the entry passed in.
@@ -142,7 +142,7 @@ cg.RowPattern = RowPattern
 ---@class RowPattern.Entry
 RowPattern.Entry = CpObject()
 
----@param position cg.Vector the position of this entry point
+---@param position Vector the position of this entry point
 ---@param reverseRowOrderBefore boolean this entry is on the last row (of the rows passed in to getPossibleEntries(),
 --- so when using this entry, the order of the rows should be reversed _before_ calling any RowPattern:iterator()
 ---@param reverseRowOrderAfter boolean this entry would be on the last row after the rows passed in to getPossibleEntries()
