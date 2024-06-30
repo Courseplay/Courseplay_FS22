@@ -24,26 +24,17 @@
 				<Text>up_down_rows</Text>
 			</Texts>
 		</Setting>
-		<Setting classType="AIParameterSettingList" name="headlandCornerType" default="1">
-			<Values>
-				<Value name="HEADLAND_CORNER_TYPE_SMOOTH">1</Value> 
-				<Value name="HEADLAND_CORNER_TYPE_SHARP">2</Value> 
-				<Value name="HEADLAND_CORNER_TYPE_ROUND">3</Value> 
-			</Values> 
+		<!-- TODO: refactor to number of rounded headlands -->
+		<Setting classType="AIParameterBooleanSetting" name="headlandCornerType" defaultBoolean="false">
 			<Texts>
-				<Text>smooth</Text> 
-				<Text>sharp</Text> 
-				<Text>round</Text> 
-			</Texts> 
+				<Text>sharp</Text>
+				<Text>round</Text>
+			</Texts>
 		</Setting>
-		<Setting classType="AIParameterSettingList" name="isClockwise" isExpertModeOnly="true" default="1">
-			<Values>
-				<Value name="HEADLAND_CLOCKWISE">1</Value>
-				<Value name="HEADLAND_COUNTERCLOCKWISE">2</Value>
-			</Values>
+		<Setting classType="AIParameterBooleanSetting" name="isClockwise" isExpertModeOnly="true" defaultBoolean="true">
 			<Texts>
-				<Text>clockwise</Text>
 				<Text>counterclockwise</Text>
+				<Text>clockwise</Text>
 			</Texts>
 		</Setting>
 		<Setting classType="AIParameterSettingList" name="headlandOverlapPercent" min="0" max="25" default="7" unit="4" isExpertModeOnly="true"/>
@@ -51,27 +42,25 @@
 	<SettingSubTitle title="center">
 		<Setting classType="AIParameterSettingList" name="centerMode">
 			<Values>
-				<Value name="CENTER_MODE_UP_DOWN">1</Value> 
-				<Value name="CENTER_MODE_SPIRAL">2</Value> 
-				<Value name="CENTER_MODE_CIRCULAR">3</Value> 
-				<Value name="CENTER_MODE_LANDS">4</Value> 
-			</Values> 
-			<Texts>
-				<Text>up_down</Text> 
-				<Text>spiral</Text> 
-				<Text>circular</Text> 
-				<Text>lands</Text> 
-			</Texts> 
-		</Setting>	
-		<Setting classType="AIParameterSettingList" name="rowDirection" default="5" isExpertModeOnly="true">
-			<Values>
-				<Value name="ROW_DIRECTION_AUTOMATIC">5</Value>
-				<Value name="ROW_DIRECTION_LONGEST_EDGE">6</Value>
-				<Value name="ROW_DIRECTION_MANUAL">7</Value>
+				<!-- These must match CourseGenerator.RowPattern.* constants -->
+				<Value name="ROW_PATTERN_ALTERNATING">1</Value>
+				<Value name="ROW_PATTERN_SKIP">2</Value>
+				<Value name="ROW_PATTERN_SPIRAL">3</Value>
+				<Value name="ROW_PATTERN_LANDS">4</Value>
+				<Value name="ROW_PATTERN_RACETRACK">5</Value>
 			</Values>
 			<Texts>
-				<Text>automatic</Text>
-				<Text>longest_edge</Text>
+				<Text>up_down</Text> 
+				<Text>skip</Text>
+				<Text>spiral</Text>
+				<Text>lands</Text>
+				<Text>circular</Text>
+			</Texts>
+		</Setting>
+		<!-- TODO: rename to autoRowAngle -->
+		<Setting classType="AIParameterBooleanSetting" name="rowDirection" isExpertModeOnly="true" defaultBoolean="false">
+			<Texts>
+				<Text>auto</Text>
 				<Text>manual</Text>
 			</Texts>
 		</Setting>
@@ -80,6 +69,8 @@
 		<Setting classType="AIParameterSettingList" name="manualRowAngleDeg" min="0" max="175" incremental="5" unit="5" isExpertModeOnly="true"/>
 	</SettingSubTitle>
 	<SettingSubTitle title="advanced">
+		<!-- TODO: rename to bypassIslands -->
+		<Setting classType="AIParameterBooleanSetting" name="islandBypassMode" defaultBoolean="true"/>
 		<Setting classType="AIParameterSettingList" name="islandBypassMode">
 			<Values>
 				<Value name="ISLAND_BYPASS_MODE_CIRCLE">3</Value>

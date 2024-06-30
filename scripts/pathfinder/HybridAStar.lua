@@ -795,8 +795,7 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
             if path then
                 -- start and goal near, just one phase, all hybrid, we are done
                 -- remove last waypoint as it is the approximate goal point and may not be aligned
-                local result = Polygon:new(path)
-                result:calculateData()
+                local result = Polygon(path)
                 result:space(math.pi / 20, 2)
                 return PathfinderResult(true, result)
             else
