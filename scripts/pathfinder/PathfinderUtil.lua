@@ -542,7 +542,7 @@ local function findShortestPathOnHeadland(start, goal, course, turnRadius, worki
     if #headland == 0 then
         return
     end
-    headland:calculateData()
+    headland:calculateProperties()
     local path = {}
     for _, p in ipairs(headland:getSectionBetweenPoints(start, goal, 2)) do
         table.insert(path, State3D(p.x, p.y, 0))

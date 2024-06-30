@@ -3,6 +3,7 @@
 ---@class RowPattern
 local RowPattern = CpObject()
 
+-- these must match the ROW_PATTERN_* values in CourseGeneratorSettingsSetup.xml
 RowPattern.ALTERNATING = 1
 RowPattern.SKIP = 2
 RowPattern.SPIRAL = 3

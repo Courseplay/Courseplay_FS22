@@ -2,6 +2,9 @@
 --- to generate
 local FieldworkContext = CpObject()
 
+---@class CourseGenerator.FieldworkContext
+CourseGenerator.FieldworkContext = FieldworkContext
+
 ---@param field CourseGenerator.Field
 ---@param workingWidth number working width
 ---@param turningRadius number minimum turning radius of the equipment
@@ -182,5 +185,3 @@ function FieldworkContext:setEnableSmallOverlapsWithHeadland(enableSmallOverlaps
     return self
 end
 
----@class CourseGenerator.FieldworkContext
-CourseGenerator.FieldworkContext = FieldworkContext
