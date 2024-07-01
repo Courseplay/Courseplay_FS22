@@ -157,7 +157,7 @@ end
 function Island:isTooBigToBypass(width)
     if self.headlands[1] and self.headlands[1]:isValid() then
         local area = self.headlands[1]:getPolygon():getArea() and self.headlands[1]:getPolygon():getArea() or 0
-        local isTooBig = area > NewCourseGenerator.maxRowsToBypassIsland * width * NewCourseGenerator.maxRowsToBypassIsland * width
+        local isTooBig = area > CourseGenerator.maxRowsToBypassIsland * width * NewCourseGenerator.maxRowsToBypassIsland * width
         self.logger:debug("isTooBigToBypass = %s (area = %.0f, width = %.1f", tostring(isTooBig), area, width)
         return isTooBig
     else
