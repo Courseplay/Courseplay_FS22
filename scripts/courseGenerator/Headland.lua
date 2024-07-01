@@ -248,7 +248,7 @@ function Headland:_getTransitionPathTypes(headlandFirst)
 end
 
 function Headland:_getHeadlandChangeMinRadius()
-    return NewCourseGenerator.cHeadlandChangeMinRadius
+    return CourseGenerator.cHeadlandChangeMinRadius
 end
 
 --- A short ID to identify the boundary this headland is based on when serializing/deserializing. By default, this
