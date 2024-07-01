@@ -368,4 +368,19 @@ function testLengthBetween()
     lu.assertEquals(p:getLengthBetween(2, 4), 10)
 end
 
+function testSplitEdges()
+    local p = Polyline({Vertex(0, 0), Vertex(10, 0)})
+    p:splitEdges(1)
+    lu.assertEquals(#p, 11)
+    p[1]:assertAlmostEquals(Vertex(0, 0))
+    p[6]:assertAlmostEquals(Vertex(5, 0))
+    p[11]:assertAlmostEquals(Vertex(10, 0))
+    p = Polyline({Vertex(0, 0), Vertex(10, 0)})
+    p:splitEdges(2)
+    lu.assertEquals(#p, 6)
+    p[1]:assertAlmostEquals(Vertex(0, 0))
+    p[4]:assertAlmostEquals(Vertex(6, 0))
+    p[6]:assertAlmostEquals(Vertex(10, 0))
+end
+
 os.exit(lu.LuaUnit.run())
