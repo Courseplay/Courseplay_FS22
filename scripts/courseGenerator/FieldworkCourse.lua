@@ -328,8 +328,11 @@ function FieldworkCourse:findPathToNextRow(boundaryId, rowEnd, rowStart, minDist
     local headlands = self:_getCachedHeadlands(boundaryId)
     local headlandWidth = #headlands * self.context.workingWidth
     local usableHeadlandWidth = headlandWidth - (minDistanceFromRowEnd or 0)
-    local headlandPassNumber = MathUtil.clamp(math.floor(usableHeadlandWidth / self.context.workingWidth), 1, #headlands)
+    local headlandPassNumber = CourseGenerator.clamp(math.floor(usableHeadlandWidth / self.context.workingWidth), 1, #headlands)
     local headland = headlands[headlandPassNumber]
+    if headland == nil then
+        return Polyline()
+    end
     local vx1 = headland:findClosestVertexToPoint(rowEnd)
     local vx2 = headland:findClosestVertexToPoint(rowStart)
     --self.logger:debug('Found shortest path to next row on boundary %s, headland %d, %d->%d',

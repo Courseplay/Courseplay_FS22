@@ -380,7 +380,7 @@ function Polyline:splitEdges(maximumLength)
         local totalLength = exitEdge:getLength()
         if totalLength > maximumLength then
             -- edge too long, will replace it with nEdges number of shorter edges
-            local nEdges = math.floor(totalLength / maximumLength) + 1
+            local nEdges = math.floor(totalLength / maximumLength)
             -- the length of each shorter edge is
             local length = totalLength / nEdges
             -- adjust original edge's length

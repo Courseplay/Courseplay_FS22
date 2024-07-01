@@ -127,5 +127,5 @@ end
 
 function Vertex:__tostring()
     return string.format('(%s) %s r: %.1f %s', self.ix, Vector.__tostring(self),
-            self:getRadius(), self.attributes:__tostring())
+            self.unitRadius and self:getRadius() or math.huge, self.attributes:__tostring())
 end
