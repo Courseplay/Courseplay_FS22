@@ -157,7 +157,7 @@ end
 function Island:isTooBigToBypass(width)
     if self.headlands[1] and self.headlands[1]:isValid() then
         local area = self.headlands[1]:getPolygon():getArea() and self.headlands[1]:getPolygon():getArea() or 0
-        local isTooBig = area > CourseGenerator.maxRowsToBypassIsland * width * NewCourseGenerator.maxRowsToBypassIsland * width
+        local isTooBig = area > CourseGenerator.maxRowsToBypassIsland * width * CourseGenerator.maxRowsToBypassIsland * width
         self.logger:debug("isTooBigToBypass = %s (area = %.0f, width = %.1f", tostring(isTooBig), area, width)
         return isTooBig
     else
@@ -174,11 +174,12 @@ function Island.findIslands(field)
     context:setAutoRowAngle(false):setRowAngle(0)
     local course = CourseGenerator.FieldworkCourse(context)
     local islandVertices = {}
-    for b in ipairs(course:getCenter():getBlocks()) do
-        for r in ipairs(b:getRows()) do
-            r:ensureMaximumEdgeLength(Island.gridSpacing)
-            r:ensureMinimumEdgeLength(Island.gridSpacing)
-            for v in ipairs(r) do
+    for _, b in ipairs(course:getCenter():getBlocks()) do
+        for _, r in ipairs(b:getRows()) do
+            --print(r)
+            --r:ensureMaximumEdgeLength(Island.gridSpacing)
+            --r:ensureMinimumEdgeLength(Island.gridSpacing)
+            for _, v in ipairs(r) do
                 local isOnField, _ = FSDensityMapUtil.getFieldDataAtWorldPosition(v.x, 0, -v.y)
                 if not isOnField then
                     -- add a vertex only if it is far enough from the field boundary
