@@ -151,7 +151,7 @@
     <!---->
     <!--Hud settings-->
     <!---->
-    <text name="CP_hud_settings_selectedJob_title" text="TODO: Selected Job:"/>
+    <text name="CP_hud_settings_selectedJob_title" text="Travail sélectionné :"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -616,49 +616,49 @@ Les dossiers doivent être vides avant de pouvoir être supprimés.
     <text name="CP_help_page_minihud_title" text="Mini ATH"/>
     <text name="CP_help_page_minihud_general_title" text="General"/>
     <text name="CP_help_page_minihud_general_text" text="
-A: Hold the left mouse button on the headline to drag the HUD to a position you like. On the right side, the installed version is shown and the X will close the HUD with a mouse click.
-B: Click on the Courseplay icon to access the global settings.
-C: At this position the name of your vehicle is displayed. Clicking on it will get you to the vehicle settings menu.
-D: These symbols are to: (1) delete the currently loaded course, (2a) toggle how the course will be displayed, (2b) if no course is loaded, a record button is shown to record a field border course, (3) to start or stop the helper.
-E: This target icon has different options depending on the selected mode, it opens the AI Menu with the job and be able to place marker and additional settings for the job. On the left side of the icon, with a fieldwork running, the remaining time of the course is shown.
-F: Click on the text to toggle the available modes for your current tools.
-G: The settings shown under this line depend on the current job. These will be explained with the following pictures.
+A: Maintenez le bouton gauche de la souris sur le titre de la fenêtre pour déplacer le HUD à l'endroit de votre choix. Sur le côté droit, la version installée est affichée et le X fermera le HUD d'un clic de souris.
+B: Cliquez sur l'icône Courseplay pour accéder aux paramètres globaux.
+C: Le nom de votre véhicule est  ici. En cliquant dessus, vous accédez au menu des paramètres du véhicule.
+D: Ces symboles servent à : (1) effacer la course actuellement chargée, (2a) modifier l'affichage de la course, (2b) si aucune course n'est chargée, un bouton d'enregistrement est affiché pour enregistrer une course en bordure de champ, (3) démarrer ou arrêter l'ouvrier.
+E: Cette icône de cible a différentes options en fonction du mode sélectionné, elle ouvre le menu AI avec le travail et permet de placer des marqueurs et des paramètres supplémentaires pour le travail. Sur le côté gauche de l'icône, lorsqu'un travail sur le terrain est en cours, le temps restant du cours est indiqué.
+F: Cliquez sur le texte pour basculer entre les modes disponibles pour vos outils actuels.
+G: Les paramètres affichés sous cette ligne dépendent du travail en cours. Ils sont expliqués dans les images suivantes.
 "/>
-    <text name="CP_help_page_minihud_fieldwork_title" text="Fieldwork"/>
+    <text name="CP_help_page_minihud_fieldwork_title" text="Travaux en champs"/>
     <text name="CP_help_page_minihud_fieldwork_text" text="
-A: Click to select where to the start the work. If a multitool course is loaded, on the right side you can select the lane.
-B: Displays the name of the loaded course. If you just generated a course, it shows 'temporary course'. On the right side you'll see the current/total waypoints once the job is started.
-C: Clicking on the text will recalculate the working width, or you can set it manually on the right by clicking +/-, or with the mouse wheel over the number.
-D: Some tools need an offset to the side. Courseplay will calculate it automatically when clicking on the text, or you can change it manually just like the working width.
-E: Use the symbol on the right side to copy the current course to the clipboard. The name of the copied course is then shown on the left. You can load the copied course into another vehicle which has no course yet. To remove the course from the clipboard, click on the remove symbol.
+A: Cliquez pour sélectionner l'endroit où commencer le travail. Si une course à outils multiples est chargée, vous pouvez sélectionner la voie sur le côté droit.
+B: Affiche le nom de la course chargée. Si vous venez de générer une course, il s'agit d'une 'course temporaire'. Sur le côté droit, vous verrez les points de passage actuels/totaux une fois la tâche démarrée.
+C: En cliquant sur le texte, la largeur de travail sera recalculée, ou vous pouvez la régler manuellement en cliquant sur +/- à droite, ou avec la molette de la souris sur le nombre.
+D: Certains outils ont besoin d'un décalage latéral. Courseplay le calculera automatiquement en cliquant sur le texte, ou vous pouvez le modifier manuellement comme la largeur de travail.
+E: Le symbole à droite permet de copier la course actuelle dans le presse-papiers. Le nom du parcours copié s'affiche alors à gauche. Vous pouvez charger la course copiée dans un autre véhicule qui n'a pas encore de course. Pour supprimer la course du presse-papiers, cliquez sur le symbole de suppression.
 "/>
-    <text name="CP_help_page_minihud_combineunload_title" text="Combine unloader"/>
+    <text name="CP_help_page_minihud_combineunload_title" text="Déchargement récolteuse"/>
     <text name="CP_help_page_minihud_combineunload_text" text="
-A: Select what type of vehicle should the worker unload. This is useful if you have different types, like a combine and a loader such as the ROPA Maus working on the same field.
-B: Set the fill level (40% - 100%) the worker should drive to the unload site. Click the +/- or use the scroll wheel over the number to change.
-C: Sometimes the position of the unloader under the pipe is less than perfect. This may be due to the trailer or the pipe of the harvester, sometimes caused by the slope of the field. You can manually correct the distance to the harvester here.
-D: Same as above, but here you can adjust the position of the unloader relative to the pipe to the front or to the rear.
-E: Similar to copying a course, here you can copy the marker positions to another vehicle.
+A: Sélectionnez le type de véhicule que l'ouvrier doit décharger. Utile si vous avez différents types de véhicules, comme une moissonneuse-batteuse et un chargeur tel que le ROPA Maus travaillant sur le même champ.
+B: Définissez le niveau de remplissage (40 % - 100 %) où l'ouvrier devra se rendre jusqu'au site de déchargement. Cliquez sur les boutons +/- ou utilisez la molette de défilement sur le chiffre pour le modifier.
+C: Il arrive que la position de l'ouvrier sous la goulotte ne soit pas parfaite. Cela peut être dû à la remorque ou à la goulotte de la moissonneuse ou encore à la pente du champ. Vous pouvez corriger manuellement la distance par rapport à la moissonneuse ici.
+D: Même chose que ci-dessus, mais ici vous pouvez régler la position de l'ouvrier par rapport à la goulotte à l'avant ou à l'arrière.
+E: Comme pour la copie d'une course, vous pouvez ici copier les positions des marqueurs sur un autre véhicule.
 "/>
-    <text name="CP_help_page_minihud_balecollect_title" text="Bale collect/wrap"/>
+    <text name="CP_help_page_minihud_balecollect_title" text="Collecte/Enrubannge des bottes"/>
     <text name="CP_help_page_minihud_balecollect_text" text="
-A: Remaining bales on the field.
-B: Type of the bales to collect/wrap.
-C: Offset between the tractor's centerline and the loader arm's centerline. You may need to adjust this for bigger tractors (e.g. with wider tires).
+A: Bottes restantes sur le terrain.
+B: Type de bottes à collecter/enrubanner.
+C: Décalage entre l'axe du tracteur et l'axe du bras du chargeur. Il peut être nécessaire d'ajuster cette valeur pour des tracteurs plus grands (par exemple avec des pneus plus larges).
 "/>
-    <text name="CP_help_page_minihud_siloloader_title" text="Silo loader"/>
+    <text name="CP_help_page_minihud_siloloader_title" text="Déchargement silo"/>
     <text name="CP_help_page_minihud_siloloader_text" text="
-A: Remaining size of the heap in liters.
-B: Working width, same as with fieldwork job.
-C: Courseplay needs the exact height of the bucket above ground set correctly. Since this height can be different for each tool, you can check and adjust it with this setting.
-D: Just like with the unloader, you can copy the marker positions to another vehicle.
+A: Taille restante du tas en litres.
+B: Largeur de travail.
+C: Courseplay a besoin que la hauteur exacte du godet au-dessus du sol soit correctement réglée. Comme cette hauteur peut être différente pour chaque outil, vous pouvez la vérifier et l'ajuster avec ce paramètre.
+D: Comme pour le déchargement, vous pouvez copier les positions des marqueurs sur un autre véhicule.
 "/>
-    <text name="CP_help_page_minihud_siloworker_title" text="Silo worker"/>
+    <text name="CP_help_page_minihud_siloworker_title" text="Tassage/Nivelage silo"/>
     <text name="CP_help_page_minihud_siloworker_text" text="
-A: Similar to the silo loader, the height of the leveler is critical. You can adjust it here.
-B: Shows the progress of the compacting. Clicking on it, toggles the option to stop the driver when reached full compacting.
-C: You can change the working width when needed here.
-D: This setting tells the worker to wait in the silo or at a selected parking position when an unloader approaches the silo.
+A: Comme pour le chargeur de silo, la hauteur du niveleur est essentielle. Vous pouvez la régler ici.
+B: Affiche la progression du compactage. En cliquant dessus, l'option d'arrêter le conducteur lorsque le compactage est terminé est activée.
+C: Vous pouvez modifier la largeur de travail si nécessaire.
+D: Ce paramètre indique à l'ouvrier d'attendre dans le silo ou à une position de stationnement sélectionnée lorsqu'une remorque s'approche du silo.
 "/>
     <text name="CP_help_page_customField_title" text="Champs personnalisés"/>
     <text name="CP_help_page_customFieldRecord_text" text="
@@ -915,7 +915,7 @@ Votre sélection devrait ressembler à l'illustration ci-contre.
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Affiche/masque les canaux de debogage."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Affiche mini ATH"/>
     <text name="input_CP_START_STOP" text="CP: Ouvrier Courseplay"/>
-    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Change current selected job"/>
+    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Change le travail actuellement sélectionné"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Change le point de départ"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: Efface la course actuellement sélectionnée"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="CP: Affiche la course actuelle du véhicule"/>
