@@ -525,7 +525,7 @@ You can define the following custom settings:
     />
     <!--Claas-->
     <Vehicle name="optiJect8.xml"
-             workingWidth = "6"
+             workingWidth = "8"
     />
 	
 	<!--Others-->
