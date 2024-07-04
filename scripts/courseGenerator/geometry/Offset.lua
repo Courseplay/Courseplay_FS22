@@ -1,5 +1,5 @@
 local Offset = {}
-Offset.logger = Logger('Offset')
+Offset.logger = Logger('Offset', Logger.level.debug)
 local recursionCount = 0
 
 function Offset.generate(polygon, offsetVector, targetOffset, currentOffset)
@@ -23,7 +23,11 @@ function Offset.generate(polygon, offsetVector, targetOffset, currentOffset)
     local deltaOffset = math.min(targetOffset, math.max(polygon:getShortestEdgeLength() / 8, 0.1))
     deltaOffset = math.min( deltaOffset, targetOffset - currentOffset )
     currentOffset = currentOffset + deltaOffset
-    polygon = polygon:createOffset(deltaOffset * offsetVector, 1, false)
+    Offset.logger:trace('recursionCount=%d, targetOffset=%f, deltaOffset=%f, currentOffset=%f',
+            recursionCount, targetOffset, deltaOffset, currentOffset)
+    -- minLength should be 1, but for target offsets <= 1, LineSegment.connect() will round corners if minLength is 1
+    -- TODO: preserveCorners should be set depending on what we are generating.
+    polygon = polygon:createOffset(deltaOffset * offsetVector, math.min(1, targetOffset / 2), false)
     if polygon == nil then
         recursionCount = 0
         return nil
