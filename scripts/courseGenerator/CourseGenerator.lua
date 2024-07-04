@@ -65,7 +65,7 @@ end
 ---@param text|nil optional debug text
 ---@param color table|nil color in form of {r, g, b}, each in the 0..1 range
 function CourseGenerator.addDebugPoint(v, text, color)
-    if CourseGenerator.isRunningInGame then
+    if CourseGenerator.isRunningInGame() then
         return
     end
     if not CourseGenerator.debugPoints then
@@ -86,7 +86,7 @@ function CourseGenerator.getDebugId()
 end
 
 function CourseGenerator.addSmallDebugPoint(v, text, color)
-    if CourseGenerator.isRunningInGame then
+    if CourseGenerator.isRunningInGame() then
         return
     end
     CourseGenerator.addDebugPoint(v, text, color)
@@ -97,7 +97,7 @@ end
 ---@param p Polyline
 ---@param color table|nil color in form of {r, g, b}, each in the 0..1 range
 function CourseGenerator.addDebugPolyline(p, color)
-    if CourseGenerator.isRunningInGame then
+    if CourseGenerator.isRunningInGame() then
         return
     end
     if not CourseGenerator.debugPolylines then

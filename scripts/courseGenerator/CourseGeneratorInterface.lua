@@ -2,6 +2,8 @@
 -- Wraps the CourseGenerator which does not depend on the CP or Giants code.
 -- all course generator related code dependent on CP/Giants functions go here
 CourseGeneratorInterface = {}
+CourseGeneratorInterface.logger = Logger('CourseGeneratorInterface')
+
 ---@param fieldPolygon table [{x, z}]
 ---@param startPosition table {x, z}
 ---@param isClockwise boolean
@@ -68,7 +70,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
             end
     )
 
-    CourseGenerator.debug('Course generator returned status %s, ok %s', status, ok)
+    CourseGeneratorInterface.logger:debug('Course generator returned status %s, course %s', status, generatedCourse)
 
     -- return on exception or if the result is not usable
     if not status or generatedCourse == nil then

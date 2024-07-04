@@ -169,6 +169,8 @@ end
 -- Find islands in the game.
 ------------------------------------------------------------------------------------------------------------------------
 function Island.findIslands(field)
+    -- the idea here is to generate a simple up/down course without headland with 1 m working width
+    -- to end up with a 1x1 grid of nodes covering the islands of the field.
     Island.logger:debug('Generating grid for field with grid spacing %.1f', Island.gridSpacing)
     local context = CourseGenerator.FieldworkContext(field, Island.gridSpacing, 5, 0)
     context:setAutoRowAngle(false):setRowAngle(0)
@@ -176,9 +178,7 @@ function Island.findIslands(field)
     local islandVertices = {}
     for _, b in ipairs(course:getCenter():getBlocks()) do
         for _, r in ipairs(b:getRows()) do
-            --print(r)
-            --r:ensureMaximumEdgeLength(Island.gridSpacing)
-            --r:ensureMinimumEdgeLength(Island.gridSpacing)
+            r:splitEdges(Island.gridSpacing)
             for _, v in ipairs(r) do
                 local isOnField, _ = FSDensityMapUtil.getFieldDataAtWorldPosition(v.x, 0, -v.y)
                 if not isOnField then

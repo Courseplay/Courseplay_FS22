@@ -117,6 +117,16 @@ function testEdgeLength()
     p:ensureMaximumEdgeLength(5, math.rad(45))
     lu.assertEquals(#p, 3)
     p[1]:getExitEdge():assertAlmostEquals(CourseGenerator.LineSegment(0, 0, 0, 3))
+
+--[[
+    p = Polyline({ Vertex(0, 0), Vertex(0, 100) })
+    p:ensureMaximumEdgeLength(5)
+    print(p)
+    lu.assertEquals(#p, 21)
+    p[1]:getExitEdge():assertAlmostEquals(CourseGenerator.LineSegment(0, 0, 0, 5))
+]]
+
+
     p:ensureMaximumEdgeLength(5, math.rad(45))
     lu.assertEquals(#p, 3)
     -- left turn
