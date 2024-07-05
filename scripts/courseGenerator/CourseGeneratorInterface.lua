@@ -54,7 +54,9 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     context:setHeadlandFirst(startOnHeadland):setHeadlandClockwise(isClockwise)
     context:setSharpenCorners(true)
     context:setHeadlandsWithRoundCorners(headlandCornerType and numberOfHeadlands or 0)
-    context:setAutoRowAngle(rowDirection):setRowAngle(CpMathUtil.angleFromGameDeg(manualRowAngleDeg))
+    -- the Course Generator UI uses the geographical direction angles (0 - North, 90 - East, etc), convert it to
+    -- the mathematical angle (0 - x+, 90 - y+, etc)
+    context:setAutoRowAngle(rowDirection):setRowAngle(math.rad(-(manualRowAngleDeg - 90)))
     context:setBypassIslands(islandBypassMode)
 
     --------------------------------------------------------------------------------------------------------------------
@@ -70,16 +72,19 @@ function CourseGeneratorInterface.generate(fieldPolygon,
             end
     )
 
-    CourseGeneratorInterface.logger:debug('Course generator returned status %s, course %s', status, generatedCourse)
 
     -- return on exception or if the result is not usable
     if not status or generatedCourse == nil then
         return false
     end
 
+    CourseGeneratorInterface.logger:debug('Generated course: %d/%d headland/center waypoints',
+            #generatedCourse:getHeadlandPath(), #generatedCourse:getCenterPath())
+
     local course = Course.createFromGeneratedCourse(nil, generatedCourse:getPath(), workWidth,
 			#generatedCourse:getHeadlands(), multiTools)
     course:setFieldPolygon(fieldPolygon)
+    CourseGeneratorInterface.logger:debug('%s', tostring(course))
     return true, course
 end
 
