@@ -60,7 +60,7 @@
 		<!-- TODO: rename to autoRowAngle -->
 		<Setting classType="AIParameterBooleanSetting" name="rowDirection" isExpertModeOnly="true" defaultBoolean="false">
 			<Texts>
-				<Text>auto</Text>
+				<Text>automatic</Text>
 				<Text>manual</Text>
 			</Texts>
 		</Setting>
@@ -71,18 +71,6 @@
 	<SettingSubTitle title="advanced">
 		<!-- TODO: rename to bypassIslands -->
 		<Setting classType="AIParameterBooleanSetting" name="islandBypassMode" defaultBoolean="true"/>
-		<Setting classType="AIParameterSettingList" name="islandBypassMode">
-			<Values>
-				<Value name="ISLAND_BYPASS_MODE_CIRCLE">3</Value>
-				<Value name="ISLAND_BYPASS_MODE_SIMPLE">2</Value>
-				<Value name="ISLAND_BYPASS_MODE_NONE">1</Value>
-			</Values>
-			<Texts>
-				<Text>circle</Text>
-				<Text>simple</Text>
-				<Text>none</Text>
-			</Texts>
-		</Setting>
 		<Setting classType="AIParameterSettingList" name="fieldMargin" min="-5" max="6" default="0" incremental="0.2" isExpertModeOnly="true"/>
 	</SettingSubTitle>
 </Settings>

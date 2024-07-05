@@ -13,7 +13,7 @@ local Center = CpObject()
 ---@param startLocation Vector location of the vehicle before it starts working on the center.
 ---@param bigIslands CourseGenerator.Island[] islands too big to circle
 function Center:init(context, boundary, headland, startLocation, bigIslands)
-    self.logger = Logger('Center', Logger.level.debug)
+    self.logger = Logger('Center', Logger.level.trace)
     self.context = context
     if headland == nil then
         -- if there are no headlands, we generate a virtual one, from the field boundary
@@ -381,7 +381,7 @@ end
 ---@param rows CourseGenerator.Row[]
 ---@param headland CourseGenerator.Headland
 function Center:_splitIntoBlocks(rows, headland)
-    local blocks
+    local blocks = {}
     local openBlocks = {}
     local function closeBlocks(rowNumber)
         local n = 0
@@ -400,6 +400,7 @@ function Center:_splitIntoBlocks(rows, headland)
     local blockId = 1
 
     for i, row in ipairs(rows) do
+        self.logger:trace('%s', row)
         local sections = row:split(headland, self.bigIslands, false, self.context.enableSmallOverlapsWithHeadland)
         self.logger:trace('Row %d has %d section(s)', i, #sections)
         -- first check if there is a block which overlaps with more than one section
