@@ -30,7 +30,7 @@ end
 
 function EditorCourseWrapper:isWaypointTurn(ix)
 	local wp = ix ~=nil and self.course:getWaypoint(ix)
-	return wp and wp:getIsTurn()
+	return wp and wp:isTurn()
 end
 
 ------------------------------------
@@ -122,7 +122,7 @@ function EditorCourseWrapper:insertWaypointAhead(ix)
 	local waypoint = self.course:getWaypoint(ix)
 	local wp
 	if waypoint then 
-		if waypoint:getIsTurnEnd() then 
+		if waypoint:isTurnEnd() then
 			return nil, false
 		end
 		local frontWp = self.course:getWaypoint(ix-1)
@@ -153,7 +153,7 @@ function EditorCourseWrapper:insertWaypointBehind(ix)
 	local waypoint = self.course:getWaypoint(ix)
 	local wp
 	if waypoint then 
-		if waypoint:getIsTurnStart() then 
+		if waypoint:isTurnStart() then
 			return nil, false
 		end
 		local backWp = self.course:getWaypoint(ix+1)
@@ -200,11 +200,11 @@ end
 function EditorCourseWrapper:deleteWaypoint(ix)
 	local wp = self.course:getWaypoint(ix)
 	if wp and self.course:getNumberOfWaypoints() > 5 then 
-		if wp:getIsTurnStart() then 
+		if wp:isTurnStart() then
 			if self.course.waypoints[ix+1] then
 				self.course:getWaypoint(ix+1):resetTurn()
 			end
-		elseif wp:getIsTurnEnd() then 
+		elseif wp:isTurnEnd() then
 			if self.course.waypoints[ix-1] then
 				self.course:getWaypoint(ix-1):resetTurn()
 			end
@@ -243,17 +243,17 @@ function EditorCourseWrapper:changeWaypointTurnType(ix)
 	local np = self.course.waypoints[ix+1]
 	local pp = self.course.waypoints[ix-1]
 	if wp then 
-		if wp:getIsTurnStart() then 
+		if wp:isTurnStart() then
 			wp:resetTurn()
 			if np then 
 				np:resetTurn()
 			end
-		elseif wp:getIsTurnEnd() then 
+		elseif wp:isTurnEnd() then
 			wp:resetTurn()
 			if pp then 
 				pp:resetTurn()
 			end
-		elseif np and not np:getIsTurn() then 
+		elseif np and not np:isTurn() then
 			wp:setTurnStart(true) 
 			np:setTurnEnd(true)
 		else 

@@ -92,7 +92,8 @@ function CpFieldUtil.saveAllFields()
                 for i, point in ipairs(points) do
                     setXMLString(xmlFile, key .. (".point%d#pos"):format(i), ("%.2f %.2f %.2f"):format(point.x, point.y, point.z))
                 end
-                local islandNodes = Island.findIslands( Polygon:new(CpMathUtil.pointsFromGame(points)))
+                local islandNodes = CourseGenerator.Island.findIslands(
+                        CourseGenerator.Field(field.fieldId, field.fieldId, Polygon(CpMathUtil.pointsFromGameInPlace(points))))
                 CpMathUtil.pointsToGameInPlace(islandNodes)
                 for i, islandNode in ipairs(islandNodes) do
                     setXMLString(xmlFile, key .. ( ".islandNode%d#pos"):format( i ), ("%.2f %2.f"):format( islandNode.x, islandNode.z ))

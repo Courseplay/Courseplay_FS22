@@ -2,6 +2,10 @@
 ---@class RidgeMarkerController : ImplementController
 RidgeMarkerController = CpObject(ImplementController)
 
+RidgeMarkerController.RIDGE_MARKER_NONE = 0
+RidgeMarkerController.RIDGE_MARKER_LEFT = 1
+RidgeMarkerController.RIDGE_MARKER_RIGHT = 2
+
 function RidgeMarkerController:init(vehicle, implement)
     ImplementController.init(self, vehicle, implement)
     self.ridgeMarkerSpec = self.implement.spec_ridgeMarker

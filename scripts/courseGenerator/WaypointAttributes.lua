@@ -85,6 +85,7 @@ end
 --- to or from this section. For instance, if this path leads to the first up/down row, the generator
 --- cannot guarantee that there are no obstacles (like a small island) between the last waypoint
 --- of this path and the first up/down waypoint.
+---@return boolean|nil
 function WaypointAttributes:isOnConnectingPath()
     return self.onConnectingPath
 end

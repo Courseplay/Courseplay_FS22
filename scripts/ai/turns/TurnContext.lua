@@ -1,5 +1,5 @@
 --[[
-This file is part of Courseplay (https://github.com/Courseplay/courseplay)
+This file is part of Courseplay (https://github.com/Courseplay/FS22_Courseplay)
 Copyright (C) 2019 Peter Vaiko
 
 This program is free software: you can redistribute it and/or modify
@@ -329,7 +329,7 @@ end
 
 function TurnContext:getAverageEndAngleDeg()
     -- use the average angle of the turn end and the next wp as there is often a bend there
-    return math.deg(getAverageAngle(math.rad(self.turnEndWp.angle), math.rad(self.afterTurnEndWp.angle)))
+    return math.deg(CpMathUtil.getAverageAngle(math.rad(self.turnEndWp.angle), math.rad(self.afterTurnEndWp.angle)))
 end
 
 --- @return number the angle to turn in this corner (if the corner is less than 90 degrees, you'll have to turn > 90 degrees)
