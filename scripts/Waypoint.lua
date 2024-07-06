@@ -72,11 +72,11 @@ Waypoint = CpObject(Point)
 Waypoint.xmlKey = ".waypoints.wp"
 
 -- constructor from the legacy Courseplay waypoint
-function Waypoint:init(cpWp, cpIndex)
-	self:set(cpWp, cpIndex)
+function Waypoint:init(cpWp)
+	self:set(cpWp)
 end
 
-function Waypoint:set(wp, cpIndex)
+function Waypoint:set(wp)
 	-- we initialize explicitly, no table copy as we want to have
 	-- full control over what is used in this object
 	self.x = wp.x or 0
@@ -87,7 +87,6 @@ function Waypoint:set(wp, cpIndex)
 	self.rev = wp.rev or wp.turnReverse or wp.reverse or false
 	self.rev = self.rev or wp.gear and wp.gear == Gear.Backward
 	self.speed = wp.speed
-	self.cpIndex = cpIndex or 0
 	self.turnStart = wp.turnStart
 	self.turnEnd = wp.turnEnd
 	self.isConnectingTrack = wp.isConnectingTrack or nil
@@ -111,7 +110,6 @@ function Waypoint.initFromGeneratedWp(wp, ix)
 	waypoint.x = wp.x
 	waypoint.z = -wp.y
 	waypoint.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, waypoint.x, 0, waypoint.z)
-	waypoint.cpIndex = ix or 0
 	waypoint.turnStart = wp.turnStart
 	waypoint.turnEnd = wp.turnEnd
 	waypoint.isConnectingTrack = wp.isConnectingTrack or nil
@@ -129,7 +127,6 @@ function Waypoint.initFromXmlFile(data,ix)
 	waypoint.x = data[1]
 	waypoint.z = data[2]
 	waypoint.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, waypoint.x, 0, waypoint.z)
-	waypoint.cpIndex = ix or 0
 	waypoint.turnStart = data[3]
 	waypoint.turnEnd = data[4]
 	waypoint.isConnectingTrack = data[5]

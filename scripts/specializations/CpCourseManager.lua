@@ -101,8 +101,6 @@ function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'loadAssignedCpCourses', CpCourseManager.loadAssignedCourses)
     SpecializationUtil.registerFunction(vehicleType, 'saveAssignedCpCourses', CpCourseManager.saveAssignedCourses)
 
-    SpecializationUtil.registerFunction(vehicleType, 'getCpLegacyWaypoints', CpCourseManager.getLegacyWaypoints)
-
     SpecializationUtil.registerFunction(vehicleType, 'cpStartCourseRecorder', CpCourseManager.cpStartCourseRecorder)
     SpecializationUtil.registerFunction(vehicleType, 'cpStopCourseRecorder', CpCourseManager.cpStopCourseRecorder)
     SpecializationUtil.registerFunction(vehicleType, 'getIsCpCourseRecorderActive', CpCourseManager.getIsCpCourseRecorderActive)
@@ -130,8 +128,6 @@ function CpCourseManager:onLoad(savegame)
     spec.courseDisplay = BufferedCourseDisplay() 
     spec.courseRecorder = CourseRecorder(spec.courseDisplay)
     g_assignedCoursesManager:registerVehicle(self, self.id)
-
-    spec.legacyWaypoints = {}
 
     spec.assignedCoursesID = nil
 end
@@ -466,27 +462,6 @@ end
 function CpCourseManager:getCpLastRememberedWaypointIx()
     local spec = self.spec_cpCourseManager
     return spec.rememberedWpIx
-end
-
---- For backwards compatibility, create all waypoints of all loaded courses for this vehicle, as it
---- used to be stored in the terrible global Waypoints variable
---- Update all the legacy (as usual global) data structures related to a vehicle's loaded course
--- TODO: once someone has the time and motivation, refactor those legacy structures
-function CpCourseManager:updateLegacyWaypoints()
-    local spec = self.spec_cpCourseManager 
-	spec.legacyWaypoints = {}
-	local n = 1
-	for _, course in ipairs(CpCourseManager.getCourses(self)) do
-		for i = 1, course:getNumberOfWaypoints() do
-			table.insert(spec.legacyWaypoints, Waypoint(course:getWaypoint(i), n))
-			n = n +1
-		end
-	end
-end
-
-function CpCourseManager:getLegacyWaypoints()
-    local spec = self.spec_cpCourseManager 
-	return spec and spec.legacyWaypoints
 end
 
 ------------------------------------------------------------------------------------------------------------------------
