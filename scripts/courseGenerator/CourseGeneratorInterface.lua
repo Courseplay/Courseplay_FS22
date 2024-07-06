@@ -81,7 +81,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     CourseGeneratorInterface.logger:debug('Generated course: %d/%d headland/center waypoints',
             #generatedCourse:getHeadlandPath(), #generatedCourse:getCenterPath())
 
-    local course = Course.createFromGeneratedCourse(nil, generatedCourse:getPath(), workWidth,
+    local course = Course.createFromGeneratedCourse(nil, generatedCourse, workWidth,
 			#generatedCourse:getHeadlands(), multiTools)
     course:setFieldPolygon(fieldPolygon)
     CourseGeneratorInterface.logger:debug('%s', tostring(course))

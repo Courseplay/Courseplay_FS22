@@ -28,11 +28,8 @@ function Course:init(vehicle, waypoints, temporary, first, last)
     -- add waypoints from current vehicle course
     ---@type Waypoint[]
     self.waypoints = self:initWaypoints()
-    local n = 0
     for i = first or 1, last or #waypoints do
-        -- make sure we pass in the original vehicle.Waypoints index with n+first
-        table.insert(self.waypoints, Waypoint(waypoints[i], n + (first or 1)))
-        n = n + 1
+        table.insert(self.waypoints, Waypoint(waypoints[i]))
     end
     -- offset to apply to every position
     self.offsetX, self.offsetZ = 0, 0
@@ -682,19 +679,6 @@ function Course:getDistanceToFirstUpDownRowWaypoint(ix)
     return math.huge, nil
 end
 
---- Find the waypoint with the original index cpIx in vehicle.Waypoints
--- This is needed when legacy code like turn or reverse finishes and continues the
--- course at at given waypoint. The index of that waypoint may be different when
--- we have combined courses, so here find the correct one.
-function Course:findOriginalIx(cpIx)
-    for i = 1, #self.waypoints do
-        if self.waypoints[i].cpIndex == cpIx then
-            return i
-        end
-    end
-    return 1
-end
-
 --- Is any of the waypoints around ix an unload point?
 ---@param ix number waypoint index to look around
 ---@param forward number look forward this number of waypoints when searching
@@ -952,7 +936,7 @@ end
 ---@param waypoints Waypoint[]
 function Course:appendWaypoints(waypoints)
     for i = 1, #waypoints do
-        table.insert(self.waypoints, Waypoint(waypoints[i], #self.waypoints + 1))
+        table.insert(self.waypoints, Waypoint(waypoints[i]))
     end
     self:enrichWaypointData()
 end
@@ -978,7 +962,7 @@ end
 --- Append a single waypoint to the course
 ---@param waypoint Waypoint
 function Course:appendWaypoint(waypoint)
-    table.insert(self.waypoints, Waypoint(waypoint, #self.waypoints + 1))
+    table.insert(self.waypoints, Waypoint(waypoint))
 end
 
 --- Extend a course with a straight segment (same direction as last WP)
@@ -1933,7 +1917,7 @@ end
 
 function Course.createFromGeneratedCourse(vehicle, generatedCourse, workWidth, numHeadlands, multiTools)
     local waypoints = {}
-    for i, wp in ipairs(generatedCourse) do
+    for i, wp in ipairs(generatedCourse:getPath()) do
         table.insert(waypoints, Waypoint.initFromGeneratedWp(wp, i))
     end
     local course = Course(vehicle or g_currentMission.controlledVehicle, waypoints)
