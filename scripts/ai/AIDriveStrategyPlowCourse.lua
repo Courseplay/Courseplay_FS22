@@ -150,9 +150,8 @@ end
 --- Initial plow rotation based on the ridge marker side selection by the course generator.
 function AIDriveStrategyPlowCourse:rotatePlows()
     self:debug('Starting work: check if plow needs to be turned.')
-    local ridgeMarker = self.course:getRidgeMarkerState(self.ppc:getCurrentWaypointIx())
-    local plowShouldBeOnTheLeft = ridgeMarker == CourseGenerator.RIDGEMARKER_RIGHT
-    self:debug('Ridge marker %d, plow should be on the left %s', ridgeMarker, tostring(plowShouldBeOnTheLeft))
+    local plowShouldBeOnTheLeft = self.course:getPlowOnLeft(self.ppc:getCurrentWaypointIx())
+    self:debug('Plow should be on the left %s', tostring(plowShouldBeOnTheLeft))
     for _, controller in pairs(self.controllers) do 
         if controller.rotate then 
             controller:rotate(plowShouldBeOnTheLeft)

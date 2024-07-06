@@ -89,6 +89,7 @@ function Waypoint:set(wp)
 	self.speed = wp.speed
 	self.turnStart = wp.turnStart
 	self.turnEnd = wp.turnEnd
+	self.headlandTurn = wp.headlandTurn
 	self.isConnectingTrack = wp.isConnectingTrack or nil
 	self.lane = wp.lane
 	self.rowNumber = wp.rowNumber
@@ -105,19 +106,29 @@ function Waypoint:set(wp)
 end
 
 --- Set from a generated waypoint (output of the course generator)
+---@param wp Vertex
 function Waypoint.initFromGeneratedWp(wp, ix)
 	local waypoint = Waypoint({})
 	waypoint.x = wp.x
 	waypoint.z = -wp.y
 	waypoint.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, waypoint.x, 0, waypoint.z)
-	waypoint.turnStart = wp.turnStart
-	waypoint.turnEnd = wp.turnEnd
-	waypoint.isConnectingTrack = wp.isConnectingTrack or nil
-	waypoint.lane = wp.passNumber and -wp.passNumber
-	waypoint.rowNumber = wp.rowNumber
-	waypoint.ridgeMarker = wp.ridgeMarker
-	--- Todo check if the course generator side is correctly implement.
-	waypoint.rev = wp.rev
+	local a = wp:getAttributes()
+	waypoint.turnStart = a:isRowEnd()
+	waypoint.turnEnd = a:isRowStart()
+	waypoint.headlandTurn = a:isHeadlandTurn()
+	waypoint.isConnectingTrack = a:isOnConnectingPath()
+	waypoint.lane = a:getHeadlandPassNumber() and -a:getHeadlandPassNumber()
+	waypoint.rowNumber = a:getRowNumber()
+	-- set ridge marker only if we are absolutely sure that a side is not worked
+	if a:isLeftSideNotWorked() then
+		waypoint.ridgeMarker = RidgeMarkerController.RIDGE_MARKER_LEFT
+	elseif a:isRightSideNotWorked() then
+		waypoint.ridgeMarker = RidgeMarkerController.RIDGE_MARKER_RIGHT
+	else
+		waypoint.ridgeMarker = RidgeMarkerController.RIDGE_MARKER_NONE
+	end
+	-- plows however, can be rotated even if we aren't so sure
+	waypoint.plowOnLeft = a:isLeftSideWorked()
 	return waypoint
 end
 
@@ -138,7 +149,7 @@ function Waypoint.initFromXmlFile(data,ix)
 end
 
 --- Gets the data to saves this waypoint in a xml file.
---- New attributes can be added at the bottom and should'nt break old courses.
+--- New attributes can be added at the bottom and shouldn't break old courses.
 --- To remove attributes, they should be filled with a zero otherwise old course might be broken.
 --- Every attribute needs to be a number.
 function Waypoint:getXmlString()
@@ -224,16 +235,20 @@ function Waypoint:getIsReverse()
 	return self.rev
 end
 
-function Waypoint:getIsTurnStart()
+function Waypoint:isTurnStart()
 	return self.turnStart
 end
 
-function Waypoint:getIsTurnEnd()
+function Waypoint:isTurnEnd()
 	return self.turnEnd
 end
 
-function Waypoint:getIsTurn()
-	return self.turnStart or self.turnEnd
+function Waypoint:isTurn()
+	return self:isTurnStart() or self:isTurnEnd()
+end
+
+function Waypoint:isHeadlandTurn()
+	return self.headlandTurn
 end
 
 function Waypoint:setTurnStart(turnStart)

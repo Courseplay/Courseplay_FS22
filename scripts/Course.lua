@@ -386,11 +386,11 @@ function Course:isForwardOnly()
 end
 
 function Course:isTurnStartAtIx(ix)
-    return self.waypoints[ix].turnStart
+    return self.waypoints[ix]:isTurnStart() or self.waypoints[ix + 1]:isHeadlandTurn()
 end
 
 function Course:isTurnEndAtIx(ix)
-    return self.waypoints[ix].turnEnd
+    return self.waypoints[ix]:isTurnEnd() or self.waypoints[ix]:isHeadlandTurn()
 end
 
 function Course:skipOverTurnStart(ix)
@@ -584,8 +584,15 @@ function Course:getWaypointYRotation(ix)
     return MathUtil.getYRotationFromDirection(dx, dz)
 end
 
+---@return number RidgeMarkerController.RIDGE_MARKER_NONE, RidgeMarkerController.RIDGE_MARKER_LEFT, RidgeMarkerController.RIDGE_MARKER_RIGHT
 function Course:getRidgeMarkerState(ix)
     return self.waypoints[ix].ridgeMarker or 0
+end
+
+---@return boolean true if the plow should be rotated to the left side of the course (as the right side was already
+--- worked on)
+function Course:getPlowOnLeft(ix)
+    return self.waypoints[ix].plowOnLeft
 end
 
 --- Get the average speed setting across n waypoints starting at ix

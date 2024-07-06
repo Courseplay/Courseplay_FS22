@@ -99,9 +99,9 @@ function Corner:findCornerNodes(startAngle)
 		-- points to the inside of the corner from the corner, half angle between start and end. The center of the arc
 		-- making a nice turn in this corner is on this line
 		self.cornerNode = CpUtil.createNode(tostring(self) .. '-cpTurnHalfNode', is.x, is.z,
-			getAverageAngle(math.rad(self.reverseStartAngle), math.rad(self.endAngleDeg)))
+				CpMathUtil.getAverageAngle(math.rad(self.reverseStartAngle), math.rad(self.endAngleDeg)))
 		self:debug('startAngle: %.1f, endAngle %.1f avg %.1f',
-			self.reverseStartAngle, self.endAngleDeg, math.deg(getAverageAngle(math.rad(startAngle) + math.pi, math.rad(self.endAngleDeg))))
+			self.reverseStartAngle, self.endAngleDeg, math.deg(CpMathUtil.getAverageAngle(math.rad(startAngle) + math.pi, math.rad(self.endAngleDeg))))
 		-- move corner back according to the offset and turn direction it moves to the inside or outside
 		local x, y, z = localToWorld(self.cornerNode, 0, 0, - self.offsetX / math.sin(self.alpha / 2))
 		setTranslation(self.cornerNode, x, y, z)

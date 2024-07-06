@@ -198,6 +198,22 @@ function CpMathUtil.getDeltaAngle(a, b)
 	return b - a
 end
 
+--- Get the average of two angles.
+-- Works fine even for the transition from -pi/2 to +pi/2
+function CpMathUtil.getAverageAngle( a1, a2 )
+	-- convert the 0 - -180 range into 180 - 360
+	if math.abs( a1 - a2 ) > math.pi then
+		a1 = normalizeAngle( a1 )
+		a2 = normalizeAngle( a2 )
+	end
+	-- calculate average in this range
+	local avg = ( a1 + a2 ) / 2
+	-- convert back to 0 - -180 if necessary
+	if avg > math.pi then avg = avg - 2 * math.pi end
+	return avg
+end
+
+
 ------------------------------------------------------------------------------------------------------------------------
 --- Transform coordinates between the game and the coordinate system used by the
 --- course generator and the pathfinder.
