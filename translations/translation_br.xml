@@ -194,8 +194,8 @@
     <text name="CP_vehicle_setting_turnOnField_tooltip" text="Virar no campo. Não é possível com todos os implementos."/>
     <text name="CP_vehicle_setting_avoidFruit_title" text="Evite dirigir na plantação"/>
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="AI evitará dirigir na plantação"/>
-    <text name="CP_vehicle_setting_toolOffsetX_title" text="Distancia horizontal do implemento"/>
-    <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Distancia horizontal do implemento"/>
+    <text name="CP_vehicle_setting_toolOffsetX_title" text="Dist. hor. do implemento"/>
+    <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Dist. hor. do implemento"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Distância lateral para coleta de fardos"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Distância lateral para coleta de fardos"/>
     <text name="CP_vehicle_setting_combineOffsetX_title" text="Distância para frente/para trás"/>
