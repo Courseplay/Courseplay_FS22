@@ -196,14 +196,14 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="AI evitará dirigir na plantação"/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Dist. hor. do implemento"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Dist. hor. do implemento"/>
-    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Distância lateral para coleta de fardos"/>
-    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Distância lateral para coleta de fardos"/>
-    <text name="CP_vehicle_setting_combineOffsetX_title" text="Distância para frente/para trás"/>
-    <text name="CP_vehicle_setting_combineOffsetX_tooltip" text="Distância do tubo da colheitadeira para frente(+) e para trás(-)"/>
-    <text name="CP_vehicle_setting_combineOffsetZ_title" text="Distância para frente/para trás"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Dist.lateral para coleta de fardos"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Dist. lateral para coleta de fardos"/>
+    <text name="CP_vehicle_setting_combineOffsetX_title" text="Distância para esq/dir"/>
+    <text name="CP_vehicle_setting_combineOffsetX_tooltip" text="Distância do tubo da colheitadeira para direita(+) e para esquerda(-)"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_title" text="Distância para frente/trás"/>
     <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Distância do tubo da colheitadeira para frente(+) e para trás(-)"/>
-    <text name="CP_vehicle_setting_fullThreshold_title" text="Esvaziar quando acabar:"/>
-    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Esvaziar quando próx. de:"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="Se o nível de enchimento do descarregador estiver acima deste valor, ele não esperará pela colheitadeira."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Verifique se há aditivo de silagem."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Se o aditivo ativo e de silagem estiver vazio, o motorista irá parar."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Mudança de fileira simétrica"/>
