@@ -13,7 +13,7 @@
     <text name="CP_automatic" text="automático"/>
     <text name="CP_unit_meter" text="m"/>
     <text name="CP_unit_foot" text="pés"/>
-    <text name="CP_copy" text="Copiar rota: "/>
+    <text name="CP_copy" text="Copiar rota:"/>
     <text name="CP_infoText" text="Courseplay(%s): Para ajuda, reportar bug ou notas de patch, favor visitar: https://github.com/Courseplay/Courseplay_FS22."/>
     <text name="CP_error_no_course" text="Criar rota antes de iniciar o trabalho."/>
     <text name="CP_error_could_not_generate_course" text="Não foi possível criar a rota. O arquivo log pode ter mais informações."/>
@@ -30,28 +30,28 @@
     <!---->
     <!--AI job parameters-->
     <!---->
-    <text name="CP_jobParameters_fieldPosition_title" text="Posição no campo:"/>
-    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Posição do silo:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Posição de estacionamento:"/>
-    <text name="CP_jobParameters_subTitle_startAt" text="Iniciar em:"/>
-    <text name="CP_jobParameters_startAt_title" text="Iniciar em:"/>
-    <text name="CP_jobParameters_startAt_tooltip" text="Onde começar o trabalho no campo"/>
-    <text name="CP_jobParameters_startAt_nearest" text="próximo waypoint"/>
-    <text name="CP_jobParameters_startAt_first" text="primeiro waypoint"/>
-    <text name="CP_jobParameters_startAt_last" text="último waypoint"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Modo silo de bunker"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Modo carregar silo"/>
-    <text name="CP_jobParameters_startAt_unload" text="descarregar colheitadeira"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Descarregar carregador de silo"/>
-    <text name="CP_jobParameters_startAt_bales" text="coletar/embalar fardos"/>
-    <text name="CP_jobParameters_subTitle_laneOffset" text="Distância da fileira:"/>
-    <text name="CP_jobParameters_laneOffset_title" text="Distância da fileira:"/>
-    <text name="CP_jobParameters_laneOffset_tooltip" text="Distância da fileira"/>
-    <text name="CP_jobParameters_laneOffset_center" text="centro"/>
-    <text name="CP_jobParameters_laneOffset_left" text="esquerda(1)"/>
-    <text name="CP_jobParameters_laneOffset_right" text="direita(1)"/>
-    <text name="CP_jobParameters_laneOffset_left_2" text="esquerda(2)"/>
-    <text name="CP_jobParameters_laneOffset_right_2" text="direita(2)"/>
+    <text name="CP_fieldWorkJobParameters_fieldPosition_title" text="Posição no campo:"/>
+    <text name="CP_fieldWorkJobParameters_bunkerSiloPosition_title" text="Posição do silo:"/>
+    <text name="CP_fieldWorkJobParameters_parkPosition_title" text="Posição de estacionamento:"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_startAt" text="Iniciar em:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_title" text="Iniciar em:"/>
+    <text name="CP_fieldWorkJobParameters_startAt_tooltip" text="Onde começar o trabalho no campo"/>
+    <text name="CP_fieldWorkJobParameters_startAt_nearest" text="próximo waypoint"/>
+    <text name="CP_fieldWorkJobParameters_startAt_first" text="primeiro waypoint"/>
+    <text name="CP_fieldWorkJobParameters_startAt_last" text="último waypoint"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bunkerSilo" text="Modo silo de bunker"/>
+    <text name="CP_fieldWorkJobParameters_startAt_siloLoader" text="Modo carregar silo"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload" text="descarregar colheitadeira"/>
+    <text name="CP_fieldWorkJobParameters_startAt_unload_siloLoader" text="Descarregar carregador de silo"/>
+    <text name="CP_fieldWorkJobParameters_startAt_bales" text="coletar/embalar fardos"/>
+    <text name="CP_fieldWorkJobParameters_subTitle_laneOffset" text="Distância da fileira:"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_title" text="Distância da fileira:"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_tooltip" text="Distância da fileira"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_center" text="centro"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left" text="esquerda(1)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right" text="direita(1)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_left_2" text="esquerda(2)"/>
+    <text name="CP_fieldWorkJobParameters_laneOffset_right_2" text="direita(2)"/>
     <!---->
     <!--AI bale finder job parameters-->
     <!---->
@@ -256,12 +256,12 @@
     <text name="CP_vehicle_setting_selfUnload_title" text="Colheitadeira descarrega"/>
     <text name="CP_vehicle_setting_selfUnload_tooltip" text="Colheitadeira descarrega na carreta. Não suportado em multiferramentas ou no nodo comboio."/>
     <text name="CP_vehicle_setting_unloadOnFirstHeadland_title" text="Descarregar na cabeceira"/>
-    <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="Colheitadeira chamará a carreta na cabeceira."/>
+    <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="A colheitadeira chamará o descarregador na primeira cabeceira, mesmo quando ele tiver que dirigir para fora do campo. Se estiver desligada, a colheitadeira primeiro cria um bolsão antes de chamar um descarregador."/>
     <text name="CP_vehicle_setting_strawSwath_title" text="Fileira de palha"/>
     <text name="CP_vehicle_setting_strawSwath_tooltip" text="Habilita/desabilita faixa de palha ou desabilita apenas nas cabeceiras."/>
-    <text name="CP_vehicle_setting_strawSwath_onlyCenter" text="Cabeceira desativada"/>
-    <text name="CP_vehicle_setting_callUnloaderPercent_title" text="Chamar carreta em"/>
-    <text name="CP_vehicle_setting_callUnloaderPercent_tooltip" text="Chamar a carreta quando o nível de enchimento da colheitadeira estiver acima deste valor."/>
+	<text name="CP_vehicle_setting_callUnloaderPercent_title" text="Chamar descarregadeira em"/>
+    <text name="CP_vehicle_setting_callUnloaderPercent_tooltip" text="Chamar a descarregadeira quando o nível de enchimento da colheitadeira estiver acima deste valor."/>
+    <text name="CP_vehicle_setting_strawSwath_onlyCenter" text="Headlands disabled"/>
     <!---->
     <!--Course generator settings-->
     <!---->
@@ -413,6 +413,7 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_courseManager_noAccessError" text="Sem acesso na pasta (%s)!"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="Destino não é uma pasta (%s)!"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="Destino não é uma rota (%s)!"/>
+    <text name="CP_courseManager_invalidNameError" text="Nome da rota (%s) é inválido!."/>
     <text name="CP_courseManager_basicSettings" text="Interação com rota."/>
     <text name="CP_courseManager_advancedSettings" text="Editar arquivos."/>
     <text name="CP_courseManager_activate" text="Ativar"/>
@@ -482,6 +483,7 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_customFieldManager_edit" text="Editar campo customizado"/>
     <text name="CP_customFieldManager_draw" text="Desenhar campo customizado"/>
     <text name="CP_customFieldManager_draw_header" text="Clique no botão direito do mouse para desenhar linhas no campo customizado."/>
+    <text name="CP_customFieldManager_draw_sub_header" text="Segure a tecla Shift esquerda para uma linha reta."/>
     <text name="CP_customFieldManager_save" text="Salvar campo customizado"/>
     <text name="CP_controllerGui_startRecording" text="Iniciar gravação de campo customizado."/>
     <text name="CP_controllerGui_stopRecording" text="Parar gravação de campo customizado."/>
@@ -615,28 +617,52 @@ Para renomear, basta clicar no botão renomear e depois ns pasta ou rota. Em seg
 Para excluir uma rota ou pasta, clique no botão excluir e depois na pasta ou rota que deseja excluir.
 As pastas devem estar vazios se você quiser excluí-los.
 "/>
-    <text name="CP_help_page_minihud_title" text="Mini HUD"/>
-    <text name="CP_help_page_minihud_text" text="
-R: Clicar no nome do veículo abrirá o menu de configuração do veículo.
-B: Seleciona o ponto inicial onde você deseja que o auxiliar comece.
-C: Clicar no nome do curso abrirá o menu AI.
-     Se o veículo estiver em um campo, as configurações do gerador de percurso também serão abertas.
-D: Inicia ou para o auxiliar. Se a cor for verde, o auxiliar CP está ativo.
-E: Mostra o waypoint atual/total de waypoints. Clicar nele abrirá o menu do gerenciador do curso.
-F: Clicar neste ícone abre o menu de configurações globais.
-G: Fecha o HUD.
-H: Diminuir ou aumentar a largura de trabalho. Uma linha vermelha no seu veículo mostra o valor atual.
-I: Valor para deslocamento horizontal, + esquerda, - direita.
-J: Copie e cole um percurso em um veículo diferente.
-     Depois que o botão copiar for pressionado, o percurso poderá ser colado em um veículo sem percurso quando o ícone ficar verde.
-K e L: Clicar no texto redefinirá suas alterações para os valores padrão.
-M: Mostra o curso copiado.
-N: Esta área mostra o deslocamento da pista se você tiver um curso de múltiplas ferramentas carregado para o comboio. 
-     Clicar no texto alterna as posições.
-O: Iniciar/parar a gravação de campos personalizados.
-P: Remove o percurso do veículo.
-P: Altera a visibilidade do percurso entre: ligado, desligado e apenas início/parada.
-R: Remove o curso copiado da área de transferência.
+    <text name="CP_help_page_minihud_title" text="Mini HUD"/>	
+    <text name="CP_help_page_minihud_general_title" text="Funções gerais"/>
+    <text name="CP_help_page_minihud_general_text" text="
+R: Segure o botão esquerdo do mouse no título para arrastar o HUD para a posição desejada. No lado direito é mostrada a versão instalada e o X fechará o HUD com um clique do mouse.
+B: Clique no ícone Courseplay para acessar as configurações globais.
+C: Nesta posição é apresentado o nome do seu veículo. Clicar nele o levará ao menu de configurações do veículo.
+D: Esses símbolos servem para: (1) excluir o curso atualmente carregado, (2a) alternar como o curso será exibido, (2b) se nenhum curso estiver carregado, um botão de gravação é mostrado para gravar um curso na borda do campo, (3 ) para iniciar ou parar o auxiliar.
+E: Este ícone de alvo possui opções diferentes dependendo do modo selecionado, ele abre o Menu AI com o trabalho e pode colocar marcador e configurações adicionais para o trabalho. No lado esquerdo do ícone, com um trabalho de campo em execução, é mostrado o tempo restante do curso.
+F: Clique no texto para alternar os modos disponíveis para suas ferramentas atuais.
+G: As configurações mostradas nesta linha dependem do trabalho atual. Isso será explicado com as fotos a seguir.
+"/>
+<text name="CP_help_page_minihud_fieldwork_title" text="Trabalho de campo"/>
+    <text name="CP_help_page_minihud_fieldwork_text" text="
+R: Clique para selecionar onde iniciar o trabalho. Se um curso multiferramenta estiver carregado, no lado direito você pode selecionar a pista.
+B: Exibe o nome do curso carregado. Se você acabou de gerar um curso, ele mostra 'curso temporário'. No lado direito você verá os waypoints atuais/totais assim que o trabalho for iniciado.
+C: Clicar no texto recalculará a largura de trabalho, ou você pode configurá-la manualmente à direita clicando em +/-, ou com a roda do mouse sobre o número.
+D: Algumas ferramentas precisam de um deslocamento lateral. O Courseplay irá calculá-lo automaticamente ao clicar no texto, ou você pode alterá-lo manualmente, assim como a largura de trabalho.
+E: Use o símbolo do lado direito para copiar o curso atual para a área de transferência. O nome do curso copiado é mostrado à esquerda. Você pode carregar o percurso copiado em outro veículo que ainda não tenha percurso. Para remover o curso da área de transferência, clique no símbolo de remoção.
+"/>
+    <text name="CP_help_page_minihud_combineunload_title" text="Descarregador de Colheitadeira"/>
+    <text name="CP_help_page_minihud_combineunload_text" text="
+R: Selecione que tipo de veículo o trabalhador deve descarregar. Isto é útil se você tiver tipos diferentes, como uma colheitadeira e uma carregadeira como a ROPA Maus trabalhando no mesmo campo.
+B: Defina o nível de enchimento (40% - 100%) que o trabalhador deve dirigir até o local de descarga. Clique em +/- ou use a roda de rolagem sobre o número para alterar.
+C: Às vezes, a posição do descarregador sob o tubo não é perfeita. Isto pode ser devido ao reboque ou à tubulação da colheitadeira, às vezes causado pela inclinação do campo. Você pode corrigir manualmente a distância até a colheitadeira aqui.
+D: O mesmo que acima, mas aqui você pode ajustar a posição do descarregador em relação ao tubo para frente ou para trás.
+E: Semelhante a copiar um percurso, aqui você pode copiar as posições dos marcadores para outro veículo.
+"/>
+    <text name="CP_help_page_minihud_balecollect_title" text="Coletar/embrulhar fardos"/>
+    <text name="CP_help_page_minihud_balecollect_text" text="
+R: Fardos restantes no campo.
+B: Tipo de fardos a recolher/embalar.
+C: Deslocamento entre a linha central do trator e a linha central do braço da carregadeira. Pode ser necessário ajustar isso para tratores maiores (por exemplo, com pneus mais largos).
+"/>
+    <text name="CP_help_page_minihud_siloloader_title" text="Carregador de Silo"/>
+    <text name="CP_help_page_minihud_siloloader_text" text="
+A: Tamanho restante da pilha em litros.
+B: Largura de trabalho igual à do trabalho de campo.
+C: O Courseplay precisa da altura exata do balde acima do solo definida corretamente. Como esta altura pode ser diferente para cada ferramenta, você pode verificá-la e ajustá-la com esta configuração.
+D: Assim como no descarregador, você pode copiar as posições dos marcadores para outro veículo.
+"/>
+    <text name="CP_help_page_minihud_siloworker_title" text="Trabalhador de Silo"/>
+    <text name="CP_help_page_minihud_siloworker_text" text="
+R: Semelhante ao carregador de silo, a altura do nivelador é crítica. Você pode ajustá-lo aqui.
+B: Mostra o andamento da compactação. Clicando nele, alterna a opção de parar o driver quando atingir a compactação total. Clicando nele, alterna a opção de parar o driver quando atingir a compactação total.
+C: Você pode alterar a largura de trabalho quando necessário aqui.
+D: Esta configuração informa ao trabalhador para esperar no silo ou em uma posição de estacionamento selecionada quando um descarregador se aproxima do silo.
 "/>
     <text name="CP_help_page_customField_title" text="Campo Customizado"/>
     <text name="CP_help_page_customFieldRecord_text" text="
@@ -646,8 +672,8 @@ Inicie a gravação na borda do campo.
 Uma vez feito, pressione o botão novamente e você será perguntado se deseja salvá-lo.
 "/>
     <text name="CP_help_page_customFieldDone_text" text="
-No Menu AI, você verá sua borda de campo gravada.
-Ao clicar no nome, você terá a opção de excluí-lo ou renomeá-lo.
+As bordas do campo personalizado serão exibidas no menu AI.
+Ao clicar no nome você terá a opção de excluí-lo, renomeá-lo ou editá-lo com o Editor.
 "/>
     <text name="CP_help_page_customFieldDraw_text" text="
 A segunda opção é desenhar o campo customizado no mapa do menu AI.
@@ -677,7 +703,7 @@ Além disso, o recurso de comboio também é aplicado quando, por exemplo, uma e
 A configuração do veículo de distância do comboio altera a distância entre os veículos.
 A distância de todos os veículos com o mesmo noma da rota será automaticamente definida para o valor mais alto de todos os veículos do comboio.
 "/>
-    <text name="CP_help_page_wrapCollect_title" text="Fardos coletar e embalar"/>
+    <text name="CP_help_page_wrapCollect_title" text="Embalagem e coleta de fardos"/>
     <text name="CP_help_page_wrapCollectBasic_text" text="
 O embrulho e a coleta dos fardos podem ser feitos de duas maneiras diferentes.
 A primeira é carregar o mesmo percurso que você usou para sua enfardadeira e deixar a embaladora ou coletor executar esse percurso.
@@ -690,7 +716,7 @@ O contador no HUD mostra os fardos restantes no campo desde a última varredura.
     <text name="CP_help_page_wrapBasic_text" text="
 Embalar fardos é muito simples. Carregue uma rota da sua enfardadeira e comece como qualquer outro trabalho de campo, ou sem uma rota,
 inicie-o com o fardos coletar/embalar no HUD ou no Menu AI.
-  "/>
+"/>
     <text name="CP_help_page_wrapFunction_text" text="
 Ao usar uma rota, o motorista dirige com um deslocamento predefinido para que a coleta das embalagens esteja no meio da rota.
 Sem uma rota, o Courseplay examina o campo em busca de fardos desembalados e usa o pathfinder para encontrar uma maneira de
@@ -722,7 +748,7 @@ Sem mudança simétrica: esquerda, direita, esquerda, direita - é quase como pu
 Com mudança simétrica: esquerda, direita, direita, esquerda - da esquerda para a direita, uma faixa após a outra.
 No exemplo com a colheitadeira, significa que nenhuma colheitadeira terá frutas à esquerda e à direita de sua faixa.
 "/>
-    <text name="CP_help_page_infoPanel_title" text="Painel Info"/>
+    <text name="CP_help_page_infoPanel_title" text="Painel de Informações"/>
     <text name="CP_help_page_infoPanelBasic_text" text="
 Este é o nosso Painel de Informações, ele pode ser movido com o mouse, assim como nosso Mini HUD.
 Além do nome e da versão do nosso Mod, também mostra informações de status sobre os veículos no CP.
@@ -777,7 +803,7 @@ Os implementos vêm com um deslocamento para o trator, para que o trator se mova
 O pulverizador trabalha próximo às videiras, por isso deve dirigir para a esquerda ou para a direita das videiras.
 Como o pulverizador pode trabalhar nas videiras esquerda e direita ao mesmo tempo, podemos pular uma fileira.
 "/>
-    <text name="CP_help_page_editor_title" text="Editor rota"/>
+    <text name="CP_help_page_editor_title" text="Editor de rota"/>
     <text name="CP_help_page_editorGeneral_text" text="
 O editor de rotas pode ser usado para editar rotas e campos customizados.
 As rotas carregadas serão salvos/substituídos automaticamente, quando o editor for fechado.
@@ -791,10 +817,10 @@ A edição incorreta pode causar problemas para o motorita cp, pois os waypoints
 "/>
     <text name="CP_help_page_editorBasic_text" text="
 Na categoria básica estão:
-1) O pincel de movimento move um waypoint pairado para a posição do pincel.
-2) O pincel de inserção pode inserir waypoints à frente ou atrás de um waypoint selecionado.
+1) Movendo um waypoint capturado.
+2) Inserir waypoints à frente ou atrás do waypoint em que você clicou.
 
-A exclusão de waypoints pode ser feita com o botão vermelho delete.
+A exclusão de waypoints pode ser feita com o botão vermelho de exclusão.
 "/>
     <text name="CP_help_page_editorAdvanced_text" text="
 Na categoria avançada estão:
@@ -809,7 +835,7 @@ Para desmarcar os waypoints, clique com o botão direito do mouse.
 Assim como mover mais waypoints, marque 2 waypoints, então segure o botão esquerdo do mouse e mova o mouse.
 Atenção: Assim que você soltar o botão do mouse, os waypoints serão definidos, isso não pode ser desfeito! (é claro que você pode excluir esses waypoints.)
  "/>
-    <text name="CP_help_page_unloader_title" text="Colheitadeira descarrega"/>
+    <text name="CP_help_page_unloader_title" text="Descarregador de Colheitadeira"/>
     <text name="CP_help_page_unloaderGeneral_text" text="
 O modo de descarregar do Courseplay funciona com praticamente todas as colheitadeiras e as com reboques.
 Não funciona com choppers.
@@ -847,13 +873,13 @@ Se não houver carreta disponível, ela continuará a descarregar a colheitadeir
 "/>
     <text name="CP_help_page_unloaderFieldUnload_title" text="Decarregar no campo"/>
     <text name="CP_help_page_unloaderFieldUnload_text" text="
-A posição de descarrgar pode ser selecionada com o marcador de descarregar.
+A posição de descarga pode ser selecionada com o marcador de descarga.
+A descarga no campo deve estar ativada.
 A posição precisa estar no mesmo campo ou perto da borda do campo.
-Se o marcador apontar para um monte já existente,
-então este monte é usado para descarregar.
-A direção do marcador é usada para a direção de descarregar.
-Além disso, para carretas, um lado de tombamento precisa ser selecionado.
-																					
+Se o marcador apontar para um heap já existente, 
+então esse heap é usado para descarregar.
+A direção do marcador é usada para a direção de descarga.
+Em alguns reboques, o lado da ponta pode ser alternado entre a parte traseira e a porta de grãos.
 "/>
     <text name="CP_help_page_bunker_title" text="Trabalhar no silo bunker"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
@@ -885,7 +911,7 @@ Para iniciar, o marcador de carregamento no menu AI precisa ser definido.
 O marcador detecta montes ou silos e os destaca no mapa.
 Agora é possível iniciar o auxiliar.
 "/>
-    <text name="CP_help_page_shovelLoader_title" text="Wheelloader Driver"/>
+    <text name="CP_help_page_shovelLoader_title" text="Carregadeira de rodas/Carregadeira frontal"/>
     <text name="CP_help_page_shovelLoaderGeneral_text" text="
 Este modo habilita carregadeiras de rodas e tratores com carregador frontal.
 Com uma pá acoplada, uma pilha pode ser retirada do solo ou o carregamento de um silo pode ser realizado.
@@ -931,6 +957,7 @@ Agora sua seleção deve ser semelhante à imagem.
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Mostrar canal de debug sim/não."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Abrir mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Iniciar/parar motorista"/>
+    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Mudar o serviço selecionado atual"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Mudar ponto inicial"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: Limpa a rota atual"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Exibir a rota atual do veículo"/>
