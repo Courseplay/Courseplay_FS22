@@ -620,7 +620,7 @@ As pastas devem estar vazios se você quiser excluí-los.
     <text name="CP_help_page_minihud_title" text="Mini HUD"/>	
     <text name="CP_help_page_minihud_general_title" text="Funções gerais"/>
     <text name="CP_help_page_minihud_general_text" text="
-R: Segure o botão esquerdo do mouse no título para arrastar o HUD para a posição desejada. No lado direito é mostrada a versão instalada e o X fechará o HUD com um clique do mouse.
+A: Segure o botão esquerdo do mouse no título para arrastar o HUD para a posição desejada. No lado direito é mostrada a versão instalada e o X fechará o HUD com um clique do mouse.
 B: Clique no ícone Courseplay para acessar as configurações globais.
 C: Nesta posição é apresentado o nome do seu veículo. Clicar nele o levará ao menu de configurações do veículo.
 D: Esses símbolos servem para: (1) excluir o curso atualmente carregado, (2a) alternar como o curso será exibido, (2b) se nenhum curso estiver carregado, um botão de gravação é mostrado para gravar um curso na borda do campo, (3 ) para iniciar ou parar o auxiliar.
@@ -630,7 +630,7 @@ G: As configurações mostradas nesta linha dependem do trabalho atual. Isso ser
 "/>
 <text name="CP_help_page_minihud_fieldwork_title" text="Trabalho de campo"/>
     <text name="CP_help_page_minihud_fieldwork_text" text="
-R: Clique para selecionar onde iniciar o trabalho. Se um curso multiferramenta estiver carregado, no lado direito você pode selecionar a pista.
+A: Clique para selecionar onde iniciar o trabalho. Se um curso multiferramenta estiver carregado, no lado direito você pode selecionar a pista.
 B: Exibe o nome do curso carregado. Se você acabou de gerar um curso, ele mostra 'curso temporário'. No lado direito você verá os waypoints atuais/totais assim que o trabalho for iniciado.
 C: Clicar no texto recalculará a largura de trabalho, ou você pode configurá-la manualmente à direita clicando em +/-, ou com a roda do mouse sobre o número.
 D: Algumas ferramentas precisam de um deslocamento lateral. O Courseplay irá calculá-lo automaticamente ao clicar no texto, ou você pode alterá-lo manualmente, assim como a largura de trabalho.
@@ -638,7 +638,7 @@ E: Use o símbolo do lado direito para copiar o curso atual para a área de tran
 "/>
     <text name="CP_help_page_minihud_combineunload_title" text="Descarregador de Colheitadeira"/>
     <text name="CP_help_page_minihud_combineunload_text" text="
-R: Selecione que tipo de veículo o trabalhador deve descarregar. Isto é útil se você tiver tipos diferentes, como uma colheitadeira e uma carregadeira como a ROPA Maus trabalhando no mesmo campo.
+A: Selecione que tipo de veículo o trabalhador deve descarregar. Isto é útil se você tiver tipos diferentes, como uma colheitadeira e uma carregadeira como a ROPA Maus trabalhando no mesmo campo.
 B: Defina o nível de enchimento (40% - 100%) que o trabalhador deve dirigir até o local de descarga. Clique em +/- ou use a roda de rolagem sobre o número para alterar.
 C: Às vezes, a posição do descarregador sob o tubo não é perfeita. Isto pode ser devido ao reboque ou à tubulação da colheitadeira, às vezes causado pela inclinação do campo. Você pode corrigir manualmente a distância até a colheitadeira aqui.
 D: O mesmo que acima, mas aqui você pode ajustar a posição do descarregador em relação ao tubo para frente ou para trás.
@@ -646,7 +646,7 @@ E: Semelhante a copiar um percurso, aqui você pode copiar as posições dos mar
 "/>
     <text name="CP_help_page_minihud_balecollect_title" text="Coletar/embrulhar fardos"/>
     <text name="CP_help_page_minihud_balecollect_text" text="
-R: Fardos restantes no campo.
+A: Fardos restantes no campo.
 B: Tipo de fardos a recolher/embalar.
 C: Deslocamento entre a linha central do trator e a linha central do braço da carregadeira. Pode ser necessário ajustar isso para tratores maiores (por exemplo, com pneus mais largos).
 "/>
@@ -659,7 +659,7 @@ D: Assim como no descarregador, você pode copiar as posições dos marcadores p
 "/>
     <text name="CP_help_page_minihud_siloworker_title" text="Trabalhador de Silo"/>
     <text name="CP_help_page_minihud_siloworker_text" text="
-R: Semelhante ao carregador de silo, a altura do nivelador é crítica. Você pode ajustá-lo aqui.
+A: Semelhante ao carregador de silo, a altura do nivelador é crítica. Você pode ajustá-lo aqui.
 B: Mostra o andamento da compactação. Clicando nele, alterna a opção de parar o driver quando atingir a compactação total. Clicando nele, alterna a opção de parar o driver quando atingir a compactação total.
 C: Você pode alterar a largura de trabalho quando necessário aqui.
 D: Esta configuração informa ao trabalhador para esperar no silo ou em uma posição de estacionamento selecionada quando um descarregador se aproxima do silo.
@@ -840,6 +840,7 @@ Atenção: Assim que você soltar o botão do mouse, os waypoints serão definid
 O modo de descarregar do Courseplay funciona com praticamente todas as colheitadeiras e as com reboques.
 Não funciona com choppers.
 Você pode usar uma carreta comum ou uma bazuca (aquela com cano) para descarregar uma colheitadeira.
+
 Para descarregar uma carreta, você pode usar o Giants Helper ou o AutoDrive.
 Iniciar o descarregador requer algumas coisas:
 - Você precisa ter uma única carreta ou bazuca. várias carretas não são suportadas.
