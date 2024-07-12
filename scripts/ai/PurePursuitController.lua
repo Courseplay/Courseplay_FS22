@@ -165,11 +165,21 @@ end
 -- TODO: make this more generic and allow registering multiple listeners?
 -- could also implement listeners for events like notify me when within x meters of a waypoint, etc.
 function PurePursuitController:registerListeners(waypointListener, onWaypointPassedFunc, onWaypointChangeFunc)
-	-- for backwards compatibility, PPC currently is initialized by the legacy code so
-	-- by the time AIDriver takes over, it is already there. So let AIDriver tell PPC who's driving.
 	self.waypointListener = waypointListener
 	self.waypointPassedListenerFunc = onWaypointPassedFunc
 	self.waypointChangeListenerFunc = onWaypointChangeFunc
+end
+
+function PurePursuitController:saveRegisteredListeners()
+	self.savedWaypointListener = self.waypointListener
+	self.savedWaypointPassedListenerFunc = self.waypointPassedListenerFunc
+	self.savedWaypointChangeListenerFunc = self.waypointChangeListenerFunc
+end
+
+function PurePursuitController:restoreRegisteredListeners()
+	self.waypointListener = self.savedWaypointListener
+	self.waypointPassedListenerFunc = self.savedWaypointPassedListenerFunc
+	self.waypointChangeListenerFunc = self.savedWaypointChangeListenerFunc
 end
 
 function PurePursuitController:setLookaheadDistance(d)

@@ -113,8 +113,8 @@ function Waypoint.initFromGeneratedWp(wp, ix)
 	waypoint.z = -wp.y
 	waypoint.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, waypoint.x, 0, waypoint.z)
 	local a = wp:getAttributes()
-	waypoint.turnStart = a:isRowEnd()
-	waypoint.turnEnd = a:isRowStart()
+	waypoint.turnStart = a:isRowEnd() or a:shouldUsePathfinderToNextWaypoint()
+	waypoint.turnEnd = a:isRowStart() or a:shouldUsePathfinderToThisWaypoint()
 	waypoint.headlandTurn = a:isHeadlandTurn()
 	waypoint.isConnectingTrack = a:isOnConnectingPath()
 	waypoint.lane = a:getHeadlandPassNumber() and -a:getHeadlandPassNumber()
@@ -145,6 +145,7 @@ function Waypoint.initFromXmlFile(data,ix)
 	waypoint.rowNumber = data[7]
 	waypoint.ridgeMarker = data[8]
 	waypoint.rev = data[9]
+	waypoint.headlandTurn = data[10]
 	return waypoint
 end
 
@@ -163,6 +164,7 @@ function Waypoint:getXmlString()
 		self.rowNumber or "-",
 		self.ridgeMarker or "-",
 		self.rev or "-",
+		self.headlandTurn or "-"
 	}
 	return CpUtil.getXmlVectorString(v)
 end
