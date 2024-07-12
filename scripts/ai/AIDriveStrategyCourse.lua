@@ -573,9 +573,8 @@ function AIDriveStrategyCourse:limitSpeed()
     end
 end
 
---- Start a course and continue with nextCourse at ix when done
----@param tempCourse Course
----@param nextCourse Course
+--- Start a course at waypoint ix
+---@param course Course
 ---@param ix number
 function AIDriveStrategyCourse:startCourse(course, ix)
     self:debug('Starting a course, at waypoint %d (of %d).', ix, course:getNumberOfWaypoints())

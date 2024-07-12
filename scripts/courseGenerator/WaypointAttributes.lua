@@ -80,8 +80,9 @@ end
 
 --- Is this waypoint on a connecting path, that is, a section connecting the headlands to the
 --- first waypoint of the up/down rows (or vica versa), or a section connecting two blocks.
---- In general, the driver should lift their implements and follow this path, maybe removing the
---- first and the last waypoint of it to make room to maneuver, and use the pathfinder when transitioning
+--- In general, after working the last waypoint before the first connecting path waypoint,
+--- the driver should lift their implements and follow this path, optionally skipping the
+--- waypoints at the beginning and end of it to make room to maneuver, and use the pathfinder when transitioning
 --- to or from this section. For instance, if this path leads to the first up/down row, the generator
 --- cannot guarantee that there are no obstacles (like a small island) between the last waypoint
 --- of this path and the first up/down waypoint.

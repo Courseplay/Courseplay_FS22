@@ -435,6 +435,15 @@ function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix, course)
             self:startTurn(ix)
         end
     elseif self.state == self.states.WORKING then
+        if self.course:isOnConnectingTrack(ix + 1) then
+            self:debug('finishing work before starting on the connecting path')
+            local fm, bm = self:getFrontAndBackMarkers()
+            self.turnContext = RowStartOrFinishContext(self.vehicle, self.course, ix, ix, self.turnNodes, self:getWorkWidth(),
+                    fm, bm, 0, 0)
+            self.aiTurn = FinishRowOnly(self.vehicle, self, self.ppc, self.proximityController, self.turnContext)
+            self.aiTurn:registerTurnEndCallback(self, AIDriveStrategyFieldWorkCourse.startConnectingPath)
+            self.state = self.states.TURNING
+        end
         -- towards the end of the field course make sure the implement reaches the last waypoint
         -- TODO: this needs refactoring, for now don't do this for temporary courses like a turn as it messes up reversing
         if ix > self.course:getNumberOfWaypoints() - 3 and not self.course:isTemporary() then
@@ -505,15 +514,11 @@ end
 
 -- switch back to fieldwork after the turn ended.
 ---@param ix number waypoint to resume fieldwork after
----@param forceIx boolean|nil if true, fieldwork will resume exactly at ix. If false, we'll look for the next waypoint
---- in front of us.
-function AIDriveStrategyFieldWorkCourse:resumeFieldworkAfterTurn(ix, forceIx)
+function AIDriveStrategyFieldWorkCourse:resumeFieldworkAfterTurn(ix)
     self.ppc:setNormalLookaheadDistance()
     self:startWaitingForLower()
     self:lowerImplements()
-    -- restore our own listeners for waypoint changes
-    self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
-    local startIx = forceIx and ix or self.fieldWorkCourse:getNextFwdWaypointIxFromVehiclePosition(ix,
+    local startIx = self.fieldWorkCourse:getNextFwdWaypointIxFromVehiclePosition(ix,
             self.vehicle:getAIDirectionNode(), self.workWidth / 2)
     self:startCourse(self.fieldWorkCourse, startIx)
 end
@@ -647,6 +652,14 @@ function AIDriveStrategyFieldWorkCourse:onPathfindingDoneToReturnToStart(path)
                 g_currentMission.time - (self.pathfindingStartedAt or 0))
         self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
     end
+end
+
+function AIDriveStrategyFieldWorkCourse:startConnectingPath(ix)
+    -- ix was the last waypoint to work before the connecting path, ix + 1 is the first on the connecting path
+    self:debug('on a connecting path now at waypoint %d, raising implements.', ix + 1)
+    self:raiseImplements()
+    self:startCourse(self.fieldWorkCourse, ix + 1)
+    self.state = self.states.ON_CONNECTING_TRACK
 end
 
 -----------------------------------------------------------------------------------------------------------------------

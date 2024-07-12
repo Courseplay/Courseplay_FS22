@@ -65,6 +65,7 @@ function AITurn:init(vehicle, driveStrategy, ppc, proximityController, turnConte
     self.proximityController = proximityController
     self.proximityController:registerBlockingObjectListener(self, AITurn.onBlocked)
     -- turn handles its own waypoint changes
+    self.ppc:saveRegisteredListeners()
     self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
     ---@type TurnContext
     self.turnContext = turnContext
@@ -83,6 +84,15 @@ end
 
 function AITurn:debug(...)
     CpUtil.debugVehicle(self.debugChannel, self.vehicle, self.name .. ' state: ' .. self.state.name .. ' ' .. string.format(...))
+end
+
+--- Register a function to call when the turn ends. If no function is registered, calls
+--- self.driveStrategy:resumeFieldworkAfterTurn() by default
+---@param callbackObject table default is
+---@param callbackFunction function(object: table, ix) where ix is the index of the turn end waypoint. Default is
+function AITurn:registerTurnEndCallback(callbackObject, callbackFunction)
+    self.callbackObject = callbackObject
+    self.callbackFunction = callbackFunction
 end
 
 --- Start the actual turn maneuver after the row is finished
@@ -265,11 +275,18 @@ function AITurn:endTurn(dt)
 end
 
 --- Give back control the the drive strategy
-function AITurn:resumeFieldworkAfterTurn(ix, forceIx)
+function AITurn:resumeFieldworkAfterTurn(ix)
     if self.proximityController then
         self.proximityController:unregisterBlockingObjectListener()
     end
-    self.driveStrategy:resumeFieldworkAfterTurn(ix, forceIx)
+    -- restore the strategies' listeners
+    self.ppc:restoreRegisteredListeners()
+    if self.callbackFunction and self.callbackObject then
+        self:debug('Triggering turn end callback function')
+        self.callbackFunction(self.callbackObject, ix)
+    else
+        self.driveStrategy:resumeFieldworkAfterTurn(ix)
+    end
 end
 
 function AITurn:drawDebug()
@@ -933,24 +950,14 @@ end
 ---@class FinishRowOnly : AITurn
 FinishRowOnly = CpObject(AITurn)
 
----@param callbackObject table|nil
----@param callbackFunction function|nil member function of callbackObject to call after the row is finished. If
---- object and function is nil, just resume fieldwork.
-function FinishRowOnly:init(vehicle, driveStrategy, ppc, proximityController, turnContext, callbackObject, callbackFunction)
+function FinishRowOnly:init(vehicle, driveStrategy, ppc, proximityController, turnContext)
     AITurn.init(self, vehicle, driveStrategy, ppc, proximityController, turnContext, 0, 'FinishRow')
-    self.callbackObject = callbackObject
-    self.callbackFunction = callbackFunction
 end
 
 -- don't perform the actual turn, just give back control to the strategy
 function FinishRowOnly:startTurn()
-    if self.callbackFunction and self.callbackObject then
-        self:debug('Row finished, triggering callback function')
-        self.callbackFunction(self.callbackObject)
-    else
-        self:debug('Row finished, no callback supplied, so resuming fieldwork')
-        self:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
-    end
+    self:debug('Row finished, ending turn')
+    self:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
 end
 
 --- A turn which really isn't a turn just a course to start a field work row using the supplied course and
