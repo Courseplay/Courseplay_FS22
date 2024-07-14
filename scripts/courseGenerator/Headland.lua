@@ -156,8 +156,11 @@ function Headland:connectTo(other, ix, workingWidth, turningRadius, headlandFirs
         return not v:getAttributes():isIslandBypass()
     end
     local transitionPathTypes = self:_getTransitionPathTypes(headlandFirst)
+    -- limit the minimum turning radius being used as with very wide working widths, the tip of the tool
+    -- may move backwards, leaving unworked areas
+    local radius = math.max(workingWidth / 2, turningRadius)
     -- determine the theoretical minimum length of the transition (depending on the width and radius)
-    local transitionLength = CourseGenerator.HeadlandConnector.getTransitionLength(workingWidth, turningRadius)
+    local transitionLength = CourseGenerator.HeadlandConnector.getTransitionLength(workingWidth, radius)
     local transition = self:_continueUntilStraightSection(ix, transitionLength)
     -- index on the other polygon closest to the location where the transition will start
     local otherClosest = other:getPolygon():findClosestVertexToPoint(self.polygon:at(ix + #transition), ignoreIslandBypass)
@@ -175,10 +178,10 @@ function Headland:connectTo(other, ix, workingWidth, turningRadius, headlandFirs
                     self.polygon:at(ix + #transition):getExitEdge():getBaseAsState3D(),
                     other.polygon:at(transitionEndIx):getExitEdge():getBaseAsState3D(),
                     -- enable any path type on the very last try
-                    turningRadius, i < tries and transitionPathTypes or nil)
+                    radius, i < tries and transitionPathTypes or nil)
             CourseGenerator.addDebugPolyline(Polyline(connector))
             -- maximum length without loops
-            local maxPlausiblePathLength = workingWidth + 4 * turningRadius
+            local maxPlausiblePathLength = workingWidth + 4 * radius
             if length < maxPlausiblePathLength or i == tries then
                 -- the whole transition is the straight section on the current headland and the actual connector between
                 -- the current and the next

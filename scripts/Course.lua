@@ -386,7 +386,7 @@ function Course:isForwardOnly()
 end
 
 function Course:isTurnStartAtIx(ix)
-    return self.waypoints[ix]:isTurnStart() or self.waypoints[ix + 1]:isHeadlandTurn()
+    return self.waypoints[ix]:isTurnStart() or (self.waypoints[ix + 1] and self.waypoints[ix + 1]:isHeadlandTurn())
 end
 
 function Course:isTurnEndAtIx(ix)

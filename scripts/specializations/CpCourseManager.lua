@@ -347,17 +347,6 @@ function CpCourseManager:drawCpCoursePlot(map, isHudMap)
 end
 
 function CpCourseManager:onDraw()
-    --- Draw debug information of the generated fieldwork course.
-    local course = self:getFieldWorkCourse()
-    if course then 
-        if CpDebug:isChannelActive(CpDebug.DBG_COURSES, self) then
-            local info = {
-                title = self:getCurrentCpCourseName(),
-                content = course:getDebugTable()
-            }
-            CpDebug:drawVehicleDebugTable(self,{info})
-        end
-    end
 end
 
 function CpCourseManager:onCpDrawHudMap(map)

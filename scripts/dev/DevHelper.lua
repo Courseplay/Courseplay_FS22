@@ -69,6 +69,7 @@ function DevHelper:update()
     end
 
     self.yRot = math.atan2( lx, lz )
+    self.data.xyDeg = math.deg(CpMathUtil.angleFromGame(self.yRot))
     self.data.yRotDeg = math.deg(self.yRot)
     local _, yRot, _ = getWorldRotation(self.node)
     self.data.yRotFromRotation = math.deg(yRot)

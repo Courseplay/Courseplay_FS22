@@ -218,6 +218,7 @@ function PathfinderController:handleFailedPathfinding(result)
             self:debug("Max number of retries already reached!")
         end
     end
+    -- TODO: make failed callback mandatory and call success only on real success?
     self:callCallback(self.callbackSuccessFunction, false, nil, result.goalNodeInvalid)
 end
 
