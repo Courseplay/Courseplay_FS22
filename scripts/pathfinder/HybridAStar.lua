@@ -477,9 +477,6 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
         analyticPath, analyticSolutionLength, pathType = self:getAnalyticPath(start, goal, turnRadius, allowReverse, hitchLength)
         if self:isPathValid(analyticPath) then
             self:debug('Found collision free analytic path (%s) from start to goal', pathType)
-            for _, p in ipairs(analyticPath) do
-                self:debug('%s', p)
-            end
             return true, analyticPath
         end
         self:debug('Length of analytic solution is %.1f', analyticSolutionLength)
