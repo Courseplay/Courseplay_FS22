@@ -256,12 +256,25 @@ function PurePursuitController:update()
 		self:debugSparse('no course set.')
 		return
 	end
+	self:showDebugTable()
 	self:switchControlledNode()
 	self:findRelevantSegment()
 	self:findGoalPoint()
 	self.course:setCurrentWaypointIx(self.currentWpNode.ix)
 	self.course:setLastPassedWaypointIx(self.lastPassedWaypointIx)
 	self:notifyListeners()
+end
+
+function PurePursuitController:showDebugTable()
+	if self.course then
+		if CpDebug:isChannelActive(CpDebug.DBG_COURSES, self.vehicle) then
+			local info = {
+				title = self.course:getName(),
+				content = self.course:getDebugTable()
+			}
+			CpDebug:drawVehicleDebugTable(self.vehicle,{info})
+		end
+	end
 end
 
 function PurePursuitController:notifyListeners()

@@ -423,6 +423,17 @@ function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix, course)
         end
         self:startTurn(ix)
     elseif self.state == self.states.ON_CONNECTING_TRACK then
+        if ix == self.course:getNumberOfWaypoints() then
+            self:debug('End of connecting track, back to work, first lowering implements.')
+            self:startWaitingForLower()
+            self:lowerImplements()
+            local fm, bm = self:getFrontAndBackMarkers()
+            self.turnContext = RowStartOrFinishContext(self.vehicle, self.course, ix, ix, self.turnNodes, self:getWorkWidth(),
+                    fm, bm, 0, 0)
+            self.aiTurn = FinishRowOnly(self.vehicle, self, self.ppc, self.proximityController, self.turnContext)
+            self.aiTurn:registerTurnEndCallback(self, AIDriveStrategyFieldWorkCourse.startConnectingPath)
+            self.state = self.states.TURNING
+        end
         if not self.course:isOnConnectingTrack(ix) then
             -- reached the end of the connecting track, back to work
             self:debug('connecting track ended, back to work, first lowering implements.')
@@ -654,12 +665,61 @@ function AIDriveStrategyFieldWorkCourse:onPathfindingDoneToReturnToStart(path)
     end
 end
 
+-----------------------------------------------------------------------------------------------------------------------
+--- Connecting path
+-----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:startConnectingPath(ix)
     -- ix was the last waypoint to work before the connecting path, ix + 1 is the first on the connecting path
     self:debug('on a connecting path now at waypoint %d, raising implements.', ix + 1)
     self:raiseImplements()
-    self:startCourse(self.fieldWorkCourse, ix + 1)
-    self.state = self.states.ON_CONNECTING_TRACK
+    -- gather the connecting path waypoints
+    local connectingPath = {}
+    local targetWaypointIx
+    for i = ix + 1, self.fieldWorkCourse:getNumberOfWaypoints() do
+        if self.fieldWorkCourse:isOnConnectingTrack(i) then
+            local x, z = self.fieldWorkCourse:getWaypointPosition(i)
+            table.insert(connectingPath, {x = x, z = z})
+        else
+            targetWaypointIx = i
+            break
+        end
+    end
+    if targetWaypointIx == nil then
+        self:onPathfindingFailedToConnectingPathEnd()
+    else
+        -- set up the turn context for the work starter to use when the pathfinding succeeds
+        local fm, bm = self:getFrontAndBackMarkers()
+        self.turnContext = RowStartOrFinishContext(self.vehicle, self.fieldWorkCourse, targetWaypointIx, targetWaypointIx,
+                self.turnNodes, self:getWorkWidth(), fm, bm, self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
+        local _, steeringLength = AIUtil.getSteeringParameters(self.vehicle)
+        local targetNode, zOffset = self.turnContext:getTurnEndNodeAndOffsets(steeringLength)
+        local context = PathfinderContext(self.vehicle):allowReverse(self:getAllowReversePathfinding())
+        context:preferredPath(connectingPath):mustBeAccurate(true)
+        self.pathfinderController:registerListeners(self, self.onPathfindingDoneToConnectingPathEnd,
+                self.onPathfindingFailedToConnectingPathEnd)
+        self:debug('Connecting path has %d waypoints, start pathfinding to target waypoint is %d, zOffset %.1f',
+                #connectingPath, targetWaypointIx, zOffset)
+        self.pathfinderController:findPathToNode(context, targetNode, 0, zOffset)
+    end
+end
+
+function AIDriveStrategyFieldWorkCourse:onPathfindingFailedToConnectingPathEnd()
+    self:debug('Pathfinding to end of connecting path failed, use the connecting path as is')
+    self.state = self.states.WORKING
+    self:startCourse(self.connectingPathCourse, 1)
+end
+
+function AIDriveStrategyFieldWorkCourse:onPathfindingDoneToConnectingPathEnd(controller, success, course, goalNodeInvalid)
+    if success then
+        self:debug('Pathfinding to end of connecting path finished')
+        course:adjustForTowedImplements(2)
+        self.workStarter = StartRowOnly(self.vehicle, self, self.ppc, self.turnContext, course)
+        self.state = self.states.DRIVING_TO_WORK_START_WAYPOINT
+        self:raiseImplements()
+        self:startCourse(self.workStarter:getCourse(), 1)
+    else
+        self:onPathfindingFailedToConnectingPathEnd()
+    end
 end
 
 -----------------------------------------------------------------------------------------------------------------------

@@ -75,14 +75,11 @@ end
 --- determine the theoretical minimum length of the transition from one headland to another
 ---(depending on the width and radius)
 function HeadlandConnector.getTransitionLength(workingWidth, turningRadius)
-    local transitionLength
-    if turningRadius - workingWidth / 2 < 0.1 then
-        -- can make two half turns within the working width
-        transitionLength = 2 * turningRadius
-    else
-        local alpha = math.abs(math.acos((turningRadius - workingWidth / 2) / turningRadius) / 2)
-        transitionLength = 2 * workingWidth / 2 / math.tan(alpha)
-    end
+    -- the angle between the row and the transition path
+    local alpha = math.abs(math.acos((turningRadius - workingWidth / 2) / turningRadius))
+    -- maximize angle to 60 degrees
+    alpha = math.min(alpha, math.rad(60))
+    local transitionLength = 2 * turningRadius * math.sin(alpha)
     return transitionLength
 end
 ---@class CourseGenerator.HeadlandConnector

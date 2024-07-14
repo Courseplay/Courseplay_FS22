@@ -477,6 +477,9 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
         analyticPath, analyticSolutionLength, pathType = self:getAnalyticPath(start, goal, turnRadius, allowReverse, hitchLength)
         if self:isPathValid(analyticPath) then
             self:debug('Found collision free analytic path (%s) from start to goal', pathType)
+            for _, p in ipairs(analyticPath) do
+                self:debug('%s', p)
+            end
             return true, analyticPath
         end
         self:debug('Length of analytic solution is %.1f', analyticSolutionLength)
@@ -794,10 +797,7 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
         if self.phase == self.ALL_HYBRID then
             if path then
                 -- start and goal near, just one phase, all hybrid, we are done
-                -- remove last waypoint as it is the approximate goal point and may not be aligned
-                local result = Polygon(path)
-                result:space(math.pi / 20, 2)
-                return PathfinderResult(true, result)
+                return PathfinderResult(true, path)
             else
                 self:debug('all hybrid: no path found')
                 return PathfinderResult(true, nil, goalNodeInvalid, self.currentPathfinder.nodes.highestDistance,
