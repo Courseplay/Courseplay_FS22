@@ -390,7 +390,7 @@
     <!---->
     <text name="CP_courseManager_title" text="Gerenciar rota(%s) %s"/>
     <text name="CP_courseManager_no_current_course" text="sem rota"/>
-    <text name="CP_courseManager_temporary_course" text="rota temporária"/>
+    <text name="CP_courseManager_temporary_course" text="rota atual"/>
     <text name="CP_courseManager_change_mode" text="Mudar modo"/>
     <text name="CP_courseManager_load_courses" text="Carregar rota"/>
     <text name="CP_courseManager_save_courses" text="Salvar rota"/>
