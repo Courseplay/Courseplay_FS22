@@ -13,7 +13,7 @@ local Center = CpObject()
 ---@param startLocation Vector location of the vehicle before it starts working on the center.
 ---@param bigIslands CourseGenerator.Island[] islands too big to circle
 function Center:init(context, boundary, headland, startLocation, bigIslands)
-    self.logger = Logger('Center', Logger.level.trace)
+    self.logger = Logger('Center', Logger.level.debug)
     self.context = context
     if headland == nil then
         -- if there are no headlands, we generate a virtual one, from the field boundary
