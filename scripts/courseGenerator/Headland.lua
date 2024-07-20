@@ -156,11 +156,8 @@ function Headland:connectTo(other, ix, workingWidth, turningRadius, headlandFirs
         return not v:getAttributes():isIslandBypass()
     end
     local transitionPathTypes = self:_getTransitionPathTypes(headlandFirst)
-    -- limit the minimum turning radius being used as with very wide working widths, the tip of the tool
-    -- may move backwards, leaving unworked areas
-    local radius = math.max(workingWidth / 2, turningRadius)
     -- determine the theoretical minimum length of the transition (depending on the width and radius)
-    local transitionLength = CourseGenerator.HeadlandConnector.getTransitionLength(workingWidth, radius)
+    local transitionLength, radius = CourseGenerator.HeadlandConnector.getTransitionLength(workingWidth, turningRadius)
     local transition = self:_continueUntilStraightSection(ix, transitionLength)
     -- index on the other polygon closest to the location where the transition will start
     local otherClosest = other:getPolygon():findClosestVertexToPoint(self.polygon:at(ix + #transition), ignoreIslandBypass)

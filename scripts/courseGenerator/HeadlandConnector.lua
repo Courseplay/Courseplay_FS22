@@ -73,14 +73,25 @@ end
 
 
 --- determine the theoretical minimum length of the transition from one headland to another
----(depending on the width and radius)
+---(depending on the width and turning radius)
 function HeadlandConnector.getTransitionLength(workingWidth, turningRadius)
-    -- the angle between the row and the transition path
-    local alpha = math.abs(math.acos((turningRadius - workingWidth / 2) / turningRadius))
-    -- maximize angle to 60 degrees
-    alpha = math.min(alpha, math.rad(60))
-    local transitionLength = 2 * turningRadius * math.sin(alpha)
-    return transitionLength
+    -- the angle between the row and the transition path, with turn radius of the vehicle
+    local alpha = math.acos(math.min(1, math.abs(((turningRadius - workingWidth / 2) / turningRadius))))
+    -- length of the transition calculated from the vehicle's turning radius only, with large widths and
+    -- small radii the connector can reach 90 degrees, making two quarter circles
+    local transitionLengthFromTurningRadius = 2 * turningRadius * math.sin(alpha)
+    -- the maximum radius belonging the the maximum angle
+    local radius = (workingWidth / 2) / math.sin(CourseGenerator.cMaxHeadlandConnectorAngle / 2) /
+            math.sin(CourseGenerator.cMaxHeadlandConnectorAngle) / 2
+    -- and the transition length calculated with that angle
+    local transitionLengthFromMaxAngle = 2 * radius * math.sin(CourseGenerator.cMaxHeadlandConnectorAngle)
+    if transitionLengthFromMaxAngle > transitionLengthFromTurningRadius then
+        -- max angle limits the minimum transition length, use the radius for that angle
+        return transitionLengthFromMaxAngle, radius
+    else
+        -- vehicle's turning radius limits the minimum transition length
+        return transitionLengthFromTurningRadius, turningRadius
+    end
 end
 ---@class CourseGenerator.HeadlandConnector
 CourseGenerator.HeadlandConnector = HeadlandConnector

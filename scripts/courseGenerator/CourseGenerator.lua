@@ -44,6 +44,10 @@ CourseGenerator.cSmallBlockRowPercentageLimit = 5
 -- will just simple drive around it. No rows intersecting the island will be split at the island.
 CourseGenerator.maxRowsToBypassIsland = 5
 
+-- Maximum angle of the transition from one headland to another. This is the angle between the
+-- headland and the transition path.
+CourseGenerator.cMaxHeadlandConnectorAngle = math.rad(35)
+
 --- Return true when running in the game
 -- used by file and log functions to determine how exactly to do things,
 -- for example, io.flush is not available from within the game.
