@@ -36,7 +36,6 @@ function FieldworkContext:init(field, workingWidth, turningRadius, nHeadlands)
     self.logger = Logger('FieldworkContext')
     self.errors = {}
     
-    self.spiralFromInside = false
     self.reverseCourse = false
     self.twoSideHeadland = false
 
@@ -188,12 +187,6 @@ end
 --- down the generation)
 function FieldworkContext:setEnableSmallOverlapsWithHeadland(enableSmallOverlaps)
     self.enableSmallOverlapsWithHeadland = enableSmallOverlaps
-    return self
-end
-
----@param spiralFromInside boolean
-function FieldworkContext:setSpiralFromInside(spiralFromInside)
-    self.spiralFromInside = spiralFromInside
     return self
 end
 
