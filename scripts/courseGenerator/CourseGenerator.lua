@@ -48,6 +48,14 @@ CourseGenerator.maxRowsToBypassIsland = 5
 -- headland and the transition path.
 CourseGenerator.cMaxHeadlandConnectorAngle = math.rad(35)
 
+-- Headland overlap. We make headland passes slightly narrower than the working width, so they overlap
+-- a bit to make sure there are no unworked gaps remaining when maneuvering. This is the overlap in percentage of
+-- the working width.
+CourseGenerator.cHeadlandOverlapPercentage = 5
+
+CourseGenerator.debugPoints = {}
+CourseGenerator.debugPolylines = {}
+
 --- Return true when running in the game
 -- used by file and log functions to determine how exactly to do things,
 -- for example, io.flush is not available from within the game.
@@ -72,9 +80,6 @@ function CourseGenerator.addDebugPoint(v, text, color)
     if CourseGenerator.isRunningInGame() then
         return
     end
-    if not CourseGenerator.debugPoints then
-        CourseGenerator.debugPoints = {}
-    end
     local debugPoint = v:clone()
     debugPoint.debugColor = color
     debugPoint.debugText = text
@@ -97,17 +102,36 @@ function CourseGenerator.addSmallDebugPoint(v, text, color)
     CourseGenerator.debugPoints[#CourseGenerator.debugPoints].small = true
 end
 
---- Add a point to the list of debug points we want to show on the test display
+local lastDebugPolylineAdded = 0
+
+--- Add a line to the list of debug lines we want to show on the test display
 ---@param p Polyline
 ---@param color table|nil color in form of {r, g, b}, each in the 0..1 range
 function CourseGenerator.addDebugPolyline(p, color)
     if CourseGenerator.isRunningInGame() then
-        return
-    end
-    if not CourseGenerator.debugPolylines then
-        CourseGenerator.debugPolylines = {}
+        -- if we haven't added any debug polylines for a while, clear the list to avoid filling the memory
+        if g_time - lastDebugPolylineAdded > 30000 then
+            CourseGenerator.debugPolylines = {}
+        end
+        lastDebugPolylineAdded = g_time
     end
     p.debugColor = color
     table.insert(CourseGenerator.debugPolylines, p)
 end
 
+--- Draw debug polylines in the game
+function CourseGenerator.drawDebugPolylines()
+    if not CourseGenerator.isRunningInGame() then
+        return
+    end
+    for _, p in ipairs(CourseGenerator.debugPolylines) do
+        local color = p.debugColor or {1, 1, 1}
+        for i = 1, #p - 1 do
+            local v1 = p[i]
+            local v2 = p[i + 1]
+            local y1 = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, v1.x, 0, -v1.y)
+            local y2 = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, v2.x, 0, -v2.y)
+            DebugUtil.drawDebugLine(v1.x, y1 + 3.5, -v1.y, v2.x, y2 + 3.5, -v2.y, color[1], color[2], color[3])
+        end
+    end
+end

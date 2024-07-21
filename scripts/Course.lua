@@ -1287,8 +1287,6 @@ end
 function Course:draw()
     for i = 1, self:getNumberOfWaypoints() do
         local x, y, z = self:getWaypointPosition(i)
-        -- TODO_22
-        --cpDebug:drawPoint(x, y + 3, z, 10, 0, 0)
         Utils.renderTextAtWorldPosition(x, y + 3.2, z, tostring(i), getCorrectTextSize(0.012), 0)
         if i < self:getNumberOfWaypoints() then
             local nx, ny, nz = self:getWaypointPosition(i + 1)

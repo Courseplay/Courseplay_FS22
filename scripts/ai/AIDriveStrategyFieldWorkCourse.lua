@@ -24,7 +24,6 @@ AIDriveStrategyFieldWorkCourse = CpObject(AIDriveStrategyCourse)
 
 AIDriveStrategyFieldWorkCourse.myStates = {
     WORKING = {},
-    ON_CONNECTING_TRACK = {},
     WAITING_FOR_LOWER = {},
     WAITING_FOR_LOWER_DELAYED = {},
     WAITING_FOR_STOP = {},
@@ -185,8 +184,6 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         -- if turn tells us which way to go, use that, otherwise just do whatever PPC tells us
         gx, gz = turnGx or gx, turnGz or gz
         if turnMoveForwards ~= nil then moveForwards = turnMoveForwards end
-    elseif self.state == self.states.ON_CONNECTING_TRACK then
-        self:setMaxSpeed(self.settings.fieldSpeed:getValue())
     elseif self.state == self.states.RETURNING_TO_START then
         local isReadyToDrive, blockingVehicle = self.vehicle:getIsAIReadyToDrive()
         if isReadyToDrive or not self.waitingForPrepare:get() then
@@ -237,7 +234,6 @@ end
 function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
 
     local defaultDisabledStates = {
-        self.states.ON_CONNECTING_TRACK,
         self.states.TEMPORARY,
         self.states.TURNING,
         self.states.DRIVING_TO_WORK_START_WAYPOINT
@@ -414,7 +410,6 @@ end
 function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix, course)
     self:calculateTightTurnOffset()
     if not self.state ~= self.states.TURNING
-            and self.state ~= self.states.ON_CONNECTING_TRACK
             and self.course:isTurnStartAtIx(ix) then
         if self.state == self.states.INITIAL then
             self:debug('Waypoint change (%d) to turn start right after starting work, lowering implements.', ix)
@@ -422,31 +417,8 @@ function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix, course)
             self:lowerImplements()
         end
         self:startTurn(ix)
-    elseif self.state == self.states.ON_CONNECTING_TRACK then
-        if ix == self.course:getNumberOfWaypoints() then
-            self:debug('End of connecting track, back to work, first lowering implements.')
-            self:startWaitingForLower()
-            self:lowerImplements()
-            local fm, bm = self:getFrontAndBackMarkers()
-            self.turnContext = RowStartOrFinishContext(self.vehicle, self.course, ix, ix, self.turnNodes, self:getWorkWidth(),
-                    fm, bm, 0, 0)
-            self.aiTurn = FinishRowOnly(self.vehicle, self, self.ppc, self.proximityController, self.turnContext)
-            self.aiTurn:registerTurnEndCallback(self, AIDriveStrategyFieldWorkCourse.startConnectingPath)
-            self.state = self.states.TURNING
-        end
-        if not self.course:isOnConnectingTrack(ix) then
-            -- reached the end of the connecting track, back to work
-            self:debug('connecting track ended, back to work, first lowering implements.')
-            self:startWaitingForLower()
-            self:lowerImplements()
-        elseif self.course:isTurnStartAtIx(ix) and
-                not self.course:isOnConnectingTrack(ix + 1) and
-                not self.course:isOnHeadland(ix + 1) then
-            self:debug('ending connecting track with a turn into the up/down rows')
-            self:startTurn(ix)
-        end
     elseif self.state == self.states.WORKING then
-        if self.course:isOnConnectingTrack(ix + 1) then
+        if self.course:isOnf(ix + 1) then
             self:debug('finishing work before starting on the connecting path')
             local fm, bm = self:getFrontAndBackMarkers()
             self.turnContext = RowStartOrFinishContext(self.vehicle, self.course, ix, ix, self.turnNodes, self:getWorkWidth(),
@@ -466,21 +438,6 @@ function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix, course)
 end
 
 function AIDriveStrategyFieldWorkCourse:onWaypointPassed(ix, course)
-    if self.state == self.states.WORKING then
-        -- check for transition to connecting track, make sure we've been on it for a few waypoints already
-        -- to avoid raising the implements too soon, this can be a problem with long implements not yet reached
-        -- the end of the headland track while the tractor is already on the connecting track
-        if self.course:isOnConnectingTrack(self.course:getCurrentWaypointIx()) and self.course:isOnConnectingTrack(ix) and self.course:isOnConnectingTrack(ix - 2) then
-            -- reached a connecting track (done with the headland, move to the up/down row or vice versa),
-            -- raise all implements while moving
-            self:debug('on a connecting track now, raising implements.')
-            self:raiseImplements()
-            self.state = self.states.ON_CONNECTING_TRACK
-        end
-        self:checkTransitionFromConnectingTrack(ix, course)
-    elseif self.state == self.states.ON_CONNECTING_TRACK then
-        self:checkTransitionFromConnectingTrack(ix, course)
-    end
     if course:isLastWaypointIx(ix) then
         self:onLastWaypointPassed()
     end
@@ -613,22 +570,6 @@ function AIDriveStrategyFieldWorkCourse:startAlignmentTurn(fieldWorkCourse, star
     end
 end
 
-function AIDriveStrategyFieldWorkCourse:checkTransitionFromConnectingTrack(ix, course)
-    if course:isOnConnectingTrack(ix) then
-        -- passed a connecting track waypoint
-        -- check transition from connecting track to the up/down rows
-        -- we are close to the end of the connecting track, transition back to the up/down rows with
-        -- an alignment course
-        local d, firstUpDownWpIx = course:getDistanceToFirstUpDownRowWaypoint(ix)
-        self:debug('up/down rows start in %d meters, at waypoint %d.', d or -1, firstUpDownWpIx or -1)
-        -- (no alignment if there is a turn generated here)
-        if d < 5 * self.turningRadius and firstUpDownWpIx and not course:isTurnEndAtIx(firstUpDownWpIx) then
-            self:debug('End connecting track, start working on up/down rows (waypoint %d) with alignment course if needed.', firstUpDownWpIx)
-            self:startAlignmentTurn(course, firstUpDownWpIx)
-        end
-    end
-end
-
 --- Back to the start waypoint after done
 function AIDriveStrategyFieldWorkCourse:returnToStartAfterDone()
     if not self.pathfinder or not self.pathfinder:isActive() then
@@ -712,10 +653,10 @@ end
 function AIDriveStrategyFieldWorkCourse:onPathfindingDoneToConnectingPathEnd(controller, success, course, goalNodeInvalid)
     if success then
         self:debug('Pathfinding to end of connecting path finished')
-        course:adjustForTowedImplements(2)
         self.workStarter = StartRowOnly(self.vehicle, self, self.ppc, self.turnContext, course)
         self.state = self.states.DRIVING_TO_WORK_START_WAYPOINT
         self:raiseImplements()
+        self.ppc:setShortLookaheadDistance()
         self:startCourse(self.workStarter:getCourse(), 1)
     else
         self:onPathfindingFailedToConnectingPathEnd()
@@ -774,9 +715,8 @@ function AIDriveStrategyFieldWorkCourse:setOffsetX()
 end
 
 function AIDriveStrategyFieldWorkCourse:calculateTightTurnOffset()
-    if self.state == self.states.WORKING or self.state == self.states.DRIVING_TO_WORK_START_WAYPOINT or
-            self.state == self.states.ON_CONNECTING_TRACK then
-        -- when rounding small islands or driving on a connecting track or to start on a course with curves
+    if self.state == self.states.WORKING or self.state == self.states.DRIVING_TO_WORK_START_WAYPOINT then
+        -- when rounding small islands or to start on a course with curves
         self.tightTurnOffset = AIUtil.calculateTightTurnOffset(self.vehicle, self.turningRadius, self.course,
                 self.tightTurnOffset, true)
     else

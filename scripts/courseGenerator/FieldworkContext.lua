@@ -13,6 +13,7 @@ function FieldworkContext:init(field, workingWidth, turningRadius, nHeadlands)
     self.field = field
     self.startLocation = Vector(0, 0)
     self.workingWidth = workingWidth
+    self.headlandWorkingWidth = (1 - CourseGenerator.cHeadlandOverlapPercentage / 100) * workingWidth
     self.turningRadius = turningRadius
 
     self.nHeadlands = nHeadlands
