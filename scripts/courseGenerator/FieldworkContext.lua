@@ -36,8 +36,6 @@ function FieldworkContext:init(field, workingWidth, turningRadius, nHeadlands)
     self.logger = Logger('FieldworkContext')
     self.errors = {}
     
-    self.rowsToSkip = 0
-    self.spiralLandsClockwise = false
     self.spiralFromInside = false
     self.reverseCourse = false
     self.twoSideHeadland = false
@@ -190,18 +188,6 @@ end
 --- down the generation)
 function FieldworkContext:setEnableSmallOverlapsWithHeadland(enableSmallOverlaps)
     self.enableSmallOverlapsWithHeadland = enableSmallOverlaps
-    return self
-end
-
----@param rowsToSkip number how many rows will be skipped before drive in the next one.
-function FieldworkContext:setRowsToSkip(rowsToSkip)
-    self.rowsToSkip = rowsToSkip
-    return self
-end
-
----@param spiralLandsClockwise boolean 
-function FieldworkContext:setSpiralLandsClockwise(spiralLandsClockwise)
-    self.spiralLandsClockwise = spiralLandsClockwise
     return self
 end
 
