@@ -24,6 +24,15 @@
 				<Text>up_down_rows</Text>
 			</Texts>
 		</Setting>
+		<Setting classType="AIParameterSettingList" name="HeadlandsWithRoundCorners" min="0" max="50" default="1">
+		<Setting classType="AIParameterSettingList" name="IslandHeadlands" min="1" max="10" default="1">
+			<Setting classType="AIParameterBooleanSetting" name="headlandClockwise" isExpertModeOnly="true" defaultBoolean="true">
+				<Texts>
+					<Text>counterclockwise</Text>
+					<Text>clockwise</Text>
+				</Texts>
+			</Setting>
+		<Setting classType="AIParameterSettingList" name="fieldCornerRadius" min="1" max="30" default="1">
 		<!-- TODO: refactor to number of rounded headlands -->
 		<Setting classType="AIParameterBooleanSetting" name="headlandCornerType" defaultBoolean="false">
 			<Texts>
@@ -31,12 +40,7 @@
 				<Text>round</Text>
 			</Texts>
 		</Setting>
-		<Setting classType="AIParameterBooleanSetting" name="isClockwise" isExpertModeOnly="true" defaultBoolean="true">
-			<Texts>
-				<Text>counterclockwise</Text>
-				<Text>clockwise</Text>
-			</Texts>
-		</Setting>
+		
 		<Setting classType="AIParameterSettingList" name="headlandOverlapPercent" min="0" max="25" default="7" unit="4" isExpertModeOnly="true"/>
 	</SettingSubTitle>
 	<SettingSubTitle title="center">
@@ -57,6 +61,15 @@
 				<Text>circular</Text>
 			</Texts>
 		</Setting>
+		<Setting classType="AIParameterBooleanSetting" name="CenterClockwise" isExpertModeOnly="true" defaultBoolean="true">
+			<Texts>
+				<Text>counterclockwise</Text>
+				<Text>clockwise</Text>
+			</Texts>
+		</Setting>
+		<Setting classType="AIParameterBooleanSetting" name="evenRowWidth" defaultBoolean="false">
+		<Setting classType="AIParameterBooleanSetting" name="useBaseLineEdge" defaultBoolean="false">
+		<Setting classType="AIParameterBooleanSetting" name="reverse" defaultBoolean="false">
 		<!-- TODO: rename to autoRowAngle -->
 		<Setting classType="AIParameterBooleanSetting" name="rowDirection" isExpertModeOnly="true" defaultBoolean="false">
 			<Texts>
@@ -71,6 +84,13 @@
 	<SettingSubTitle title="advanced">
 		<!-- TODO: rename to bypassIslands -->
 		<Setting classType="AIParameterBooleanSetting" name="islandBypassMode" defaultBoolean="true"/>
+		<Setting classType="AIParameterSettingList" name="IslandHeadlands" min="1" max="10" default="1">
+			<Setting classType="AIParameterBooleanSetting" name="islandHeadlandClockwise" isExpertModeOnly="true" defaultBoolean="true">
+				<Texts>
+					<Text>counterclockwise</Text>
+					<Text>clockwise</Text>
+				</Texts>
+			</Setting>
 		<Setting classType="AIParameterSettingList" name="fieldMargin" min="-5" max="6" default="0" incremental="0.2" isExpertModeOnly="true"/>
 	</SettingSubTitle>
 </Settings>
