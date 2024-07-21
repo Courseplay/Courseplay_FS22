@@ -394,7 +394,7 @@ function EditorCourseDisplay:updateWaypoint(i)
 	if self.courseWrapper:isHeadland(i) or self.courseWrapper:isOnRowNumber(i) then 
 		self.signs[i]:setLineColor(EditorCourseDisplay.COLORS.HEADLAND_LINE)
 	end
-	if self.courseWrapper:isConnectingTrack(i) then 
+	if self.courseWrapper:isConnectingPath(i) then
 		self.signs[i]:setLineColor(EditorCourseDisplay.COLORS.CONNECTING_LINE)
 	end
 	self.signs[i]:setBottomLineToGround()

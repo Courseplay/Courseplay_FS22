@@ -461,7 +461,7 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/editor/brushes/changeAttributes/ChangeTurnWaypoint.lua"/>
 		<sourceFile filename="scripts/editor/brushes/changeAttributes/ChangeHeadlandWaypoint.lua"/>
 		<sourceFile filename="scripts/editor/brushes/changeAttributes/ChangeRowNumberWaypoint.lua"/>
-		<sourceFile filename="scripts/editor/brushes/changeAttributes/ChangeConnectingTrackWaypoint.lua"/>
+		<sourceFile filename="scripts/editor/brushes/changeAttributes/ChangeConnectingPathWaypoint.lua"/>
 		<sourceFile filename="scripts/editor/brushes/advanced/MoveWaypoint.lua"/>
 		<sourceFile filename="scripts/editor/brushes/advanced/CurveWaypoints.lua"/>
 		<sourceFile filename="scripts/editor/EditorCourseWrapper.lua"/>

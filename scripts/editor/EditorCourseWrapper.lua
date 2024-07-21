@@ -9,7 +9,7 @@ function EditorCourseWrapper:init(course)
 	self.hoveredWaypointIx = nil
 	self.headlandMode = nil
 	self.rowNumberMode = nil
-	self.connectingTrackActive = false
+	self.connectingPathActive = false
 end
 
 function EditorCourseWrapper:getCourse()
@@ -83,8 +83,8 @@ function EditorCourseWrapper:setRowNumberMode(mode)
 end
 
 --- Sets the connecting track visible.
-function EditorCourseWrapper:setConnectingTrackActive(active)
-	self.connectingTrackActive = active	
+function EditorCourseWrapper:setConnectingPathActive(active)
+	self.connectingPathActive = active
 end
 
 function EditorCourseWrapper:isHeadland(ix)
@@ -105,10 +105,10 @@ function EditorCourseWrapper:isOnRowNumber(ix)
 	end
 end
 
-function EditorCourseWrapper:isConnectingTrack(ix)
+function EditorCourseWrapper:isConnectingPath(ix)
 	local wp = ix ~=nil and self.course:getWaypoint(ix)
-	if wp and self.connectingTrackActive then
-		return self.course:isOnConnectingTrack(ix)
+	if wp and self.connectingPathActive then
+		return self.course:isOnConnectingPath(ix)
 	end
 end
 
@@ -290,10 +290,10 @@ function EditorCourseWrapper:changeHeadland(ix, n)
 end
 
 --- Sets the connecting track of a waypoint.
-function EditorCourseWrapper:setConnectingTrack(ix, set)
+function EditorCourseWrapper:setConnectingPath(ix, set)
 	local wp = ix ~=nil and self.course:getWaypoint(ix)
 	if wp then
-		wp.isConnectingTrack = set
+		wp.isConnectingPath = set
 	end
 end
 

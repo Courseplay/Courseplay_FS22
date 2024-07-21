@@ -213,7 +213,7 @@ function Course:enrichWaypointData(startIx)
         local dToNext = MathUtil.getPointPointDistance(cx, cz, nx, nz)
         self.waypoints[i].dToNext = dToNext
         self.length = self.length + dToNext
-        if not self:isOnConnectingTrack(i) then
+        if not self:isOnConnectingPath(i) then
             -- working length is where we do actual fieldwork
             self.workingLength = self.workingLength + dToNext
         end
@@ -403,8 +403,8 @@ end
 
 --- Is this waypoint on a connecting track, that is, a transfer path between
 -- a headland and the up/down rows where there's no fieldwork to do.
-function Course:isOnConnectingTrack(ix)
-    return self.waypoints[ix].isConnectingTrack
+function Course:isOnConnectingPath(ix)
+    return self.waypoints[ix].isConnectingPath
 end
 
 function Course:switchingDirectionAt(ix)
@@ -672,11 +672,11 @@ end
 --- index of the first up/down waypoint
 function Course:getDistanceToFirstUpDownRowWaypoint(ix)
     local d = 0
-    local isConnectingTrack = false
+    local isConnectingPath = false
     for i = ix, #self.waypoints - 1 do
-        isConnectingTrack = isConnectingTrack or self.waypoints[i].isConnectingTrack
+        isConnectingPath = isConnectingPath or self.waypoints[i].isConnectingPath
         d = d + self.waypoints[i].dToNext
-        if self.waypoints[i].lane and not self.waypoints[i + 1].lane and isConnectingTrack then
+        if self.waypoints[i].lane and not self.waypoints[i + 1].lane and isConnectingPath then
             return d, i + 1
         end
         if d > 1000 then
@@ -1784,7 +1784,7 @@ function Course:serializeWaypoints(compress)
                     serializeBool(p.rev), serializeBool(p.unload), serializeBool(p.wait), serializeBool(p.crossing))
             serializedWaypoint = serializedWaypoint .. string.format('%s;%s;%s;%s|\n',
                     serializeInt(p.lane), serializeInt(p.ridgeMarker),
-                    serializeInt(p.headlandHeightForTurn), serializeBool(p.isConnectingTrack))
+                    serializeInt(p.headlandHeightForTurn), serializeBool(p.isConnectingPath))
             serializedWaypoints = serializedWaypoints .. serializedWaypoint
         end
     end
@@ -1823,7 +1823,7 @@ function Course.deserializeWaypoints(serializedWaypoints)
             p.lane = tonumber(fields[9])
             p.ridgeMarker = tonumber(fields[10])
             p.headlandHeightForTurn = tonumber(fields[11])
-            p.isConnectingTrack = deserializeBool(fields[12])
+            p.isConnectingPath = deserializeBool(fields[12])
             table.insert(waypoints, p)
         end
     end

@@ -1395,7 +1395,7 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
         elseif self.combineController:isRootVegetableHarvester() then
             self:debug('Headland turn but this harvester uses normal turn maneuvers.')
             AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
-        elseif self.course:isOnConnectingTrack(ix) then
+        elseif self.course:isOnConnectingPath(ix) then
             self:debug('Headland turn but this a connecting track, use normal turn maneuvers.')
             AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
         elseif self.course:isOnOutermostHeadland(ix) and self:isTurnOnFieldActive() then

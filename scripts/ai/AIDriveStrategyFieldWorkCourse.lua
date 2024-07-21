@@ -617,7 +617,7 @@ function AIDriveStrategyFieldWorkCourse:startConnectingPath(ix)
     local connectingPath = {}
     local targetWaypointIx
     for i = ix + 1, self.fieldWorkCourse:getNumberOfWaypoints() do
-        if self.fieldWorkCourse:isOnConnectingTrack(i) then
+        if self.fieldWorkCourse:isOnConnectingPath(i) then
             local x, z = self.fieldWorkCourse:getWaypointPosition(i)
             table.insert(connectingPath, {x = x, z = z})
         else
