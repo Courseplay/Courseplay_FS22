@@ -186,3 +186,32 @@ function FieldworkContext:setEnableSmallOverlapsWithHeadland(enableSmallOverlaps
     return self
 end
 
+---@param rowsToSkip number how many rows will be skipped before drive in the next one.
+function FieldworkContext:setRowsToSkip(rowsToSkip)
+    self.rowsToSkip = rowsToSkip
+    return self
+end
+
+---@param spiralLandsClockwise boolean 
+function FieldworkContext:setSpiralLandsClockwise(spiralLandsClockwise)
+    self.spiralLandsClockwise = spiralLandsClockwise
+    return self
+end
+
+---@param spiralFromInside boolean
+function FieldworkContext:setSpiralFromInside(spiralFromInside)
+    self.spiralFromInside = spiralFromInside
+    return self
+end
+
+---@param reverseCourse boolean reverse the complete course, not sure how to do it when copy a course and reverse it afterwards.
+function FieldworkContext:setReverseCourse(reverseCourse)
+    self.reverseCourse = reverseCourse
+    return self
+end
+
+---@param twoSideHeadland boolean will create a course with headlands on just two sides or also called "narrow field"
+function FieldworkContext:setTwoSideHeadland(twoSideHeadland)
+    self.twoSideHeadland = twoSideHeadland
+    return self
+end
