@@ -42,7 +42,6 @@
 		</Setting>
 		
 		<Setting classType="AIParameterSettingList" name="headlandOverlapPercent" min="0" max="25" default="7" unit="4" isExpertModeOnly="true"/>
-	</SettingSubTitle>
 	<SettingSubTitle title="center">
 		<Setting classType="AIParameterSettingList" name="centerMode">
 			<Values>
@@ -80,7 +79,6 @@
 		<Setting classType="AIParameterSettingList" name="rowsToSkip" min="0" max="6"/>
 		<Setting classType="AIParameterSettingList" name="rowsPerLand" min="2" max="24" default="6"/>
 		<Setting classType="AIParameterSettingList" name="manualRowAngleDeg" min="0" max="175" incremental="5" unit="5" isExpertModeOnly="true"/>
-	</SettingSubTitle>
 	<SettingSubTitle title="advanced">
 		<!-- TODO: rename to bypassIslands -->
 		<Setting classType="AIParameterBooleanSetting" name="islandBypassMode" defaultBoolean="true"/>
@@ -92,5 +90,4 @@
 				</Texts>
 			</Setting>
 		<Setting classType="AIParameterSettingList" name="fieldMargin" min="-5" max="6" default="0" incremental="0.2" isExpertModeOnly="true"/>
-	</SettingSubTitle>
 </Settings>
