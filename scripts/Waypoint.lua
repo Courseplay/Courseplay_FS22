@@ -90,7 +90,7 @@ function Waypoint:set(wp)
 	self.turnStart = wp.turnStart
 	self.turnEnd = wp.turnEnd
 	self.headlandTurn = wp.headlandTurn
-	self.isConnectingTrack = wp.isConnectingTrack or nil
+	self.isConnectingPath = wp.isConnectingPath or nil
 	self.lane = wp.lane
 	self.rowNumber = wp.rowNumber
 	self.ridgeMarker = wp.ridgeMarker
@@ -116,7 +116,7 @@ function Waypoint.initFromGeneratedWp(wp, ix)
 	waypoint.turnStart = a:isRowEnd() or a:shouldUsePathfinderToNextWaypoint()
 	waypoint.turnEnd = a:isRowStart() or a:shouldUsePathfinderToThisWaypoint()
 	waypoint.headlandTurn = a:isHeadlandTurn()
-	waypoint.isConnectingTrack = a:isOnConnectingPath()
+	waypoint.isConnectingPath = a:isOnConnectingPath()
 	waypoint.lane = a:getHeadlandPassNumber() and -a:getHeadlandPassNumber()
 	waypoint.rowNumber = a:getRowNumber()
 	-- set ridge marker only if we are absolutely sure that a side is not worked
@@ -140,7 +140,7 @@ function Waypoint.initFromXmlFile(data,ix)
 	waypoint.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, waypoint.x, 0, waypoint.z)
 	waypoint.turnStart = data[3]
 	waypoint.turnEnd = data[4]
-	waypoint.isConnectingTrack = data[5]
+	waypoint.isConnectingPath = data[5]
 	waypoint.lane = data[6]
 	waypoint.rowNumber = data[7]
 	waypoint.ridgeMarker = data[8]
@@ -159,7 +159,7 @@ function Waypoint:getXmlString()
 		MathUtil.round(self.z,2),
 		self.turnStart or "-",
 		self.turnEnd or "-",
-		self.isConnectingTrack or "-",
+		self.isConnectingPath or "-",
 		self.lane or "-",
 		self.rowNumber or "-",
 		self.ridgeMarker or "-",

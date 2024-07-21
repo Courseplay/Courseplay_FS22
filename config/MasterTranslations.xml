@@ -1528,15 +1528,15 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="de"><![CDATA[keine Vorgewende]]></Text>
 			<Text language="en"><![CDATA[no headland]]></Text>
 		</Translation>
-		<Translation name="CP_editor_course_changeAttributes_changeConnectingTrack_title">
+		<Translation name="CP_editor_course_changeAttributes_changeConnectingPath_title">
 			<Text language="de"><![CDATA[Setzt Überfahrtstrecke]]></Text>
 			<Text language="en"><![CDATA[Sets connecting track]]></Text>
 		</Translation>
-		<Translation name="CP_editor_course_changeAttributes_changeConnectingTrack_primary_text">
+		<Translation name="CP_editor_course_changeAttributes_changeConnectingPath_primary_text">
 			<Text language="de"><![CDATA[Markiert den ausgewählten Wegpunkt als Überfahrstrecke.]]></Text>
 			<Text language="en"><![CDATA[Changes the selected waypoint to a connecting track.]]></Text>
 		</Translation>
-		<Translation name="CP_editor_course_changeAttributes_changeConnectingTrack_secondary_text">
+		<Translation name="CP_editor_course_changeAttributes_changeConnectingPath_secondary_text">
 			<Text language="de"><![CDATA[Makiert Wegpunkte, über die mit der Maus gezogen wird, als Überfahrstrecke.]]></Text>
 			<Text language="en"><![CDATA[Continues assigning of waypoints to connecting track.]]></Text>
 		</Translation>

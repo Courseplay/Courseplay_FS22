@@ -499,7 +499,7 @@ local function getHeadland(course, n)
     for i = first, last, step do
         -- do not want to include the connecting track parts as those are overlap with the first part
         -- of the headland confusing the shortest path finding
-        if course:isOnHeadland(i, n) and not course:isOnConnectingTrack(i) then
+        if course:isOnHeadland(i, n) and not course:isOnConnectingPath(i) then
             local x, y, z = course:getWaypointPosition(i)
             headland:add({ x = x, y = -z })
         end
