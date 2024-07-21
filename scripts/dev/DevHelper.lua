@@ -194,6 +194,8 @@ function DevHelper:draw()
 
     self:showDriveData()
 
+    CourseGenerator.drawDebugPolylines()
+
 	if not self.tNode then
 		self.tNode = createTransformGroup("devhelper")
 		link(g_currentMission.terrainRootNode, self.tNode)

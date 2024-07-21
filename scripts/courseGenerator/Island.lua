@@ -111,14 +111,14 @@ function Island:generateHeadlands(context, mustNotCross)
     local headlands = {}
     self.boundary = CourseGenerator.FieldworkCourseHelper.createUsableBoundary(self.boundary, self.context.islandHeadlandClockwise)
     -- innermost headland is offset from the island by half width
-    headlands[1] = CourseGenerator.IslandHeadland(self, self.boundary, self.context.islandHeadlandClockwise, 1, self.context.workingWidth / 2)
+    headlands[1] = CourseGenerator.IslandHeadland(self, self.boundary, self.context.islandHeadlandClockwise, 1, self.context.headlandWorkingWidth / 2)
     for i = 2, self.context.nIslandHeadlands do
         if not headlands[i - 1]:isValid() then
             self.logger:warning('headland %d is invalid, removing', i - 1)
             headlands[i - 1] = nil
             break
         end
-        headlands[i] = CourseGenerator.IslandHeadland(self, headlands[i - 1]:getPolygon(), self.context.islandHeadlandClockwise, i, self.context.workingWidth)
+        headlands[i] = CourseGenerator.IslandHeadland(self, headlands[i - 1]:getPolygon(), self.context.islandHeadlandClockwise, i, self.context.headlandWorkingWidth)
     end
     if headlands[1]:getPolygon():intersects(mustNotCross) then
         self.logger:error('First headland intersects field boundary!')

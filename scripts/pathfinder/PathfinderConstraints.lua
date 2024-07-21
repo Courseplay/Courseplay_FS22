@@ -55,7 +55,7 @@ PathfinderConstraints = CpObject(PathfinderConstraintInterface)
 ---@param context PathfinderContext
 function PathfinderConstraints:init(context)
     self.vehicleData = PathfinderUtil.VehicleData(context._vehicle, true, 0.25)
-    self.trailerHitchLength = AIUtil.getTowBarLength(context._vehicle)
+    self.trailerHitchLength = AIUtil.getTowBarLength(context._vehicle) or 3
     self.turnRadius = AIUtil.getTurningRadius(context._vehicle) or 10
     self.objectsToIgnore = context._objectsToIgnore or {}
     self.vehiclesToIgnore = context._vehiclesToIgnore or {}

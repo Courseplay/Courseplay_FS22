@@ -999,6 +999,7 @@ function StartRowOnly:init(vehicle, driveStrategy, ppc, turnContext, startRowCou
     -- add a turn ending section into the row to make sure the implements are lowered correctly
     local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.turnCourse, 3, true)
     TurnManeuver.setLowerImplements(self.turnCourse, endingTurnLength, true)
+    self.turnCourse:adjustForReversing(2)
     self.state = self.states.DRIVING_TO_ROW
 end
 

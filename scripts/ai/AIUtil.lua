@@ -75,6 +75,10 @@ function AIUtil.calculateTightTurnOffset(vehicle, vehicleTurningRadius, course, 
 
 	local towBarLength = AIUtil.getTowBarLength(vehicle)
 
+	if towBarLength == nil then
+		-- not a towed implement, no offset
+		return 0
+	end
 	-- Is this really a tight turn? It is when the tow bar is longer than radius / 3, otherwise
 	-- we ignore it.
 	if towBarLength < r / 3 then
@@ -110,7 +114,9 @@ end
 function AIUtil.getTowBarLength(vehicle)
 	-- is there a wheeled implement behind the tractor and is it on a pivot?
 	local implement = AIUtil.getFirstReversingImplementWithWheels(vehicle, true)
-	if not implement or not implement.steeringAxleNode then
+	if not implement then
+		return nil
+	elseif not implement.steeringAxleNode then
 		CpUtil.debugVehicle(CpDebug.DBG_AI_DRIVER, vehicle, 'could not get tow bar length, using default 3 m.')
 		-- default is not 0 as this is used to calculate trailer heading and 0 here may result in NaNs
 		return 3
@@ -130,7 +136,7 @@ function AIUtil.getSteeringParameters(vehicle)
 	if not implement then
 		return false, 0
 	else
-		return true, AIUtil.getTowBarLength(vehicle)
+		return true, AIUtil.getTowBarLength(vehicle) or 3
 	end
 end
 
