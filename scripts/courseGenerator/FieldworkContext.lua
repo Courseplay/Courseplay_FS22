@@ -35,6 +35,13 @@ function FieldworkContext:init(field, workingWidth, turningRadius, nHeadlands)
     self.enableSmallOverlapsWithHeadland = false
     self.logger = Logger('FieldworkContext')
     self.errors = {}
+    
+    self.rowsToSkip = 0
+    self.spiralLandsClockwise = false
+    self.spiralFromInside = false
+    self.reverseCourse = false
+    self.twoSideHeadland = false
+
 end
 
 function FieldworkContext:log()
