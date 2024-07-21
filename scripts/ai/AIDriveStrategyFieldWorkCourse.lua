@@ -418,7 +418,7 @@ function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix, course)
         end
         self:startTurn(ix)
     elseif self.state == self.states.WORKING then
-        if self.course:isOnf(ix + 1) then
+        if self.course:isOnConnectingPath(ix + 1) then
             self:debug('finishing work before starting on the connecting path')
             local fm, bm = self:getFrontAndBackMarkers()
             self.turnContext = RowStartOrFinishContext(self.vehicle, self.course, ix, ix, self.turnNodes, self:getWorkWidth(),
