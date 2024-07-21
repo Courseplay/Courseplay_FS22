@@ -121,9 +121,9 @@ function Block:finalize(entry)
         row:setAdjacentRowInfo(rowOnLeftWorked, rowOnRightWorked, leftSideBlockBoundary, rightSideBlockBoundary)
         self.logger:debug('row %d is now at position %d, left/right worked %s/%s, headland %s/%s',
                 row:getOriginalSequenceNumber(), i, rowOnLeftWorked, rowOnRightWorked, leftSideBlockBoundary, rightSideBlockBoundary)
+        row:adjustLength()
         -- need vertices close enough so the smoothing in goAround() only starts close to the island
         row:splitEdges(CourseGenerator.cRowWaypointDistance)
-        row:adjustLength()
         row:setRowNumber(i)
         row:setAllAttributes()
         table.insert(self.rowsInWorkSequence, row)
