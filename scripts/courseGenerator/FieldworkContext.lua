@@ -36,8 +36,8 @@ function FieldworkContext:init(field, workingWidth, turningRadius, nHeadlands)
     self.logger = Logger('FieldworkContext')
     self.errors = {}
     
-    --self.reverseCourse = false
-    --self.twoSideHeadland = false
+    self.reverseCourse = false
+    self.twoSideHeadland = false
 
 end
 
