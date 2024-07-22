@@ -941,11 +941,11 @@
 			<Text language="de"><![CDATA[Das Fahrzeug kann auf dem Vorgewende im oder gegen den Uhrzeigersinn fahren.]]></Text>
 			<Text language="en"><![CDATA[Should the vehicle drive clockwise or counterclockwise on the headland.]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise">
+		<Translation name="CP_vehicle_courseGeneratorSetting_centerClockwise_clockwise">
 			<Text language="de"><![CDATA[Im Uhrzeigersinn]]></Text>
 			<Text language="en"><![CDATA[clockwise]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise">
+		<Translation name="CP_vehicle_courseGeneratorSetting_centerClockwise_counterclockwise">
 			<Text language="de"><![CDATA[Gegen den Uhrzeigersinn]]></Text>
 			<Text language="en"><![CDATA[counterclockwise]]></Text>
 		</Translation>
@@ -1009,11 +1009,11 @@
 			<Text language="de"><![CDATA[Richtung, in der die Bahnen gefahren werden sollen.]]></Text>
 			<Text language="en"><![CDATA[Direction of the rows in the center of the field.]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic">
+		<Translation name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic">
 			<Text language="de"><![CDATA[Automatisch]]></Text>
 			<Text language="en"><![CDATA[automatic]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_rowDirection_manual">
+		<Translation name="CP_vehicle_courseGeneratorSetting_autoRowAngle_manual">
 			<Text language="de"><![CDATA[Manuell]]></Text>
 			<Text language="en"><![CDATA[manual]]></Text>
 		</Translation>
