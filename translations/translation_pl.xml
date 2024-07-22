@@ -301,8 +301,12 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="Spirala"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="Na około"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Spirala od środka"/>
+    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="Even row with"/>
+    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Even row with tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title" text="Narożniki uwroci"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip" text="Narożniki uwroci."/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Number of round corners"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Number of round corners, starting with the first headland."/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="radius"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="radius tt"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" text="Obrót"/>

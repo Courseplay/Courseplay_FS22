@@ -301,8 +301,12 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="Spirale (tourne autour)"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="Circulaire (extérieur vers intérieur)"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Par blocs (Intérieur vers extérieur)"/>
+    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="Even row with"/>
+    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Even row with tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title" text="Angle des fourrières"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip" text="Détermine la manière de travailler les coins dans les fourrières"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Number of round corners"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Number of round corners, starting with the first headland."/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="radius"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="radius tt"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" text="Manoeuvres"/>
