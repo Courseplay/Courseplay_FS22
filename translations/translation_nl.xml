@@ -288,8 +288,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
     <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_title" text="Island Headland direction"/>
     <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" text="met de klok mee"/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" text="tegen de klok in"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_clockwise" text="clockwise"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_counterclockwise" text="counterclockwise"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Veld middenpunt"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Veld middenpunt"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="Omhoog/omlaag"/>
@@ -305,8 +305,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" text="Rond"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Up/down row direction"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Direction of the rows in the center of the field."/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" text="Automatisch"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" text="Handmatig"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="automatic"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_manual" text="manual"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Rijhoek omhoog/omlaag"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Hoek van rijen omhoog/omlaag (0 is het noorden) indien handmatig. Waarde: 0 - 175 Stappen: 5"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>

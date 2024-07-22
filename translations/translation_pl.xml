@@ -288,8 +288,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
     <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_title" text="Island Headland direction"/>
     <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" text="Zgodnie ze wskazówkami zegara"/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" text="Odwrotnie do wskazówek zegara"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_clockwise" text="clockwise"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_counterclockwise" text="counterclockwise"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Środek pola"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Rodzaj pracy na środku pola."/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="Tam i z powrotem"/>
@@ -305,8 +305,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" text="Kółko"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Up/down row direction"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Direction of the rows in the center of the field."/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" text="Automatyczny"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" text="Ręczny"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="automatic"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_manual" text="manual"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Kąt w tą i z powrotem"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Kąt dla rzędów w tą i z powrotem (0 to północ) w trybie ręcznym. Zakres: 0 - 175, przeskok co: 5"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>
