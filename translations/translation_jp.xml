@@ -314,7 +314,9 @@
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="往復レーンの角度"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="[往復レーン方向]の[マニュアル]を選択した場合、往復するレーンの方向（角度）を設定します (北=0° 設定角度:0～175°)"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" text="フィールド内にある障害物を回避する方法を設定します"/>
+    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="How the course should bypass islands in the field."/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_title" text="Island headlands"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_tooltip" text="Island headlands tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="作業開始地点"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="作業を始める場所を設定します"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="まくら地"/>

@@ -314,7 +314,9 @@
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Sorok iránya"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="A sorok iránya (0° az észak), ha az irány kézi. 0° - 175°, 5°-os lépésekben"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" text="Hogyan kerülje az útvonal a szigeteket a táblán"/>
+    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="How the course should bypass islands in the field."/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_title" text="Island headlands"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_tooltip" text="Island headlands tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Hol kezdje a munkát"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Betakarításnál kívül (a fordulósávon), egyébként középről"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="kívűl"/>

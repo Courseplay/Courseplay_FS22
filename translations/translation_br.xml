@@ -314,7 +314,9 @@
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Ângulo das fileiras para cima/para baixo"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Ângulo das fileiras para cima/para baixo (0 será norte) quando for manual"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" text="Como a rota deve contornar ilhas no campo"/>
+    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="How the course should bypass islands in the field."/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_title" text="Island headlands"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_tooltip" text="Island headlands tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Iniciar em"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Iniciar em"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="Cabeceira"/>
