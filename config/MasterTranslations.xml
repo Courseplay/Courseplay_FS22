@@ -941,11 +941,27 @@
 			<Text language="de"><![CDATA[Das Fahrzeug kann auf dem Vorgewende im oder gegen den Uhrzeigersinn fahren.]]></Text>
 			<Text language="en"><![CDATA[Should the vehicle drive clockwise or counterclockwise on the headland.]]></Text>
 		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_headlandClockwise_clockwise">
+			<Text language="de"><![CDATA[Im Uhrzeigersinn]]></Text>
+			<Text language="en"><![CDATA[clockwise]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_headlandClockwise_counterclockwise">
+			<Text language="de"><![CDATA[Gegen den Uhrzeigersinn]]></Text>
+			<Text language="en"><![CDATA[counterclockwise]]></Text>
+		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_centerClockwise_clockwise">
 			<Text language="de"><![CDATA[Im Uhrzeigersinn]]></Text>
 			<Text language="en"><![CDATA[clockwise]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_centerClockwise_counterclockwise">
+			<Text language="de"><![CDATA[Gegen den Uhrzeigersinn]]></Text>
+			<Text language="en"><![CDATA[counterclockwise]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_clockwise">
+			<Text language="de"><![CDATA[Im Uhrzeigersinn]]></Text>
+			<Text language="en"><![CDATA[clockwise]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_counterclockwise">
 			<Text language="de"><![CDATA[Gegen den Uhrzeigersinn]]></Text>
 			<Text language="en"><![CDATA[counterclockwise]]></Text>
 		</Translation>
