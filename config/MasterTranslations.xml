@@ -1045,9 +1045,17 @@
 			<Text language="de"><![CDATA[Inselumfahrung]]></Text>
 			<Text language="en"><![CDATA[Island bypass mode]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip">
+		<Translation name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip">
 			<Text language="de"><![CDATA[Wie Inseln auf dem Feld umfahren werden sollen.]]></Text>
 			<Text language="en"><![CDATA[How the course should bypass islands in the field.]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_islandHeadlands_title">
+			<Text language="de"><![CDATA[Insel Vorgewende]]></Text>
+			<Text language="en"><![CDATA[Island headlands]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_islandHeadlands_tooltip">
+			<Text language="de"><![CDATA[Insel Vorgewende tt.]]></Text>
+			<Text language="en"><![CDATA[Island headlands tt.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title">
 			<Text language="de"><![CDATA[Starte auf]]></Text>
