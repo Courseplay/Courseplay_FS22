@@ -33,7 +33,7 @@
 				<Text>round</Text>
 			</Texts>
 		</Setting>
-		<Setting classType="AIParameterSettingList" name="HeadlandsWithRoundCorners" min="0" max="50" default="1"/>	
+		<Setting classType="AIParameterSettingList" name="headlandsWithRoundCorners" min="0" max="50" default="1"/>	
 		<Setting classType="AIParameterSettingList" name="fieldCornerRadius" min="1" max="30" default="1"/>
 		<Setting classType="AIParameterBooleanSetting" name="headlandClockwise" isExpertModeOnly="true" defaultBoolean="true">
 			<Texts>
@@ -63,7 +63,7 @@
 				<Text>circular</Text>
 			</Texts>
 		</Setting>
-		<Setting classType="AIParameterBooleanSetting" name="CenterClockwise" isExpertModeOnly="true" defaultBoolean="true">
+		<Setting classType="AIParameterBooleanSetting" name="centerClockwise" isExpertModeOnly="true" defaultBoolean="true">
 			<Texts>
 				<Text>counterclockwise</Text>
 				<Text>clockwise</Text>
@@ -83,9 +83,9 @@
 		<Setting classType="AIParameterSettingList" name="manualRowAngleDeg" min="0" max="175" incremental="5" unit="5" isExpertModeOnly="true"/>
 	</SettingSubTitle>
 	<!--Island settings-->
-	<SettingSubTitle title="advanced">
+	<SettingSubTitle title="island">
 		<Setting classType="AIParameterBooleanSetting" name="bypassIslands" defaultBoolean="true"/>
-		<Setting classType="AIParameterSettingList" name="IslandHeadlands" min="1" max="10" default="1"/>
+		<Setting classType="AIParameterSettingList" name="islandHeadlands" min="1" max="10" default="1"/>
 		<Setting classType="AIParameterBooleanSetting" name="islandHeadlandClockwise" isExpertModeOnly="true" defaultBoolean="true">
 			<Texts>
 				<Text>counterclockwise</Text>

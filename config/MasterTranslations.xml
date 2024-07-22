@@ -854,20 +854,20 @@
 			<Text language="en"><![CDATA[Course generator settings of (%s)]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_subTitle_basic">
-			<Text language="de"><![CDATA[Basis]]></Text>
-			<Text language="en"><![CDATA[basic]]></Text>
+			<Text language="de"><![CDATA[Basis Einstellungen]]></Text>
+			<Text language="en"><![CDATA[Basic settings]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_subTitle_headland">
-			<Text language="de"><![CDATA[Vorgewende]]></Text>
-			<Text language="en"><![CDATA[headland]]></Text>
+			<Text language="de"><![CDATA[Einstellungen Vorgewende]]></Text>
+			<Text language="en"><![CDATA[Settings headland]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_subTitle_center">
-			<Text language="de"><![CDATA[Mitte]]></Text>
-			<Text language="en"><![CDATA[center]]></Text>
+			<Text language="de"><![CDATA[Einstellungen Mitte]]></Text>
+			<Text language="en"><![CDATA[Settings center]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_subTitle_advanced">
-			<Text language="de"><![CDATA[Fortgeschritten]]></Text>
-			<Text language="en"><![CDATA[advanced]]></Text>
+		<Translation name="CP_vehicle_courseGeneratorSetting_subTitle_island">
+			<Text language="de"><![CDATA[Einstellungen Insel]]></Text>
+			<Text language="en"><![CDATA[Settings island]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_workWidth_title">
 			<Text language="de"><![CDATA[Arbeitsbreite]]></Text>
@@ -917,11 +917,27 @@
 			<Text language="de"><![CDATA[Wenn Zentrierung Beete ausgewählt ist, dann befinden sich so viele Reihen im Block. Wert: 0 - 24]]></Text>
 			<Text language="en"><![CDATA[When the center mode is 'lands', this many rows are in each block. Value: 0 - 24]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_isClockwise_title">
+		<Translation name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title">
 			<Text language="de"><![CDATA[Vorgewende-Richtung]]></Text>
 			<Text language="en"><![CDATA[Headland direction]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip">
+		<Translation name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip">
+			<Text language="de"><![CDATA[Das Fahrzeug kann auf dem Vorgewende im oder gegen den Uhrzeigersinn fahren.]]></Text>
+			<Text language="en"><![CDATA[Should the vehicle drive clockwise or counterclockwise on the headland.]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_centerClockwise_title">
+			<Text language="de"><![CDATA[Mitte-Richtung]]></Text>
+			<Text language="en"><![CDATA[Center direction]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip">
+			<Text language="de"><![CDATA[Das Fahrzeug kann auf dem Vorgewende im oder gegen den Uhrzeigersinn fahren.]]></Text>
+			<Text language="en"><![CDATA[Should the vehicle drive clockwise or counterclockwise on the headland.]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_title">
+			<Text language="de"><![CDATA[Insel Vorgewende-Richtung]]></Text>
+			<Text language="en"><![CDATA[Island Headland direction]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip">
 			<Text language="de"><![CDATA[Das Fahrzeug kann auf dem Vorgewende im oder gegen den Uhrzeigersinn fahren.]]></Text>
 			<Text language="en"><![CDATA[Should the vehicle drive clockwise or counterclockwise on the headland.]]></Text>
 		</Translation>
@@ -945,6 +961,10 @@
 			<Text language="de"><![CDATA[hoch/runter]]></Text>
 			<Text language="en"><![CDATA[up/down]]></Text>
 		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_centerMode_skip">
+			<Text language="de"><![CDATA[skip?]]></Text>
+			<Text language="en"><![CDATA[skip?]]></Text>
+		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_centerMode_spiral">
 			<Text language="de"><![CDATA[spiralförmig]]></Text>
 			<Text language="en"><![CDATA[spiral]]></Text>
@@ -965,9 +985,13 @@
 			<Text language="de"><![CDATA[Vorgewende-Ecken]]></Text>
 			<Text language="en"><![CDATA[Headland corners]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth">
-			<Text language="de"><![CDATA[weich]]></Text>
-			<Text language="en"><![CDATA[smooth]]></Text>
+		<Translation name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title">
+			<Text language="de"><![CDATA[Radius]]></Text>
+			<Text language="en"><![CDATA[radius]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip">
+			<Text language="de"><![CDATA[Radius tt]]></Text>
+			<Text language="en"><![CDATA[radius tt]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp">
 			<Text language="de"><![CDATA[scharf]]></Text>
@@ -977,21 +1001,17 @@
 			<Text language="de"><![CDATA[rund]]></Text>
 			<Text language="en"><![CDATA[round]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_rowDirection_title">
+		<Translation name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title">
 			<Text language="de"><![CDATA[Startrichtung]]></Text>
 			<Text language="en"><![CDATA[Up/down row direction]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip">
+		<Translation name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip">
 			<Text language="de"><![CDATA[Richtung, in der die Bahnen gefahren werden sollen.]]></Text>
 			<Text language="en"><![CDATA[Direction of the rows in the center of the field.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic">
 			<Text language="de"><![CDATA[Automatisch]]></Text>
 			<Text language="en"><![CDATA[automatic]]></Text>
-		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge">
-			<Text language="de"><![CDATA[Längste Kante]]></Text>
-			<Text language="en"><![CDATA[longest edge]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_rowDirection_manual">
 			<Text language="de"><![CDATA[Manuell]]></Text>
@@ -1005,25 +1025,13 @@
 			<Text language="de"><![CDATA[Winkel der Bahnen (0 ist Norden), wenn Einstellung auf Manuell gesetzt ist. Wert: 0 - 175 Schritte: 5]]></Text>
 			<Text language="en"><![CDATA[Angle of up/down rows (0° is North) when manual. Value: 0 - 175 Steps: 5]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title">
+		<Translation name="CP_vehicle_courseGeneratorSetting_bypassIslands_title">
 			<Text language="de"><![CDATA[Inselumfahrung]]></Text>
 			<Text language="en"><![CDATA[Island bypass mode]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip">
 			<Text language="de"><![CDATA[Wie Inseln auf dem Feld umfahren werden sollen.]]></Text>
 			<Text language="en"><![CDATA[How the course should bypass islands in the field.]]></Text>
-		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none">
-			<Text language="de"><![CDATA[keine Umfahrung]]></Text>
-			<Text language="en"><![CDATA[no bypass]]></Text>
-		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple">
-			<Text language="de"><![CDATA[einfach]]></Text>
-			<Text language="en"><![CDATA[simple]]></Text>
-		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle">
-			<Text language="de"><![CDATA[Kreis]]></Text>
-			<Text language="en"><![CDATA[circle]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title">
 			<Text language="de"><![CDATA[Starte auf]]></Text>
@@ -1048,6 +1056,22 @@
 		<Translation name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip">
 			<Text language="de"><![CDATA[Wie viele Fahrzeuge zusammen auf dem Kurs fahren.]]></Text>
 			<Text language="en"><![CDATA[Number of vehicles on the same course.]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title">
+			<Text language="de"><![CDATA[Feldrandkante für Bahnen Form]]></Text>
+			<Text language="en"><![CDATA[Field edge for line form]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip">
+			<Text language="de"><![CDATA[Feldkante tt.]]></Text>
+			<Text language="en"><![CDATA[field edge tt.]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_reverse_title">
+			<Text language="de"><![CDATA[Kurs umdrehen]]></Text>
+			<Text language="en"><![CDATA[Reverse course]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_reverse_tooltip">
+			<Text language="de"><![CDATA[Kurs umdrehen tt.]]></Text>
+			<Text language="en"><![CDATA[Reverse course tt.]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Vine course generator settings">	
