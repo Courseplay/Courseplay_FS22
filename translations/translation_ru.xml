@@ -269,7 +269,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_basic" text="основные"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_headland" text="поворотная полоса"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="метод движения"/>
-    <text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced" text="расширенные"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_island" text="Settings island"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_title" text="Рабочая ширина"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip" text="Рабочая ширина орудия. Значение: 0 - 50."/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title" text="Количество поворотных полос"/>
@@ -282,39 +282,45 @@
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Сколько пропускать проходов при переходе к следующему проходу при челночном методе. Значение: 0 - 6."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Проходов в загоне"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="При выборе метода движения 'загонами', указывается к-во проходов к каждой загонке. Значение: 0 - 24."/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_title" text="Направление поворотной полосы"/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip" text="Транспортное средство должно двигаться по часовой стрелке или против часовой стрелки на разворотной полосе."/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_title" text="Center direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_title" text="Island Headland direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
     <text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" text="по часовой стрелке"/>
     <text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" text="против часовой стрелки"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Метод движения"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Метод движения агрегата по полю."/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="челночный"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="круговой"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="всвал/вразвал"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="загонами"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title" text="Углы поворотной полосы"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip" text="Каким образом техника будет проходить углы поворотной полосы."/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" text="сглаженные"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="radius"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="radius tt"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" text="острые"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" text="скруглённые"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_title" text="Направление проходов"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip" text="Направление первого прохода."/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Up/down row direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Direction of the rows in the center of the field."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" text="автоматическое"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" text="длинная сторона"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" text="вручную"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Угол челночных проходов"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Угол проходов в челночном режиме при указании направления вручную (0 = север). Значение: 0 - 175 с шагом: 5."/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" text="Обход островков"/>
+    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>
     <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" text="Как курс должен обходить островки на поле."/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" text="без обхода"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" text="простой"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" text="по кругу"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Начать работу с"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="С какой части курса начать работу."/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="поворотной полосы"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="основного маршрута"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Совместно работающих орудий"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Количество транспортных средств с одинаковым оборудованием на том же курсе."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Field edge for line form"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="field edge tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_reverse_title" text="Reverse course"/>
+    <text name="CP_vehicle_courseGeneratorSetting_reverse_tooltip" text="Reverse course tt."/>
     <!---->
     <!--Vine course generator settings-->
     <!---->

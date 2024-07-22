@@ -269,7 +269,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_basic" text="basis"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_headland" text="wendakker"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="midden"/>
-    <text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced" text="geavanceerd"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_island" text="Settings island"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_title" text="Werkbreedte"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip" text="Werkbreedte. Value: 0 - 50"/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title" text="Aantal wendakkers"/>
@@ -282,39 +282,45 @@
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Rijen die moeten worden overgeslagen bij het wisselen naar de volgende rij omhoog/omlaag. Value: 0 - 6"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Rijen per veldsectie"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="Als de veld middenpunt modus 'Veldsecties' is, zitten er zoveel rijen in elk blok. Value: 0 - 24"/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_title" text="Wendakker richting"/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip" text="Moet het voertuig op de wendakker met de klok mee of tegen de klok in rijden?"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_title" text="Center direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_title" text="Island Headland direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
     <text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" text="met de klok mee"/>
     <text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" text="tegen de klok in"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Veld middenpunt"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Veld middenpunt"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="Omhoog/omlaag"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="Spiraal"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="Racebaan"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Veldsecties"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title" text="Wendakker hoeken"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip" text="Wendakker hoeken"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" text="Gelijk"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="radius"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="radius tt"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" text="Scherp"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" text="Rond"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_title" text="Rij startrichting"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip" text="Richting van de rijen omhoog/omlaag in het midden van het veld"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Up/down row direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Direction of the rows in the center of the field."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" text="Automatisch"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" text="Langste zijde"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" text="Handmatig"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Rijhoek omhoog/omlaag"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Hoek van rijen omhoog/omlaag (0 is het noorden) indien handmatig. Waarde: 0 - 175 Stappen: 5"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" text="Eiland omzeilen"/>
+    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>
     <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" text="Hoe de koers eilanden in het veld moet omzeilen?"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" text="niet omzeilen"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" text="simpel"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" text="cirkel"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Begin met werken op"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Begin met werken op"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="Wendakker"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="Midden"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Meerdere voertuigen"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Aantal voertuigen op dezelfde koers."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Field edge for line form"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="field edge tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_reverse_title" text="Reverse course"/>
+    <text name="CP_vehicle_courseGeneratorSetting_reverse_tooltip" text="Reverse course tt."/>
     <!---->
     <!--Vine course generator settings-->
     <!---->

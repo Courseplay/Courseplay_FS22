@@ -269,7 +269,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_basic" text="Paramètres principaux"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_headland" text="Paramètres des fourrières"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="Paramètres des rangs"/>
-    <text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced" text="Paramètres avancés"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_island" text="Settings island"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_title" text="Largeur de travail"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip" text="Largeur de travail. Cliquez sur le chiffre pour saisir la valeur (0 - 50)."/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title" text="Nombre de fourrières"/>
@@ -282,39 +282,45 @@
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Une fois arrivé en bout de rang à l'aller, détermine combien seront ignorer pour le retour. Valeurs: 0 - 6"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Rangs par blocs"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="Détermine la quantité de rangs par blocs lorsque ce mode est sélectionné. Valeurs: 0 - 24"/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_title" text="Sens des fourrières"/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip" text="Sens horaire ou antihoraire pour les fourrières."/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_title" text="Center direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_title" text="Island Headland direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
     <text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" text="Sens horaire"/>
     <text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" text="Sens antihoraire"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Gestion des rangs"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Choix du type de rangées"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="Allers-retours"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="Spirale (tourne autour)"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="Circulaire (extérieur vers intérieur)"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Par blocs (Intérieur vers extérieur)"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title" text="Angle des fourrières"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip" text="Détermine la manière de travailler les coins dans les fourrières"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" text="Virages lissés"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="radius"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="radius tt"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" text="Manoeuvres"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" text="Circulaires"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_title" text="Orientation des rangs"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip" text="Détermine le sens des rangées"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Up/down row direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Direction of the rows in the center of the field."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" text="Automatique"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" text="Bords longs"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" text="Selon un angle"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Angle de l'orientation"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Exprimé en degrés. 0=Nord. Utilisé uniquement lorsque votre choix d'orientation est en mode -selon un angle-. Valeurs: 0 - 175 Incrément: 5"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" text="Gestion des îlots"/>
+    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>
     <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" text="Comportement du tracé lors de la présence d'îlots (obstacles) dans le champ"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" text="Pas d'évitement"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" text="Evitement simple"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" text="Circulaire"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Début du travail"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Détermine par quoi commencer le travail dans le champ"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="Fourrières"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="Rangées"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Outils multiples"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Nombre de véhicules sur la même course avec le même outil. La distance entre les véhicules est fixée avec le paramètre convoi."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Field edge for line form"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="field edge tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_reverse_title" text="Reverse course"/>
+    <text name="CP_vehicle_courseGeneratorSetting_reverse_tooltip" text="Reverse course tt."/>
     <!---->
     <!--Vine course generator settings-->
     <!---->

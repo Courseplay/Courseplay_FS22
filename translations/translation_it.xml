@@ -269,7 +269,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_basic" text="Base"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_headland" text="testa campo"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="centro"/>
-    <text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced" text="avanzato"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_island" text="Settings island"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_title" text="Larghezza lavoro"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip" text="Larghezza di lavoro del veicolo e/o degli attrezzi connessi. Intervallo: 0 - 50"/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title" text="Numero traccie perimetrali"/>
@@ -282,39 +282,45 @@
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="File da saltare quando si passa alla linea Su/Giù successiva. Intervallo: 0 - 6"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Righe per terreno"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="Determina la quantità di righe per terreno quando questa modalità è selezionata. Intervallo: 0 - 24"/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_title" text="Direzione lavoro"/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip" text="Se il veicolo deve guidare in senso orario o antiorario sul campo"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_title" text="Center direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_title" text="Island Headland direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
     <text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" text="Orario"/>
     <text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" text="Antiorario"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Centro campo"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Centro campo"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="Su/Giù"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="Spirale"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="Circolare"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Sezioni di campo (dentro e fuori)"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title" text="Tipo angoli"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip" text="Tipologia degli angoli del campo"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" text="Morbidi"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="radius"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="radius tt"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" text="Netti"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" text="Rotondi"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_title" text="Direzione inizio riga"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip" text="Direzione inizio riga"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Up/down row direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Direction of the rows in the center of the field."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" text="Automatico"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" text="Lato più lungo"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" text="Manuale"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Orientamento angolo della riga su/giù"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Regola l'angolo in gradi delle righe su/giù (0° è il nord) in modalità manuale. Intervallo: 0° - 175° Passo: 5°"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" text="Gestione dell'isola"/>
+    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>
     <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" text="Comportamento del percorso quando ci sono isole nel campo"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" text="Nessun evitamento"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" text="Semplice"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" text="Cerchio"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Inizia a lavorare da"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Inizia a lavorare da"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="Inizio campo"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="Centro"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Veicoli multipli"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Numero di veicoli sullo stesso percorso."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Field edge for line form"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="field edge tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_reverse_title" text="Reverse course"/>
+    <text name="CP_vehicle_courseGeneratorSetting_reverse_tooltip" text="Reverse course tt."/>
     <!---->
     <!--Vine course generator settings-->
     <!---->
