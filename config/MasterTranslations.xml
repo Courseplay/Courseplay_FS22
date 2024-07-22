@@ -993,6 +993,14 @@
 			<Text language="de"><![CDATA[Beete (innen nach außen)]]></Text>
 			<Text language="en"><![CDATA[lands]]></Text>
 		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title">
+			<Text language="de"><![CDATA[Gleichmäßige Bahnenbreite]]></Text>
+			<Text language="en"><![CDATA[Even row with]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip">
+			<Text language="de"><![CDATA[Gleichmäßige Bahnenbreite tt.]]></Text>
+			<Text language="en"><![CDATA[Even row with tt.]]></Text>
+		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title">
 			<Text language="de"><![CDATA[Vorgewende-Ecken]]></Text>
 			<Text language="en"><![CDATA[Headland corners]]></Text>
@@ -1000,6 +1008,14 @@
 		<Translation name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip">
 			<Text language="de"><![CDATA[Vorgewende-Ecken]]></Text>
 			<Text language="en"><![CDATA[Headland corners]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title">
+			<Text language="de"><![CDATA[Anzahl runde Ecken]]></Text>
+			<Text language="en"><![CDATA[Number of round corners]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip">
+			<Text language="de"><![CDATA[Anzahl runde Ecken, beginnend mit dem ersten Vorgewende.]]></Text>
+			<Text language="en"><![CDATA[Number of round corners, starting with the first headland.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title">
 			<Text language="de"><![CDATA[Radius]]></Text>
