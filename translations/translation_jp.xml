@@ -280,8 +280,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="プラス値ではフィールド領域を縮小し、フィールド外周に余白を作ります。マイナス値ではフィールド領域を拡大します（-5～5.8m）"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="レーンのスキップ"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="往復レーンのスキップする数を設定します （0～6レーン）"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Number of circles tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="ブロックのレーン数"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="作業領域で[往復（ブロック）]を選択した場合、各ブロックのレーン数を設定します(2～24レーン)"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>
@@ -299,19 +297,20 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="作業領域（フィールド中央部）"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="まくら地を除く作業領域（レーン）の設定をします"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="往復（通常）"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="往復（周回）"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="往復（レーストラック）"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="往復（ブロック）"/>
-    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_title" text="Spiral from inside"/>
-    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip" text="Spiral from inside tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="Even row with"/>
     <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Even row with tt."/>
-    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title" text="Sharpen headland corners"/>
-    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="Sharpen corners of non-rounded headlands"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title" text="まくら地の角"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip" text="まくら地の曲がり角を設定します"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Number of round corners"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Number of round corners, starting with the first headland."/>
-    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_title" text="Corner radius"/>
-    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Corner radius tt"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="radius"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="radius tt"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" text="シャープ（直角）"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" text="ラウンド"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Up/down row direction"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Direction of the rows in the center of the field."/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="automatic"/>
@@ -320,8 +319,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="[往復レーン方向]の[マニュアル]を選択した場合、往復するレーンの方向（角度）を設定します (北=0° 設定角度:0～175°)"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="How the course should bypass islands in the field."/>
-    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title" text="Island headlands"/>
-    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Island headlands tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_title" text="Island headlands"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_tooltip" text="Island headlands tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="作業開始地点"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="作業を始める場所を設定します"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="まくら地"/>
@@ -332,8 +331,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="field edge tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_reverse_title" text="Reverse course"/>
     <text name="CP_vehicle_courseGeneratorSetting_reverse_tooltip" text="Reverse course tt."/>
-    <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Narrow field"/>
-    <text name="CP_vehicle_courseGeneratorSetting_narrowField_tooltip" text="Generates the headland only at the short edges of the field."/>
     <!---->
     <!--Vine course generator settings-->
     <!---->

@@ -39,6 +39,7 @@ function FieldworkContext:init(field, workingWidth, turningRadius, nHeadlands)
     
     self.reverseCourse = false
     self.spiralFromInside = false
+    self.twoSideHeadland = false
 
 end
 
@@ -211,5 +212,10 @@ end
 ---@param spiralFromInside boolean will create a course with headlands on just two sides or also called "narrow field"
 function FieldworkContext:setSpiralFromInside(spiralFromInside)
     self.spiralFromInside = spiralFromInside
+end
+
+---@param twoSideHeadland boolean will create a course with headlands on just two sides or also called "narrow field"
+function FieldworkContext:setTwoSideHeadland(twoSideHeadland)
+    self.twoSideHeadland = twoSideHeadland
     return self
 end

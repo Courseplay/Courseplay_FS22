@@ -280,8 +280,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="設置田地邊界。正值會減少田地範圍的大小，負值使工作區域超出了田地範圍的限制。 數值範圍: -5 - 5.8"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="要跳過的路徑"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="決定到達當前路徑的終點時要跳過多少行路徑。 數值範圍: 0 - 6"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Number of circles tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="中心路徑行數"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="如果選擇“中心路線”模式，則每塊田地中有多少行路徑。 數值範圍: 0 - 24"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>
@@ -299,19 +297,20 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="田地中心路徑"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="選擇中心路徑類型。"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="往返"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="螺旋（迴轉）"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="圓形（由外到內）"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="區域（由內到外）"/>
-    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_title" text="Spiral from inside"/>
-    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip" text="Spiral from inside tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="Even row with"/>
     <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Even row with tt."/>
-    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title" text="Sharpen headland corners"/>
-    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="Sharpen corners of non-rounded headlands"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title" text="地頭"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip" text="在田地兩頭的轉向方式。 "/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Number of round corners"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Number of round corners, starting with the first headland."/>
-    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_title" text="Corner radius"/>
-    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Corner radius tt"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="radius"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="radius tt"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" text="倒車"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" text="圓形的"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Up/down row direction"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Direction of the rows in the center of the field."/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="automatic"/>
@@ -320,8 +319,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="當選擇為手動的路徑起始方向時的角度（0表示北） 數值範圍: 0 - 175 調整幅度: 5"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="How the course should bypass islands in the field."/>
-    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title" text="Island headlands"/>
-    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Island headlands tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_title" text="Island headlands"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_tooltip" text="Island headlands tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="開始工作"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="確定從哪裡開始工作。"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="地頭"/>
@@ -332,8 +331,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="field edge tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_reverse_title" text="Reverse course"/>
     <text name="CP_vehicle_courseGeneratorSetting_reverse_tooltip" text="Reverse course tt."/>
-    <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Narrow field"/>
-    <text name="CP_vehicle_courseGeneratorSetting_narrowField_tooltip" text="Generates the headland only at the short edges of the field."/>
     <!---->
     <!--Vine course generator settings-->
     <!---->

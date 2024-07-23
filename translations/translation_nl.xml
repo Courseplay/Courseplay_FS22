@@ -280,8 +280,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Positieve waarden verkleinen de veldgrootte om een buffer rond het bewerkte gebied toe te voegen, negatieve waarden vergroten het bewerkte gebied buiten de veldgrens. Waarde: -2 - 5.8"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Rijen om over te slaan"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Rijen die moeten worden overgeslagen bij het wisselen naar de volgende rij omhoog/omlaag. Value: 0 - 6"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Number of circles tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Rijen per veldsectie"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="Als de veld middenpunt modus 'Veldsecties' is, zitten er zoveel rijen in elk blok. Value: 0 - 24"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>
@@ -299,19 +297,20 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Veld middenpunt"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Veld middenpunt"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="Omhoog/omlaag"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="Spiraal"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="Racebaan"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Veldsecties"/>
-    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_title" text="Spiral from inside"/>
-    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip" text="Spiral from inside tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="Even row with"/>
     <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Even row with tt."/>
-    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title" text="Sharpen headland corners"/>
-    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="Sharpen corners of non-rounded headlands"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title" text="Wendakker hoeken"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip" text="Wendakker hoeken"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Number of round corners"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Number of round corners, starting with the first headland."/>
-    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_title" text="Corner radius"/>
-    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Corner radius tt"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="radius"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="radius tt"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" text="Scherp"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" text="Rond"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Up/down row direction"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Direction of the rows in the center of the field."/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="automatic"/>
@@ -320,8 +319,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Hoek van rijen omhoog/omlaag (0 is het noorden) indien handmatig. Waarde: 0 - 175 Stappen: 5"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="How the course should bypass islands in the field."/>
-    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title" text="Island headlands"/>
-    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Island headlands tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_title" text="Island headlands"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_tooltip" text="Island headlands tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Begin met werken op"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Begin met werken op"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="Wendakker"/>
@@ -332,8 +331,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="field edge tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_reverse_title" text="Reverse course"/>
     <text name="CP_vehicle_courseGeneratorSetting_reverse_tooltip" text="Reverse course tt."/>
-    <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Narrow field"/>
-    <text name="CP_vehicle_courseGeneratorSetting_narrowField_tooltip" text="Generates the headland only at the short edges of the field."/>
     <!---->
     <!--Vine course generator settings-->
     <!---->

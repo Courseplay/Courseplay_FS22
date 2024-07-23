@@ -198,9 +198,9 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="工具横向调整"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_title" text="拾取草捆偏移调整"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="草捆拾取机偏移调整"/>
-    <text name="CP_vehicle_setting_combineOffsetX_title" text="向左/向右 偏移调整"/>
-    <text name="CP_vehicle_setting_combineOffsetX_tooltip" text="收割机管向左(+)和向右(-)的调整"/>
-    <text name="CP_vehicle_setting_combineOffsetZ_title" text="向前/向后 偏移调整"/>
+    <text name="CP_vehicle_setting_combineOffsetX_title" text="前/后 偏移调整"/>
+    <text name="CP_vehicle_setting_combineOffsetX_tooltip" text="收割机管向前(+)和向后(-)的调整"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_title" text="前/后 偏移调整"/>
     <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="收割机管向前(+)和向后(-)的调整"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="清空:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
@@ -218,8 +218,8 @@
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="青贮池作业"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="工作宽度"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="工作宽度. 调整范围: 0 - 50"/>
-    <text name="CP_vehicle_setting_levelerHeightOffset_title" text="罩板高度调整"/>
-    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="罩板与地面高度调整. 调整范围: 0 - 1"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_title" text="护罩高度调整"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="护罩与地面高度调整. 调整范围: 0 - 1"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="铲斗装载调整. 调整范围: -1 - 1"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="铲斗卸载调整. 调整范围: -1 - 1"/>
     <!---->
@@ -255,8 +255,8 @@
     <text name="CP_vehicle_setting_stopForUnload_tooltip" text="始终停车执行卸载。"/>
     <text name="CP_vehicle_setting_selfUnload_title" text="收割机自助卸载"/>
     <text name="CP_vehicle_setting_selfUnload_tooltip" text="收割机自动在田间或会合附近的拖车进行卸载。"/>
-    <text name="CP_vehicle_setting_unloadOnFirstHeadland_title" text="在第一个岬角卸载"/>
-    <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="收割机将在第一个岬角呼叫拖车。"/>
+    <text name="CP_vehicle_setting_unloadOnFirstHeadland_title" text="在第一个地头卸载"/>
+    <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="收割机将在第一个地头呼叫拖车。"/>
     <text name="CP_vehicle_setting_strawSwath_title" text="地头产生秸秆堆"/>
     <text name="CP_vehicle_setting_strawSwath_tooltip" text="启用/禁用条形秸秆堆功能或仅在田间地头禁用。"/>
     <text name="CP_vehicle_setting_callUnloaderPercent_title" text="呼叫卸载拖车"/>
@@ -280,8 +280,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="设置田地边界。正值会减少田地范围的大小，负值使工作区域超出了田地范围的限制。 调整范围: -5 - 5.8"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="要跳过的路径"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="决定到达当前路径的终点时要跳过多少行路径。 调整范围: 0 - 6"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Number of circles tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="中心路径行数"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="如果选择“中心路线”模式，则每块田地中有多少行路径。 调整范围: 0 - 24"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>
@@ -299,19 +297,20 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="田地中心路径"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="选择中心路径类型。"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="往返"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="螺旋（回转）"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="圆形（由外到内）"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="区域（由内到外）"/>
-    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_title" text="Spiral from inside"/>
-    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip" text="Spiral from inside tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="Even row with"/>
     <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Even row with tt."/>
-    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title" text="Sharpen headland corners"/>
-    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="Sharpen corners of non-rounded headlands"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title" text="地头"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip" text="在田地两头的转向方式。 "/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Number of round corners"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Number of round corners, starting with the first headland."/>
-    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_title" text="Corner radius"/>
-    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Corner radius tt"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="radius"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="radius tt"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" text="倒车"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" text="圆形的"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Up/down row direction"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Direction of the rows in the center of the field."/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="automatic"/>
@@ -320,8 +319,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="当选择为手动的路径起始方向时的角度（0表示北） 调整范围: 0 - 175 调整幅度: 5"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="How the course should bypass islands in the field."/>
-    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title" text="Island headlands"/>
-    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Island headlands tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_title" text="Island headlands"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_tooltip" text="Island headlands tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="开始工作"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="确定从哪里开始工作。"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="地块边缘"/>
@@ -332,8 +331,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="field edge tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_reverse_title" text="Reverse course"/>
     <text name="CP_vehicle_courseGeneratorSetting_reverse_tooltip" text="Reverse course tt."/>
-    <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Narrow field"/>
-    <text name="CP_vehicle_courseGeneratorSetting_narrowField_tooltip" text="Generates the headland only at the short edges of the field."/>
     <!---->
     <!--Vine course generator settings-->
     <!---->
