@@ -6,62 +6,42 @@ CourseGeneratorInterface.logger = Logger('CourseGeneratorInterface')
 
 ---@param fieldPolygon table [{x, z}]
 ---@param startPosition table {x, z}
----@param isClockwise boolean
----@param workWidth number
----@param numberOfHeadlands number
----@param rowsToSkip number when turning to the next row, skip nRowsToSkip and continue working there. This allows
---- for a bigger turning radius
----@param leaveSkippedRowsUnworked boolean normally, if rowsToSkip > 0, the vehicle will cover all rows, including the
---- skipped ones, for example, on the first run work on the odd rows, then on the even ones. When leaveSkippedRowsUnworked
---- is true, it will not return to work on the skipped rows, will only work on every rowsToSkip + 1 row.
+---@param vehicle table
+---@param settings CpCourseGeneratorSettings
 function CourseGeneratorInterface.generate(fieldPolygon,
                                            startPosition,
-                                           isClockwise,
-                                           workWidth,
-                                           turnRadius,
-                                           numberOfHeadlands,
-                                           startOnHeadland,
-                                           headlandCornerType,
-                                           headlandOverlapPercent,
-                                           rowPatternNumber,
-                                           rowDirection,
-                                           manualRowAngleDeg,
-                                           rowsToSkip,
-                                           leaveSkippedRowsUnworked,
-                                           rowsPerLand,
-                                           islandBypassMode,
-                                           fieldMargin,
-                                           multiTools,
-                                           pipeOnLeftSide
+                                           vehicle,
+                                           settings
 )
     local field = CourseGenerator.Field('', 0, CpMathUtil.pointsFromGame(fieldPolygon))
 
-    local context = CourseGenerator.FieldworkContext(field, workWidth * multiTools, turnRadius, numberOfHeadlands)
+    local context = CourseGenerator.FieldworkContext(field, settings.workWidth:getValue() * settings.multiTools:getValue(),
+            AIUtil.getTurningRadius(vehicle), settings.numberOfHeadlands:getValue())
+    local rowPatternNumber = settings.centerMode:getValue()
     if rowPatternNumber == CourseGenerator.RowPattern.ALTERNATING then
         context:setRowPattern(CourseGenerator.RowPatternAlternating())
     elseif rowPatternNumber == CourseGenerator.RowPattern.SKIP then
-        context:setRowPattern(CourseGenerator.RowPatternSkip(rowsToSkip, leaveSkippedRowsUnworked))
+        context:setRowPattern(CourseGenerator.RowPatternSkip(settings.rowsToSkip:getValue(), false))
     elseif rowPatternNumber == CourseGenerator.RowPattern.SPIRAL then
-        -- TODO: add center clockwise for first param
-        context:setRowPattern(CourseGenerator.RowPatternSpiral(true, rowsToSkip))
+        context:setRowPattern(CourseGenerator.RowPatternSpiral(settings.centerClockwise:getValue(), settings.rowsToSkip:getValue()))
     elseif rowPatternNumber == CourseGenerator.RowPattern.LANDS then
-        context:setRowPattern(CourseGenerator.RowPatternLands(rowsPerLand))
+        -- TODO: auto fill clockwise from self:isPipeOnLeftSide(vehicle)?
+        context:setRowPattern(CourseGenerator.RowPatternLands(settings.centerClockwise:getValue(), settings.rowsPerLand:getValue()))
     elseif rowPatternNumber == CourseGenerator.RowPattern.RACETRACK then
-        context:setRowPattern(CourseGenerator.RowPatternRacetrack(rowsToSkip))
+        context:setRowPattern(CourseGenerator.RowPatternRacetrack(settings.rowsToSkip:getValue()))
     end
 
     context:setStartLocation(startPosition.x, -startPosition.z)
-    context:setHeadlandFirst(startOnHeadland):setHeadlandClockwise(isClockwise)
+    context:setHeadlandFirst(settings.startOnHeadland:getValue())
+    context:setHeadlandClockwise(settings.headlandClockwise:getValue())
     context:setSharpenCorners(true)
-    context:setHeadlandsWithRoundCorners(headlandCornerType and numberOfHeadlands or 0)
+    context:setHeadlandsWithRoundCorners(settings.headlandsWithRoundCorners:getValue())
+    context:setAutoRowAngle(settings.autoRowAngle:getValue())
     -- the Course Generator UI uses the geographical direction angles (0 - North, 90 - East, etc), convert it to
     -- the mathematical angle (0 - x+, 90 - y+, etc)
-    context:setAutoRowAngle(rowDirection):setRowAngle(math.rad(-(manualRowAngleDeg - 90)))
-    context:setBypassIslands(islandBypassMode)
+    context:setRowAngle(math.rad(-(settings.manualRowAngleDeg:getValue() - 90)))
+    context:setBypassIslands(settings.bypassIslands:getValue())
 
-    --------------------------------------------------------------------------------------------------------------------
-    -- General settings
-    -----------------------------------------------------------------------------------------------------------------------
     local status, generatedCourse = xpcall(
             function()
                 return CourseGenerator.FieldworkCourse(context)
@@ -81,8 +61,8 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     CourseGeneratorInterface.logger:debug('Generated course: %d/%d headland/center waypoints',
             #generatedCourse:getHeadlandPath(), #generatedCourse:getCenterPath())
 
-    local course = Course.createFromGeneratedCourse(nil, generatedCourse, workWidth,
-			#generatedCourse:getHeadlands(), multiTools)
+    local course = Course.createFromGeneratedCourse(nil, generatedCourse, settings.workWidth:getValue(),
+			#generatedCourse:getHeadlands(), settings.multiTools:getValue())
     course:setFieldPolygon(fieldPolygon)
     CourseGeneratorInterface.logger:debug('%s', tostring(course))
     return true, course
