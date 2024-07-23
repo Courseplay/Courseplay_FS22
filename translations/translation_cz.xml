@@ -269,7 +269,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_basic" text="Základní"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_headland" text="Souvrať"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="Střed"/>
-    <text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced" text="Pokročilý"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_island" text="Settings island"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_title" text="Pracovní šířka"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip" text="Pracovní šířka. Hodnota: 0 - 50"/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title" text="Počet souvratí"/>
@@ -282,39 +282,55 @@
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Řádky, které se mají přeskočit při přechodu na další řádek nahoru/dolů. Hodnota: 0 - 6"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Řádků v režimu 'záhon'"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="Pokud je vybrán středový režim 'záhon', tolik řádků je v každém bloku. Hodnota: 0 - 24"/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_title" text="Směr souvratě"/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip" text="Jízda na souvrati ve směru nebo proti směru hodinových ručiček."/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" text="Ve směru hodinových ručiček"/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" text="Proti směru hodinových ručiček"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_title" text="Center direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_title" text="Island Headland direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_clockwise" text="clockwise"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_counterclockwise" text="counterclockwise"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_clockwise" text="clockwise"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_counterclockwise" text="counterclockwise"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_clockwise" text="clockwise"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_counterclockwise" text="counterclockwise"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Postup práce"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Postup práce"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="Nahoru/dolů"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="Spirála"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="Kruh"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Záhon"/>
+    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="Even row with"/>
+    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Even row with tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title" text="Souvraťové rohy"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip" text="Souvraťové rohy"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" text="Zaoblený"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Number of round corners"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Number of round corners, starting with the first headland."/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="radius"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="radius tt"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" text="Pocouvnutí"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" text="Průjezd"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_title" text="Směr na začátku řádku"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip" text="Zvolit směr na začátku řádku"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" text="Automatický"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" text="Nejdelší okraj"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" text="Manuální"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Up/down row direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Direction of the rows in the center of the field."/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="automatic"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_manual" text="manual"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Úhel trasy řádku"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Úhel trasy řádku pokud je manuální (0° je sever). Hodnota: 0 - 175 Krok: 5"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" text="Režim ostrova"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" text="Jak má trasa obcházet remízky na poli"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" text="Žádný"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" text="Ze stran"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" text="Kruh"/>
+    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>
+    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="How the course should bypass islands in the field."/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_title" text="Island headlands"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_tooltip" text="Island headlands tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Začít pracovat na"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Kde začít pracovat."/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="Souvrati"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="Řádku"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Více strojů"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Počet vozidel na stejné trase."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Field edge for line form"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="field edge tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_reverse_title" text="Reverse course"/>
+    <text name="CP_vehicle_courseGeneratorSetting_reverse_tooltip" text="Reverse course tt."/>
     <!---->
     <!--Vine course generator settings-->
     <!---->
