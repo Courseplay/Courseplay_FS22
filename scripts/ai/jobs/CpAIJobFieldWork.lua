@@ -210,23 +210,8 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
 
         ok, course = CourseGeneratorInterface.generate(fieldPolygon,
                 { x = tx, z = tz },
-                settings.isClockwise:getValue(),
-                settings.workWidth:getValue(),
-                AIUtil.getTurningRadius(vehicle),
-                settings.numberOfHeadlands:getValue(),
-                settings.startOnHeadland:getValue(),
-                settings.headlandCornerType:getValue(),
-                settings.headlandOverlapPercent:getValue(),
-                settings.centerMode:getValue(),
-                settings.rowDirection:getValue(),
-                settings.manualRowAngleDeg:getValue(),
-                settings.rowsToSkip:getValue(),
-                false,
-                settings.rowsPerLand:getValue(),
-                settings.islandBypassMode:getValue(),
-                settings.fieldMargin:getValue(),
-                settings.multiTools:getValue(),
-                self:isPipeOnLeftSide(vehicle)
+                vehicle,
+                settings
         )
     end
     if not ok then
