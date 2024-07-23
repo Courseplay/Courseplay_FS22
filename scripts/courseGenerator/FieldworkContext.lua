@@ -35,6 +35,10 @@ function FieldworkContext:init(field, workingWidth, turningRadius, nHeadlands)
     self.enableSmallOverlapsWithHeadland = false
     self.logger = Logger('FieldworkContext')
     self.errors = {}
+    
+    self.reverseCourse = false
+    self.twoSideHeadland = false
+
 end
 
 function FieldworkContext:log()
@@ -186,3 +190,14 @@ function FieldworkContext:setEnableSmallOverlapsWithHeadland(enableSmallOverlaps
     return self
 end
 
+---@param reverseCourse boolean reverse the complete course, not sure how to do it when copy a course and reverse it afterwards.
+function FieldworkContext:setReverseCourse(reverseCourse)
+    self.reverseCourse = reverseCourse
+    return self
+end
+
+---@param twoSideHeadland boolean will create a course with headlands on just two sides or also called "narrow field"
+function FieldworkContext:setTwoSideHeadland(twoSideHeadland)
+    self.twoSideHeadland = twoSideHeadland
+    return self
+end
