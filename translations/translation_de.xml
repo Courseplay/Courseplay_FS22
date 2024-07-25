@@ -303,14 +303,12 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Beete (innen nach außen)"/>
     <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="Gleichmäßige Bahnenbreite"/>
     <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Gleichmäßige Bahnenbreite tt."/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title" text="Vorgewende-Ecken"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip" text="Vorgewende-Ecken"/>
+    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title" text="Vorgewende-Ecken"/>
+    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="Vorgewende-Ecken"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Anzahl runde Ecken"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Anzahl runde Ecken, beginnend mit dem ersten Vorgewende."/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="Radius"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="Radius tt"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" text="scharf"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" text="rund"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Startrichtung"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Richtung, in der die Bahnen gefahren werden sollen."/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="Automatisch"/>
