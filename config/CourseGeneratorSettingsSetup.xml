@@ -67,8 +67,8 @@
 		<Setting classType="AIParameterBooleanSetting" name="reverse" defaultBoolean="false"/>
 		<Setting classType="AIParameterBooleanSetting" name="autoRowAngle" isExpertModeOnly="true" defaultBoolean="false">
 			<Texts>
-				<Text>automatic</Text>
 				<Text>manual</Text>
+				<Text>automatic</Text>
 			</Texts>
 		</Setting>
 		<Setting classType="AIParameterSettingList" name="rowsToSkip" min="0" max="6"/>
