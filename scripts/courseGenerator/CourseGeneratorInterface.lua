@@ -18,12 +18,13 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     local context = CourseGenerator.FieldworkContext(field, settings.workWidth:getValue() * settings.multiTools:getValue(),
             AIUtil.getTurningRadius(vehicle), settings.numberOfHeadlands:getValue())
     local rowPatternNumber = settings.centerMode:getValue()
-    if rowPatternNumber == CourseGenerator.RowPattern.ALTERNATING then
+    if rowPatternNumber == CourseGenerator.RowPattern.ALTERNATING and settings.rowsToSkip:getValue() == 0 then
         context:setRowPattern(CourseGenerator.RowPatternAlternating())
-    elseif rowPatternNumber == CourseGenerator.RowPattern.SKIP then
+    elseif rowPatternNumber == CourseGenerator.RowPattern.ALTERNATING and settings.rowsToSkip:getValue() > 0 then
         context:setRowPattern(CourseGenerator.RowPatternSkip(settings.rowsToSkip:getValue(), false))
     elseif rowPatternNumber == CourseGenerator.RowPattern.SPIRAL then
-        context:setRowPattern(CourseGenerator.RowPatternSpiral(settings.centerClockwise:getValue(), settings.rowsToSkip:getValue()))
+        -- TODO: add from inside/outside
+        context:setRowPattern(CourseGenerator.RowPatternSpiral(settings.centerClockwise:getValue(), false))
     elseif rowPatternNumber == CourseGenerator.RowPattern.LANDS then
         -- TODO: auto fill clockwise from self:isPipeOnLeftSide(vehicle)?
         context:setRowPattern(CourseGenerator.RowPatternLands(settings.centerClockwise:getValue(), settings.rowsPerLand:getValue()))
@@ -32,9 +33,11 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     end
 
     context:setStartLocation(startPosition.x, -startPosition.z)
+    context:setFieldCornerRadius(settings.fieldCornerRadius:getValue())
     context:setHeadlandFirst(settings.startOnHeadland:getValue())
     context:setHeadlandClockwise(settings.headlandClockwise:getValue())
-    context:setSharpenCorners(true)
+    context:setHeadlandOverlap(settings.headlandOverlapPercent:getValue())
+    context:setSharpenCorners(settings.sharpenCorners:getValue())
     context:setHeadlandsWithRoundCorners(settings.headlandsWithRoundCorners:getValue())
     context:setAutoRowAngle(settings.autoRowAngle:getValue())
     -- the Course Generator UI uses the geographical direction angles (0 - North, 90 - East, etc), convert it to
@@ -64,7 +67,6 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     local course = Course.createFromGeneratedCourse(nil, generatedCourse, settings.workWidth:getValue(),
 			#generatedCourse:getHeadlands(), settings.multiTools:getValue())
     course:setFieldPolygon(fieldPolygon)
-    CourseGeneratorInterface.logger:debug('%s', tostring(course))
     return true, course
 end
 

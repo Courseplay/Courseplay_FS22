@@ -26,14 +26,8 @@
 				<Text>up_down_rows</Text>
 			</Texts>
 		</Setting>
-		<!-- TODO: refactor to number of rounded headlands -->
-		<Setting classType="AIParameterBooleanSetting" name="headlandCornerType" defaultBoolean="false">
-			<Texts>
-				<Text>sharp</Text>
-				<Text>round</Text>
-			</Texts>
-		</Setting>
-		<Setting classType="AIParameterSettingList" name="headlandsWithRoundCorners" min="0" max="50" default="1"/>	
+		<Setting classType="AIParameterBooleanSetting" name="sharpenCorners" defaultBoolean="false"/>
+		<Setting classType="AIParameterSettingList" name="headlandsWithRoundCorners" min="0" max="50" default="1"/>
 		<Setting classType="AIParameterSettingList" name="fieldCornerRadius" min="1" max="30" default="1"/>
 		<Setting classType="AIParameterBooleanSetting" name="headlandClockwise" isExpertModeOnly="true" defaultBoolean="true">
 			<Texts>
@@ -50,7 +44,6 @@
 			<Values>
 				<!-- These must match CourseGenerator.RowPattern.* constants -->
 				<Value name="ROW_PATTERN_ALTERNATING">1</Value>
-				<Value name="ROW_PATTERN_SKIP">2</Value>
 				<Value name="ROW_PATTERN_SPIRAL">3</Value>
 				<Value name="ROW_PATTERN_LANDS">4</Value>
 				<Value name="ROW_PATTERN_RACETRACK">5</Value>

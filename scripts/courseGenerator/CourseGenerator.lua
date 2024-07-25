@@ -51,7 +51,7 @@ CourseGenerator.cMaxHeadlandConnectorAngle = math.rad(35)
 -- Headland overlap. We make headland passes slightly narrower than the working width, so they overlap
 -- a bit to make sure there are no unworked gaps remaining when maneuvering. This is the overlap in percentage of
 -- the working width.
-CourseGenerator.cHeadlandOverlapPercentage = 5
+CourseGenerator.cDefaultHeadlandOverlapPercentage = 5
 
 CourseGenerator.debugPoints = {}
 CourseGenerator.debugPolylines = {}

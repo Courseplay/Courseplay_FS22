@@ -1001,13 +1001,13 @@
 			<Text language="de"><![CDATA[Gleichmäßige Bahnenbreite tt.]]></Text>
 			<Text language="en"><![CDATA[Even row with tt.]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title">
+		<Translation name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title">
 			<Text language="de"><![CDATA[Vorgewende-Ecken]]></Text>
-			<Text language="en"><![CDATA[Headland corners]]></Text>
+			<Text language="en"><![CDATA[Sharpen headland corners]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip">
+		<Translation name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip">
 			<Text language="de"><![CDATA[Vorgewende-Ecken]]></Text>
-			<Text language="en"><![CDATA[Headland corners]]></Text>
+			<Text language="en"><![CDATA[Sharpen corners of non-rounded headlands]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title">
 			<Text language="de"><![CDATA[Anzahl runde Ecken]]></Text>
@@ -1024,14 +1024,6 @@
 		<Translation name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip">
 			<Text language="de"><![CDATA[Radius tt]]></Text>
 			<Text language="en"><![CDATA[radius tt]]></Text>
-		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp">
-			<Text language="de"><![CDATA[scharf]]></Text>
-			<Text language="en"><![CDATA[sharp]]></Text>
-		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round">
-			<Text language="de"><![CDATA[rund]]></Text>
-			<Text language="en"><![CDATA[round]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title">
 			<Text language="de"><![CDATA[Startrichtung]]></Text>

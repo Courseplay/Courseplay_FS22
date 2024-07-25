@@ -13,7 +13,7 @@ function FieldworkContext:init(field, workingWidth, turningRadius, nHeadlands)
     self.field = field
     self.startLocation = Vector(0, 0)
     self.workingWidth = workingWidth
-    self.headlandWorkingWidth = (1 - CourseGenerator.cHeadlandOverlapPercentage / 100) * workingWidth
+    self.headlandWorkingWidth = (1 - CourseGenerator.cDefaultHeadlandOverlapPercentage / 100) * workingWidth
     self.turningRadius = turningRadius
 
     self.nHeadlands = nHeadlands
@@ -102,15 +102,18 @@ function FieldworkContext:setHeadlandClockwise(clockwise)
     return self
 end
 
----@param sharpen boolean if true, sharpen the corners of the headlands which are not rounded
+---@param sharpen boolean if true, sharpen the corners of the headlands which are not rounded. Will make
+--- a sharp turn whenever the headland's curvature is less than the turning radius.
 function FieldworkContext:setSharpenCorners(sharpen)
     self.sharpenCorners = sharpen
     return self
 end
 
----@param clockwise boolean generate headlands around the field boundary in the clockwise direction if true, counterclockwise if false
-function FieldworkContext:setHeadlandClockwise(clockwise)
-    self.headlandClockwise = clockwise
+---@param overlap number Headland overlap percentage. We make headland passes slightly narrower than the working width, so they overlap
+--- a bit to make sure there are no unworked gaps remaining when maneuvering. This is the overlap in percentage of
+--- the working width.
+function FieldworkContext:setHeadlandOverlap(overlap)
+    self.headlandWorkingWidth = (1 - overlap / 100) * self.workingWidth
     return self
 end
 
