@@ -301,6 +301,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="Spirála"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="Kruh"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Záhon"/>
+    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_title" text="Spiral from inside"/>
+    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip" text="Spiral from inside tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="Even row with"/>
     <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Even row with tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title" text="Sharpen headland corners"/>
