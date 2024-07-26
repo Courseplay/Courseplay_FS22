@@ -993,6 +993,14 @@
 			<Text language="de"><![CDATA[Beete (innen nach außen)]]></Text>
 			<Text language="en"><![CDATA[lands]]></Text>
 		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_spiralFromInside_title">
+			<Text language="de"><![CDATA[Spirale von innen]]></Text>
+			<Text language="en"><![CDATA[Spiral from inside]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip">
+			<Text language="de"><![CDATA[Spirale von innen tt.]]></Text>
+			<Text language="en"><![CDATA[Spiral from inside tt.]]></Text>
+		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title">
 			<Text language="de"><![CDATA[Gleichmäßige Bahnenbreite]]></Text>
 			<Text language="en"><![CDATA[Even row with]]></Text>
@@ -1018,12 +1026,12 @@
 			<Text language="en"><![CDATA[Number of round corners, starting with the first headland.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title">
-			<Text language="de"><![CDATA[Radius]]></Text>
-			<Text language="en"><![CDATA[radius]]></Text>
+			<Text language="de"><![CDATA[Eckenradius]]></Text>
+			<Text language="en"><![CDATA[Corner radius]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip">
-			<Text language="de"><![CDATA[Radius tt]]></Text>
-			<Text language="en"><![CDATA[radius tt]]></Text>
+			<Text language="de"><![CDATA[Eckenradius tt]]></Text>
+			<Text language="en"><![CDATA[Corner radius tt]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title">
 			<Text language="de"><![CDATA[Startrichtung]]></Text>
