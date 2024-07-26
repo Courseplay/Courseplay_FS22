@@ -47,6 +47,7 @@ end
 function CpCourseGeneratorSettings.registerEventListeners(vehicleType)	
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpCourseGeneratorSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpCourseGeneratorSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onLoadFinished",CpCourseGeneratorSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onCpUnitChanged", CpCourseGeneratorSettings)
 end
 function CpCourseGeneratorSettings.registerFunctions(vehicleType)
@@ -100,18 +101,19 @@ function CpCourseGeneratorSettings:onLoad(savegame)
     CpCourseGeneratorSettings.loadSettings(self,savegame)
 end
 
+--- Apply auto work width after everything is loaded.
+function CpCourseGeneratorSettings:onLoadFinished()
+    CpCourseGeneratorSettings.setAutomaticWorkWidthAndOffset(self)
+    CpCourseGeneratorSettings.setDefaultTurningRadius(self)
+end
+
 --- Resets the work width to a saved value after all implements are loaded and attached.
 function CpCourseGeneratorSettings:onUpdate(savegame)
     local spec = self.spec_cpCourseGeneratorSettings
     if not spec.finishedFirstUpdate then
-        CpCourseGeneratorSettings.setAutomaticWorkWidthAndOffset(self)
         spec.workWidth:resetToLoadedValue()
     end
     spec.finishedFirstUpdate = true
-    if spec.needsRefresh then 
-
-        spec.needsRefresh = false
-    end
 end
 
 --- Makes sure the automatic work width gets recalculated after the variable work width was changed by the user.
@@ -132,12 +134,17 @@ function CpCourseGeneratorSettings:setAutomaticWorkWidthAndOffset()
     self:getCpSettings().toolOffsetX:setFloatValue(offset)
 end
 
+function CpCourseGeneratorSettings:setDefaultTurningRadius()
+    local spec = self.spec_cpCourseGeneratorSettings
+    spec.turningRadius:setFloatValue(AIUtil.getTurningRadius(self))
+end
+
 --- Loads the generic settings setup from an xmlFile.
 function CpCourseGeneratorSettings.loadSettingsSetup()
     local filePath = Utils.getFilename("config/CourseGeneratorSettingsSetup.xml", g_Courseplay.BASE_DIRECTORY)
     CpSettingsUtil.loadSettingsFromSetup(CpCourseGeneratorSettings,filePath)
     CpCourseGeneratorSettings.vineSettings = {}
-    local filePath = Utils.getFilename("config/VineCourseGeneratorSettingsSetup.xml", g_Courseplay.BASE_DIRECTORY)
+    filePath = Utils.getFilename("config/VineCourseGeneratorSettingsSetup.xml", g_Courseplay.BASE_DIRECTORY)
     CpSettingsUtil.loadSettingsFromSetup(CpCourseGeneratorSettings.vineSettings,filePath)
 end
 
