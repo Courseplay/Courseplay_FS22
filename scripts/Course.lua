@@ -253,8 +253,8 @@ function Course:enrichWaypointData(startIx)
             -- X offset must be reversed at waypoints where we are driving in reverse
             self.waypoints[i].reverseOffset = true
         end
-        if self.waypoints[i].lane and self.waypoints[i].lane < 0 then
-            self.numberOfHeadlands = math.max(self.numberOfHeadlands, -self.waypoints[i].lane)
+        if self.waypoints[i].headlandNumber then
+            self.numberOfHeadlands = math.max(self.numberOfHeadlands, self.waypoints[i].headlandNumber)
         end
     end
     -- make the last waypoint point to the same direction as the previous so we don't
@@ -432,20 +432,20 @@ function Course:isUnloadAt(ix)
 end
 
 function Course:getHeadlandNumber(ix)
-    return self.waypoints[ix].lane
+    return self.waypoints[ix].headlandNumber
 end
 
 function Course:isOnHeadland(ix, n)
     ix = ix or self.currentWaypoint
     if n then
-        return self.waypoints[ix].lane and self.waypoints[ix].lane == -n
+        return self.waypoints[ix].headlandNumber == n
     else
-        return self.waypoints[ix].lane and self.waypoints[ix].lane < 0
+        return self.waypoints[ix].headlandNumber ~= nil
     end
 end
 
 function Course:isOnOutermostHeadland(ix)
-    return self.waypoints[ix].lane and self.waypoints[ix].lane == -1
+    return self.waypoints[ix].headlandNumber == 1
 end
 
 function Course:startsWithHeadland()
@@ -627,7 +627,7 @@ function Course:print()
         print(string.format('%d: x=%.1f z=%.1f a=%.1f yRot=%.1f ts=%s te=%s r=%s d=%.1f t=%d l=%s p=%s tt=%s dx=%.1f dz=%.1f',
                 i, p.x, p.z, p.angle or -1, math.deg(p.yRot or 0),
                 tostring(p.turnStart), tostring(p.turnEnd), tostring(p.rev), p.dToHere or -1, p.turnsToHere or -1,
-                tostring(p.lane), tostring(p.pipeInFruit), tostring(p.useTightTurnOffset), p.dx, p.dz))
+                tostring(p.headlandNumber), tostring(p.pipeInFruit), tostring(p.useTightTurnOffset), p.dx, p.dz))
     end
 end
 
@@ -676,7 +676,7 @@ function Course:getDistanceToFirstUpDownRowWaypoint(ix)
     for i = ix, #self.waypoints - 1 do
         isConnectingPath = isConnectingPath or self.waypoints[i].isConnectingPath
         d = d + self.waypoints[i].dToNext
-        if self.waypoints[i].lane and not self.waypoints[i + 1].lane and isConnectingPath then
+        if self.waypoints[i].headlandNumber and not self.waypoints[i + 1].headlandNumber and isConnectingPath then
             return d, i + 1
         end
         if d > 1000 then
@@ -1358,15 +1358,15 @@ function Course:setUseTightTurnOffsetForLastWaypoints(d)
 end
 
 --- Get the next contiguous headland section of a course, starting at startIx
----@param lane number of lane (headland), starting at -1 on the outermost headland, any headland if nil
+---@param headlandNumber number of headland, starting at 1 on the outermost headland, any headland if nil
 ---@param startIx number start at this waypoint index
 ---@return Course, number headland section as a Course object, next wp index after the section
-function Course:getNextHeadlandSection(lane, startIx)
+function Course:getNextHeadlandSection(headlandNumber, startIx)
     return self:getNextSectionWithProperty(startIx, function(wp)
-        if lane then
-            return wp.lane and wp.lane == lane
+        if headlandNumber then
+            return wp.headlandNumber == headlandNumber
         else
-            return wp.lane ~= nil
+            return wp.headlandNumber ~= nil
         end
     end)
 end
@@ -1376,7 +1376,7 @@ end
 ---@return Course, number headland section as a Course object, next wp index after the section
 function Course:getNextNonHeadlandSection(startIx)
     return self:getNextSectionWithProperty(startIx, function(wp)
-        return not wp.lane
+        return not wp.headlandNumber
     end)
 end
 
@@ -1442,12 +1442,11 @@ function Course:offsetUpDownRows(offsetX, offsetZ, useSameTurnWidth)
 end
 
 ---@param waypoints Polyline
-function Course:markAsHeadland(waypoints, passNumber)
-    -- TODO: this should be in Polyline
+function Course:markAsHeadland(waypoints, headlandNumber)
 
     for _, p in ipairs(waypoints) do
         -- don't care which headland, just make sure it is a headland
-        p.lane = passNumber
+        p.headlandNumber = headlandNumber
     end
 end
 
@@ -1506,10 +1505,9 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
     while ix and (ix < #self.waypoints) do
         sIx = ix
         local origHeadlandsCourse
-        -- time to get rid of this negative lane number marking the headland, why on Earth must it be negative?
-        local currentLaneNumber = self.waypoints[ix].lane
-        -- work on the headland passes one by one to keep have the correct lane number in the offset course
-        origHeadlandsCourse, ix = self:getNextHeadlandSection(currentLaneNumber, ix)
+        local currentHeadlandNumber = self.waypoints[ix].headlandNumber
+        -- work on the headland passes one by one to keep have the correct headland number in the offset course
+        origHeadlandsCourse, ix = self:getNextHeadlandSection(currentHeadlandNumber, ix)
         if origHeadlandsCourse:getNumberOfWaypoints() > 0 then
             if origHeadlandsCourse:getNumberOfWaypoints() > 2 then
                 CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Headland section to %d', ix)
@@ -1526,7 +1524,7 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
                     CpUtil.info('Could not generate offset headland')
                 else
                     offsetHeadlands:calculateData()
-                    self:markAsHeadland(offsetHeadlands, currentLaneNumber)
+                    self:markAsHeadland(offsetHeadlands, currentHeadlandNumber)
                     if origHeadlandsCourse:isTurnStartAtIx(origHeadlandsCourse:getNumberOfWaypoints()) then
                         CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Original headland transitioned to the center with a turn, adding a turn start to the offset one')
                         offsetHeadlands[#offsetHeadlands].turnStart = true
@@ -1783,7 +1781,7 @@ function Course:serializeWaypoints(compress)
             serializedWaypoint = serializedWaypoint .. string.format('%s;%s;%s;%s;',
                     serializeBool(p.rev), serializeBool(p.unload), serializeBool(p.wait), serializeBool(p.crossing))
             serializedWaypoint = serializedWaypoint .. string.format('%s;%s;%s;%s|\n',
-                    serializeInt(p.lane), serializeInt(p.ridgeMarker),
+                    serializeInt(p.headlandNumber), serializeInt(p.ridgeMarker),
                     serializeInt(p.headlandHeightForTurn), serializeBool(p.isConnectingPath))
             serializedWaypoints = serializedWaypoints .. serializedWaypoint
         end
@@ -1820,7 +1818,7 @@ function Course.deserializeWaypoints(serializedWaypoints)
             p.unload = deserializeBool(fields[6])
             p.wait = deserializeBool(fields[7])
             p.crossing = deserializeBool(fields[8])
-            p.lane = tonumber(fields[9])
+            p.headlandNumber = tonumber(fields[9])
             p.ridgeMarker = tonumber(fields[10])
             p.headlandHeightForTurn = tonumber(fields[11])
             p.isConnectingPath = deserializeBool(fields[12])

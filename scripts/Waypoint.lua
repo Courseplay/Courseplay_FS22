@@ -91,7 +91,7 @@ function Waypoint:set(wp)
 	self.turnEnd = wp.turnEnd
 	self.headlandTurn = wp.headlandTurn
 	self.isConnectingPath = wp.isConnectingPath or nil
-	self.lane = wp.lane
+	self.headlandNumber = wp.headlandNumber
 	self.rowNumber = wp.rowNumber
 	self.ridgeMarker = wp.ridgeMarker
 	self.unload = wp.unload
@@ -117,7 +117,7 @@ function Waypoint.initFromGeneratedWp(wp, ix)
 	waypoint.turnEnd = a:isRowStart() or a:shouldUsePathfinderToThisWaypoint()
 	waypoint.headlandTurn = a:isHeadlandTurn()
 	waypoint.isConnectingPath = a:isOnConnectingPath()
-	waypoint.lane = a:getHeadlandPassNumber() and -a:getHeadlandPassNumber()
+	waypoint.headlandNumber = a:getHeadlandPassNumber()
 	waypoint.rowNumber = a:getRowNumber()
 	-- set ridge marker only if we are absolutely sure that a side is not worked
 	if a:isLeftSideNotWorked() then
@@ -141,7 +141,8 @@ function Waypoint.initFromXmlFile(data,ix)
 	waypoint.turnStart = data[3]
 	waypoint.turnEnd = data[4]
 	waypoint.isConnectingPath = data[5]
-	waypoint.lane = data[6]
+	-- saved course backwards compatibility, for when the headland numbers were negative
+	waypoint.headlandNumber = data[6] and math.abs(data[6])
 	waypoint.rowNumber = data[7]
 	waypoint.ridgeMarker = data[8]
 	waypoint.rev = data[9]
@@ -160,7 +161,7 @@ function Waypoint:getXmlString()
 		self.turnStart or "-",
 		self.turnEnd or "-",
 		self.isConnectingPath or "-",
-		self.lane or "-",
+		self.headlandNumber or "-",
 		self.rowNumber or "-",
 		self.ridgeMarker or "-",
 		self.rev or "-",
