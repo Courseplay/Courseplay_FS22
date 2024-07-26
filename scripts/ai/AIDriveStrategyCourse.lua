@@ -172,14 +172,14 @@ function AIDriveStrategyCourse:getGeneratedCourse(jobParameters)
         local symmetricLaneChange = self.settings.symmetricLaneChange:getValue()
         local offsetCourse = self.vehicle:getOffsetFieldWorkCourse()
         if offsetCourse == nil or not offsetCourse:hasSameMultiToolSettings(numMultiTools, position, symmetricLaneChange) then
-            self:debug('Multitool course, non-center vehicle, generating offset course for lane number %d, symmetric lane change %s',
+            self:debug('Multitool course, non-center vehicle, generating offset course for position number %d, symmetric lane change %s',
                     position, tostring(symmetricLaneChange))
             --- Work width of a single vehicle.
             local width = course:getWorkWidth() / numMultiTools
             offsetCourse = course:calculateOffsetCourse(numMultiTools, position, width, symmetricLaneChange)
             self.vehicle:setOffsetFieldWorkCourse(offsetCourse, position)
         else
-            self:debug('Multitool course, non-center vehicle, offset course for lane number %d, symmetric lane change %s already exists, reusing',
+            self:debug('Multitool course, non-center vehicle, offset course for position number %d, symmetric lane change %s already exists, reusing',
                     position, tostring(symmetricLaneChange))
         end
         return offsetCourse

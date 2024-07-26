@@ -282,9 +282,9 @@ function EditorCourseWrapper:changeHeadland(ix, n)
 	local wp = ix ~=nil and self.course:getWaypoint(ix)
 	if wp then
 		if n == 0 then 
-			wp.lane = nil
+			wp.headlandNumber = nil
 		else
-			wp.lane = -n
+			wp.headlandNumber = n
 		end
 	end
 end
@@ -297,7 +297,7 @@ function EditorCourseWrapper:setConnectingPath(ix, set)
 	end
 end
 
---- Set the lane number.
+--- Set the row number.
 function EditorCourseWrapper:getMaxRowNumber()
 	local max = 0
 	for i=1, self.course:getNumberOfWaypoints() do 
