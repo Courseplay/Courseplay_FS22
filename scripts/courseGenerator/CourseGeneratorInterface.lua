@@ -16,15 +16,14 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     local field = CourseGenerator.Field('', 0, CpMathUtil.pointsFromGame(fieldPolygon))
 
     local context = CourseGenerator.FieldworkContext(field, settings.workWidth:getValue() * settings.multiTools:getValue(),
-            AIUtil.getTurningRadius(vehicle), settings.numberOfHeadlands:getValue())
+            setting.turningRadius:getValue(), settings.numberOfHeadlands:getValue())
     local rowPatternNumber = settings.centerMode:getValue()
     if rowPatternNumber == CourseGenerator.RowPattern.ALTERNATING and settings.rowsToSkip:getValue() == 0 then
         context:setRowPattern(CourseGenerator.RowPatternAlternating())
     elseif rowPatternNumber == CourseGenerator.RowPattern.ALTERNATING and settings.rowsToSkip:getValue() > 0 then
         context:setRowPattern(CourseGenerator.RowPatternSkip(settings.rowsToSkip:getValue(), false))
     elseif rowPatternNumber == CourseGenerator.RowPattern.SPIRAL then
-        -- TODO: add from inside/outside
-        context:setRowPattern(CourseGenerator.RowPatternSpiral(settings.centerClockwise:getValue(), false))
+        context:setRowPattern(CourseGenerator.RowPatternSpiral(settings.centerClockwise:getValue(), settings.spiralFromInside:getValue()))
     elseif rowPatternNumber == CourseGenerator.RowPattern.LANDS then
         -- TODO: auto fill clockwise from self:isPipeOnLeftSide(vehicle)?
         context:setRowPattern(CourseGenerator.RowPatternLands(settings.centerClockwise:getValue(), settings.rowsPerLand:getValue()))

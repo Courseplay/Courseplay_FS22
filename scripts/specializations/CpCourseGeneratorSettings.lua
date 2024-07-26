@@ -104,6 +104,7 @@ end
 --- Apply auto work width after everything is loaded.
 function CpCourseGeneratorSettings:onLoadFinished()
     CpCourseGeneratorSettings.setAutomaticWorkWidthAndOffset(self)
+    CpCourseGeneratorSettings.setDefaultTurningRadius(self)
 end
 
 --- Resets the work width to a saved value after all implements are loaded and attached.
@@ -133,12 +134,17 @@ function CpCourseGeneratorSettings:setAutomaticWorkWidthAndOffset()
     self:getCpSettings().toolOffsetX:setFloatValue(offset)
 end
 
+function CpCourseGeneratorSettings:setDefaultTurningRadius()
+    local spec = self.spec_cpCourseGeneratorSettings
+    spec.turningRadius:setFloatValue(AIUtil.getTurningRadius(self))
+end
+
 --- Loads the generic settings setup from an xmlFile.
 function CpCourseGeneratorSettings.loadSettingsSetup()
     local filePath = Utils.getFilename("config/CourseGeneratorSettingsSetup.xml", g_Courseplay.BASE_DIRECTORY)
     CpSettingsUtil.loadSettingsFromSetup(CpCourseGeneratorSettings,filePath)
     CpCourseGeneratorSettings.vineSettings = {}
-    local filePath = Utils.getFilename("config/VineCourseGeneratorSettingsSetup.xml", g_Courseplay.BASE_DIRECTORY)
+    filePath = Utils.getFilename("config/VineCourseGeneratorSettingsSetup.xml", g_Courseplay.BASE_DIRECTORY)
     CpSettingsUtil.loadSettingsFromSetup(CpCourseGeneratorSettings.vineSettings,filePath)
 end
 
