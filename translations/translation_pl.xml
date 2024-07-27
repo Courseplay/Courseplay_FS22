@@ -280,8 +280,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Wartości dodatnie zmniejszają rozmiar pola, aby dodać bufor wokół obrabianego obszaru, a ujemne powiększają obrabiany obszar poza granicę pola. Zakres: -2 - 5.8"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Rzędy do pominięcia"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Rzędy do pominięcia przy przejściu do następnego rzędu tam /z powrotem. Zakres: 0 - 6"/>
-    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_title" text="Amount of circles"/>
-    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_tooltip" text="Amount of circles tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Number of circles tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Rzędy na spiralę od środka"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="W trybie spirali od środka określa ilość rzędów dla każdej 'wysepki'. Zakres: 0 - 24"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>

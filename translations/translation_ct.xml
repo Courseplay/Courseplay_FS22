@@ -280,8 +280,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="設置田地邊界。正值會減少田地範圍的大小，負值使工作區域超出了田地範圍的限制。 數值範圍: -5 - 5.8"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="要跳過的路徑"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="決定到達當前路徑的終點時要跳過多少行路徑。 數值範圍: 0 - 6"/>
-    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_title" text="Amount of circles"/>
-    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_tooltip" text="Amount of circles tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Number of circles tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="中心路徑行數"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="如果選擇“中心路線”模式，則每塊田地中有多少行路徑。 數值範圍: 0 - 24"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>

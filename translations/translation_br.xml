@@ -280,8 +280,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Valores positivos reduzem o tamanho do campo para adicionar um buffer ao redor da área trabalhada, valores negativos aumentam a área trabalhada além do limite do campo."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Pular fileiras"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Pular fileiras para cima ou para baixo ao mudar para próxima fileira"/>
-    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_title" text="Amount of circles"/>
-    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_tooltip" text="Amount of circles tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Number of circles tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="fileiras por campo"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="Quando o modo central é 'terras', essas várias fileiras estão em cada bloco"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>

@@ -280,8 +280,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Um valor positivo reduz o tamanho do campo, um negativo aumenta o tamanho do campo para além do tamanho original. Valor: -2 - 5,8"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Saltar faixa"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Faixas que deve de saltar quando vira nas faixas de ida e volta. Valor: 0 - 6"/>
-    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_title" text="Amount of circles"/>
-    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_tooltip" text="Amount of circles tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Number of circles tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Faixas por bloco"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="Determina a quantidade de faixas por blocos, quando esse modo está selecionado. Valor: 0 - 24"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>
