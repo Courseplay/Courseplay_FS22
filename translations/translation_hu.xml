@@ -297,7 +297,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Minta"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Milyen mintában művelje a tábla középső részét"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="fel/le"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="spirál"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="versenypálya"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="blokk"/>

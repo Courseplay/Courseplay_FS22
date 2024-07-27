@@ -297,7 +297,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Метод движения"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Метод движения агрегата по полю."/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="челночный"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="круговой"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="всвал/вразвал"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="загонами"/>

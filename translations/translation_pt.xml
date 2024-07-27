@@ -297,7 +297,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Gestão de faixas"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Escolha do estilo"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="Ida e volta"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="Espiral"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="Circular (de fora para dentro)"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Por blocos (dentro para fora)"/>

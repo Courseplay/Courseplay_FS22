@@ -297,7 +297,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Veld middenpunt"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Veld middenpunt"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="Omhoog/omlaag"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="Spiraal"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="Racebaan"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Veldsecties"/>

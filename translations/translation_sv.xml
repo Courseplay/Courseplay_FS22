@@ -297,7 +297,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Fältcentrum"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Fältcentrum"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="Upp/Ner"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="spiral"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="racerbana"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="land"/>

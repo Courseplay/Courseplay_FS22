@@ -297,7 +297,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="田地中心路径"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="选择中心路径类型。"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="往返"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="螺旋（回转）"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="圆形（由外到内）"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="区域（由内到外）"/>

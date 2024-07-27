@@ -297,7 +297,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Feldmitte"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Feldmitte"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="hoch/runter"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="spiralförmig"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="kreisförmig"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Beete (innen nach außen)"/>
