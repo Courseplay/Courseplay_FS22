@@ -309,8 +309,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="Vorgewende-Ecken"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Anzahl runde Ecken"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Anzahl runde Ecken, beginnend mit dem ersten Vorgewende."/>
-    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="Eckenradius"/>
-    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="Eckenradius tt"/>
+    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_title" text="Eckenradius"/>
+    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Eckenradius tt"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Startrichtung"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Richtung, in der die Bahnen gefahren werden sollen."/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="Automatisch"/>
