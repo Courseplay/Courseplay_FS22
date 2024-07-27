@@ -909,6 +909,14 @@
 			<Text language="de"><![CDATA[Zu überspringende Reihen, wenn auf nächste Reihe gewendet wird. Wert: 0 - 6]]></Text>
 			<Text language="en"><![CDATA[Rows to skip when changing to the next up/down row. Value: 0 - 6]]></Text>
 		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_amountCircles_title">
+			<Text language="de"><![CDATA[Anzahl Runden]]></Text>
+			<Text language="en"><![CDATA[Amount of circles]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_amountCircles_tooltip">
+			<Text language="de"><![CDATA[Anzahl Runden tt.]]></Text>
+			<Text language="en"><![CDATA[Amount of circles tt.]]></Text>
+		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title">
 			<Text language="de"><![CDATA[Reihen pro Beet]]></Text>
 			<Text language="en"><![CDATA[Rows per land]]></Text>
@@ -2153,8 +2161,6 @@ E: Similar to copying a course, here you can copy the marker positions to anothe
 		<Translation name="CP_help_page_minihud_balecollect_text">
 	<Text language="de"><![CDATA[
 A: Ballen die nach dem letzten automatischen Scan noch auf dem Feld liegen.
-
-
 B: Ballen die gesammelt oder bearbeitet werden sollen (z.B. nur gewickelte Ballen sammeln).
 C: Dieser Offset stellt den Versatz ein der zwischen Traktormitte und der mitte der Gabel liegt. Es kann nötig sein, bei einem breiterem Traktor (z.B. Breitreifen) diesen Wert an zu passen.
 ]]></Text>
