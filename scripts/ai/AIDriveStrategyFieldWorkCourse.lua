@@ -418,14 +418,20 @@ function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix, course)
         end
         self:startTurn(ix)
     elseif self.state == self.states.WORKING then
-        if self.course:isOnConnectingPath(ix + 1) then
-            self:debug('finishing work before starting on the connecting path')
+        if self.course:isOnConnectingPath(ix + 1) or self.course:shouldUsePathfinderToNextWaypoint(ix) then
             local fm, bm = self:getFrontAndBackMarkers()
             self.turnContext = RowStartOrFinishContext(self.vehicle, self.course, ix, ix, self.turnNodes, self:getWorkWidth(),
                     fm, bm, 0, 0)
             self.aiTurn = FinishRowOnly(self.vehicle, self, self.ppc, self.proximityController, self.turnContext)
-            self.aiTurn:registerTurnEndCallback(self, AIDriveStrategyFieldWorkCourse.startConnectingPath)
             self.state = self.states.TURNING
+            if self.course:isOnConnectingPath(ix + 1) then
+                self:debug('finishing work before starting on the connecting path')
+                self.aiTurn:registerTurnEndCallback(self, AIDriveStrategyFieldWorkCourse.startConnectingPath)
+            else
+                -- the generated course instructs the vehicle to use the pathfinder to the next waypoint
+                self:debug('finishing work before starting pathfinding to the next waypoint')
+                self.aiTurn:registerTurnEndCallback(self, AIDriveStrategyFieldWorkCourse.startPathfindingToNextWaypoint)
+            end
         end
         -- towards the end of the field course make sure the implement reaches the last waypoint
         -- TODO: this needs refactoring, for now don't do this for temporary courses like a turn as it messes up reversing
@@ -605,6 +611,40 @@ function AIDriveStrategyFieldWorkCourse:onPathfindingDoneToReturnToStart(path)
         self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
     end
 end
+-----------------------------------------------------------------------------------------------------------------------
+--- Use pathfinder to next waypoint
+-----------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyFieldWorkCourse:startPathfindingToNextWaypoint(ix)
+    self:debug('start pathfinding to waypoint %d', ix + 1)
+    self:raiseImplements()
+    local fm, bm = self:getFrontAndBackMarkers()
+    self.turnContext = RowStartOrFinishContext(self.vehicle, self.fieldWorkCourse, ix + 1, ix + 1,
+            self.turnNodes, self:getWorkWidth(), fm, bm, self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
+    local _, steeringLength = AIUtil.getSteeringParameters(self.vehicle)
+    local targetNode, zOffset = self.turnContext:getTurnEndNodeAndOffsets(steeringLength)
+    local context = PathfinderContext(self.vehicle):allowReverse(self:getAllowReversePathfinding())
+    self.waypointToContinueOnFailedPathfinding = ix + 1
+    self.pathfinderController:registerListeners(self, self.onPathfindingDoneToNextWaypoint,
+            self.onPathfindingFailedToNextWaypoint)
+    self:debug('Start pathfinding to target waypoint %d, zOffset %.1f', ix + 1, zOffset)
+    self.pathfinderController:findPathToNode(context, targetNode, 0, zOffset)
+end
+
+function AIDriveStrategyFieldWorkCourse:onPathfindingFailedToNextWaypoint()
+    self:debug('Pathfinding to next waypoint failed, use alignment course instead')
+    self:createAlignmentCourse(self.fieldWorkCourse, ix)
+    self.state = self.states.WORKING
+    self:startCourse(self.fieldWorkCourse, self.waypointToContinueOnFailedPathfinding)
+end
+
+function AIDriveStrategyFieldWorkCourse:onPathfindingDoneToNextWaypoint(controller, success, course, goalNodeInvalid)
+    if success then
+        self:debug('Pathfinding to next waypoint finished')
+        self:startCourseToWorkStart(course)
+    else
+        self:onPathfindingFailedToNextWaypoint()
+    end
+end
 
 -----------------------------------------------------------------------------------------------------------------------
 --- Connecting path
@@ -636,9 +676,10 @@ function AIDriveStrategyFieldWorkCourse:startConnectingPath(ix)
         local targetNode, zOffset = self.turnContext:getTurnEndNodeAndOffsets(steeringLength)
         local context = PathfinderContext(self.vehicle):allowReverse(self:getAllowReversePathfinding())
         context:preferredPath(connectingPath):mustBeAccurate(true)
+        self.waypointToContinueOnFailedPathfinding = ix + 1
         self.pathfinderController:registerListeners(self, self.onPathfindingDoneToConnectingPathEnd,
                 self.onPathfindingFailedToConnectingPathEnd)
-        self:debug('Connecting path has %d waypoints, start pathfinding to target waypoint is %d, zOffset %.1f',
+        self:debug('Connecting path has %d waypoints, start pathfinding to target waypoint %d, zOffset %.1f',
                 #connectingPath, targetWaypointIx, zOffset)
         self.pathfinderController:findPathToNode(context, targetNode, 0, zOffset)
     end
@@ -647,20 +688,24 @@ end
 function AIDriveStrategyFieldWorkCourse:onPathfindingFailedToConnectingPathEnd()
     self:debug('Pathfinding to end of connecting path failed, use the connecting path as is')
     self.state = self.states.WORKING
-    self:startCourse(self.connectingPathCourse, 1)
+    self:startCourse(self.fieldWorkCourse, self.waypointToContinueOnFailedPathfinding)
 end
 
 function AIDriveStrategyFieldWorkCourse:onPathfindingDoneToConnectingPathEnd(controller, success, course, goalNodeInvalid)
     if success then
         self:debug('Pathfinding to end of connecting path finished')
-        self.workStarter = StartRowOnly(self.vehicle, self, self.ppc, self.turnContext, course)
-        self.state = self.states.DRIVING_TO_WORK_START_WAYPOINT
-        self:raiseImplements()
-        self.ppc:setShortLookaheadDistance()
-        self:startCourse(self.workStarter:getCourse(), 1)
+        self:startCourseToWorkStart(course)
     else
         self:onPathfindingFailedToConnectingPathEnd()
     end
+end
+
+function AIDriveStrategyFieldWorkCourse:startCourseToWorkStart(course)
+    self.workStarter = StartRowOnly(self.vehicle, self, self.ppc, self.turnContext, course)
+    self.state = self.states.DRIVING_TO_WORK_START_WAYPOINT
+    self:raiseImplements()
+    self.ppc:setShortLookaheadDistance()
+    self:startCourse(self.workStarter:getCourse(), 1)
 end
 
 -----------------------------------------------------------------------------------------------------------------------
