@@ -280,6 +280,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Positive Werte reduzieren die Feldgröße, negative Werte vergrößern den Arbeitsbereich. Wert: -2 - 5.8"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Reihen überspringen"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Zu überspringende Reihen, wenn auf nächste Reihe gewendet wird. Wert: 0 - 6"/>
+    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_title" text="Anzahl Runden"/>
+    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_tooltip" text="Anzahl Runden tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Reihen pro Beet"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="Wenn Zentrierung Beete ausgewählt ist, dann befinden sich so viele Reihen im Block. Wert: 0 - 24"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Vorgewende-Richtung"/>
@@ -666,8 +668,6 @@ E: Ähnlich wie beim Kopieren eines Kurses, werden hier die Positionen der Marke
     <text name="CP_help_page_minihud_balecollect_title" text="Ballen sammeln/wickeln"/>
     <text name="CP_help_page_minihud_balecollect_text" text="
 A: Ballen die nach dem letzten automatischen Scan noch auf dem Feld liegen.
-
-
 B: Ballen die gesammelt oder bearbeitet werden sollen (z.B. nur gewickelte Ballen sammeln).
 C: Dieser Offset stellt den Versatz ein der zwischen Traktormitte und der mitte der Gabel liegt. Es kann nötig sein, bei einem breiterem Traktor (z.B. Breitreifen) diesen Wert an zu passen.
 "/>

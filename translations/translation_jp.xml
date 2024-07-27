@@ -280,6 +280,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="プラス値ではフィールド領域を縮小し、フィールド外周に余白を作ります。マイナス値ではフィールド領域を拡大します（-5～5.8m）"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="レーンのスキップ"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="往復レーンのスキップする数を設定します （0～6レーン）"/>
+    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_title" text="Amount of circles"/>
+    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_tooltip" text="Amount of circles tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="ブロックのレーン数"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="作業領域で[往復（ブロック）]を選択した場合、各ブロックのレーン数を設定します(2～24レーン)"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>

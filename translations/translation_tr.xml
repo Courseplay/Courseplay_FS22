@@ -280,6 +280,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Pozitif değerler alan boyutunu küçültür, negatif alan boyutunu artırır. Değer: -2 - 5.8"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Atlanacak satırlar"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Bir sonraki yukarı / aşağı satıra geçerken atlanacak satırlar. Değer: 0 - 6"/>
+    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_title" text="Amount of circles"/>
+    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_tooltip" text="Amount of circles tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Arazi başına satırlar"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="Merkez modu 'yer' olduğunda, her blokta bu kadar çok sıra vardır. Değer: 0 - 24"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>

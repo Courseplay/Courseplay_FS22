@@ -280,6 +280,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Pozitív értékek beljebb húzzák a tábla határát (táblaméret csökken), negatív értékek kijebbtolják (táblaméret nő) -2 - 5.8 m"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Kihagyandó sorok"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="A következő fel/le sorra váltáskor átugrandó sorok. 0 - 6"/>
+    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_title" text="Amount of circles"/>
+    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_tooltip" text="Amount of circles tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Sorok blokkonként"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="Amikor a középső mód a „blokk”, ennyi sor van minden blokkban. 0 - 24"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>

@@ -280,6 +280,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Positive values reduce field size, negative increase the field size. Value: -2 - 5.8"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Rows to skip"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Rows to skip when changing to the next up/down row. Value: 0 - 6"/>
+    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_title" text="Amount of circles"/>
+    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_tooltip" text="Amount of circles tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Rows per land"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="When the center mode is 'lands', this many rows are in each block. Value: 0 - 24"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>
