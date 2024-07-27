@@ -297,7 +297,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="作業領域（フィールド中央部）"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="まくら地を除く作業領域（レーン）の設定をします"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="往復（通常）"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="往復（周回）"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="往復（レーストラック）"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="往復（ブロック）"/>

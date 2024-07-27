@@ -297,7 +297,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Saha merkezi"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Saha merkezi"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="up/down"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="sarmal"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="yarış pisti"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="topraklar"/>

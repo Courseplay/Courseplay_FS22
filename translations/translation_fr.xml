@@ -297,7 +297,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Gestion des rangs"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Choix du type de rangées"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="Allers-retours"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="Spirale (tourne autour)"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="Circulaire (extérieur vers intérieur)"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Par blocs (Intérieur vers extérieur)"/>

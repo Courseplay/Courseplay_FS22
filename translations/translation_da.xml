@@ -297,7 +297,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Mark mitte"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Mark mitte"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="Op/Ned"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="Spiralformet"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="Cirkelformet"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Bede (indefra ud)"/>

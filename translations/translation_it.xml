@@ -297,7 +297,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Centro campo"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Centro campo"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="Su/Giù"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="Spirale"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="Circolare"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Sezioni di campo (dentro e fuori)"/>

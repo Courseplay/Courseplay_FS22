@@ -297,7 +297,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Postup práce"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Postup práce"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="Nahoru/dolů"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_skip" text="skip?"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="Spirála"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="Kruh"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Záhon"/>
