@@ -49,8 +49,7 @@
 				<Value name="ROW_PATTERN_RACETRACK">5</Value>
 			</Values>
 			<Texts>
-				<Text>up_down</Text> 
-				<Text>skip</Text>
+				<Text>up_down</Text>
 				<Text>spiral</Text>
 				<Text>lands</Text>
 				<Text>circular</Text>

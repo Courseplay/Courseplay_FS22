@@ -977,10 +977,6 @@
 			<Text language="de"><![CDATA[hoch/runter]]></Text>
 			<Text language="en"><![CDATA[up/down]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_centerMode_skip">
-			<Text language="de"><![CDATA[skip?]]></Text>
-			<Text language="en"><![CDATA[skip?]]></Text>
-		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_centerMode_spiral">
 			<Text language="de"><![CDATA[spiralförmig]]></Text>
 			<Text language="en"><![CDATA[spiral]]></Text>
