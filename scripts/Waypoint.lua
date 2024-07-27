@@ -147,6 +147,8 @@ function Waypoint.initFromXmlFile(data,ix)
 	waypoint.ridgeMarker = data[8]
 	waypoint.rev = data[9]
 	waypoint.headlandTurn = data[10]
+	waypoint.usePathfinderToNextWaypoint = data[11]
+	waypoint.usePathfinderToThisWaypoint = data[12]
 	return waypoint
 end
 
@@ -165,7 +167,9 @@ function Waypoint:getXmlString()
 		self.rowNumber or "-",
 		self.ridgeMarker or "-",
 		self.rev or "-",
-		self.headlandTurn or "-"
+		self.headlandTurn or "-",
+		self.usePathfinderToNextWaypoint or "-",
+		self.usePathfinderToThisWaypoint or "-"
 	}
 	return CpUtil.getXmlVectorString(v)
 end
@@ -252,6 +256,14 @@ end
 
 function Waypoint:isHeadlandTurn()
 	return self.headlandTurn
+end
+
+function Waypoint:shouldUsePathfinderToNextWaypoint()
+	return self.usePathfinderToNextWaypoint
+end
+
+function Waypoint:shouldUsePathfinderToThisWaypoint()
+	return self.usePathfinderToThisWaypoint
 end
 
 function Waypoint:setTurnStart(turnStart)

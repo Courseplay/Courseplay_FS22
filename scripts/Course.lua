@@ -393,6 +393,11 @@ function Course:isTurnEndAtIx(ix)
     return self.waypoints[ix]:isTurnEnd() or self.waypoints[ix]:isHeadlandTurn()
 end
 
+function Course:shouldUsePathfinderToNextWaypoint(ix)
+    return self.waypoints[ix]:shouldUsePathfinderToNextWaypoint() or
+            (ix < #self.waypoints and self.waypoints[ix + 1]:shouldUsePathfinderToThisWaypoint())
+end
+
 function Course:skipOverTurnStart(ix)
     if self:isTurnStartAtIx(ix) then
         return ix + 1
