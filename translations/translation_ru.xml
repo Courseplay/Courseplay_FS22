@@ -280,8 +280,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Положительные значения уменьшают размер поля, отрицательные - увеличивают рабочую область за пределы поля. Значение: -2 - 5.8."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Пропускать проходов"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Сколько пропускать проходов при переходе к следующему проходу при челночном методе. Значение: 0 - 6."/>
-    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_title" text="Amount of circles"/>
-    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_tooltip" text="Amount of circles tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Number of circles tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Проходов в загоне"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="При выборе метода движения 'загонами', указывается к-во проходов к каждой загонке. Значение: 0 - 24."/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>

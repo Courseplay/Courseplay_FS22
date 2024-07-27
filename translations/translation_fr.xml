@@ -280,8 +280,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Une valeur positive réduit la taille du champ. Une valeur négative agrandit la zone travaillée au-delà des limites du champ. Valeurs: -2 - 5.8"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Rangs à ignorer"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Une fois arrivé en bout de rang à l'aller, détermine combien seront ignorer pour le retour. Valeurs: 0 - 6"/>
-    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_title" text="Amount of circles"/>
-    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_tooltip" text="Amount of circles tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Number of circles tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Rangs par blocs"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="Détermine la quantité de rangs par blocs lorsque ce mode est sélectionné. Valeurs: 0 - 24"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>

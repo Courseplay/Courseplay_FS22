@@ -280,8 +280,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Positiva värden minskar fältstorleken för att lägga till en buffert runt det arbetade området, negativa förstora arbetats område bortom fältgränsen. Värde: -2 - 5.8"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Rader att hoppa över"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Rader att hoppa över när du byter till nästa Upp/Ner rad. Value: 0 - 6"/>
-    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_title" text="Amount of circles"/>
-    <text name="CP_vehicle_courseGeneratorSetting_amountCircles_tooltip" text="Amount of circles tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Number of circles tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Rader per land"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="När fältcentrum är 'Lands' är det här många rader i varje block. Value: 0 - 24"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>
