@@ -16,7 +16,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     local field = CourseGenerator.Field('', 0, CpMathUtil.pointsFromGame(fieldPolygon))
 
     local context = CourseGenerator.FieldworkContext(field, settings.workWidth:getValue() * settings.multiTools:getValue(),
-            setting.turningRadius:getValue(), settings.numberOfHeadlands:getValue())
+            settings.turningRadius:getValue(), settings.numberOfHeadlands:getValue())
     local rowPatternNumber = settings.centerMode:getValue()
     if rowPatternNumber == CourseGenerator.RowPattern.ALTERNATING and settings.rowsToSkip:getValue() == 0 then
         context:setRowPattern(CourseGenerator.RowPatternAlternating())
