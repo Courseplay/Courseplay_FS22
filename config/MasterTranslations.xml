@@ -909,13 +909,13 @@
 			<Text language="de"><![CDATA[Zu überspringende Reihen, wenn auf nächste Reihe gewendet wird. Wert: 0 - 6]]></Text>
 			<Text language="en"><![CDATA[Rows to skip when changing to the next up/down row. Value: 0 - 6]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_amountCircles_title">
+		<Translation name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title">
 			<Text language="de"><![CDATA[Anzahl Runden]]></Text>
-			<Text language="en"><![CDATA[Amount of circles]]></Text>
+			<Text language="en"><![CDATA[Number of circles]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_amountCircles_tooltip">
+		<Translation name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip">
 			<Text language="de"><![CDATA[Anzahl Runden tt.]]></Text>
-			<Text language="en"><![CDATA[Amount of circles tt.]]></Text>
+			<Text language="en"><![CDATA[Number of circles tt.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title">
 			<Text language="de"><![CDATA[Reihen pro Beet]]></Text>

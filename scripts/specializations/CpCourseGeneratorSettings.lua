@@ -116,6 +116,30 @@ function CpCourseGeneratorSettings:onUpdate(savegame)
     spec.finishedFirstUpdate = true
 end
 
+function CpCourseGeneratorSettings:isRowsToSkipVisible()
+    local spec = self.spec_cpCourseGeneratorSettings
+    local rowPatternNumber = spec.centerMode:getValue()
+    return rowPatternNumber == CourseGenerator.RowPattern.ALTERNATING
+end
+
+function CpCourseGeneratorSettings:isNumberOfCirclesVisible()
+    local spec = self.spec_cpCourseGeneratorSettings
+    local rowPatternNumber = spec.centerMode:getValue()
+    return rowPatternNumber == CourseGenerator.RowPattern.RACETRACK
+end
+
+function CpCourseGeneratorSettings:isRowsPerLandVisible()
+    local spec = self.spec_cpCourseGeneratorSettings
+    local rowPatternNumber = spec.centerMode:getValue()
+    return rowPatternNumber == CourseGenerator.RowPattern.LANDS
+end
+
+function CpCourseGeneratorSettings:isSpiralFromInsideVisible()
+    local spec = self.spec_cpCourseGeneratorSettings
+    local rowPatternNumber = spec.centerMode:getValue()
+    return rowPatternNumber == CourseGenerator.RowPattern.SPIRAL
+end
+
 --- Makes sure the automatic work width gets recalculated after the variable work width was changed by the user.
 function CpCourseGeneratorSettings.onVariableWorkWidthSectionChanged(object)
     --- Object could be an implement, so make sure we use the root vehicle.
