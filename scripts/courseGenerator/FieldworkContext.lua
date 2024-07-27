@@ -33,7 +33,7 @@ function FieldworkContext:init(field, workingWidth, turningRadius, nHeadlands)
     self.evenRowDistribution = false
     self.useBaselineEdge = false
     self.enableSmallOverlapsWithHeadland = false
-    self.logger = Logger('FieldworkContext')
+    self.logger = Logger('FieldworkContext', Logger.level.debug)
     self.errors = {}
     
     self.reverseCourse = false
@@ -49,6 +49,7 @@ function FieldworkContext:log()
             self.fieldCornerRadius, self.sharpenCorners, self.bypassIslands, self.nIslandHeadlands, self.islandHeadlandClockwise)
     self.logger:debug('row pattern: %s, row angle auto: %s, %.1fº, even row distribution: %s, use baseline edge: %s, small overlaps: %s',
             self.rowPattern, self.autoRowAngle, math.deg(self.rowAngle), self.evenRowDistribution, self.useBaselineEdge, self.enableSmallOverlapsWithHeadland)
+    self.logger:debug('start location %s, baseline edge %s', self.startLocation, self.baselineEdge)
 end
 
 function FieldworkContext:addError(logger, ...)
