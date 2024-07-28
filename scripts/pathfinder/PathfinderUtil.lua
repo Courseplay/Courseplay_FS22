@@ -501,7 +501,7 @@ local function getHeadland(course, n)
         -- of the headland confusing the shortest path finding
         if course:isOnHeadland(i, n) and not course:isOnConnectingPath(i) then
             local x, y, z = course:getWaypointPosition(i)
-            headland:add({ x = x, y = -z })
+            headland:append({ x = x, y = -z })
         end
         if not course:isOnHeadland(i) or (#headland > 0 and not course:isOnHeadland(i, n)) then
             -- stop after we leave the headland around the field boundary or when we already found our headland
@@ -514,8 +514,7 @@ local function getHeadland(course, n)
     -- short section connecting this headland with the previous one and may result in
     -- the path taking some sharp turns, especially when the transition is near a corner
     if n > 1 then
-        table.remove(headland, 1)
-        table.remove(headland, 1)
+        headland:cutStartAtIx(3)
     end
     return headland
 end
