@@ -1517,7 +1517,7 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
             if origHeadlandsCourse:getNumberOfWaypoints() > 2 then
                 CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Headland section to %d', ix)
                 CpMathUtil.pointsFromGameInPlace(origHeadlandsCourse.waypoints)
-                local origHeadlands = Polyline:new(origHeadlandsCourse.waypoints)
+                local origHeadlands = Polyline(origHeadlandsCourse.waypoints)
                 origHeadlands:calculateData()
                 -- generating inward when on the right side and clockwise or when on the left side ccw
                 local inward = (position > 0 and origHeadlands.isClockwise) or (position < 0 and not origHeadlands.isClockwise)
