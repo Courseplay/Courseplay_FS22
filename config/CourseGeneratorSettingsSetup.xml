@@ -61,7 +61,6 @@
 				<Text>clockwise</Text>
 			</Texts>
 		</Setting>
-		<Setting classType="AIParameterBooleanSetting" name="spiralFromInside" defaultBoolean="false" isVisible="isSpiralFromInsideVisible"/>
 		<Setting classType="AIParameterBooleanSetting" name="evenRowWidth" defaultBoolean="false"/>
 		<Setting classType="AIParameterBooleanSetting" name="useBaseLineEdge" defaultBoolean="false"/>
 		<Setting classType="AIParameterBooleanSetting" name="reverse" defaultBoolean="false"/>
@@ -71,10 +70,11 @@
 				<Text>automatic</Text>
 			</Texts>
 		</Setting>
+		<Setting classType="AIParameterSettingList" name="manualRowAngleDeg" min="0" max="175" incremental="5" unit="5" isExpertModeOnly="true"/>
 		<Setting classType="AIParameterSettingList" name="rowsToSkip" min="0" max="6" isVisible="isRowsToSkipVisible"/>
 		<Setting classType="AIParameterSettingList" name="numberOfCircles" min="1" max="12" default="2" isVisible="isNumberOfCirclesVisible"/>
 		<Setting classType="AIParameterSettingList" name="rowsPerLand" min="2" max="24" default="6" isVisible="isRowsPerLandVisible"/>
-		<Setting classType="AIParameterSettingList" name="manualRowAngleDeg" min="0" max="175" incremental="5" unit="5" isExpertModeOnly="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="spiralFromInside" defaultBoolean="false" isVisible="isSpiralFromInsideVisible"/>
 	</SettingSubTitle>
 	<!--Island settings-->
 	<SettingSubTitle title="island">
