@@ -17,7 +17,7 @@ end
 ---@param v table|Vertex table with x, y (Vector, Vertex, State3D or just plain {x, y}
 --- if v is a Vertex, it will be cloned, otherwise a new vertex created
 function Polyline:append(v)
-    if v:is_a(Vertex) then
+    if v.is_a and v:is_a(Vertex) then
         table.insert(self, v:clone())
         self[#self].ix = #self
     else
