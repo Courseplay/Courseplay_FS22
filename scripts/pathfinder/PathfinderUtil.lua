@@ -487,7 +487,7 @@ end
 ---@param n number number of headland to get, 1 -> number of headlands, 1 is the outermost
 ---@return Polygon headland as a polygon (x, y)
 local function getHeadland(course, n)
-    local headland = Polygon:new()
+    local headland = Polygon()
     local first, last, step
     if course:startsWithHeadland() then
         first, last, step = 1, course:getNumberOfWaypoints(), 1
