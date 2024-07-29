@@ -176,7 +176,7 @@ function Center:generate()
     self.blocks = blocksInSequence
     local lastLocation = self.startLocation
     for _, b in ipairs(self.blocks) do
-        lastLocation = b:finalize(entries[b])
+        lastLocation = b:finalize(entries[b], self.context.rowWaypointDistance)
     end
     self:_wrapUpConnectingPaths()
     self.logger:debug('Found %d block(s), %d connecting path(s).', #self.blocks, #self.connectingPaths)

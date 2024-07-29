@@ -30,10 +30,13 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 local function getNumberOfIslandNeighbors(point, islandPoints, gridSpacing)
     local nNeighbors = 0
+    -- the worst case, considering that our grid isn't really a grid as points can be offset between rows,
+    -- so worst case is when the neighbor in the next row is offset by half grid spacing, plus 5% reserve
+    local worstCase = 1.05 * (1.5 * gridSpacing * 1.5 * gridSpacing) + (gridSpacing * gridSpacing)
     for _, v in ipairs(islandPoints) do
         local dSquare = Vector.getDistanceSquared(point, v)
-        -- 1.5 is around sqrt( 2 ), to find diagonal neighbors too, > 0 to ignore own point
-        if dSquare > 0 and dSquare < 2.1 * gridSpacing then
+        -- > 0 to ignore own point
+        if dSquare > 0 and dSquare < worstCase then
             nNeighbors = nNeighbors + 1
         end
     end
@@ -55,8 +58,10 @@ function Island.getIslandPerimeterPoints(islandPoints)
     for _, v in ipairs(islandPoints) do
         -- a vertex on the perimeter has at least two non-island neighbors (out of the possible
         -- 8 neighbors at most 6 can be island vertices).
-        if getNumberOfIslandNeighbors(v, islandPoints, Island.gridSpacing) <= 6 then
+        local neighbors = getNumberOfIslandNeighbors(v, islandPoints, Island.gridSpacing)
+        if neighbors <= 6 then
             table.insert(perimeterPoints, v)
+            CourseGenerator.addDebugPoint(v, tostring(neighbors))
         end
     end
     return perimeterPoints
@@ -173,12 +178,11 @@ function Island.findIslands(field)
     -- to end up with a 1x1 grid of nodes covering the islands of the field.
     Island.logger:debug('Generating grid for field with grid spacing %.1f', Island.gridSpacing)
     local context = CourseGenerator.FieldworkContext(field, Island.gridSpacing, 5, 0)
-    context:setAutoRowAngle(false):setRowAngle(0)
+    context:setAutoRowAngle(false):setRowAngle(0):setRowWaypointDistance(1)
     local course = CourseGenerator.FieldworkCourse(context)
     local islandVertices = {}
     for _, b in ipairs(course:getCenter():getBlocks()) do
         for _, r in ipairs(b:getRows()) do
-            r:splitEdges(Island.gridSpacing)
             for _, v in ipairs(r) do
                 local isOnField, _ = FSDensityMapUtil.getFieldDataAtWorldPosition(v.x, 0, -v.y)
                 if not isOnField then

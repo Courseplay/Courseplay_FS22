@@ -13,6 +13,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
                                            vehicle,
                                            settings
 )
+    CourseGenerator.clearDebugObjects()
     local field = CourseGenerator.Field('', 0, CpMathUtil.pointsFromGame(fieldPolygon))
 
     local context = CourseGenerator.FieldworkContext(field, settings.workWidth:getValue() * settings.multiTools:getValue(),

@@ -103,9 +103,10 @@ end
 --- Finalize this block, set the entry we will be using, rearrange rows accordingly, set all row attributes and create
 --- a sequence in which the rows must be worked on
 ---@param entry CourseGenerator.RowPattern.Entry the entry to be used for this block
+---@param rowWaypointDistance number distance between waypoints on a row
 ---@return Vertex the last vertex of the last row, the exit point from this block (to be used to find the entry
 --- to the next one.
-function Block:finalize(entry)
+function Block:finalize(entry, rowWaypointDistance)
     self.logger:debug('Finalizing, entry %s', entry)
     self.logger:debug('Generating row sequence for %d rows, pattern: %s', #self.rows, self.rowPattern)
     local sequence, exit = self.rowPattern:getWorkSequenceAndExit(self.rows, entry)
@@ -123,7 +124,7 @@ function Block:finalize(entry)
                 row:getOriginalSequenceNumber(), i, rowOnLeftWorked, rowOnRightWorked, leftSideBlockBoundary, rightSideBlockBoundary)
         row:adjustLength()
         -- need vertices close enough so the smoothing in goAround() only starts close to the island
-        row:splitEdges(CourseGenerator.cRowWaypointDistance)
+        row:splitEdges(rowWaypointDistance or CourseGenerator.cRowWaypointDistance)
         row:setRowNumber(i)
         row:setAllAttributes()
         table.insert(self.rowsInWorkSequence, row)
