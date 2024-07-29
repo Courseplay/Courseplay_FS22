@@ -12,11 +12,7 @@
 		<Setting classType="AIParameterSettingList" name="workWidth" min="0.5" max="50" incremental="0.1" unit="2" setDefault="setAutomaticWorkWidthAndOffset" onChangeCallback="cpShowWorkWidth" isVisible="isWorkWidthSettingVisible"/>
 		<Setting classType="AIParameterSettingList" name="multiTools" min="1" max="5" default="1" isExpertModeOnly="true"/>
 		<Setting classType="AIParameterSettingList" name="numberOfHeadlands" min="0" max="40"/>
-		<Setting classType="AIParameterSettingList" name="startOnHeadland" isVisible="hasHeadlandsSelected">
-			<Values>
-				<Value name="HEADLAND_START_ON_HEADLAND">1</Value>
-				<Value name="HEADLAND_START_ON_UP_DOWN_ROWS">2</Value>
-			</Values>
+		<Setting classType="AIParameterBooleanSetting" name="startOnHeadland" isVisible="hasHeadlandsSelected">
 			<Texts>
 				<Text>on_headland</Text>
 				<Text>up_down_rows</Text>
