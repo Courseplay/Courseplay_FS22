@@ -281,7 +281,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Rows to skip"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Rows to skip when changing to the next up/down row. Value: 0 - 6"/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Number of circles tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Number of circles for racetrack. Value: 1 - 12"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Rows per land"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="When the center mode is 'lands', this many rows are in each block. Value: 0 - 24"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>
@@ -303,15 +303,15 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="racetrack"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="lands"/>
     <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_title" text="Spiral from inside"/>
-    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip" text="Spiral from inside tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip" text="Starts the spiral from inside."/>
     <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="Even row with"/>
-    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Even row with tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Reduces the working width to achieve an even distribution across all lanes."/>
     <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title" text="Sharpen headland corners"/>
-    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="Sharpen corners of non-rounded headlands"/>
+    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="If aktiv, corners of the field will be generated as sharp corners."/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Number of round corners"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Number of round corners, starting with the first headland."/>
     <text name="CP_vehicle_courseGeneratorSetting_turningRadius_title" text="Corner radius"/>
-    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Corner radius tt"/>
+    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Radius of round corners, based on the turning radius of the vehicle. Value: 5 - 30"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Up/down row direction"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Direction of the rows in the center of the field."/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="automatic"/>
@@ -321,15 +321,15 @@
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="How the course should bypass islands in the field."/>
     <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title" text="Island headlands"/>
-    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Island headlands tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Amount of headlands for islands. Value: 1 - 10"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Start work on"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Start working on the headland or center of the field"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="headland"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="center"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Multiple tools"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Number of vehicles on the same course."/>
-    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Field edge for line form"/>
-    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="field edge tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Line from based on field edge"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="The field edge wich is nearest to the field marker will be used to determin the course of the lines."/>
     <text name="CP_vehicle_courseGeneratorSetting_reverse_title" text="Reverse course"/>
     <text name="CP_vehicle_courseGeneratorSetting_reverse_tooltip" text="Reverse course tt."/>
     <!---->

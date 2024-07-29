@@ -279,9 +279,9 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="Feldgrenze"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Positive Werte reduzieren die Feldgröße, negative Werte vergrößern den Arbeitsbereich. Wert: -2 - 5.8"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Reihen überspringen"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Zu überspringende Reihen, wenn auf nächste Reihe gewendet wird. Wert: 0 - 6"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Zu überspringende Reihen, wenn auf nächste Reihe gewendet wird. Nur für Hoch/Runter. Wert: 0 - 6"/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Anzahl Runden"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Anzahl Runden tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Anzahl Runden für Kreisförmig. Wert: 1 - 12"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Reihen pro Beet"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="Wenn Zentrierung Beete ausgewählt ist, dann befinden sich so viele Reihen im Block. Wert: 0 - 24"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Vorgewende-Richtung"/>
@@ -303,15 +303,15 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="kreisförmig"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Beete (innen nach außen)"/>
     <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_title" text="Spirale von innen"/>
-    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip" text="Spirale von innen tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip" text="Startet die Spirale von innen."/>
     <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="Gleichmäßige Bahnenbreite"/>
-    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Gleichmäßige Bahnenbreite tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Reduziert die Arbeitsbreite um eine gleichmäßige Verteilung über alle Bahnen zu erreichen."/>
     <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title" text="Vorgewende-Ecken"/>
-    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="Vorgewende-Ecken"/>
+    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="Wenn aktiv, werden die Ecken des Feldes als scharfe Ecken generiert."/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Anzahl runde Ecken"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Anzahl runde Ecken, beginnend mit dem ersten Vorgewende."/>
     <text name="CP_vehicle_courseGeneratorSetting_turningRadius_title" text="Eckenradius"/>
-    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Eckenradius tt"/>
+    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Radius der Runden Ecken, basierend auf dem Wenderadius des Fahrzeugs. Wert: 5 - 30"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Startrichtung"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Richtung, in der die Bahnen gefahren werden sollen."/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="Automatisch"/>
@@ -321,15 +321,15 @@
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Inselumfahrung"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="Wie Inseln auf dem Feld umfahren werden sollen."/>
     <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title" text="Insel Vorgewende"/>
-    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Insel Vorgewende tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Anzahl Vorgewende bei Inseln. Wert: 1 - 10"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Starte auf"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Startpunkt auf dem Vorgewende oder auf den Bahnen."/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="Vorgewende"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="Bahnen"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Fahrzeuge auf dem Kurs"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Wie viele Fahrzeuge zusammen auf dem Kurs fahren."/>
-    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Feldrandkante für Bahnen Form"/>
-    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="Feldkante tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Bahnen Form anhand Feldkante"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="Die Feldkante die am nächsten am Feldmarker wird verwendet um den Verlauf der Bahnen zu bestimmen."/>
     <text name="CP_vehicle_courseGeneratorSetting_reverse_title" text="Kurs umdrehen"/>
     <text name="CP_vehicle_courseGeneratorSetting_reverse_tooltip" text="Kurs umdrehen tt."/>
     <!---->
