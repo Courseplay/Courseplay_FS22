@@ -906,7 +906,7 @@
 			<Text language="en"><![CDATA[Rows to skip]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip">
-			<Text language="de"><![CDATA[Zu überspringende Reihen, wenn auf nächste Reihe gewendet wird. Wert: 0 - 6]]></Text>
+			<Text language="de"><![CDATA[Zu überspringende Reihen, wenn auf nächste Reihe gewendet wird. Nur für Hoch/Runter. Wert: 0 - 6]]></Text>
 			<Text language="en"><![CDATA[Rows to skip when changing to the next up/down row. Value: 0 - 6]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title">
@@ -914,8 +914,8 @@
 			<Text language="en"><![CDATA[Number of circles]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip">
-			<Text language="de"><![CDATA[Anzahl Runden tt.]]></Text>
-			<Text language="en"><![CDATA[Number of circles tt.]]></Text>
+			<Text language="de"><![CDATA[Anzahl Runden für Kreisförmig. Wert: 1 - 12]]></Text>
+			<Text language="en"><![CDATA[Number of circles for racetrack. Value: 1 - 12]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title">
 			<Text language="de"><![CDATA[Reihen pro Beet]]></Text>
@@ -1002,24 +1002,24 @@
 			<Text language="en"><![CDATA[Spiral from inside]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip">
-			<Text language="de"><![CDATA[Spirale von innen tt.]]></Text>
-			<Text language="en"><![CDATA[Spiral from inside tt.]]></Text>
+			<Text language="de"><![CDATA[Startet die Spirale von innen.]]></Text>
+			<Text language="en"><![CDATA[Starts the spiral from inside.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title">
 			<Text language="de"><![CDATA[Gleichmäßige Bahnenbreite]]></Text>
 			<Text language="en"><![CDATA[Even row with]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip">
-			<Text language="de"><![CDATA[Gleichmäßige Bahnenbreite tt.]]></Text>
-			<Text language="en"><![CDATA[Even row with tt.]]></Text>
+			<Text language="de"><![CDATA[Reduziert die Arbeitsbreite um eine gleichmäßige Verteilung über alle Bahnen zu erreichen.]]></Text>
+			<Text language="en"><![CDATA[Reduces the working width to achieve an even distribution across all lanes.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title">
 			<Text language="de"><![CDATA[Vorgewende-Ecken]]></Text>
 			<Text language="en"><![CDATA[Sharpen headland corners]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip">
-			<Text language="de"><![CDATA[Vorgewende-Ecken]]></Text>
-			<Text language="en"><![CDATA[Sharpen corners of non-rounded headlands]]></Text>
+			<Text language="de"><![CDATA[Wenn aktiv, werden die Ecken des Feldes als scharfe Ecken generiert.]]></Text>
+			<Text language="en"><![CDATA[If aktiv, corners of the field will be generated as sharp corners.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title">
 			<Text language="de"><![CDATA[Anzahl runde Ecken]]></Text>
@@ -1034,8 +1034,8 @@
 			<Text language="en"><![CDATA[Corner radius]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip">
-			<Text language="de"><![CDATA[Eckenradius tt]]></Text>
-			<Text language="en"><![CDATA[Corner radius tt]]></Text>
+			<Text language="de"><![CDATA[Radius der Runden Ecken, basierend auf dem Wenderadius des Fahrzeugs. Wert: 5 - 30]]></Text>
+			<Text language="en"><![CDATA[Radius of round corners, based on the turning radius of the vehicle. Value: 5 - 30]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title">
 			<Text language="de"><![CDATA[Startrichtung]]></Text>
@@ -1074,8 +1074,8 @@
 			<Text language="en"><![CDATA[Island headlands]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip">
-			<Text language="de"><![CDATA[Insel Vorgewende tt.]]></Text>
-			<Text language="en"><![CDATA[Island headlands tt.]]></Text>
+			<Text language="de"><![CDATA[Anzahl Vorgewende bei Inseln. Wert: 1 - 10]]></Text>
+			<Text language="en"><![CDATA[Amount of headlands for islands. Value: 1 - 10]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title">
 			<Text language="de"><![CDATA[Starte auf]]></Text>
@@ -1102,12 +1102,12 @@
 			<Text language="en"><![CDATA[Number of vehicles on the same course.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title">
-			<Text language="de"><![CDATA[Feldrandkante für Bahnen Form]]></Text>
-			<Text language="en"><![CDATA[Field edge for line form]]></Text>
+			<Text language="de"><![CDATA[Bahnen Form anhand Feldkante]]></Text>
+			<Text language="en"><![CDATA[Line from based on field edge]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip">
-			<Text language="de"><![CDATA[Feldkante tt.]]></Text>
-			<Text language="en"><![CDATA[field edge tt.]]></Text>
+			<Text language="de"><![CDATA[Die Feldkante die am nächsten am Feldmarker wird verwendet um den Verlauf der Bahnen zu bestimmen.]]></Text>
+			<Text language="en"><![CDATA[The field edge wich is nearest to the field marker will be used to determin the course of the lines.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_reverse_title">
 			<Text language="de"><![CDATA[Kurs umdrehen]]></Text>
