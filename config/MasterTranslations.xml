@@ -1069,11 +1069,11 @@
 			<Text language="de"><![CDATA[Wie Inseln auf dem Feld umfahren werden sollen.]]></Text>
 			<Text language="en"><![CDATA[How the course should bypass islands in the field.]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_islandHeadlands_title">
+		<Translation name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title">
 			<Text language="de"><![CDATA[Insel Vorgewende]]></Text>
 			<Text language="en"><![CDATA[Island headlands]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_islandHeadlands_tooltip">
+		<Translation name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip">
 			<Text language="de"><![CDATA[Insel Vorgewende tt.]]></Text>
 			<Text language="en"><![CDATA[Island headlands tt.]]></Text>
 		</Translation>
