@@ -81,7 +81,7 @@ function FieldworkContext:setHeadlandsWithRoundCorners(nHeadlandsWithRoundCorner
 end
 
 ---@param nIslandHeadlands number of headlands to generate around field islands
-function FieldworkContext:setIslandHeadlands(nIslandHeadlands)
+function FieldworkContext:setnIslandHeadlands(nIslandHeadlands)
     self.nIslandHeadlands = nIslandHeadlands
     return self
 end

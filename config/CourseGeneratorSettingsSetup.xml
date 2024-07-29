@@ -79,7 +79,7 @@
 	<!--Island settings-->
 	<SettingSubTitle title="island">
 		<Setting classType="AIParameterBooleanSetting" name="bypassIslands" defaultBoolean="true"/>
-		<Setting classType="AIParameterSettingList" name="islandHeadlands" min="1" max="10" default="1"/>
+		<Setting classType="AIParameterSettingList" name="nIslandHeadlands" min="1" max="10" default="1"/>
 		<Setting classType="AIParameterBooleanSetting" name="islandHeadlandClockwise" isExpertModeOnly="true" defaultBoolean="true">
 			<Texts>
 				<Text>counterclockwise</Text>
