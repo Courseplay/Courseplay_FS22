@@ -29,7 +29,7 @@
 		<Setting classType="AIParameterBooleanSetting" name="sharpenCorners" defaultBoolean="false"/>
 		<Setting classType="AIParameterSettingList" name="headlandsWithRoundCorners" min="0" max="50" default="1"/>
 		<Setting classType="AIParameterSettingList" name="turningRadius" min="5" max="30" setDefault="setDefaultTurningRadius"/>
-		<Setting classType="AIParameterBooleanSetting" name="headlandClockwise" defaultBoolean="false">
+		<Setting classType="AIParameterBooleanSetting" name="headlandClockwise" defaultBoolean="true">
 			<Texts>
 				<Text>counterclockwise</Text>
 				<Text>clockwise</Text>
