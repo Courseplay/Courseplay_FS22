@@ -10,13 +10,9 @@
 	<!--Basic settings-->
 	<SettingSubTitle title="basic">
 		<Setting classType="AIParameterSettingList" name="workWidth" min="0.5" max="50" incremental="0.1" unit="2" setDefault="setAutomaticWorkWidthAndOffset" onChangeCallback="cpShowWorkWidth" isVisible="isWorkWidthSettingVisible"/>
-		<Setting classType="AIParameterSettingList" name="multiTools" min="1" max="5" default="1"/>
+		<Setting classType="AIParameterSettingList" name="multiTools" min="1" max="5" default="1" isExpertModeOnly="true"/>
 		<Setting classType="AIParameterSettingList" name="numberOfHeadlands" min="0" max="40"/>
-	</SettingSubTitle>
-	<!-- Only active with one or more headlands -->
-	<!--Headland settings-->
-	<SettingSubTitle title="headland" isVisible="hasHeadlandsSelected">	
-		<Setting classType="AIParameterSettingList" name="startOnHeadland">
+		<Setting classType="AIParameterSettingList" name="startOnHeadland" isVisible="hasHeadlandsSelected">
 			<Values>
 				<Value name="HEADLAND_START_ON_HEADLAND">1</Value>
 				<Value name="HEADLAND_START_ON_UP_DOWN_ROWS">2</Value>
@@ -26,10 +22,14 @@
 				<Text>up_down_rows</Text>
 			</Texts>
 		</Setting>
+	</SettingSubTitle>
+	<!-- Only active with one or more headlands -->
+	<!--Headland settings-->
+	<SettingSubTitle title="headland" isVisible="hasHeadlandsSelected">	
 		<Setting classType="AIParameterBooleanSetting" name="sharpenCorners" defaultBoolean="false"/>
 		<Setting classType="AIParameterSettingList" name="headlandsWithRoundCorners" min="0" max="50" default="1"/>
-		<Setting classType="AIParameterSettingList" name="turningRadius" min="1" max="30" setDefault="setDefaultTurningRadius"/>
-		<Setting classType="AIParameterBooleanSetting" name="headlandClockwise" isExpertModeOnly="true" defaultBoolean="true">
+		<Setting classType="AIParameterSettingList" name="turningRadius" min="5" max="30" setDefault="setDefaultTurningRadius"/>
+		<Setting classType="AIParameterBooleanSetting" name="headlandClockwise" defaultBoolean="false">
 			<Texts>
 				<Text>counterclockwise</Text>
 				<Text>clockwise</Text>
@@ -62,9 +62,9 @@
 			</Texts>
 		</Setting>
 		<Setting classType="AIParameterBooleanSetting" name="evenRowWidth" defaultBoolean="false"/>
-		<Setting classType="AIParameterBooleanSetting" name="useBaseLineEdge" defaultBoolean="false"/>
-		<Setting classType="AIParameterBooleanSetting" name="reverse" defaultBoolean="false"/>
-		<Setting classType="AIParameterBooleanSetting" name="autoRowAngle" isExpertModeOnly="true" defaultBoolean="false">
+		<Setting classType="AIParameterBooleanSetting" name="useBaseLineEdge" defaultBoolean="false" isExpertModeOnly="true"/>
+		<!--For Testing only--><Setting classType="AIParameterBooleanSetting" name="reverse" defaultBoolean="false"/>
+		<Setting classType="AIParameterBooleanSetting" name="autoRowAngle" defaultBoolean="true">
 			<Texts>
 				<Text>manual</Text>
 				<Text>automatic</Text>
@@ -80,7 +80,7 @@
 	<SettingSubTitle title="island">
 		<Setting classType="AIParameterBooleanSetting" name="bypassIslands" defaultBoolean="true"/>
 		<Setting classType="AIParameterSettingList" name="nIslandHeadlands" min="1" max="10" default="1"/>
-		<Setting classType="AIParameterBooleanSetting" name="islandHeadlandClockwise" isExpertModeOnly="true" defaultBoolean="true">
+		<Setting classType="AIParameterBooleanSetting" name="islandHeadlandClockwise" defaultBoolean="true">
 			<Texts>
 				<Text>counterclockwise</Text>
 				<Text>clockwise</Text>
