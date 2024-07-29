@@ -46,6 +46,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     -- the mathematical angle (0 - x+, 90 - y+, etc)
     context:setRowAngle(math.rad(-(settings.manualRowAngleDeg:getValue() - 90)))
     context:setBypassIslands(settings.bypassIslands:getValue())
+    context:setIslandHeadlands(settings.nIslandHeadlands:getValue())
 
     context:log()
 
