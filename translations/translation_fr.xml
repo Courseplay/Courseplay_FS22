@@ -320,8 +320,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Exprimé en degrés. 0=Nord. Utilisé uniquement lorsque votre choix d'orientation est en mode -selon un angle-. Valeurs: 0 - 175 Incrément: 5"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="How the course should bypass islands in the field."/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_title" text="Island headlands"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_tooltip" text="Island headlands tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title" text="Island headlands"/>
+    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Island headlands tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Début du travail"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Détermine par quoi commencer le travail dans le champ"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="Fourrières"/>

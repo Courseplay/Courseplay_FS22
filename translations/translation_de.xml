@@ -320,8 +320,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Winkel der Bahnen (0 ist Norden), wenn Einstellung auf Manuell gesetzt ist. Wert: 0 - 175 Schritte: 5"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Inselumfahrung"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="Wie Inseln auf dem Feld umfahren werden sollen."/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_title" text="Insel Vorgewende"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_tooltip" text="Insel Vorgewende tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title" text="Insel Vorgewende"/>
+    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Insel Vorgewende tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Starte auf"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Startpunkt auf dem Vorgewende oder auf den Bahnen."/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="Vorgewende"/>
