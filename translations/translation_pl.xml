@@ -320,8 +320,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Kąt dla rzędów w tą i z powrotem (0 to północ) w trybie ręcznym. Zakres: 0 - 175, przeskok co: 5"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="How the course should bypass islands in the field."/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_title" text="Island headlands"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlands_tooltip" text="Island headlands tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title" text="Island headlands"/>
+    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Island headlands tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Rozpocznij pracę od"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Ustala od czego zacząć pracę polową."/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="Uwroci"/>
