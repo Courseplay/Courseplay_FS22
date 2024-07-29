@@ -112,8 +112,10 @@ function Field:setupIslands()
         local island = CourseGenerator.Island(islandId, islandPerimeterPoints)
         -- ignore too really small islands (under 5 sqm), there are too many issues with the
         -- headland generation for them
+        CourseGenerator.addDebugPolyline(island:getBoundary())
         if island:getBoundary():getArea() > 5 then
             table.insert(self.islands, island)
+            self.logger:debug('created island %d, boundary has %d vertices, area %.0f', islandId, #island:getBoundary(), island:getBoundary():getArea())
             islandId = islandId + 1
         end
     end

@@ -11,7 +11,6 @@ local FieldworkCourse = CpObject()
 ---@param context CourseGenerator.FieldworkContext
 function FieldworkCourse:init(context)
     self.logger = Logger('FieldworkCourse')
-    CourseGenerator.clearDebugObjects()
     self:_setContext(context)
     self.headlandPath = Polyline()
     self.circledIslands = {}

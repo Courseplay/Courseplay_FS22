@@ -72,13 +72,19 @@ function CourseGenerator.clearDebugObjects()
     CourseGenerator.debugPolylines = {}
 end
 
+local lastDebugPointAdded = 0
+
 --- Add a point to the list of debug points we want to show on the test display
 ---@param v Vector
 ---@param text|nil optional debug text
 ---@param color table|nil color in form of {r, g, b}, each in the 0..1 range
 function CourseGenerator.addDebugPoint(v, text, color)
     if CourseGenerator.isRunningInGame() then
-        return
+        -- if we haven't added any debug points for a while, clear the list to avoid filling the memory
+        if g_time - lastDebugPointAdded > 30000 then
+            CourseGenerator.debugPoints = {}
+        end
+        lastDebugPointAdded = g_time
     end
     local debugPoint = v:clone()
     debugPoint.debugColor = color
@@ -132,6 +138,21 @@ function CourseGenerator.drawDebugPolylines()
             local y1 = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, v1.x, 0, -v1.y)
             local y2 = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, v2.x, 0, -v2.y)
             DebugUtil.drawDebugLine(v1.x, y1 + 3.5, -v1.y, v2.x, y2 + 3.5, -v2.y, color[1], color[2], color[3])
+        end
+    end
+end
+
+--- Draw debug points in the game
+function CourseGenerator.drawDebugPoints()
+    if not CourseGenerator.isRunningInGame() then
+        return
+    end
+    for _, p in ipairs(CourseGenerator.debugPoints) do
+        local color = p.debugColor or {1, 1, 1}
+        local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, p.x, 0, -p.y)
+        DebugUtil.drawDebugCircle(p.x, y + 3.6, -p.y, 0.3, 16, color)
+        if p.debugText then
+            Utils.renderTextAtWorldPosition(p.x, y + 3.6, -p.y, p.debugText, getCorrectTextSize(0.012), 0)
         end
     end
 end

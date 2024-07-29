@@ -195,6 +195,7 @@ function DevHelper:draw()
     self:showDriveData()
 
     CourseGenerator.drawDebugPolylines()
+    CourseGenerator.drawDebugPoints()
 
 	if not self.tNode then
 		self.tNode = createTransformGroup("devhelper")

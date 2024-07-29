@@ -30,6 +30,7 @@ function FieldworkContext:init(field, workingWidth, turningRadius, nHeadlands)
     self.rowPattern = CourseGenerator.RowPatternAlternating()
     self.autoRowAngle = true
     self.rowAngle = 0
+    self.rowWaypointDistance = CourseGenerator.cRowWaypointDistance
     self.evenRowDistribution = false
     self.useBaselineEdge = false
     self.enableSmallOverlapsWithHeadland = false
@@ -150,6 +151,13 @@ end
 ---@param rowAngle number row angle in radians, x axis is 0, increasing counterclockwise
 function FieldworkContext:setRowAngle(rowAngle)
     self.rowAngle = rowAngle
+    return self
+end
+
+--- Distance between waypoints on rows
+---@param d number distance between waypoints, default is CourseGenerator.cRowWaypointDistance
+function FieldworkContext:setRowWaypointDistance(d)
+    self.rowWaypointDistance = d
     return self
 end
 
