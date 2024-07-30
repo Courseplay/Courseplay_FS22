@@ -938,16 +938,16 @@
 			<Text language="en"><![CDATA[Center direction]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip">
-			<Text language="de"><![CDATA[Das Fahrzeug kann auf dem Vorgewende im oder gegen den Uhrzeigersinn fahren.]]></Text>
-			<Text language="en"><![CDATA[Should the vehicle drive clockwise or counterclockwise on the headland.]]></Text>
+			<Text language="de"><![CDATA[Die Mitte des Feldes im oder gegen den Uhrzeigersinn fahren.]]></Text>
+			<Text language="en"><![CDATA[Drive the center of the field clockwise or counterclockwise.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_title">
 			<Text language="de"><![CDATA[Insel Vorgewende-Richtung]]></Text>
 			<Text language="en"><![CDATA[Island Headland direction]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip">
-			<Text language="de"><![CDATA[Das Fahrzeug kann auf dem Vorgewende im oder gegen den Uhrzeigersinn fahren.]]></Text>
-			<Text language="en"><![CDATA[Should the vehicle drive clockwise or counterclockwise on the headland.]]></Text>
+			<Text language="de"><![CDATA[Die Insel im oder gegen den Uhrzeigersinn umfahren.]]></Text>
+			<Text language="en"><![CDATA[Bypass the island clockwise or counterclockwise.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_headlandClockwise_clockwise">
 			<Text language="de"><![CDATA[Im Uhrzeigersinn]]></Text>
@@ -1063,11 +1063,11 @@
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_bypassIslands_title">
 			<Text language="de"><![CDATA[Inselumfahrung]]></Text>
-			<Text language="en"><![CDATA[Island bypass mode]]></Text>
+			<Text language="en"><![CDATA[Island bypass]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip">
-			<Text language="de"><![CDATA[Wie Inseln auf dem Feld umfahren werden sollen.]]></Text>
-			<Text language="en"><![CDATA[How the course should bypass islands in the field.]]></Text>
+			<Text language="de"><![CDATA[Inseln auf dem Feld umfahren oder ignorieren.]]></Text>
+			<Text language="en"><![CDATA[Bypass Islands on the field or ignore them.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title">
 			<Text language="de"><![CDATA[Insel Vorgewende]]></Text>
