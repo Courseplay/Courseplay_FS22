@@ -297,7 +297,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_clockwise" text="clockwise"/>
     <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_counterclockwise" text="counterclockwise"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Field center"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Field center"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Select how the center of the field should be driven. Up/down, spiral, lands or circular."/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="up/down"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="spiral"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="racetrack"/>

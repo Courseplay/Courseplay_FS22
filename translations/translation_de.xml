@@ -297,7 +297,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_clockwise" text="Im Uhrzeigersinn"/>
     <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_counterclockwise" text="Gegen den Uhrzeigersinn"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Feldmitte"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Feldmitte"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Auswhal wie die Mitte des Feldes abgefahren werden soll. Hoch/runter, spiralförmig, Beete, kreisförmig."/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="hoch/runter"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="spiralförmig"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="kreisförmig"/>
