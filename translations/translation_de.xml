@@ -287,9 +287,9 @@
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Vorgewende-Richtung"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip" text="Das Fahrzeug kann auf dem Vorgewende im oder gegen den Uhrzeigersinn fahren."/>
     <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_title" text="Mitte-Richtung"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip" text="Das Fahrzeug kann auf dem Vorgewende im oder gegen den Uhrzeigersinn fahren."/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip" text="Die Mitte des Feldes im oder gegen den Uhrzeigersinn fahren."/>
     <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_title" text="Insel Vorgewende-Richtung"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="Das Fahrzeug kann auf dem Vorgewende im oder gegen den Uhrzeigersinn fahren."/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="Die Insel im oder gegen den Uhrzeigersinn umfahren."/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_clockwise" text="Im Uhrzeigersinn"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_counterclockwise" text="Gegen den Uhrzeigersinn"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_clockwise" text="Im Uhrzeigersinn"/>
@@ -319,7 +319,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Richtungswinkel der Bahnen"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Winkel der Bahnen (0 ist Norden), wenn Einstellung auf Manuell gesetzt ist. Wert: 0 - 175 Schritte: 5"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Inselumfahrung"/>
-    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="Wie Inseln auf dem Feld umfahren werden sollen."/>
+    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="Inseln auf dem Feld umfahren oder ignorieren."/>
     <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title" text="Insel Vorgewende"/>
     <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Anzahl Vorgewende bei Inseln. Wert: 1 - 10"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Starte auf"/>
