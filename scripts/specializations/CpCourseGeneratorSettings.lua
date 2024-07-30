@@ -47,7 +47,6 @@ end
 function CpCourseGeneratorSettings.registerEventListeners(vehicleType)	
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpCourseGeneratorSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpCourseGeneratorSettings)
-    SpecializationUtil.registerEventListener(vehicleType, "onLoadFinished",CpCourseGeneratorSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onCpUnitChanged", CpCourseGeneratorSettings)
 end
 function CpCourseGeneratorSettings.registerFunctions(vehicleType)
@@ -101,18 +100,18 @@ function CpCourseGeneratorSettings:onLoad(savegame)
     CpCourseGeneratorSettings.loadSettings(self,savegame)
 end
 
---- Apply auto work width after everything is loaded.
-function CpCourseGeneratorSettings:onLoadFinished()
-    CpCourseGeneratorSettings.setAutomaticWorkWidthAndOffset(self)
-end
-
 --- Resets the work width to a saved value after all implements are loaded and attached.
 function CpCourseGeneratorSettings:onUpdate(savegame)
     local spec = self.spec_cpCourseGeneratorSettings
     if not spec.finishedFirstUpdate then
+        CpCourseGeneratorSettings.setAutomaticWorkWidthAndOffset(self)
         spec.workWidth:resetToLoadedValue()
     end
     spec.finishedFirstUpdate = true
+    if spec.needsRefresh then 
+
+        spec.needsRefresh = false
+    end
 end
 
 --- Makes sure the automatic work width gets recalculated after the variable work width was changed by the user.

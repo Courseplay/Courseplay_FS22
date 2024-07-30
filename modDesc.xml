@@ -445,6 +445,7 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/events/CpJoinEvent.lua"/>
 		<sourceFile filename="scripts/events/GlobalSettingsEvent.lua"/>
 		<sourceFile filename="scripts/events/VehicleSettingsEvent.lua"/>
+		<sourceFile filename="scripts/events/HudSettingsEvent.lua"/>
 		<sourceFile filename="scripts/events/DebugChannelEvent.lua"/>
 		<sourceFile filename="scripts/events/CpJobStartAtLastWpSyncEvent.lua"/>
 		<sourceFile filename="scripts/events/CpJobSyncOnLeaveEvent.lua"/>
