@@ -545,7 +545,9 @@ local function findShortestPathOnHeadland(start, goal, course, turnRadius, worki
     end
     headland:calculateProperties()
     local path = {}
-    for _, p in ipairs(headland:getSectionBetweenPoints(start, goal, 2)) do
+    local startVertex = headland:findClosestVertexToPoint(start)
+    local endVertex = headland:findClosestVertexToPoint(goal)
+    for _, p in ipairs(headland:getShortestPathBetween(startVertex.ix, endVertex.ix)) do
         table.insert(path, State3D(p.x, p.y, 0))
     end
     return path
