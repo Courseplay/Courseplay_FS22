@@ -978,8 +978,8 @@
 			<Text language="en"><![CDATA[Field center]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip">
-			<Text language="de"><![CDATA[Feldmitte]]></Text>
-			<Text language="en"><![CDATA[Field center]]></Text>
+			<Text language="de"><![CDATA[Auswhal wie die Mitte des Feldes abgefahren werden soll. Hoch/runter, spiralförmig, Beete, kreisförmig.]]></Text>
+			<Text language="en"><![CDATA[Select how the center of the field should be driven. Up/down, spiral, lands or circular.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_centerMode_up_down">
 			<Text language="de"><![CDATA[hoch/runter]]></Text>
