@@ -65,7 +65,6 @@ function AITurn:init(vehicle, driveStrategy, ppc, proximityController, turnConte
     self.proximityController = proximityController
     self.proximityController:registerBlockingObjectListener(self, AITurn.onBlocked)
     -- turn handles its own waypoint changes
-    self.ppc:saveRegisteredListeners()
     self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
     ---@type TurnContext
     self.turnContext = turnContext
@@ -280,7 +279,7 @@ function AITurn:resumeFieldworkAfterTurn(ix)
         self.proximityController:unregisterBlockingObjectListener()
     end
     -- restore the strategies' listeners
-    self.ppc:restoreRegisteredListeners()
+    self.ppc:restorePreviouslyRegisteredListeners()
     if self.callbackFunction and self.callbackObject then
         self:debug('Triggering turn end callback function')
         self.callbackFunction(self.callbackObject, ix)
