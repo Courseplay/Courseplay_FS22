@@ -14,8 +14,8 @@
 		<Setting classType="AIParameterSettingList" name="numberOfHeadlands" min="0" max="40"/>
 		<Setting classType="AIParameterBooleanSetting" name="startOnHeadland" isVisible="hasHeadlandsSelected">
 			<Texts>
-				<Text>on_headland</Text>
 				<Text>up_down_rows</Text>
+				<Text>on_headland</Text>
 			</Texts>
 		</Setting>
 	</SettingSubTitle>
