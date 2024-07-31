@@ -156,7 +156,8 @@ function PurePursuitController:initialize(ix)
 	self.course:setLastPassedWaypointIx(nil)
 	self:debug('initialized to waypoint %d of %d', self.firstIx, self.course:getNumberOfWaypoints())
 	self.lastPassedWaypointIx = nil
-	self.sendWaypointChange = nil
+    -- force calling the waypoint change callback right after initialization
+    self.sendWaypointChange = { current = self.currentWpNode.ix, prev = self.currentWpNode.ix - 1}
 	self.sendWaypointPassed = nil
 	-- current goal point search case as described in the paper, for diagnostics only
 	self.case = 0
@@ -283,6 +284,7 @@ function PurePursuitController:notifyListeners()
         if self.sendWaypointChange then
             -- send waypoint change event for all waypoints between the previous and current to make sure
             -- we don't miss any
+            self:debug('prev %s curr %s', self.sendWaypointChange.prev, self.sendWaypointChange.current)
             for ix = self.sendWaypointChange.prev + 1, self.sendWaypointChange.current do
                 self.waypointListener[self.waypointChangeListenerFunc](self.waypointListener, ix, self.course)
             end
