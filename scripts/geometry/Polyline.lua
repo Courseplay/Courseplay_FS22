@@ -492,8 +492,9 @@ function Polyline:ensureMinimumRadius(r, makeCorners)
                 exit:move(step)
                 totalMoved = totalMoved + step
                 rMin = entry:getRadiusTo(exit)
-
-            until rMin >= r or totalMoved > maxDistanceToMove
+                -- use a limit a bit over r, to make sure the Dubins generated won't end
+                -- up as a loop because it can't fit between entry and exit
+            until rMin >= 1.01 * r or totalMoved > maxDistanceToMove
             -- entry and exit are now far enough, so use the Dubins solver to effortlessly create a nice
             -- arc between the two, or, to make it a sharp corner, find the intersection of entry and exit
             local adjustedCornerVertices
