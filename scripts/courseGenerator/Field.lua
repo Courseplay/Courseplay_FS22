@@ -40,7 +40,11 @@ function Field.loadSavedFields(fileName)
     local fields = {}
     local ix = 0
     for line in io.lines(fileName) do
-        local fieldNum = string.match(line, '<field fieldNum="([%d%.-]+)"')
+        local fieldNum = string.match(line, '<field fieldNum="(%d+)"')
+        if not fieldNum then
+            fieldNum = string.match(line, '<customField name="CP%-(%d+)"')
+            print(fieldNum)
+        end
         if fieldNum then
             -- a new field started
             ix = tonumber(fieldNum)
@@ -50,6 +54,12 @@ function Field.loadSavedFields(fileName)
         local num, x, z = string.match(line, '<point(%d+).+pos="([%d%.-]+) [%d%.-]+ ([%d%.-]+)"')
         if num then
             fields[ix].boundary:append(Vertex(tonumber(x), -tonumber(z)))
+        else
+            -- try the custom field format
+            x, z = string.match(line, '([%d%.-]+) [%d%.-]+ ([%d%.-]+)')
+            if x then
+                fields[ix].boundary:append(Vertex(tonumber(x), -tonumber(z)))
+            end
         end
         num, x, z = string.match(line, '<islandNode(%d+).+pos="([%d%.-]+) +([%d%.-]+)"')
         if num then
