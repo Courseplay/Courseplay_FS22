@@ -4,6 +4,9 @@
 CourseGeneratorInterface = {}
 CourseGeneratorInterface.logger = Logger('CourseGeneratorInterface')
 
+-- Generate into this global variable to be able to access the generated course for debug purposes
+CourseGeneratorInterface.generatedCourse = nil
+
 ---@param fieldPolygon table [{x, z}]
 ---@param startPosition table {x, z}
 ---@param vehicle table
@@ -49,8 +52,8 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     context:setIslandHeadlands(settings.nIslandHeadlands:getValue())
 
     context:log()
-
-    local status, generatedCourse = xpcall(
+    local status
+    status, CourseGeneratorInterface.generatedCourse = xpcall(
             function()
                 return CourseGenerator.FieldworkCourse(context)
             end,
@@ -62,15 +65,15 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 
 
     -- return on exception or if the result is not usable
-    if not status or generatedCourse == nil then
+    if not status or CourseGeneratorInterface.generatedCourse == nil then
         return false
     end
 
     CourseGeneratorInterface.logger:debug('Generated course: %d/%d headland/center waypoints',
-            #generatedCourse:getHeadlandPath(), #generatedCourse:getCenterPath())
+            #CourseGeneratorInterface.generatedCourse:getHeadlandPath(), #CourseGeneratorInterface.generatedCourse:getCenterPath())
 
-    local course = Course.createFromGeneratedCourse(nil, generatedCourse, settings.workWidth:getValue(),
-			#generatedCourse:getHeadlands(), settings.multiTools:getValue())
+    local course = Course.createFromGeneratedCourse(nil, CourseGeneratorInterface.generatedCourse, settings.workWidth:getValue(),
+			#CourseGeneratorInterface.generatedCourse:getHeadlands(), settings.multiTools:getValue())
     course:setFieldPolygon(fieldPolygon)
     return true, course
 end

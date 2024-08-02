@@ -487,12 +487,13 @@ function Center:_wrapUpConnectingPaths()
             self.blocks[i]:getEntryVertex():getAttributes():setUsePathfinderToThisWaypoint()
             self.blocks[i]:getExitVertex():getAttributes():setUsePathfinderToNextWaypoint()
         end
-    elseif not self.context.headlandFirst then
-        -- we don't need a connecting path to get to the first row, the driver will generate this path
-        -- using the pathfinder anyway
-        self.logger:debug('Work starts on the field center, remove first connecting path.')
-        self.connectingPaths[1] = {}
     else
+        if not self.context.headlandFirst then
+            -- we don't need a connecting path to get to the first row, the driver will generate this path
+            -- using the pathfinder anyway
+            self.logger:debug('Work starts on the field center, remove first connecting path.')
+            self.connectingPaths[1] = Polyline()
+        end
         for _, c in ipairs(self.connectingPaths) do
             c:setAttribute(nil, CourseGenerator.WaypointAttributes.setOnConnectingPath)
             c:setAttribute(nil, CourseGenerator.WaypointAttributes.setHeadlandTurn, nil)
