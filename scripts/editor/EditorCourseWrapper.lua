@@ -267,9 +267,9 @@ end
 function EditorCourseWrapper:getWaypointType(ix)
 	local wp = ix ~=nil and self.course:getWaypoint(ix)
 	if wp then
-		if wp.turnStart then 
+		if wp.rowEnd then
 			return CpBrushChangeTurnWP.TYPES.TURN_START
-		elseif wp.turnEnd then 
+		elseif wp.rowStart then
 			return CpBrushChangeTurnWP.TYPES.TURN_END
 		else
 			return CpBrushChangeTurnWP.TYPES.NORMAL

@@ -71,12 +71,8 @@ end
 Waypoint = CpObject(Point)
 Waypoint.xmlKey = ".waypoints.wp"
 
--- constructor from the legacy Courseplay waypoint
-function Waypoint:init(cpWp)
-	self:set(cpWp)
-end
-
-function Waypoint:set(wp)
+-- constructor from another waypoint
+function Waypoint:init(wp)
 	-- we initialize explicitly, no table copy as we want to have
 	-- full control over what is used in this object
 	self.x = wp.x or 0
@@ -84,11 +80,11 @@ function Waypoint:set(wp)
 	self.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, self.x, 0, self.z)
 	self.angle = wp.angle or nil
 	self.radius = wp.radius or nil
-	self.rev = wp.rev or wp.turnReverse or wp.reverse or false
+	self.rev = wp.rev or wp.reverse or false
 	self.rev = self.rev or wp.gear and wp.gear == Gear.Backward
 	self.speed = wp.speed
-	self.turnStart = wp.turnStart
-	self.turnEnd = wp.turnEnd
+	self.rowEnd = wp.rowEnd
+	self.rowStart = wp.rowStart
 	self.headlandTurn = wp.headlandTurn
 	self.isConnectingPath = wp.isConnectingPath or nil
 	self.headlandNumber = wp.headlandNumber
@@ -102,7 +98,8 @@ function Waypoint:set(wp)
 	self.yRot = wp.yRot
 	--- Set, when generated for a multi tool course
 	self.originalMultiToolReference = wp.originalMultiToolReference
-	
+	self.usePathfinderToThisWaypoint = wp.usePathfinderToThisWaypoint
+	self.usePathfinderToNextWaypoint = wp.usePathfinderToNextWaypoint
 end
 
 --- Set from a generated waypoint (output of the course generator)
@@ -113,8 +110,10 @@ function Waypoint.initFromGeneratedWp(wp, ix)
 	waypoint.z = -wp.y
 	waypoint.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, waypoint.x, 0, waypoint.z)
 	local a = wp:getAttributes()
-	waypoint.turnStart = a:isRowEnd() or a:shouldUsePathfinderToNextWaypoint()
-	waypoint.turnEnd = a:isRowStart() or a:shouldUsePathfinderToThisWaypoint()
+	waypoint.rowEnd = a:isRowEnd()
+	waypoint.rowStart = a:isRowStart()
+	waypoint.usePathfinderToNextWaypoint = a:shouldUsePathfinderToNextWaypoint()
+	waypoint.usePathfinderToThisWaypoint = a:shouldUsePathfinderToThisWaypoint()
 	waypoint.headlandTurn = a:isHeadlandTurn()
 	waypoint.isConnectingPath = a:isOnConnectingPath()
 	waypoint.headlandNumber = a:getHeadlandPassNumber()
@@ -138,8 +137,8 @@ function Waypoint.initFromXmlFile(data,ix)
 	waypoint.x = data[1]
 	waypoint.z = data[2]
 	waypoint.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, waypoint.x, 0, waypoint.z)
-	waypoint.turnStart = data[3]
-	waypoint.turnEnd = data[4]
+	waypoint.rowEnd = data[3]
+	waypoint.rowStart = data[4]
 	waypoint.isConnectingPath = data[5]
 	-- saved course backwards compatibility, for when the headland numbers were negative
 	waypoint.headlandNumber = data[6] and math.abs(data[6])
@@ -160,8 +159,8 @@ function Waypoint:getXmlString()
 	local v = {
 		MathUtil.round(self.x,2),
 		MathUtil.round(self.z,2),
-		self.turnStart or "-",
-		self.turnEnd or "-",
+		self.rowEnd or "-",
+		self.rowStart or "-",
 		self.isConnectingPath or "-",
 		self.headlandNumber or "-",
 		self.rowNumber or "-",
@@ -243,11 +242,11 @@ function Waypoint:getIsReverse()
 end
 
 function Waypoint:isTurnStart()
-	return self.turnStart
+	return self.rowEnd
 end
 
 function Waypoint:isTurnEnd()
-	return self.turnEnd
+	return self.rowStart
 end
 
 function Waypoint:isTurn()
@@ -266,17 +265,17 @@ function Waypoint:shouldUsePathfinderToThisWaypoint()
 	return self.usePathfinderToThisWaypoint
 end
 
-function Waypoint:setTurnStart(turnStart)
-	self.turnStart = turnStart	
+function Waypoint:setTurnStart(rowEnd)
+	self.rowEnd = rowEnd
 end
 
-function Waypoint:setTurnEnd(turnEnd)
-	self.turnEnd = turnEnd	
+function Waypoint:setrowStart(rowStart)
+	self.rowStart = rowStart	
 end
 
 function Waypoint:resetTurn()
-	self.turnEnd = false	
-	self.turnStart = false	
+	self.rowStart = false	
+	self.rowEnd = false
 end
 
 function Waypoint:setOriginalMultiToolReference(ix)

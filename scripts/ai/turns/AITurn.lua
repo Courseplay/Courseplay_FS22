@@ -705,6 +705,9 @@ function CourseTurn:generateCalculatedTurn()
         self:debug('This is NOT a headland turn, turnOnField=%s distanceToFieldEdge=%.1f', turnOnField, distanceToFieldEdge)
         if distanceToFieldEdge > self.workWidth or self.steeringLength > 0 then
             -- if there's plenty of space or it is a towed implement, stick with Dubins, that's easier
+            -- TODO: the generated Dubins turn may not fit on the field and we we'll move it back, forcing the
+            -- vehicle to reverse at the start and at the end of the turn. This will be very slow, and if the
+            -- vehicle is able to reverse, a Reeds-Shepp would be lot faster
             turnManeuver = DubinsTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
                     self.turningRadius, self.workWidth, self.steeringLength, distanceToFieldEdge)
         else

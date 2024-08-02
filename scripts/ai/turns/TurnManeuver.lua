@@ -309,24 +309,24 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 		turningRadius, workWidth, steeringLength, distanceToFieldEdge)
 
 	local turnEndNode, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(self.steeringLength)
-
 	self.course = self:findAnalyticPath(vehicleDirectionNode, 0, turnEndNode, 0, goalOffset, self.turningRadius)
-
-	-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
-
-	self.course:setUseTightTurnOffsetForLastWaypoints(
-			g_vehicleConfigurations:getRecursively(vehicle, 'tightTurnOffsetDistanceInTurns') or 10)
-	local ixBeforeEndingTurnSection = self.course:getNumberOfWaypoints()
-	-- and once again, if there is an ending course, keep adjusting the tight turn offset
-	local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.course, steeringLength, true)
 
 	local dzMax = self:getDzMax(self.course)
 	local spaceNeededOnFieldForTurn = dzMax + workWidth / 2
 	distanceToFieldEdge = distanceToFieldEdge or 500  -- if not given, assume we have a lot of space
+
+	local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.course, steeringLength, true)
+	-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
+	self.course:setUseTightTurnOffsetForLastWaypoints(
+			g_vehicleConfigurations:getRecursively(vehicle, 'tightTurnOffsetDistanceInTurns') or 10)
+	local ixBeforeEndingTurnSection = self.course:getNumberOfWaypoints()
+	-- and once again, if there is an ending course, keep adjusting the tight turn offset
+
 	local canReverse = AIUtil.canReverse(vehicle)
 	self:debug('dzMax=%.1f, workWidth=%.1f, spaceNeeded=%.1f, distanceToFieldEdge=%.1f, ixBeforeEndingTurnSection=%d, canReverse=%s',
 		dzMax, workWidth, spaceNeededOnFieldForTurn, distanceToFieldEdge, ixBeforeEndingTurnSection, canReverse)
 	if distanceToFieldEdge < spaceNeededOnFieldForTurn and canReverse then
+		local dBack = spaceNeededOnFieldForTurn - distanceToFieldEdge
 		self.course = self:moveCourseBack(self.course, spaceNeededOnFieldForTurn - distanceToFieldEdge,
 			ixBeforeEndingTurnSection, endingTurnLength)
 	end
