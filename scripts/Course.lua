@@ -388,7 +388,9 @@ end
 function Course:isTurnStartAtIx(ix)
     -- Don't start turns at the last waypoint
     -- TODO: do a row finish maneuver instead
-    return (self.waypoints[ix]:isTurnStart() and ix < #self.waypoints) or
+    return ix < #self.waypoints and
+            -- if there is a turn start just before a connecting path
+            (self.waypoints[ix]:isTurnStart() and not self:isOnConnectingPath(ix + 1)) or
             (self.waypoints[ix + 1] and self.waypoints[ix + 1]:isHeadlandTurn())
 end
 
@@ -634,7 +636,7 @@ function Course:print()
         local p = self.waypoints[i]
         print(string.format('%d: x=%.1f z=%.1f a=%.1f yRot=%.1f ts=%s te=%s r=%s d=%.1f t=%d l=%s p=%s tt=%s dx=%.1f dz=%.1f',
                 i, p.x, p.z, p.angle or -1, math.deg(p.yRot or 0),
-                tostring(p.turnStart), tostring(p.turnEnd), tostring(p.rev), p.dToHere or -1, p.turnsToHere or -1,
+                tostring(p.rowEnd), tostring(p.rowStart), tostring(p.rev), p.dToHere or -1, p.turnsToHere or -1,
                 tostring(p.headlandNumber), tostring(p.pipeInFruit), tostring(p.useTightTurnOffset), p.dx, p.dz))
     end
 end
@@ -731,7 +733,7 @@ end
 ---@return boolean true if any of the waypoints are turn start/end point
 function Course:hasTurnWithinDistance(ix, distance)
     return self:hasWaypointWithPropertyWithinDistance(ix, distance, function(p)
-        return p.turnStart or p.turnEnd
+        return p.rowEnd or p.rowStart
     end)
 end
 
@@ -1535,7 +1537,7 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
                     self:markAsHeadland(offsetHeadlands, currentHeadlandNumber)
                     if origHeadlandsCourse:isTurnStartAtIx(origHeadlandsCourse:getNumberOfWaypoints()) then
                         CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Original headland transitioned to the center with a turn, adding a turn start to the offset one')
-                        offsetHeadlands[#offsetHeadlands].turnStart = true
+                        offsetHeadlands[#offsetHeadlands].rowEnd = true
                     end
                     addTurnsToCorners(offsetHeadlands, math.rad(60), true)
                     local newHeadlandCourse = Course(self.vehicle, CpMathUtil.pointsToGameInPlace(offsetHeadlands), true)
@@ -1742,7 +1744,7 @@ function Course:addWaypointsForRows()
             CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: adding waypoints for row, length %.1f', p.dToNext)
             for n = 1, (p.dToNext / CourseGenerator.waypointDistance) - 1 do
                 local newWp = Waypoint(p)
-                newWp.turnEnd = nil
+                newWp.rowStart = nil
                 newWp.x = p.x + n * CourseGenerator.waypointDistance * p.dx
                 newWp.z = p.z + n * CourseGenerator.waypointDistance * p.dz
                 table.insert(waypoints, newWp)
@@ -1753,87 +1755,6 @@ function Course:addWaypointsForRows()
     self.waypoints = waypoints
     CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: has now %d waypoints', #self.waypoints)
     self:enrichWaypointData()
-end
-
---- Use a single XML node to store all waypoints. Waypoints are separated by a '|' and a newline, latter for better
---- readability only.
---- The attributes of individual waypoints are separated by a ';', the order of the attributes can be read from the
---- code below.
----@param compress boolean if true, will skip waypoints of rows between turn end and turn start
-function Course:serializeWaypoints(compress)
-    local function serializeBool(bool)
-        return bool and 'Y' or 'N'
-    end
-
-    local function serializeInt(number)
-        return number and string.format('%d', number) or ''
-    end
-
-    local serializedWaypoints = '\n' -- (pure cosmetic)
-    for i, p in ipairs(self.waypoints) do
-        -- do not save waypoints of a row between the turn start and end as it is just a long straight
-        -- line between the two and can be re-generated on load
-        -- always include first and last waypoint
-        local mustInclude = i == 1 or i == #self.waypoints
-        -- always include turn starts and turn ends and everything which does not have a row number
-        mustInclude = mustInclude or p.turnStart or p.turnEnd or not p.rowNumber
-        -- always include the first waypoint of the first row (after transitioning from the headland, in case it is not a turn)
-        mustInclude = mustInclude or (i > 1 and not self.waypoints[i - 1].rowNumber and p.rowNumber)
-        -- always include the last waypoint of the last row (before transitioning to the headland in case it is not a turn)
-        mustInclude = mustInclude or (i < #self.waypoints and not self.waypoints[i + 1].rowNumber and p.rowNumber)
-        if not compress or mustInclude then
-            local x, y, z = p.x, p.y, p.z
-            local turn = p.turnStart and 'S' or (p.turnEnd and 'E' or '')
-            local serializedWaypoint = string.format('%.2f %.2f %.2f;%.2f;%s;%s;',
-                    x, y, z, p.angle, serializeInt(p.speed), turn)
-            serializedWaypoint = serializedWaypoint .. string.format('%s;%s;%s;%s;',
-                    serializeBool(p.rev), serializeBool(p.unload), serializeBool(p.wait), serializeBool(p.crossing))
-            serializedWaypoint = serializedWaypoint .. string.format('%s;%s;%s;%s|\n',
-                    serializeInt(p.headlandNumber), serializeInt(p.ridgeMarker),
-                    serializeInt(p.headlandHeightForTurn), serializeBool(p.isConnectingPath))
-            serializedWaypoints = serializedWaypoints .. serializedWaypoint
-        end
-    end
-    return serializedWaypoints
-end
-
-function Course.deserializeWaypoints(serializedWaypoints)
-    local function deserializeBool(str)
-        if str == 'Y' then
-            return true
-        elseif str == 'N' then
-            return false
-        else
-            return nil
-        end
-    end
-
-    local waypoints = {}
-
-    local lines = string.split(serializedWaypoints, '|')
-    for _, line in ipairs(lines) do
-        local p = {}
-        local fields = string.split(line, ';')
-        p.x, p.y, p.z = string.getVector(fields[1])
-        -- just skip empty lines
-        if p.x then
-            p.angle = tonumber(fields[2])
-            p.speed = tonumber(fields[3])
-            local turn = fields[4]
-            p.turnStart = turn == 'S'
-            p.turnEnd = turn == 'E'
-            p.rev = deserializeBool(fields[5])
-            p.unload = deserializeBool(fields[6])
-            p.wait = deserializeBool(fields[7])
-            p.crossing = deserializeBool(fields[8])
-            p.headlandNumber = tonumber(fields[9])
-            p.ridgeMarker = tonumber(fields[10])
-            p.headlandHeightForTurn = tonumber(fields[11])
-            p.isConnectingPath = deserializeBool(fields[12])
-            table.insert(waypoints, p)
-        end
-    end
-    return waypoints
 end
 
 function Course:saveToXml(courseXml, courseKey)
@@ -1875,17 +1796,11 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
     local isCompressed = courseXml:getValue(courseKey .. '#isCompressed')
     local wasEdited = courseXml:getValue(courseKey .. '#wasEdited', false)
     local waypoints = {}
-    if courseXml:hasProperty(courseKey .. Waypoint.xmlKey) then
-        local d
-        courseXml:iterate(courseKey .. Waypoint.xmlKey, function(ix, key)
-            d = CpUtil.getXmlVectorValues(courseXml:getString(key))
-            table.insert(waypoints, Waypoint.initFromXmlFile(d, ix))
-        end)
-    else
-        --- old course save format for backwards compatibility
-        local serializedWaypoints = courseXml:getValue(courseKey .. '.waypoints')
-        waypoints = Course.deserializeWaypoints(serializedWaypoints)
-    end
+    local d
+    courseXml:iterate(courseKey .. Waypoint.xmlKey, function(ix, key)
+        d = CpUtil.getXmlVectorValues(courseXml:getString(key))
+        table.insert(waypoints, Waypoint.initFromXmlFile(d, ix))
+    end)
 
     local course = Course(vehicle, waypoints)
     course.name = name
