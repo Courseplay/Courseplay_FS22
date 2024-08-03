@@ -454,6 +454,10 @@ function Course:isOnHeadland(ix, n)
     end
 end
 
+function Course:isHeadlandTransition(ix)
+    return self.waypoints[ix]:isHeadlandTransition()
+end
+
 function Course:isOnOutermostHeadland(ix)
     return self.waypoints[ix].headlandNumber == 1
 end
