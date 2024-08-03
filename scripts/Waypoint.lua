@@ -100,6 +100,7 @@ function Waypoint:init(wp)
 	self.originalMultiToolReference = wp.originalMultiToolReference
 	self.usePathfinderToThisWaypoint = wp.usePathfinderToThisWaypoint
 	self.usePathfinderToNextWaypoint = wp.usePathfinderToNextWaypoint
+	self.headlandTransition = wp.headlandTransition
 end
 
 --- Set from a generated waypoint (output of the course generator)
@@ -117,6 +118,7 @@ function Waypoint.initFromGeneratedWp(wp, ix)
 	waypoint.headlandTurn = a:isHeadlandTurn()
 	waypoint.isConnectingPath = a:isOnConnectingPath()
 	waypoint.headlandNumber = a:getHeadlandPassNumber()
+	waypoint.headlandTransition = a:isHeadlandTransition()
 	waypoint.rowNumber = a:getRowNumber()
 	-- set ridge marker only if we are absolutely sure that a side is not worked
 	if a:isLeftSideNotWorked() then
@@ -148,6 +150,7 @@ function Waypoint.initFromXmlFile(data,ix)
 	waypoint.headlandTurn = data[10]
 	waypoint.usePathfinderToNextWaypoint = data[11]
 	waypoint.usePathfinderToThisWaypoint = data[12]
+	waypoint.headlandTransition = data[13]
 	return waypoint
 end
 
@@ -168,7 +171,8 @@ function Waypoint:getXmlString()
 		self.rev or "-",
 		self.headlandTurn or "-",
 		self.usePathfinderToNextWaypoint or "-",
-		self.usePathfinderToThisWaypoint or "-"
+		self.usePathfinderToThisWaypoint or "-",
+		self.headlandTransition or "-"
 	}
 	return CpUtil.getXmlVectorString(v)
 end
@@ -255,6 +259,10 @@ end
 
 function Waypoint:isHeadlandTurn()
 	return self.headlandTurn
+end
+
+function Waypoint:isHeadlandTransition()
+	return self.headlandTransition
 end
 
 function Waypoint:shouldUsePathfinderToNextWaypoint()
