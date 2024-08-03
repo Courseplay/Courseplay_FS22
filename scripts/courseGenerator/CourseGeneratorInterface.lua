@@ -52,16 +52,35 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     context:setIslandHeadlands(settings.nIslandHeadlands:getValue())
 
     context:log()
-    local status
-    status, CourseGeneratorInterface.generatedCourse = xpcall(
-            function()
-                return CourseGenerator.FieldworkCourse(context)
-            end,
-            function(err)
-                printCallstack();
-                return err
-            end
-    )
+
+    local status, numberOfHeadlands
+    if settings.narrowField:getValue() then
+        -- two sided must start on headland
+        context:setHeadlandFirst(true)
+        status, CourseGeneratorInterface.generatedCourse = xpcall(
+                function()
+                    return CourseGenerator.FieldworkCourseTwoSided(context)
+                end,
+                function(err)
+                    printCallstack();
+                    return err
+                end
+        )
+        -- two sided always has the requested headlands
+        numberOfHeadlands = settings.numberOfHeadlands:getValue()
+    else
+        status, CourseGeneratorInterface.generatedCourse = xpcall(
+                function()
+                    return CourseGenerator.FieldworkCourse(context)
+                end,
+                function(err)
+                    printCallstack();
+                    return err
+                end
+        )
+        -- the actual number of headlands generated may be less than the requested
+        numberOfHeadlands = #CourseGeneratorInterface.generatedCourse:getHeadlands()
+    end
 
 
     -- return on exception or if the result is not usable
@@ -72,8 +91,8 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     CourseGeneratorInterface.logger:debug('Generated course: %d/%d headland/center waypoints',
             #CourseGeneratorInterface.generatedCourse:getHeadlandPath(), #CourseGeneratorInterface.generatedCourse:getCenterPath())
 
-    local course = Course.createFromGeneratedCourse(nil, CourseGeneratorInterface.generatedCourse, settings.workWidth:getValue(),
-			#CourseGeneratorInterface.generatedCourse:getHeadlands(), settings.multiTools:getValue())
+    local course = Course.createFromGeneratedCourse(nil, CourseGeneratorInterface.generatedCourse,
+            settings.workWidth:getValue(), numberOfHeadlands, settings.multiTools:getValue())
     course:setFieldPolygon(fieldPolygon)
     return true, course
 end

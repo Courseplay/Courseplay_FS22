@@ -38,7 +38,6 @@ function FieldworkContext:init(field, workingWidth, turningRadius, nHeadlands)
     self.errors = {}
     
     self.reverseCourse = false
-    self.narrowField = false
     self.spiralFromInside = false
 
 end
@@ -206,12 +205,6 @@ end
 ---@param reverseCourse boolean reverse the complete course, not sure how to do it when copy a course and reverse it afterwards.
 function FieldworkContext:setReverseCourse(reverseCourse)
     self.reverseCourse = reverseCourse
-    return self
-end
-
----@param narrowField boolean will create a course with headlands on just two sides or also called "narrow field"
-function FieldworkContext:setNarrowField(narrowField)
-    self.narrowField = narrowField
     return self
 end
 

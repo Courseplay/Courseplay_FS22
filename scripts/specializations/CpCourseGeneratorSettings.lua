@@ -253,7 +253,13 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 function CpCourseGeneratorSettings:hasHeadlandsSelected()
     local spec = self.spec_cpCourseGeneratorSettings
-    return spec.numberOfHeadlands:getValue()>0
+    return spec.numberOfHeadlands:getValue() > 0
+end
+
+function CpCourseGeneratorSettings:canStartOnRows()
+    local spec = self.spec_cpCourseGeneratorSettings
+    -- start on rows does not work for narrow field patterns
+    return spec.numberOfHeadlands:getValue() > 0 and not spec.narrowField:getValue()
 end
 
 --- Only show the work width, if the bale finder can't be started.
