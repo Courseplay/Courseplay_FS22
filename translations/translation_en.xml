@@ -332,6 +332,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="The field edge wich is nearest to the field marker will be used to determin the course of the lines."/>
     <text name="CP_vehicle_courseGeneratorSetting_reverse_title" text="Reverse course"/>
     <text name="CP_vehicle_courseGeneratorSetting_reverse_tooltip" text="Reverse course tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Narrow field"/>
+    <text name="CP_vehicle_courseGeneratorSetting_narrowField_tooltip" text="Generates the headland only at the short edges of the field."/>
     <!---->
     <!--Vine course generator settings-->
     <!---->

@@ -332,6 +332,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="Die Feldkante die am nächsten am Feldmarker wird verwendet um den Verlauf der Bahnen zu bestimmen."/>
     <text name="CP_vehicle_courseGeneratorSetting_reverse_title" text="Kurs umdrehen"/>
     <text name="CP_vehicle_courseGeneratorSetting_reverse_tooltip" text="Kurs umdrehen tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Schmales Feld"/>
+    <text name="CP_vehicle_courseGeneratorSetting_narrowField_tooltip" text="Generiert das Vorgewende nur an den schmalen Kanten des Felds."/>
     <!---->
     <!--Vine course generator settings-->
     <!---->
