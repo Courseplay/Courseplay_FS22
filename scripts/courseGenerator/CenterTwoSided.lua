@@ -3,7 +3,7 @@
 --- With that pattern, we always use baseline edges, that is, the rows following the
 --- field edge (instead of always being straight) and do not allow multiple blocks.
 
----@class CenterTwoSided : CourseGenerator.Center
+---@class CenterTwoSided : Center
 local CenterTwoSided = CpObject(CourseGenerator.Center)
 
 ---@param context CourseGenerator.FieldworkContext

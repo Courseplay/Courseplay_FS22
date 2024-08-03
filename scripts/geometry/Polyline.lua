@@ -379,17 +379,11 @@ function Polyline:splitEdges(maximumLength)
         local exitEdge = CourseGenerator.LineSegment.fromVectors(self:at(i), self:at(i + 1))
         local totalLength = exitEdge:getLength()
         if totalLength > maximumLength then
-            -- edge too long, will replace it with nEdges number of shorter edges
-            local nEdges = math.floor(totalLength / maximumLength)
-            -- the length of each shorter edge is
-            local length = totalLength / nEdges
-            -- adjust original edge's length
-            exitEdge:setLength(length)
-            -- add new edges
-            local e = exitEdge:clone()
-            for _ = 1, nEdges - 1 do
-                e:setBase(e:getEnd())
-                table.insert(self, i + 1, Vertex.fromVector(e:getBase()))
+            local length = maximumLength
+            while length < totalLength do
+                exitEdge:setLength(length)
+                table.insert(self, i + 1, Vertex.fromVector(exitEdge:getEnd(), i + 1))
+                length = length + math.min(totalLength - length, maximumLength)
                 i = i + 1
             end
         end
