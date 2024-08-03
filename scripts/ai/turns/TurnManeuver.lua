@@ -327,6 +327,8 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 				dzMax, workWidth, spaceNeededOnFieldForTurn, distanceToFieldEdge, ixBeforeEndingTurnSection, canReverse)
 		self.course = self:adjustCourseToFitField(self.course, dBack, ixBeforeEndingTurnSection, endingTurnLength)
 	else
+		self.course:setUseTightTurnOffsetForLastWaypoints(
+				g_vehicleConfigurations:getRecursively(vehicle, 'tightTurnOffsetDistanceInTurns') or 10)
 		endingTurnLength = self.turnContext:appendEndingTurnCourse(self.course, steeringLength, true)
 	end
 	-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
