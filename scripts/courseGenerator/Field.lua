@@ -43,7 +43,6 @@ function Field.loadSavedFields(fileName)
         local fieldNum = string.match(line, '<field fieldNum="(%d+)"')
         if not fieldNum then
             fieldNum = string.match(line, '<customField name="CP%-(%d+)"')
-            print(fieldNum)
         end
         if fieldNum then
             -- a new field started
