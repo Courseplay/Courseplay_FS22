@@ -1117,6 +1117,14 @@
 			<Text language="de"><![CDATA[Kurs umdrehen tt.]]></Text>
 			<Text language="en"><![CDATA[Reverse course tt.]]></Text>
 		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_narrowField_title">
+			<Text language="de"><![CDATA[Schmales Feld]]></Text>
+			<Text language="en"><![CDATA[Narrow field]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_narrowField_tooltip">
+			<Text language="de"><![CDATA[Generiert das Vorgewende nur an den schmalen Kanten des Felds.]]></Text>
+			<Text language="en"><![CDATA[Generates the headland only at the short edges of the field.]]></Text>
+		</Translation>
 	</Category>
 	<Category name="Vine course generator settings">	
 		<Translation name="CP_vehicle_vineCourseGeneratorSetting_title">
