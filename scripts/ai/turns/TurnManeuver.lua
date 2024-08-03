@@ -315,10 +315,11 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 	local spaceNeededOnFieldForTurn = dzMax + workWidth / 2
 	distanceToFieldEdge = distanceToFieldEdge or 500  -- if not given, assume we have a lot of space
 
-	local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.course, steeringLength, true)
 	-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
 	self.course:setUseTightTurnOffsetForLastWaypoints(
 			g_vehicleConfigurations:getRecursively(vehicle, 'tightTurnOffsetDistanceInTurns') or 10)
+
+	local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.course, steeringLength, true)
 	local ixBeforeEndingTurnSection = self.course:getNumberOfWaypoints()
 	-- and once again, if there is an ending course, keep adjusting the tight turn offset
 
