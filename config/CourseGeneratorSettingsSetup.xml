@@ -60,7 +60,7 @@
 		</Setting>
 		<Setting classType="AIParameterBooleanSetting" name="evenRowWidth" defaultBool="false"/>
 		<Setting classType="AIParameterBooleanSetting" name="useBaseLineEdge" defaultBool="false" isExpertModeOnly="true"/>
-		<!--For Testing only--><Setting classType="AIParameterBooleanSetting" name="reverse" defaultBool="false"/>
+		<!--For Testing only:<Setting classType="AIParameterBooleanSetting" name="reverse" defaultBool="false"/>-->
 		<Setting classType="AIParameterBooleanSetting" name="autoRowAngle" defaultBool="true">
 			<Texts>
 				<Text>manual</Text>
