@@ -32,7 +32,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
         -- TODO: auto fill clockwise from self:isPipeOnLeftSide(vehicle)?
         context:setRowPattern(CourseGenerator.RowPatternLands(settings.centerClockwise:getValue(), settings.rowsPerLand:getValue()))
     elseif rowPatternNumber == CourseGenerator.RowPattern.RACETRACK then
-        context:setRowPattern(CourseGenerator.RowPatternRacetrack(settings.rowsToSkip:getValue()))
+        context:setRowPattern(CourseGenerator.RowPatternRacetrack(settings.numberOfCircles:getValue()))
     end
 
     context:setStartLocation(startPosition.x, -startPosition.z)
