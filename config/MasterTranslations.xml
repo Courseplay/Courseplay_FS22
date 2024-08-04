@@ -1039,7 +1039,7 @@
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title">
 			<Text language="de"><![CDATA[Startrichtung]]></Text>
-			<Text language="en"><![CDATA[Up/down row direction]]></Text>
+			<Text language="en"><![CDATA[Direction of rows]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip">
 			<Text language="de"><![CDATA[Richtung, in der die Bahnen gefahren werden sollen.]]></Text>
@@ -1055,11 +1055,11 @@
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title">
 			<Text language="de"><![CDATA[Richtungswinkel der Bahnen]]></Text>
-			<Text language="en"><![CDATA[Up/down row angle]]></Text>
+			<Text language="en"><![CDATA[Center row angle]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip">
 			<Text language="de"><![CDATA[Winkel der Bahnen (0 ist Norden), wenn Einstellung auf Manuell gesetzt ist. Wert: 0 - 175 Schritte: 5]]></Text>
-			<Text language="en"><![CDATA[Angle of up/down rows (0° is North) when manual. Value: 0 - 175 Steps: 5]]></Text>
+			<Text language="en"><![CDATA[Angle of center rows (0° is North) when manual. Value: 0 - 175 Steps: 5]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_bypassIslands_title">
 			<Text language="de"><![CDATA[Inselumfahrung]]></Text>
