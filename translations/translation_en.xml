@@ -312,12 +312,12 @@
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Number of round corners, starting with the first headland."/>
     <text name="CP_vehicle_courseGeneratorSetting_turningRadius_title" text="Corner radius"/>
     <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Radius of round corners, based on the turning radius of the vehicle. Value: 5 - 15"/>
-    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Up/down row direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Direction of rows"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Direction of the rows in the center of the field."/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="automatic"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_manual" text="manual"/>
-    <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Up/down row angle"/>
-    <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Angle of up/down rows (0° is North) when manual. Value: 0 - 175 Steps: 5"/>
+    <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Center row angle"/>
+    <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Angle of center rows (0° is North) when manual. Value: 0 - 175 Steps: 5"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="Bypass Islands on the field or ignore them."/>
     <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title" text="Island headlands"/>
