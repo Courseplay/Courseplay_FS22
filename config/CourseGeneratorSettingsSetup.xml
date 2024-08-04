@@ -25,7 +25,7 @@
 	<SettingSubTitle title="headland" isVisible="hasHeadlandsSelected">	
 		<Setting classType="AIParameterBooleanSetting" name="sharpenCorners" defaultBool="false"/>
 		<Setting classType="AIParameterSettingList" name="headlandsWithRoundCorners" min="0" max="50" default="1"/>
-		<Setting classType="AIParameterSettingList" name="turningRadius" min="5" max="30" setDefault="setDefaultTurningRadius"/>
+		<Setting classType="AIParameterSettingList" name="turningRadius" min="5" max="15" setDefault="setDefaultTurningRadius"/>
 		<Setting classType="AIParameterBooleanSetting" name="headlandClockwise" defaultBool="true">
 			<Texts>
 				<Text>counterclockwise</Text>
