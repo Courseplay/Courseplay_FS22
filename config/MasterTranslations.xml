@@ -978,7 +978,7 @@
 			<Text language="en"><![CDATA[Field center]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip">
-			<Text language="de"><![CDATA[Auswhal wie die Mitte des Feldes abgefahren werden soll. Hoch/runter, spiralförmig, Beete, kreisförmig.]]></Text>
+			<Text language="de"><![CDATA[Auswahl wie die Mitte des Feldes abgefahren werden soll. Hoch/runter, spiralförmig, Beete, kreisförmig.]]></Text>
 			<Text language="en"><![CDATA[Select how the center of the field should be driven. Up/down, spiral, lands or circular.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_centerMode_up_down">
@@ -1019,7 +1019,7 @@
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip">
 			<Text language="de"><![CDATA[Wenn aktiv, werden die Ecken des Feldes als scharfe Ecken generiert.]]></Text>
-			<Text language="en"><![CDATA[If aktiv, corners of the field will be generated as sharp corners.]]></Text>
+			<Text language="en"><![CDATA[On non-rounded headlands, add a headland turn maneuver where the headland direction changes abruptly.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title">
 			<Text language="de"><![CDATA[Anzahl runde Ecken]]></Text>
@@ -1027,7 +1027,7 @@
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip">
 			<Text language="de"><![CDATA[Anzahl runde Ecken, beginnend mit dem ersten Vorgewende.]]></Text>
-			<Text language="en"><![CDATA[Number of round corners, starting with the first headland.]]></Text>
+			<Text language="en"><![CDATA[Number of headlands with round corners, starting with the outermost headland.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_turningRadius_title">
 			<Text language="de"><![CDATA[Eckenradius]]></Text>
@@ -1055,11 +1055,11 @@
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title">
 			<Text language="de"><![CDATA[Richtungswinkel der Bahnen]]></Text>
-			<Text language="en"><![CDATA[Center row angle]]></Text>
+			<Text language="en"><![CDATA[Center rows direction]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip">
 			<Text language="de"><![CDATA[Winkel der Bahnen (0 ist Norden), wenn Einstellung auf Manuell gesetzt ist. Wert: 0 - 175 Schritte: 5]]></Text>
-			<Text language="en"><![CDATA[Angle of center rows (0° is North) when manual. Value: 0 - 175 Steps: 5]]></Text>
+			<Text language="en"><![CDATA[Direction of center rows (0° is North) when manual. Value: 0 - 175 Steps: 5]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_bypassIslands_title">
 			<Text language="de"><![CDATA[Inselumfahrung]]></Text>
@@ -1067,7 +1067,7 @@
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip">
 			<Text language="de"><![CDATA[Inseln auf dem Feld umfahren oder ignorieren.]]></Text>
-			<Text language="en"><![CDATA[Bypass Islands on the field or ignore them.]]></Text>
+			<Text language="en"><![CDATA[Bypass islands on the field or ignore them.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title">
 			<Text language="de"><![CDATA[Insel Vorgewende]]></Text>
@@ -1075,7 +1075,7 @@
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip">
 			<Text language="de"><![CDATA[Anzahl Vorgewende bei Inseln. Wert: 1 - 10]]></Text>
-			<Text language="en"><![CDATA[Amount of headlands for islands. Value: 1 - 10]]></Text>
+			<Text language="en"><![CDATA[Number of headlands around islands. Value: 1 - 10]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title">
 			<Text language="de"><![CDATA[Starte auf]]></Text>
@@ -1103,11 +1103,11 @@
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title">
 			<Text language="de"><![CDATA[Bahnen Form anhand Feldkante]]></Text>
-			<Text language="en"><![CDATA[Line from based on field edge]]></Text>
+			<Text language="en"><![CDATA[Rows follow field edge curve]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip">
 			<Text language="de"><![CDATA[Die Feldkante die am nächsten am Feldmarker wird verwendet um den Verlauf der Bahnen zu bestimmen.]]></Text>
-			<Text language="en"><![CDATA[The field edge wich is nearest to the field marker will be used to determin the course of the lines.]]></Text>
+			<Text language="en"><![CDATA[The rows follow the curvature of the field edge nearest to the field marker.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_reverse_title">
 			<Text language="de"><![CDATA[Kurs umdrehen]]></Text>
