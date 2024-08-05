@@ -307,29 +307,29 @@
     <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="Even row with"/>
     <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Reduces the working width to achieve an even distribution across all lanes."/>
     <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title" text="Sharpen headland corners"/>
-    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="If aktiv, corners of the field will be generated as sharp corners."/>
+    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="On non-rounded headlands, add a headland turn maneuver where the headland direction changes abruptly."/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Number of round corners"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Number of round corners, starting with the first headland."/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Number of headlands with round corners, starting with the outermost headland."/>
     <text name="CP_vehicle_courseGeneratorSetting_turningRadius_title" text="Corner radius"/>
     <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Radius of round corners, based on the turning radius of the vehicle. Value: 5 - 15"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Direction of rows"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Direction of the rows in the center of the field."/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="automatic"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_manual" text="manual"/>
-    <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Center row angle"/>
-    <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Angle of center rows (0° is North) when manual. Value: 0 - 175 Steps: 5"/>
+    <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Center rows direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Direction of center rows (0° is North) when manual. Value: 0 - 175 Steps: 5"/>
     <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass"/>
-    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="Bypass Islands on the field or ignore them."/>
+    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="Bypass islands on the field or ignore them."/>
     <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title" text="Island headlands"/>
-    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Amount of headlands for islands. Value: 1 - 10"/>
+    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Number of headlands around islands. Value: 1 - 10"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Start work on"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Start working on the headland or center of the field"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="headland"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="center"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Multiple tools"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Number of vehicles on the same course."/>
-    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Line from based on field edge"/>
-    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="The field edge wich is nearest to the field marker will be used to determin the course of the lines."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Rows follow field edge curve"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="The rows follow the curvature of the field edge nearest to the field marker."/>
     <text name="CP_vehicle_courseGeneratorSetting_reverse_title" text="Reverse course"/>
     <text name="CP_vehicle_courseGeneratorSetting_reverse_tooltip" text="Reverse course tt."/>
     <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Narrow field"/>
