@@ -437,10 +437,6 @@ function Course:switchingToForwardAt(ix)
     return self:isReverseAt(ix) and not self:isReverseAt(ix + 1)
 end
 
-function Course:isUnloadAt(ix)
-    return self.waypoints[ix].unload
-end
-
 function Course:getHeadlandNumber(ix)
     return self.waypoints[ix].headlandNumber
 end
@@ -700,17 +696,6 @@ function Course:getDistanceToFirstUpDownRowWaypoint(ix)
     return math.huge, nil
 end
 
---- Is any of the waypoints around ix an unload point?
----@param ix number waypoint index to look around
----@param forward number look forward this number of waypoints when searching
----@param backward number look back this number of waypoints when searching
----@return boolean true if any of the waypoints are unload points and the index of the next unload point
-function Course:hasUnloadPointAround(ix, forward, backward)
-    return self:hasWaypointWithPropertyAround(ix, forward, backward, function(p)
-        return p.unload
-    end)
-end
-
 function Course:hasWaypointWithPropertyAround(ix, forward, backward, hasProperty)
     for i = math.max(ix - backward + 1, 1), math.min(ix + forward - 1, #self.waypoints) do
         if hasProperty(self.waypoints[i]) then
@@ -719,16 +704,6 @@ function Course:hasWaypointWithPropertyAround(ix, forward, backward, hasProperty
         end
     end
     return false
-end
-
---- Is there an unload waypoint within distance around ix?
----@param ix number waypoint index to look around
----@param distance number distance in meters to look around the waypoint
----@return boolean true if any of the waypoints are unload points and the index of the next unload point
-function Course:hasUnloadPointWithinDistance(ix, distance)
-    return self:hasWaypointWithPropertyWithinDistance(ix, distance, function(p)
-        return p.unload
-    end)
 end
 
 --- Is there an turn (start or end) around ix?

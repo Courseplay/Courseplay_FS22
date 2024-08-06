@@ -147,12 +147,6 @@ function WaypointAttributes:getAtBoundaryId()
     return self.atBoundaryId
 end
 
---- For the first and last waypoints of a row, the angle between the row and the headland
----@return number | nil
-function WaypointAttributes:getHeadlandAngle()
-    return self.headlandAngle
-end
-
 ------------------------------------------------------------------------------------------------------------------------
 --- Setters
 ---------------------------------------------------------------------------------------------------------------------------
@@ -230,11 +224,6 @@ end
 ---@param boundaryId string
 function WaypointAttributes:setAtBoundaryId(boundaryId)
     self.atBoundaryId = boundaryId
-end
-
----@param a number radians
-function WaypointAttributes:setHeadlandAngle(a)
-    self.headlandAngle = a
 end
 
 ---@return number number of the block this waypoint is in
