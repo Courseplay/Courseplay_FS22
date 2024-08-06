@@ -90,7 +90,6 @@ function Waypoint:init(wp)
 	self.headlandNumber = wp.headlandNumber
 	self.rowNumber = wp.rowNumber
 	self.ridgeMarker = wp.ridgeMarker
-	self.unload = wp.unload
 	self.headlandHeightForTurn = wp.headlandHeightForTurn
 	self.useTightTurnOffset = wp.useTightTurnOffset
 	self.turnControls = table.copy(wp.turnControls)
