@@ -75,39 +75,33 @@ function Waypoint:setXmlValue(xmlFile, baseKey, i)
 	self.attributes:setXmlValue(xmlFile, key)
 end
 
+function Waypoint:writeStream(streamId)
+	streamWriteFloat32(streamId, self.x)
+	streamWriteFloat32(streamId, self.z)
+	streamWriteFloat32(streamId, self.y)
+	streamWriteBool(streamId, self.rev)
+	self.attributes:writeStream(streamId)
+end
+
 --- Set from a saved waypoint in a xml file.
-function Waypoint.initFromXmlFile(xmlFile, key)
+function Waypoint.createFromXmlFile(xmlFile, key)
 	local waypoint = Waypoint({})
 	waypoint.x, waypoint.y, waypoint.z = xmlFile:getValue(key .. '#position')
 	waypoint.rev = xmlFile:getValue(key .. '#rev')
-	waypoint.attributes = CourseGenerator.WaypointAttributes.initFromXmlFile(xmlFile, key)
+	waypoint.attributes = CourseGenerator.WaypointAttributes.createFromXmlFile(xmlFile, key)
 	return waypoint
 end
 
---- Gets the data to saves this waypoint in a xml file.
---- New attributes can be added at the bottom and shouldn't break old courses.
---- To remove attributes, they should be filled with a zero otherwise old course might be broken.
---- Every attribute needs to be a number.
-function Waypoint:getXmlString()
-	local v = {
-		MathUtil.round(self.x,2),
-		MathUtil.round(self.z,2),
-		self.rowEnd or "-",
-		self.rowStart or "-",
-		self.isConnectingPath or "-",
-		self.headlandNumber or "-",
-		self.rowNumber or "-",
-		self.ridgeMarker or "-",
-		self.rev or "-",
-		self.headlandTurn or "-",
-		self.usePathfinderToNextWaypoint or "-",
-		self.usePathfinderToThisWaypoint or "-",
-		self.headlandTransition or "-"
-	}
-	return CpUtil.getXmlVectorString(v)
+function Waypoint.createFromStream(streamId)
+	local waypoint = Waypoint({})
+	waypoint.x = streamReadFloat32(streamId)
+	waypoint.z = streamReadFloat32(streamId)
+	waypoint.y = streamReadFloat32(streamId)
+	waypoint.rev = streamReadBool(streamId)
+	waypoint.attributes.createFromStream(streamId)
 end
 
---- Read legacy format (with custom serialization instead of XML schema)
+--- Read legacy format (which used custom serialization instead of XML schema)
 function Waypoint.initFromXmlFileLegacyFormat(data)
 	local waypoint = Waypoint({})
 	waypoint.x = data[1]
