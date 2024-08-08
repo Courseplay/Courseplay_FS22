@@ -281,9 +281,13 @@ function WaypointAttributes:setXmlValue(xmlFile, key)
     xmlFile:setValue(key .. '#rowStart', self.rowStart)
     xmlFile:setValue(key .. '#isConnectingPath', self.isConnectingPath)
     xmlFile:setValue(key .. '#headlandNumber', self.headlandNumber)
-    xmlFile:setValue(key .. '#rowNumber', self.rowNumber)
-    xmlFile:setValue(key .. '#leftSideWorked', self.leftSideWorked)
-    xmlFile:setValue(key .. '#rightSideWorked', self.rightSideWorked)
+    if self.rowStart then
+        -- only write these at the start of the row to reduce the XML file size, as these are the same for
+        -- all rows of the waypoint
+        xmlFile:setValue(key .. '#rowNumber', self.rowNumber)
+        xmlFile:setValue(key .. '#leftSideWorked', self.leftSideWorked)
+        xmlFile:setValue(key .. '#rightSideWorked', self.rightSideWorked)
+    end
     xmlFile:setValue(key .. '#headlandTurn', self.headlandTurn)
     xmlFile:setValue(key .. '#headlandTransition', self.headlandTransition)
     xmlFile:setValue(key .. '#usePathfinderToNextWaypoint', self.usePathfinderToNextWaypoint)
