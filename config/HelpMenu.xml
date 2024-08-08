@@ -27,8 +27,8 @@
 				<text text="$l10n_CP_help_page_JobMenuExtras_text"/>
 			</paragraph>
 		</page>
-		<!--Courseplay Generator-->
-		<page title="$l10n_CP_help_page_courseGenerator_title">
+		<!--Courseplay Generator Basic-->
+		<page title="$l10n_CP_help_page_courseGeneratorBasic_title">
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorBase_text"/>
 				<image filename="img/helpmenu/generatorbasehelp.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
@@ -45,7 +45,35 @@
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorExtras_text"/>
-			</paragraph>	
+			</paragraph>
+		</page>
+		<!--Courseplay Generator Headland-->
+		<page title="$l10n_CP_help_page_courseGeneratorHeadland_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_courseGeneratorBase_text"/>
+				<image filename="img/helpmenu/generatorbasehelp.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
+			</paragraph>
+		</page>
+		<!--Courseplay Generator Center-->
+		<page title="$l10n_CP_help_page_courseGeneratorCenter_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_courseGeneratorBase_text"/>
+				<image filename="img/helpmenu/generatorbasehelp.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
+			</paragraph>
+		</page>
+		<!--Courseplay Generator Island-->
+		<page title="$l10n_CP_help_page_courseGeneratorIsland_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_courseGeneratorBase_text"/>
+				<image filename="img/helpmenu/generatorbasehelp.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
+			</paragraph>
+		</page>
+		<!--Courseplay Generator Expert-->
+		<page title="$l10n_CP_help_page_courseGeneratorExpert_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_courseGeneratorBase_text"/>
+				<image filename="img/helpmenu/generatorbasehelp.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
+			</paragraph>
 		</page>
 		<!--Courseplay courseManager-->
         <page title="$l10n_CP_help_page_courseManager_title">

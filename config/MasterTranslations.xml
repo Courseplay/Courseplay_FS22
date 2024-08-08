@@ -1925,9 +1925,9 @@ Now it's possible to start the driver directly from the menu. The Giants helper 
 Alternatively you can also start the driver from the HUD if you are close to the field with the vehicle or using the AutoDrive mod to deliver the CP job close to the field.
 ]]></Text>
 		</Translation>
-		<Translation name="CP_help_page_courseGenerator_title">
-			<Text language="de"><![CDATA[Kursgenerator]]></Text>
-			<Text language="en"><![CDATA[Course generator]]></Text>
+		<Translation name="CP_help_page_courseGeneratorBasic_title">
+			<Text language="de"><![CDATA[Kursgenerator Basis]]></Text>
+			<Text language="en"><![CDATA[Course generator basics]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_courseGeneratorBase_text">
 			<Text language="de"><![CDATA[
@@ -2019,6 +2019,22 @@ Field Margin explanation:
 Positive values reduce field size to add a buffer around the worked area in case you have obstacles near the field border.
 Negative values enlarge worked area beyond the field boundary to cover up field borders that are not perfectly detected.
 ]]></Text>
+		</Translation>
+		<Translation name="CP_help_page_courseGeneratorHeadland_title">
+			<Text language="de"><![CDATA[Kursgenerator Vorgewende]]></Text>
+			<Text language="en"><![CDATA[Course generator headland]]></Text>
+		</Translation>
+		<Translation name="CP_help_page_courseGeneratorCenter_title">
+			<Text language="de"><![CDATA[Kursgenerator Feldmitte]]></Text>
+			<Text language="en"><![CDATA[Course generator center]]></Text>
+		</Translation>
+		<Translation name="CP_help_page_courseGeneratorIsland_title">
+			<Text language="de"><![CDATA[Kursgenerator Insel]]></Text>
+			<Text language="en"><![CDATA[Course generator island]]></Text>
+		</Translation>
+		<Translation name="CP_help_page_courseGeneratorExpert_title">
+			<Text language="de"><![CDATA[Kursgenerator Expert]]></Text>
+			<Text language="en"><![CDATA[Course generator expert]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_courseManager_title">
 			<Text language="de"><![CDATA[Kursmanager]]></Text>
