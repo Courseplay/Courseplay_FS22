@@ -556,7 +556,7 @@ Courseplay 允許您生成具有附加功能的任務路線，例如：地頭。
 現在可以直接從菜單中啟動車輛了。 助手將駕駛到目標位置，到了目的地CP工作將自動接管。
 你也可以從迷你HUD啟動車輛，如果你駕駛的車輛離田地很近，或者使用AutoDrive mod到達離田地很近的地方，CP作業將會自動接管。
 "/>
-    <text name="CP_help_page_courseGenerator_title" text="工作路線建立"/>
+    <text name="CP_help_page_courseGeneratorBasic_title" text="Course generator basics"/>
     <text name="CP_help_page_courseGeneratorBase_text" text="
 每個田地作業路線都由路線建立生成。這是一個強大的工具，它允許您根據自己的需要訂製生成的工作任務路線。
 如果你是新手，你應該從改變地頭數量開始。
@@ -597,6 +597,10 @@ Courseplay 允許您生成具有附加功能的任務路線，例如：地頭。
 正值會減小田地大小以在工作區域周圍添加緩衝區，以防您田地邊界附近有障礙物。 
 負值將工作區域擴大到田地邊界之外，以覆蓋未完全檢測到的田地邊界。 
 "/>
+    <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
+    <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
+    <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>
+    <text name="CP_help_page_courseGeneratorExpert_title" text="Course generator expert"/>
     <text name="CP_help_page_courseManager_title" text="任務管理"/>
     <text name="CP_help_page_courseManagerBase_text" text="
 任務管理器允許您儲存任務並允許您稍後再次載入儲存的任務。 

@@ -555,7 +555,7 @@ CP: Saha çalışması işi oluşturuyorsanız kurs oluşturucu ayarlarına eri�
 Artık sürücüyü doğrudan menüden başlatmak mümkün. Devler yardımcısı hedef pozisyona gider ve oradan CP işi otomatik olarak devralır.
 Alternatif olarak, araçla alana yakınsanız veya CP işini alana yakın bir yere teslim etmek için AutoDrive modunu kullanıyorsanız, sürücüyü HUD'den de başlatabilirsiniz.
 "/>
-    <text name="CP_help_page_courseGenerator_title" text="Course generator"/>
+    <text name="CP_help_page_courseGeneratorBasic_title" text="Course generator basics"/>
     <text name="CP_help_page_courseGeneratorBase_text" text="
 Her saha çalışması kursu, kurs oluşturucu tarafından oluşturulur. Bu, oluşturulan kursu ihtiyaçlarınıza göre özelleştirmenizi sağlayan güçlü bir araçtır.
 Bu konuda yeniyseniz, muhtemelen yalnızca arazi miktarı ayarını değiştirerek başlamalısınız.
@@ -596,6 +596,10 @@ Alan Marjı açıklaması:
 Pozitif değerler, alan sınırının yakınında engeller olması durumunda çalışılan alanın etrafına bir arabellek eklemek için alan boyutunu küçültür.
 Negatif değerler, mükemmel algılanmayan alan sınırlarını örtmek için çalışma alanını alan sınırının ötesine genişletir.
 "/>
+    <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
+    <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
+    <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>
+    <text name="CP_help_page_courseGeneratorExpert_title" text="Course generator expert"/>
     <text name="CP_help_page_courseManager_title" text="Kurs yöneticisi"/>
     <text name="CP_help_page_courseManagerBase_text" text="
 Kurs yöneticisi, dersleri kaydetmenize ve kaydedilen dersi daha sonra tekrar yüklemenize olanak tanır.

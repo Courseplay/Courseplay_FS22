@@ -557,7 +557,7 @@ Jeśli tworzysz CP: Prace polowe, uzyskasz dostęp do ustawień generatora kurs�
 Teraz można wysłać kierowcę bezpośrednio z menu. Pomocnik Giantsa przejedzie do pozycji docelowej, a stamtąd CP automatycznie przejmie zadanie.
 Alternatywnie możesz również wysłać kierowcę z HUDa, jeśli jesteś blisko pola z pojazdem lub używając modu AutoDrive, aby dojechał blisko pola i CP mógł zacząć swoją pracę.
 "/>
-    <text name="CP_help_page_courseGenerator_title" text="Generator kursu"/>
+    <text name="CP_help_page_courseGeneratorBasic_title" text="Course generator basics"/>
     <text name="CP_help_page_courseGeneratorBase_text" text="
 Każdy kurs prac polowych jest generowany przez generator kursów. To potężne narzędzie, które pozwala dostosować wygenerowany kurs do własnych potrzeb.
 Jeśli jesteś w tym nowy, prawdopodobnie powinieneś zacząć od zmiany tylko ustawienia ilości uwroci.
@@ -598,6 +598,10 @@ Objaśnienie marginesu pola:
 Wartości dodatnie zmniejszają rozmiar pola, aby dodać bufor wokół obrabianego obszaru w przypadku napotkania przeszkód w pobliżu granicy pola.
 Wartości ujemne powiększają obrobioną powierzchnię poza granicę pola, aby zakryć granice pola, które nie są idealnie wykrywane.
 "/>
+    <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
+    <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
+    <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>
+    <text name="CP_help_page_courseGeneratorExpert_title" text="Course generator expert"/>
     <text name="CP_help_page_courseManager_title" text="Menadżer kursu"/>
     <text name="CP_help_page_courseManagerBase_text" text="
 Menadżer kursów umożliwia zapisywanie kursów i umożliwia późniejsze ponowne wczytanie zapisanego kursu.

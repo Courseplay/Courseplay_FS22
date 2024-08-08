@@ -561,7 +561,7 @@ Mit erstelltem Kurs ist es jetzt möglich, den Fahrer über &quot;Job starten&qu
 Der Giants-Helfer wird zu dem Zielpunkt fahren und dann automatisch an CP übergeben.
 Alternativ kannst du den Fahrer auch über das HUD direkt am Kurs starten, oder mit Hilfe von AutoDrive dein Gespann zum Feld fahren lassen und es wird dann an CP übergeben.
 "/>
-    <text name="CP_help_page_courseGenerator_title" text="Kursgenerator"/>
+    <text name="CP_help_page_courseGeneratorBasic_title" text="Kursgenerator Basis"/>
     <text name="CP_help_page_courseGeneratorBase_text" text="
 Das mit Abstand mächtigste und wichtigste Tool für die Feldarbeit ist der Kursgenerator. Dieser erlaubt es dir, die Kurse für deine Feldarbeit zu generieren.
 Wenn du das erste Mal mit dem Kursgenerator arbeitest, solltest du erst einmal anfangen, nur mit dem Vorgewende zu experimentieren.
@@ -603,6 +603,10 @@ Feldgrenze:
 Positive Werte reduzieren den Arbeitsbereich, um einen Puffer zum Feldrand zu generieren. Das ist nützlich, sollten sich einige Objekte zu dicht an der Feldkante befinden.
 Negative Werte vergrößern den Arbeitsbereich über das Feld hinaus, um eine größere Abdeckung zu bekommen, z.B. wenn der Feldrand nicht genau genug erkannt wurde.
 "/>
+    <text name="CP_help_page_courseGeneratorHeadland_title" text="Kursgenerator Vorgewende"/>
+    <text name="CP_help_page_courseGeneratorCenter_title" text="Kursgenerator Feldmitte"/>
+    <text name="CP_help_page_courseGeneratorIsland_title" text="Kursgenerator Insel"/>
+    <text name="CP_help_page_courseGeneratorExpert_title" text="Kursgenerator Expert"/>
     <text name="CP_help_page_courseManager_title" text="Kursmanager"/>
     <text name="CP_help_page_courseManagerBase_text" text="
 Der Kursmanager erlaubt es dir, Kurse zu speichern und später wieder zu laden.

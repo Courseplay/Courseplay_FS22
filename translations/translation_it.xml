@@ -557,7 +557,7 @@ Se stai creando un lavoro CP: Lavoro sul campo, avrai accesso alle impostazioni 
 Ora è possibile avviare il lavoro direttamente dal menu. L'aiutante dei Giants guiderà verso la posizione di destinazione e da lì il lavoro CP prende automaticamente il sopravvento.
 In alternativa, puoi anche avviare il lavoro dall'HUD se sei vicino al campo con il veicolo o utilizzando la modalità AutoDrive per consegnare il lavoro CP vicino al campo.
 "/>
-    <text name="CP_help_page_courseGenerator_title" text="Generatore percosi"/>
+    <text name="CP_help_page_courseGeneratorBasic_title" text="Course generator basics"/>
     <text name="CP_help_page_courseGeneratorBase_text" text="
 Ogni percorso sul campo è generato dal generatore di percorso. Questo è uno strumento potente, che ti consente di personalizzare il percorso generato in base alle tue esigenze.
 Se non conosci questo, probabilmente dovresti iniziare modificando solo l'impostazione della quantità di fine campo.
@@ -598,6 +598,10 @@ Spiegazione del margine di campo:
 I valori positivi riducono le dimensioni del campo per aggiungere un buffer intorno all'area lavorata in caso di ostacoli vicino al bordo del campo.
 I valori negativi ingrandiscono l'area lavorata oltre il limite del campo per coprire i bordi del campo che non vengono rilevati perfettamente.
 "/>
+    <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
+    <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
+    <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>
+    <text name="CP_help_page_courseGeneratorExpert_title" text="Course generator expert"/>
     <text name="CP_help_page_courseManager_title" text="Gestione percorsi"/>
     <text name="CP_help_page_courseManagerBase_text" text="
 Il gestore del percorso consente di salvare i corsi e di caricare nuovamente il corso salvato in un secondo momento.

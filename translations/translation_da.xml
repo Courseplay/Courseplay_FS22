@@ -556,7 +556,7 @@ Hvis du opretter et CP: markarbejde, får du adgang til rutegeneratorens indstil
 Nu er det muligt at starte hjølperen direkte fra menuen. Giants hjælperen kører til målpositionen, og derfra overtager CP-jobbet automatisk.
 Alternativt kan du også starte hjælperen fra HUD'en, hvis du er tæt på marken med køretøjet eller bruge AutoDrive-mod til at levere CP-jobbet tæt på marken.
 "/>
-    <text name="CP_help_page_courseGenerator_title" text="Course generator"/>
+    <text name="CP_help_page_courseGeneratorBasic_title" text="Course generator basics"/>
     <text name="CP_help_page_courseGeneratorBase_text" text="
 Hvert rute genereres af rutegeneratoren. Dette er et mægtigt værktøj, som giver dig mulighed for at tilpasse den genererede rute efter dine behov.
 Hvis du er ny til dette, bør du nok starte med kun at ændre indstillingen for foragermængde.
@@ -597,6 +597,10 @@ Markgrænse forklaring:
 Positive værdier reducerer markstørrelsen for at tilføje en buffer omkring det bearbejdede område, hvis du har forhindringer nær markgrænsen.
 Negative værdier forstørrer det bearbejdede område ud over markgrænsen for at dække over markgrænser, der ikke er perfekt detekteret.
 "/>
+    <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
+    <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
+    <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>
+    <text name="CP_help_page_courseGeneratorExpert_title" text="Course generator expert"/>
     <text name="CP_help_page_courseManager_title" text="Rute manager"/>
     <text name="CP_help_page_courseManagerBase_text" text="
 Rutegeneratoren giver dig mulighed for at gemme ruter og giver dig mulighed for at indlæse den gemte rute senere igen.

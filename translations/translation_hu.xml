@@ -557,7 +557,7 @@ Ha egy  CP: táblamunkát hozol létre, hozzáférést nyersz az útvonal gener�
 Mostmár lehetséges a sofőr indítása közvetlenül a menüből. A beépített segítő a célpozícióra fog vezetni és onnan a CP munka automatikusan átveszi az irányítást.
 Alternatív megoldásként a sofőrt a kijelzőről is indíthatod, ha a járművel közel vagy a táblához, vagy AutoDrive modot használsz, hogy a CP munkát közel vidd a táblához.
 "/>
-    <text name="CP_help_page_courseGenerator_title" text="Útvonal generátor"/>
+    <text name="CP_help_page_courseGeneratorBasic_title" text="Course generator basics"/>
     <text name="CP_help_page_courseGeneratorBase_text" text="
 Minden táblamunka útvonalat az útvonal generátor hoz létre. Ez egy remek eszköz, ami megengedi a generált útvonalak igény szerinti testreszabását.
 Ha még nem csináltál ilyet, kezdd azzal, hogy csak a fordulósávok számát módosítod.
@@ -598,6 +598,10 @@ Táblahatár magyarázata:
 A pozitív értékek csökkentik a tábla méretét és egy biztonsági sávot hoznak létre arraz az esetre, ha akadályok lennének a határhoz közel.
 A negatív értékek megnövelik a művelt területet a tábla határain túlra, hogy lefedjék a nem megfelelően detektált határokat.
 "/>
+    <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
+    <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
+    <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>
+    <text name="CP_help_page_courseGeneratorExpert_title" text="Course generator expert"/>
     <text name="CP_help_page_courseManager_title" text="Útvonal kezelő"/>
     <text name="CP_help_page_courseManagerBase_text" text="
 Az útvonal kezelő lehetővé teszi útvonalak mentését és későbbi újra betöltését.

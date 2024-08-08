@@ -556,7 +556,7 @@ Se você estiver criando um trabalho CP: Trabalho de campo, você terá acesso �
 Agora é possível iniciar o driver diretamente do menu. O ajudante do Giants irá dirigir até a posição alvo e a partir daí o trabalho de CP assume automaticamente.
 Alternativamente, você também pode iniciar o motorista a partir do HUD se estiver perto do campo com o veículo ou usando o mod AutoDrive para entregar o trabalho de CP perto do campo.
 "/>
-    <text name="CP_help_page_courseGenerator_title" text="Gerador de curso"/>
+    <text name="CP_help_page_courseGeneratorBasic_title" text="Course generator basics"/>
     <text name="CP_help_page_courseGeneratorBase_text" text="
 Cada curso de trabalho de campo é gerado pelo gerador de curso. Esta é uma ferramenta poderosa, que permite personalizar o curso gerado de acordo com suas necessidades.
 Se você é novo nisso, provavelmente deve começar alterando apenas a configuração da quantidade de cabeceira.
@@ -593,6 +593,10 @@ Explicação da margem do campo:
 Valores positivos reduzem o tamanho do campo para adicionar um buffer ao redor da área trabalhada caso haja obstáculos próximos à borda do campo.
 Os valores negativos aumentam a área trabalhada além do limite do campo para cobrir as bordas do campo que não são detectadas perfeitamente.
 "/>
+    <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
+    <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
+    <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>
+    <text name="CP_help_page_courseGeneratorExpert_title" text="Course generator expert"/>
     <text name="CP_help_page_courseManager_title" text="Gerente de curso"/>
     <text name="CP_help_page_courseManagerBase_text" text="
 O gerenciador de cursos permite que você salve cursos e carregue o curso salvo novamente mais tarde.
