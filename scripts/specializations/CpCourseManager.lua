@@ -26,6 +26,7 @@ function CpCourseManager.registerXmlSchemaValues(schema,baseKey)
 	schema:register(XMLValueType.INT, baseKey .. "#numHeadlands", "Course number of headlands")
 	schema:register(XMLValueType.INT, baseKey .. "#multiTools", "Course multi tools")
     schema:register(XMLValueType.BOOL, baseKey .. "#wasEdited", "Was the course edited by the course editor.")
+    schema:register(XMLValueType.STRING, baseKey .. ".waypoints", "Course serialized waypoints") -- old save format
     Waypoint.registerXmlSchema(schema, baseKey)
 end
 

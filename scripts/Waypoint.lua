@@ -57,7 +57,7 @@ function Waypoint.initFromGeneratedWp(wp)
 	waypoint.z = -wp.y
 	waypoint.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, waypoint.x, 0, waypoint.z)
 	---@type CourseGenerator.WaypointAttributes
-	self.attributes = wp:getAttributes():clone()
+	waypoint.attributes = wp:getAttributes():clone()
 	return waypoint
 end
 
@@ -105,6 +105,48 @@ function Waypoint:getXmlString()
 		self.headlandTransition or "-"
 	}
 	return CpUtil.getXmlVectorString(v)
+end
+
+--- Read legacy format (with custom serialization instead of XML schema)
+function Waypoint.initFromXmlFileLegacyFormat(data)
+	local waypoint = Waypoint({})
+	waypoint.x = data[1]
+	waypoint.z = data[2]
+	waypoint.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, waypoint.x, 0, waypoint.z)
+	local turnStart = data[3]
+	waypoint.attributes.rowEnd = turnStart
+	local turnEnd = data[4]
+	waypoint.attributes.rowStart = turnEnd
+	waypoint.attributes.onConnectingPath = data[5]
+	-- saved course backwards compatibility, for when the headland numbers were negative
+	waypoint.attributes.headlandPassNumber = data[6] and math.abs(data[6])
+	waypoint.attributes.rowNumber = data[7]
+	local ridgeMarker = data[8]
+	if ridgeMarker == RidgeMarkerController.RIDGE_MARKER_LEFT then
+		waypoint.attributes.leftSideWorked = false
+		waypoint.attributes.rightSideWorked = true
+	elseif ridgeMarker == RidgeMarkerController.RIDGE_MARKER_RIGHT then
+		waypoint.attributes.rightSideWorked = false
+		waypoint.attributes.leftSideWorked = true
+	end
+	waypoint.rev = data[9]
+	waypoint.attributes.headlandTurn = data[10]
+	waypoint.attributes.usePathfinderToNextWaypoint = data[11]
+	waypoint.attributes.usePathfinderToThisWaypoint = data[12]
+	waypoint.headlandTransition = data[13]
+	if not waypoint.attributes.headlandTurn then
+		-- guess where we have headland turns, rowEnd and rowStart used to be turnStart and turnEnd, respectively,
+		if waypoint.attributes.headlandPassNumber and waypoint.attributes.headlandPassNumber > 0 then
+			-- old courses have the turnEnd at the corner
+			if turnEnd then
+				waypoint.attributes.headlandTurn = true
+			end
+			-- waypoint on headland has no row start/end
+			waypoint.attributes.rowEnd = nil
+			waypoint.attributes.rowStart = nil
+		end
+	end
+	return waypoint
 end
 
 --- Get the (original, non-offset) position of a waypoint

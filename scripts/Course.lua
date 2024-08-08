@@ -1414,7 +1414,7 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
                 CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Headland section to %d', ix)
                 CpMathUtil.pointsFromGameInPlace(origHeadlandsCourse.waypoints)
                 local origHeadlands = Polyline(origHeadlandsCourse.waypoints)
-                origHeadlands:calculateData()
+                origHeadlands:calculateProperties()
                 -- generating inward when on the right side and clockwise or when on the left side ccw
                 local inward = (position > 0 and origHeadlands.isClockwise) or (position < 0 and not origHeadlands.isClockwise)
                 local offsetHeadlands = calculateHeadlandTrack(origHeadlands, CourseGenerator.HEADLAND_MODE_NORMAL, origHeadlands.isClockwise,
@@ -1652,9 +1652,31 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
     local multiTools = courseXml:getValue(courseKey .. '#multiTools')
     local wasEdited = courseXml:getValue(courseKey .. '#wasEdited', false)
     local waypoints = {}
+    -- these are only saved for the row start waypoint, here we add them to all waypoints of the row
+    local rowNumber, leftSideWorked, rightSideWorked
     courseXml:iterate(courseKey .. Waypoint.xmlKey, function(ix, key)
         table.insert(waypoints, Waypoint.initFromXmlFile(courseXml, key, ix))
+        local last = waypoints[#waypoints].attributes
+        if last.rowStart then
+            rowNumber = last.rowNumber
+            leftSideWorked = last.leftSideWorked
+            rightSideWorked = last.rightSideWorked
+        elseif last.rowEnd then
+            rowNumber, leftSideWorked, rightSideWorked = nil, nil, nil
+        else
+            last.rowNumber = rowNumber
+            last.leftSideWorked = leftSideWorked
+            last.rightSideWorked = rightSideWorked
+        end
     end)
+    if #waypoints == 0 then
+        CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'No waypoints loaded, trying old format')
+        courseXml:iterate(courseKey .. '.waypoints' .. Waypoint.xmlKey, function(ix, key)
+            local d
+            d = CpUtil.getXmlVectorValues(courseXml:getString(key))
+            table.insert(waypoints, Waypoint.initFromXmlFileLegacyFormat(d, ix))
+        end)
+    end
 
     local course = Course(vehicle, waypoints)
     course.name = name
