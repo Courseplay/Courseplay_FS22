@@ -559,7 +559,7 @@ Si vous avez créé une tâche CP:Travail alors vous pourrez accéder aux param�
 Il est possible de démarrer la tâche directement depuis le menu. L'ouvrier de base du jeu se rendra alors à la position cible avant de passer le relai à l'ouvrier CP qui commencera son travail au point de départ de la course.
 Vous pouvez également démarrer la course depuis l'ATH si vous êtes déjà dans ou proche du champ concerné. Si vous utilisez AutoDrive (AD) vous pouvez démarrer le trajet avec AD et une fois arrivé il passera le relai à l'ouvrir CP si vous avez activé l'option dans AD.
 "/>
-    <text name="CP_help_page_courseGenerator_title" text="Générateur de courses"/>
+    <text name="CP_help_page_courseGeneratorBasic_title" text="Course generator basics"/>
     <text name="CP_help_page_courseGeneratorBase_text" text="
 Toutes les courses de travail dans un champ sont créées à partir du générateur de courses. Cet outil puissant vous permet de configurer précisément la course de l'ouvrier dans le champ.
 Si vous découvrez le générateur, nous vous conseillons de laisser les paramètres par défaut et de ne changer que la quantité de fourrières.
@@ -598,6 +598,10 @@ Délimitation du champ :
 Les valeurs positives réduisent la taille du champ afin de laisser une marge de sécurité autour du champ si celui-ci est bordé d'arbres ou de clôtures qui pourraient entrer en collision avec les outils.
 Les valeurs négatives agrandissent la taille du champ pour travailler les bordures qui ne seraient pas correctement détectées.
 "/>
+    <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
+    <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
+    <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>
+    <text name="CP_help_page_courseGeneratorExpert_title" text="Course generator expert"/>
     <text name="CP_help_page_courseManager_title" text="Gestionnaire des courses"/>
     <text name="CP_help_page_courseManagerBase_text" text="
 Le gestionnaire de courses vous permet de sauvegarder et de charger vos courses pour une utilisation ultérieure.

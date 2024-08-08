@@ -560,7 +560,7 @@ Om du skapar en CP: fältarbete jobb, får du tillgång till inställningarna f�
 Nu är det möjligt att starta föraren direkt från menyn. Giants-hjälpen kommer att köra till målpositionen och därifrån tar CP-jobbet automatiskt över.
 Alternativt kan du också starta drivrutinen från HUD om du är nära fältet med fordonet eller med AutoDrive Mod för att leverera CP-jobbet nära fältet.
 "/>
-    <text name="CP_help_page_courseGenerator_title" text="Course generator"/>
+    <text name="CP_help_page_courseGeneratorBasic_title" text="Course generator basics"/>
     <text name="CP_help_page_courseGeneratorBase_text" text="
 Varje fältverkskurs genereras av kursgeneratorn. Detta är ett mäktigt verktyg, vilket gör att du kan anpassa den genererade kursen till dina behov.
 Om du är ny för detta, bör du förmodligen börja med att bara ändra satsen på huvudet.
@@ -601,6 +601,10 @@ Fältmarginal Förklaring:
 Positiva värden minskar fältstorleken för att lägga till en buffert runt det arbetade området om du har hinder nära fältgränsen.
 Negativa värden Förstora arbetade området utöver fältgränsen för att täcka fältgränser som inte är perfekt upptäckta.
 "/>
+    <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
+    <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
+    <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>
+    <text name="CP_help_page_courseGeneratorExpert_title" text="Course generator expert"/>
     <text name="CP_help_page_courseManager_title" text="Course manager"/>
     <text name="CP_help_page_courseManagerBase_text" text="
 Kurschefen låter dig spara kurser och låter dig ladda den sparade kursen senare igen.
