@@ -219,10 +219,10 @@ end
 --- or not. The attributes are set when the row is split at headlands but may need to be reapplied when
 --- we adjust the end of the row as we may remove the first/last vertex.
 function Row:setEndAttributes()
-    self:setAttribute(1, CourseGenerator.WaypointAttributes.setRowStart)
+    self:setAttribute(1, CourseGenerator.WaypointAttributes.setRowStart, true)
     self:setAttribute(1, CourseGenerator.WaypointAttributes._setAtHeadland, self.startsAtHeadland)
     self:setAttribute(1, CourseGenerator.WaypointAttributes.setAtBoundaryId, self.startsAtHeadland:getBoundaryId())
-    self:setAttribute(#self, CourseGenerator.WaypointAttributes.setRowEnd)
+    self:setAttribute(#self, CourseGenerator.WaypointAttributes.setRowEnd, true)
     self:setAttribute(#self, CourseGenerator.WaypointAttributes._setAtHeadland, self.endsAtHeadland)
     self:setAttribute(#self, CourseGenerator.WaypointAttributes.setAtBoundaryId, self.endsAtHeadland:getBoundaryId())
 end

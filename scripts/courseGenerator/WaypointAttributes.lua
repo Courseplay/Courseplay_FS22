@@ -170,12 +170,12 @@ function WaypointAttributes:setRowNumber(n)
     self.rowNumber = n
 end
 
-function WaypointAttributes:setRowEnd()
-    self.rowEnd = true
+function WaypointAttributes:setRowEnd(rowEnd)
+    self.rowEnd = rowEnd
 end
 
-function WaypointAttributes:setRowStart()
-    self.rowStart = true
+function WaypointAttributes:setRowStart(rowStart)
+    self.rowStart = rowStart
 end
 
 function WaypointAttributes:setHeadlandTurn(isHeadlandTurn)
@@ -194,8 +194,8 @@ function WaypointAttributes:setUsePathfinderToThisWaypoint()
     self.usePathfinderToThisWaypoint = true
 end
 
-function WaypointAttributes:setOnConnectingPath()
-    self.onConnectingPath = true
+function WaypointAttributes:setOnConnectingPath(onConnectingPath)
+    self.onConnectingPath = onConnectingPath
 end
 
 ---@see isLeftSideWorked()
@@ -258,6 +258,59 @@ function WaypointAttributes:_reverse()
     -- TODO: is there a use case where these are needed for a reversed course? It isn't trivial to find these out after the block is finalized
     self.leftSideWorked, self.rightSideWorked = nil, nil
 end
+
+--- XML serialization/deserialization in the game, dependent on the game XML API
+function WaypointAttributes.registerXmlSchema(schema, key)
+    schema:register(XMLValueType.BOOL, key .. '#rowEnd', '')
+    schema:register(XMLValueType.BOOL, key .. '#rowStart', '')
+    schema:register(XMLValueType.BOOL, key .. '#isConnectingPath', '')
+    schema:register(XMLValueType.INT, key .. '#headlandNumber', '')
+    schema:register(XMLValueType.INT, key .. '#rowNumber', '')
+    schema:register(XMLValueType.BOOL, key .. '#leftSideWorked', '')
+    schema:register(XMLValueType.BOOL, key .. '#rightSideWorked', '')
+    schema:register(XMLValueType.BOOL, key .. '#headlandTurn', '')
+    schema:register(XMLValueType.BOOL, key .. '#headlandTransition', '')
+    schema:register(XMLValueType.BOOL, key .. '#usePathfinderToNextWaypoint', '')
+    schema:register(XMLValueType.BOOL, key .. '#usePathfinderToThisWaypoint', '')
+    schema:register(XMLValueType.STRING, key .. '#boundaryId', '')
+    schema:register(XMLValueType.STRING, key .. '#atBoundaryId', '')
+end
+
+function WaypointAttributes:setXmlValue(xmlFile, key)
+    xmlFile:setValue(key .. '#rowEnd', self.rowEnd)
+    xmlFile:setValue(key .. '#rowStart', self.rowStart)
+    xmlFile:setValue(key .. '#isConnectingPath', self.isConnectingPath)
+    xmlFile:setValue(key .. '#headlandNumber', self.headlandNumber)
+    xmlFile:setValue(key .. '#rowNumber', self.rowNumber)
+    xmlFile:setValue(key .. '#leftSideWorked', self.leftSideWorked)
+    xmlFile:setValue(key .. '#rightSideWorked', self.rightSideWorked)
+    xmlFile:setValue(key .. '#headlandTurn', self.headlandTurn)
+    xmlFile:setValue(key .. '#headlandTransition', self.headlandTransition)
+    xmlFile:setValue(key .. '#usePathfinderToNextWaypoint', self.usePathfinderToNextWaypoint)
+    xmlFile:setValue(key .. '#usePathfinderToThisWaypoint', self.usePathfinderToThisWaypoint)
+    xmlFile:setValue(key .. '#boundaryId', self.boundaryId)
+    xmlFile:setValue(key .. '#atBoundaryId', self.atBoundaryId)
+end
+
+--- Set from a saved waypoint in a xml file.
+function WaypointAttributes.initFromXmlFile(xmlFile, key)
+    local attributes = WaypointAttributes()
+    attributes.rowEnd = xmlFile:getValue(key .. '#rowEnd') 
+    attributes.rowStart = xmlFile:getValue(key .. '#rowStart') 
+    attributes.isConnectingPath = xmlFile:getValue(key .. '#isConnectingPath') 
+    attributes.headlandNumber = xmlFile:getValue(key .. '#headlandNumber') 
+    attributes.rowNumber = xmlFile:getValue(key .. '#rowNumber') 
+    attributes.leftSideWorked = xmlFile:getValue(key .. '#leftSideWorked') 
+    attributes.rightSideWorked = xmlFile:getValue(key .. '#rightSideWorked') 
+    attributes.headlandTurn = xmlFile:getValue(key .. '#headlandTurn') 
+    attributes.headlandTransition = xmlFile:getValue(key .. '#headlandTransition') 
+    attributes.usePathfinderToNextWaypoint = xmlFile:getValue(key .. '#usePathfinderToNextWaypoint') 
+    attributes.usePathfinderToThisWaypoint = xmlFile:getValue(key .. '#usePathfinderToThisWaypoint') 
+    attributes.boundaryId = xmlFile:getValue(key .. '#boundaryId') 
+    attributes.atBoundaryId = xmlFile:getValue(key .. '#atBoundaryId') 
+    return attributes
+end
+
 
 function WaypointAttributes:__tostring()
     local str = '[ '

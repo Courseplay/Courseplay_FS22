@@ -30,7 +30,7 @@ end
 
 function EditorCourseWrapper:isWaypointTurn(ix)
 	local wp = ix ~=nil and self.course:getWaypoint(ix)
-	return wp and wp:isTurn()
+	return wp and (wp:isRowEnd() or wp:isRowStart())
 end
 
 ------------------------------------
@@ -100,8 +100,8 @@ end
 
 function EditorCourseWrapper:isOnRowNumber(ix)
 	local wp = ix ~=nil and self.course:getWaypoint(ix)
-	if wp and wp.rowNumber ~= nil and self.rowNumberMode ~= nil then
-		return wp.rowNumber == self.rowNumberMode
+	if wp and wp:getRowNumber() ~= nil and self.rowNumberMode ~= nil then
+		return wp:getRowNumber() == self.rowNumberMode
 	end
 end
 
@@ -122,14 +122,14 @@ function EditorCourseWrapper:insertWaypointAhead(ix)
 	local waypoint = self.course:getWaypoint(ix)
 	local wp
 	if waypoint then 
-		if waypoint:isTurnEnd() then
+		if waypoint:isRowStart() then
 			return nil, false
 		end
 		local frontWp = self.course:getWaypoint(ix-1)
 		if frontWp and ix > 1 then 
 			local x, z = frontWp.x + (waypoint.x - frontWp.x)/2 , frontWp.z + (waypoint.z - frontWp.z)/2
 			wp = waypoint:clone()
-			wp:resetTurn()
+			wp:resetRowStartEnd()
 			wp:setPosition(x, z)
 			table.insert(self.course.waypoints, ix, wp)
 		else 
@@ -138,7 +138,7 @@ function EditorCourseWrapper:insertWaypointAhead(ix)
 				local dx, dz = MathUtil.vector2Normalize(backWp.x - waypoint.x, backWp.z - waypoint.z)
 				local x, z = waypoint.x - dx * 3, waypoint.z - dz * 3
 				wp = waypoint:clone()
-				wp:resetTurn()
+				wp:resetRowStartEnd()
 				wp:setPosition(x, z)
 				table.insert(self.course.waypoints, 1, wp)
 			end
@@ -153,14 +153,14 @@ function EditorCourseWrapper:insertWaypointBehind(ix)
 	local waypoint = self.course:getWaypoint(ix)
 	local wp
 	if waypoint then 
-		if waypoint:isTurnStart() then
+		if waypoint:isRowEnd() then
 			return nil, false
 		end
 		local backWp = self.course:getWaypoint(ix+1)
 		if backWp and ix < #self.course.waypoints then 
 			local x, z = waypoint.x + (backWp.x - waypoint.x)/2 , waypoint.z + (backWp.z - waypoint.z)/2
 			wp = waypoint:clone()
-			wp:resetTurn()
+			wp:resetRowStartEnd()
 			wp:setPosition(x, z)
 			table.insert(self.course.waypoints, ix+1, wp)
 		else 
@@ -169,7 +169,7 @@ function EditorCourseWrapper:insertWaypointBehind(ix)
 				local dx, dz = MathUtil.vector2Normalize(waypoint.x - frontWp.x, waypoint.z - frontWp.z)
 				local x, z = waypoint.x + dx * 3, waypoint.z + dz * 3
 				wp = waypoint:clone()
-				wp:resetTurn()
+				wp:resetRowStartEnd()
 				wp:setPosition(x, z)
 				table.insert(self.course.waypoints, wp)
 			end
@@ -200,13 +200,13 @@ end
 function EditorCourseWrapper:deleteWaypoint(ix)
 	local wp = self.course:getWaypoint(ix)
 	if wp and self.course:getNumberOfWaypoints() > 5 then 
-		if wp:isTurnStart() then
+		if wp:isRowEnd() then
 			if self.course.waypoints[ix+1] then
-				self.course:getWaypoint(ix+1):resetTurn()
+				self.course:getWaypoint(ix+1):resetRowStartEnd()
 			end
-		elseif wp:isTurnEnd() then
+		elseif wp:isRowStart() then
 			if self.course.waypoints[ix-1] then
-				self.course:getWaypoint(ix-1):resetTurn()
+				self.course:getWaypoint(ix-1):resetRowStartEnd()
 			end
 		end
 		table.remove(self.course.waypoints, ix)
@@ -243,19 +243,19 @@ function EditorCourseWrapper:changeWaypointTurnType(ix)
 	local np = self.course.waypoints[ix+1]
 	local pp = self.course.waypoints[ix-1]
 	if wp then 
-		if wp:isTurnStart() then
-			wp:resetTurn()
+		if wp:isRowEnd() then
+			wp:resetRowStartEnd()
 			if np then 
-				np:resetTurn()
+				np:resetRowStartEnd()
 			end
-		elseif wp:isTurnEnd() then
-			wp:resetTurn()
+		elseif wp:isRowStart() then
+			wp:resetRowStartEnd()
 			if pp then 
-				pp:resetTurn()
+				pp:resetRowStartEnd()
 			end
-		elseif np and not np:isTurn() then
-			wp:setTurnStart(true) 
-			np:setTurnEnd(true)
+		elseif np and not np:isRowEnd() then
+			wp:setRowEnd(true)
+			np:setRowStart(true)
 		else 
 			return false
 		end
@@ -267,9 +267,9 @@ end
 function EditorCourseWrapper:getWaypointType(ix)
 	local wp = ix ~=nil and self.course:getWaypoint(ix)
 	if wp then
-		if wp.rowEnd then
+		if wp:isRowEnd() then
 			return CpBrushChangeTurnWP.TYPES.TURN_START
-		elseif wp.rowStart then
+		elseif wp:isRowStart() then
 			return CpBrushChangeTurnWP.TYPES.TURN_END
 		else
 			return CpBrushChangeTurnWP.TYPES.NORMAL
@@ -282,9 +282,9 @@ function EditorCourseWrapper:changeHeadland(ix, n)
 	local wp = ix ~=nil and self.course:getWaypoint(ix)
 	if wp then
 		if n == 0 then 
-			wp.headlandNumber = nil
+			wp:setHeadlandNumber(nil)
 		else
-			wp.headlandNumber = n
+			wp:setHeadlandNumber(n)
 		end
 	end
 end
@@ -293,7 +293,7 @@ end
 function EditorCourseWrapper:setConnectingPath(ix, set)
 	local wp = ix ~=nil and self.course:getWaypoint(ix)
 	if wp then
-		wp.isConnectingPath = set
+		wp:setOnConnectingPath(set)
 	end
 end
 
@@ -302,8 +302,8 @@ function EditorCourseWrapper:getMaxRowNumber()
 	local max = 0
 	for i=1, self.course:getNumberOfWaypoints() do 
 		local wp = self.course:getWaypoint(i)
-		if wp and wp.rowNumber ~= nil then 
-			max = math.max(max, wp.rowNumber)
+		if wp and wp:getRowNumber() ~= nil then
+			max = math.max(max, wp:getRowNumber())
 		end
 	end
 	return max
@@ -314,9 +314,9 @@ function EditorCourseWrapper:changeRowNumber(ix, n)
 	local wp = ix ~=nil and self.course:getWaypoint(ix)
 	if wp then
 		if n == 0 then 
-			wp.rowNumber = nil
+			wp:setRowNumber(nil)
 		else 
-			wp.rowNumber = n
+			wp:setRowNumber(n)
 		end
 	end
 end

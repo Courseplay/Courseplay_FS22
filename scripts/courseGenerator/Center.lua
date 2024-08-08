@@ -495,7 +495,7 @@ function Center:_wrapUpConnectingPaths()
             self.connectingPaths[1] = Polyline()
         end
         for _, c in ipairs(self.connectingPaths) do
-            c:setAttribute(nil, CourseGenerator.WaypointAttributes.setOnConnectingPath)
+            c:setAttribute(nil, CourseGenerator.WaypointAttributes.setOnConnectingPath, true)
             c:setAttribute(nil, CourseGenerator.WaypointAttributes.setHeadlandTurn, nil)
         end
     end
