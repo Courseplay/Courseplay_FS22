@@ -251,10 +251,7 @@ function Course:enrichWaypointData(startIx)
         self.waypoints[i].curvature = i == 1 and 0 or 1 / self:calculateSignedRadius(i)
         if (self:isReverseAt(i) and not self:switchingToForwardAt(i)) or self:switchingToReverseAt(i) then
             -- X offset must be reversed at waypoints where we are driving in reverse
-            self.waypoints[i].reverseOffset = true
-        end
-        if self.waypoints[i].headlandNumber then
-            self.numberOfHeadlands = math.max(self.numberOfHeadlands, self.waypoints[i].headlandNumber)
+            self.waypoints[i]:setReverseOffset()
         end
     end
     -- make the last waypoint point to the same direction as the previous so we don't
@@ -272,7 +269,7 @@ function Course:enrichWaypointData(startIx)
     self.waypoints[#self.waypoints].turnsToHere = self.totalTurns
     self.waypoints[#self.waypoints].calculatedRadius = math.huge
     self.waypoints[#self.waypoints].curvature = 0
-    self.waypoints[#self.waypoints].reverseOffset = self:isReverseAt(#self.waypoints)
+    self.waypoints[#self.waypoints]:setReverseOffset(self:isReverseAt(#self.waypoints))
     -- now add some metadata for the combines
     local dToNextTurn, lNextRow, nextRowStartIx = 0, 0, 0
     local dToNextDirectionChange, nextDirectionChangeIx = 0, 0
@@ -390,12 +387,12 @@ function Course:isTurnStartAtIx(ix)
     -- TODO: do a row finish maneuver instead
     return ix < #self.waypoints and
             -- if there is a turn start just before a connecting path
-            (self.waypoints[ix]:isTurnStart() and not self:isOnConnectingPath(ix + 1)) or
+            (self.waypoints[ix]:isRowEnd() and not self:isOnConnectingPath(ix + 1)) or
             (self.waypoints[ix + 1] and self.waypoints[ix + 1]:isHeadlandTurn())
 end
 
 function Course:isTurnEndAtIx(ix)
-    return self.waypoints[ix]:isTurnEnd() or self.waypoints[ix]:isHeadlandTurn()
+    return self.waypoints[ix]:isRowStart() or self.waypoints[ix]:isHeadlandTurn()
 end
 
 function Course:shouldUsePathfinderToNextWaypoint(ix)
@@ -414,7 +411,7 @@ end
 --- Is this waypoint on a connecting track, that is, a transfer path between
 -- a headland and the up/down rows where there's no fieldwork to do.
 function Course:isOnConnectingPath(ix)
-    return self.waypoints[ix].isConnectingPath
+    return self.waypoints[ix]:isOnConnectingPath()
 end
 
 function Course:switchingDirectionAt(ix)
@@ -438,15 +435,15 @@ function Course:switchingToForwardAt(ix)
 end
 
 function Course:getHeadlandNumber(ix)
-    return self.waypoints[ix].headlandNumber
+    return self.waypoints[ix].attributes:getHeadlandPassNumber()
 end
 
 function Course:isOnHeadland(ix, n)
     ix = ix or self.currentWaypoint
     if n then
-        return self.waypoints[ix].headlandNumber == n
+        return self.waypoints[ix].attributes:getHeadlandPassNumber() == n
     else
-        return self.waypoints[ix].headlandNumber ~= nil
+        return self.waypoints[ix].attributes:getHeadlandPassNumber() ~= nil
     end
 end
 
@@ -455,7 +452,7 @@ function Course:isHeadlandTransition(ix)
 end
 
 function Course:isOnOutermostHeadland(ix)
-    return self.waypoints[ix].headlandNumber == 1
+    return self.waypoints[ix].attributes:getHeadlandPassNumber() == 1
 end
 
 function Course:startsWithHeadland()
@@ -596,26 +593,20 @@ end
 
 ---@return number RidgeMarkerController.RIDGE_MARKER_NONE, RidgeMarkerController.RIDGE_MARKER_LEFT, RidgeMarkerController.RIDGE_MARKER_RIGHT
 function Course:getRidgeMarkerState(ix)
-    return self.waypoints[ix].ridgeMarker or 0
+    -- set ridge marker only if we are absolutely sure that a side is not worked
+    if self.waypoints[ix].attributes:isLeftSideNotWorked() then
+        return RidgeMarkerController.RIDGE_MARKER_LEFT
+    elseif self.waypoints[ix].attributes:isRightSideNotWorked() then
+        return RidgeMarkerController.RIDGE_MARKER_RIGHT
+    else
+        return RidgeMarkerController.RIDGE_MARKER_NONE
+    end
 end
 
 ---@return boolean true if the plow should be rotated to the left side of the course (as the right side was already
 --- worked on)
 function Course:getPlowOnLeft(ix)
-    return self.waypoints[ix].plowOnLeft
-end
-
---- Get the average speed setting across n waypoints starting at ix
-function Course:getAverageSpeed(ix, n)
-    local total, count = 0, 0
-    for i = ix, ix + n - 1 do
-        local index = self:getIxRollover(i)
-        if self.waypoints[index].speed ~= nil and self.waypoints[index].speed ~= 0 then
-            total = total + self.waypoints[index].speed
-            count = count + 1
-        end
-    end
-    return (total > 0 and count > 0) and (total / count) or nil
+    return self.waypoints[ix].attributes:isLeftSideWorked()
 end
 
 function Course:getIxRollover(ix)
@@ -634,10 +625,10 @@ end
 function Course:print()
     for i = 1, #self.waypoints do
         local p = self.waypoints[i]
-        print(string.format('%d: x=%.1f z=%.1f a=%.1f yRot=%.1f ts=%s te=%s r=%s d=%.1f t=%d l=%s p=%s tt=%s dx=%.1f dz=%.1f',
+        print(string.format('%d: x=%.1f z=%.1f a=%.1f yRot=%.1f re=%s rs=%s r=%s d=%.1f t=%d l=%s p=%s tt=%s dx=%.1f dz=%.1f',
                 i, p.x, p.z, p.angle or -1, math.deg(p.yRot or 0),
-                tostring(p.rowEnd), tostring(p.rowStart), tostring(p.rev), p.dToHere or -1, p.turnsToHere or -1,
-                tostring(p.headlandNumber), tostring(p.pipeInFruit), tostring(p.useTightTurnOffset), p.dx, p.dz))
+                tostring(p:isRowEnd()), tostring(p:isRowStart()), tostring(p.rev), p.dToHere or -1, p.turnsToHere or -1,
+                tostring(p.attributes:getHeadlandPassNumber()), tostring(p.pipeInFruit), tostring(p.useTightTurnOffset), p.dx, p.dz))
     end
 end
 
@@ -657,25 +648,6 @@ function Course:getDistanceToLastWaypoint(ix)
     return self.length - self.waypoints[ix].dToHere
 end
 
-function Course:getWaypointsWithinDrivingTime(startIx, fwd, seconds, speed)
-    local waypoints = {}
-    local travelTimeSeconds = 0
-    local first, last, step = startIx, #self.waypoints - 1, 1
-    if not fwd then
-        first, last, step = startIx - 1, 1, -1
-    end
-    for i = startIx, #self.waypoints - 1 do
-        table.insert(waypoints, self.waypoints[i])
-        local v = speed or self.waypoints[i].speed or 10
-        local s = self:getDistanceToNextWaypoint(i)
-        travelTimeSeconds = travelTimeSeconds + s / (v / 3.6)
-        if travelTimeSeconds > seconds then
-            break
-        end
-    end
-    return waypoints
-end
-
 --- How far are we from the waypoint marked as the beginning of the up/down rows?
 ---@param ix number start searching from this index. Will stop searching after 100 m
 ---@return number, number of meters or math.huge if no start up/down row waypoint found within 100 meters and the
@@ -684,9 +656,9 @@ function Course:getDistanceToFirstUpDownRowWaypoint(ix)
     local d = 0
     local isConnectingPath = false
     for i = ix, #self.waypoints - 1 do
-        isConnectingPath = isConnectingPath or self.waypoints[i].isConnectingPath
+        isConnectingPath = isConnectingPath or self.waypoints[i].attributes:isOnConnectingPath()
         d = d + self.waypoints[i].dToNext
-        if self.waypoints[i].headlandNumber and not self.waypoints[i + 1].headlandNumber and isConnectingPath then
+        if self.waypoints[i].attributes:getHeadlandPassNumber() and not self.waypoints[i + 1].attributes:getHeadlandPassNumber() and isConnectingPath then
             return d, i + 1
         end
         if d > 1000 then
@@ -712,7 +684,7 @@ end
 ---@return boolean true if any of the waypoints are turn start/end point
 function Course:hasTurnWithinDistance(ix, distance)
     return self:hasWaypointWithPropertyWithinDistance(ix, distance, function(p)
-        return p.rowEnd or p.rowStart
+        return p:isRowEnd() or p:isRowStart()
     end)
 end
 
@@ -787,66 +759,6 @@ function Course:getPreviousWaypointIxWithinDistanceOrToTurnEnd(ix, distance)
         end
     end
     return nil
-end
-
---- Collect a nSteps number of positions on the course, starting at startIx, one position for every second,
---- or every dStep meters, whichever is less
----@param startIx number start at this waypoint
----@param dStep number step in meters
----@param nSteps number number of positions to collect
-function Course:getPositionsOnCourse(nominalSpeed, startIx, dStep, nSteps)
-
-    local function addPosition(positions, ix, x, y, z, dFromLastWp, speed)
-        table.insert(positions, { x = x + dFromLastWp * self.waypoints[ix].dx,
-                                  y = y,
-                                  z = z + dFromLastWp * self.waypoints[ix].dz,
-                                  yRot = self.waypoints[ix].yRot,
-                                  speed = speed,
-            -- for debugging only
-                                  dToNext = self.waypoints[ix].dToNext,
-                                  dFromLastWp = dFromLastWp,
-                                  ix = ix })
-    end
-
-    local positions = {}
-    local d = 0 -- distance from the last step
-    local dFromLastWp = 0
-    local ix = startIx
-    while #positions < nSteps and ix < #self.waypoints do
-        local speed = nominalSpeed
-        if self.waypoints[ix].speed then
-            speed = (self.waypoints[ix].speed > 0) and self.waypoints[ix].speed or nominalSpeed
-        end
-        -- speed / 3.6 is the speed in meter/sec, that's how many meters we travel in one sec
-        -- don't step more than 4 m as that would move the boxes too far away from each other creating a gap between them
-        -- so if we drive fast, our event horizon shrinks, which is probably not a good thing
-        local currentStep = math.min(speed / 3.6, dStep)
-        local x, y, z = self:getWaypointPosition(ix)
-        if dFromLastWp + currentStep < self.waypoints[ix].dToNext then
-            while dFromLastWp + currentStep < self.waypoints[ix].dToNext and #positions < nSteps and ix < #self.waypoints do
-                d = d + currentStep
-                dFromLastWp = dFromLastWp + currentStep
-                addPosition(positions, ix, x, y, z, dFromLastWp, speed)
-            end
-            -- this is before wp ix, so negative
-            dFromLastWp = -(self.waypoints[ix].dToNext - dFromLastWp)
-            d = 0
-            ix = ix + 1
-        else
-            d = -dFromLastWp
-            -- would step over the waypoint
-            while d < currentStep and ix < #self.waypoints do
-                d = d + self.waypoints[ix].dToNext
-                ix = ix + 1
-            end
-            -- this is before wp ix, so negative
-            dFromLastWp = -(d - currentStep)
-            d = 0
-            x, y, z = self:getWaypointPosition(ix)
-            addPosition(positions, ix, x, y, z, dFromLastWp, speed)
-        end
-    end
-    return positions
 end
 
 function Course:getLength()
@@ -1353,9 +1265,9 @@ end
 function Course:getNextHeadlandSection(headlandNumber, startIx)
     return self:getNextSectionWithProperty(startIx, function(wp)
         if headlandNumber then
-            return wp.headlandNumber == headlandNumber
+            return wp.attributes:getHeadlandPassNumber() == headlandNumber
         else
-            return wp.headlandNumber ~= nil
+            return wp.attributes:getHeadlandPassNumber() ~= nil
         end
     end)
 end
@@ -1365,7 +1277,7 @@ end
 ---@return Course, number headland section as a Course object, next wp index after the section
 function Course:getNextNonHeadlandSection(startIx)
     return self:getNextSectionWithProperty(startIx, function(wp)
-        return not wp.headlandNumber
+        return not wp.attributes:getHeadlandPassNumber()
     end)
 end
 
@@ -1435,7 +1347,7 @@ function Course:markAsHeadland(waypoints, headlandNumber)
 
     for _, p in ipairs(waypoints) do
         -- don't care which headland, just make sure it is a headland
-        p.headlandNumber = headlandNumber
+        p:setHeadlandNumber(headlandNumber)
     end
 end
 
@@ -1494,7 +1406,7 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
     while ix and (ix < #self.waypoints) do
         sIx = ix
         local origHeadlandsCourse
-        local currentHeadlandNumber = self.waypoints[ix].headlandNumber
+        local currentHeadlandNumber = self.waypoints[ix].attributes:getHeadlandPassNumber()
         -- work on the headland passes one by one to keep have the correct headland number in the offset course
         origHeadlandsCourse, ix = self:getNextHeadlandSection(currentHeadlandNumber, ix)
         if origHeadlandsCourse:getNumberOfWaypoints() > 0 then
@@ -1516,7 +1428,7 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
                     self:markAsHeadland(offsetHeadlands, currentHeadlandNumber)
                     if origHeadlandsCourse:isTurnStartAtIx(origHeadlandsCourse:getNumberOfWaypoints()) then
                         CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Original headland transitioned to the center with a turn, adding a turn start to the offset one')
-                        offsetHeadlands[#offsetHeadlands].rowEnd = true
+                        offsetHeadlands[#offsetHeadlands].attributes:setRowEnd(true)
                     end
                     addTurnsToCorners(offsetHeadlands, math.rad(60), true)
                     local newHeadlandCourse = Course(self.vehicle, CpMathUtil.pointsToGameInPlace(offsetHeadlands), true)
@@ -1705,48 +1617,14 @@ function Course:getProgress(ix)
     return self.waypoints[ix].dToHere / self.length, ix, ix == #self.waypoints
 end
 
--- This may be useful in the future, the idea is not to store the waypoints of a fieldwork row (as it is just a straight
--- line), only the start and the end of the row (turn end and turn start waypoints). We still need those intermediate
--- waypoints though when working so the PPC does not put the targets kilometers away, so after loading a course, these
--- points can be generated by this function
--- TODO: fix headland -> up/down transition where there is no turn start/end
-function Course:addWaypointsForRows()
-    local waypoints = self:initWaypoints()
-
-    CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: adding waypoints for rows')
-
-    for i = 1, #self.waypoints - 1 do
-        table.insert(waypoints, Waypoint(self.waypoints[i]))
-        local p = self.waypoints[i]
-        if self:isTurnEndAtIx(i) and self:isTurnStartAtIx(i + 1) and
-                p.dToNext > CourseGenerator.waypointDistance + 0.1 then
-            CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: adding waypoints for row, length %.1f', p.dToNext)
-            for n = 1, (p.dToNext / CourseGenerator.waypointDistance) - 1 do
-                local newWp = Waypoint(p)
-                newWp.rowStart = nil
-                newWp.x = p.x + n * CourseGenerator.waypointDistance * p.dx
-                newWp.z = p.z + n * CourseGenerator.waypointDistance * p.dz
-                table.insert(waypoints, newWp)
-            end
-        end
-    end
-    table.insert(waypoints, Waypoint(self.waypoints[#self.waypoints]))
-    self.waypoints = waypoints
-    CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: has now %d waypoints', #self.waypoints)
-    self:enrichWaypointData()
-end
-
 function Course:saveToXml(courseXml, courseKey)
     courseXml:setValue(courseKey .. '#name', self.name)
     courseXml:setValue(courseKey .. '#workWidth', self.workWidth or 0)
     courseXml:setValue(courseKey .. '#numHeadlands', self.numHeadlands or 0)
     courseXml:setValue(courseKey .. '#multiTools', self.multiTools or 0)
     courseXml:setValue(courseKey .. '#wasEdited', self.editedByCourseEditor)
-    --- For backward compatibility a flag is set to indicate, that the waypoints between rows are not saved.
-    --courseXml:setValue(courseKey  .. '#isCompressed',true)
     for i, p in ipairs(self.waypoints) do
-        local key = string.format("%s%s(%d)", courseKey, Waypoint.xmlKey, i - 1)
-        courseXml:setString(key, p:getXmlString())
+        p:setXmlValue(courseXml, courseKey, i)
     end
 end
 
@@ -1772,13 +1650,10 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
     local workWidth = courseXml:getValue(courseKey .. '#workWidth')
     local numHeadlands = courseXml:getValue(courseKey .. '#numHeadlands')
     local multiTools = courseXml:getValue(courseKey .. '#multiTools')
-    local isCompressed = courseXml:getValue(courseKey .. '#isCompressed')
     local wasEdited = courseXml:getValue(courseKey .. '#wasEdited', false)
     local waypoints = {}
-    local d
     courseXml:iterate(courseKey .. Waypoint.xmlKey, function(ix, key)
-        d = CpUtil.getXmlVectorValues(courseXml:getString(key))
-        table.insert(waypoints, Waypoint.initFromXmlFile(d, ix))
+        table.insert(waypoints, Waypoint.initFromXmlFile(courseXml, key, ix))
     end)
 
     local course = Course(vehicle, waypoints)
@@ -1787,9 +1662,6 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
     course.numHeadlands = numHeadlands
     course.multiTools = multiTools
     course.editedByCourseEditor = wasEdited
-    if isCompressed then
-        course:addWaypointsForRows()
-    end
     CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
     return course
 end
