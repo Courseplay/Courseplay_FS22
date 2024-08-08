@@ -198,9 +198,9 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="工具横向调整"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_title" text="拾取草捆偏移调整"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="草捆拾取机偏移调整"/>
-    <text name="CP_vehicle_setting_combineOffsetX_title" text="前/后 偏移调整"/>
-    <text name="CP_vehicle_setting_combineOffsetX_tooltip" text="收割机管向前(+)和向后(-)的调整"/>
-    <text name="CP_vehicle_setting_combineOffsetZ_title" text="前/后 偏移调整"/>
+    <text name="CP_vehicle_setting_combineOffsetX_title" text="向左/向右 偏移调整"/>
+    <text name="CP_vehicle_setting_combineOffsetX_tooltip" text="收割机管向左(+)和向右(-)的调整"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_title" text="向前/向后 偏移调整"/>
     <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="收割机管向前(+)和向后(-)的调整"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="清空:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
@@ -218,8 +218,8 @@
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="青贮池作业"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="工作宽度"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="工作宽度. 调整范围: 0 - 50"/>
-    <text name="CP_vehicle_setting_levelerHeightOffset_title" text="护罩高度调整"/>
-    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="护罩与地面高度调整. 调整范围: 0 - 1"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_title" text="罩板高度调整"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="罩板与地面高度调整. 调整范围: 0 - 1"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="铲斗装载调整. 调整范围: -1 - 1"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="铲斗卸载调整. 调整范围: -1 - 1"/>
     <!---->
@@ -255,8 +255,8 @@
     <text name="CP_vehicle_setting_stopForUnload_tooltip" text="始终停车执行卸载。"/>
     <text name="CP_vehicle_setting_selfUnload_title" text="收割机自助卸载"/>
     <text name="CP_vehicle_setting_selfUnload_tooltip" text="收割机自动在田间或会合附近的拖车进行卸载。"/>
-    <text name="CP_vehicle_setting_unloadOnFirstHeadland_title" text="在第一个地头卸载"/>
-    <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="收割机将在第一个地头呼叫拖车。"/>
+    <text name="CP_vehicle_setting_unloadOnFirstHeadland_title" text="在第一个岬角卸载"/>
+    <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="收割机将在第一个岬角呼叫拖车。"/>
     <text name="CP_vehicle_setting_strawSwath_title" text="地头产生秸秆堆"/>
     <text name="CP_vehicle_setting_strawSwath_tooltip" text="启用/禁用条形秸秆堆功能或仅在田间地头禁用。"/>
     <text name="CP_vehicle_setting_callUnloaderPercent_title" text="呼叫卸载拖车"/>
