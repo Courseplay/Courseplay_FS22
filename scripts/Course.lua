@@ -1638,7 +1638,7 @@ function Course:writeStream(vehicle, streamId, connection)
     streamWriteInt32(streamId, #self.waypoints or 0)
     streamWriteBool(streamId, self.editedByCourseEditor)
     for i, p in ipairs(self.waypoints) do
-        streamWriteString(streamId, p:getXmlString())
+        p:writeStream(streamId)
     end
 end
 
@@ -1655,7 +1655,7 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
     -- these are only saved for the row start waypoint, here we add them to all waypoints of the row
     local rowNumber, leftSideWorked, rightSideWorked
     courseXml:iterate(courseKey .. Waypoint.xmlKey, function(ix, key)
-        table.insert(waypoints, Waypoint.initFromXmlFile(courseXml, key, ix))
+        table.insert(waypoints, Waypoint.createFromXmlFile(courseXml, key, ix))
         local last = waypoints[#waypoints].attributes
         if last.rowStart then
             rowNumber = last.rowNumber
@@ -1699,8 +1699,7 @@ function Course.createFromStream(vehicle, streamId, connection)
     local wasEdited = streamReadBool(streamId)
     local waypoints = {}
     for ix = 1, numWaypoints do
-        local d = CpUtil.getXmlVectorValues(streamReadString(streamId))
-        table.insert(waypoints, Waypoint.initFromXmlFile(d, ix))
+        table.insert(waypoints, Waypoint.createFromStream(d, ix))
     end
     local course = Course(vehicle, waypoints)
     course.name = name

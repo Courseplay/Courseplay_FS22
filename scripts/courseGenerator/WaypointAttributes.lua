@@ -296,8 +296,24 @@ function WaypointAttributes:setXmlValue(xmlFile, key)
     xmlFile:setValue(key .. '#atBoundaryId', self.atBoundaryId)
 end
 
+function WaypointAttributes:writeStream(streamId)
+    streamWriteBool(streamId, self.rowEnd)
+    streamWriteBool(streamId, self.rowStart)
+    streamWriteBool(streamId, self.isConnectingPath)
+    streamWriteInt32(streamId, self.headlandNumber)
+    streamWriteInt32(streamId, self.rowNumber)
+    streamWriteBool(streamId, self.leftSideWorked)
+    streamWriteBool(streamId, self.rightSideWorked)
+    streamWriteBool(streamId, self.headlandTurn)
+    streamWriteBool(streamId, self.headlandTransition)
+    streamWriteBool(streamId, self.usePathfinderToNextWaypoint)
+    streamWriteBool(streamId, self.usePathfinderToThisWaypoint)
+    streamWriteString(streamId, self.boundaryId)
+    streamWriteString(streamId, self.atBoundaryId)
+end
+
 --- Set from a saved waypoint in a xml file.
-function WaypointAttributes.initFromXmlFile(xmlFile, key)
+function WaypointAttributes.createFromXmlFile(xmlFile, key)
     local attributes = WaypointAttributes()
     attributes.rowEnd = xmlFile:getValue(key .. '#rowEnd') 
     attributes.rowStart = xmlFile:getValue(key .. '#rowStart') 
@@ -315,6 +331,23 @@ function WaypointAttributes.initFromXmlFile(xmlFile, key)
     return attributes
 end
 
+function WaypointAttributes.createFromStream(streamId)
+    local attributes = WaypointAttributes()
+    attributes.rowEnd = streamReadBool(streamId)
+    attributes.rowStart = streamReadBool(streamId)
+    attributes.isConnectingPath = streamReadBool(streamId)
+    attributes.headlandNumber = streamReadInt32(streamId)
+    attributes.rowNumber = streamReadInt32(streamId)
+    attributes.leftSideWorked = streamReadBool(streamId)
+    attributes.rightSideWorked = streamReadBool(streamId)
+    attributes.headlandTurn = streamReadBool(streamId)
+    attributes.headlandTransition = streamReadBool(streamId)
+    attributes.usePathfinderToNextWaypoint = streamReadBool(streamId)
+    attributes.usePathfinderToThisWaypoint = streamReadBool(streamId)
+    attributes.boundaryId = streamReadString(streamId)
+    attributes.atBoundaryId = streamReadString(streamId)
+    return attributes
+end
 
 function WaypointAttributes:__tostring()
     local str = '[ '
