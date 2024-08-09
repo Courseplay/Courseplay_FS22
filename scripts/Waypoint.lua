@@ -98,7 +98,7 @@ function Waypoint.createFromStream(streamId)
 	waypoint.z = streamReadFloat32(streamId)
 	waypoint.y = streamReadFloat32(streamId)
 	waypoint.rev = streamReadBool(streamId)
-	waypoint.attributes.createFromStream(streamId)
+	waypoint.attributes = WaypointAttributes.createFromStream(streamId)
 end
 
 --- Read legacy format (which used custom serialization instead of XML schema)
