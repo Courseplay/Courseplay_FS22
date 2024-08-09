@@ -277,23 +277,23 @@ function WaypointAttributes.registerXmlSchema(schema, key)
 end
 
 function WaypointAttributes:setXmlValue(xmlFile, key)
-    xmlFile:setValue(key .. '#rowEnd', self.rowEnd)
-    xmlFile:setValue(key .. '#rowStart', self.rowStart)
-    xmlFile:setValue(key .. '#isConnectingPath', self.isConnectingPath)
-    xmlFile:setValue(key .. '#headlandNumber', self.headlandNumber)
+    CpUtil.setXmlValue(xmlFile, key .. '#rowEnd', self.rowEnd)
+    CpUtil.setXmlValue(xmlFile, key .. '#rowStart', self.rowStart)
+    CpUtil.setXmlValue(xmlFile, key .. '#isConnectingPath', self.isConnectingPath)
+    CpUtil.setXmlValue(xmlFile, key .. '#headlandNumber', self.headlandNumber)
     if self.rowStart then
         -- only write these at the start of the row to reduce the XML file size, as these are the same for
         -- all rows of the waypoint
-        xmlFile:setValue(key .. '#rowNumber', self.rowNumber)
-        xmlFile:setValue(key .. '#leftSideWorked', self.leftSideWorked)
-        xmlFile:setValue(key .. '#rightSideWorked', self.rightSideWorked)
+        CpUtil.setXmlValue(xmlFile, key .. '#rowNumber', self.rowNumber)
+        CpUtil.setXmlValue(xmlFile, key .. '#leftSideWorked', self.leftSideWorked)
+        CpUtil.setXmlValue(xmlFile, key .. '#rightSideWorked', self.rightSideWorked)
     end
-    xmlFile:setValue(key .. '#headlandTurn', self.headlandTurn)
-    xmlFile:setValue(key .. '#headlandTransition', self.headlandTransition)
-    xmlFile:setValue(key .. '#usePathfinderToNextWaypoint', self.usePathfinderToNextWaypoint)
-    xmlFile:setValue(key .. '#usePathfinderToThisWaypoint', self.usePathfinderToThisWaypoint)
-    xmlFile:setValue(key .. '#boundaryId', self.boundaryId)
-    xmlFile:setValue(key .. '#atBoundaryId', self.atBoundaryId)
+    CpUtil.setXmlValue(xmlFile, key .. '#headlandTurn', self.headlandTurn)
+    CpUtil.setXmlValue(xmlFile, key .. '#headlandTransition', self.headlandTransition)
+    CpUtil.setXmlValue(xmlFile, key .. '#usePathfinderToNextWaypoint', self.usePathfinderToNextWaypoint)
+    CpUtil.setXmlValue(xmlFile, key .. '#usePathfinderToThisWaypoint', self.usePathfinderToThisWaypoint)
+    CpUtil.setXmlValue(xmlFile, key .. '#boundaryId', self.boundaryId)
+    CpUtil.setXmlValue(xmlFile, key .. '#atBoundaryId', self.atBoundaryId)
 end
 
 function WaypointAttributes:writeStream(streamId)
@@ -302,7 +302,11 @@ function WaypointAttributes:writeStream(streamId)
     streamWriteBool(streamId, self.isConnectingPath)
     streamWriteInt32(streamId, self.headlandNumber)
     streamWriteInt32(streamId, self.rowNumber)
+    -- *SideWorked is really not a boolean, if it is nil, it means the state is unknown. So let's make sure
+    -- that information is passed too
+    streamWriteBool(streamId, self.leftSideWorked == nil)
     streamWriteBool(streamId, self.leftSideWorked)
+    streamWriteBool(streamId, self.rightSideWorked == nil)
     streamWriteBool(streamId, self.rightSideWorked)
     streamWriteBool(streamId, self.headlandTurn)
     streamWriteBool(streamId, self.headlandTransition)
@@ -338,8 +342,18 @@ function WaypointAttributes.createFromStream(streamId)
     attributes.isConnectingPath = streamReadBool(streamId)
     attributes.headlandNumber = streamReadInt32(streamId)
     attributes.rowNumber = streamReadInt32(streamId)
-    attributes.leftSideWorked = streamReadBool(streamId)
-    attributes.rightSideWorked = streamReadBool(streamId)
+    local leftSideWorkedNil = streamReadBool(streamId)
+    if leftSideWorkedNil then
+        streamReadBool(streamId)
+    else
+        attributes.leftSideWorked = streamReadBool(streamId)
+    end
+    local rightSideWorkedNil = streamReadBool(streamId)
+    if rightSideWorkedNil then
+        streamReadBool(streamId)
+    else
+        attributes.rightSideWorked = streamReadBool(streamId)
+    end
     attributes.headlandTurn = streamReadBool(streamId)
     attributes.headlandTransition = streamReadBool(streamId)
     attributes.usePathfinderToNextWaypoint = streamReadBool(streamId)

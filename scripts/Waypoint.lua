@@ -71,7 +71,7 @@ end
 function Waypoint:setXmlValue(xmlFile, baseKey, i)
 	local key = string.format("%s%s(%d)", baseKey, Waypoint.xmlKey, i - 1)
 	xmlFile:setValue(key .. "#position", self.x, self.y, self.z)
-	xmlFile:setValue(key .. "#rev", self.rev)
+	CpUtil.setXmlValue(xmlFile, key .. "#rev", self.rev)
 	self.attributes:setXmlValue(xmlFile, key)
 end
 
