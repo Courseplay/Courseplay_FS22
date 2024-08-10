@@ -140,6 +140,11 @@ function CpCourseGeneratorSettings:isSpiralFromInsideVisible()
     return rowPatternNumber == CourseGenerator.RowPattern.SPIRAL
 end
 
+function CpCourseGeneratorSettings:isManualRowAngleVisible()
+    local spec = self.spec_cpCourseGeneratorSettings
+    return spec.autoRowAngle:getValue() == false
+end
+
 --- Makes sure the automatic work width gets recalculated after the variable work width was changed by the user.
 function CpCourseGeneratorSettings.onVariableWorkWidthSectionChanged(object)
     --- Object could be an implement, so make sure we use the root vehicle.
