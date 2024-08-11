@@ -106,7 +106,7 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
         self.selectedFieldPlot:setBrightColor(true)
         if isCustomField then
             CpUtil.infoVehicle(vehicle, 'disabling island bypass on custom field')
-            vehicle:getCourseGeneratorSettings().bypassIslands:setValue(true)
+            vehicle:getCourseGeneratorSettings().bypassIslands:setValue(false)
         end
     else
         self.selectedFieldPlot:setVisible(false)
