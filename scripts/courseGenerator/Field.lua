@@ -13,16 +13,10 @@ function Field:init(id, num, boundary)
     self.logger = Logger('Field ' .. id)
     ---@type Polygon
     self.boundary = Polygon(boundary)
-    self.islandPoints = {}
     ---@type CourseGenerator.Island[]
     self.islands = {}
     if boundary then
         self.boundary:calculateProperties()
-        if CourseGenerator.isRunningInGame() then
-            -- When running in the game, find all island vertices within the field boundary
-            self.islandPoints = CourseGenerator.Island.findIslands(self)
-            self:setupIslands()
-        end
     end
 end
 
@@ -103,6 +97,13 @@ function Field:getUnpackedVertices()
         self.unpackedVertices = self.boundary:getUnpackedVertices()
     end
     return self.unpackedVertices
+end
+
+-- Find islands (when running in the game)
+function Field:findIslands()
+    if self.islandPoints == nil then
+        self.islandPoints = CourseGenerator.Island.findIslands(self)
+    end
 end
 
 -- set up all island related data for the field
