@@ -215,7 +215,6 @@ function FieldworkCourse:setupAndSortIslands()
     if not self.context.bypassIslands then
         return
     end
-    self.context.field:findIslands()
     for _, island in pairs(self.context.field:getIslands()) do
         island:generateHeadlands(self.context, (self.nHeadlands > 0 and self.headlands[1]) and
                 self.headlands[1]:getPolygon() or self.boundary)
