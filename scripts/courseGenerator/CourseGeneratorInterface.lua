@@ -50,7 +50,9 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     context:setRowAngle(math.rad(-(settings.manualRowAngleDeg:getValue() - 90)))
     context:setBypassIslands(settings.bypassIslands:getValue())
     context:setIslandHeadlands(settings.nIslandHeadlands:getValue())
-
+    if settings.bypassIslands:getValue() then
+        context.field:findIslands()
+    end
     context:log()
 
     local status, numberOfHeadlands

@@ -92,7 +92,8 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
     end
     self.hasValidPosition = false
     self.foundVines = nil
-    local fieldPolygon, isCustomField = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
+    local fieldPolygon
+    fieldPolygon, self.isCustomField = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
     self:setFieldPolygon(fieldPolygon)
     if fieldPolygon then
         self.hasValidPosition = true
@@ -104,10 +105,6 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
         self.selectedFieldPlot:setWaypoints(fieldPolygon)
         self.selectedFieldPlot:setVisible(true)
         self.selectedFieldPlot:setBrightColor(true)
-        if isCustomField then
-            CpUtil.infoVehicle(vehicle, 'disabling island bypass on custom field')
-            vehicle:getCourseGeneratorSettings().bypassIslands:setValue(false)
-        end
     else
         self.selectedFieldPlot:setVisible(false)
         return false, g_i18n:getText("CP_error_not_on_field")
@@ -190,6 +187,10 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
     local vehicle = self.vehicleParameter:getVehicle()
     local fieldPolygon = self:getFieldPolygon()
     local settings = vehicle:getCourseGeneratorSettings()
+    if self.isCustomField then
+        CpUtil.infoVehicle(vehicle, 'disabling island bypass on custom field')
+        settings.bypassIslands:setValue(false)
+    end
     local tx, tz = self.cpJobParameters.fieldPosition:getPosition()
     local ok, course
     if self.foundVines then
