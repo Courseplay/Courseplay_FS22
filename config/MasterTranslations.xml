@@ -2014,6 +2014,7 @@ Negative Werte vergrößern den Arbeitsbereich über das Feld hinaus, um eine gr
 - Field Margin: Positive values reduce field size to add a buffer around the worked area in case you have obstacles near the field border.
 Negative values enlarge worked area beyond the field boundary to cover up field borders that are not perfectly detected.
 ]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_courseGeneratorHeadland_title">
 			<Text language="de"><![CDATA[Kursgenerator Vorgewende]]></Text>
 			<Text language="en"><![CDATA[Course generator headland]]></Text>
