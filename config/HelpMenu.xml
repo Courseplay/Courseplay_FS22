@@ -36,24 +36,15 @@
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorBaseFunctions_text"/>
 			</paragraph>
-			<paragraph>
-				<text text="$l10n_CP_help_page_courseGeneratorHeadland_text"/>
-			</paragraph>
-			<paragraph>
-				<text text="$l10n_CP_help_page_courseGeneratorHeadlandFunctions_text"/>
-			</paragraph>
-			<paragraph>
-				<text text="$l10n_CP_help_page_courseGeneratorExtras_text"/>
-			</paragraph>
 		</page>
 		<!--Courseplay Generator Headland-->
 		<page title="$l10n_CP_help_page_courseGeneratorHeadland_title">
 			<paragraph>
-				<text text="$l10n_CP_help_page_courseGeneratorBase_text"/>
+				<text text="$l10n_CP_help_page_courseGeneratorHeadland_text"/>
 				<image filename="img/helpmenu/headlandsettings.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
 			</paragraph>
 			<paragraph>
-				<text text="$l10n_CP_help_page_courseGeneratorBase_text"/>
+				<text text="$l10n_CP_help_page_courseGeneratorHeadlandFunctions_text"/>
 				<image filename="img/helpmenu/sharproundcorner.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
 			</paragraph>
 		</page>
