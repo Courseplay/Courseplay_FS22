@@ -592,6 +592,23 @@ Runde vil tage højde for de aktuelle valgte køretøjers drejeradius for at få
 - Foragerretning: med eller mod uret. Dette kan være vigtigt for mejetærskere og mejetærskere, afhængig af hvilken side sneglen eller transportbåndet er.
 - Forageroverlap: Hvor meget % overlap skal alle forager have. Den første vil ikke have noget overlap med markgrænsen, men de indre vil overlappe hinanden.
 "/>
+    <text name="CP_help_page_courseGeneratorCenter_text" text="
+Center
+"/>
+    <text name="CP_help_page_courseGeneratorCenterFunctions_text" text="
+- Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
+Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have the combine's pipe point out of the fruit most of the time to easier unload them.
+- Center direction:
+- Even row width:
+- Row direction: automatic mostly finds the best direction, but sometimes the longest edge fits better. If you are not happy with either one, choose manual and set the direction manually.
+- Row angle: When the row direction is set to manual, this setting appears and will tell the generator the direction of the rows.
+
+These settings appear only for specific settings you have done before:
+- Rows to skip: Appears when field center is set to &quot;up/down&quot;. This is a very helpful option to accelerate your work, as tools won't have to back up to turn into the next row.
+- Rows per Land: Appears when field center is set to &quot;lands&quot;. This has only impact when the field center is set to lands and will tell the generator how many rows each land should have. The more rows, the fewer lands will be generated.
+- Spiral from inside: Appears when field center is set to &quot;spiral&quot;.
+- Number of circles: Appears when field center is set to &quot;racetrack&quot;.
+"/>
     <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
     <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
     <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>
