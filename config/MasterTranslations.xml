@@ -2044,6 +2044,7 @@ hoch/runter
 			<Text language="en"><![CDATA[
 up/down
 ]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_courseGeneratorCenterExampleLands_text">
 			<Text language="de"><![CDATA[
 beete
@@ -2051,6 +2052,7 @@ beete
 			<Text language="en"><![CDATA[
 lands
 ]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_courseGeneratorCenterExampleSpiral_text">
 			<Text language="de"><![CDATA[
 spiralförmig
@@ -2058,6 +2060,7 @@ spiralförmig
 			<Text language="en"><![CDATA[
 spiral
 ]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_courseGeneratorCenterExampleRacetrack_text">
 			<Text language="de"><![CDATA[
 kreisförmig
