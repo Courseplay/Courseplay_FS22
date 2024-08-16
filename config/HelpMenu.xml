@@ -58,16 +58,25 @@
 				<text text="$l10n_CP_help_page_courseGeneratorCenterFunctions_text"/>
 			</paragraph>
 			<paragraph>
-				<text text="$l10n_CP_help_page_courseGeneratorCenterExamples_text"/>
+				<text text="$l10n_CP_help_page_courseGeneratorCenterExampleUpdown_text"/>
 			</paragraph>
 			<paragraph>
 				<image filename="img/helpmenu/updown.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
 			</paragraph>
 			<paragraph>
+				<text text="$l10n_CP_help_page_courseGeneratorCenterExampleLands_text"/>
+			</paragraph>
+			<paragraph>
 				<image filename="img/helpmenu/lands.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
 			</paragraph>
 			<paragraph>
+				<text text="$l10n_CP_help_page_courseGeneratorCenterExampleSpiral_text"/>
+			</paragraph>
+			<paragraph>
 				<image filename="img/helpmenu/spiral.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_courseGeneratorCenterExampleRacetrack_text"/>
 			</paragraph>
 			<paragraph>
 				<image filename="img/helpmenu/racetrack.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>

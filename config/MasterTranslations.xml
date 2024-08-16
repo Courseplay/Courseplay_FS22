@@ -2037,17 +2037,32 @@ These settings appear only for specific settings you have done before:
 - Number of circles: Appears when field center is set to "racetrack".
 ]]></Text>
 		</Translation>
-		<Translation name="CP_help_page_courseGeneratorCenterExamples_text">
+		<Translation name="CP_help_page_courseGeneratorCenterExampleUpdown_text">
 			<Text language="de"><![CDATA[
 hoch/runter
-beete
-spiralförmig
-kreisförmig
 ]]></Text>
 			<Text language="en"><![CDATA[
 up/down
+]]></Text>
+		<Translation name="CP_help_page_courseGeneratorCenterExampleLands_text">
+			<Text language="de"><![CDATA[
+beete
+]]></Text>
+			<Text language="en"><![CDATA[
 lands
+]]></Text>
+		<Translation name="CP_help_page_courseGeneratorCenterExampleSpiral_text">
+			<Text language="de"><![CDATA[
+spiralförmig
+]]></Text>
+			<Text language="en"><![CDATA[
 spiral
+]]></Text>
+		<Translation name="CP_help_page_courseGeneratorCenterExampleRacetrack_text">
+			<Text language="de"><![CDATA[
+kreisförmig
+]]></Text>
+			<Text language="en"><![CDATA[
 racetrack
 ]]></Text>
 		</Translation>
