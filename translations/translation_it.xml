@@ -593,11 +593,6 @@ Rotondi terrà conto del raggio di sterzata dei veicoli attualmente selezionati 
 - Senso di fine campo: orario o antiorario. Questo può essere importante per mietitrebbie e mietitrebbie, a seconda del lato in cui si trova il tubo o il nastro trasportatore.
 - Sovrapposizione a fine campo: quanta % di sovrapposizione dovrebbero avere tutte le capezzagne. Il primo non avrà sovrapposizione con il bordo del campo, ma quelli interni si sovrapporranno al loro vicino.
 "/>
-    <text name="CP_help_page_courseGeneratorExtras_text" text="
-Spiegazione del margine di campo:
-I valori positivi riducono le dimensioni del campo per aggiungere un buffer intorno all'area lavorata in caso di ostacoli vicino al bordo del campo.
-I valori negativi ingrandiscono l'area lavorata oltre il limite del campo per coprire i bordi del campo che non vengono rilevati perfettamente.
-"/>
     <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
     <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
     <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>

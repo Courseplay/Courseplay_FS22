@@ -593,11 +593,6 @@ Kółko - uwzględni aktualnie wybrany promień skrętu pojazdu, aby uzyskać na
 - Kierunek uwrocia: zgodnie z ruchem wskazówek zegara lub przeciwnie do ruchu wskazówek zegara. Może to być ważne w przypadku kombajnów, w zależności od tego, po której stronie znajduje się rura wyładowcza.
 - Zachodzenie na uwrociach: w jakim % powinny nakładać się na siebie uwrocia. Pierwszy z nich nie będzie nachodził na granicę pola, ale następne nałożą się na siebie.
 "/>
-    <text name="CP_help_page_courseGeneratorExtras_text" text="
-Objaśnienie marginesu pola:
-Wartości dodatnie zmniejszają rozmiar pola, aby dodać bufor wokół obrabianego obszaru w przypadku napotkania przeszkód w pobliżu granicy pola.
-Wartości ujemne powiększają obrobioną powierzchnię poza granicę pola, aby zakryć granice pola, które nie są idealnie wykrywane.
-"/>
     <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
     <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
     <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>

@@ -588,11 +588,6 @@ As configurações de cabeceiras apenas exibidas quando você definir pelo menos
 Você ganha opções de onde começar, configurações de canto, direção e sobreposição.
 As ferramentas são altamente recomendadas para evitar que as ferramentas saiam do campo ao virar.
 "/>
-    <text name="CP_help_page_courseGeneratorExtras_text" text="
-Explicação da margem do campo:
-Valores positivos reduzem o tamanho do campo para adicionar um buffer ao redor da área trabalhada caso haja obstáculos próximos à borda do campo.
-Os valores negativos aumentam a área trabalhada além do limite do campo para cobrir as bordas do campo que não são detectadas perfeitamente.
-"/>
     <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
     <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
     <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>

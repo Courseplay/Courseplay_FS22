@@ -593,11 +593,6 @@ A kerek opció figyelembe veszi a kiválasztott jármű fordulási sugarát, hog
 - Fordulósáv iránya: Órairányú vagy órával ellentétes. Ez fontos lehet betakarító gépeknél attól függően, hogy melyik oldalon van a cső, vagy kirakodó szalag.
 - Fordulósáv átfedés: Fordulósávok átfedése százalékban megadva. Az első nem lesz fedésben a tábla határával, de a belső sávok átfedésben lesznek egymással.
 "/>
-    <text name="CP_help_page_courseGeneratorExtras_text" text="
-Táblahatár magyarázata:
-A pozitív értékek csökkentik a tábla méretét és egy biztonsági sávot hoznak létre arraz az esetre, ha akadályok lennének a határhoz közel.
-A negatív értékek megnövelik a művelt területet a tábla határain túlra, hogy lefedjék a nem megfelelően detektált határokat.
-"/>
     <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
     <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
     <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>

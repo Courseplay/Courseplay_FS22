@@ -591,11 +591,6 @@ Zaoblený vezme v úvahu aktuálně vybraný poloměr zatáčky, aby byl pro dan
 - Směr souvrati: ve směru nebo proti směru hodinových ručiček. To může být důležité pro kombajny a sklízeče, v závislosti na tom, na které straně je výsypová roura nebo dopravní pás.
 - Souvraťový přesah: Kolik % by měly mít všechny souvratě. První se nebude překrývat s hranicí pole, ale vnitřní se budou překrývat se svou sousední.
 "/>
-    <text name="CP_help_page_courseGeneratorExtras_text" text="
-Vysvětlení okraje pole:
-Kladné hodnoty zmenšují velikost pole, aby se přidalo místo kolem obdělané plochy v případě, že máte poblíž hranice pole překážky.
-Záporné hodnoty zvětšují obdělanou plochu za hranici pole, aby zakryly hranice pole, které nejsou dokonale detekovány.
-"/>
     <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
     <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
     <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>

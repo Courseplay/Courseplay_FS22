@@ -592,11 +592,6 @@ Runde vil tage højde for de aktuelle valgte køretøjers drejeradius for at få
 - Foragerretning: med eller mod uret. Dette kan være vigtigt for mejetærskere og mejetærskere, afhængig af hvilken side sneglen eller transportbåndet er.
 - Forageroverlap: Hvor meget % overlap skal alle forager have. Den første vil ikke have noget overlap med markgrænsen, men de indre vil overlappe hinanden.
 "/>
-    <text name="CP_help_page_courseGeneratorExtras_text" text="
-Markgrænse forklaring:
-Positive værdier reducerer markstørrelsen for at tilføje en buffer omkring det bearbejdede område, hvis du har forhindringer nær markgrænsen.
-Negative værdier forstørrer det bearbejdede område ud over markgrænsen for at dække over markgrænser, der ikke er perfekt detekteret.
-"/>
     <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
     <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
     <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>

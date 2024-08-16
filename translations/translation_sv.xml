@@ -593,11 +593,6 @@ Rund kommer att ta hänsyn till de nuvarande valda fordonen förvandla radie fö
 - Riktning av rubriker: medurs eller moturs. Detta kan vara viktigt för kombinerade och skördare, beroende på vad röret eller transportbandet är.
 - Huvudlandsöverlappning: Hur mycket % överlappar alla Headlands bör ha. Den första kommer inte att ha någon överlappning med fältgränsen, men de inre kommer att överlappa med sin granne.
 "/>
-    <text name="CP_help_page_courseGeneratorExtras_text" text="
-Fältmarginal Förklaring:
-Positiva värden minskar fältstorleken för att lägga till en buffert runt det arbetade området om du har hinder nära fältgränsen.
-Negativa värden Förstora arbetade området utöver fältgränsen för att täcka fältgränser som inte är perfekt upptäckta.
-"/>
     <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
     <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
     <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>

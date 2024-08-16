@@ -591,11 +591,6 @@ Tur, mevcut seçilen araçların o araç için en iyi yuvarlak köşeye sahip ol
 - Burun yönü: saat yönünde veya saat yönünün tersine. Bu, borunun veya konveyör bandının hangi tarafta olduğuna bağlı olarak biçerdöverler ve biçerdöverler için önemli olabilir.
 - Headland çakışması: Tüm burçların % ne kadar örtüşmesi gerektiği. İlki alan sınırıyla örtüşmeyecek, ancak iç kısımlar komşularıyla örtüşecektir.
 "/>
-    <text name="CP_help_page_courseGeneratorExtras_text" text="
-Alan Marjı açıklaması:
-Pozitif değerler, alan sınırının yakınında engeller olması durumunda çalışılan alanın etrafına bir arabellek eklemek için alan boyutunu küçültür.
-Negatif değerler, mükemmel algılanmayan alan sınırlarını örtmek için çalışma alanını alan sınırının ötesine genişletir.
-"/>
     <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
     <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
     <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>

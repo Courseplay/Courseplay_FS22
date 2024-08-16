@@ -564,6 +564,7 @@ Alternativ kannst du den Fahrer auch über das HUD direkt am Kurs starten, oder 
     <text name="CP_help_page_courseGeneratorBasic_title" text="Kursgenerator Basis"/>
     <text name="CP_help_page_courseGeneratorBase_text" text="
 Das mit Abstand mächtigste und wichtigste Tool für die Feldarbeit ist der Kursgenerator. Dieser erlaubt es dir, die Kurse für deine Feldarbeit zu generieren.
+Mit der Version 2.0 des Generators lassen sich die Kurse noch mehr individualisieren.
 Wenn du das erste Mal mit dem Kursgenerator arbeitest, solltest du erst einmal anfangen, nur mit dem Vorgewende zu experimentieren.
 Danach kann man nach und nach die Einstellungen ändern und immer wieder auf &quot;Kurs generieren&quot; klicken, um anzuschauen welchen Einfluss diese Änderung hatte.
 Durch Experimentieren mit den Werten oder auch der Startposition kann man sich langsam mit dem Generator vertraut machen.
@@ -575,6 +576,8 @@ Grundeinstellungen:
 - Geräte auf Kurs: Mit dieser Einstellung kannst du einen Kurs mit bis zu 5 Geräten erstellen. Da dies etwas komplizierter wird, gibt es dazu eine extra Hilfesektion.
 - Anzahl Vorgewende: Damit deine Fahrzeuge und Geräte beim Wenden auf dem Feld bleiben, solltest du am besten ein paar Vorgewende einstellen.
 Die Anzahl der Vorgewende, multipliziert mit der Arbeitsbreite sollte in etwa die Länge des Fahrzeugs plus das angehängte Arbeitsgerät sein.
+- Starten auf: Wie im erweiterten Helfermenü beschrieben, wird die Feldposition benutzt, um den Start- oder Endpunkt auf dem Feld zu bestimmen.
+Wenn auf dem Vorgewende gestartet wird, ist es der Startpunkt. Wird auf den Feldreihen gestartet, bestimmt das den Endpunkt.
 
 Einstellungen Feldmitte:
 - Feldmitte: Es gibt verschiedene Arbeitsweisen, um die Feldmitte zu bearbeiten. Der klassische Weg ist hoch/runter.
@@ -590,17 +593,12 @@ Du erhältst Zugang zu Einstellungen, wie z.B. dem Wendemanöver für die Ecken,
 Vorgewende sind empfohlen, damit die Arbeitsgeräte beim Wenden von einer Feldbahn zur nächsten auf dem Feld bleiben.
 "/>
     <text name="CP_help_page_courseGeneratorHeadlandFunctions_text" text="
-- Starten auf: Wie im erweiterten Helfermenü beschrieben, wird die Feldposition benutzt, um den Start- oder Endpunkt auf dem Feld zu bestimmen.
-Wenn auf dem Vorgewende gestartet wird, ist es der Startpunkt. Wird auf den Feldreihen gestartet, bestimmt das den Endpunkt.
-- Vorgewende-Ecken: &quot;Weich&quot; rundet die Ecken einfach nur ab, dies wird für alle Geräte funktionieren, sorgt aber für kleine unbearbeitete Flächen in den Ecken.
-Das kann mit Überlappung reduziert werden, wird aber nie ganz verschwinden. Bei &quot;Scharf&quot; wird ein Wendemanöver in den Ecken generiert, abhängig vom Winkel der Feldecke.
-&quot;Rund&quot; nutzt den Wenderadius des gewählten Fahrzeugs und generiert so passende runde Ecken für das Fahrzeug.
+- Scharfe Ecken:
+- Anzahl runde Ecken:
+- Eckenradius: 
 - Vorgewende-Richtung: Im Uhrzeigersinn oder gegen den Uhrzeigersinn. Das kann für Drescher oder Ernter entscheidend sein, abhängig davon auf welcher Seite sich das Abladerohr oder Förderband befindet.
 - Vorgewende-Überlappung: Wie viel % Überlappung die Vorgewende haben sollen. Die erste Vorgewendebahn hat keine Überlappung mit dem Feldrand, alle weiteren Bahnen überlappen mit der jeweils vorherigen Bahn.
-"/>
-    <text name="CP_help_page_courseGeneratorExtras_text" text="
-Feldgrenze:
-Positive Werte reduzieren den Arbeitsbereich, um einen Puffer zum Feldrand zu generieren. Das ist nützlich, sollten sich einige Objekte zu dicht an der Feldkante befinden.
+- Feldgrenze: Positive Werte reduzieren den Arbeitsbereich, um einen Puffer zum Feldrand zu generieren. Das ist nützlich, sollten sich einige Objekte zu dicht an der Feldkante befinden.
 Negative Werte vergrößern den Arbeitsbereich über das Feld hinaus, um eine größere Abdeckung zu bekommen, z.B. wenn der Feldrand nicht genau genug erkannt wurde.
 "/>
     <text name="CP_help_page_courseGeneratorHeadland_title" text="Kursgenerator Vorgewende"/>

@@ -593,11 +593,6 @@ Redondo tendrá en cuenta el radio de giro de los vehículos seleccionados actua
 - Dirección de la cabecera: en sentido horario o antihorario. Esto puede ser importante para combinadas y cosechadoras, dependiendo de qué lado esté la tubería o la cinta transportadora.
 - Superposición de cabeceras: Cuánto % de superposición deben tener todas las cabeceras. El primero no se superpondrá con el borde del campo, pero los interiores se superpondrán con su vecino.
 "/>
-    <text name="CP_help_page_courseGeneratorExtras_text" text="
-Explicación del margen de campo:
-Los valores positivos reducen el tamaño del campo para agregar un búfer alrededor del área trabajada en caso de que haya obstáculos cerca del borde del campo.
-Los valores negativos amplían el área trabajada más allá del límite del campo para cubrir los bordes del campo que no se detectan perfectamente.
-"/>
     <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
     <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
     <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>

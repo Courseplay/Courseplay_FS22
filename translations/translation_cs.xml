@@ -592,11 +592,6 @@ Courseplay 允许您生成具有附加功能的任务路线，例如：地头。
 - 地头方向： 从左往右或从右往左。 这对于联合收割机和收割机来说可能很重要，具体取决于管道或传送带的哪一侧。 
 - 地头重叠：所有地头应有多少重叠百分比。 第一个与字田地边界没有重叠，但中间的将与其邻居重叠。
 "/>
-    <text name="CP_help_page_courseGeneratorExtras_text" text="
-田地边界说明：
-正值会减小田地大小以在工作区域周围添加缓冲区，以防您田地边界附近有障碍物。 
-负值将工作区域扩大到田地边界之外，以覆盖未完全检测到的田地边界。 
-"/>
     <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
     <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
     <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>

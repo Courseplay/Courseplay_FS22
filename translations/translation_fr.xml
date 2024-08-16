@@ -590,11 +590,6 @@ Cela peut être attenué avec le chevauchement mais sans pour autant complèteme
 - Sens des fourrières : Horaire ou anti-horaire. Important pour les véhicules qui doivent être vidés (moissonneuses) en fonction du côté de leur goulotte de déchargement.
 - Chevauchement : Le pourcentage de recouvrement entre les fourrières. La première fourrière (contour du champ) n'aura pas de recouvrement mais les suivantes utiliseront ce paramètre.
 "/>
-    <text name="CP_help_page_courseGeneratorExtras_text" text="
-Délimitation du champ :
-Les valeurs positives réduisent la taille du champ afin de laisser une marge de sécurité autour du champ si celui-ci est bordé d'arbres ou de clôtures qui pourraient entrer en collision avec les outils.
-Les valeurs négatives agrandissent la taille du champ pour travailler les bordures qui ne seraient pas correctement détectées.
-"/>
     <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
     <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
     <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>
