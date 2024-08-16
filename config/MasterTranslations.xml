@@ -2069,6 +2069,30 @@ kreisförmig
 racetrack
 ]]></Text>
 		</Translation>
+		<Translation name="CP_help_page_courseGeneratorIsland_text">
+			<Text language="de"><![CDATA[
+Insel
+]]></Text>
+			<Text language="en"><![CDATA[
+Island
+]]></Text>
+		</Translation>
+		<Translation name="CP_help_page_courseGeneratorIslandFunctions_text">
+			<Text language="de"><![CDATA[
+- Insel
+]]></Text>
+			<Text language="en"><![CDATA[
+- Island
+]]></Text>
+		</Translation>
+		<Translation name="CP_help_page_courseGeneratorExpert_text">
+			<Text language="de"><![CDATA[
+Experten Einstellungen
+]]></Text>
+			<Text language="en"><![CDATA[
+Expert settings
+]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_courseGeneratorHeadland_title">
 			<Text language="de"><![CDATA[Kursgenerator Vorgewende]]></Text>
 			<Text language="en"><![CDATA[Course generator headland]]></Text>
