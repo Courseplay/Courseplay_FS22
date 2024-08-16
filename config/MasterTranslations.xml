@@ -1998,7 +1998,7 @@ Negative Werte vergrößern den Arbeitsbereich über das Feld hinaus, um eine gr
 - Field Margin: Positive values reduce field size to add a buffer around the worked area in case you have obstacles near the field border.
 Negative values enlarge worked area beyond the field boundary to cover up field borders that are not perfectly detected.
 ]]></Text>
-	</Translation>
+		</Translation>
 		<Translation name="CP_help_page_courseGeneratorCenter_text">
 			<Text language="de"><![CDATA[
 Mitte
@@ -2036,6 +2036,7 @@ These settings appear only for specific settings you have done before:
 - Spiral from inside: Appears when field center is set to "spiral".
 - Number of circles: Appears when field center is set to "racetrack".
 ]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_courseGeneratorCenterExamples_text">
 			<Text language="de"><![CDATA[
 hoch/runter
