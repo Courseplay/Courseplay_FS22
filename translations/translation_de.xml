@@ -622,6 +622,15 @@ spiralförmig
     <text name="CP_help_page_courseGeneratorCenterExampleRacetrack_text" text="
 kreisförmig
 "/>
+    <text name="CP_help_page_courseGeneratorIsland_text" text="
+Insel
+"/>
+    <text name="CP_help_page_courseGeneratorIslandFunctions_text" text="
+- Insel
+"/>
+    <text name="CP_help_page_courseGeneratorExpert_text" text="
+Experten Einstellungen
+"/>
     <text name="CP_help_page_courseGeneratorHeadland_title" text="Kursgenerator Vorgewende"/>
     <text name="CP_help_page_courseGeneratorCenter_title" text="Kursgenerator Feldmitte"/>
     <text name="CP_help_page_courseGeneratorIsland_title" text="Kursgenerator Insel"/>

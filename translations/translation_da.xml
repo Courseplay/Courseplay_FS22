@@ -621,6 +621,15 @@ spiral
     <text name="CP_help_page_courseGeneratorCenterExampleRacetrack_text" text="
 racetrack
 "/>
+    <text name="CP_help_page_courseGeneratorIsland_text" text="
+Island
+"/>
+    <text name="CP_help_page_courseGeneratorIslandFunctions_text" text="
+- Island
+"/>
+    <text name="CP_help_page_courseGeneratorExpert_text" text="
+Expert settings
+"/>
     <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
     <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
     <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>
