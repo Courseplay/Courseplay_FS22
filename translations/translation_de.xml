@@ -610,6 +610,12 @@ Folgende Einstellungen erscheinen erst Anhand bestimmter vorheriger Einstellung:
 - Spirale von Innen: Erscheint bei Feldmitte &quot;Spiralförmig&quot;.
 - Anzahl Runden: Erscheint bei Feldmitte &quot;Kreisförmig&quot;.
 "/>
+    <text name="CP_help_page_courseGeneratorCenterExamples_text" text="
+hoch/runter
+beete
+spiralförmig
+kreisförmig
+"/>
     <text name="CP_help_page_courseGeneratorHeadland_title" text="Kursgenerator Vorgewende"/>
     <text name="CP_help_page_courseGeneratorCenter_title" text="Kursgenerator Feldmitte"/>
     <text name="CP_help_page_courseGeneratorIsland_title" text="Kursgenerator Insel"/>
