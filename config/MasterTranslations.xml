@@ -1999,16 +1999,16 @@ Negative Werte vergrößern den Arbeitsbereich über das Feld hinaus, um eine gr
 Negative values enlarge worked area beyond the field boundary to cover up field borders that are not perfectly detected.
 ]]></Text>
 	</Translation>
-	<Translation name="CP_help_page_courseGeneratorCenter_text">
-		<Text language="de"><![CDATA[
+		<Translation name="CP_help_page_courseGeneratorCenter_text">
+			<Text language="de"><![CDATA[
 Mitte
 ]]></Text>
-		<Text language="en"><![CDATA[
+			<Text language="en"><![CDATA[
 Center
 ]]></Text>
-	</Translation>
-	<Translation name="CP_help_page_courseGeneratorCenterFunctions_text">
-		<Text language="de"><![CDATA[
+		</Translation>
+		<Translation name="CP_help_page_courseGeneratorCenterFunctions_text">
+			<Text language="de"><![CDATA[
 - Feldmitte: Es gibt verschiedene Arbeitsweisen, um die Feldmitte zu bearbeiten. Der klassische Weg ist hoch/runter.
 Spiralförmig, Kreisförmig und Beete haben jeweils ihre eigenen Vorteile gegenüber den anderen. Bei Beeten zum Beispiel wird der Drescher die meiste Zeit mit dem Rohr außerhalb der Frucht fahren, um ein einfacheres Entladen zu ermöglichen.
 - Mitte Richtung:
@@ -2022,7 +2022,7 @@ Folgende Einstellungen erscheinen erst Anhand bestimmter vorheriger Einstellung:
 - Spirale von Innen: Erscheint bei Feldmitte "Spiralförmig".
 - Anzahl Runden: Erscheint bei Feldmitte "Kreisförmig".
 ]]></Text>
-		<Text language="en"><![CDATA[
+			<Text language="en"><![CDATA[
 - Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
 Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have the combine's pipe point out of the fruit most of the time to easier unload them.
 - Center direction:
@@ -2035,6 +2035,19 @@ These settings appear only for specific settings you have done before:
 - Rows per Land: Appears when field center is set to "lands". This has only impact when the field center is set to lands and will tell the generator how many rows each land should have. The more rows, the fewer lands will be generated.
 - Spiral from inside: Appears when field center is set to "spiral".
 - Number of circles: Appears when field center is set to "racetrack".
+]]></Text>
+		<Translation name="CP_help_page_courseGeneratorCenterExamples_text">
+			<Text language="de"><![CDATA[
+hoch/runter
+beete
+spiralförmig
+kreisförmig
+]]></Text>
+			<Text language="en"><![CDATA[
+up/down
+lands
+spiral
+racetrack
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_courseGeneratorHeadland_title">
