@@ -605,10 +605,16 @@ These settings appear only for specific settings you have done before:
 - Spiral from inside: Appears when field center is set to &quot;spiral&quot;.
 - Number of circles: Appears when field center is set to &quot;racetrack&quot;.
 "/>
-    <text name="CP_help_page_courseGeneratorCenterExamples_text" text="
+    <text name="CP_help_page_courseGeneratorCenterExampleUpdown_text" text="
 up/down
+"/>
+    <text name="CP_help_page_courseGeneratorCenterExampleLands_text" text="
 lands
+"/>
+    <text name="CP_help_page_courseGeneratorCenterExampleSpiral_text" text="
 spiral
+"/>
+    <text name="CP_help_page_courseGeneratorCenterExampleRacetrack_text" text="
 racetrack
 "/>
     <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
