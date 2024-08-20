@@ -1981,18 +1981,18 @@ Headlands are highly suggested to prevent tools leaving the field when turning.
 		</Translation>
 		<Translation name="CP_help_page_courseGeneratorHeadlandFunctions_text">
 			<Text language="de"><![CDATA[
-- Scharfe Ecken:
-- Anzahl runde Ecken:
-- Eckenradius: 
+- Scharfe Ecken: Erzwingt die Ecken scharf zu fahren, was bedeutet das ein Wendemanöver durchgeführt wird.
+- Anzahl runde Ecken: Hat man z.B. drei Vorgewende und stellt die Anzahl runder Ecken auf eins, wird vom ersten Vorgewende an gezählt, die Ecken des ersten Vorgewendes auf Rund gestellt, basierend auf den Eckenradius.
+- Eckenradius: Bestimmt den Radius den runde Ecken haben sollen. Weis man bereits, dass ein nachfolgender Arbeitsschritt mit einem Gerät bearbeitet wird, was einen minimalen Radius von 10 hat, kann man für den Kurs bereits diesen Radius einstellen.
 - Vorgewende-Richtung: Im Uhrzeigersinn oder gegen den Uhrzeigersinn. Das kann für Drescher oder Ernter entscheidend sein, abhängig davon auf welcher Seite sich das Abladerohr oder Förderband befindet.
 - Vorgewende-Überlappung: Wie viel % Überlappung die Vorgewende haben sollen. Die erste Vorgewendebahn hat keine Überlappung mit dem Feldrand, alle weiteren Bahnen überlappen mit der jeweils vorherigen Bahn.
 - Feldgrenze: Positive Werte reduzieren den Arbeitsbereich, um einen Puffer zum Feldrand zu generieren. Das ist nützlich, sollten sich einige Objekte zu dicht an der Feldkante befinden.
 Negative Werte vergrößern den Arbeitsbereich über das Feld hinaus, um eine größere Abdeckung zu bekommen, z.B. wenn der Feldrand nicht genau genug erkannt wurde.
 ]]></Text>
 			<Text language="en"><![CDATA[
-- Sharpen headland corners:
-- Number of round corners:
-- Corner radius:
+- Sharpen headland corners: Forces corners to generate a sharp turn
+- Number of round corners: In case you selected e.g. three headlands and round corners to one, counted from the 1st headland, the 1st one will be rounded based on the corner radius.
+- Corner radius: Sets the radius for the round corners. If you know a following work tool have a minimum radius of 10, you may set this value to 10 for the course.
 - Headland direction: clockwise or counter-clockwise. This can be important for combines and harvesters, depending on wich side the pipe or conveyor belt is.
 - Headland overlap: How much % overlap all headlands should have. The first one will have no overlap with the field border, but the inner ones will overlap with their neighbour.
 - Field Margin: Positive values reduce field size to add a buffer around the worked area in case you have obstacles near the field border.
@@ -2001,18 +2001,24 @@ Negative values enlarge worked area beyond the field boundary to cover up field 
 		</Translation>
 		<Translation name="CP_help_page_courseGeneratorCenter_text">
 			<Text language="de"><![CDATA[
-Mitte
+Für die Mitte gibt es die verschiedenste Strategien das Feld ab zu arbeiten. Oft spielt das gewählte Tool eine Rolle. Die verfügbaren Strategien entstanden durch Feedback und Informationen aus unserer Community.
+Das einfache hoch und runter fahren funktioniert an sich immer. Es kann aber besser sein, zum Dreschen z.B. Beete zu verwenden, damit das Rohr öffter außerhalb der Frucht liegt, das ein effizienteres Abtanken ermöglicht.
+Beim Häckseln möchte man möglichst wenig enge Wendemanöver haben, damit der Abfahrer einfacher hinterher fahren kann. Dafür ist Kreisförmig eine gute Wahl.
+Spiralförmig hingegen kann man gut für schmale gezogene Ernter verwenden, so dass man durch dessen Offset das Arbeitsgerät immer zur Frucht stellt, den Traktor aber außerhalb dieser fährt.
 ]]></Text>
 			<Text language="en"><![CDATA[
-Center
+For the center of the field, different strategies are available to do the work. Mostly the selected tool is a reason to choose a specific strategie over the other. The available strategies where created based on feedback and informations from our community.
+The simple up down strategie works almost every time for any tool. But it can be better to choose another, for example when harvesting with a combine, lands is a better way to keep the pipe outside of the fruit for a more efficient unloading.
+For Chopping, racetrack can be a better solution for less narrow turns to make the work for the unloader easier.
+Spirale is a better solution for towed harvester with an offset, to keep the tool in the fruit and the tractor outside.
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_courseGeneratorCenterFunctions_text">
 			<Text language="de"><![CDATA[
 - Feldmitte: Es gibt verschiedene Arbeitsweisen, um die Feldmitte zu bearbeiten. Der klassische Weg ist hoch/runter.
 Spiralförmig, Kreisförmig und Beete haben jeweils ihre eigenen Vorteile gegenüber den anderen. Bei Beeten zum Beispiel wird der Drescher die meiste Zeit mit dem Rohr außerhalb der Frucht fahren, um ein einfacheres Entladen zu ermöglichen.
-- Mitte Richtung:
-- Gleichmäßige Bahnenbreite:
+- Mitte Richtung: Funktioniert genau so wie beim Vorgewende, ist jetzt aber unabhängig davon einstellbar.
+- Gleichmäßige Bahnenbreite: Wenn die Feldmitte eine gesammte Breite hat, die sich nicht gleichmäßig auf die Arbeitsbreite des Tools aufteilen lässt, wird am Anfang oder am Ende eine sehr schmale Bahn gezogen. Um das zu vermeiden, wird die Bahnenbreite so reduziert, dass alle Bahnen die gleiche Breite haben.
 - Startrichtung: Automatisch findet meistens die beste Startrichtung, manchmal hilft es aber auch, die längste Kante zu nehmen. Sollte das auch nicht passen, kannst du den Wert auf Manuell stellen.
 - Richtungswinkel der Bahnen: Ist die Startrichtung auf Manuell gesetzt, erscheint diese Einstellung und bestimmt die Richtung der Bahnen.
 
@@ -2025,8 +2031,8 @@ Folgende Einstellungen erscheinen erst Anhand bestimmter vorheriger Einstellung:
 			<Text language="en"><![CDATA[
 - Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
 Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have the combine's pipe point out of the fruit most of the time to easier unload them.
-- Center direction:
-- Even row width:
+- Center direction: Works the same as the headland, but can now be set independantly.
+- Even row width: If the center of a field have a total width, that can't be evenly split over the work width of the tool, the 1st or last line will have a narrow rest work. To prevent this the width of each row gets reduced to have a even split over all lines.
 - Row direction: automatic mostly finds the best direction, but sometimes the longest edge fits better. If you are not happy with either one, choose manual and set the direction manually.
 - Row angle: When the row direction is set to manual, this setting appears and will tell the generator the direction of the rows.
 
