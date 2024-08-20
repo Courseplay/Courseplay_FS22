@@ -626,10 +626,15 @@ spiralförmig
 kreisförmig
 "/>
     <text name="CP_help_page_courseGeneratorIsland_text" text="
-Insel
+Das Umfahren von Inseln ist nur noch komplett möglich. Das heist es wird immer einmal komplett rum gefahren.
+Es gibt auch im neuen Generator limitierungen, wenn die Insel zu dicht am Feldrand liegt.
+Es spielt natürlich eine Rolle, wie breit das Arbeitsgerät ist, ob die Runden um die Insel zu dicht zum Rand des Feldes kommt.
+Z.B. wie viele Vorgewende passen zwischen Insel und Feldrand.
 "/>
     <text name="CP_help_page_courseGeneratorIslandFunctions_text" text="
-- Insel
+- Insel Umfahrung: Schaltet das Umfahren der Insel ein oder aus, sollte eine Insel gefunden werden. Inselumfahrung funktioniert nicht auf selbst erstellten Feldern!
+- Insel Vorgewende: Die Anzahl an Umrundungen um die Insel kann jetzt seperat von den Vorgewende eingestellt werden.
+- Insel Vorgewende Richtung: In welche richtung die Insel umfahren werden soll um eventuelle richtungswechsel zu vermeiden. Das kann je nach Feld und den rest des Kurses auf versuche ankommen.
 "/>
     <text name="CP_help_page_courseGeneratorExpert_text" text="
 Experten Einstellungen
