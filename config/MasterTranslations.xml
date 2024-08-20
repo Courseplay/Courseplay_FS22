@@ -2077,18 +2077,28 @@ racetrack
 		</Translation>
 		<Translation name="CP_help_page_courseGeneratorIsland_text">
 			<Text language="de"><![CDATA[
-Insel
+Das Umfahren von Inseln ist nur noch komplett möglich. Das heist es wird immer einmal komplett rum gefahren.
+Es gibt auch im neuen Generator limitierungen, wenn die Insel zu dicht am Feldrand liegt.
+Es spielt natürlich eine Rolle, wie breit das Arbeitsgerät ist, ob die Runden um die Insel zu dicht zum Rand des Feldes kommt.
+Z.B. wie viele Vorgewende passen zwischen Insel und Feldrand.
 ]]></Text>
 			<Text language="en"><![CDATA[
-Island
+Driving arround the island is now only possible with a complete round arround it.
+Even in the new generator, limits for island too close to the field border.
+The work width of the tool is decisive if the island is too close or not.
+Like how many headlands do fit between the island and the field border.
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_courseGeneratorIslandFunctions_text">
 			<Text language="de"><![CDATA[
-- Insel
+- Insel Umfahrung: Schaltet das Umfahren der Insel ein oder aus, sollte eine Insel gefunden werden. Inselumfahrung funktioniert nicht auf selbst erstellten Feldern!
+- Insel Vorgewende: Die Anzahl an Umrundungen um die Insel kann jetzt seperat von den Vorgewende eingestellt werden.
+- Insel Vorgewende Richtung: In welche richtung die Insel umfahren werden soll um eventuelle richtungswechsel zu vermeiden. Das kann je nach Feld und den rest des Kurses auf versuche ankommen.
 ]]></Text>
 			<Text language="en"><![CDATA[
-- Island
+- Island bypass: Turns on or off the bypass of the island, if an island is found. This does not work for custom fields!
+- Island headlands: The amount of rounds arround the island can now be set indipendantly from the headland setting.
+- Island headland direction: In which direction the driver drives arround the island, to not have strange direction changes. This can be tricky to set up as it depends on the field and the rest of the course.
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_courseGeneratorExpert_text">
