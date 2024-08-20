@@ -585,22 +585,25 @@ You gain options for where to start on, corner settings, direction and overlap.
 Headlands are highly suggested to prevent tools leaving the field when turning.
 "/>
     <text name="CP_help_page_courseGeneratorHeadlandFunctions_text" text="
-- Sharpen headland corners:
-- Number of round corners:
-- Corner radius:
+- Sharpen headland corners: Forces corners to generate a sharp turn
+- Number of round corners: In case you selected e.g. three headlands and round corners to one, counted from the 1st headland, the 1st one will be rounded based on the corner radius.
+- Corner radius: Sets the radius for the round corners. If you know a following work tool have a minimum radius of 10, you may set this value to 10 for the course.
 - Headland direction: clockwise or counter-clockwise. This can be important for combines and harvesters, depending on wich side the pipe or conveyor belt is.
 - Headland overlap: How much % overlap all headlands should have. The first one will have no overlap with the field border, but the inner ones will overlap with their neighbour.
 - Field Margin: Positive values reduce field size to add a buffer around the worked area in case you have obstacles near the field border.
 Negative values enlarge worked area beyond the field boundary to cover up field borders that are not perfectly detected.
 "/>
     <text name="CP_help_page_courseGeneratorCenter_text" text="
-Center
+For the center of the field, different strategies are available to do the work. Mostly the selected tool is a reason to choose a specific strategie over the other. The available strategies where created based on feedback and informations from our community.
+The simple up down strategie works almost every time for any tool. But it can be better to choose another, for example when harvesting with a combine, lands is a better way to keep the pipe outside of the fruit for a more efficient unloading.
+For Chopping, racetrack can be a better solution for less narrow turns to make the work for the unloader easier.
+Spirale is a better solution for towed harvester with an offset, to keep the tool in the fruit and the tractor outside.
 "/>
     <text name="CP_help_page_courseGeneratorCenterFunctions_text" text="
 - Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
 Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have the combine's pipe point out of the fruit most of the time to easier unload them.
-- Center direction:
-- Even row width:
+- Center direction: Works the same as the headland, but can now be set independantly.
+- Even row width: If the center of a field have a total width, that can't be evenly split over the work width of the tool, the 1st or last line will have a narrow rest work. To prevent this the width of each row gets reduced to have a even split over all lines.
 - Row direction: automatic mostly finds the best direction, but sometimes the longest edge fits better. If you are not happy with either one, choose manual and set the direction manually.
 - Row angle: When the row direction is set to manual, this setting appears and will tell the generator the direction of the rows.
 
