@@ -734,7 +734,7 @@ function CourseTurn:generatePathfinderTurn(useHeadland)
             self.turningRadius, self.driveStrategy:getAllowReversePathfinding(),
             useHeadland and self.fieldWorkCourse or nil,
             self.driveStrategy:getWorkWidth(), backMarkerDistance,
-            self.driveStrategy:isTurnOnFieldActive())
+            self.driveStrategy:isTurnOnFieldActive(), self.turnContext:getBoundaryId())
     if result.done then
         return self:onPathfindingDone(result.path)
     else

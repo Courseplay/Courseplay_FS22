@@ -231,6 +231,14 @@ function Waypoint:isHeadlandTransition()
 	return self.attributes:isHeadlandTransition()
 end
 
+function Waypoint:getBoundaryId()
+	return self.attributes:getBoundaryId()
+end
+
+function Waypoint:getAtBoundaryId()
+	return self.attributes:getAtBoundaryId()
+end
+
 function Waypoint:isOnConnectingPath()
 	return self.attributes:isOnConnectingPath()
 end
