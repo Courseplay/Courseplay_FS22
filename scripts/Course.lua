@@ -168,6 +168,7 @@ function Course:getNumberOfWaypoints()
     return #self.waypoints
 end
 
+---@return Waypoint
 function Course:getWaypoint(ix)
     return self.waypoints[ix]
 end
@@ -438,10 +439,18 @@ function Course:getHeadlandNumber(ix)
     return self.waypoints[ix].attributes:getHeadlandPassNumber()
 end
 
-function Course:isOnHeadland(ix, n)
+---@param ix number
+---@param n number|nil headland pass number
+---@param boundaryId string|nil boundary id of the headland
+function Course:isOnHeadland(ix, n, boundaryId)
     ix = ix or self.currentWaypoint
     if n then
-        return self.waypoints[ix].attributes:getHeadlandPassNumber() == n
+        if boundaryId == nil then
+            return self.waypoints[ix].attributes:getHeadlandPassNumber() == n
+        else
+            return self.waypoints[ix].attributes:getHeadlandPassNumber() == n and
+                    self.waypoints[ix]:getBoundaryId() == boundaryId
+        end
     else
         return self.waypoints[ix].attributes:getHeadlandPassNumber() ~= nil
     end
@@ -458,6 +467,38 @@ end
 function Course:startsWithHeadland()
     return self:isOnHeadland(1)
 end
+
+---@param n number number of headland to get, 1 -> number of headlands, 1 is the outermost
+---@param boundaryId string|nil id of the boundary to return only the points that are on the same field boundary
+--- or island headland
+---@return Polygon headland as a polygon (x, y)
+function Course:getHeadland(n, boundaryId)
+    local headland = Polygon()
+    local first, last, step
+    if self:startsWithHeadland() then
+        first, last, step = 1, self:getNumberOfWaypoints(), 1
+    else
+        -- if the course ends with the headland, start at the end to avoid headlands around the
+        -- islands in the center of the field
+        first, last, step = self:getNumberOfWaypoints(), 1, -1
+    end
+    for i = first, last, step do
+        -- do not want to include the transition and the connecting path parts as those are overlap with the first part
+        -- of the headland confusing the shortest path finding
+        if self:isOnHeadland(i, n, boundaryId) and not self:isHeadlandTransition(i) and not self:isOnConnectingPath(i) then
+            local x, _, z = self:getWaypointPosition(i)
+            headland:append({ x = x, y = -z })
+        end
+        if #headland > 0 and not self:isOnHeadland(i, n) then
+            -- stop after we leave the headland around the field boundary or when we already found our headland
+            -- and now on a different one
+            -- as we don't want to include headlands around islands.
+            break
+        end
+    end
+    return headland
+end
+
 
 function Course:getTurnControls(ix)
     return self.waypoints[ix].turnControls
@@ -863,7 +904,7 @@ function Course:copy(vehicle, first, last)
     newCourse.multiToolsPosition = self.multiToolsPosition
     newCourse.multiToolsSameTurnWidth = self.multiToolsSameTurnWidth
     newCourse.workWidth = self.workWidth
-    newCourse.numHeadlands = self.numHeadlands
+    newCourse.numberOfHeadlands = self.numberOfHeadlands
     return newCourse
 end
 
@@ -1620,7 +1661,7 @@ end
 function Course:saveToXml(courseXml, courseKey)
     courseXml:setValue(courseKey .. '#name', self.name)
     courseXml:setValue(courseKey .. '#workWidth', self.workWidth or 0)
-    courseXml:setValue(courseKey .. '#numHeadlands', self.numHeadlands or 0)
+    courseXml:setValue(courseKey .. '#numHeadlands', self.numberOfHeadlands or 0)
     courseXml:setValue(courseKey .. '#multiTools', self.multiTools or 0)
     courseXml:setValue(courseKey .. '#wasEdited', self.editedByCourseEditor)
     for i, p in ipairs(self.waypoints) do
@@ -1631,7 +1672,7 @@ end
 function Course:writeStream(vehicle, streamId, connection)
     streamWriteString(streamId, self.name or "")
     streamWriteFloat32(streamId, self.workWidth or 0)
-    streamWriteInt32(streamId, self.numHeadlands or 0)
+    streamWriteInt32(streamId, self.numberOfHeadlands or 0)
     streamWriteInt32(streamId, self.multiTools or 1)
     streamWriteInt32(streamId, self.multiToolsPosition or 0)
     streamWriteBool(streamId, self.multiToolsSameTurnWidth or false)
@@ -1648,7 +1689,7 @@ end
 function Course.createFromXml(vehicle, courseXml, courseKey)
     local name = courseXml:getValue(courseKey .. '#name')
     local workWidth = courseXml:getValue(courseKey .. '#workWidth')
-    local numHeadlands = courseXml:getValue(courseKey .. '#numHeadlands')
+    local numberOfHeadlands = courseXml:getValue(courseKey .. '#numHeadlands')
     local multiTools = courseXml:getValue(courseKey .. '#multiTools')
     local wasEdited = courseXml:getValue(courseKey .. '#wasEdited', false)
     local waypoints = {}
@@ -1681,7 +1722,7 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
     local course = Course(vehicle, waypoints)
     course.name = name
     course.workWidth = workWidth
-    course.numHeadlands = numHeadlands
+    course.numberOfHeadlands = numberOfHeadlands
     course.multiTools = multiTools
     course.editedByCourseEditor = wasEdited
     CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
@@ -1691,7 +1732,7 @@ end
 function Course.createFromStream(vehicle, streamId, connection)
     local name = streamReadString(streamId)
     local workWidth = streamReadFloat32(streamId)
-    local numHeadlands = streamReadInt32(streamId)
+    local numberOfHeadlands = streamReadInt32(streamId)
     local multiTools = streamReadInt32(streamId)
     local multiToolsPosition = streamReadInt32(streamId)
     local multiToolsSameTurnWidth = streamReadBool(streamId)
@@ -1704,7 +1745,7 @@ function Course.createFromStream(vehicle, streamId, connection)
     local course = Course(vehicle, waypoints)
     course.name = name
     course.workWidth = workWidth
-    course.numHeadlands = numHeadlands
+    course.numberOfHeadlands = numberOfHeadlands
     course.multiTools = multiTools
     course.multiToolsPosition = multiToolsPosition
     course.multiToolsSameTurnWidth = multiToolsSameTurnWidth
@@ -1713,14 +1754,14 @@ function Course.createFromStream(vehicle, streamId, connection)
     return course
 end
 
-function Course.createFromGeneratedCourse(vehicle, generatedCourse, workWidth, numHeadlands, multiTools)
+function Course.createFromGeneratedCourse(vehicle, generatedCourse, workWidth, numberOfHeadlands, multiTools)
     local waypoints = {}
     for i, wp in ipairs(generatedCourse:getPath()) do
         table.insert(waypoints, Waypoint.initFromGeneratedWp(wp, i))
     end
     local course = Course(vehicle or g_currentMission.controlledVehicle, waypoints)
     course.workWidth = workWidth
-    course.numHeadlands = numHeadlands
+    course.numberOfHeadlands = numberOfHeadlands
     course.multiTools = multiTools
     -- we always generate course for the middle position, other positions and symmetric lane change
     -- are set in calculateOffsetCourse()

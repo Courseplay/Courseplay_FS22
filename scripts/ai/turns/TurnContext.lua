@@ -56,17 +56,13 @@ function TurnContext:init(vehicle, course, turnStartIx, turnEndIx, turnNodes, wo
     self.workWidth = workWidth
     self.vehicle = vehicle
     --- Setting up turn waypoints
-    ---
-    ---@type Waypoint
-    self.beforeTurnStartWp = course.waypoints[turnStartIx - 1]
-    ---@type Waypoint
-    self.turnStartWp = course.waypoints[turnStartIx]
+    self.beforeTurnStartWp = course:getWaypoint(turnStartIx - 1)
+    self.turnStartWp = course:getWaypoint(turnStartIx)
     self.turnStartWpIx = turnStartIx
-    ---@type Waypoint
-    self.turnEndWp = course.waypoints[turnEndIx]
+    self.turnEndWp = course:getWaypoint(turnEndIx)
     self.turnEndWpIx = turnEndIx
-    ---@type Waypoint
-    self.afterTurnEndWp = course.waypoints[math.min(course:getNumberOfWaypoints(), turnEndIx + 1)]
+    self.turnEndAtBoundaryId = self.turnEndWp:getAtBoundaryId()
+    self.afterTurnEndWp = course:getWaypoint(math.min(course:getNumberOfWaypoints(), turnEndIx + 1))
     self.directionChangeDeg = math.deg( CpMathUtil.getDeltaAngle( math.rad(self.turnEndWp.angle), math.rad(self.beforeTurnStartWp.angle)))
 
     self:setupTurnStart(course, turnNodes)
@@ -478,6 +474,11 @@ function TurnContext:getTurnEndNodeAndOffsets(steeringLength)
         end
     end
     return turnEndNode, goalOffset
+end
+
+---@return string|nil id of the boundary for this turn
+function TurnContext:getBoundaryId()
+    return self.turnEndAtBoundaryId
 end
 
 function TurnContext:debug(...)

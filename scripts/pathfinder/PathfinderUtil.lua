@@ -523,8 +523,12 @@ end
 ---@param goal State3D
 ---@param course Course
 ---@param turnRadius number
+---@param workingWidth number
+---@param backMarkerDistance number
+---@param boundaryId string|nil id of the boundary (field or island), to make sure we stay on the same headland as
+--- the headland number alone may also be one of the island headlands.
 ---@return State3D[]
-local function findShortestPathOnHeadland(start, goal, course, turnRadius, workingWidth, backMarkerDistance)
+local function findShortestPathOnHeadland(start, goal, course, turnRadius, workingWidth, backMarkerDistance, boundaryId)
     local headlandWidth = course:getNumberOfHeadlands() * workingWidth
     -- distance of the vehicle's direction node from the end of the row. If the implement is on the front of the
     -- vehicle (like a combine), we move the vehicle up to the end of the row so we'll later always end up with
@@ -536,10 +540,10 @@ local function findShortestPathOnHeadland(start, goal, course, turnRadius, worki
     local closestHeadland = math.max(1, math.min(course:getNumberOfHeadlands() - 1,
             math.floor(usableHeadlandWidth / workingWidth) + 1))
     -- to be able to use the existing getSectionBetweenPoints, we first create a Polyline[], then construct a State3D[]
-    local headland = getHeadland(course, closestHeadland)
+    local headland = course:getHeadland(closestHeadland, boundaryId)
     CpUtil.debugVehicle(CpDebug.DBG_PATHFINDER, course:getVehicle(),
-            'headland width %.1f, distance from row end %.1f, usable headland width %.1f closest headland %d with %d points',
-            headlandWidth, distanceFromRowEnd, usableHeadlandWidth, closestHeadland, #headland)
+            'headland width %.1f, distance from row end %.1f, usable headland width %.1f closest headland %d (%s) with %d points',
+            headlandWidth, distanceFromRowEnd, usableHeadlandWidth, closestHeadland, boundaryId, #headland)
     if #headland == 0 then
         return
     end
@@ -587,10 +591,12 @@ end
 --- in front of the vehicle when it stops working on that row before the turn starts. Negative values mean the
 --- vehicle is towing the implements and is past the end of the row when the implement reaches the end of the row.
 ---@param turnOnField boolean is turn on field allowed?
+---@param boundaryId string|nil id of the boundary (field or island), to make sure we stay on the same headland as
+--- the headland number alone may also be one of the island headlands.
 ---@return PathfinderInterface pathfinder
 ---@return PathfinderResult
 function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode, goalOffset, turnRadius, allowReverse,
-                                        courseWithHeadland, workingWidth, backMarkerDistance, turnOnField)
+                                        courseWithHeadland, workingWidth, backMarkerDistance, turnOnField, boundaryId)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(vehicle:getAIDirectionNode(), 0, startOffset or 0)
     local start = State3D(x, -z, CpMathUtil.angleFromGame(yRot))
     x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalReferenceNode, 0, goalOffset or 0)
@@ -605,7 +611,8 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
     local pathfinder
     if courseWithHeadland and courseWithHeadland:getNumberOfHeadlands() > 0 then
         -- if there's a headland, we want to drive on the headland to the next row
-        local headlandPath = findShortestPathOnHeadland(start, goal, courseWithHeadland, turnRadius, workingWidth, backMarkerDistance)
+        local headlandPath = findShortestPathOnHeadland(start, goal, courseWithHeadland, turnRadius, workingWidth,
+                backMarkerDistance, boundaryId)
         if headlandPath ~= nil then
             -- is the first wp of the headland in front of us?
             local _, y, _ = getWorldTranslation(vehicle:getAIDirectionNode())
