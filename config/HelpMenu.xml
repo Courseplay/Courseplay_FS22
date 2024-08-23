@@ -43,7 +43,9 @@
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorHeadlandFunctions_text"/>
-				<image filename="img/helpmenu/sharproundcorner.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
+			</paragraph>
+			<paragraph>
+				<image filename="img/helpmenu/sharproundcorner.dds" size="330 130" uvs="0px 0px 330px 130px"/>
 			</paragraph>
 		</page>
 		<!--Courseplay Generator Center-->
@@ -58,25 +60,25 @@
 				<text text="$l10n_CP_help_page_courseGeneratorCenterExampleUpdown_text"/>
 			</paragraph>
 			<paragraph>
-				<image filename="img/helpmenu/updown.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
+				<image filename="img/helpmenu/updown.dds" size="1024 470" uvs="0px 0px 1024px 470px"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorCenterExampleLands_text"/>
 			</paragraph>
 			<paragraph>
-				<image filename="img/helpmenu/lands.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
+				<image filename="img/helpmenu/lands.dds" size="1024 470" uvs="0px 0px 1024px 470px"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorCenterExampleSpiral_text"/>
 			</paragraph>
 			<paragraph>
-				<image filename="img/helpmenu/spiral.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
+				<image filename="img/helpmenu/spiral.dds" size="1024 470" uvs="0px 0px 1024px 470px"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorCenterExampleRacetrack_text"/>
 			</paragraph>
 			<paragraph>
-				<image filename="img/helpmenu/racetrack.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
+				<image filename="img/helpmenu/racetrack.dds" size="1024 470" uvs="0px 0px 1024px 470px"/>
 			</paragraph>
 		</page>
 		<!--Courseplay Generator Island-->
@@ -93,6 +95,10 @@
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorExpert_text"/>
 			</paragraph>
+			<paragraph>
+				<image filename="img/helpmenu/baseedge.dds" size="1020 545" uvs="0px 0px 1020px 545px"/>
+			</paragraph>
+			
 		</page>
 		<!--Courseplay courseManager-->
         <page title="$l10n_CP_help_page_courseManager_title">
