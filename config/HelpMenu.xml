@@ -31,7 +31,6 @@
 		<page title="$l10n_CP_help_page_courseGeneratorBasic_title">
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorBase_text"/>
-				<image filename="img/helpmenu/basicsettings.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorBaseFunctions_text"/>
@@ -41,7 +40,6 @@
 		<page title="$l10n_CP_help_page_courseGeneratorHeadland_title">
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorHeadland_text"/>
-				<image filename="img/helpmenu/headlandsettings.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorHeadlandFunctions_text"/>
@@ -52,7 +50,6 @@
 		<page title="$l10n_CP_help_page_courseGeneratorCenter_title">
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorCenter_text"/>
-				<image filename="img/helpmenu/centersettings.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorCenterFunctions_text"/>
@@ -86,7 +83,6 @@
 		<page title="$l10n_CP_help_page_courseGeneratorIsland_title">
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorIsland_text"/>
-				<image filename="img/helpmenu/islandsettings.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorIslandFunctions_text"/>
