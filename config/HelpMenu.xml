@@ -96,7 +96,6 @@
 		<page title="$l10n_CP_help_page_courseGeneratorExpert_title">
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorExpert_text"/>
-				<image filename="img/helpmenu/expertsettings.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
 			</paragraph>
 		</page>
 		<!--Courseplay courseManager-->
