@@ -637,7 +637,16 @@ Like how many headlands do fit between the island and the field border.
 - Island headland direction: In which direction the driver drives arround the island, to not have strange direction changes. This can be tricky to set up as it depends on the field and the rest of the course.
 "/>
     <text name="CP_help_page_courseGeneratorExpert_text" text="
-Expert settings
+Some settings are only visible, if you set the expert mode to active on the global courseplay settings.
+Before you play arround with those settings, you should make sure you know what the basic settings do.
+Some expert settings only work properly under some conditions.
+
+- Vehicles on the field: With this setting you can create a course for more then 1 vehicle to work on the same field. More details in the multitool entry of the helpmenu.
+- Narrow field: Creates the headland only at two short edges of the field. In that case, it is not possible to keep your vehicle on the field on the longest edges at the headland.
+- Headland overlap: There is a default value that will always be used. This value can be changed with this setting. The overlap will be withing the field and won't overlap the field border.
+- Field margin: This setting lets you move the field border in- or outwards of the original border.
+- Use base line edge: A completly new feature, what only works on specific fields. If you have a field with a long radial border and place the field marker near it, the center line will follow that border.
+IMPORTANT NOTE: Should the generated course not be perfect or even bad, the selected edge or the field will not work with this feature. There also won't be an Update for this!
 "/>
     <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
     <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>

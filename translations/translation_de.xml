@@ -637,7 +637,15 @@ Z.B. wie viele Vorgewende passen zwischen Insel und Feldrand.
 - Insel Vorgewende Richtung: In welche richtung die Insel umfahren werden soll um eventuelle richtungswechsel zu vermeiden. Das kann je nach Feld und den rest des Kurses auf versuche ankommen.
 "/>
     <text name="CP_help_page_courseGeneratorExpert_text" text="
-Experten Einstellungen
+Einige Einstellunge sind erst dann sichbar, wenn in den globalen CP Einstellungen den &quot;Experten Modus&quot; eingeschaltet habt.
+Bevor ihr euch mit den Einstellmöglichkeiten beschäftigt, solltet ihr euch erst mit den normalen Einstellungen vertraut machen, da nicht alle Experten Einstellungen ohne Einschränkung funktionieren werden.
+
+- Fahrzeuge auf dem Feld: Mit dieser Einstellung könnt ihr mehr als 1 Fahrzeug das Feld abwarbeiten lassen. Mehr Details dazu gibt es unter einem extra Punkt im Hilfemenü.
+- Enges Feld: Erzeugt nur an den kürzesten Feldrand Seiten ein Vorgewende. Es lässt sich aktuell nicht vermeiden, dass Fahrzeuge an den langen Seiten im Vorgewende das Feld verlassen.
+- Vorgewende Überlappung: Es ist ein standart Wert eingestellt, der immer verwendet wird. Dieser kann aber mit dieser Einstellung angepasst werden. Die Überlappung findet innerhalb des Feldes statt und ragt nicht über den Feldrand hinaus.
+- Feldgrenze: Mit dieser Einstellung lässt sich die Feldgrenze weiter nach innen oder außen verschieben und somit lässt sich der normale Feldrand verschieben.
+- Feldrand für Bahnen: Ein ganz neues Feature, was nur auf bestimmten Feldern funktioniert. Hat man ein Feld als Feldgrenze einem langen Bogen und setzt den Feldmarker in die Nähe dieses Feldrands, so werden die Bahnen in der Mitte den Verlauf des Feldrands nehmen.
+ANMERKUNG: Sollte ein Kurs nicht sauber generiert werden, funktioniert diese Funktion nicht auf dem Feld oder mit dem Feldrand. Es wird dafür auch kein Update geben!
 "/>
     <text name="CP_help_page_courseGeneratorHeadland_title" text="Kursgenerator Vorgewende"/>
     <text name="CP_help_page_courseGeneratorCenter_title" text="Kursgenerator Feldmitte"/>
