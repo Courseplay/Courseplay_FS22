@@ -85,11 +85,11 @@
 		<!--Courseplay Generator Island-->
 		<page title="$l10n_CP_help_page_courseGeneratorIsland_title">
 			<paragraph>
-				<text text="$l10n_CP_help_page_courseIsland_text"/>
+				<text text="$l10n_CP_help_page_courseGeneratorIsland_text"/>
 				<image filename="img/helpmenu/islandsettings.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
 			</paragraph>
 			<paragraph>
-				<text text="$l10n_CP_help_page_courseIslandFunctions_text"/>
+				<text text="$l10n_CP_help_page_courseGeneratorIslandFunctions_text"/>
 			</paragraph>
 		</page>
 		<!--Courseplay Generator Expert-->
