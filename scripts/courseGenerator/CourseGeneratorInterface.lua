@@ -52,8 +52,8 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     context:setIslandHeadlands(settings.nIslandHeadlands:getValue())
     if settings.bypassIslands:getValue() then
         context.field:findIslands()
+        context.field:setupIslands()
     end
-    context:log()
 
     local status, numberOfHeadlands
     if settings.narrowField:getValue() then
@@ -84,7 +84,6 @@ function CourseGeneratorInterface.generate(fieldPolygon,
         numberOfHeadlands = #CourseGeneratorInterface.generatedCourse:getHeadlands()
     end
 
-
     -- return on exception or if the result is not usable
     if not status or CourseGeneratorInterface.generatedCourse == nil then
         return false
@@ -102,40 +101,50 @@ end
 --- Generates a vine course, where the fieldPolygon are the start/end of the vine node.
 ---@param fieldPolygon table
 ---@param workWidth number
----@param turnRadius number
+---@param turningRadius number
 ---@param manualRowAngleDeg number
 ---@param rowsToSkip number
 ---@param multiTools number
 function CourseGeneratorInterface.generateVineCourse(
         fieldPolygon,
-        startingPoint,
+        startPosition,
         workWidth,
-        turnRadius,
+        turningRadius,
         manualRowAngleDeg,
         rowsToSkip,
         multiTools
 )
+    CourseGenerator.clearDebugObjects()
+    local field = CourseGenerator.Field('', 0, CpMathUtil.pointsFromGame(fieldPolygon))
 
-    return CourseGeneratorInterface.generate(
-            fieldPolygon,
-            startingPoint,
-            true,
-            workWidth,
-            turnRadius,
-            0,
-            false,
-            CpCourseGeneratorSettings.HEADLAND_CORNER_TYPE_SHARP,
-            0,
-            CourseGenerator.RowPattern.ALTERNATING,
-            CpCourseGeneratorSettings.ROW_DIRECTION_MANUAL,
-            manualRowAngleDeg,
-            rowsToSkip,
-            true,
-            0,
-            false,
-            0,
-            multiTools,
-            false
+    local context = CourseGenerator.FieldworkContext(field, workWidth * multiTools, turningRadius, 0)
+    context:setRowPattern(CourseGenerator.RowPatternAlternating(rowsToSkip, true))
+    context:setStartLocation(startPosition.x, -startPosition.z)
+    context:setAutoRowAngle(false)
+    -- the Course Generator UI uses the geographical direction angles (0 - North, 90 - East, etc), convert it to
+    -- the mathematical angle (0 - x+, 90 - y+, etc)
+    context:setRowAngle(CpMathUtil.angleFromGame(manualRowAngleDeg))
+    context:setBypassIslands(false)
+    local status
+    status, CourseGeneratorInterface.generatedCourse = xpcall(
+            function()
+                return CourseGenerator.FieldworkCourse(context)
+            end,
+            function(err)
+                printCallstack();
+                return err
+            end
     )
+    -- return on exception or if the result is not usable
+    if not status or CourseGeneratorInterface.generatedCourse == nil then
+        return false
+    end
 
+    CourseGeneratorInterface.logger:debug('Generated vine course: %d center waypoints',
+            #CourseGeneratorInterface.generatedCourse:getCenterPath())
+
+    local course = Course.createFromGeneratedCourse(nil, CourseGeneratorInterface.generatedCourse,
+            workWidth, 0, multiTools)
+    course:setFieldPolygon(fieldPolygon)
+    return true, course
 end
