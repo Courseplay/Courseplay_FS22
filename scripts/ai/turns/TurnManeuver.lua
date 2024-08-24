@@ -17,6 +17,8 @@ TurnManeuver.CHANGE_TO_FWD_WHEN_REACHED = 'changeToFwdWhenReached'
 -- Ending turn, from here, lower implement whenever needed (depending on the lowering duration,
 -- making sure it is lowered when we reach the start of the next row)
 TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END = 'lowerImplementAtTurnEnd'
+-- Mark waypoints for dynamic tight turn offset
+TurnManeuver.applyTightTurnOffset = true
 
 ---@param course Course
 function TurnManeuver.hasTurnControl(course, ix, control)
@@ -156,7 +158,7 @@ function TurnManeuver:generateTurnCircle(center, startDir, stopDir, radius, cloc
 		end
 	end
 	self:debug("generateTurnCircle: startRot=%d, endRot=%d, degreeStep=%d, degreeToTurn=%d, clockwise=%d",
-		startRot, endRot, (degreeStep * clockwise), degreeToTurn, clockwise)
+			startRot, endRot, (degreeStep * clockwise), degreeToTurn, clockwise)
 
 	-- Get the number of waypoints
 	numWP = ceil(degreeToTurn / degreeStep)
@@ -180,7 +182,7 @@ function TurnManeuver:generateTurnCircle(center, startDir, stopDir, radius, cloc
 		self:addWaypoint(x, z, nil, reverse, nil, nil, true)
 
 		local _,rot,_ = getRotation(point)
-		self:debug("generateTurnCircle: waypoint %d curentRotation=%d", i, deg(rot))
+		self:debug("generateTurnCircle: waypoint %d currentRotation=%d", i, deg(rot))
 	end
 
 	-- Clean up the created node.
@@ -201,8 +203,8 @@ function TurnManeuver:addWaypoint(x, z, turnEnd, reverse, dontPrint)
 	self.dzMax = dz > self.dzMax and dz or self.dzMax
 	if not dontPrint then
 		self:debug("addWaypoint %d: x=%.2f, z=%.2f, dz=%.1f, turnEnd=%s, reverse=%s",
-			#self.waypoints, x, z, dz,
-			tostring(turnEnd and true or false), tostring(reverse and true or false))
+				#self.waypoints, x, z, dz,
+				tostring(turnEnd and true or false), tostring(reverse and true or false))
 	end
 end
 
@@ -265,35 +267,35 @@ function TurnManeuver:adjustCourseToFitField(course, dBack, ixBeforeEndingTurnSe
 	-- generate a straight reverse section first (less than 1 m step should make sure we always end up with
 	-- at least two waypoints
 	local courseWithReversing = Course.createFromNode(self.vehicle, self.vehicle:getAIDirectionNode(),
-		0, -reversingOffset, -reversingOffset - dBack, -0.9, true)
+			0, -reversingOffset, -reversingOffset - dBack, -0.9, true)
 	-- now add the actual turn, which has already been shifted back before this function was called
 	courseWithReversing:append(course)
 	-- the last waypoint of the course after it was translated
 	local _, _, dFromTurnEnd = course:getWaypointLocalPosition(self.turnContext.vehicleAtTurnEndNode, ixBeforeEndingTurnSection)
 	local _, _, dFromWorkStart = course:getWaypointLocalPosition(self.turnContext.workStartNode, ixBeforeEndingTurnSection)
 	self:debug('Work start from curve end %.1f, vehicle at %.1f, %.1f between vehicle and work start)',
-		dFromWorkStart, dFromTurnEnd, self.turnContext.turnEndForwardOffset)
+			dFromWorkStart, dFromTurnEnd, self.turnContext.turnEndForwardOffset)
 	if self.turnContext.turnEndForwardOffset > 0 and math.max(dFromTurnEnd, dFromWorkStart) > -self.steeringLength then
 		self:debug('Reverse to work start (implement in back)')
 		-- vehicle in front of the work start node at turn end
 		-- allow early direction change when aligned
 		TurnManeuver.setTurnControlForLastWaypoints(courseWithReversing, endingTurnLength,
-			TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED, true, true)
+				TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED, true, true)
 		-- go all the way to the back marker distance so there's plenty of room for lower early too, also, the
 		-- reversingOffset may be even behind the back marker, especially for vehicles which have a AIToolReverserDirectionNode
 		-- which is then used as the PPC controlled node, and thus it must be far enough that we reach the lowering
 		-- point before the controlled node reaches the end of the course
 		local reverseAfterTurn = Course.createFromNode(self.vehicle, self.turnContext.vehicleAtTurnEndNode,
-			0, dFromTurnEnd + self.steeringLength,
-			math.min(dFromTurnEnd, self.turnContext.backMarkerDistance, -reversingOffset), -0.8, true)
+				0, dFromTurnEnd + self.steeringLength,
+				math.min(dFromTurnEnd, self.turnContext.backMarkerDistance, -reversingOffset), -0.8, true)
 		courseWithReversing:append(reverseAfterTurn)
 	elseif self.turnContext.turnEndForwardOffset <= 0 and dFromTurnEnd >= 0 then
 		self:debug('Reverse to work start (implement in front)')
 		-- the work start is in front of the vehicle at the turn end
 		TurnManeuver.setTurnControlForLastWaypoints(courseWithReversing, endingTurnLength,
-			TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED, true, true)
+				TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED, true, true)
 		local reverseAfterTurn = Course.createFromNode(self.vehicle, self.turnContext.workStartNode,
-			0, -reversingOffset, -reversingOffset + self.turnContext.turnEndForwardOffset, -1, true)
+				0, -reversingOffset, -reversingOffset + self.turnContext.turnEndForwardOffset, -1, true)
 		courseWithReversing:append(reverseAfterTurn)
 	end
 	return courseWithReversing
@@ -305,7 +307,7 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 	TurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, steeringLength)
 	self:debug('Start generating')
 	self:debug('r=%.1f, w=%.1f, steeringLength=%.1f, distanceToFieldEdge=%.1f',
-		turningRadius, workWidth, steeringLength, distanceToFieldEdge)
+			turningRadius, workWidth, steeringLength, distanceToFieldEdge)
 
 	local turnEndNode, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(self.steeringLength)
 	self.course = self:findAnalyticPath(vehicleDirectionNode, 0, turnEndNode, 0, goalOffset, self.turningRadius)
@@ -319,39 +321,73 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 		dBack = dBack < 2 and 2 or dBack
 		self:debug('Not enough space on field, regenerating course back %.1f meters', dBack)
 		self.course = self:findAnalyticPath(vehicleDirectionNode, -dBack, turnEndNode, 0, goalOffset + dBack, self.turningRadius)
-		self.course:setUseTightTurnOffsetForLastWaypoints(
-				g_vehicleConfigurations:getRecursively(vehicle, 'tightTurnOffsetDistanceInTurns') or 10)
+		if self.applyTightTurnOffset then
+			self.course:setUseTightTurnOffsetForLastWaypoints(
+					g_vehicleConfigurations:getRecursively(vehicle, 'tightTurnOffsetDistanceInTurns') or 10)
+		end
 		local ixBeforeEndingTurnSection = self.course:getNumberOfWaypoints()
-		endingTurnLength = self.turnContext:appendEndingTurnCourse(self.course, steeringLength, true)
+		endingTurnLength = self.turnContext:appendEndingTurnCourse(self.course, steeringLength, self.applyTightTurnOffset)
 		self:debug('dzMax=%.1f, workWidth=%.1f, spaceNeeded=%.1f, distanceToFieldEdge=%.1f, ixBeforeEndingTurnSection=%d, canReverse=%s',
 				dzMax, workWidth, spaceNeededOnFieldForTurn, distanceToFieldEdge, ixBeforeEndingTurnSection, canReverse)
 		self.course = self:adjustCourseToFitField(self.course, dBack, ixBeforeEndingTurnSection, endingTurnLength)
 	else
+		if self.applyTightTurnOffset then
+			self.course:setUseTightTurnOffsetForLastWaypoints(
+					g_vehicleConfigurations:getRecursively(vehicle, 'tightTurnOffsetDistanceInTurns') or 10)
+		end
+		endingTurnLength = self.turnContext:appendEndingTurnCourse(self.course, steeringLength, self.applyTightTurnOffset)
+	end
+	if self.applyTightTurnOffset then
+		-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
 		self.course:setUseTightTurnOffsetForLastWaypoints(
 				g_vehicleConfigurations:getRecursively(vehicle, 'tightTurnOffsetDistanceInTurns') or 10)
-		endingTurnLength = self.turnContext:appendEndingTurnCourse(self.course, steeringLength, true)
 	end
-	-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
-	self.course:setUseTightTurnOffsetForLastWaypoints(
-			g_vehicleConfigurations:getRecursively(vehicle, 'tightTurnOffsetDistanceInTurns') or 10)
 	TurnManeuver.setLowerImplements(self.course, endingTurnLength, true)
 end
 
 ---@class DubinsTurnManeuver : AnalyticTurnManeuver
 DubinsTurnManeuver = CpObject(AnalyticTurnManeuver)
-
 function DubinsTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius,
 								 workWidth, steeringLength, distanceToFieldEdge)
 	self.debugPrefix = '(DubinsTurn): '
 	AnalyticTurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius,
-		workWidth, steeringLength, distanceToFieldEdge)
+			workWidth, steeringLength, distanceToFieldEdge)
 end
 
 function DubinsTurnManeuver:findAnalyticPath(vehicleDirectionNode, startOffset, turnEndNode,
 											 xOffset, goalOffset, turningRadius)
 	local path = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver,
-		vehicleDirectionNode, startOffset, turnEndNode, 0, goalOffset, self.turningRadius)
+			vehicleDirectionNode, startOffset, turnEndNode, 0, goalOffset, self.turningRadius)
 	return Course.createFromAnalyticPath(self.vehicle, path, true)
+end
+
+---@class TowedDubinsTurnManeuver : DubinsTurnManeuver
+TowedDubinsTurnManeuver = CpObject(DubinsTurnManeuver)
+TowedDubinsTurnManeuver.applyTightTurnOffset = false
+function TowedDubinsTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius,
+									  workWidth, steeringLength, distanceToFieldEdge)
+	self.debugPrefix = '(TowedDubinsTurn): '
+	local offset = AIUtil.getOffsetForTowBarLength(turningRadius, steeringLength)
+	turningRadius = turningRadius - offset
+	self:debug('Towed implement, adjusting radius to %.1f to accommodate tight turn offset', turningRadius)
+	AnalyticTurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius,
+			workWidth, steeringLength, distanceToFieldEdge)
+end
+
+function TowedDubinsTurnManeuver:calculateTractorCourse(course)
+	for _, wp in ipairs(course.waypoints) do
+		local v = PathfinderUtil.getWaypointAsState3D(wp, 0, self.steeringLength)
+		wp.x, wp.z = v.x, -v.y
+	end
+	course:enrichWaypointData()
+	return course
+end
+
+function TowedDubinsTurnManeuver:findAnalyticPath(vehicleDirectionNode, startOffset, turnEndNode,
+												  xOffset, goalOffset, turningRadius)
+	local path = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver,
+			vehicleDirectionNode, startOffset, turnEndNode, 0, goalOffset, self.turningRadius)
+	return self:calculateTractorCourse(Course.createFromAnalyticPath(self.vehicle, path, true))
 end
 
 ---@class LeftTurnReedsSheppSolver : ReedsSheppSolver
@@ -376,14 +412,14 @@ end
 ReedsSheppTurnManeuver = CpObject(AnalyticTurnManeuver)
 
 function ReedsSheppTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius,
-								 workWidth, steeringLength, distanceToFieldEdge)
+									 workWidth, steeringLength, distanceToFieldEdge)
 	self.debugPrefix = '(ReedsSheppTurn): '
 	AnalyticTurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius,
-		workWidth, steeringLength, distanceToFieldEdge)
+			workWidth, steeringLength, distanceToFieldEdge)
 end
 
 function ReedsSheppTurnManeuver:findAnalyticPath(vehicleDirectionNode, startOffset, turnEndNode,
-											 xOffset, goalOffset, turningRadius)
+												 xOffset, goalOffset, turningRadius)
 	local solver
 	if self.turnContext:isLeftTurn() then
 		self:debug('using LeftTurnReedsSheppSolver')
@@ -393,7 +429,7 @@ function ReedsSheppTurnManeuver:findAnalyticPath(vehicleDirectionNode, startOffs
 		solver = RightTurnReedsSheppSolver()
 	end
 	local path = PathfinderUtil.findAnalyticPath(solver, vehicleDirectionNode, startOffset, turnEndNode,
-		0, goalOffset, self.turningRadius)
+			0, goalOffset, self.turningRadius)
 	if not path or #path == 0 then
 		self:debug('Could not find ReedsShepp path, retry with Dubins')
 		path = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver, vehicleDirectionNode, startOffset,
@@ -434,8 +470,10 @@ function TurnEndingManeuver:init(vehicle, turnContext, vehicleDirectionNode, tur
 	self:generateStraightSection(endArc, endStraight)
 	myCorner:delete()
 	self.course = Course(vehicle, self.waypoints, true)
-	self.course:setUseTightTurnOffsetForLastWaypoints(
-			g_vehicleConfigurations:getRecursively(vehicle, 'tightTurnOffsetDistanceInTurns') or 20)
+	if self.applyTightTurnOffset then
+		self.course:setUseTightTurnOffsetForLastWaypoints(
+				g_vehicleConfigurations:getRecursively(vehicle, 'tightTurnOffsetDistanceInTurns') or 20)
+	end
 	TurnManeuver.setLowerImplements(self.course, math.max(math.abs(turnContext.frontMarkerDistance), steeringLength))
 end
 
@@ -470,7 +508,7 @@ function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionN
 	_, _, dz = worldToLocal( helperNode, toPoint.x, toPoint.y, toPoint.z )
 	CpUtil.destroyNode(helperNode)
 	self:debug("from ( %.2f %.2f ), to ( %.2f %.2f) workWidth: %.1f, dz = %.1f",
-		fromPoint.x, fromPoint.z, toPoint.x, toPoint.z, self.workWidth, dz )
+			fromPoint.x, fromPoint.z, toPoint.x, toPoint.z, self.workWidth, dz )
 	local fromIx, toIx = self:generateStraightSection( fromPoint, toPoint, dz < 0)
 	-- this is where the arc will begin, and once the tractor reaches it, can switch to forward
 	local changeToFwdIx = #self.waypoints + 1
@@ -555,7 +593,7 @@ function VineTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turni
 	self:debug('r=%.1f, w=%.1f, dz=%.1f, startOffset=%.1f, goalOffset=%.1f',
 			turningRadius, workWidth, dz, startOffset, goalOffset)
 	local path = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver,
-			-- always move the goal a bit backwards to let the vehicle align
+	-- always move the goal a bit backwards to let the vehicle align
 			vehicleDirectionNode, startOffset, turnEndNode, 0, goalOffset - turnContext.frontMarkerDistance, self.turningRadius)
 	self.course = Course.createFromAnalyticPath(self.vehicle, path, true)
 	local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.course, 0, false)
