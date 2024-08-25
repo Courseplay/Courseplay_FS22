@@ -93,6 +93,7 @@ function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'resetCpCoursesFromGui', CpCourseManager.resetCpCoursesFromGui)
     SpecializationUtil.registerFunction(vehicleType, 'getCurrentCpCourseName', CpCourseManager.getCurrentCourseName)
     SpecializationUtil.registerFunction(vehicleType, 'setCpCourseName', CpCourseManager.setCpCourseName)
+    SpecializationUtil.registerFunction(vehicleType, 'cpReverseCurrentCourse', CpCourseManager.cpReverseCurrentCourse)
 
     SpecializationUtil.registerFunction(vehicleType, 'drawCpCoursePlot', CpCourseManager.drawCpCoursePlot)
     SpecializationUtil.registerFunction(vehicleType, 'updateCpCourseDisplayVisibility', CpCourseManager.updateCpCourseDisplayVisibility)
@@ -426,6 +427,17 @@ function CpCourseManager:setCpCourseName(name)
     if course then 
         course:setName(name)
         course.temporary = false
+    end
+end
+
+function CpCourseManager:cpReverseCurrentCourse(noEventSend)
+    local spec = self.spec_cpCourseManager
+    ---@type Course
+    local course = spec.courses[1]
+    if course then 
+        if noEventSend == nil or noEventSend == false then 
+            CourseReverseEvent.sendEvent(self)
+        end
     end
 end
 

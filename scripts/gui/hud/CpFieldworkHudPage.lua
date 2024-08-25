@@ -26,12 +26,24 @@ function CpFieldWorkHudPageElement:setupElements(baseHud, vehicle, lines, wMargi
                                                         CpBaseHud.OFF_COLOR,
                                                         CpBaseHud.alignments.bottomRight)
     self.courseVisibilityBtn = CpHudButtonElement.new(courseVisibilityOverlay, self)
-    local _, y = unpack(lines[8].right)
+    local x, y = unpack(lines[8].right)
     y = y - hMargin/16
-    x = x - width - wMargin/4
-    self.courseVisibilityBtn:setPosition(x, y)
+    local courseVisibilityBtnX = x - width - wMargin/4
+    self.courseVisibilityBtn:setPosition(courseVisibilityBtnX, y)
     self.courseVisibilityBtn:setCallback("onClickPrimary", vehicle, function (vehicle)
         vehicle:getCpSettings().showCourse:setNextItem()
+    end)
+    local width, height = getNormalizedScreenValues(18, 18)
+    local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
+    local reverseCourseOverlay = CpGuiUtil.createOverlay({width, height},
+                                                        {imageFilename, GuiUtils.getUVs(unpack(CpBaseHud.uvs.refresh))}, 
+                                                        CpBaseHud.OFF_COLOR,
+                                                        CpBaseHud.alignments.bottomRight)
+    self.reverseCourseBtn = CpHudButtonElement.new(reverseCourseOverlay, self)
+    local reverseCourseBtnX = courseVisibilityBtnX - 2*width - wMargin/2 - wMargin/8
+    self.reverseCourseBtn:setPosition(reverseCourseBtnX, y + hMargin/32)
+    self.reverseCourseBtn:setCallback("onClickPrimary", vehicle, function (vehicle)
+        vehicle:cpReverseCurrentCourse()
     end)
 
     --- Starting point 
@@ -101,6 +113,7 @@ function CpFieldWorkHudPageElement:updateContent(vehicle, status)
 
 	if vehicle:hasCpCourse() then 
         self.courseVisibilityBtn:setVisible(true)
+        self.reverseCourseBtn:setVisible(true)
         local value = vehicle:getCpSettings().showCourse:getValue()
         if value == CpVehicleSettings.SHOW_COURSE_DEACTIVATED then 
             self.courseVisibilityBtn:setColor(unpack(CpBaseHud.OFF_COLOR))
@@ -113,6 +126,7 @@ function CpFieldWorkHudPageElement:updateContent(vehicle, status)
         end
     else 
         self.courseVisibilityBtn:setVisible(false)
+        self.reverseCourseBtn:setVisible(false)
     end
 
     CpGuiUtil.updateCopyBtn(self, vehicle, status)
