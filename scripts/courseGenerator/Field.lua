@@ -56,6 +56,9 @@ function Field.loadSavedFields(fileName)
         end
         num, x, z = string.match(line, '<islandNode(%d+).+pos="([%d%.-]+) +([%d%.-]+)"')
         if num then
+            if not fields[ix].islandPoints then
+                fields[ix].islandPoints = {}
+            end
             table.insert(fields[ix].islandPoints, Vertex(tonumber(x), -tonumber(z)))
         end
     end
@@ -108,7 +111,7 @@ end
 
 -- set up all island related data for the field
 function Field:setupIslands()
-    local islandPerimeterPoints = CourseGenerator.Island.getIslandPerimeterPoints(self.islandPoints)
+    local islandPerimeterPoints = CourseGenerator.Island.getIslandPerimeterPoints(self.islandPoints or {})
     -- remember them for debug
     self.islandPerimeterPoints = {}
     if (#islandPerimeterPoints) > 0 then
