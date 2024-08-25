@@ -61,7 +61,7 @@ function RowPattern:iterator(rows)
     local sequence = self:_getSequence(#rows)
     return function()
         i = i + 1
-        if i <= #rows then
+        if i <= #sequence then
             return i, rows[sequence[i]]
         else
             return nil, nil
