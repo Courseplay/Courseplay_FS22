@@ -573,7 +573,6 @@ Experimenting with it and check what impact the different setting on different f
 Basics:
 The first few values you see here, are real basic stuff.
 - Work width: Most tools get the exact work width detected and you won't have to care about this setting at all. Adjusting it, will have an impact on your overall course.
-- Multiple Tools: This setting is used when you want more then just one vehicle to work on your course. As this gets a bit more complicated, there is a separate help topic for it.
 - Number of Headlands: The best way to keep your vehicles on the field while turning at the end of each row is to add headlands.
 The Number of the Headlands multiplied by the work width should be at least the total length of your vehicle plus the attached tool.
 - Start work on: As mentioned in the extended AI Menu, the field position is used to set the start or end position for the field work course.
@@ -641,7 +640,7 @@ Some settings are only visible, if you set the expert mode to active on the glob
 Before you play arround with those settings, you should make sure you know what the basic settings do.
 Some expert settings only work properly under some conditions.
 
-- Vehicles on the field: With this setting you can create a course for more then 1 vehicle to work on the same field. More details in the multitool entry of the helpmenu.
+- Multiple Tools: This setting is used when you want more then just one vehicle to work on your course. As this gets a bit more complicated, there is a separate help topic for it.
 - Narrow field: Creates the headland only at two short edges of the field. In that case, it is not possible to keep your vehicle on the field on the longest edges at the headland.
 - Headland overlap: There is a default value that will always be used. This value can be changed with this setting. The overlap will be withing the field and won't overlap the field border.
 - Field margin: This setting lets you move the field border in- or outwards of the original border.
