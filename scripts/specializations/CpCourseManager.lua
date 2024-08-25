@@ -434,24 +434,22 @@ function CpCourseManager:cpReverseCurrentCourse(noEventSend)
     local spec = self.spec_cpCourseManager
     ---@type Course
     local course = spec.courses[1]
-    if course then 
-        if noEventSend == nil or noEventSend == false then 
+    if course then
+        course:reverse()
+        spec.coursePlot:setWaypoints(course.waypoints)
+        spec.coursePlot:setVisible(true)
+        if noEventSend == nil or noEventSend == false then
             CourseReverseEvent.sendEvent(self)
+        end
+        if g_client then
+            spec.courseDisplay:setCourse(self:getFieldWorkCourse())
+            self:updateCpCourseDisplayVisibility()
         end
     end
 end
 
 function CpCourseManager:appendCourse(course)
 
-end
-
-function CpCourseManager:getFieldworkCourseLegacy(vehicle)
-	for _, course in ipairs(CpCourseManager.getCourses(self)) do
-		if course:isFieldworkCourse() then
-			CpUtil.debugVehicle(CpDebug.DBG_COURSES,vehicle, 'getting fieldwork course %s', course:getName())
-			return course
-		end
-	end
 end
 
 function CpCourseManager:rememberCpLastWaypointIx(ix)
