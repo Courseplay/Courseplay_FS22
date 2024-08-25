@@ -152,9 +152,10 @@ g_signPrototypes = SignPrototypes()
 ---@class SimpleCourseDisplay
 SimpleCourseDisplay = CpObject()
 SimpleCourseDisplay.COLORS = {
-	NORMAL   = { 1.000, 0.212, 0.000, 1.000 }, -- orange
+	NORMAL     = { 1.000, 0.212, 0.000, 1.000 }, -- orange
 	TURN_START = { 0.200, 0.900, 0.000, 1.000 }, -- green
 	TURN_END   = { 0.896, 0.000, 0.000, 1.000 }, -- red
+	PATHFINDER = { 0.900, 0.000, 0.900, 1.000 }, -- purple
 }
 
 SimpleCourseDisplay.HEIGHT_OFFSET = 4.5
@@ -222,6 +223,8 @@ function SimpleCourseDisplay:updateWaypoint(i)
 		self.signs[i]:setColor(SimpleCourseDisplay.COLORS.TURN_START)
 	elseif self.course:isTurnEndAtIx(i) then
 		self.signs[i]:setColor(SimpleCourseDisplay.COLORS.TURN_END)
+	elseif self.course:shouldUsePathfinderToNextWaypoint(i) or self.course:shouldUsePathfinderToThisWaypoint(i) then
+		self.signs[i]:setColor(SimpleCourseDisplay.COLORS.PATHFINDER)
 	else
 		self.signs[i]:setColor(SimpleCourseDisplay.COLORS.NORMAL)
 	end
