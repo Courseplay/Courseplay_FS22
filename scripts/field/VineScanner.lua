@@ -403,6 +403,10 @@ function VineScanner:getCourseGeneratorVertices(vineOffset, tx, tz)
 	return lines, self.width, lines[1], -math.deg(yRot)
 end
 
+function VineScanner:getLines()
+	return self.lines
+end
+
 --- Gets a segment for a vine node.
 function VineScanner:getVineSegmentIxForNode(node, vineSegments)
 	for segment, nodes in pairs(vineSegments) do 

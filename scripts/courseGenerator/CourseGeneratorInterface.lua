@@ -112,13 +112,19 @@ function CourseGeneratorInterface.generateVineCourse(
         turningRadius,
         manualRowAngleDeg,
         rowsToSkip,
-        multiTools
+        multiTools,
+        lines,
+        offset
 )
     CourseGenerator.clearDebugObjects()
     local field = CourseGenerator.Field('', 0, CpMathUtil.pointsFromGame(fieldPolygon))
 
     local context = CourseGenerator.FieldworkContext(field, workWidth * multiTools, turningRadius, 0)
-    context:setRowPattern(CourseGenerator.RowPatternAlternating(rowsToSkip, true))
+    if rowsToSkip == 0 then
+        context:setRowPattern(CourseGenerator.RowPatternAlternating())
+    else
+        context:setRowPattern(CourseGenerator.RowPatternSkip(rowsToSkip, true))
+    end
     context:setStartLocation(startPosition.x, -startPosition.z)
     context:setAutoRowAngle(false)
     -- the Course Generator UI uses the geographical direction angles (0 - North, 90 - East, etc), convert it to
@@ -128,7 +134,8 @@ function CourseGeneratorInterface.generateVineCourse(
     local status
     status, CourseGeneratorInterface.generatedCourse = xpcall(
             function()
-                return CourseGenerator.FieldworkCourse(context)
+                return CourseGenerator.FieldworkCourseVine(context,
+                        CourseGenerator.FieldworkCourseVine.generateRows(workWidth, lines, offset ~= 0))
             end,
             function(err)
                 printCallstack();
