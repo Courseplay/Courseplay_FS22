@@ -11,9 +11,8 @@ local CenterTwoSided = CpObject(CourseGenerator.Center)
 ---@param headland CourseGenerator.Headland|nil the innermost headland if exists
 ---@param startLocation Vector location of the vehicle before it starts working on the center.
 ---@param bigIslands CourseGenerator.Island[] islands too big to circle
----@param lastRow CourseGenerator.Row the last row of the center (before cut), this will be added to the ones generated
-function CenterTwoSided:init(context, boundary, headland, startLocation, bigIslands, lastRow)
-    CourseGenerator.Center.init(self, context, boundary, headland, startLocation, bigIslands, lastRow)
+function CenterTwoSided:init(context, boundary, headland, startLocation, bigIslands)
+    CourseGenerator.Center.init(self, context, boundary, headland, startLocation, bigIslands)
     -- force using the baseline edge, no matter what the context is
     self.useBaselineEdge = true
 end

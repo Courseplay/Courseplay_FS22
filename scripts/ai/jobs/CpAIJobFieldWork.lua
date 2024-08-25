@@ -205,7 +205,9 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
                 AIUtil.getTurningRadius(vehicle),
                 rowAngleDeg,
                 vineSettings.vineRowsToSkip:getValue(),
-                vineSettings.vineMultiTools:getValue()
+                vineSettings.vineMultiTools:getValue(),
+                g_vineScanner:getLines(),
+                vineSettings.vineCenterOffset:getValue()
         )
     else
 

@@ -295,6 +295,7 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/courseGenerator/FieldworkCourse.lua"/>
 		<sourceFile filename="scripts/courseGenerator/FieldworkCourseHelper.lua"/>
 		<sourceFile filename="scripts/courseGenerator/FieldworkCourseTwoSided.lua"/>
+		<sourceFile filename="scripts/courseGenerator/FieldworkCourseVine.lua"/>
 		<sourceFile filename="scripts/courseGenerator/HeadlandConnector.lua"/>
 		<sourceFile filename="scripts/courseGenerator/Row.lua"/>
 		<sourceFile filename="scripts/courseGenerator/RowPattern.lua"/>
@@ -308,6 +309,7 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/courseGenerator/genetic/Genetic.lua"/>
 		<sourceFile filename="scripts/courseGenerator/genetic/BlockSequencer.lua"/>
 		<sourceFile filename="scripts/courseGenerator/CenterTwoSided.lua"/>
+		<sourceFile filename="scripts/courseGenerator/CenterPredefinedRows.lua"/>
 		<sourceFile filename="scripts/courseGenerator/CourseGeneratorInterface.lua"/>
 
 		<sourceFile filename="scripts/field/CpFieldUtil.lua"/>
