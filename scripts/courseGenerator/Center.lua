@@ -484,8 +484,12 @@ function Center:_wrapUpConnectingPaths()
         for i = 1, #self.blocks do
             -- instead of the connecting track use pathfinder to the entry of the next block
             self.connectingPaths[i] = {}
-            self.blocks[i]:getEntryVertex():getAttributes():setUsePathfinderToThisWaypoint()
-            self.blocks[i]:getExitVertex():getAttributes():setUsePathfinderToNextWaypoint()
+            if i > 1 then
+                self.blocks[i]:getEntryVertex():getAttributes():setUsePathfinderToThisWaypoint()
+            end
+            if i < #self.blocks then
+                self.blocks[i]:getExitVertex():getAttributes():setUsePathfinderToNextWaypoint()
+            end
         end
     else
         if not self.context.headlandFirst then
