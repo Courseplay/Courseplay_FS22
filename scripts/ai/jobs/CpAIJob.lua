@@ -438,7 +438,7 @@ function CpAIJob:showNotification(aiMessage)
 	end
 	local vehicle = self:getVehicle()
 	--- Makes sure the message is shown, when a player is in the vehicle.
-	if releaseMessage and vehicle:getIsEntered() then 
+	if releaseMessage and vehicle and vehicle:getIsEntered() then 
 		g_currentMission:showBlinkingWarning(releaseMessage:getText(), 5000)
 	end
 end
