@@ -31,7 +31,8 @@ AIDriveStrategyFindBales.myStates = {
     WORKING_ON_BALE = {},
     REVERSING_AFTER_PATHFINDER_FAILURE = {},
     REVERSING_DUE_TO_OBSTACLE_AHEAD = {},
-    DRIVING_TO_START_MARKER = {}
+    DRIVING_TO_START_MARKER = {},
+    WAITING_FOR_IMPLEMENTS_TO_FOLD = {}
 }
 --- Offset to apply at the goal marker, so we don't crash with an empty unloader waiting there with the same position.
 AIDriveStrategyFindBales.invertedGoalPositionOffset = -4.5
@@ -82,7 +83,7 @@ function AIDriveStrategyFindBales:collectNextBale()
             self:findPathToNextBale()
             return
         end
-        self:setFinished()
+        self.state = self.states.WAITING_FOR_IMPLEMENTS_TO_FOLD
     end
 end
 
@@ -336,6 +337,11 @@ function AIDriveStrategyFindBales:setFinished()
         return
     end 
     self.vehicle:prepareForAIDriving()
+    if not self.vehicle:getIsAIReadyToDrive() then 
+        -- Watiting until the folding has finished..
+        self:debugSparse("Waiting until an animation has finish, so the driver can be released ..")
+        return
+    end
     if self.invertedStartPositionMarkerNode then 
         self:debug("A valid start position is found, so the driver tries to finish at the invered goal node")
         self:startPathfindingToStartMarker()
@@ -560,11 +566,10 @@ function AIDriveStrategyFindBales:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.REVERSING_DUE_TO_OBSTACLE_AHEAD then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
     elseif self.state == self.states.DRIVING_TO_START_MARKER then
-        if self.vehicle:getIsAIPreparingToDrive() then 
-            self:setMaxSpeed(0) --- folding
-        else
-            self:setMaxSpeed(self.settings.fieldSpeed:getValue())
-        end
+        self:setMaxSpeed(self.settings.fieldSpeed:getValue())
+    elseif self.state == self.states.WAITING_FOR_IMPLEMENTS_TO_FOLD then
+        self:setFinished()
+        self:setMaxSpeed(0) --- folding
     end
 
     local moveForwards = not self.ppc:isReversing()
@@ -642,9 +647,10 @@ function AIDriveStrategyFindBales:update(dt)
             self.ppc:getCourse():draw()
         end
     end
-    if self.state ~= self.states.DRIVING_TO_START_MARKER then
+    if self.state ~= self.states.DRIVING_TO_START_MARKER and
+        self.state ~= self.states.WAITING_FOR_IMPLEMENTS_TO_FOLD then
         if self:areBaleLoadersFull() then
-            self:setFinished()
+            self.state = self.states.WAITING_FOR_IMPLEMENTS_TO_FOLD
         end
     end
     --- Ignores the loaded auto loader bales.
