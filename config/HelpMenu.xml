@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Every image filename needs to start with CP_ as prefix, with will be ignored for the path. -->
+
+<!--
+
+	<page> #title <- Page title in the left menu
+		<paragraph> #noSpacing <- no additional spacing between paragraphs
+			<title> <- Paragraph title, where the font size is larger
+			<text> #alignToImage <- text direct next to the icon, for smaller icon examples can be found in the symbole overview category
+			<image> #aspectRatio #size #uvs #displaySize 
+				<- aspectRatio image uv height/ uv width (size="1024 1024" uvs="0px 0px 1020px 895px" > aspectRatio = 895/1020 )
+				<- size the raw image size which has to be symmetrical and a power of 2.
+				<- uvs the image cutout relative to the left top corner: uvs="0px(width offset) 0px(height Offset) 1020px(width) 895px(height)"
+				<- displaySize forces the image dimensions to a fixed pixel size.
+-->
+
+
 <helpLines>
 	<!--Courseplay category-->
 	<category title="$l10n_CP_help_title" subTitle="$l10n_CP_help_subTitle">
@@ -45,7 +60,7 @@
 				<text text="$l10n_CP_help_page_courseGeneratorHeadlandFunctions_text"/>
 			</paragraph>
 			<paragraph>
-				<image filename="img/helpmenu/sharproundcorner.dds" size="330 130" uvs="0px 0px 330px 130px"/>
+				<image filename="img/helpmenu/sharproundcorner.dds" size="1024 1024" uvs="0px 0px 330px 130px" aspectRatio="0.3"/>
 			</paragraph>
 		</page>
 		<!--Courseplay Generator Center-->
@@ -57,28 +72,28 @@
 				<text text="$l10n_CP_help_page_courseGeneratorCenterFunctions_text"/>
 			</paragraph>
 			<paragraph>
-				<text text="$l10n_CP_help_page_courseGeneratorCenterExampleUpdown_text"/>
+				<title text="$l10n_CP_help_page_courseGeneratorCenterExampleUpdown_text"/>
 			</paragraph>
 			<paragraph>
-				<image filename="img/helpmenu/updown.dds" size="1024 470" uvs="0px 0px 1024px 470px"/>
+				<image filename="img/helpmenu/updown.dds" size="1024 1024" uvs="0px 0px 1024px 470px" aspectRatio="0.5"/>
 			</paragraph>
 			<paragraph>
-				<text text="$l10n_CP_help_page_courseGeneratorCenterExampleLands_text"/>
+				<title text="$l10n_CP_help_page_courseGeneratorCenterExampleLands_text"/>
 			</paragraph>
 			<paragraph>
-				<image filename="img/helpmenu/lands.dds" size="1024 470" uvs="0px 0px 1024px 470px"/>
+				<image filename="img/helpmenu/lands.dds" size="1024 1024" uvs="0px 0px 1024px 470px" aspectRatio="0.5"/>
 			</paragraph>
 			<paragraph>
-				<text text="$l10n_CP_help_page_courseGeneratorCenterExampleSpiral_text"/>
+				<title text="$l10n_CP_help_page_courseGeneratorCenterExampleSpiral_text"/>
 			</paragraph>
 			<paragraph>
-				<image filename="img/helpmenu/spiral.dds" size="1024 470" uvs="0px 0px 1024px 470px"/>
+				<image filename="img/helpmenu/spiral.dds" size="1024 1024" uvs="0px 0px 1024px 470px" aspectRatio="0.5"/>
 			</paragraph>
 			<paragraph>
-				<text text="$l10n_CP_help_page_courseGeneratorCenterExampleRacetrack_text"/>
+				<title text="$l10n_CP_help_page_courseGeneratorCenterExampleRacetrack_text"/>
 			</paragraph>
 			<paragraph>
-				<image filename="img/helpmenu/racetrack.dds" size="1024 470" uvs="0px 0px 1024px 470px"/>
+				<image filename="img/helpmenu/racetrack.dds" size="1024 1024" uvs="0px 0px 1024px 470px" aspectRatio="0.5"/>
 			</paragraph>
 		</page>
 		<!--Courseplay Generator Island-->
@@ -96,7 +111,7 @@
 				<text text="$l10n_CP_help_page_courseGeneratorExpert_text"/>
 			</paragraph>
 			<paragraph>
-				<image filename="img/helpmenu/baseedge.dds" size="1020 545" uvs="0px 0px 1020px 545px"/>
+				<image filename="img/helpmenu/baseedge.dds" size="1020 1024" uvs="0px 0px 1020px 545px" aspectRatio="0.5"/>
 			</paragraph>
 			
 		</page>
@@ -104,14 +119,14 @@
         <page title="$l10n_CP_help_page_courseManager_title">
 			<paragraph>
                 <text text="$l10n_CP_help_page_courseManagerBase_text"/>
-				<image filename="img/helpmenu/managerbasehelp.dds" size="1024 1024" uvs="0px 0px 765px 430px"/>
+				<image filename="img/helpmenu/managerbasehelp.dds" size="1024 1024" uvs="0px 0px 765px 430px" aspectRatio="0.7"/>
             </paragraph>
 			<paragraph>
                 <text text="$l10n_CP_help_page_courseManagerBaseFunctions_text"/>
             </paragraph>
 			<paragraph>
                 <text text="$l10n_CP_help_page_courseManagerEdit_text"/>
-				<image filename="img/helpmenu/manageredithelp.dds" size="1024 1024" uvs="0px 0px 765px 430px"/>
+				<image filename="img/helpmenu/manageredithelp.dds" size="1024 1024" uvs="0px 0px 765px 430px" aspectRatio="0.7"/>
             </paragraph>
 			<paragraph>
                 <text text="$l10n_CP_help_page_courseManagerEditFunctions_text"/>
@@ -122,7 +137,7 @@
 			<paragraph>
 				<text text="$l10n_CP_help_page_blank"/>
 				<title text="$l10n_CP_help_page_minihud_general_title" />
-				<image filename="img/helpmenu/minihudhelp_general.dds" size="1024 1024" uvs="0px 0px 478px 305px"/>
+				<image filename="img/helpmenu/minihudhelp_general.dds" size="1024 1024" uvs="0px 0px 478px 305px" aspectRatio="0.8"/>
             </paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_minihud_general_text"/>
@@ -130,7 +145,7 @@
 			<paragraph>
 				<text text="$l10n_CP_help_page_blank"/>
 				<title text="$l10n_CP_help_page_minihud_fieldwork_title" />
-				<image filename="img/helpmenu/minihudhelp_fieldwork.dds" size="1024 1024" uvs="0px 0px 478px 305px"/>
+				<image filename="img/helpmenu/minihudhelp_fieldwork.dds" size="1024 1024" uvs="0px 0px 478px 305px" aspectRatio="0.8"/>
             </paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_minihud_fieldwork_text"/>
@@ -138,7 +153,7 @@
 			<paragraph>
 				<text text="$l10n_CP_help_page_blank"/>
 				<title text="$l10n_CP_help_page_minihud_combineunload_title" />
-				<image filename="img/helpmenu/minihudhelp_combineunload.dds" size="1024 1024" uvs="0px 0px 478px 305px"/>
+				<image filename="img/helpmenu/minihudhelp_combineunload.dds" size="1024 1024" uvs="0px 0px 478px 305px" aspectRatio="0.8"/>
             </paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_minihud_combineunload_text"/>
@@ -146,7 +161,7 @@
 			<paragraph>
 				<text text="$l10n_CP_help_page_blank"/>
 				<title text="$l10n_CP_help_page_minihud_balecollect_title" />
-				<image filename="img/helpmenu/minihudhelp_balecollect.dds" size="1024 1024" uvs="0px 0px 478px 305px"/>
+				<image filename="img/helpmenu/minihudhelp_balecollect.dds" size="1024 1024" uvs="0px 0px 478px 305px" aspectRatio="0.8"/>
             </paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_minihud_balecollect_text"/>
@@ -154,7 +169,7 @@
 			<paragraph>
 				<text text="$l10n_CP_help_page_blank"/>
 				<title text="$l10n_CP_help_page_minihud_siloloader_title" />
-				<image filename="img/helpmenu/minihudhelp_siloloader.dds" size="1024 1024" uvs="0px 0px 478px 305px"/>
+				<image filename="img/helpmenu/minihudhelp_siloloader.dds" size="1024 1024" uvs="0px 0px 478px 305px" aspectRatio="0.8"/>
             </paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_minihud_siloloader_text"/>
@@ -162,7 +177,7 @@
 			<paragraph>
 				<text text="$l10n_CP_help_page_blank"/>
 				<title text="$l10n_CP_help_page_minihud_siloworker_title" />
-				<image filename="img/helpmenu/minihudhelp_siloworker.dds" size="1024 1024" uvs="0px 0px 478px 305px"/>
+				<image filename="img/helpmenu/minihudhelp_siloworker.dds" size="1024 1024" uvs="0px 0px 478px 305px" aspectRatio="0.8"/>
             </paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_minihud_siloworker_text"/>
@@ -172,15 +187,15 @@
 		<page title="$l10n_CP_help_page_customField_title">
 			<paragraph>
 				<text text="$l10n_CP_help_page_customFieldRecord_text"/>
-				<image filename="img/helpmenu/recordcustomhelp.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
+				<image filename="img/helpmenu/recordcustomhelp.dds" size="1024 1024" uvs="0px 0px 765px 510px" aspectRatio="0.66"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_customFieldDone_text"/>
-				<image filename="img/helpmenu/donecustomhelp.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
+				<image filename="img/helpmenu/donecustomhelp.dds" size="1024 1024" uvs="0px 0px 765px 510px" aspectRatio="0.66"/>
 			</paragraph>	
 			<paragraph>	
 				<text text="$l10n_CP_help_page_customFieldDraw_text"/>
-				<image filename="img/helpmenu/drawcustomhelp.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
+				<image filename="img/helpmenu/drawcustomhelp.dds" size="1024 1024" uvs="0px 0px 765px 510px" aspectRatio="0.66"/>
             </paragraph>
 		</page>
 		<!--Courseplay Multitool and Convoy-->
@@ -220,14 +235,14 @@
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_blank"/>
-				<image filename="img/helpmenu/regularchange.dds" size="1024 1024" uvs="0px 0px 1020px 765px"/>
+				<image filename="img/helpmenu/regularchange.dds" size="1024 1024" uvs="0px 0px 1020px 765px" aspectRatio="0.76"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_symetricLaneChangeExampleOff_text"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_blank"/>
-				<image filename="img/helpmenu/symetricchange.dds" size="1024 1024" uvs="0px 0px 1020px 765px"/>
+				<image filename="img/helpmenu/symetricchange.dds" size="1024 1024" uvs="0px 0px 1020px 765px" aspectRatio="0.76"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_symetricLaneChangeExampleOn_text"/>
@@ -237,7 +252,7 @@
 		<page title="$l10n_CP_help_page_infoPanel_title">
 			<paragraph>
 				<text text="$l10n_CP_help_page_blank"/>
-				<image filename="img/helpmenu/infopanel.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
+				<image filename="img/helpmenu/infopanel.dds" size="1024 1024" uvs="0px 0px 765px 510px" aspectRatio="0.66"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_infoPanelBasic_text"/>
@@ -253,19 +268,19 @@
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_vineWorkGenerator_text"/>
-				<image filename="img/helpmenu/vineworkgen.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
+				<image filename="img/helpmenu/vineworkgen.dds" size="1024 1024" uvs="0px 0px 765px 510px" aspectRatio="0.66"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_vineWorkHarvester_text"/>
-				<image filename="img/helpmenu/vineworkharvest.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
+				<image filename="img/helpmenu/vineworkharvest.dds" size="1024 1024" uvs="0px 0px 765px 510px" aspectRatio="0.66"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_vineWorkPruner_text"/>
-				<image filename="img/helpmenu/vineworkpruner.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
+				<image filename="img/helpmenu/vineworkpruner.dds" size="1024 1024" uvs="0px 0px 765px 510px" aspectRatio="0.66"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_vineWorkSprayer_text"/>
-				<image filename="img/helpmenu/vineworkspray.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
+				<image filename="img/helpmenu/vineworkspray.dds" size="1024 1024" uvs="0px 0px 765px 510px" aspectRatio="0.66"/>
 			</paragraph>
 		</page>
 		<!--Courseplay editor-->
@@ -326,7 +341,7 @@
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_shovelLoaderTrigger_text"/>
-				<image filename="img/helpmenu/shovelloadertrigger.dds" size="1024 1024" uvs="0px 0px 830px 610px"/>
+				<image filename="img/helpmenu/shovelloadertrigger.dds" size="1024 1024" uvs="0px 0px 830px 610px" aspectRatio="0.73"/>
 			</paragraph>
 			<!--<paragraph>
 				<text text="$l10n_CP_help_page_shovelLoaderTpsExtension_text"/>
