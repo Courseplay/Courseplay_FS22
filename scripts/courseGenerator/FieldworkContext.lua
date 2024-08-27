@@ -211,4 +211,5 @@ end
 ---@param spiralFromInside boolean will create a course with headlands on just two sides or also called "narrow field"
 function FieldworkContext:setSpiralFromInside(spiralFromInside)
     self.spiralFromInside = spiralFromInside
+    return self
 end
