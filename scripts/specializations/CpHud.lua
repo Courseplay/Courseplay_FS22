@@ -199,6 +199,12 @@ function CpHud:onLoad(savegame)
     spec.hudSettings = {}
     --- Clones the generic settings to create different settings containers for each vehicle. 
     CpSettingsUtil.cloneSettingsTable(spec.hudSettings, CpHud.hudSettings.settings, self, CpHud)
+    if self.isServer then
+        for _, setting in ipairs(spec.hudSettings.settings) do
+            setting:refresh()
+        end
+        self:raiseDirtyFlags(spec.availableClientJobModesDirtyFlag)
+    end
     if savegame == nil or savegame.resetVehicles then return end
     CpSettingsUtil.loadFromXmlFile(spec.hudSettings, savegame.xmlFile, 
                         savegame.key .. CpHud.KEY .. CpHud.SETTINGS_KEY, self)
