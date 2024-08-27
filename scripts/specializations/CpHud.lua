@@ -197,6 +197,7 @@ function CpHud:onLoad(savegame)
     spec.lastShownBaleCollectorOffsetTimeStamp = g_time
     spec.openCloseText = g_i18n:getText("input_CP_OPEN_CLOSE_HUD")
     spec.hudSettings = {}
+    spec.availableClientJobModesDirtyFlag = self:getNextDirtyFlag()
     --- Clones the generic settings to create different settings containers for each vehicle. 
     CpSettingsUtil.cloneSettingsTable(spec.hudSettings, CpHud.hudSettings.settings, self, CpHud)
     if self.isServer then
@@ -213,7 +214,6 @@ function CpHud:onLoad(savegame)
         values = {},
         texts = {}
     }
-    spec.availableClientJobModesDirtyFlag = self:getNextDirtyFlag()
     if not self.isServer then
         spec.hudSettings.selectedJob.data.generateValuesFunction = "generateClientStates"
     end
