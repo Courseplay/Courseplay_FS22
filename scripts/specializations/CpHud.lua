@@ -231,10 +231,12 @@ end
 function CpHud:onWriteUpdateStream(streamId, connection, dirtyMask)
     local spec = self.spec_cpHud
 	spec.status:onWriteUpdateStream(streamId, connection, dirtyMask)
-    if not connection:getIsServer() and streamWriteBool(streamId, bitAND(dirtyMask, spec.availableClientJobModesDirtyFlag) ~= 0) then
-        streamWriteUInt8(streamId, #spec.hudSettings.selectedJob.values)
-        for _, value in pairs(spec.hudSettings.selectedJob.values) do 
-            streamWriteUInt8(streamId, value)
+    if not connection:getIsServer() then
+        if streamWriteBool(streamId, bitAND(dirtyMask, spec.availableClientJobModesDirtyFlag) ~= 0) then
+            streamWriteUInt8(streamId, #spec.hudSettings.selectedJob.values)
+            for _, value in pairs(spec.hudSettings.selectedJob.values) do 
+                streamWriteUInt8(streamId, value)
+            end
         end
     end
 end
@@ -242,22 +244,24 @@ end
 function CpHud:onReadUpdateStream(streamId, timestamp, connection)
     local spec = self.spec_cpHud
 	spec.status:onReadUpdateStream(streamId, timestamp, connection)
-    if connection:getIsServer() and streamReadBool(streamId) then
-        local numValues = streamReadUInt8(streamId)
-        spec.availableClientJobModes = {
-            values = {},
-            texts = {}
-        }
-        ---@type AIParameterSettingList
-        local setting = spec.hudSettings.selectedJob
-        for i=1, numValues do 
-            local value = streamReadUInt8(streamId)
-            local ix = setting:getClosestIx(value)
-            if ix then
-                table.insert(spec.availableClientJobModes.values, 
-                    setting.data.values[ix])
-                table.insert(spec.availableClientJobModes.texts, 
-                    setting.data.texts[ix])
+    if connection:getIsServer() then
+        if streamReadBool(streamId) then
+            local numValues = streamReadUInt8(streamId)
+            spec.availableClientJobModes = {
+                values = {},
+                texts = {}
+            }
+            ---@type AIParameterSettingList
+            local setting = spec.hudSettings.selectedJob
+            for i=1, numValues do 
+                local value = streamReadUInt8(streamId)
+                local ix = setting:getClosestIx(value)
+                if ix then
+                    table.insert(spec.availableClientJobModes.values, 
+                        setting.data.values[ix])
+                    table.insert(spec.availableClientJobModes.texts, 
+                        setting.data.texts[ix])
+                end
             end
         end
     end
@@ -304,7 +308,7 @@ function CpHud:onStateChange(state, data)
             for _, setting in ipairs(spec.hudSettings.settings) do
                 setting:refresh()
             end
-            self.vehicle:raiseDirtyFlags(spec.availableClientJobModesDirtyFlag)
+            self:raiseDirtyFlags(spec.availableClientJobModesDirtyFlag)
         end
     end
 end
