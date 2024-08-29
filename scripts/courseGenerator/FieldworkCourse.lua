@@ -353,6 +353,11 @@ function FieldworkCourse:_setContext(context)
     self.nHeadlandsWithRoundCorners = self.context.nHeadlandsWithRoundCorners
     ---@type Polygon
     self.boundary = CourseGenerator.FieldworkCourseHelper.createUsableBoundary(context.field:getBoundary(), self.context.headlandClockwise)
+    if self.context.fieldMargin ~= 0 then
+        self.logger:debug('Applying field margin %.1f', self.context.fieldMargin)
+        self.boundary = CourseGenerator.Headland(self.boundary, self.boundary:isClockwise(), 0,
+                math.abs(self.context.fieldMargin), self.context.fieldMargin < 0):getPolygon()
+    end
     if self.context.fieldCornerRadius > 0 then
         self.logger:debug('sharpening field boundary corners')
         self.boundary:ensureMinimumRadius(self.context.fieldCornerRadius, true)

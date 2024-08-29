@@ -16,6 +16,7 @@ function FieldworkContext:init(field, workingWidth, turningRadius, nHeadlands)
     self.headlandWorkingWidth = (1 - CourseGenerator.cDefaultHeadlandOverlapPercentage / 100) * workingWidth
     self.turningRadius = turningRadius
 
+    self.fieldMargin = 0
     self.nHeadlands = nHeadlands
     self.nHeadlandsWithRoundCorners = 0
     self.headlandClockwise = true
@@ -211,5 +212,12 @@ end
 ---@param spiralFromInside boolean will create a course with headlands on just two sides or also called "narrow field"
 function FieldworkContext:setSpiralFromInside(spiralFromInside)
     self.spiralFromInside = spiralFromInside
+    return self
+end
+
+---@param margin number reduce or increase the size of the field. Positive values will make the field smaller, moving
+---the field boundary inside by margin meters, negative values will make it larger, moving the boundary outside.
+function FieldworkContext:setFieldMargin(margin)
+    self.fieldMargin = margin
     return self
 end

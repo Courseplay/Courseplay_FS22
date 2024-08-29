@@ -37,6 +37,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 
     context:setStartLocation(startPosition.x, -startPosition.z)
     context:setBaselineEdge(startPosition.x, -startPosition.z)
+    context:setFieldMargin(settings.fieldMargin:getValue())
     context:setUseBaselineEdge(settings.useBaseLineEdge:getValue())
     context:setFieldCornerRadius(settings.turningRadius:getValue())
     context:setHeadlandFirst(settings.startOnHeadland:getValue())
