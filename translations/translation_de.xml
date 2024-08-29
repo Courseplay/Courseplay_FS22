@@ -635,16 +635,16 @@ Z.B. wie viele Vorgewende passen zwischen Insel und Feldrand.
 "/>
     <text name="CP_help_page_courseGeneratorIslandFunctions_text" text="
 - Insel Umfahrung: Schaltet das Umfahren der Insel ein oder aus, sollte eine Insel gefunden werden. Inselumfahrung funktioniert nicht auf selbst erstellten Feldern!
-- Insel Vorgewende: Die Anzahl an Umrundungen um die Insel kann jetzt seperat von den Vorgewende eingestellt werden.
-- Insel Vorgewende Richtung: In welche richtung die Insel umfahren werden soll um eventuelle richtungswechsel zu vermeiden. Das kann je nach Feld und den rest des Kurses auf versuche ankommen.
+- Insel Vorgewende: Die Anzahl an Umrundungen um die Insel kann jetzt separat von den Vorgewende eingestellt werden.
+- Insel Vorgewende Richtung: In welche Richtung die Insel umfahren werden soll, um eventuelle Richtungswechsel zu vermeiden. Das kann je nach Feld und den rest des Kurses auf versuche ankommen.
 "/>
     <text name="CP_help_page_courseGeneratorExpert_text" text="
-Einige Einstellunge sind erst dann sichbar, wenn in den globalen CP Einstellungen den &quot;Experten Modus&quot; eingeschaltet habt.
+Einige Einstellungen sind erst dann sichtbar, wenn in den globalen CP Einstellungen den &quot;Experten Modus&quot; eingeschaltet habt.
 Bevor ihr euch mit den Einstellmöglichkeiten beschäftigt, solltet ihr euch erst mit den normalen Einstellungen vertraut machen, da nicht alle Experten Einstellungen ohne Einschränkung funktionieren werden.
 
-- Fahrzeuge auf dem Feld: Mit dieser Einstellung könnt ihr mehr als 1 Fahrzeug das Feld abwarbeiten lassen. Mehr Details dazu gibt es unter einem extra Punkt im Hilfemenü.
+- Fahrzeuge auf dem Feld: Mit dieser Einstellung könnt ihr mehr als 1 Fahrzeug das Feld abarbeiten lassen. Mehr Details dazu gibt es unter einem extra Punkt im Hilfemenü.
 - Enges Feld: Erzeugt nur an den kürzesten Feldrand Seiten ein Vorgewende. Es lässt sich aktuell nicht vermeiden, dass Fahrzeuge an den langen Seiten im Vorgewende das Feld verlassen.
-- Vorgewende Überlappung: Es ist ein standart Wert eingestellt, der immer verwendet wird. Dieser kann aber mit dieser Einstellung angepasst werden. Die Überlappung findet innerhalb des Feldes statt und ragt nicht über den Feldrand hinaus.
+- Vorgewende Überlappung: Es ist ein standard Wert eingestellt, der immer verwendet wird. Dieser kann aber mit dieser Einstellung angepasst werden. Die Überlappung findet innerhalb des Feldes statt und ragt nicht über den Feldrand hinaus.
 - Feldgrenze: Mit dieser Einstellung lässt sich die Feldgrenze weiter nach innen oder außen verschieben und somit lässt sich der normale Feldrand verschieben.
 - Feldrand für Bahnen: Ein ganz neues Feature, was nur auf bestimmten Feldern funktioniert. Hat man ein Feld als Feldgrenze einem langen Bogen und setzt den Feldmarker in die Nähe dieses Feldrands, so werden die Bahnen in der Mitte den Verlauf des Feldrands nehmen.
 ANMERKUNG: Sollte ein Kurs nicht sauber generiert werden, funktioniert diese Funktion nicht auf dem Feld oder mit dem Feldrand. Es wird dafür auch kein Update geben!
