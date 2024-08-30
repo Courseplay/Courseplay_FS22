@@ -197,11 +197,27 @@ function CpHud:onLoad(savegame)
     spec.lastShownBaleCollectorOffsetTimeStamp = g_time
     spec.openCloseText = g_i18n:getText("input_CP_OPEN_CLOSE_HUD")
     spec.hudSettings = {}
+    spec.availableClientJobModesDirtyFlag = self:getNextDirtyFlag()
     --- Clones the generic settings to create different settings containers for each vehicle. 
     CpSettingsUtil.cloneSettingsTable(spec.hudSettings, CpHud.hudSettings.settings, self, CpHud)
+    if self.isServer then
+        for _, setting in ipairs(spec.hudSettings.settings) do
+            setting:refresh()
+        end
+        self:raiseDirtyFlags(spec.availableClientJobModesDirtyFlag)
+    end
     if savegame == nil or savegame.resetVehicles then return end
     CpSettingsUtil.loadFromXmlFile(spec.hudSettings, savegame.xmlFile, 
                         savegame.key .. CpHud.KEY .. CpHud.SETTINGS_KEY, self)
+
+    spec.availableClientJobModes = {
+        values = {},
+        texts = {}
+    }
+    if not self.isServer then
+        spec.hudSettings.selectedJob.data.generateValuesFunction = "generateClientStates"
+    end
+
 end
 
 function CpHud:onReadStream(streamId, connection)
@@ -221,11 +237,40 @@ end
 function CpHud:onWriteUpdateStream(streamId, connection, dirtyMask)
     local spec = self.spec_cpHud
 	spec.status:onWriteUpdateStream(streamId, connection, dirtyMask)
+    if not connection:getIsServer() then
+        if streamWriteBool(streamId, bitAND(dirtyMask, spec.availableClientJobModesDirtyFlag) ~= 0) then
+            streamWriteUInt8(streamId, #spec.hudSettings.selectedJob.values)
+            for _, value in pairs(spec.hudSettings.selectedJob.values) do 
+                streamWriteUInt8(streamId, value)
+            end
+        end
+    end
 end
 
 function CpHud:onReadUpdateStream(streamId, timestamp, connection)
     local spec = self.spec_cpHud
 	spec.status:onReadUpdateStream(streamId, timestamp, connection)
+    if connection:getIsServer() then
+        if streamReadBool(streamId) then
+            local numValues = streamReadUInt8(streamId)
+            spec.availableClientJobModes = {
+                values = {},
+                texts = {}
+            }
+            ---@type AIParameterSettingList
+            local setting = spec.hudSettings.selectedJob
+            for i=1, numValues do 
+                local value = streamReadUInt8(streamId)
+                local ix = setting:getClosestIx(value)
+                if ix then
+                    table.insert(spec.availableClientJobModes.values, 
+                        setting.data.values[ix])
+                    table.insert(spec.availableClientJobModes.texts, 
+                        setting.data.texts[ix])
+                end
+            end
+        end
+    end
 end
 
 function CpHud:getCpStatus()
@@ -252,18 +297,6 @@ function CpHud:onEnterVehicle(isControlling)
                 self.spec_cpHud.savedCameraRotatableInfo)
         local spec = self.spec_cpHud
         spec.hud:openClose(CpHud.isHudActive)
-
-        -- if not spec.firstTimeEntered then
-        --     --- Attach/Detach only happens after the synchronizing is done.
-        --     --- For some reason the detection of the inital attach/detach event
-        --     --- is not corresponding to Vehicle:getIsSynchronized() function,
-        --     --- so we only do it after the first time entering the vehicle. 
-        --     for _, setting in ipairs(spec.hudSettings.settings) do
-        --         setting:refresh()
-        --         setting:resetToLoadedValue()
-        --     end
-        -- end
-        -- spec.firstTimeEntered = true
     end
 end
 
@@ -277,7 +310,12 @@ end
 function CpHud:onStateChange(state, data)
     local spec = self.spec_cpHud
     if state == Vehicle.STATE_CHANGE_ATTACH or state == Vehicle.STATE_CHANGE_DETACH then
-        spec.needsRefresh = true
+        if self.isServer then
+            for _, setting in ipairs(spec.hudSettings.settings) do
+                setting:refresh()
+            end
+            self:raiseDirtyFlags(spec.availableClientJobModesDirtyFlag)
+        end
     end
 end
 
@@ -286,12 +324,6 @@ function CpHud:onUpdate(dt)
     local spec = self.spec_cpHud
     local strategy = self:getCpDriveStrategy()
     spec.status:update(dt, self:getIsCpActive(), strategy)
-    if spec.needsRefresh then 
-        for _, setting in ipairs(spec.hudSettings.settings) do
-            setting:refresh()
-        end
-        spec.needsRefresh = false
-    end
 end
 
 function CpHud:onDraw()
@@ -359,6 +391,14 @@ end
 --------------------------------------
 --- Hud Settings
 --------------------------------------
+
+function CpHud:generateClientStates(setting, lastvalue)
+    local spec = self.spec_cpHud
+    if #spec.availableClientJobModes.values > 0 then
+        return spec.availableClientJobModes.values, spec.availableClientJobModes.texts
+    end
+    return {99}, "Client update error!"
+end
 
 function CpHud:raiseDirtyFlag(setting)
     HudSettingsEvent.sendEvent(self, setting)
