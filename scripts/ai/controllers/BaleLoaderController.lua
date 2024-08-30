@@ -78,7 +78,7 @@ end
 function BaleLoaderController:getDriveData()
     --- While animations are playing and the bale loader is full, then just wait.
     local maxSpeed 
-    if self:isFull() or self.baleLoaderSpec.emptyState ~= BaleLoader.EMPTY_NONE then
+    if self:isChangingBaleSize() and ( self:isFull() or self.baleLoaderSpec.emptyState ~= BaleLoader.EMPTY_NONE) then
         self:debugSparse("is full and waiting for release after animation has finished.")
         maxSpeed = 0
     end
