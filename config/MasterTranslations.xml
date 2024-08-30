@@ -1109,10 +1109,10 @@
 			<Text language="de"><![CDATA[Die Feldkante die am nächsten am Feldmarker wird verwendet um den Verlauf der Bahnen zu bestimmen.]]></Text>
 			<Text language="en"><![CDATA[The rows follow the curvature of the field edge nearest to the field marker.]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_courseGeneratorSetting_reverse_title">
+		<!--<Translation name="CP_vehicle_courseGeneratorSetting_reverse_title">
 			<Text language="de"><![CDATA[Kurs umdrehen]]></Text>
 			<Text language="en"><![CDATA[Reverse course]]></Text>
-		</Translation>
+		</Translation>-->
 		<Translation name="CP_vehicle_courseGeneratorSetting_reverse_tooltip">
 			<Text language="de"><![CDATA[Kurs umdrehen tt.]]></Text>
 			<Text language="en"><![CDATA[Reverse course tt.]]></Text>
