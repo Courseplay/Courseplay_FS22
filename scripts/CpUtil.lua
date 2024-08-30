@@ -261,11 +261,22 @@ end
 function CpUtil.try(func, ...)
 	local data = {xpcall(func, function(err) printCallstack(); return err end, ...)}
 	local status = data[1]
-	if not status then 
+	if not status then
 		CpUtil.info(data[2])
 		return status, tostring(data[2])
 	end
 	return unpack(data)
+end
+
+--- Same as the Giants xmlFile:setValue() function, but won't crash if it gets a nil value,
+--- instead just silently ignores it
+---@param xmlFile
+---@param key string
+---@param value any|nil
+function CpUtil.setXmlValue(xmlFile, key, value)
+	if value ~= nil then
+		xmlFile:setValue(key, value)
+	end
 end
 
 --- Gets the saved values from an xml string.

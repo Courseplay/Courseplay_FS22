@@ -85,6 +85,15 @@ function AITurn:debug(...)
     CpUtil.debugVehicle(self.debugChannel, self.vehicle, self.name .. ' state: ' .. self.state.name .. ' ' .. string.format(...))
 end
 
+--- Register a function to call when the turn ends. If no function is registered, calls
+--- self.driveStrategy:resumeFieldworkAfterTurn() by default
+---@param callbackObject table default is
+---@param callbackFunction function(object: table, ix) where ix is the index of the turn end waypoint. Default is
+function AITurn:registerTurnEndCallback(callbackObject, callbackFunction)
+    self.callbackObject = callbackObject
+    self.callbackFunction = callbackFunction
+end
+
 --- Start the actual turn maneuver after the row is finished
 function AITurn:startTurn()
     -- implement in derived classes
@@ -265,11 +274,18 @@ function AITurn:endTurn(dt)
 end
 
 --- Give back control the the drive strategy
-function AITurn:resumeFieldworkAfterTurn(ix, forceIx)
+function AITurn:resumeFieldworkAfterTurn(ix)
     if self.proximityController then
         self.proximityController:unregisterBlockingObjectListener()
     end
-    self.driveStrategy:resumeFieldworkAfterTurn(ix, forceIx)
+    -- restore the strategies' listeners
+    self.ppc:restorePreviouslyRegisteredListeners()
+    if self.callbackFunction and self.callbackObject then
+        self:debug('Triggering turn end callback function')
+        self.callbackFunction(self.callbackObject, ix)
+    else
+        self.driveStrategy:resumeFieldworkAfterTurn(ix)
+    end
 end
 
 function AITurn:drawDebug()
@@ -689,6 +705,9 @@ function CourseTurn:generateCalculatedTurn()
         self:debug('This is NOT a headland turn, turnOnField=%s distanceToFieldEdge=%.1f', turnOnField, distanceToFieldEdge)
         if distanceToFieldEdge > self.workWidth or self.steeringLength > 0 then
             -- if there's plenty of space or it is a towed implement, stick with Dubins, that's easier
+            -- TODO: the generated Dubins turn may not fit on the field and we we'll move it back, forcing the
+            -- vehicle to reverse at the start and at the end of the turn. This will be very slow, and if the
+            -- vehicle is able to reverse, a Reeds-Shepp would be lot faster
             turnManeuver = DubinsTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
                     self.turningRadius, self.workWidth, self.steeringLength, distanceToFieldEdge)
         else
@@ -715,7 +734,7 @@ function CourseTurn:generatePathfinderTurn(useHeadland)
             self.turningRadius, self.driveStrategy:getAllowReversePathfinding(),
             useHeadland and self.fieldWorkCourse or nil,
             self.driveStrategy:getWorkWidth(), backMarkerDistance,
-            self.driveStrategy:isTurnOnFieldActive())
+            self.driveStrategy:isTurnOnFieldActive(), self.turnContext:getBoundaryId())
     if result.done then
         return self:onPathfindingDone(result.path)
     else
@@ -727,7 +746,7 @@ end
 function CourseTurn:onPathfindingDone(path)
     if path and #path > 2 then
         self:debug('Pathfinding finished with %d waypoints (%d ms)', #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
-        self.turnCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        self.turnCourse = Course(self.vehicle, CpMathUtil.pointsToGameInPlace(path), true)
         -- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
         self.turnCourse:setUseTightTurnOffsetForLastWaypoints(15)
         local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.turnCourse, nil, true)
@@ -933,24 +952,14 @@ end
 ---@class FinishRowOnly : AITurn
 FinishRowOnly = CpObject(AITurn)
 
----@param callbackObject table|nil
----@param callbackFunction function|nil member function of callbackObject to call after the row is finished. If
---- object and function is nil, just resume fieldwork.
-function FinishRowOnly:init(vehicle, driveStrategy, ppc, proximityController, turnContext, callbackObject, callbackFunction)
+function FinishRowOnly:init(vehicle, driveStrategy, ppc, proximityController, turnContext)
     AITurn.init(self, vehicle, driveStrategy, ppc, proximityController, turnContext, 0, 'FinishRow')
-    self.callbackObject = callbackObject
-    self.callbackFunction = callbackFunction
 end
 
 -- don't perform the actual turn, just give back control to the strategy
 function FinishRowOnly:startTurn()
-    if self.callbackFunction and self.callbackObject then
-        self:debug('Row finished, triggering callback function')
-        self.callbackFunction(self.callbackObject)
-    else
-        self:debug('Row finished, no callback supplied, so resuming fieldwork')
-        self:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
-    end
+    self:debug('Row finished, ending turn')
+    self:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
 end
 
 --- A turn which really isn't a turn just a course to start a field work row using the supplied course and
@@ -992,6 +1001,7 @@ function StartRowOnly:init(vehicle, driveStrategy, ppc, turnContext, startRowCou
     -- add a turn ending section into the row to make sure the implements are lowered correctly
     local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.turnCourse, 3, true)
     TurnManeuver.setLowerImplements(self.turnCourse, endingTurnLength, true)
+    self.turnCourse:adjustForReversing(2)
     self.state = self.states.DRIVING_TO_ROW
 end
 

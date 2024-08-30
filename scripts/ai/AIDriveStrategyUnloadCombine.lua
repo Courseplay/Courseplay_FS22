@@ -2834,7 +2834,7 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadPositionReached()
             self:debug("Reverse alignment course creation failed!")
         else
             --- Adds the transition turn segment
-            local alignmentTurnSegmentCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+            local alignmentTurnSegmentCourse = Course(self.vehicle, CpMathUtil.pointsToGameInPlace(path), true)
             alignmentCourse:append(alignmentTurnSegmentCourse)
 
             --- Add a small straight segment at the end

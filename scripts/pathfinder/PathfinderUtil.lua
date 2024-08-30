@@ -18,6 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 PathfinderUtil = {}
 
+PathfinderUtil.logger = Logger('PathfinderUtil')
+
 PathfinderUtil.dubinsSolver = DubinsSolver()
 PathfinderUtil.reedsSheppSolver = ReedsSheppSolver()
 
@@ -477,7 +479,7 @@ function PathfinderUtil.initializeTrailerHeading(start, vehicleData)
     -- initialize the trailer's heading for the starting point
     if vehicleData.trailer then
         local _, _, yRot = PathfinderUtil.getNodePositionAndDirection(vehicleData.trailer.rootNode, 0, 0)
-        start:setTrailerHeading(CourseGenerator.fromCpAngle(yRot))
+        start:setTrailerHeading(CpMathUtil.angleFromGame(yRot))
     end
 end
 
@@ -485,7 +487,7 @@ end
 ---@param n number number of headland to get, 1 -> number of headlands, 1 is the outermost
 ---@return Polygon headland as a polygon (x, y)
 local function getHeadland(course, n)
-    local headland = Polygon:new()
+    local headland = Polygon()
     local first, last, step
     if course:startsWithHeadland() then
         first, last, step = 1, course:getNumberOfWaypoints(), 1
@@ -495,11 +497,11 @@ local function getHeadland(course, n)
         first, last, step = course:getNumberOfWaypoints(), 1, -1
     end
     for i = first, last, step do
-        -- do not want to include the connecting track parts as those are overlap with the first part
+        -- do not want to include the transition and the connecting path parts as those are overlap with the first part
         -- of the headland confusing the shortest path finding
-        if course:isOnHeadland(i, n) and not course:isOnConnectingTrack(i) then
+        if course:isOnHeadland(i, n) and not course:isHeadlandTransition(i) and not course:isOnConnectingPath(i) then
             local x, y, z = course:getWaypointPosition(i)
-            headland:add({ x = x, y = -z })
+            headland:append({ x = x, y = -z })
         end
         if not course:isOnHeadland(i) or (#headland > 0 and not course:isOnHeadland(i, n)) then
             -- stop after we leave the headland around the field boundary or when we already found our headland
@@ -512,8 +514,7 @@ local function getHeadland(course, n)
     -- short section connecting this headland with the previous one and may result in
     -- the path taking some sharp turns, especially when the transition is near a corner
     if n > 1 then
-        table.remove(headland, 1)
-        table.remove(headland, 1)
+        headland:cutStartAtIx(3)
     end
     return headland
 end
@@ -522,8 +523,12 @@ end
 ---@param goal State3D
 ---@param course Course
 ---@param turnRadius number
+---@param workingWidth number
+---@param backMarkerDistance number
+---@param boundaryId string|nil id of the boundary (field or island), to make sure we stay on the same headland as
+--- the headland number alone may also be one of the island headlands.
 ---@return State3D[]
-local function findShortestPathOnHeadland(start, goal, course, turnRadius, workingWidth, backMarkerDistance)
+local function findShortestPathOnHeadland(start, goal, course, turnRadius, workingWidth, backMarkerDistance, boundaryId)
     local headlandWidth = course:getNumberOfHeadlands() * workingWidth
     -- distance of the vehicle's direction node from the end of the row. If the implement is on the front of the
     -- vehicle (like a combine), we move the vehicle up to the end of the row so we'll later always end up with
@@ -535,16 +540,18 @@ local function findShortestPathOnHeadland(start, goal, course, turnRadius, worki
     local closestHeadland = math.max(1, math.min(course:getNumberOfHeadlands() - 1,
             math.floor(usableHeadlandWidth / workingWidth) + 1))
     -- to be able to use the existing getSectionBetweenPoints, we first create a Polyline[], then construct a State3D[]
-    local headland = getHeadland(course, closestHeadland)
+    local headland = course:getHeadland(closestHeadland, boundaryId)
     CpUtil.debugVehicle(CpDebug.DBG_PATHFINDER, course:getVehicle(),
-            'headland width %.1f, distance from row end %.1f, usable headland width %.1f closest headland %d with %d points',
-            headlandWidth, distanceFromRowEnd, usableHeadlandWidth, closestHeadland, #headland)
+            'headland width %.1f, distance from row end %.1f, usable headland width %.1f closest headland %d (%s) with %d points',
+            headlandWidth, distanceFromRowEnd, usableHeadlandWidth, closestHeadland, boundaryId, #headland)
     if #headland == 0 then
         return
     end
-    headland:calculateData()
+    headland:calculateProperties()
     local path = {}
-    for _, p in ipairs(headland:getSectionBetweenPoints(start, goal, 2)) do
+    local startVertex = headland:findClosestVertexToPoint(start)
+    local endVertex = headland:findClosestVertexToPoint(goal)
+    for _, p in ipairs(headland:getShortestPathBetween(startVertex.ix, endVertex.ix)) do
         table.insert(path, State3D(p.x, p.y, 0))
     end
     return path
@@ -584,14 +591,16 @@ end
 --- in front of the vehicle when it stops working on that row before the turn starts. Negative values mean the
 --- vehicle is towing the implements and is past the end of the row when the implement reaches the end of the row.
 ---@param turnOnField boolean is turn on field allowed?
+---@param boundaryId string|nil id of the boundary (field or island), to make sure we stay on the same headland as
+--- the headland number alone may also be one of the island headlands.
 ---@return PathfinderInterface pathfinder
 ---@return PathfinderResult
 function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode, goalOffset, turnRadius, allowReverse,
-                                        courseWithHeadland, workingWidth, backMarkerDistance, turnOnField)
+                                        courseWithHeadland, workingWidth, backMarkerDistance, turnOnField, boundaryId)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(vehicle:getAIDirectionNode(), 0, startOffset or 0)
-    local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
+    local start = State3D(x, -z, CpMathUtil.angleFromGame(yRot))
     x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalReferenceNode, 0, goalOffset or 0)
-    local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
+    local goal = State3D(x, -z, CpMathUtil.angleFromGame(yRot))
 
     -- use an analyticSolver which only yields courses ending in forward gear. This is to
     -- avoid reaching the end of turn in reverse. Implement lowering at turn end in reverse works only properly
@@ -602,20 +611,21 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
     local pathfinder
     if courseWithHeadland and courseWithHeadland:getNumberOfHeadlands() > 0 then
         -- if there's a headland, we want to drive on the headland to the next row
-        local headlandPath = findShortestPathOnHeadland(start, goal, courseWithHeadland, turnRadius, workingWidth, backMarkerDistance)
+        local headlandPath = findShortestPathOnHeadland(start, goal, courseWithHeadland, turnRadius, workingWidth,
+                backMarkerDistance, boundaryId)
         if headlandPath ~= nil then
             -- is the first wp of the headland in front of us?
             local _, y, _ = getWorldTranslation(vehicle:getAIDirectionNode())
             local dx, _, dz = worldToLocal(vehicle:getAIDirectionNode(), headlandPath[1].x, y, -headlandPath[1].y)
             local dirDeg = math.deg(math.abs(math.atan2(dx, dz)))
             if dirDeg > 45 or true then
-                CourseGenerator.debug('First headland waypoint isn\'t in front of us (%.1f), remove first few waypoints to avoid making a circle %.1f %.1f', dirDeg, dx, dz)
+                PathfinderUtil.logger:debug('First headland waypoint isn\'t in front of us (%.1f), remove first few waypoints to avoid making a circle %.1f %.1f', dirDeg, dx, dz)
             end
             pathfinder = HybridAStarWithPathInTheMiddle(vehicle, turnRadius * 3, 200, headlandPath, true, analyticSolver)
         end
     end
     if pathfinder == nil then
-        CourseGenerator.debug('No headland, or there is a headland but wasn\'t able to get the shortest path on the headland to the next row, falling back to hybrid A*')
+        PathfinderUtil.logger:debug('No headland, or there is a headland but wasn\'t able to get the shortest path on the headland to the next row, falling back to hybrid A*')
         pathfinder = HybridAStarWithAStarInTheMiddle(vehicle, turnRadius * 6, 200, 10000, true, analyticSolver)
     end
 
@@ -642,9 +652,9 @@ end
 function PathfinderUtil.findAnalyticPath(solver, vehicleDirectionNode, startOffset, goalReferenceNode,
                                          xOffset, zOffset, turnRadius)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(vehicleDirectionNode, 0, startOffset or 0)
-    local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
+    local start = State3D(x, -z, CpMathUtil.angleFromGame(yRot))
     x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalReferenceNode, xOffset or 0, zOffset or 0)
-    local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
+    local goal = State3D(x, -z, CpMathUtil.angleFromGame(yRot))
     return PathfinderUtil.findAnalyticPathFromStartToGoal(solver, start, goal, turnRadius)
 end
 
@@ -676,7 +686,7 @@ end
 ---@return State3D position/heading of vehicle
 function PathfinderUtil.getVehiclePositionAsState3D(vehicle, xOffset, zOffset)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(AIUtil.getDirectionNode(vehicle), xOffset, zOffset)
-    return State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
+    return State3D(x, -z, CpMathUtil.angleFromGame(yRot))
 end
 
 --- Creates a State3D Vector from a given Waypoint.
@@ -685,7 +695,7 @@ end
 ---@param zOffset number
 ---@return State3D
 function PathfinderUtil.getWaypointAsState3D(waypoint, xOffset, zOffset)
-    local result = State3D(waypoint.x, -waypoint.z, CourseGenerator.fromCpAngleDeg(waypoint.angle))
+    local result = State3D(waypoint.x, -waypoint.z, CpMathUtil.angleFromGameDeg(waypoint.angle))
     if waypoint:getIsReverse() then
         --- If it's a reverse driven waypoint, then the target heading needs to be inverted. 
         result:reverseHeading()
@@ -740,7 +750,7 @@ end
 ---@return PathfinderResult
 function PathfinderUtil.startPathfindingFromVehicleToNode(goalNode, xOffset, zOffset, context)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalNode, xOffset, zOffset)
-    local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
+    local goal = State3D(x, -z, CpMathUtil.angleFromGame(yRot))
     return PathfinderUtil.startPathfindingFromVehicleToGoal(goal, context)
 end
 
@@ -755,9 +765,9 @@ end
 ---@return PathfinderResult
 function PathfinderUtil.startAStarPathfindingFromVehicleToNode(goalNode, xOffset, zOffset, context)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(context._vehicle:getAIDirectionNode())
-    local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
+    local start = State3D(x, -z, CpMathUtil.angleFromGame(yRot))
     x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalNode, xOffset, zOffset)
-    local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
+    local goal = State3D(x, -z, CpMathUtil.angleFromGame(yRot))
 
     local constraints = PathfinderConstraints(context)
     PathfinderUtil.initializeTrailerHeading(start, constraints.vehicleData)

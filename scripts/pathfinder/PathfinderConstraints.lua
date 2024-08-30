@@ -55,7 +55,7 @@ PathfinderConstraints = CpObject(PathfinderConstraintInterface)
 ---@param context PathfinderContext
 function PathfinderConstraints:init(context)
     self.vehicleData = PathfinderUtil.VehicleData(context._vehicle, true, 0.25)
-    self.trailerHitchLength = AIUtil.getTowBarLength(context._vehicle)
+    self.trailerHitchLength = AIUtil.getTowBarLength(context._vehicle) or 3
     self.turnRadius = AIUtil.getTurningRadius(context._vehicle) or 10
     self.objectsToIgnore = context._objectsToIgnore or {}
     self.vehiclesToIgnore = context._vehiclesToIgnore or {}
@@ -67,6 +67,8 @@ function PathfinderConstraints:init(context)
     self.areaToIgnoreFruit = context._areaToIgnoreFruit
     self.areaToIgnoreOffFieldPenalty = context._areaToIgnoreOffFieldPenalty
     self.ignoreFruitHeaps = context._ignoreFruitHeaps
+    self.preferredPath = context._preferredPath
+    self.preferredPathAffinitySquared = PathfinderContext.preferredPathAffinity * PathfinderContext.preferredPathAffinity
     self.ignoreTrailerAtStartRange = context._ignoreTrailerAtStartRange or 0
     self.initialMaxFruitPercent = self.maxFruitPercent
     self.initialOffFieldPenalty = self.offFieldPenalty
@@ -127,8 +129,28 @@ function PathfinderConstraints:getNodePenalty(node)
         penalty = penalty + PathfinderUtil.defaultAreaToAvoidPenalty
         self.areaToAvoidPenaltyCount = self.areaToAvoidPenaltyCount + 1
     end
+    penalty = penalty + self:calculatePreferredPathPenalty(node)
     self.totalNodeCount = self.totalNodeCount + 1
     return penalty
+end
+
+--- Calculate penalty for this node based on the preferred path. The penalty will be negative to
+--- encourage the pathfinder to use the preferred path.
+---@param node State3D
+function PathfinderConstraints:calculatePreferredPathPenalty(node)
+    if self.preferredPath == nil then
+        return 0
+    end
+    for _, waypoint in ipairs(self.preferredPath) do
+        local dx = node.x - waypoint.x
+        local dz = -node.y - waypoint.z
+        -- if any point of the preferred path is within the affinity limit meters of the node, we reduce the penalty
+        local distanceSquared = dx * dx + dz * dz
+        if distanceSquared < self.preferredPathAffinitySquared then
+            return - math.sqrt(self.preferredPathAffinitySquared - distanceSquared)
+        end
+    end
+    return 0
 end
 
 --- When the pathfinder tries an analytic solution for the entire path from start to goal, we can't use node penalties
@@ -172,7 +194,7 @@ function PathfinderConstraints:isValidNode(node, ignoreTrailer, offFieldValid)
     end
     ensureHelperNode()
     PathfinderUtil.setWorldPositionAndRotationOnTerrain(PathfinderUtil.helperNode,
-            node.x, -node.y, CourseGenerator.toCpAngle(node.t), 0.5)
+            node.x, -node.y, CpMathUtil.angleToGame(node.t), 0.5)
 
     -- for debug purposes only, store validity info on node
     node.collidingShapes = PathfinderUtil.collisionDetector:findCollidingShapes(
@@ -184,7 +206,7 @@ function PathfinderConstraints:isValidNode(node, ignoreTrailer, offFieldValid)
         local x, y, z = localToWorld(PathfinderUtil.helperNode, 0, 0, self.vehicleData.trailerHitchOffset)
 
         PathfinderUtil.setWorldPositionAndRotationOnTerrain(PathfinderUtil.helperNode, x, z,
-                CourseGenerator.toCpAngle(node.tTrailer), 0.5)
+                CpMathUtil.angleToGame(node.tTrailer), 0.5)
 
         node.collidingShapes = node.collidingShapes + PathfinderUtil.collisionDetector:findCollidingShapes(
                 PathfinderUtil.helperNode, self.vehicleData.trailerRectangle, self.vehiclesToIgnore,

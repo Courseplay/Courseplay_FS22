@@ -92,7 +92,8 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
     end
     self.hasValidPosition = false
     self.foundVines = nil
-    local fieldPolygon, isCustomField = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
+    local fieldPolygon
+    fieldPolygon, self.isCustomField = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
     self:setFieldPolygon(fieldPolygon)
     if fieldPolygon then
         self.hasValidPosition = true
@@ -104,10 +105,6 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
         self.selectedFieldPlot:setWaypoints(fieldPolygon)
         self.selectedFieldPlot:setVisible(true)
         self.selectedFieldPlot:setBrightColor(true)
-        if isCustomField then
-            CpUtil.infoVehicle(vehicle, 'disabling island bypass on custom field')
-            vehicle:getCourseGeneratorSettings().islandBypassMode:setValue(Island.BYPASS_MODE_NONE)
-        end
     else
         self.selectedFieldPlot:setVisible(false)
         return false, g_i18n:getText("CP_error_not_on_field")
@@ -190,6 +187,10 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
     local vehicle = self.vehicleParameter:getVehicle()
     local fieldPolygon = self:getFieldPolygon()
     local settings = vehicle:getCourseGeneratorSettings()
+    if self.isCustomField then
+        CpUtil.infoVehicle(vehicle, 'disabling island bypass on custom field')
+        settings.bypassIslands:setValue(false)
+    end
     local tx, tz = self.cpJobParameters.fieldPosition:getPosition()
     local ok, course
     if self.foundVines then
@@ -204,29 +205,16 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
                 AIUtil.getTurningRadius(vehicle),
                 rowAngleDeg,
                 vineSettings.vineRowsToSkip:getValue(),
-                vineSettings.vineMultiTools:getValue()
+                vineSettings.vineMultiTools:getValue(),
+                g_vineScanner:getLines(),
+                vineSettings.vineCenterOffset:getValue()
         )
     else
 
         ok, course = CourseGeneratorInterface.generate(fieldPolygon,
                 { x = tx, z = tz },
-                settings.isClockwise:getValue(),
-                settings.workWidth:getValue(),
-                AIUtil.getTurningRadius(vehicle),
-                settings.numberOfHeadlands:getValue(),
-                settings.startOnHeadland:getValue(),
-                settings.headlandCornerType:getValue(),
-                settings.headlandOverlapPercent:getValue(),
-                settings.centerMode:getValue(),
-                settings.rowDirection:getValue(),
-                settings.manualRowAngleDeg:getValue(),
-                settings.rowsToSkip:getValue(),
-                false,
-                settings.rowsPerLand:getValue(),
-                settings.islandBypassMode:getValue(),
-                settings.fieldMargin:getValue(),
-                settings.multiTools:getValue(),
-                self:isPipeOnLeftSide(vehicle)
+                vehicle,
+                settings
         )
     end
     if not ok then

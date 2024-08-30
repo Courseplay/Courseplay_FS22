@@ -29,4 +29,21 @@ jobs:
           lua CourseManagerTest.lua
           lua CpMathUtilTest.lua
           lua MovingAverageTest.lua
+      - name: Run course generator unit tests
+        run: |
+          cd scripts/courseGenerator/test
+          lua BlockSequencerTest.lua
+          lua CacheMapTest.lua
+          lua FieldTest.lua
+          lua FieldworkCourseTest.lua
+          lua HeadlandConnectorTest.lua
+          lua LineSegmentTest.lua
           lua PolygonTest.lua
+          lua PolylineTest.lua
+          lua SliderTest.lua
+          lua RowPatternTest.lua
+          lua RowTest.lua
+          lua SliderTest.lua
+          lua TransformTest.lua
+          lua VertexTest.lua
+          lua WrapAroundIndexTest.lua

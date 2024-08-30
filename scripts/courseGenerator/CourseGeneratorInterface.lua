@@ -2,163 +2,157 @@
 -- Wraps the CourseGenerator which does not depend on the CP or Giants code.
 -- all course generator related code dependent on CP/Giants functions go here
 CourseGeneratorInterface = {}
+CourseGeneratorInterface.logger = Logger('CourseGeneratorInterface')
+
+-- Generate into this global variable to be able to access the generated course for debug purposes
+CourseGeneratorInterface.generatedCourse = nil
+
 ---@param fieldPolygon table [{x, z}]
 ---@param startPosition table {x, z}
----@param isClockwise boolean
----@param workWidth number
----@param numberOfHeadlands number
----@param rowsToSkip number when turning to the next row, skip nRowsToSkip and continue working there. This allows
---- for a bigger turning radius
----@param leaveSkippedRowsUnworked boolean normally, if rowsToSkip > 0, the vehicle will cover all rows, including the
---- skipped ones, for example, on the first run work on the odd rows, then on the even ones. When leaveSkippedRowsUnworked
---- is true, it will not return to work on the skipped rows, will only work on every rowsToSkip + 1 row.
+---@param vehicle table
+---@param settings CpCourseGeneratorSettings
 function CourseGeneratorInterface.generate(fieldPolygon,
-										   startPosition,
-										   isClockwise,
-										   workWidth,
-										   turnRadius,
-										   numberOfHeadlands,
-										   startOnHeadland,
-										   headlandCornerType,
-										   headlandOverlapPercent,
-										   centerMode,
-										   rowDirection,
-										   manualRowAngleDeg,
-										   rowsToSkip,
-										   leaveSkippedRowsUnworked,
-										   rowsPerLand,
-										   islandBypassMode,
-										   fieldMargin,
-										   multiTools,
-										   pipeOnLeftSide
+                                           startPosition,
+                                           vehicle,
+                                           settings
 )
-	CourseGenerator.debug('Generating course, clockwise %s, width %.1f m, turn radius %.1f m, headlands %d, startOnHeadland %s',
-			tostring(isClockwise), workWidth, turnRadius, numberOfHeadlands, tostring(startOnHeadland))
-	CourseGenerator.debug('                   headland corner %d, headland overlap %d, center mode %d',
-			headlandCornerType, headlandOverlapPercent, centerMode)
-	CourseGenerator.debug('                   row direction %d, rows to skip %d, rows per land %d',
-			rowDirection, rowsToSkip, rowsPerLand)
-	CourseGenerator.debug('                   multiTools %d, pipe on left %s',
-			multiTools, pipeOnLeftSide)
+    CourseGenerator.clearDebugObjects()
+    local field = CourseGenerator.Field('', 0, CpMathUtil.pointsFromGame(fieldPolygon))
 
+    local context = CourseGenerator.FieldworkContext(field, settings.workWidth:getValue() * settings.multiTools:getValue(),
+            settings.turningRadius:getValue(), settings.numberOfHeadlands:getValue())
+    local rowPatternNumber = settings.centerMode:getValue()
+    if rowPatternNumber == CourseGenerator.RowPattern.ALTERNATING and settings.rowsToSkip:getValue() == 0 then
+        context:setRowPattern(CourseGenerator.RowPatternAlternating())
+    elseif rowPatternNumber == CourseGenerator.RowPattern.ALTERNATING and settings.rowsToSkip:getValue() > 0 then
+        context:setRowPattern(CourseGenerator.RowPatternSkip(settings.rowsToSkip:getValue(), false))
+    elseif rowPatternNumber == CourseGenerator.RowPattern.SPIRAL then
+        context:setRowPattern(CourseGenerator.RowPatternSpiral(settings.centerClockwise:getValue(), settings.spiralFromInside:getValue()))
+    elseif rowPatternNumber == CourseGenerator.RowPattern.LANDS then
+        -- TODO: auto fill clockwise from self:isPipeOnLeftSide(vehicle)?
+        context:setRowPattern(CourseGenerator.RowPatternLands(settings.centerClockwise:getValue(), settings.rowsPerLand:getValue()))
+    elseif rowPatternNumber == CourseGenerator.RowPattern.RACETRACK then
+        context:setRowPattern(CourseGenerator.RowPatternRacetrack(settings.numberOfCircles:getValue()))
+    end
 
-	--------------------------------------------------------------------------------------------------------------------
-	-- Headland settings
-	-----------------------------------------------------------------------------------------------------------------------
-	-- ignore headland order setting when there's no headland
-	local headlandFirst = startOnHeadland == CourseGenerator.HEADLAND_START_ON_HEADLAND or numberOfHeadlands == 0
-	if headlandFirst then
-		isClockwise = isClockwise == CourseGenerator.HEADLAND_CLOCKWISE
-	else
-		-- reverse clockwise when starting in the middle
-		isClockwise = isClockwise == CourseGenerator.HEADLAND_COUNTERCLOCKWISE
-	end
-	local headlandSettings = {
-		startLocation = CourseGenerator.pointToXy(startPosition),
-		-- use some overlap between headland passes to get better results
-		-- (=less fruit missed) at smooth headland corners
-		overlapPercent = headlandOverlapPercent,
-		nPasses = numberOfHeadlands,
-		headlandFirst = headlandFirst,
-		isClockwise = isClockwise,
-		mode = numberOfHeadlands == 0 and CourseGenerator.HEADLAND_MODE_NONE or CourseGenerator.HEADLAND_MODE_NORMAL
-	}
+    context:setStartLocation(startPosition.x, -startPosition.z)
+    context:setBaselineEdge(startPosition.x, -startPosition.z)
+    context:setFieldMargin(settings.fieldMargin:getValue())
+    context:setUseBaselineEdge(settings.useBaseLineEdge:getValue())
+    context:setFieldCornerRadius(settings.turningRadius:getValue())
+    context:setHeadlandFirst(settings.startOnHeadland:getValue())
+    context:setHeadlandClockwise(settings.headlandClockwise:getValue())
+    context:setHeadlandOverlap(settings.headlandOverlapPercent:getValue())
+    context:setSharpenCorners(settings.sharpenCorners:getValue())
+    context:setHeadlandsWithRoundCorners(settings.headlandsWithRoundCorners:getValue())
+    context:setAutoRowAngle(settings.autoRowAngle:getValue())
+    -- the Course Generator UI uses the geographical direction angles (0 - North, 90 - East, etc), convert it to
+    -- the mathematical angle (0 - x+, 90 - y+, etc)
+    context:setRowAngle(math.rad(-(settings.manualRowAngleDeg:getValue() - 90)))
+    context:setBypassIslands(settings.bypassIslands:getValue())
+    context:setIslandHeadlands(settings.nIslandHeadlands:getValue())
+    if settings.bypassIslands:getValue() then
+        context.field:findIslands()
+        context.field:setupIslands()
+    end
 
-	--------------------------------------------------------------------------------------------------------------------
-	-- Center settings
-	-----------------------------------------------------------------------------------------------------------------------
-	local centerSettings = {
-		useBestAngle = rowDirection == CourseGenerator.ROW_DIRECTION_AUTOMATIC,
-		useLongestEdgeAngle = rowDirection == CourseGenerator.ROW_DIRECTION_LONGEST_EDGE,
-		rowAngle = CourseGenerator.fromCpAngleDeg(manualRowAngleDeg),
-		nRowsToSkip = rowsToSkip,
-		leaveSkippedRowsUnworked = leaveSkippedRowsUnworked,
-		mode = centerMode,
-		nRowsPerLand = rowsPerLand or 6,
-		pipeOnLeftSide = pipeOnLeftSide
-	}
+    local status, numberOfHeadlands
+    if settings.narrowField:getValue() then
+        -- two sided must start on headland
+        context:setHeadlandFirst(true)
+        status, CourseGeneratorInterface.generatedCourse = xpcall(
+                function()
+                    return CourseGenerator.FieldworkCourseTwoSided(context)
+                end,
+                function(err)
+                    printCallstack();
+                    return err
+                end
+        )
+        -- two sided always has the requested headlands
+        numberOfHeadlands = settings.numberOfHeadlands:getValue()
+    else
+        status, CourseGeneratorInterface.generatedCourse = xpcall(
+                function()
+                    return CourseGenerator.FieldworkCourse(context)
+                end,
+                function(err)
+                    printCallstack();
+                    return err
+                end
+        )
+        -- the actual number of headlands generated may be less than the requested
+        numberOfHeadlands = #CourseGeneratorInterface.generatedCourse:getHeadlands()
+    end
 
-	--------------------------------------------------------------------------------------------------------------------
-	-- Detect islands
-	-----------------------------------------------------------------------------------------------------------------------
-	local islandNodes = Island.findIslands(Polygon:new(CourseGenerator.pointsToXy(fieldPolygon)))
+    -- return on exception or if the result is not usable
+    if not status or CourseGeneratorInterface.generatedCourse == nil then
+        return false
+    end
 
-	--------------------------------------------------------------------------------------------------------------------
-	-- General settings
-	-----------------------------------------------------------------------------------------------------------------------
-	local minDistanceBetweenPoints = 0.5
+    CourseGeneratorInterface.logger:debug('Generated course: %d/%d headland/center waypoints',
+            #CourseGeneratorInterface.generatedCourse:getHeadlandPath(), #CourseGeneratorInterface.generatedCourse:getCenterPath())
 
-	local field = {}
-	field.boundary = Polygon:new(CourseGenerator.pointsToXy(fieldPolygon))
-	field.boundary:calculateData()
-
-	--- Multiplies the workWidth with the number of targeted vehicles.
-	workWidth = workWidth * multiTools
-
-	local status, ok = xpcall(generateCourseForField, function(err)
-		printCallstack();
-		return err
-	end,
-		field, workWidth, headlandSettings,
-		minDistanceBetweenPoints,
-		headlandCornerType,
-		headlandCornerType == CourseGenerator.HEADLAND_CORNER_TYPE_ROUND,
-		turnRadius,
-		islandNodes,
-		islandBypassMode, centerSettings, fieldMargin
-	)
-
-	CourseGenerator.debug('Course generator returned status %s, ok %s', status, ok)
-
-	-- return on exception or if the result is not usable
-	if not status or not ok then
-		return false
-	end
-
-	--removeRidgeMarkersFromLastTrack(field.course,
-	--	vehicle.cp.courseGeneratorSettings.startOnHeadland:is(CourseGenerator.HEADLAND_START_ON_UP_DOWN_ROWS))
-	local course = Course.createFromGeneratedCourse(nil, field.course, workWidth, #field.headlandTracks, multiTools)
-	course:setFieldPolygon(fieldPolygon)
-	return true, course
+    local course = Course.createFromGeneratedCourse(nil, CourseGeneratorInterface.generatedCourse,
+            settings.workWidth:getValue(), numberOfHeadlands, settings.multiTools:getValue())
+    course:setFieldPolygon(fieldPolygon)
+    return true, course
 end
 
 --- Generates a vine course, where the fieldPolygon are the start/end of the vine node.
 ---@param fieldPolygon table
 ---@param workWidth number
----@param turnRadius number
+---@param turningRadius number
 ---@param manualRowAngleDeg number
 ---@param rowsToSkip number
 ---@param multiTools number
 function CourseGeneratorInterface.generateVineCourse(
-	fieldPolygon,
-	startingPoint,
-	workWidth,
-	turnRadius,
-	manualRowAngleDeg,
-	rowsToSkip,
-	multiTools
+        fieldPolygon,
+        startPosition,
+        workWidth,
+        turningRadius,
+        manualRowAngleDeg,
+        rowsToSkip,
+        multiTools,
+        lines,
+        offset
 )
-	
-	return CourseGeneratorInterface.generate(
-		fieldPolygon,
-		startingPoint,
-		true,
-		workWidth,
-		turnRadius,
-		0,
-		false,
-		CpCourseGeneratorSettings.HEADLAND_CORNER_TYPE_SHARP,
-		0,
-		CpCourseGeneratorSettings.CENTER_MODE_UP_DOWN,
-		CpCourseGeneratorSettings.ROW_DIRECTION_MANUAL,
-		manualRowAngleDeg,
-		rowsToSkip,
-		true,
-		0,
-		false,
-		0,
-		multiTools,
-		false
-	)
-					
+    CourseGenerator.clearDebugObjects()
+    local field = CourseGenerator.Field('', 0, CpMathUtil.pointsFromGame(fieldPolygon))
+
+    local context = CourseGenerator.FieldworkContext(field, workWidth * multiTools, turningRadius, 0)
+    if rowsToSkip == 0 then
+        context:setRowPattern(CourseGenerator.RowPatternAlternating())
+    else
+        context:setRowPattern(CourseGenerator.RowPatternSkip(rowsToSkip, true))
+    end
+    context:setStartLocation(startPosition.x, -startPosition.z)
+    context:setAutoRowAngle(false)
+    -- the Course Generator UI uses the geographical direction angles (0 - North, 90 - East, etc), convert it to
+    -- the mathematical angle (0 - x+, 90 - y+, etc)
+    context:setRowAngle(CpMathUtil.angleFromGame(manualRowAngleDeg))
+    context:setBypassIslands(false)
+    local status
+    status, CourseGeneratorInterface.generatedCourse = xpcall(
+            function()
+                return CourseGenerator.FieldworkCourseVine(context,
+                        CourseGenerator.FieldworkCourseVine.generateRows(workWidth, lines, offset ~= 0))
+            end,
+            function(err)
+                printCallstack();
+                return err
+            end
+    )
+    -- return on exception or if the result is not usable
+    if not status or CourseGeneratorInterface.generatedCourse == nil then
+        return false
+    end
+
+    CourseGeneratorInterface.logger:debug('Generated vine course: %d center waypoints',
+            #CourseGeneratorInterface.generatedCourse:getCenterPath())
+
+    local course = Course.createFromGeneratedCourse(nil, CourseGeneratorInterface.generatedCourse,
+            workWidth, 0, multiTools)
+    course:setFieldPolygon(fieldPolygon)
+    return true, course
 end

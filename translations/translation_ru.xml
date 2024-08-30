@@ -269,7 +269,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_basic" text="основные"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_headland" text="поворотная полоса"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="метод движения"/>
-    <text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced" text="расширенные"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_island" text="Settings island"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_title" text="Рабочая ширина"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip" text="Рабочая ширина орудия. Значение: 0 - 50."/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title" text="Количество поворотных полос"/>
@@ -280,41 +280,60 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Положительные значения уменьшают размер поля, отрицательные - увеличивают рабочую область за пределы поля. Значение: -2 - 5.8."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Пропускать проходов"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Сколько пропускать проходов при переходе к следующему проходу при челночном методе. Значение: 0 - 6."/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Number of circles for racetrack. Value: 1 - 12"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Проходов в загоне"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="При выборе метода движения 'загонами', указывается к-во проходов к каждой загонке. Значение: 0 - 24."/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_title" text="Направление поворотной полосы"/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip" text="Транспортное средство должно двигаться по часовой стрелке или против часовой стрелки на разворотной полосе."/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" text="по часовой стрелке"/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" text="против часовой стрелки"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_title" text="Center direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_title" text="Island Headland direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_clockwise" text="clockwise"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_counterclockwise" text="counterclockwise"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_clockwise" text="clockwise"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_counterclockwise" text="counterclockwise"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_clockwise" text="clockwise"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_counterclockwise" text="counterclockwise"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Метод движения"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Метод движения агрегата по полю."/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="челночный"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="круговой"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="всвал/вразвал"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="загонами"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title" text="Углы поворотной полосы"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip" text="Каким образом техника будет проходить углы поворотной полосы."/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" text="сглаженные"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" text="острые"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" text="скруглённые"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_title" text="Направление проходов"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip" text="Направление первого прохода."/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" text="автоматическое"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" text="длинная сторона"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" text="вручную"/>
+    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_title" text="Spiral from inside"/>
+    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip" text="Starts the spiral from inside."/>
+    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="Even row with"/>
+    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Reduces the working width to achieve an even distribution across all lanes."/>
+    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title" text="Sharpen headland corners"/>
+    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="Sharpen corners of non-rounded headlands"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Number of round corners"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Number of round corners, starting with the first headland."/>
+    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_title" text="Corner radius"/>
+    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Radius of round corners, based on the turning radius of the vehicle. Value: 5 - 15"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Up/down row direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Direction of the rows in the center of the field."/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="automatic"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_manual" text="manual"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Угол челночных проходов"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Угол проходов в челночном режиме при указании направления вручную (0 = север). Значение: 0 - 175 с шагом: 5."/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" text="Обход островков"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" text="Как курс должен обходить островки на поле."/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" text="без обхода"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" text="простой"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" text="по кругу"/>
+    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>
+    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="How the course should bypass islands in the field."/>
+    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title" text="Island headlands"/>
+    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Number of headlands around islands. Value: 1 - 10"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Начать работу с"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="С какой части курса начать работу."/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="поворотной полосы"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="основного маршрута"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Совместно работающих орудий"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Количество транспортных средств с одинаковым оборудованием на том же курсе."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Field edge for line form"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="The rows follow the curvature of the field edge nearest to the field marker."/>
+    <text name="CP_vehicle_courseGeneratorSetting_reverse_title" text="Reverse course"/>
+    <text name="CP_vehicle_courseGeneratorSetting_reverse_tooltip" text="Reverse course tt."/>
+    <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Narrow field"/>
+    <text name="CP_vehicle_courseGeneratorSetting_narrowField_tooltip" text="Generates the headland only at the short edges of the field."/>
     <!---->
     <!--Vine course generator settings-->
     <!---->
@@ -541,7 +560,7 @@ CoursePlay позволяет вам генерировать полевые к�
 Теперь можно отправить водителя на работу прямо из меню. Помощник Giants доедет к целевой позиции, и оттуда CP примет управление на себя.
 В качестве альтернативы вы также можете запустить водителя с HUD, если вы находитесь рядом с полем в транспортном средстве или используете для доставки мод AutoDrive для работ CP вблизи поля.
 "/>
-    <text name="CP_help_page_courseGenerator_title" text="Генератор курса"/>
+    <text name="CP_help_page_courseGeneratorBasic_title" text="Course generator basics"/>
     <text name="CP_help_page_courseGeneratorBase_text" text="
 Каждый курс для работ на поле генерируется Генератором курса. Это мощный инструмент, который позволяет настроить сгенерированный курс под ваши потребности.
 Если вы новичок в этом, вам, вероятно, нужно начать только с изменения настройки количества проходов для разворотной полосы.
@@ -577,11 +596,65 @@ CoursePlay позволяет вам генерировать полевые к�
 - Направление поворотной полосы: по часовой стрелке или против часовой стрелки. Это может быть важно для зерновых и кормоуборочных комбайнов, и зависит от того, с какой стороны труба или конвейерная лента.
 - Перекрытие поворотных полос: на сколько процентов должны перекрываться проходы поворотной полосы. Первый проход не будет перекрываться с границей поля, но внутренние будут перекрываться из соседними.
 "/>
-    <text name="CP_help_page_courseGeneratorExtras_text" text="
-Сдвиг границы поля:
-Положительные значения уменьшают размер поля, чтобы добавить буфер вокруг рабочей зоны на случай, если у вас есть препятствия вблизи поля.
-Отрицательные значений расширяют рабочую зону за пределы поля, чтобы перекрыть границы поля, которые не полностью обнаружены.
+    <text name="CP_help_page_courseGeneratorCenter_text" text="
+For the center of the field, different strategies are available to do the work. Mostly the selected tool is a reason to choose a specific strategie over the other. The available strategies where created based on feedback and informations from our community.
+The simple up down strategie works almost every time for any tool. But it can be better to choose another, for example when harvesting with a combine, lands is a better way to keep the pipe outside of the fruit for a more efficient unloading.
+For Chopping, racetrack can be a better solution for less narrow turns to make the work for the unloader easier.
+Spirale is a better solution for towed harvester with an offset, to keep the tool in the fruit and the tractor outside.
 "/>
+    <text name="CP_help_page_courseGeneratorCenterFunctions_text" text="
+- Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
+Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have the combine's pipe point out of the fruit most of the time to easier unload them.
+- Center direction: Works the same as the headland, but can now be set independantly.
+- Even row width: If the center of a field have a total width, that can't be evenly split over the work width of the tool, the 1st or last line will have a narrow rest work. To prevent this the width of each row gets reduced to have a even split over all lines.
+- Row direction: automatic mostly finds the best direction, but sometimes the longest edge fits better. If you are not happy with either one, choose manual and set the direction manually.
+- Row angle: When the row direction is set to manual, this setting appears and will tell the generator the direction of the rows.
+
+These settings appear only for specific settings you have done before:
+- Rows to skip: Appears when field center is set to &quot;up/down&quot;. This is a very helpful option to accelerate your work, as tools won't have to back up to turn into the next row.
+- Rows per Land: Appears when field center is set to &quot;lands&quot;. This has only impact when the field center is set to lands and will tell the generator how many rows each land should have. The more rows, the fewer lands will be generated.
+- Spiral from inside: Appears when field center is set to &quot;spiral&quot;.
+- Number of circles: Appears when field center is set to &quot;racetrack&quot;.
+"/>
+    <text name="CP_help_page_courseGeneratorCenterExampleUpdown_text" text="
+up/down
+"/>
+    <text name="CP_help_page_courseGeneratorCenterExampleLands_text" text="
+lands
+"/>
+    <text name="CP_help_page_courseGeneratorCenterExampleSpiral_text" text="
+spiral
+"/>
+    <text name="CP_help_page_courseGeneratorCenterExampleRacetrack_text" text="
+racetrack
+"/>
+    <text name="CP_help_page_courseGeneratorIsland_text" text="
+Driving arround the island is now only possible with a complete round arround it.
+Even in the new generator, limits for island too close to the field border.
+The work width of the tool is decisive if the island is too close or not.
+Like how many headlands do fit between the island and the field border.
+"/>
+    <text name="CP_help_page_courseGeneratorIslandFunctions_text" text="
+- Island bypass: Turns on or off the bypass of the island, if an island is found. This does not work for custom fields!
+- Island headlands: The amount of rounds arround the island can now be set indipendantly from the headland setting.
+- Island headland direction: In which direction the driver drives arround the island, to not have strange direction changes. This can be tricky to set up as it depends on the field and the rest of the course.
+"/>
+    <text name="CP_help_page_courseGeneratorExpert_text" text="
+Some settings are only visible, if you set the expert mode to active on the global courseplay settings.
+Before you play arround with those settings, you should make sure you know what the basic settings do.
+Some expert settings only work properly under some conditions.
+
+- Multiple Tools: This setting is used when you want more then just one vehicle to work on your course. As this gets a bit more complicated, there is a separate help topic for it.
+- Narrow field: Creates the headland only at two short edges of the field. In that case, it is not possible to keep your vehicle on the field on the longest edges at the headland.
+- Headland overlap: There is a default value that will always be used. This value can be changed with this setting. The overlap will be withing the field and won't overlap the field border.
+- Field margin: This setting lets you move the field border in- or outwards of the original border.
+- Use base line edge: A completly new feature, what only works on specific fields. If you have a field with a long radial border and place the field marker near it, the center line will follow that border.
+IMPORTANT NOTE: Should the generated course not be perfect or even bad, the selected edge or the field will not work with this feature. There also won't be an Update for this!
+"/>
+    <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
+    <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
+    <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>
+    <text name="CP_help_page_courseGeneratorExpert_title" text="Course generator expert"/>
     <text name="CP_help_page_courseManager_title" text="Управление курсами"/>
     <text name="CP_help_page_courseManagerBase_text" text="
 В разделе Управление курсами можно сохранять курсы и снова их загружать.

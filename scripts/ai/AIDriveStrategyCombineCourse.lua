@@ -1395,7 +1395,7 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
         elseif self.combineController:isRootVegetableHarvester() then
             self:debug('Headland turn but this harvester uses normal turn maneuvers.')
             AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
-        elseif self.course:isOnConnectingTrack(ix) then
+        elseif self.course:isOnConnectingPath(ix) then
             self:debug('Headland turn but this a connecting track, use normal turn maneuvers.')
             AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
         elseif self.course:isOnOutermostHeadland(ix) and self:isTurnOnFieldActive() then
@@ -1416,8 +1416,8 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
                     AIDriveStrategyCombineCourse.selfUnloadBeforeNextRowFillLevelThreshold)
             -- will continue at the turn end waypoint after the unload is finished
             self:rememberCourse(self.fieldWorkCourse, ix + 1)
-            self.aiTurn = FinishRowOnly(self.vehicle, self, self.ppc, self.proximityController, self.turnContext,
-                    self, AIDriveStrategyCombineCourse.startSelfUnloadBeforeNextRow)
+            self.aiTurn = FinishRowOnly(self.vehicle, self, self.ppc, self.proximityController, self.turnContext)
+            self.aiTurn:registerTurnEndCallback(self, AIDriveStrategyCombineCourse.startSelfUnloadBeforeNextRow)
             self.state = self.states.TURNING
             -- continue at the turn end waypoint on failed pathfinding
             self.waypointIxToContinueOnFailedSelfUnload = ix + 1
@@ -1657,7 +1657,7 @@ function AIDriveStrategyCombineCourse:onPathfindingDoneBeforeSelfUnload(path)
     if path and #path > 2 then
         self:debug('Pathfinding to self unload finished with %d waypoints (%d ms)',
                 #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
-        local selfUnloadCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        local selfUnloadCourse = Course(self.vehicle, CpMathUtil.pointsToGameInPlace(path), true)
         if self.selfUnloadAlignCourse then
             selfUnloadCourse:append(self.selfUnloadAlignCourse)
             self.selfUnloadAlignCourse = nil
@@ -1719,7 +1719,7 @@ function AIDriveStrategyCombineCourse:onPathfindingDoneAfterSelfUnload(path)
         self.ppc:setShortLookaheadDistance()
         self:debug('Pathfinding to return to fieldwork after self unload finished with %d waypoints (%d ms)',
                 #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
-        local returnCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        local returnCourse = Course(self.vehicle, CpMathUtil.pointsToGameInPlace(path), true)
         returnCourse:adjustForTowedImplements(2)
         self.workStarter = StartRowOnly(self.vehicle, self, self.ppc, self.turnContext, returnCourse)
         self:startCourse(self.workStarter:getCourse(), 1)
@@ -1783,9 +1783,8 @@ end
 -- This is a callback from the "finish row only" turn initiated at the end of the row when there is a
 -- trailer nearby for self unloading. At this point, the row is done and we are ready to drive to the
 -- trailer before starting the next row
-function AIDriveStrategyCombineCourse:startSelfUnloadBeforeNextRow()
+function AIDriveStrategyCombineCourse:startSelfUnloadBeforeNextRow(ix)
     -- giving back control to the strategy, re-register these listeners
-    self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
     if self:startSelfUnload(self.states.DRIVING_TO_SELF_UNLOAD_BEFORE_NEXT_ROW,
             self.selfUnloadBestTrailer, self.selfUnloadFillRootNode) then
         self:debug('Start self unload before continuing with next row')

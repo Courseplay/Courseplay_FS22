@@ -59,6 +59,7 @@ local context = PathfinderContext():maxFruitPercent(100):useFieldNum(10):vehicle
 ---@field _ignoreTrailerAtStartRange number
 PathfinderContext = CpObject()
 PathfinderContext.defaultOffFieldPenalty = 7.5
+PathfinderContext.preferredPathAffinity = 5
 PathfinderContext.attributesToDefaultValue = {
     -- If an 4 x 4 m area around a pathfinder node has more than this fruit, a penalty of 0.5 * actual fruit
     -- percentage will be applied to that node.
@@ -83,6 +84,9 @@ PathfinderContext.attributesToDefaultValue = {
     ["mustBeAccurate"] = false,
     -- No fruit penalty in this area (e.g. when we know the goal is in fruit but want to avoid fruit all the way there)
     ["areaToIgnoreFruit"] = CpObjectUtil.BUILDER_API_NIL,
+    -- A path [{x, z}, {x, z}, ...] that the pathfinder will try to follow. Nodes closer than
+    -- PathfinderContext.preferredPathAffinity to the path will have a negative penalty
+    ["preferredPath"] = CpObjectUtil.BUILDER_API_NIL,
     -- No off-field penalty in this area (for instance when need to approach another vehicle, such as a trailer
     -- to unload to, regardless of it is on the field or not, but we do want to have normal off-field penalty for
     -- the rest of the path

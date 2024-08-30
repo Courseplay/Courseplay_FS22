@@ -253,6 +253,7 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/CpObject.lua"/>
 		<sourceFile filename="Courseplay.lua"/>
 
+		<sourceFile filename="scripts/Logger.lua"/>
 		<sourceFile filename="scripts/CpUtil.lua"/>
 
 		<sourceFile filename="scripts/debug/CpDebug.lua"/>
@@ -265,6 +266,11 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/util/MovingAverage.lua"/>
 		<sourceFile filename="scripts/util/CpRemainingTime.lua"/>
 
+		<sourceFile filename="scripts/geometry/Vector.lua"/>
+		<sourceFile filename="scripts/geometry/Vertex.lua"/>
+		<sourceFile filename="scripts/geometry/Polyline.lua"/>
+		<sourceFile filename="scripts/geometry/Polygon.lua"/>
+
 		<sourceFile filename="scripts/CpSettingsUtil.lua"/>
 		<sourceFile filename="scripts/Waypoint.lua"/>
 		<sourceFile filename="scripts/Course.lua"/>
@@ -272,15 +278,39 @@ Changelog 7.1.0.0:
 
 		<sourceFile filename="scripts/courseManager/FileSystem.lua"/>
 		<sourceFile filename="scripts/courseManager/AssignedCoursesManager.lua"/>
+
 		<sourceFile filename="scripts/courseGenerator/CourseGenerator.lua"/>
-		<sourceFile filename="scripts/courseGenerator/CourseGeneratorInterface.lua"/>
-		<sourceFile filename="scripts/courseGenerator/Genetic.lua"/>
-		<sourceFile filename="scripts/courseGenerator/center.lua"/>
-		<sourceFile filename="scripts/courseGenerator/headland.lua"/>
+
+		<sourceFile filename="scripts/courseGenerator/geometry/Intersection.lua"/>
+		<sourceFile filename="scripts/courseGenerator/geometry/LineSegment.lua"/>
+		<sourceFile filename="scripts/courseGenerator/geometry/Offset.lua"/>
+		<sourceFile filename="scripts/courseGenerator/geometry/Slider.lua"/>
+		<sourceFile filename="scripts/courseGenerator/geometry/WrapAroundIndex.lua"/>
+
+		<sourceFile filename="scripts/courseGenerator/WaypointAttributes.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Util.lua"/>
+		<sourceFile filename="scripts/courseGenerator/CacheMap.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Field.lua"/>
+		<sourceFile filename="scripts/courseGenerator/FieldworkContext.lua"/>
+		<sourceFile filename="scripts/courseGenerator/FieldworkCourse.lua"/>
+		<sourceFile filename="scripts/courseGenerator/FieldworkCourseHelper.lua"/>
+		<sourceFile filename="scripts/courseGenerator/FieldworkCourseTwoSided.lua"/>
+		<sourceFile filename="scripts/courseGenerator/FieldworkCourseVine.lua"/>
+		<sourceFile filename="scripts/courseGenerator/HeadlandConnector.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Row.lua"/>
+		<sourceFile filename="scripts/courseGenerator/RowPattern.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Block.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Headland.lua"/>
+		<sourceFile filename="scripts/courseGenerator/CurvedPathHelper.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Center.lua"/>
 		<sourceFile filename="scripts/courseGenerator/Island.lua"/>
-		<sourceFile filename="scripts/courseGenerator/track.lua"/>
-		<sourceFile filename="scripts/courseGenerator/geo.lua"/>
-		<sourceFile filename="scripts/courseGenerator/Vector.lua"/>
+		<sourceFile filename="scripts/courseGenerator/SplineHelper.lua"/>
+		<sourceFile filename="scripts/courseGenerator/AnalyticHelper.lua"/>
+		<sourceFile filename="scripts/courseGenerator/genetic/Genetic.lua"/>
+		<sourceFile filename="scripts/courseGenerator/genetic/BlockSequencer.lua"/>
+		<sourceFile filename="scripts/courseGenerator/CenterTwoSided.lua"/>
+		<sourceFile filename="scripts/courseGenerator/CenterPredefinedRows.lua"/>
+		<sourceFile filename="scripts/courseGenerator/CourseGeneratorInterface.lua"/>
 
 		<sourceFile filename="scripts/field/CpFieldUtil.lua"/>
 		<sourceFile filename="scripts/field/CustomField.lua"/>
@@ -435,7 +465,7 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/editor/brushes/changeAttributes/ChangeTurnWaypoint.lua"/>
 		<sourceFile filename="scripts/editor/brushes/changeAttributes/ChangeHeadlandWaypoint.lua"/>
 		<sourceFile filename="scripts/editor/brushes/changeAttributes/ChangeRowNumberWaypoint.lua"/>
-		<sourceFile filename="scripts/editor/brushes/changeAttributes/ChangeConnectingTrackWaypoint.lua"/>
+		<sourceFile filename="scripts/editor/brushes/changeAttributes/ChangeConnectingPathWaypoint.lua"/>
 		<sourceFile filename="scripts/editor/brushes/advanced/MoveWaypoint.lua"/>
 		<sourceFile filename="scripts/editor/brushes/advanced/CurveWaypoints.lua"/>
 		<sourceFile filename="scripts/editor/EditorCourseWrapper.lua"/>

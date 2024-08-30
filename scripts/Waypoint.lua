@@ -16,147 +16,131 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
----@class Point
-Point = CpObject()
-function Point:init(x, z, yRotation)
-	self.x = x
-	self.z = z
-	self.yRotation = yRotation or 0
-end
+---@class Waypoint
+Waypoint = CpObject()
+Waypoint.xmlKey = ".wp"
 
-function Point:clone()
-	return Point(self.x, self.z, self.yRotation)
-end
-
----@param other Point
-function Point:copy(other)
-	return self:clone(other)
-end
-
-function Point:translate(dx, dz)
-	self.x = self.x + dx
-	self.z = self.z + dz
-end
-
-function Point:rotate(yRotation)
-	self.x, self.z =
-	self.x * math.cos(yRotation) + self.z * math.sin(yRotation),
-	- self.x * math.sin(yRotation) + self.z * math.cos(yRotation)
-	self.yRotation = yRotation
-end
-
---- Get the local coordinates of a world position
----@param x number
----@param z number
----@return number, number x and z local coordinates
-function Point:worldToLocal(x, z)
-	local lp = Point(x, z, 0)
-	lp:translate(-self.x, -self.z)
-	lp:rotate(-self.yRotation)
-	return lp.x, lp.z
-end
-
---- Convert the local x z coordinates to world coordinates
----@param x number
----@param z number
----@return number, number x and z world coordinates
-function Point:localToWorld(x, z)
-	local lp = Point(x, z, 0)
-	lp:rotate(self.yRotation)
-	lp:translate(self.x, self.z)
-	return lp.x, lp.z
-end
-
----@class Waypoint : Point
-Waypoint = CpObject(Point)
-Waypoint.xmlKey = ".waypoints.wp"
-
--- constructor from the legacy Courseplay waypoint
-function Waypoint:init(cpWp, cpIndex)
-	self:set(cpWp, cpIndex)
-end
-
-function Waypoint:set(wp, cpIndex)
+-- Waypoint is a friend class for the Course, so it can access the private members without
+-- getters. The Waypoint has getters only for other classes.
+-- constructor from another waypoint
+---@param wp Waypoint
+function Waypoint:init(wp)
 	-- we initialize explicitly, no table copy as we want to have
 	-- full control over what is used in this object
 	self.x = wp.x or 0
 	self.z = wp.z or 0
 	self.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, self.x, 0, self.z)
+	-- keep a copy of the generated attributes.
+	---@type CourseGenerator.WaypointAttributes
+	self.attributes = wp.attributes and wp.attributes:clone() or CourseGenerator.WaypointAttributes()
 	self.angle = wp.angle or nil
 	self.radius = wp.radius or nil
-	self.rev = wp.rev or wp.turnReverse or wp.reverse or false
+	self.rev = wp.rev or wp.reverse or false
 	self.rev = self.rev or wp.gear and wp.gear == Gear.Backward
-	self.speed = wp.speed
-	self.cpIndex = cpIndex or 0
-	self.turnStart = wp.turnStart
-	self.turnEnd = wp.turnEnd
-	self.isConnectingTrack = wp.isConnectingTrack or nil
-	self.lane = wp.lane
-	self.rowNumber = wp.rowNumber
-	self.ridgeMarker = wp.ridgeMarker
-	self.unload = wp.unload
-	self.headlandHeightForTurn = wp.headlandHeightForTurn
+	-- dynamically added/calculated properties
 	self.useTightTurnOffset = wp.useTightTurnOffset
 	self.turnControls = table.copy(wp.turnControls)
 	self.dToNext = wp.dToNext
 	self.yRot = wp.yRot
 	--- Set, when generated for a multi tool course
 	self.originalMultiToolReference = wp.originalMultiToolReference
-	
+	self.usePathfinderToThisWaypoint = wp.usePathfinderToThisWaypoint
+	self.usePathfinderToNextWaypoint = wp.usePathfinderToNextWaypoint
+	self.headlandTransition = wp.headlandTransition
 end
 
 --- Set from a generated waypoint (output of the course generator)
-function Waypoint.initFromGeneratedWp(wp, ix)
+---@param wp Vertex
+function Waypoint.initFromGeneratedWp(wp)
 	local waypoint = Waypoint({})
 	waypoint.x = wp.x
 	waypoint.z = -wp.y
 	waypoint.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, waypoint.x, 0, waypoint.z)
-	waypoint.cpIndex = ix or 0
-	waypoint.turnStart = wp.turnStart
-	waypoint.turnEnd = wp.turnEnd
-	waypoint.isConnectingTrack = wp.isConnectingTrack or nil
-	waypoint.lane = wp.passNumber and -wp.passNumber
-	waypoint.rowNumber = wp.rowNumber
-	waypoint.ridgeMarker = wp.ridgeMarker
-	--- Todo check if the course generator side is correctly implement.
-	waypoint.rev = wp.rev
+	---@type CourseGenerator.WaypointAttributes
+	waypoint.attributes = wp:getAttributes():clone()
 	return waypoint
 end
 
+function Waypoint.registerXmlSchema(schema, baseKey)
+	local key = baseKey .. Waypoint.xmlKey .. "(?)"
+	schema:register(XMLValueType.VECTOR_3, key .. "#position", "Position")
+	schema:register(XMLValueType.BOOL, key .. "#rev", "Reverse")
+	CourseGenerator.WaypointAttributes.registerXmlSchema(schema, key)
+end
+
+function Waypoint:setXmlValue(xmlFile, baseKey, i)
+	local key = string.format("%s%s(%d)", baseKey, Waypoint.xmlKey, i - 1)
+	xmlFile:setValue(key .. "#position", self.x, self.y, self.z)
+	CpUtil.setXmlValue(xmlFile, key .. "#rev", self.rev)
+	self.attributes:setXmlValue(xmlFile, key)
+end
+
+function Waypoint:writeStream(streamId)
+	streamWriteFloat32(streamId, self.x)
+	streamWriteFloat32(streamId, self.z)
+	streamWriteFloat32(streamId, self.y)
+	streamWriteBool(streamId, self.rev)
+	self.attributes:writeStream(streamId)
+end
+
 --- Set from a saved waypoint in a xml file.
-function Waypoint.initFromXmlFile(data,ix)
+function Waypoint.createFromXmlFile(xmlFile, key)
+	local waypoint = Waypoint({})
+	waypoint.x, waypoint.y, waypoint.z = xmlFile:getValue(key .. '#position')
+	waypoint.rev = xmlFile:getValue(key .. '#rev')
+	waypoint.attributes = CourseGenerator.WaypointAttributes.createFromXmlFile(xmlFile, key)
+	return waypoint
+end
+
+function Waypoint.createFromStream(streamId)
+	local waypoint = Waypoint({})
+	waypoint.x = streamReadFloat32(streamId)
+	waypoint.z = streamReadFloat32(streamId)
+	waypoint.y = streamReadFloat32(streamId)
+	waypoint.rev = streamReadBool(streamId)
+	waypoint.attributes = WaypointAttributes.createFromStream(streamId)
+end
+
+--- Read legacy format (which used custom serialization instead of XML schema)
+function Waypoint.initFromXmlFileLegacyFormat(data)
 	local waypoint = Waypoint({})
 	waypoint.x = data[1]
 	waypoint.z = data[2]
 	waypoint.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, waypoint.x, 0, waypoint.z)
-	waypoint.cpIndex = ix or 0
-	waypoint.turnStart = data[3]
-	waypoint.turnEnd = data[4]
-	waypoint.isConnectingTrack = data[5]
-	waypoint.lane = data[6]
-	waypoint.rowNumber = data[7]
-	waypoint.ridgeMarker = data[8]
+	local turnStart = data[3]
+	waypoint.attributes.rowEnd = turnStart
+	local turnEnd = data[4]
+	waypoint.attributes.rowStart = turnEnd
+	waypoint.attributes.onConnectingPath = data[5]
+	-- saved course backwards compatibility, for when the headland numbers were negative
+	waypoint.attributes.headlandPassNumber = data[6] and math.abs(data[6])
+	waypoint.attributes.rowNumber = data[7]
+	local ridgeMarker = data[8]
+	if ridgeMarker == RidgeMarkerController.RIDGE_MARKER_LEFT then
+		waypoint.attributes.leftSideWorked = false
+		waypoint.attributes.rightSideWorked = true
+	elseif ridgeMarker == RidgeMarkerController.RIDGE_MARKER_RIGHT then
+		waypoint.attributes.rightSideWorked = false
+		waypoint.attributes.leftSideWorked = true
+	end
 	waypoint.rev = data[9]
+	waypoint.attributes.headlandTurn = data[10]
+	waypoint.attributes.usePathfinderToNextWaypoint = data[11]
+	waypoint.attributes.usePathfinderToThisWaypoint = data[12]
+	waypoint.headlandTransition = data[13]
+	if not waypoint.attributes.headlandTurn then
+		-- guess where we have headland turns, rowEnd and rowStart used to be turnStart and turnEnd, respectively,
+		if waypoint.attributes.headlandPassNumber and waypoint.attributes.headlandPassNumber > 0 then
+			-- old courses have the turnEnd at the corner
+			if turnEnd then
+				waypoint.attributes.headlandTurn = true
+			end
+			-- waypoint on headland has no row start/end
+			waypoint.attributes.rowEnd = nil
+			waypoint.attributes.rowStart = nil
+		end
+	end
 	return waypoint
-end
-
---- Gets the data to saves this waypoint in a xml file.
---- New attributes can be added at the bottom and should'nt break old courses.
---- To remove attributes, they should be filled with a zero otherwise old course might be broken.
---- Every attribute needs to be a number.
-function Waypoint:getXmlString()
-	local v = {
-		MathUtil.round(self.x,2),
-		MathUtil.round(self.z,2),
-		self.turnStart or "-",
-		self.turnEnd or "-",
-		self.isConnectingTrack or "-",
-		self.lane or "-",
-		self.rowNumber or "-",
-		self.ridgeMarker or "-",
-		self.rev or "-",
-	}
-	return CpUtil.getXmlVectorString(v)
 end
 
 --- Get the (original, non-offset) position of a waypoint
@@ -213,6 +197,10 @@ function Waypoint:setPosition(x, z, y)
 	end
 end
 
+function Waypoint:setReverseOffset()
+	self.reverseOffset = true
+end
+
 function Waypoint:translate(dx, dz)
 	self.x = self.x + dx
 	self.z = self.z + dz
@@ -227,29 +215,69 @@ function Waypoint:getIsReverse()
 	return self.rev
 end
 
-function Waypoint:getIsTurnStart()
-	return self.turnStart
+function Waypoint:isRowEnd()
+	return self.attributes:isRowEnd()
 end
 
-function Waypoint:getIsTurnEnd()
-	return self.turnEnd
+function Waypoint:isRowStart()
+	return self.attributes:isRowStart()
 end
 
-function Waypoint:getIsTurn()
-	return self.turnStart or self.turnEnd
+function Waypoint:isHeadlandTurn()
+	return self.attributes:isHeadlandTurn()
 end
 
-function Waypoint:setTurnStart(turnStart)
-	self.turnStart = turnStart	
+function Waypoint:isHeadlandTransition()
+	return self.attributes:isHeadlandTransition()
 end
 
-function Waypoint:setTurnEnd(turnEnd)
-	self.turnEnd = turnEnd	
+function Waypoint:getBoundaryId()
+	return self.attributes:getBoundaryId()
 end
 
-function Waypoint:resetTurn()
-	self.turnEnd = false	
-	self.turnStart = false	
+function Waypoint:getAtBoundaryId()
+	return self.attributes:getAtBoundaryId()
+end
+
+function Waypoint:isOnConnectingPath()
+	return self.attributes:isOnConnectingPath()
+end
+
+function Waypoint:shouldUsePathfinderToNextWaypoint()
+	return self.attributes:shouldUsePathfinderToNextWaypoint()
+end
+
+function Waypoint:shouldUsePathfinderToThisWaypoint()
+	return self.attributes:shouldUsePathfinderToThisWaypoint()
+end
+
+function Waypoint:getRowNumber()
+	return self.attributes:getRowNumber()
+end
+
+function Waypoint:setRowNumber(rowNumber)
+	self.attributes:setRowNumber(rowNumber)
+end
+
+function Waypoint:setRowEnd(rowEnd)
+	self.attributes:setRowEnd(rowEnd)
+end
+
+function Waypoint:setRowStart(rowStart)
+	self.attributes:setRowStart(rowStart)
+end
+
+function Waypoint:resetRowStartEnd()
+	self.attributes:setRowStart(false)
+	self.attributes:setRowEnd(false)
+end
+
+function Waypoint:setHeadlandNumber(n)
+	self.attributes:setHeadlandPassNumber(n)
+end
+
+function Waypoint:setOnConnectingPath(onConnectingPath)
+	self.attributes:setOnConnectingPath(onConnectingPath)
 end
 
 function Waypoint:setOriginalMultiToolReference(ix)

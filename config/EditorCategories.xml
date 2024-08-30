@@ -9,7 +9,7 @@
 		<Tab name="changeAttributes" iconFilename="img/iconSprite.dds"  refSize="256 512" iconUVs="0 366px 28px 28px">
 			<Brush name="changeHeadland" class="CpBrushChangeHeadlandWP" iconFilename="img/iconSprite.dds" refSize="256 512" iconUVs="0 366px 28px 28px"/>
 			<Brush name="changeRowNumber" class="CpBrushChangeRowNumberWP" iconFilename="img/iconSprite.dds" refSize="256 512" iconUVs="0 366px 28px 28px"/>
-			<Brush name="changeConnectingTrack" class="CpBrushChangeConnectingTrackWP" iconFilename="img/iconSprite.dds" refSize="256 512" iconUVs="0 366px 28px 28px"/>
+			<Brush name="changeConnectingPath" class="CpBrushChangeConnectingPathWP" iconFilename="img/iconSprite.dds" refSize="256 512" iconUVs="0 366px 28px 28px"/>
 		</Tab>
 	-->
         <Tab name="advanced" iconFilename="img/iconSprite.dds"  refSize="256 512" iconUVs="0 366px 28px 28px">
