@@ -51,7 +51,9 @@ function CoursePlot:delete()
 	if self.stopSignOverlayId ~= 0 then 
 		delete(self.stopSignOverlayId)
 	end
-	self.arrowOverlay:delete()
+	if self.arrowOverlayId ~= 0 then 
+		delete(self.arrowOverlayId)
+	end
 end
 
 function CoursePlot:setVisible( isVisible )
