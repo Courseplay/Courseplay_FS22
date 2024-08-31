@@ -132,7 +132,7 @@ function CoursePlot:drawLineBetween(map, x, z, nx, nz, isHudMap, lineThickness, 
 				--- Draws an arrow after a row start waypoint 
 				local ax, az = x + dirX * math.min(length/2, 5), z + dirZ * math.min(length/2, 5)
 				self:drawArrow(map, ax, az, rotation, r, g, b, a, isHudMap)
-				--- Draws an arrow after a row end waypoint 
+				--- Draws an arrow before a row end waypoint 
 				ax, az = x + dirX * math.max(length/2, length - 5), z + dirZ * math.max(length/2, length - 5)
 				self:drawArrow(map, ax, az, rotation, r, g, b, a, isHudMap)
 				if length > 30 then 
@@ -145,7 +145,7 @@ function CoursePlot:drawLineBetween(map, x, z, nx, nz, isHudMap, lineThickness, 
 				local ax, az = x + dirX * math.min(length/2, 5), z + dirZ * math.min(length/2, 5)
 				self:drawArrow(map, ax, az, rotation, r, g, b, a, isHudMap)
 			elseif rowEnd then
-				--- Draws an arrow after a row end waypoint 
+				--- Draws an arrow before a row end waypoint 
 				local ax, az = x + dirX * math.max(length/2, length - 5), z + dirZ * math.max(length/2, length - 5)
 				self:drawArrow(map, ax, az, rotation, r, g, b, a, isHudMap)
 			else
