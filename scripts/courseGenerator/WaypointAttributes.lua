@@ -297,23 +297,37 @@ function WaypointAttributes:setXmlValue(xmlFile, key)
 end
 
 function WaypointAttributes:writeStream(streamId)
-    streamWriteBool(streamId, self.rowEnd)
-    streamWriteBool(streamId, self.rowStart)
-    streamWriteBool(streamId, self.isConnectingPath)
-    streamWriteInt32(streamId, self.headlandNumber)
-    streamWriteInt32(streamId, self.rowNumber)
-    -- *SideWorked is really not a boolean, if it is nil, it means the state is unknown. So let's make sure
-    -- that information is passed too
-    streamWriteBool(streamId, self.leftSideWorked == nil)
-    streamWriteBool(streamId, self.leftSideWorked)
-    streamWriteBool(streamId, self.rightSideWorked == nil)
-    streamWriteBool(streamId, self.rightSideWorked)
-    streamWriteBool(streamId, self.headlandTurn)
-    streamWriteBool(streamId, self.headlandTransition)
-    streamWriteBool(streamId, self.usePathfinderToNextWaypoint)
-    streamWriteBool(streamId, self.usePathfinderToThisWaypoint)
-    streamWriteString(streamId, self.boundaryId)
-    streamWriteString(streamId, self.atBoundaryId)
+    CpUtil.streamWriteBool(streamId, self.rowEnd)
+    CpUtil.streamWriteBool(streamId, self.rowStart)
+    CpUtil.streamWriteBool(streamId, self.isConnectingPath)
+    CpUtil.streamWriteInt32(streamId, self.headlandNumber)
+    CpUtil.streamWriteInt32(streamId, self.rowNumber)
+    CpUtil.streamWriteBool(streamId, self.leftSideWorked)
+    CpUtil.streamWriteBool(streamId, self.rightSideWorked)
+    CpUtil.streamWriteBool(streamId, self.headlandTurn)
+    CpUtil.streamWriteBool(streamId, self.headlandTransition)
+    CpUtil.streamWriteBool(streamId, self.usePathfinderToNextWaypoint)
+    CpUtil.streamWriteBool(streamId, self.usePathfinderToThisWaypoint)
+    CpUtil.streamWriteString(streamId, self.boundaryId)
+    CpUtil.streamWriteString(streamId, self.atBoundaryId)
+end
+
+function WaypointAttributes.createFromStream(streamId)
+    local attributes = WaypointAttributes()
+    attributes.rowEnd = CpUtil.streamReadBool(streamId)
+    attributes.rowStart = CpUtil.streamReadBool(streamId)
+    attributes.isConnectingPath = CpUtil.streamReadBool(streamId)
+    attributes.headlandNumber = CpUtil.streamReadInt32(streamId)
+    attributes.rowNumber = CpUtil.streamReadInt32(streamId)
+    attributes.leftSideWorked = CpUtil.streamReadBool(streamId)
+    attributes.rightSideWorked = CpUtil.streamReadBool(streamId)
+    attributes.headlandTurn = CpUtil.streamReadBool(streamId)
+    attributes.headlandTransition = CpUtil.streamReadBool(streamId)
+    attributes.usePathfinderToNextWaypoint = CpUtil.streamReadBool(streamId)
+    attributes.usePathfinderToThisWaypoint = CpUtil.streamReadBool(streamId)
+    attributes.boundaryId = CpUtil.streamReadString(streamId)
+    attributes.atBoundaryId = CpUtil.streamReadString(streamId)
+    return attributes
 end
 
 --- Set from a saved waypoint in a xml file.
@@ -332,34 +346,6 @@ function WaypointAttributes.createFromXmlFile(xmlFile, key)
     attributes.usePathfinderToThisWaypoint = xmlFile:getValue(key .. '#usePathfinderToThisWaypoint') 
     attributes.boundaryId = xmlFile:getValue(key .. '#boundaryId') 
     attributes.atBoundaryId = xmlFile:getValue(key .. '#atBoundaryId') 
-    return attributes
-end
-
-function WaypointAttributes.createFromStream(streamId)
-    local attributes = WaypointAttributes()
-    attributes.rowEnd = streamReadBool(streamId)
-    attributes.rowStart = streamReadBool(streamId)
-    attributes.isConnectingPath = streamReadBool(streamId)
-    attributes.headlandNumber = streamReadInt32(streamId)
-    attributes.rowNumber = streamReadInt32(streamId)
-    local leftSideWorkedNil = streamReadBool(streamId)
-    if leftSideWorkedNil then
-        streamReadBool(streamId)
-    else
-        attributes.leftSideWorked = streamReadBool(streamId)
-    end
-    local rightSideWorkedNil = streamReadBool(streamId)
-    if rightSideWorkedNil then
-        streamReadBool(streamId)
-    else
-        attributes.rightSideWorked = streamReadBool(streamId)
-    end
-    attributes.headlandTurn = streamReadBool(streamId)
-    attributes.headlandTransition = streamReadBool(streamId)
-    attributes.usePathfinderToNextWaypoint = streamReadBool(streamId)
-    attributes.usePathfinderToThisWaypoint = streamReadBool(streamId)
-    attributes.boundaryId = streamReadString(streamId)
-    attributes.atBoundaryId = streamReadString(streamId)
     return attributes
 end
 

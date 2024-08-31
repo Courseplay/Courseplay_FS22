@@ -79,7 +79,7 @@ function Waypoint:writeStream(streamId)
 	streamWriteFloat32(streamId, self.x)
 	streamWriteFloat32(streamId, self.z)
 	streamWriteFloat32(streamId, self.y)
-	streamWriteBool(streamId, self.rev)
+	CpUtil.streamWriteBool(streamId, self.rev)
 	self.attributes:writeStream(streamId)
 end
 
@@ -97,8 +97,9 @@ function Waypoint.createFromStream(streamId)
 	waypoint.x = streamReadFloat32(streamId)
 	waypoint.z = streamReadFloat32(streamId)
 	waypoint.y = streamReadFloat32(streamId)
-	waypoint.rev = streamReadBool(streamId)
-	waypoint.attributes = WaypointAttributes.createFromStream(streamId)
+	waypoint.rev = CpUtil.streamReadBool(streamId)
+	waypoint.attributes = CourseGenerator.WaypointAttributes.createFromStream(streamId)
+	return waypoint
 end
 
 --- Read legacy format (which used custom serialization instead of XML schema)

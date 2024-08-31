@@ -322,6 +322,57 @@ function CpUtil.getXmlVectorString(data)
 	return table.concat(values, " ")
 end
 
+--- Helper functions to write and read optional values to the stream (until Giants implements a proper serialization/
+--- deserialization API), written by GitHub Copilot
+function CpUtil.streamWriteBool(streamId, value)
+	if value == nil then
+		streamWriteBool(streamId, false)
+	else
+		streamWriteBool(streamId, true)
+		streamWriteBool(streamId, value)
+	end
+end
+
+function CpUtil.streamReadBool(streamId)
+	if streamReadBool(streamId) then
+		return streamReadBool(streamId)
+	end
+	return nil
+end
+
+function CpUtil.streamWriteString(streamId, value)
+	if value == nil then
+		streamWriteBool(streamId, false)
+	else
+		streamWriteBool(streamId, true)
+		streamWriteString(streamId, value)
+	end
+end
+
+function CpUtil.streamReadString(streamId)
+	if streamReadBool(streamId) then
+		return streamReadString(streamId)
+	end
+	return nil
+end
+
+function CpUtil.streamWriteInt32(streamId, value)
+	if value == nil then
+		streamWriteBool(streamId, false)
+	else
+		streamWriteBool(streamId, true)
+		streamWriteInt32(streamId, value)
+	end
+end
+
+function CpUtil.streamReadInt32(streamId)
+	if streamReadBool(streamId) then
+		return streamReadInt32(streamId)
+	end
+	return nil
+end
+
+
 --- Gets a class from a global class name.
 ---@param className string
 ---@return table classObject that was found.
