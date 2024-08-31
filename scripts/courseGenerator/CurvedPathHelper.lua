@@ -41,7 +41,7 @@ function CurvedPathHelper.generateCurvedUpDownRows(boundary, baselineLocation, w
     --- of the field boundary. This way some odd-shaped fields can be covered with less turns.
     local closest = boundary:findClosestVertexToPoint(baselineLocation or boundary:at(1))
     local baseline = CourseGenerator.Row(workingWidth)
-    CurvedPathHelper.findLongestStraightSection(boundary, closest.ix, 2 * turningRadius, baseline)
+    CurvedPathHelper.findLongestStraightSection(boundary, closest.ix, 1.5 * turningRadius, baseline)
 
     baseline:extendStart(50)
     baseline:extendEnd(50)
