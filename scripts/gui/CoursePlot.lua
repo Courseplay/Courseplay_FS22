@@ -22,19 +22,23 @@ CoursePlot = CpObject()
 -- Position and size of the course plot as normalized screen coordinates
 -- x = 0, y = 0 is the bottom left corner of the screen, terrainSize is in meters
 function CoursePlot:init()
-	self.courseOverlayId = createImageOverlay('dataS/scripts/shared/graph_pixel.dds')
-	self.startSignOverlayId = createImageOverlay(Utils.getFilename('img/signs/start_noMM.dds', Courseplay.BASE_DIRECTORY))
-	self.stopSignOverlayId = createImageOverlay(Utils.getFilename('img/signs/stop_noMM.dds', Courseplay.BASE_DIRECTORY))
-	self.startPosition = {}
-	self.stopPosition = {}
-	self.isVisible = false
+	self.lineThickness = 2 / g_screenHeight -- 2 pixels
+	self.arrowThickness = 3 / g_screenHeight -- 3 pixels
 	-- the normal FS22 blue
 	self.color = {CpGuiUtil.getNormalizedRgb(42, 193, 237)}
 	-- a lighter shade of the same color
 	self.lightColor = {CpGuiUtil.getNormalizedRgb(45, 207, 255)}
 	-- a darker shade of the same color
 	self.darkColor = {CpGuiUtil.getNormalizedRgb(19, 87, 107)}
-	self.lineThickness = 2 / g_screenHeight -- 2 pixels
+	self.courseOverlayId = createImageOverlay('dataS/scripts/shared/graph_pixel.dds')
+	self.startSignOverlayId = createImageOverlay(Utils.getFilename('img/signs/start_noMM.dds', Courseplay.BASE_DIRECTORY))
+	self.stopSignOverlayId = createImageOverlay(Utils.getFilename('img/signs/stop_noMM.dds', Courseplay.BASE_DIRECTORY))
+	self.arrowOverlayId = createImageOverlay(Utils.getFilename('img/iconSprite.dds', Courseplay.BASE_DIRECTORY))
+	setOverlayUVs(self.arrowOverlayId, unpack(GuiUtils.getUVs({44, 184, 32, 32}, {256, 512})))
+	self.startPosition = {}
+	self.stopPosition = {}
+	self.drawArrows	= true
+	self.isVisible = false
 end
 
 function CoursePlot:delete()
@@ -44,10 +48,18 @@ function CoursePlot:delete()
 	if self.startSignOverlayId ~= 0 then
 		delete(self.startSignOverlayId)
 	end
+	if self.stopSignOverlayId ~= 0 then 
+		delete(self.stopSignOverlayId)
+	end
+	self.arrowOverlay:delete()
 end
 
 function CoursePlot:setVisible( isVisible )
 	self.isVisible = isVisible
+end
+
+function CoursePlot:setDrawingArrows(draw)
+	self.drawArrows = draw
 end
 
 function CoursePlot:setWaypoints( waypoints )
@@ -96,15 +108,34 @@ function CoursePlot:drawLineBetween(map, x, z, nx, nz, isHudMap, lineThickness, 
 	local startX, startY, _, sv = CpGuiUtil.worldToScreen(map, x, z, isHudMap)
 	local endX, endY, _, ev = CpGuiUtil.worldToScreen(map, nx, nz, isHudMap)
 	local dx, dz = nx - x, nz - z
+	local dirX, dirZ = MathUtil.vector2Normalize(dx, dz)
+	local length = MathUtil.vector2Length(dx, dz)
 	if startX and startY and endX and endY then
 		local dx2D = endX - startX
 		local dy2D = ( endY - startY ) / g_screenAspectRatio
 		local width = MathUtil.vector2Length(dx2D, dy2D)
 
-		local rotation = MathUtil.getYRotationFromDirection(dx, dz) - math.pi * 0.5 + mapRotation
+		local rotation = MathUtil.getYRotationFromDirection(dirX, dirZ) - math.pi * 0.5 + mapRotation
 		setOverlayColor( self.courseOverlayId, r, g, b, a or 0.8 )
-		setOverlayRotation( self.courseOverlayId, rotation, 0, 0 )
+		setOverlayRotation( self.courseOverlayId, rotation, 0, self.lineThickness/2 )
 		renderOverlay( self.courseOverlayId, startX, startY, width, lineThickness )
+
+		if self.drawArrows and not isHudMap and MathUtil.vector2Length(dx, dz) > 2.5 then
+			local zoom = isHudMap and map.layout:getIconZoom() or map.fullScreenLayout:getIconZoom()
+			if isHudMap and map.state == IngameMap.STATE_MAP then 
+				--- When the hud is completely open, then the signs need to be scaled down.
+				zoom = zoom * 0.5
+			end
+			local arrowWidth = self.arrowThickness * map.uiScale * zoom
+			local arrowHeight = self.arrowThickness * map.uiScale * zoom * g_screenAspectRatio
+			local ax, ay, _ = CpGuiUtil.worldToScreen(map, x + dirX * length/2, z + dirZ * length/2, isHudMap)
+			setOverlayColor( self.arrowOverlayId, r, g, b, a or 0.8)
+			setOverlayRotation(self.arrowOverlayId, rotation, arrowWidth/2, arrowHeight/2 )
+			renderOverlay( self.arrowOverlayId,
+				ax - arrowWidth/2,
+				ay - arrowHeight/2,
+				arrowWidth, arrowHeight)
+		end
 	end
 end
 
@@ -129,6 +160,7 @@ function CoursePlot:drawPoints(map, points, isHudMap)
 				isHudMap, lineThickness, r, g, b)
 		end
 		setOverlayRotation( self.courseOverlayId, 0, 0, 0 ) -- reset overlay rotation
+		setOverlayRotation( self.arrowOverlayId, 0, 0, 0 ) -- reset overlay rotation
 	end
 end
 
