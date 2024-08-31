@@ -75,25 +75,25 @@
 				<title text="$l10n_CP_help_page_courseGeneratorCenterExampleUpdown_text"/>
 			</paragraph>
 			<paragraph>
-				<image filename="img/helpmenu/updown.dds" size="1024 1024" uvs="0px 0px 1024px 470px" aspectRatio="0.5"/>
+				<image filename="img/helpmenu/updown.dds" size="1024 1024" uvs="0px 0px 1024px 591px" aspectRatio="0.5"/>
 			</paragraph>
 			<paragraph>
 				<title text="$l10n_CP_help_page_courseGeneratorCenterExampleLands_text"/>
 			</paragraph>
 			<paragraph>
-				<image filename="img/helpmenu/lands.dds" size="1024 1024" uvs="0px 0px 1024px 470px" aspectRatio="0.5"/>
+				<image filename="img/helpmenu/lands.dds" size="1024 1024" uvs="0px 0px 1024px 599px" aspectRatio="0.5"/>
 			</paragraph>
 			<paragraph>
 				<title text="$l10n_CP_help_page_courseGeneratorCenterExampleSpiral_text"/>
 			</paragraph>
 			<paragraph>
-				<image filename="img/helpmenu/spiral.dds" size="1024 1024" uvs="0px 0px 1024px 470px" aspectRatio="0.5"/>
+				<image filename="img/helpmenu/spiral.dds" size="1024 1024" uvs="0px 0px 1024px 590px" aspectRatio="0.5"/>
 			</paragraph>
 			<paragraph>
 				<title text="$l10n_CP_help_page_courseGeneratorCenterExampleRacetrack_text"/>
 			</paragraph>
 			<paragraph>
-				<image filename="img/helpmenu/racetrack.dds" size="1024 1024" uvs="0px 0px 1024px 470px" aspectRatio="0.5"/>
+				<image filename="img/helpmenu/racetrack.dds" size="1024 1024" uvs="0px 0px 1024px 589px" aspectRatio="0.5"/>
 			</paragraph>
 		</page>
 		<!--Courseplay Generator Island-->
