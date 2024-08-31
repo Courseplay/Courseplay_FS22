@@ -350,6 +350,10 @@ function testShorten()
     p[1]:assertAlmostEquals(Vector(0, 8))
     p[#p]:assertAlmostEquals(Vector(12, 10))
 
+    p = Polyline({ Vertex(0, 0), Vertex(0, 5), Vertex(0, 10), Vertex(5, 10),
+                   Vertex(10, 10), Vertex(15, 15), Vertex(20, 15) })
+    p:cutEnd(2)
+    p[#p]:assertAlmostEquals(Vector(18, 15))
 end
 
 function testTrimAtFirstIntersection()

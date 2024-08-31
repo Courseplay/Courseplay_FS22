@@ -245,7 +245,7 @@ function Row:reverse()
     self.leftSideBlockBoundary, self.rightSideBlockBoundary = self.rightSideBlockBoundary, self.leftSideBlockBoundary
 end
 
---- Adjust the length of this tow for full coverage where it meets the headland or field boundary
+--- Adjust the length of this row for full coverage where it meets the headland or field boundary
 --- The adjustment depends on the angle the row meets the boundary/headland. In case of a headland,
 --- and an angle of 90 degrees, we don't have to drive all the way up to the headland centerline, only
 --- half workwidth.

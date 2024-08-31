@@ -236,7 +236,11 @@ function Polyline:cutEnd(length)
             d = d - self[#self]:getEntryEdge():getLength()
             self[#self] = nil
         end
-        self:extendEnd(-d)
+        -- this still exists, pointing to the last vertex we just removed
+        local newExitEdge = self[#self]:getExitEdge()
+        newExitEdge:setLength(-d)
+        self[#self] = Vertex.fromVector(newExitEdge:getEnd())
+        self:calculateProperties(#self - 1)
     end
 end
 ---
