@@ -98,7 +98,7 @@ function Waypoint.createFromStream(streamId)
 	waypoint.z = streamReadFloat32(streamId)
 	waypoint.y = streamReadFloat32(streamId)
 	waypoint.rev = CpUtil.streamReadBool(streamId)
-	waypoint.attributes = WaypointAttributes.createFromStream(streamId)
+	waypoint.attributes = CourseGenerator.WaypointAttributes.createFromStream(streamId)
 end
 
 --- Read legacy format (which used custom serialization instead of XML schema)
