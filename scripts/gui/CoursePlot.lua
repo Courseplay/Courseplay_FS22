@@ -71,7 +71,8 @@ function CoursePlot:setWaypoints( waypoints )
 	table.insert(self.waypoints, waypoints[1])
 	self.waypoints[1].progress = 1 / #waypoints
 	for i = 2, #waypoints - 1 do
-		if waypoints[i].angle == nil or math.abs(waypoints[i].angle - waypoints[i - 1].angle) > 2 then
+		if waypoints[i].angle == nil or math.abs(waypoints[i].angle - waypoints[i - 1].angle) > 2 
+			or waypoints[i].attributes.rowStart or waypoints[i].attributes.rowEnd then
 			table.insert(self.waypoints, waypoints[i])
 			self.waypoints[#self.waypoints].progress = i / #waypoints
 		end
@@ -105,7 +106,9 @@ end
 ---@param g number
 ---@param b number
 ---@param a number|nil
-function CoursePlot:drawLineBetween(map, x, z, nx, nz, isHudMap, lineThickness, r, g, b, a)
+---@param rowStart boolean|nil
+---@param rowEnd boolean|nil
+function CoursePlot:drawLineBetween(map, x, z, nx, nz, isHudMap, lineThickness, r, g, b, a, rowStart, rowEnd)
 	local mapRotation = map.layout:getMapRotation()
 	local startX, startY, _, sv = CpGuiUtil.worldToScreen(map, x, z, isHudMap)
 	local endX, endY, _, ev = CpGuiUtil.worldToScreen(map, nx, nz, isHudMap)
@@ -122,23 +125,64 @@ function CoursePlot:drawLineBetween(map, x, z, nx, nz, isHudMap, lineThickness, 
 		setOverlayRotation( self.courseOverlayId, rotation, 0, self.lineThickness/2 )
 		renderOverlay( self.courseOverlayId, startX, startY, width, lineThickness )
 
-		if self.drawArrows and not isHudMap and MathUtil.vector2Length(dx, dz) > 2.5 then
-			local zoom = isHudMap and map.layout:getIconZoom() or map.fullScreenLayout:getIconZoom()
-			if isHudMap and map.state == IngameMap.STATE_MAP then 
-				--- When the hud is completely open, then the signs need to be scaled down.
-				zoom = zoom * 0.5
+		if self.drawArrows and not isHudMap 
+			and (MathUtil.vector2Length(dx, dz) > 2.5 or rowStart or rowEnd) then
+
+			if rowStart and rowEnd then
+				--- Draws an arrow after a row start waypoint 
+				local ax, az = x + dirX * math.min(length/2, 5), z + dirZ * math.min(length/2, 5)
+				self:drawArrow(map, ax, az, rotation, r, g, b, a, isHudMap)
+				--- Draws an arrow after a row end waypoint 
+				ax, az = x + dirX * math.max(length/2, length - 5), z + dirZ * math.max(length/2, length - 5)
+				self:drawArrow(map, ax, az, rotation, r, g, b, a, isHudMap)
+				if length > 30 then 
+					--- Draws an arrow in the middle between two waypoints
+					ax, az = x + dirX * length/2, z + dirZ * length/2
+					self:drawArrow(map, ax, az, rotation, r, g, b, a, isHudMap)
+				end
+			elseif rowStart then 
+				--- Draws an arrow after a row start waypoint 
+				local ax, az = x + dirX * math.min(length/2, 5), z + dirZ * math.min(length/2, 5)
+				self:drawArrow(map, ax, az, rotation, r, g, b, a, isHudMap)
+			elseif rowEnd then
+				--- Draws an arrow after a row end waypoint 
+				local ax, az = x + dirX * math.max(length/2, length - 5), z + dirZ * math.max(length/2, length - 5)
+				self:drawArrow(map, ax, az, rotation, r, g, b, a, isHudMap)
+			else
+				--- Draws an arrow in the middle between two waypoints
+				local ax, az = x + dirX * length/2, z + dirZ * length/2
+				self:drawArrow(map, ax, az, rotation, r, g, b, a, isHudMap)
 			end
-			local arrowWidth = self.arrowThickness * map.uiScale * zoom
-			local arrowHeight = self.arrowThickness * map.uiScale * zoom * g_screenAspectRatio
-			local ax, ay, _ = CpGuiUtil.worldToScreen(map, x + dirX * length/2, z + dirZ * length/2, isHudMap)
-			setOverlayColor( self.arrowOverlayId, r, g, b, a or 0.8)
-			setOverlayRotation(self.arrowOverlayId, rotation, arrowWidth/2, arrowHeight/2 )
-			renderOverlay( self.arrowOverlayId,
-				ax - arrowWidth/2,
-				ay - arrowHeight/2,
-				arrowWidth, arrowHeight)
+		
 		end
 	end
+end
+
+---Draws an arrow
+---@param map table
+---@param x number
+---@param z number
+---@param rotation number
+---@param r number
+---@param g number
+---@param b number
+---@param a number|nil
+---@param isHudMap boolean|nil
+function CoursePlot:drawArrow(map, x, z, rotation, r, g, b, a, isHudMap)
+	local zoom = isHudMap and map.layout:getIconZoom() or map.fullScreenLayout:getIconZoom()
+	if isHudMap and map.state == IngameMap.STATE_MAP then 
+		--- When the hud is completely open, then the signs need to be scaled down.
+		zoom = zoom * 0.5
+	end
+	local arrowWidth = self.arrowThickness * map.uiScale * zoom
+	local arrowHeight = self.arrowThickness * map.uiScale * zoom * g_screenAspectRatio
+	local ax, ay, _ = CpGuiUtil.worldToScreen(map, x, z, isHudMap)
+	setOverlayColor( self.arrowOverlayId, r, g, b, a or 0.8)
+	setOverlayRotation(self.arrowOverlayId, rotation, arrowWidth/2, arrowHeight/2 )
+	renderOverlay( self.arrowOverlayId,
+		ax - arrowWidth/2,
+		ay - arrowHeight/2,
+		arrowWidth, arrowHeight)
 end
 
 -- Draw the waypoints in the screen area defined in new(), the bottom left corner
@@ -159,7 +203,9 @@ function CoursePlot:drawPoints(map, points, isHudMap)
 			
 			r, g, b = MathUtil.vector3ArrayLerp(self.lightColor, self.darkColor, wp.progress or 1)
 			self:drawLineBetween(map, wp.x, wp.z, np.x, np.z,
-				isHudMap, lineThickness, r, g, b)
+				isHudMap, lineThickness, r, g, b, 0.8, 
+				wp.attributes and wp.attributes.rowStart, 
+				np.attributes and np.attributes.rowEnd)
 		end
 		setOverlayRotation( self.courseOverlayId, 0, 0, 0 ) -- reset overlay rotation
 		setOverlayRotation( self.arrowOverlayId, 0, 0, 0 ) -- reset overlay rotation
