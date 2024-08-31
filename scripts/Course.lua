@@ -1735,7 +1735,7 @@ function Course.createFromStream(vehicle, streamId, connection)
     local wasEdited = streamReadBool(streamId)
     local waypoints = {}
     for ix = 1, numWaypoints do
-        table.insert(waypoints, Waypoint.createFromStream(d, ix))
+        table.insert(waypoints, Waypoint.createFromStream(streamId, ix))
     end
     local course = Course(vehicle, waypoints)
     course.name = name
