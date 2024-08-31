@@ -113,7 +113,7 @@ function CpFieldWorkHudPageElement:updateContent(vehicle, status)
 
 	if vehicle:hasCpCourse() then 
         self.courseVisibilityBtn:setVisible(true)
-        self.reverseCourseBtn:setVisible(true)
+        self.reverseCourseBtn:setVisible(not vehicle:getIsCpActive())
         local value = vehicle:getCpSettings().showCourse:getValue()
         if value == CpVehicleSettings.SHOW_COURSE_DEACTIVATED then 
             self.courseVisibilityBtn:setColor(unpack(CpBaseHud.OFF_COLOR))
