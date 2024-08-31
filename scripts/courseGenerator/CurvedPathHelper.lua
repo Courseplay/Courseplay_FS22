@@ -41,7 +41,7 @@ function CurvedPathHelper.generateCurvedUpDownRows(boundary, baselineLocation, w
     --- of the field boundary. This way some odd-shaped fields can be covered with less turns.
     local closest = boundary:findClosestVertexToPoint(baselineLocation or boundary:at(1))
     local baseline = CourseGenerator.Row(workingWidth)
-    CurvedPathHelper.findLongestStraightSection(boundary, closest.ix, turningRadius, baseline)
+    CurvedPathHelper.findLongestStraightSection(boundary, closest.ix, 2 * turningRadius, baseline)
 
     baseline:extendStart(50)
     baseline:extendEnd(50)
@@ -72,14 +72,14 @@ end
 function CurvedPathHelper.findLongestStraightSection(boundary, ix, radiusThreshold, section)
     local i, n, j = ix, 1
     -- max one round only (n <) self:at(currentIx):getXte(r)
-    while n < #boundary and boundary:at(i):getXte(radiusThreshold) < CourseGenerator.cMaxCrossTrackErrorForCurvedRows do
+    while n < #boundary and boundary:at(i):getRadius() > radiusThreshold do
         section:append((boundary:at(i)):clone())
         i = i - 1
         n = n + 1
     end
     section:reverse()
     j, n = ix + 1, 1
-    while n < #boundary and boundary:at(j):getXte(radiusThreshold) < CourseGenerator.cMaxCrossTrackErrorForCurvedRows do
+    while n < #boundary and boundary:at(j):getRadius() > radiusThreshold do
         section:append((boundary:at(j)):clone())
         j = j + 1
         n = n + 1
