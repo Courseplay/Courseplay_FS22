@@ -24,6 +24,7 @@ FieldPlot = CpObject(CoursePlot)
 function FieldPlot:init(drawLastWp)
 	CoursePlot.init(self)
 	self:setNormalColor()
+	self:setDrawingArrows(false)
 	-- use a thicker line
 	self.lineThickness = 4 / g_screenHeight
 	self.drawLastWp = drawLastWp
