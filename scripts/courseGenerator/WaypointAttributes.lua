@@ -296,24 +296,89 @@ function WaypointAttributes:setXmlValue(xmlFile, key)
     CpUtil.setXmlValue(xmlFile, key .. '#atBoundaryId', self.atBoundaryId)
 end
 
+--- Helper functions to write and read optional values to the stream (until Giants implements a proper serialization/
+--- deserialization API), written by GitHub Copilot
+-- TODO: move this to a common util when works
+function WaypointAttributes:streamWriteBool(streamId, value)
+    if value == nil then
+        streamWriteBool(streamId, false)
+    else
+        streamWriteBool(streamId, true)
+        streamWriteBool(streamId, value)
+    end
+end
+
+function WaypointAttributes:streamReadBool(streamId)
+    if streamReadBool(streamId) then
+        return streamReadBool(streamId)
+    end
+    return nil
+end
+
+function WaypointAttributes:streamWriteString(streamId, value)
+    if value == nil then
+        streamWriteBool(streamId, false)
+    else
+        streamWriteBool(streamId, true)
+        streamWriteString(streamId, value)
+    end
+end
+
+function WaypointAttributes:streamReadString(streamId)
+    if streamReadBool(streamId) then
+        return streamReadString(streamId)
+    end
+    return nil
+end
+
+function WaypointAttributes:streamWriteInt32(streamId, value)
+    if value == nil then
+        streamWriteBool(streamId, false)
+    else
+        streamWriteBool(streamId, true)
+        streamWriteInt32(streamId, value)
+    end
+end
+
+function WaypointAttributes:streamReadInt32(streamId)
+    if streamReadBool(streamId) then
+        return streamReadInt32(streamId)
+    end
+    return nil
+end
+
 function WaypointAttributes:writeStream(streamId)
-    streamWriteBool(streamId, self.rowEnd)
-    streamWriteBool(streamId, self.rowStart)
-    streamWriteBool(streamId, self.isConnectingPath)
-    streamWriteInt32(streamId, self.headlandNumber)
-    streamWriteInt32(streamId, self.rowNumber)
-    -- *SideWorked is really not a boolean, if it is nil, it means the state is unknown. So let's make sure
-    -- that information is passed too
-    streamWriteBool(streamId, self.leftSideWorked == nil)
-    streamWriteBool(streamId, self.leftSideWorked)
-    streamWriteBool(streamId, self.rightSideWorked == nil)
-    streamWriteBool(streamId, self.rightSideWorked)
-    streamWriteBool(streamId, self.headlandTurn)
-    streamWriteBool(streamId, self.headlandTransition)
-    streamWriteBool(streamId, self.usePathfinderToNextWaypoint)
-    streamWriteBool(streamId, self.usePathfinderToThisWaypoint)
-    streamWriteString(streamId, self.boundaryId)
-    streamWriteString(streamId, self.atBoundaryId)
+    self:streamWriteBool(streamId, self.rowEnd)
+    self:streamWriteBool(streamId, self.rowStart)
+    self:streamWriteBool(streamId, self.isConnectingPath)
+    self:streamWriteInt32(streamId, self.headlandNumber)
+    self:streamWriteInt32(streamId, self.rowNumber)
+    self:streamWriteBool(streamId, self.leftSideWorked)
+    self:streamWriteBool(streamId, self.rightSideWorked)
+    self:streamWriteBool(streamId, self.headlandTurn)
+    self:streamWriteBool(streamId, self.headlandTransition)
+    self:streamWriteBool(streamId, self.usePathfinderToNextWaypoint)
+    self:streamWriteBool(streamId, self.usePathfinderToThisWaypoint)
+    self:streamWriteString(streamId, self.boundaryId)
+    self:streamWriteString(streamId, self.atBoundaryId)
+end
+
+function WaypointAttributes.createFromStream(streamId)
+    local attributes = WaypointAttributes()
+    attributes.rowEnd = self:streamReadBool(streamId)
+    attributes.rowStart = self:streamReadBool(streamId)
+    attributes.isConnectingPath = self:streamReadBool(streamId)
+    attributes.headlandNumber = self:streamReadInt32(streamId)
+    attributes.rowNumber = self:streamReadInt32(streamId)
+    attributes.leftSideWorked = self:streamReadBool(streamId)
+    attributes.rightSideWorked = self:streamReadBool(streamId)
+    attributes.headlandTurn = self:streamReadBool(streamId)
+    attributes.headlandTransition = self:streamReadBool(streamId)
+    attributes.usePathfinderToNextWaypoint = self:streamReadBool(streamId)
+    attributes.usePathfinderToThisWaypoint = self:streamReadBool(streamId)
+    attributes.boundaryId = self:streamReadString(streamId)
+    attributes.atBoundaryId = self:streamReadString(streamId)
+    return attributes
 end
 
 --- Set from a saved waypoint in a xml file.
@@ -332,34 +397,6 @@ function WaypointAttributes.createFromXmlFile(xmlFile, key)
     attributes.usePathfinderToThisWaypoint = xmlFile:getValue(key .. '#usePathfinderToThisWaypoint') 
     attributes.boundaryId = xmlFile:getValue(key .. '#boundaryId') 
     attributes.atBoundaryId = xmlFile:getValue(key .. '#atBoundaryId') 
-    return attributes
-end
-
-function WaypointAttributes.createFromStream(streamId)
-    local attributes = WaypointAttributes()
-    attributes.rowEnd = streamReadBool(streamId)
-    attributes.rowStart = streamReadBool(streamId)
-    attributes.isConnectingPath = streamReadBool(streamId)
-    attributes.headlandNumber = streamReadInt32(streamId)
-    attributes.rowNumber = streamReadInt32(streamId)
-    local leftSideWorkedNil = streamReadBool(streamId)
-    if leftSideWorkedNil then
-        streamReadBool(streamId)
-    else
-        attributes.leftSideWorked = streamReadBool(streamId)
-    end
-    local rightSideWorkedNil = streamReadBool(streamId)
-    if rightSideWorkedNil then
-        streamReadBool(streamId)
-    else
-        attributes.rightSideWorked = streamReadBool(streamId)
-    end
-    attributes.headlandTurn = streamReadBool(streamId)
-    attributes.headlandTransition = streamReadBool(streamId)
-    attributes.usePathfinderToNextWaypoint = streamReadBool(streamId)
-    attributes.usePathfinderToThisWaypoint = streamReadBool(streamId)
-    attributes.boundaryId = streamReadString(streamId)
-    attributes.atBoundaryId = streamReadString(streamId)
     return attributes
 end
 
