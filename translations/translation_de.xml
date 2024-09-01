@@ -117,7 +117,7 @@
     <text name="CP_ai_messageErrorNoPathFound" text="Helfer %s hat die Arbeit gestoppt - keinen Weg gefunden!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Helfer %s hat die Arbeit gestoppt - abladen auf dem Boden nicht möglich!"/>
     <text name="CP_ai_messageErrorCutterNotSupported" text="Helfer %s hat die Arbeit gestoppt - ankuppeln des Schneidwerks nicht möglich!"/>
-    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="Helfer %s hat die Arbeit gestoppt - automatisches Schneidwerkankuppeln deaktiviert!"/>
+    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="Helfer %s hat die Arbeit gestoppt - automatisches Schneidwerk ankuppeln deaktiviert!"/>
     <text name="CP_ai_messageErrorWrongMissionFruitType" text="Helfer %s hat die Arbeit gestoppt - falsche Frucht für die Mission ausgewählt!"/>
     <!---->
     <!--AI fieldwork task descriptions-->
