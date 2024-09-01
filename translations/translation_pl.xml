@@ -269,7 +269,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_basic" text="Podstawowe"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_headland" text="Uwrocia"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="Środek"/>
-    <text name="CP_vehicle_courseGeneratorSetting_subTitle_island" text="Settings island"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_island" text="Ustawienia przeszkód"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_title" text="Szerokość robocza"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip" text="Szerokość robocza. Zakres: 0 - 50"/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title" text="Liczba uwroci"/>
@@ -280,58 +280,58 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Wartości dodatnie zmniejszają rozmiar pola, aby dodać bufor wokół obrabianego obszaru, a ujemne powiększają obrabiany obszar poza granicę pola. Zakres: -2 - 5.8"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Rzędy do pominięcia"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Rzędy do pominięcia przy przejściu do następnego rzędu tam /z powrotem. Zakres: 0 - 6"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Number of circles for racetrack. Value: 1 - 12"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Rzędy na spiralę od środka"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="W trybie spirali od środka określa ilość rzędów dla każdej 'wysepki'. Zakres: 0 - 24"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_title" text="Center direction"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_title" text="Island Headland direction"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_clockwise" text="clockwise"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_counterclockwise" text="counterclockwise"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_clockwise" text="clockwise"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_counterclockwise" text="counterclockwise"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_clockwise" text="clockwise"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_counterclockwise" text="counterclockwise"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Liczba kółek"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Liczba okręgów dla ścieżki. Zakres: 1 - 12"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Rzędy wysp"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="W obecnym trybie określa ilość rzędów dla każdej 'wyspy'. Zakres: 0 - 24"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Kierunek uwroci"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip" text="Określa czy pojazd będzie poruszał się na uwrociach zgodnie z wskazówkami zegara czy przeciwnie."/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_title" text="Kierunek uwroci - środek pola"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip" text="Określa czy pojazd będzie poruszał się na uwrociach zgodnie z wskazówkami zegara czy przeciwnie."/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_title" text="Kierunek uwroci - 'wyspy'"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="Określa czy pojazd będzie poruszał się na uwrociach zgodnie z wskazówkami zegara czy przeciwnie."/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_clockwise" text="W prawo"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_counterclockwise" text="W lewo"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_clockwise" text="W prawo"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_counterclockwise" text="W lewo"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_clockwise" text="W prawo"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_counterclockwise" text="W lewo"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Środek pola"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Rodzaj pracy na środku pola."/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="Tam i z powrotem"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="Spirala"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="Na około"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Spirala od środka"/>
-    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_title" text="Spiral from inside"/>
-    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip" text="Starts the spiral from inside."/>
-    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="Even row with"/>
-    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Reduces the working width to achieve an even distribution across all lanes."/>
-    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title" text="Sharpen headland corners"/>
-    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="Sharpen corners of non-rounded headlands"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Number of round corners"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Number of round corners, starting with the first headland."/>
-    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_title" text="Corner radius"/>
-    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Radius of round corners, based on the turning radius of the vehicle. Value: 5 - 15"/>
-    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Up/down row direction"/>
-    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Direction of the rows in the center of the field."/>
-    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="automatic"/>
-    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_manual" text="manual"/>
-    <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Kąt w tą i z powrotem"/>
-    <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Kąt dla rzędów w tą i z powrotem (0 to północ) w trybie ręcznym. Zakres: 0 - 175, przeskok co: 5"/>
-    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>
-    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="How the course should bypass islands in the field."/>
-    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title" text="Island headlands"/>
-    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Number of headlands around islands. Value: 1 - 10"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Wyspy"/>
+    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_title" text="Spirala od środka"/>
+    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip" text="Rozpoczyna spiralę od środka."/>
+    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="Równa szerokość rzędu"/>
+    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Zmniejsza szerokość roboczą, aby uzyskać równomierny rozkład na wszystkich ścieżek."/>
+    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title" text="Zaostrzenie narożników uwroci"/>
+    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="Zaostrzone narożniki nieokrągłych uwroci"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Zaokrąglenie narożników"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Liczba zaokrąglonych narożników, począwszy od pierwszego uwrocia."/>
+    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_title" text="Promień narożników"/>
+    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Promień zaokrąglenia narożników, w oparciu o promień skrętu pojazdu. Zakres: 5 - 15"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Kierunek w tam i z powrotem"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Kierunek rzędów w środku pola."/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="Automatyczny"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_manual" text="Ręczny"/>
+    <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Kąt w tam i z powrotem"/>
+    <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Kąt dla rzędów w tam i z powrotem (0 to północ) w trybie ręcznym. Zakres: 0 - 175, przeskok co: 5"/>
+    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Tryb omijania przeszkód"/>
+    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="Określa jak wygenerować kurs omijania przeszkody na polu."/>
+    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title" text="Okręgi wokół przeszkody"/>
+    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Liczba okręgów wokół przeszkody. Zakres: 1 - 10"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Rozpocznij pracę od"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Ustala od czego zacząć pracę polową."/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="Uwroci"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="Rzędów"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Wiele maszyn"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Ilość pojazdów pracujących na tym samym kurcie."/>
-    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Field edge for line form"/>
-    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="The rows follow the curvature of the field edge nearest to the field marker."/>
-    <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Narrow field"/>
-    <text name="CP_vehicle_courseGeneratorSetting_narrowField_tooltip" text="Generates the headland only at the short edges of the field."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Krawędź pola krzywizną ścieżki"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="Rzędy podążają za krzywizną krawędzi pola najbliżej znacznika pola."/>
+    <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Wąskie pole"/>
+    <text name="CP_vehicle_courseGeneratorSetting_narrowField_tooltip" text="Generuje uwrocie tylko na krótkich krawędziach pola."/>
     <!---->
     <!--Vine course generator settings-->
     <!---->
@@ -533,32 +533,27 @@ Pozostałe ustawienia są ukryte i ustawione na wartości domyślne, co działa 
 W ten sposób staramy się pomóc nowym graczom w łatwiejszym użyciu Courseplay bez przytłaczania wszystkimi ustawieniami.
 "/>
     <text name="CP_help_page_extendedJobMenu_title" text="Rozszerzone menu SI"/>
-    <text name="CP_help_page_startJobMenuBase_text" text="
-Najpierw musisz wybrać pojazd w menu SI, aby wygenerować kurs terenowy lub uzyskać dostęp do ustawień pojazdu i menedżera kursu.
+    <text name="CP_help_page_startJobMenuBase_text" text="Najpierw musisz wybrać pojazd w menu SI, aby wygenerować kurs terenowy lub uzyskać dostęp do ustawień pojazdu i menedżera kursu.
 Aktualnie wczytany kurs zostanie wyświetlony na mapie.
 Ustawienia globalne są zawsze widoczne.
 Aby wygenerować kurs i rozpocząć zadania związane z kursem, musisz utworzyć zadanie CP: Prace polowe lub CP: Zbieranie/Owijanie bel, podobnie jak w przypadku pomocnika Giantsa.
 "/>
-    <text name="CP_help_page_startJobMenuFunctions_text" text="
-Aby rozpocząć swoją pierwszą pracę CP, musiałbyś wybrać pojazd i możliwe prawidłowe narzędzie, które jest obsługiwane w tym zadaniu.
+    <text name="CP_help_page_startJobMenuFunctions_text" text="Aby rozpocząć swoją pierwszą pracę CP, musiałbyś wybrać pojazd i możliwe prawidłowe narzędzie, które jest obsługiwane w tym zadaniu.
 Następnie, klikając na utwórz pracę, możesz wybrać CP: Prace polowe dla narzędzi do prac polowych lub CP: Zbieranie/Owijanie bel
 z dołączoną owijarką lub zbieraczem bel.
 "/>
-    <text name="CP_help_page_readyJobMenuBase_text" text="
-Po wybraniu zadania CP należałoby umieścić pozycję na polu w celu wygenerowania kursu lub użycia na nim wyszukiwania bel.
+    <text name="CP_help_page_readyJobMenuBase_text" text="Po wybraniu zadania CP należałoby umieścić pozycję na polu w celu wygenerowania kursu lub użycia na nim wyszukiwania bel.
 Pozycja kontroluje również z grubsza punkt początkowy kursu.
 Jeśli chcesz użyć pomocnika Giantsa do przejazdu na pole, musisz również ustawić pozycję docelową blisko punktu początkowego kursu.
 Ustawienie przesunięcia pasa jest używane tylko wtedy, gdy chcesz mieć wielu pomocników pracujących na tym samym polu. W tym celu sprawdź oddzielną stronę menu pomocy poniżej.
 "/>
-    <text name="CP_help_page_readyJobMenuFunctions_text" text="
-Gdy pozycja zostanie prawidłowo umieszczona na polu, na mapie pojawi się granica pola.
-Jeśli tworzysz CP: Prace polowe, uzyskasz dostęp do ustawień generatora kursów.
-"/>
-    <text name="CP_help_page_JobMenuExtras_text" text="
-Teraz można wysłać kierowcę bezpośrednio z menu. Pomocnik Giantsa przejedzie do pozycji docelowej, a stamtąd CP automatycznie przejmie zadanie.
+    <text name="CP_help_page_readyJobMenuFunctions_text" text="Gdy pozycja zostanie prawidłowo umieszczona na polu, na mapie pojawi się granica pola.
+Jeśli tworzysz CP: Prace polowe, uzyskasz dostęp do ustawień generatora kursów."/>
+
+    <text name="CP_help_page_JobMenuExtras_text" text="Teraz można wysłać kierowcę bezpośrednio z menu. Pomocnik Giantsa przejedzie do pozycji docelowej, a stamtąd CP automatycznie przejmie zadanie.
 Alternatywnie możesz również wysłać kierowcę z HUDa, jeśli jesteś blisko pola z pojazdem lub używając modu AutoDrive, aby dojechał blisko pola i CP mógł zacząć swoją pracę.
 "/>
-    <text name="CP_help_page_courseGeneratorBasic_title" text="Course generator basics"/>
+    <text name="CP_help_page_courseGeneratorBasic_title" text="Generator kursu - podstawa"/>
     <text name="CP_help_page_courseGeneratorBase_text" text="
 Każdy kurs prac polowych jest generowany przez generator kursów. To potężne narzędzie, które pozwala dostosować wygenerowany kurs do własnych potrzeb.
 Jeśli jesteś w tym nowy, prawdopodobnie powinieneś zacząć od zmiany tylko ustawienia ilości uwroci.
@@ -569,103 +564,100 @@ Eksperymentowanie z nim i sprawdzanie, jaki wpływ mają różne ustawienia na r
 Podstawowe:
 Pierwsze kilka wartości, które tu widzisz, to naprawdę podstawowe rzeczy.
 - Szerokość robocza: Większość maszyn wykrywa dokładną szerokość roboczą i nie musisz w ogóle przejmować się tym ustawieniem. Dostosowanie go będzie miało wpływ na ogólny kurs.
-- Wiele maszyn: To ustawienie jest używane, gdy chcesz, aby na tym samum kursie pracował więcej niż jeden pojazd. Ponieważ staje się to nieco bardziej skomplikowane, istnieje dla niego osobny temat pomocy.
+- Wiele maszyn: To ustawienie jest używane, gdy chcesz, aby na tym samym kursie pracował więcej niż jeden pojazd. Ponieważ jest to nieco bardziej skomplikowane, istnieje dla niego osobny temat pomocy.
 - Liczba uwroci: Najlepszym sposobem na utrzymanie pojazdów na polu podczas skręcania na końcu każdego rzędu jest dodanie uwrocia.
 Liczba uwroci pomnożona przez szerokość roboczą powinna wynosić co najmniej całkowitą długość pojazdu plus dołączonej maszyny.
 Opcje środka pola:
-- Środek pola: Istnieją różne tryby wyświetlania wzoru środka pola. Klasyczna i najczęściej używana jest góra/dół.
+- Środek pola: Istnieją różne tryby wyświetlania wzoru środka pola. Klasyczna i najczęściej używana jest 'tam i z powrotem'.
 Spirala, na około i spirala od środka mają swoje specyficzne zalety nad innymi. Np. w trybie spirali od środka, rura kombajnu przez większość czasu będzie wystawać po skoszonej części pola, aby było łatwiej rozładować kombajn.
-- Rzędy góra/dół: Zazwyczaj automatycznie znajduje najlepszy kierunek, ale czasami najdłuższa krawędź jest lepiej dopasowana. Jeśli nie jesteś zadowolony z któregokolwiek z nich, wybierz opcję manualną i ręcznie ustaw kierunek.
-- Rzędy do pominięcia: Jest to bardzo pomocna opcja przyspieszająca pracę, ponieważ pojazd nie będzie musiał cofać, aby przejść do następnego rzędu.
-- Rzędy na spiralę: Ma to wpływ tylko wtedy, gdy środek pola jest ustawiony na spiralę od środka i informuje generator, ile rzędów powinna mieć każda spirala. Im więcej rzędów, tym mniej spiral zostanie wygenerowanych.
-- Kąt rzędów góra/dół: Gdy kierunek rzędu góra/dół jest ustawiony na ręczny, to ustawienie wskaże kierunek generowania.
+- Rzędy tam i z powrotem: Zazwyczaj automatycznie znajduje najlepszy kierunek, ale czasami najdłuższa krawędź jest lepiej dopasowana. Jeśli nie jesteś zadowolony z któregokolwiek z nich, wybierz opcję manualną i ręcznie ustaw kierunek.
+- Rzędy do pominięcia: Jest to bardzo pomocna opcja przyspieszająca pracę, ponieważ pojazd nie będzie musiał cofać, aby trafić do następnego rzędu.
+- Rzędy wysp: Ma to wpływ tylko wtedy, gdy środek pola jest ustawiony na wyspy i informuje generator, ile rzędów powinna mieć każda wyspa. Im więcej rzędów, tym mniej wysp zostanie wygenerowanych.
+- Kąt rzędów tam i z powrotem: Gdy kierunek rzędu tam i z powrotem jest ustawiony na ręczny, to ustawienie wskaże kierunek generowania.
 "/>
     <text name="CP_help_page_courseGeneratorHeadland_text" text="
 Ustawienia uwroci pojawią się tylko wtedy, gdy ustawisz co najmniej 1 w liczbie uwroci.
 Zyskujesz opcje takie jak: od czego zacząć, ustawienia narożników, kierunek i nakładanie się.
 Zdecydowanie zalecane są uwrocia, aby zapobiec opuszczaniu pola przez pojazd podczas zawracania.
 "/>
-    <text name="CP_help_page_courseGeneratorHeadlandFunctions_text" text="
-- Rozpocznij pracę od: Jak wspomniano w rozszerzonym menu SI, pozycja na polu służy do ustawiania pozycji początkowej lub końcowej kursu pracy na polu.
+    <text name="CP_help_page_courseGeneratorHeadlandFunctions_text" text="- Rozpocznij pracę od: Jak wspomniano w rozszerzonym menu SI, pozycja na polu służy do ustawiania pozycji początkowej lub końcowej kursu pracy na polu.
 Gdy ustawiony jest na: rozpocznij od uwroci, pomocnik najpierw objedzie pole na około (w zależności od ilości uwroci), a następnie rozpocznie jazdę w rzędach. Po zmianie na: rozpocznij od rzędów, najpierw pojedzie rzędy a na koniec uwrocia.
 - Narożniki na uwrociach: Wygładzenie - pomocnik będzie 'ścinał' narożniki. Działa to dla wszystkich maszyn, ale spowoduje to niedokładne obrobienie narożników.
-Niedokładność tą można zmniejszać przez opcję nakładki, ale nie wyeliminuje to niedoróbek w 100%. Obrót - wygeneruje skręt w oparciu o kąt kąta granicy pola.
+Niedokładność tą można zmniejszać przez opcję nakładki, ale nie wyeliminuje to niedoróbek w 100%. Obrót - wygeneruje skręt w oparciu o kąt narożnika pola.
 Kółko - uwzględni aktualnie wybrany promień skrętu pojazdu, aby uzyskać najlepszy nawrót na narożniku dla obecnej maszyny.
 - Kierunek uwrocia: zgodnie z ruchem wskazówek zegara lub przeciwnie do ruchu wskazówek zegara. Może to być ważne w przypadku kombajnów, w zależności od tego, po której stronie znajduje się rura wyładowcza.
 - Zachodzenie na uwrociach: w jakim % powinny nakładać się na siebie uwrocia. Pierwszy z nich nie będzie nachodził na granicę pola, ale następne nałożą się na siebie.
 "/>
     <text name="CP_help_page_courseGeneratorCenter_text" text="
-For the center of the field, different strategies are available to do the work. Mostly the selected tool is a reason to choose a specific strategie over the other. The available strategies where created based on feedback and informations from our community.
-The simple up down strategie works almost every time for any tool. But it can be better to choose another, for example when harvesting with a combine, lands is a better way to keep the pipe outside of the fruit for a more efficient unloading.
-For Chopping, racetrack can be a better solution for less narrow turns to make the work for the unloader easier.
-Spirale is a better solution for towed harvester with an offset, to keep the tool in the fruit and the tractor outside.
+Na środku pola dostępne są różne strategie wykonywania pracy. Przeważnie wybrane narzędzie jest powodem wyboru konkretnej strategii. Dostępne strategie zostały stworzone w oparciu o opinie i informacje od naszej społeczności.
+Najprostsza strategia, 'tam i z powrotem', działa prawie za każdym razem dla każdego narzędzia, ale możesz wybrać inną lepszą, na przykład podczas zbiorów za pomocą kombajnu, 'wyspy' są lepszym sposobem na utrzymanie rury na skoszonej części pola w celu bardziej wydajnego rozładunku.
+W przypadku sieczkarni, 'na około' może być lepszym rozwiązaniem dla mniejszej ilości ciasnych nawrotów, aby ułatwić pracę odwożących.
+Spirale są lepszym rozwiązaniem dla półzawieszanych kombajnów bocznych, aby utrzymać maszynę w rzędzie, a ciągnik na poza nimi.
 "/>
     <text name="CP_help_page_courseGeneratorCenterFunctions_text" text="
-- Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
-Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have the combine's pipe point out of the fruit most of the time to easier unload them.
-- Center direction: Works the same as the headland, but can now be set independantly.
-- Even row width: If the center of a field have a total width, that can't be evenly split over the work width of the tool, the 1st or last line will have a narrow rest work. To prevent this the width of each row gets reduced to have a even split over all lines.
-- Row direction: automatic mostly finds the best direction, but sometimes the longest edge fits better. If you are not happy with either one, choose manual and set the direction manually.
-- Row angle: When the row direction is set to manual, this setting appears and will tell the generator the direction of the rows.
+- Środek pola: Istnieją różne tryby tego, jak powinien wyglądać wzór środka pola. Klasyczny i najczęściej używany to 'tam i z powrotem'.
+'Spirala', 'na około' i 'wyspy' mają swoje specyficzne zalety w stosunku do innych. Na przykład w trybie 'wysepek' rura kombajnu będzie przez większość czasu skierowana na skoszoną już część pola, aby ułatwić jego rozładunek.
+- Kierunek środka pola: Działa tak samo jak na uwrociach, ale można go teraz ustawić niezależnie.
+- Równa szerokość rzędów: Jeśli środek pola ma całkowitą szerokość, której nie można równomiernie podzielić na szerokość roboczą narzędzia, pierwszy lub ostatni rząd będzie miał wąski zakres pracy. Aby temu zapobiec, szerokość każdego rzędu jest zmniejszana, aby zapewnić równomierny podział na wszystkie rzędy.
+- Kierunek rzędów: Funkcja automatyczna w większości przypadków znajduje najlepszy kierunek, ale czasami najdłuższa krawędź pasuje lepiej. Jeśli nie jesteś zadowolony z żadnego z nich, wybierz opcję ręczną i ustaw kierunek ręcznie.
+- Kąt rzędu: Gdy kierunek rzędów jest ustawiony na ręczny, pojawia się to ustawienie i informuje generator o kierunku rzędów.
 
-These settings appear only for specific settings you have done before:
-- Rows to skip: Appears when field center is set to &quot;up/down&quot;. This is a very helpful option to accelerate your work, as tools won't have to back up to turn into the next row.
-- Rows per Land: Appears when field center is set to &quot;lands&quot;. This has only impact when the field center is set to lands and will tell the generator how many rows each land should have. The more rows, the fewer lands will be generated.
-- Spiral from inside: Appears when field center is set to &quot;spiral&quot;.
-- Number of circles: Appears when field center is set to &quot;racetrack&quot;.
+Te ustawienia są wyświetlane tylko dla określonych ustawień, które zostały wprowadzone wcześniej:
+- Rzędy do pominięcia: Pojawia się, gdy środek pola jest ustawiony na &quot;tam i z powrotem&quot;. Jest to bardzo pomocna opcja przyspieszająca pracę, ponieważ pojazd nie będą musiał się cofać, aby trafić do następnego rzędu.
+- Rzędy na wysepkę: Pojawia się, gdy środek pola jest ustawiony na &quot;wyspy&quot;. Określa generatorowi, ile rzędów powinna mieć każda z nich. Im więcej rzędów, tym mniej wysepek zostanie wygenerowanych.
+- Spirala od środka: Pojawia się, gdy środek pola jest ustawione na &quot;spirala&quot;.
+- Liczba okręgów: Pojawia się, gdy środek pola jest ustawione na &quot;na około&quot;.
 "/>
     <text name="CP_help_page_courseGeneratorCenterExampleUpdown_text" text="
-up/down
-"/>
+Tam i z powrotem"/>
     <text name="CP_help_page_courseGeneratorCenterExampleLands_text" text="
-lands
+Wyspy
 "/>
     <text name="CP_help_page_courseGeneratorCenterExampleSpiral_text" text="
-spiral
+Spirala
 "/>
     <text name="CP_help_page_courseGeneratorCenterExampleRacetrack_text" text="
-racetrack
+Na około
 "/>
     <text name="CP_help_page_courseGeneratorIsland_text" text="
-Driving arround the island is now only possible with a complete round arround it.
-Even in the new generator, limits for island too close to the field border.
-The work width of the tool is decisive if the island is too close or not.
-Like how many headlands do fit between the island and the field border.
+Jazda wokół przeszkody jest teraz możliwa tylko jeśli jest możliwość jej całkowitego okrążenia.
+Nawet w nowym generatorze są limity dla przeszkody będącej zbyt blisko granicy pola.
+Szerokość robocza narzędzia decyduje o tym, czy przeszkoda jest zbyt blisko, czy nie.
+Na przykład, ile uwroci mieści się między przeszkodą a granicą pola.
 "/>
     <text name="CP_help_page_courseGeneratorIslandFunctions_text" text="
-- Island bypass: Turns on or off the bypass of the island, if an island is found. This does not work for custom fields!
-- Island headlands: The amount of rounds arround the island can now be set indipendantly from the headland setting.
-- Island headland direction: In which direction the driver drives arround the island, to not have strange direction changes. This can be tricky to set up as it depends on the field and the rest of the course.
+- Omijanie przeszkody: Włącza lub wyłącza omijanie przeszkody, jeśli taka zostanie znaleziona.
+  !! Nie działa w przypadku pól niestandardowych !!
+- Okręgi przeszkody: Liczba okrążeń wokół przeszkody może być teraz ustawiona niezależnie od ustawienia uwroci.
+- Kierunek omijania przeszkody: Kierunek, w którym kierowca jedzie wokół przeszkody, aby uniknąć dziwnych zmian kierunku. Może to być trudne do ustawienia, ponieważ zależy od pola i reszty ścieżki.
 "/>
     <text name="CP_help_page_courseGeneratorExpert_text" text="
-Some settings are only visible, if you set the expert mode to active on the global courseplay settings.
-Before you play arround with those settings, you should make sure you know what the basic settings do.
-Some expert settings only work properly under some conditions.
+Niektóre ustawienia są widoczne tylko po włączeniu trybu zaawansowanego w globalnych ustawieniach.
+Zanim zaczniesz bawić się tymi ustawieniami, upewnij się, że wiesz, co robią ustawienia podstawowe.
+Niektóre ustawienia zaawansowane działają poprawnie tylko w określonych warunkach.
 
-- Multiple Tools: This setting is used when you want more then just one vehicle to work on your course. As this gets a bit more complicated, there is a separate help topic for it.
-- Narrow field: Creates the headland only at two short edges of the field. In that case, it is not possible to keep your vehicle on the field on the longest edges at the headland.
-- Headland overlap: There is a default value that will always be used. This value can be changed with this setting. The overlap will be withing the field and won't overlap the field border.
-- Field margin: This setting lets you move the field border in- or outwards of the original border.
-- Use base line edge: A completly new feature, what only works on specific fields. If you have a field with a long radial border and place the field marker near it, the center line will follow that border.
-IMPORTANT NOTE: Should the generated course not be perfect or even bad, the selected edge or the field will not work with this feature. There also won't be an Update for this!
+- Wiele maszyn: To ustawienie jest używane, gdy na kursie ma pracować więcej niż tylko jeden pojazd. Ponieważ jest to nieco bardziej skomplikowane, istnieje osobny temat pomocy.
+- Wąskie pole: Tworzy uwrocie tylko na dwóch krótkich krawędziach pola. W takim przypadku nie jest możliwe utrzymanie pojazdu na polu na najdłuższych krawędziach uwrocia.
+- Nakładka na uwrociach: Istnieje wartość domyślna, która będzie zawsze używana. Wartość tę można zmienić za pomocą tego ustawienia. Nakładka będzie tylko wewnątrz pola i nie będzie nachodzić na granicę pola.
+- Obrys pola: To ustawienie umożliwia przesunięcie obrysu pola do wewnątrz lub na zewnątrz oryginalnego.
+- Użyj krzywizny krawędzi: Zupełnie nowa funkcja, która działa tylko na określonych polach. Jeśli masz pole z długą nieregularną krawędzią i umieścisz znacznik pola w jej pobliżu, linia ścieżki zostanie wygenerowana względem tej krzywizny.
+WAŻNA UWAGA: Jeśli wygenerowany kurs nie będzie idealny lub nawet zły przez wybraną krawędź lub pole, nie będzie on działał z tą funkcją. Nie będzie również żadnej aktualizacji tego!
 "/>
-    <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
-    <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
-    <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>
-    <text name="CP_help_page_courseGeneratorExpert_title" text="Course generator expert"/>
+    <text name="CP_help_page_courseGeneratorHeadland_title" text="Generator kursu - uwrocia"/>
+    <text name="CP_help_page_courseGeneratorCenter_title" text="Generator kursu - środek pola"/>
+    <text name="CP_help_page_courseGeneratorIsland_title" text="Generator kursu - przeszkody"/>
+    <text name="CP_help_page_courseGeneratorExpert_title" text="Generator kursu - zaawansowane"/>
     <text name="CP_help_page_courseManager_title" text="Menadżer kursu"/>
-    <text name="CP_help_page_courseManagerBase_text" text="
-Menadżer kursów umożliwia zapisywanie kursów i umożliwia późniejsze ponowne wczytanie zapisanego kursu.
+    <text name="CP_help_page_courseManagerBase_text" text="Menadżer kursów umożliwia zapisywanie kursów i umożliwia późniejsze ponowne wczytanie zapisanego kursu.
 Jest to bardzo ważne, gdy chcesz, aby wielu pomocników jeździło tym samym kursem dla konwoju (wiele maszyn).
 Ta funkcja umożliwia również zbieranie pokosu pozostawionego przez kombajn lub zgrabiarkę z przyczepą samozbierającą lub prasą.
-
-Lokalizacja zapisu plików kursu to: Dokumenty\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Nazwa_mapy.SampleModMap (lub w przypadku map z gry, np. MapUS).
+"/>
+    <text name="CP_help_page_courseManagerBaseFunctions_text" text="Lokalizacja zapisu plików kursu to: Dokumenty\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Nazwa_mapy.SampleModMap (lub w przypadku map z gry, np. MapUS).
 Menedżer kursu działa inaczej niż ten, do którego przywykłeś w FS19.
 Kursy zapisywane są w folderach, które wyświetlą się po lewej stronie. Oznacza to, że aby rozpocząć zapisywanie kursów, potrzebujesz co najmniej jednego folderu.
 Foldery można po prostu utworzyć, naciskając przycisk u dołu ekranu i wprowadzając nazwę.
 Na razie kursy są zapisywane tylko lokalnie.
-"/>
-    <text name="CP_help_page_courseManagerBaseFunctions_text" text="
+
 Po załadowaniu kursu możesz go zapisać, klikając przycisk Zapisz kurs, a następnie folder. Następnie pojawi się wyskakujące okienko, w którym możesz wpisać nazwę swojego kursu.
 Nazwę i lokalizację można zmienić później.
 Aby usunąć kurs z pojazdu, kliknij przycisk 'Wyczyść aktualny kurs'.
@@ -735,19 +727,16 @@ C: W tym miejscu można w razie potrzeby zmienić szerokość roboczą.
 D: To ustawienie nakazuje Pracownikowi SI czekać w silosie lub w wybranej pozycji parkingowej, gdy do silosu zbliża się kierowca.
 "/>
     <text name="CP_help_page_customField_title" text="Nowe pola"/>
-    <text name="CP_help_page_customFieldRecord_text" text="
-Są dwie możliwości stworzenia nowego pola.
+    <text name="CP_help_page_customFieldRecord_text" text="Są dwie możliwości stworzenia nowego pola.
 Pierwsza to użycie nagrywania w HUDzie.
 Rozpocznij nagrywanie i przejedź po krawędziach wokół nowego pola.
 Gdy gotowe, wciśnij przycisk ponownie a zostaniesz zapytany czy zapisać to pole.
 "/>
-    <text name="CP_help_page_customFieldDone_text" text="
-Zaglądając do menu pomocników SI, zobaczysz nagrany obrys pola.
+    <text name="CP_help_page_customFieldDone_text" text="Zaglądając do menu pomocników SI, zobaczysz nagrany obrys pola.
 Klikając na NAZWĘ, dostaniesz opcję usunięcia go lub zmiany nazwy.
 "/>
-    <text name="CP_help_page_customFieldDraw_text" text="
-Druga opcja to narysowanie go na mapie w menu pomocników SI.
-Nie miej wygranego żadnego ciągnika czy innego pojazdu (kliknij lewym przyciskiem gdzieś na mapie), pojawi się wtedy opcja narysowania nowego pola.
+    <text name="CP_help_page_customFieldDraw_text" text="Druga opcja to narysowanie go na mapie w menu pomocników SI.
+Nie miej wybranego żadnego ciągnika czy innego pojazdu (kliknij lewym przyciskiem gdzieś na mapie), pojawi się wtedy opcja narysowania nowego pola.
 Po rozpoczęciu zostanie wyświetlony tekst rysujący linie nowego pola za pomocą prawego przycisku myszy.
 Użyj prawego przycisku myszy, aby kliknąć na pozycję, gdzie chcesz zacząć.
 Następne prawe kliknięcie narysuje linię od punktu początkowego do obecnej pozycji kursora, będzie to punk początku nowej linii.
@@ -760,7 +749,7 @@ Możliwe jest posiadanie do 5 pojazdów pracujących razem na tym samym polu w k
 Po załadowaniu kursu wielu maszyn należy wybrać pas dla kierowcy.
 Te pasy mają zawsze takie same nazwy:
 lewo(2), lewo(1), środek, prawo(1), prawo(2).
-2 pojazdy będą miały lewy(1) i prawy(1), 4 lewy(2) i prawy(2).
+2 pojazdy będą miały lewy(1) i prawy(1), 4 - lewy(2) i prawy(2).
 Przy 3 lub 5 pojazdach zyskasz również opcję środkową.
 "/>
     <text name="CP_help_page_convoyBasic_text" text="
@@ -786,14 +775,12 @@ zacznij od zbieranie/owijanie bel z HUDa lub menu SI.
 "/>
     <text name="CP_help_page_wrapFunction_text" text="
 Podczas korzystania z kursu pomocnik jedzie z ustawionym przesunięciem, dzięki czemu podbieracz owijarek znajduje się w środku kursu.
-Bez kursu Courseplay skanuje pole w poszukiwaniu nieowiniętych bel i używa wyszukiwania ścieżki jazdy, aby znaleźć sposób na
-najlepsze dojechanie do najbliższej beli do owinięcia.
+Bez kursu Courseplay skanuje pole w poszukiwaniu nieowiniętych bel i używa wyszukiwania ścieżki jazdy, aby znaleźć sposób na najlepsze dojechanie do najbliższej beli do owinięcia.
 Automatyczne cofanie, jeśli przed pojazdem znajduje się bela lub jeśli znajdujemy się zbyt blisko granicy pola, powinno zapobiec wypadkom.
 "/>
     <text name="CP_help_page_collectBasic_text" text="
 Zbieranie bel działa podobnie, z kursem lub bez.
-Gdy przyczepa jest pełna, zatrzyma pracę i poinformuje użytkownika, że należy go rozładować. Jeśli masz AutoDrive
-zainstalowany, możesz go użyć do automatycznego rozładunku.
+Gdy przyczepa jest pełna, zatrzyma pracę i poinformuje użytkownika, że należy go rozładować. Jeśli masz zainstalowany AutoDrive, możesz go użyć do automatycznego rozładunku.
 "/>
     <text name="CP_help_page_symetricLaneChange_title" text="Symetryczna zmiana pasa"/>
     <text name="CP_help_page_symetricLaneChangeBasic_text" text="
@@ -836,29 +823,24 @@ Informacje są następujące:
 - Oczekuje na koniec opadów
 "/>
     <text name="CP_help_page_vineWork_title" text="Praca na winorośli"/>
-    <text name="CP_help_page_vineWorkConditions_text" text="
-Praca na winorośli jest nieco bardziej skomplikowana niż praca na normalnym polu.
+    <text name="CP_help_page_vineWorkConditions_text" text="Praca na winorośli jest nieco bardziej skomplikowana niż praca na normalnym polu.
 Aby uzyskać najlepszy wynik, wszystkie winorośle powinny znajdować się obok siebie w domyślnej siatce.
 Koniec i początek każdej winorośli również powinny mieć w przybliżeniu taką samą długość.
 Jeśli pnącza znajdują się na istniejącym polu, możesz otworzyć generator w bezpośredni sposób, jak zwykle.
 Jeśli nie znajdują się na polu, musisz przejść przez menu SI i umieścić znacznik pola na pnączach.
 "/>
-    <text name="CP_help_page_vineWorkGenerator_text" text="
-Generator do winorośli ma mniej opcji.
+    <text name="CP_help_page_vineWorkGenerator_text" text="Generator do winorośli ma mniej opcji.
 W zależności od narzędzia musisz wybrać pracę na pnączach lub obok pnączy.
 Np. domyślny kombajn musi prowadzić i pracować na winorośli.
       Sekator musi jechać w lewo od winorośli, ale pracuje na winorośli, więc musisz wybrać pracę na winorośli, ale jechać z przesunięciem.
       Opryskiwacze muszą jechać obok winorośli i pominąć jeden rząd, ponieważ opryskuje z lewej i prawej strony.
 "/>
-    <text name="CP_help_page_vineWorkHarvester_text" text="
-Kurs prac na winoroślach powinien powstać na winorośli, ponieważ musi on jechać i pracować na winoroślach.
+    <text name="CP_help_page_vineWorkHarvester_text" text="Kurs prac na winoroślach powinien powstać na winorośli, ponieważ musi on jechać i pracować na winoroślach.
 "/>
-    <text name="CP_help_page_vineWorkPruner_text" text="
-Sekator działa na winoroślach, więc kurs musi być generowany na winoroślach.
+    <text name="CP_help_page_vineWorkPruner_text" text="Sekator działa na winoroślach, więc kurs musi być generowany na winoroślach.
 Maszyna ma domyślne przesunięcie dla ciągnika, więc ciągnik jedzie między winoroślami.
 "/>
-    <text name="CP_help_page_vineWorkSprayer_text" text="
-Opryskiwacz pracuje obok winorośli, więc musi jechać w lewo lub w prawo od winorośli.
+    <text name="CP_help_page_vineWorkSprayer_text" text="Opryskiwacz pracuje obok winorośli, więc musi jechać w lewo lub w prawo od winorośli.
 Ponieważ opryskiwacz może pracować jednocześnie na lewej i prawej winorośli, możemy pominąć rząd.
 "/>
     <text name="CP_help_page_editor_title" text="Edytor kursu"/>
@@ -888,8 +870,8 @@ W kategorii zaawansowanej znajdują się:
 "/>
     <text name="CP_help_page_unloader_title" text="Rozładunek kombajnu"/>
     <text name="CP_help_page_unloaderGeneral_text" text="
-Tryb rozładunku w Courseplay działa z kombajnami i kombajnami ciąganymi sterowanymi przez pracownika Courseplay.
-Nie działa z sieczkarniami.
+Tryb rozładunku w Courseplay działa z kombajnami i kombajnami półzawieszanymi sterowanymi przez pracownika Courseplay.
+!! Nie działa z sieczkarniami !!
 Możesz użyć pojedynczej przyczepy lub wozu przeładunkowego, aby rozładować kombajn.
 Aby opróżnić przyczepy, możesz użyć Pomocnika SI z gry lub AutoDrive.
 Uruchomienie rozładunku wymaga kilku rzeczy:
@@ -898,16 +880,14 @@ Uruchomienie rozładunku wymaga kilku rzeczy:
 - Musisz być na polu lub w odległości 20 metrów od niego by móc aktywować rozładunek.
 
 Dostępnych jest tylko kilka ustawień, które możesz zmienić:
-- Możesz ustawić poziom napełnienia, przy którym pracownik będzie uważał podłączoną przyczepę za pełną. Ma to na celu
-  uniknięcie czekania na kombajn z prawie pełną przyczepą.
+- Możesz ustawić poziom napełnienia, przy którym pracownik będzie uważał podłączoną przyczepę za pełną. Ma to na celu uniknięcie czekania na kombajn z prawie pełną przyczepą.
 - Możesz użyć przesunięć w HUD, aby dostosować pozycję pomocnika rozładowującego pod rurą kombajnu.
 "/>
     <text name="CP_help_page_unloaderTrailer_title" text="Używanie przyczep"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 Jeśli używasz zwykłej przyczepy do rozładunku, istnieją dwa sposoby transportu zbiorów do silosu lub punktu sprzedaży: Pracownik SI z gry lub AutoDrive.
-Możesz użyć menu AI i utworzyć zadanie, a następnie aktywować funkcję Pomocnika SI i cel rozładunku na
-na dole listy lub aktywując ikonę koła na HUD.
-W tym drugim przypadku musisz wybrać stację rozładunkową po tym, jak ikona koła zmieni kolor na niebieski.
+Możesz użyć menu AI i utworzyć zadanie, a następnie aktywować funkcję Pomocnika SI i cel rozładunku na dole listy lub aktywując ikonę koła na HUD.
+W tym drugim przypadku musisz wybrać punkt rozładunku po tym, jak ikona koła zmieni kolor na niebieski.
 
 Opróżnianie przyczepy za pomocą AutoDrive działa tak samo, jak korzystanie z przyczepy samozbierającej, sprawdź samouczki AutoDrive w Internecie.
 "/>
@@ -918,16 +898,15 @@ Podobnie jak w przypadku przyczep, za pomocą ikony celu wybierasz pole, na któ
 Aby aktywować rozładunek, umieść zestaw ponownie na polu lub w odległości 20 metrów od pola.
 Jeśli wóz przeładunkowy jest pełen, automatycznie szuka przyczepy na polu lub w jego pobliżu, aby się do niego przeładować.
 W przypadku, gdy przyczepa jest pełna, a wóz przeładunkowy nadal nie jest pusty, szuka innej przyczepy do rozładunku.
-Jeśli nie ma w pobliżu żadnej wolnej przyczepy, będzie ona nadal rozładowywać kombajn.
+Jeśli nie ma w pobliżu żadnej wolnej przyczepy, będzie on nadal rozładowywał kombajn.
 "/>
     <text name="CP_help_page_unloaderFieldUnload_title" text="Rozładunek na polu"/>
     <text name="CP_help_page_unloaderFieldUnload_text" text="
 Pozycja rozładunku może zostać wybrana poprzez znacznik rozładunku.
 Pozycja ta musi być na tym samym polu lub blisko jego krawędzi.
-Jeżeli znacznik jest ustawiony na istniejącej pryzmie, 
-wtedy zostanie ona użyta do rozładunku.
+Jeżeli znacznik jest ustawiony na istniejącej pryzmie, wtedy zostanie ona użyta do rozładunku.
 Kierunek znacznika ustala kierunek rozładunku.
-Dodatkowo można ubrać stronę kiprowania przyczepy.
+Dodatkowo można wybrać stronę kiprowania przyczepy.
 "/>
     <text name="CP_help_page_bunker_title" text="Pracownik silosu bunkrowego"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
@@ -937,13 +916,10 @@ Do wyrównywania służą specjalne narzędzia (np. Fliegl Duo).
 W przypadku silosów klinowych stosuje się lemiesz, który popycha sieczkę na tył silosu.
 "/>
     <text name="CP_help_page_bunkerBasic_text" text="
-Jeśli pojazd ma zamocowany roztrząsacz lub lemiesz, wstępnie wybrany jest tryb Silos. Tylko z obciążnikiem lub wałem
-przechodzisz przez punkt początkowy, aż pojawi się tryb.
-Oprócz szerokości roboczej można również wybrać kierunek, w którym pracownik powinien wjechać do silosu. Z założonym lemieszem,
-kierunek jest wybierany automatycznie.
+Jeśli pojazd ma zamocowany roztrząsacz lub lemiesz, wstępnie wybrany jest tryb Silos. Tylko z obciążnikiem lub wałem przechodzisz przez punkt początkowy, aż pojawi się tryb.
+Oprócz szerokości roboczej można również wybrać kierunek, w którym pracownik powinien wjechać do silosu. Z założonym lemieszem, kierunek jest wybierany automatycznie.
 Użyj ikony 'celu' na HUD, aby wybrać silos na mapie AI. Jeśli zostanie zaznaczone, zostanie pokazane z niebieskimi liniami i podświetli się na biało.
-Pozycję parkowania ustawia się za pomocą znacznika &quot;pozycja parkowania&quot; którego można również użyć, aby pojechać tam z pracownikiem SI
-przed rozpoczęciem właściwej pracy.
+Pozycję parkowania ustawia się za pomocą znacznika &quot;pozycja parkowania&quot; którego można również użyć, aby pojechać tam z pracownikiem SI przed rozpoczęciem właściwej pracy.
 "/>
     <text name="CP_help_page_siloLoader_title" text="Załadunek pryzmy"/>
     <text name="CP_help_page_siloLoaderGeneral_text" text="
@@ -951,17 +927,16 @@ W tym trybie możliwy jest załadunek pryzmy na polu lub w jego pobliżu.
 Dodatkowo można załadować pryzmę z silosu bunkrowego.
 Załadunkowy możne zostać rozładowany poprzez rozładunkowego Courseplay.
 "/>
-    <text name="CP_help_page_siloLoaderBasic_text" text="
-Aby rozpocząć załadunek, punkt załadunkowy musi zostać ustawiony w menu SI.
+    <text name="CP_help_page_siloLoaderBasic_text" text="Aby rozpocząć załadunek, punkt załadunkowy musi zostać ustawiony w menu SI.
 Znacznik wykrywa pryzmę lub silos i podświetla to na mapie.
-Terze możesz rozpocząć pracę pomocnika.
+Teraz możesz rozpocząć pracę pomocnika.
 "/>
     <text name="CP_help_page_shovelLoader_title" text="Ładowarka"/>
     <text name="CP_help_page_shovelLoaderGeneral_text" text="
 W tym trybie można pracować ładowarką kołową oraz ciągnikami z ładowaczem czołowym.
 Za pomocą podczepionej łyżki można zebrać ładunek z ziemi lub silosu bunkrowego.
 Zebrany ładunek może zostać automatycznie wyładowany na pobliską przyczepę lub wybrany punkt rozładunku, np. BGA.
-Łyżka zostanie automatycznie ustawiona we właściwe pozycje do załadunku, rozładunku itd.
+Łyżka zostanie automatycznie ustawiona we właściwe pozycje: do załadunku, rozładunku itd.
 W przypadku, gdy tryb nie jest bezpośrednio widoczny na HUDzie, możesz przełączyć &quot;Pozycję początkową&quot; aż tryb ładowarki się pojawi.
 
 Ikony celu na HUDzie można użyć do otwarcia mapy AI w celu wybrania celów ładowania i rozładowywania.
@@ -969,15 +944,14 @@ HUD pokazuje również pozostałą zawartość pryzmy lub silosu, gdy pracownik 
 Jeśli celem załadunku jest silos bunkrowy, może być konieczne dostosowanie szerokości roboczej, aby uniknąć uderzenia w boczne ściany silosu.
 
 Ustawienie przesunięcia wysokości służy do regulacji wysokości nad poziomem gruntu, ponieważ nie dla wszystkich łyżek można obliczyć to poprawnie.
-Należy sprawdzić, czy jeśli łyżka jest w pozycji do załadunku, kierowca może swobodnie skręcać oraz czy łyżka jest zbyt wysoko co uniemożliwia podebrania ładunku z gruntu.
+Należy sprawdzić, czy jeśli łyżka jest w pozycji do załadunku, kierowca może swobodnie skręcać oraz czy łyżka nie jest zbyt wysoko co uniemożliwia podebrania ładunku z gruntu.
 Jeśli zmienisz wartość przesunięcia, łyżka automatycznie ustawi się w pozycji załadunku, aby zobrazować wpływ wprowadzonej zmiany.
 Aby zresetować przesunięcie, kliknij tekst ustawień w HUD. Wartość można regulować w zakresie od +1 do -1 z dokładnością do kroku co 0,1.
 
 Łyżki z chwytakiem do kiszonki otwierają się i zamykają automatycznie podczas załadunku i rozładunku.
 Łyżka do rozdrabniania buraków cukrowych również jest w pełni obsługiwana.
 "/>
-    <text name="CP_help_page_shovelLoaderBasic_text" text="
-Aby uruchomić kierowcę ładowarki kołowej, musisz ustawić pozycje załadunku i rozładunku, klikając ikonę celu na HUDzie.
+    <text name="CP_help_page_shovelLoaderBasic_text" text="Aby uruchomić kierowcę ładowarki kołowej, musisz ustawić pozycje załadunku i rozładunku, klikając ikonę celu na HUDzie.
 Pozycja ładowania działa identycznie jak ta z trybu &quot;Załadunek pryzmy&quot;. Wokół pryzmy zostanie utworzony niebieski kwadrat.
 
 Pozycja rozładunku zależy od tego, czy chcesz rozładować towar na przyczepę, czy w punkcie rozładunku.
@@ -985,8 +959,7 @@ W przypadku wybrania rozładunku do przyczepy należy w menu AI wybrać obszar, 
 Pomocnik podjedzie do dowolnej zaparkowanej przyczepy w okolicy. Kierunek znacznika nie ma w tym przypadku znaczenia.
 Jeśli chcesz rozładować do punktu rozładunku, musisz przełączyć cel, a następnie oznaczyć trigger pozycją rozładunku.
 "/>
-    <text name="CP_help_page_shovelLoaderTrigger_text" text="
-Wybór triggeru na pierwszy rzut oka wydaje się nieco skomplikowany, ale w rzeczywistości jest naprawdę łatwy.
+    <text name="CP_help_page_shovelLoaderTrigger_text" text="Wybór triggeru na pierwszy rzut oka wydaje się nieco skomplikowany, ale w rzeczywistości jest naprawdę łatwy.
 Każdy budynek może mieć więcej niż jeden trigger, więc musisz wybrać ten, do którego chcesz się rozładować.
 Wszystkie dostępne triggery zostaną pokazane z pomarańczowym krzyżykiem na mapie AI.
 Aby wybrać jedno, umieść środek okrągłego znacznika na środku krzyża.
