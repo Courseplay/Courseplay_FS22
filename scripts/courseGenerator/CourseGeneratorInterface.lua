@@ -56,7 +56,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
         context.field:setupIslands()
     end
 
-    local status, numberOfHeadlands
+    local status
     if settings.narrowField:getValue() then
         -- two sided must start on headland
         context:setHeadlandFirst(true)
@@ -69,8 +69,6 @@ function CourseGeneratorInterface.generate(fieldPolygon,
                     return err
                 end
         )
-        -- two sided always has the requested headlands
-        numberOfHeadlands = settings.numberOfHeadlands:getValue()
     else
         status, CourseGeneratorInterface.generatedCourse = xpcall(
                 function()
@@ -81,14 +79,15 @@ function CourseGeneratorInterface.generate(fieldPolygon,
                     return err
                 end
         )
-        -- the actual number of headlands generated may be less than the requested
-        numberOfHeadlands = #CourseGeneratorInterface.generatedCourse:getHeadlands()
     end
 
     -- return on exception or if the result is not usable
     if not status or CourseGeneratorInterface.generatedCourse == nil then
         return false
     end
+
+    -- the actual number of headlands generated may be less than the requested
+    local numberOfHeadlands = #CourseGeneratorInterface.generatedCourse:getHeadlands()
 
     CourseGeneratorInterface.logger:debug('Generated course: %d/%d headland/center waypoints',
             #CourseGeneratorInterface.generatedCourse:getHeadlandPath(), #CourseGeneratorInterface.generatedCourse:getCenterPath())
