@@ -378,7 +378,7 @@
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - attaching of the header is impossible!]]></Text>
 		</Translation>
 		<Translation name="CP_ai_messageErrorAutomaticCutterAttachNotActive">
-			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - automatisches Scheidwerkankuppeln deaktiviert!]]></Text>
+			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - automatisches Schneidwerkankuppeln deaktiviert!]]></Text>
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!]]></Text>
 		</Translation>
 		<Translation name="CP_ai_messageErrorWrongMissionFruitType">
