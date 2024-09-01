@@ -13,7 +13,7 @@
 		<Setting classType="AIParameterSettingList" name="multiTools" min="1" max="5" default="1" isExpertModeOnly="true"/>
 		<Setting classType="AIParameterSettingList" name="numberOfHeadlands" min="0" max="40"/>
 		<Setting classType="AIParameterBooleanSetting" name="narrowField" defaultBool="false" isVisible="hasHeadlandsSelected" isExpertModeOnly="true"/>
-		<Setting classType="AIParameterBooleanSetting" name="startOnHeadland" isVisible="canStartOnRows">
+		<Setting classType="AIParameterBooleanSetting" name="startOnHeadland" defaultBool="true" isVisible="canStartOnRows">
 			<Texts>
 				<Text>up_down_rows</Text>
 				<Text>on_headland</Text>
