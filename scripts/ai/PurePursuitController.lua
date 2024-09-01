@@ -230,12 +230,19 @@ function PurePursuitController:getLastPassedWaypointIx()
     return self.lastPassedWaypointIx
 end
 
---- When reversing, use the towed implement's node as a reference
+--- In implement mode, the controlled node is on the implement. We use the same node as the reversing one as
+--- it sits over the wheel axle and is a good reference point also when driving forward and controlling the
+--- implement's position.
+function PurePursuitController:setImplementMode(implementMode)
+    self.implementMode = implementMode
+end
+
+--- When reversing, or when implement mode is set, use the towed implement's node as a reference
 function PurePursuitController:switchControlledNode()
     local lastControlledNode = self.controlledNode
     local debugText = 'AIDirectionNode'
     local reverserNode
-    if self:isReversing() then
+    if self:isReversing() or self.implementMode then
         if not self.reversingImplement then
             self.reversingImplement = AIUtil.getFirstReversingImplementWithWheels(self.vehicle, true)
         end

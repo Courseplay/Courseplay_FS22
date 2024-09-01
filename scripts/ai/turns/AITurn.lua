@@ -584,7 +584,7 @@ end
 
 function CourseTurn:turn()
 
-    local gx, gz, moveForwards, maxSpeed = AITurn.turn(self)
+    local gx, gz, moveForwards, speed = self.driveStrategy:getTowedImplementDriver():getDriveData()
 
     self:changeDirectionWhenAligned()
     self:changeToFwdWhenWaypointReached()
@@ -594,7 +594,7 @@ function CourseTurn:turn()
         self.state = self.states.ENDING_TURN
         self:debug('About to end turn')
     end
-    return gx, gz, moveForwards, maxSpeed
+    return gx, gz, moveForwards, speed or self:getForwardSpeed()
 end
 
 ---@return boolean true if it is ok the continue driving, false when the vehicle should stop

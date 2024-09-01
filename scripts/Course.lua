@@ -1136,18 +1136,6 @@ function Course.createFromTwoWorldPositions(vehicle, sx, sz, ex, ez, xOffset, zS
     return course
 end
 
-function Course:getDirectionToWPInDistance(ix, vehicle, distance)
-    local lx, lz = 0, 1
-    for i = ix, #self.waypoints do
-        if self:getDistanceBetweenVehicleAndWaypoint(vehicle, i) > distance then
-            local x, y, z = self:getWaypointPosition(i)
-            lx, lz = AIVehicleUtil.getDriveDirection(vehicle.cp.directionNode, x, y, z)
-            break
-        end
-    end
-    return lx, lz
-end
-
 function Course:getDistanceToNextTurn(ix)
     return self.waypoints[ix].dToNextTurn
 end

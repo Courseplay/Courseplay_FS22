@@ -369,6 +369,7 @@ end
 function AIDriveStrategyCourse:setAllStaticParameters()
     self.workWidth = self.vehicle:getCourseGeneratorSettings().workWidth:getValue()
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
+    self.towedImplementDriver = AITowedImplementDriver(self.vehicle, self.ppc)
     self.proximityController = ProximityController(self.vehicle, self:getProximitySensorWidth())
     self.proximityController:registerIgnoreObjectCallback(self, self.ignoreBaleInFrontWithBalePusher)
     -- let all controllers register an ignore object callback if they want
@@ -466,6 +467,10 @@ function AIDriveStrategyCourse:getReverseDriveData()
         maxSpeed = self.settings.reverseSpeed:getValue()
     end
     return gx, gz, maxSpeed
+end
+
+function AIDriveStrategyCourse:getTowedImplementDriver()
+    return self.towedImplementDriver
 end
 
 -----------------------------------------------------------------------------------------------------------------------
