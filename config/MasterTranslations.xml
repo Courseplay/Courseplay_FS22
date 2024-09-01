@@ -72,7 +72,7 @@
 			<Text language="en"><![CDATA[Vehicle is too far away from the field.]]></Text>
 		</Translation>
 		<Translation name="CP_error_no_bunkerSilo_found">
-			<Text language="de"><![CDATA[Keinen Silo gefunden.]]></Text>
+			<Text language="de"><![CDATA[Kein Silo gefunden.]]></Text>
 			<Text language="en"><![CDATA[No silo found.]]></Text>
 		</Translation>
 		<Translation name="CP_error_no_heap_found">
@@ -374,11 +374,11 @@
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - unloading on the field not possible!]]></Text>
 		</Translation>
 		<Translation name="CP_ai_messageErrorCutterNotSupported">
-			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - ankuppelen von dem Schneidwerk nicht möglich!]]></Text>
+			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - ankuppeln des Schneidwerks nicht möglich!]]></Text>
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - attaching of the header is impossible!]]></Text>
 		</Translation>
 		<Translation name="CP_ai_messageErrorAutomaticCutterAttachNotActive">
-			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - automatisches Scheidwerk ankuppeln deaktiviert!]]></Text>
+			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - automatisches Scheidwerkankuppeln deaktiviert!]]></Text>
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!]]></Text>
 		</Translation>
 		<Translation name="CP_ai_messageErrorWrongMissionFruitType">
@@ -424,7 +424,7 @@
 			<Text language="en"><![CDATA[Unloads to a heap]]></Text>
 		</Translation>
 		<Translation name="CP_ai_taskDescriptionUnloadingToTrailer">
-			<Text language="de"><![CDATA[Entlädt in ein Anhänger]]></Text>
+			<Text language="de"><![CDATA[Entlädt in einen Anhänger]]></Text>
 			<Text language="en"><![CDATA[Unloads into trailer]]></Text>
 		</Translation>
 		<Translation name="CP_ai_taskDescriptionUnloadingWithGiants">
@@ -536,7 +536,7 @@
 			<Text language="en"><![CDATA[Stop at end.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_allowReversePathfinding_title">
-			<Text language="de"><![CDATA[Pathfinder darf rückwärts fahren]]></Text>
+			<Text language="de"><![CDATA[Pathfinder darf rückwärtsfahren]]></Text>
 			<Text language="en"><![CDATA[Allow reverse for pathfinding]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_allowReversePathfinding_tooltip">
@@ -624,7 +624,7 @@
 			<Text language="en"><![CDATA[Tool offset horizontal]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_baleCollectorOffset_title">
-			<Text language="de"><![CDATA[Ballen Aufnahme Versatz]]></Text>
+			<Text language="de"><![CDATA[Ballenaufnahmeversatz]]></Text>
 			<Text language="en"><![CDATA[Bale pickup offset]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_baleCollectorOffset_tooltip">
@@ -1102,11 +1102,11 @@
 			<Text language="en"><![CDATA[Number of vehicles on the same course.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title">
-			<Text language="de"><![CDATA[Bahnen Form anhand Feldkante]]></Text>
+			<Text language="de"><![CDATA[Bahnenform anhand Feldkante]]></Text>
 			<Text language="en"><![CDATA[Rows follow field edge curve]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip">
-			<Text language="de"><![CDATA[Die Feldkante die am nächsten am Feldmarker wird verwendet um den Verlauf der Bahnen zu bestimmen.]]></Text>
+			<Text language="de"><![CDATA[Die Feldkante, die am nächsten am Feldmarker ist, wird verwendet, um den Verlauf der Bahnen zu bestimmen.]]></Text>
 			<Text language="en"><![CDATA[The rows follow the curvature of the field edge nearest to the field marker.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_narrowField_title">
@@ -1524,7 +1524,7 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Inserts a waypoint before the selected waypoint.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_basic_insert_err">
-			<Text language="de"><![CDATA[Einfügen zwischen Wendepunkte ist verboten.]]></Text>
+			<Text language="de"><![CDATA[Einfügen zwischen einem Wendepunkt ist verboten.]]></Text>
 			<Text language="en"><![CDATA[Inserting between a turning point is not allowed.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_advanced_title">
@@ -1763,7 +1763,7 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Draw custom field lines with right click.]]></Text>
 		</Translation>
 		<Translation name="CP_customFieldManager_draw_sub_header">
-			<Text language="de"><![CDATA[Halte die linke Shift Taste für eine gerade Linie.]]></Text>
+			<Text language="de"><![CDATA[Halte die linke Shift-Taste für eine gerade Linie.]]></Text>
 			<Text language="en"><![CDATA[Hold the left shift key for a straight line.]]></Text>
 		</Translation>
 		<Translation name="CP_customFieldManager_save">
@@ -1817,8 +1817,8 @@ Eigene Feldränder können mit einem Fahrzeug aufgezeichnet oder auf der Menüka
 Außerdem hat CP ein Interface für AutoDrive, dadurch ist es möglich Sämaschinen auffüllen zu lassen, Ladewagen zu entleeren und vieles mehr.
 Ab Version 7.2.1.0 ist es auch möglich, mit dem Drescher-Abfahrer die geladene Frucht als Haufen am Feldrand abzulegen.
 
-Für weitere Informationen, schaut bitte auf Github vorbei unter:  https://github.com/Courseplay/Courseplay_FS22 .
-Dort könnte ihr Fragen stellen, Fehlerberichte einreichen oder Verbesserungen vorschlagen.
+Für weitere Informationen, schaut bitte auf GitHub vorbei unter:  https://github.com/Courseplay/Courseplay_FS22 .
+Dort könnt ihr Fragen stellen, Fehlerberichte einreichen oder Verbesserungen vorschlagen.
 Ein ganz großes Danke geht an unsere Übersetzer und an die Community für die zahlreichen Fehlermeldungen, Feedbacks und Ideen.
 
 Was ist der Expertenmodus:
@@ -2071,8 +2071,8 @@ racetrack
 		</Translation>
 		<Translation name="CP_help_page_courseGeneratorIsland_text">
 			<Text language="de"><![CDATA[
-Das Umfahren von Inseln ist nur noch komplett möglich. Das heist es wird immer einmal komplett rum gefahren.
-Es gibt auch im neuen Generator limitierungen, wenn die Insel zu dicht am Feldrand liegt.
+Das Umfahren von Inseln ist nur noch komplett möglich. Das heißt es wird immer einmal komplett rum gefahren.
+Es gibt auch im neuen Generator Limitierungen, wenn die Insel zu dicht am Feldrand liegt.
 Es spielt natürlich eine Rolle, wie breit das Arbeitsgerät ist, ob die Runden um die Insel zu dicht zum Rand des Feldes kommt.
 Z.B. wie viele Vorgewende passen zwischen Insel und Feldrand.
 ]]></Text>
@@ -2087,7 +2087,7 @@ headlands if the island is too close to the field boundary
 			<Text language="de"><![CDATA[
 - Insel Umfahrung: Schaltet das Umfahren der Insel ein oder aus, sollte eine Insel gefunden werden. Inselumfahrung funktioniert nicht auf selbst erstellten Feldern!
 - Insel Vorgewende: Die Anzahl an Umrundungen um die Insel kann jetzt separat von den Vorgewende eingestellt werden.
-- Insel Vorgewende Richtung: In welche Richtung die Insel umfahren werden soll, um eventuelle Richtungswechsel zu vermeiden. Das kann je nach Feld und den rest des Kurses auf versuche ankommen.
+- Insel Vorgewende Richtung: In welche Richtung die Insel umfahren werden soll, um eventuelle Richtungswechsel zu vermeiden. Das kann je nach Feld und den Rest des Kurses auf Versuche ankommen.
 ]]></Text>
 			<Text language="en"><![CDATA[
 - Island bypass: Turns on or off the bypass of the island, if an island is found. This does not work for custom fields!
@@ -2100,11 +2100,11 @@ headlands if the island is too close to the field boundary
 Einige Einstellungen sind erst dann sichtbar, wenn in den globalen CP Einstellungen den "Experten Modus" eingeschaltet habt.
 Bevor ihr euch mit den Einstellmöglichkeiten beschäftigt, solltet ihr euch erst mit den normalen Einstellungen vertraut machen, da nicht alle Experten Einstellungen ohne Einschränkung funktionieren werden.
 
-- Fahrzeuge auf dem Feld: Mit dieser Einstellung könnt ihr mehr als 1 Fahrzeug das Feld abarbeiten lassen. Mehr Details dazu gibt es unter einem extra Punkt im Hilfemenü.
-- Enges Feld: Erzeugt nur an den kürzesten Feldrand Seiten ein Vorgewende. Es lässt sich aktuell nicht vermeiden, dass Fahrzeuge an den langen Seiten im Vorgewende das Feld verlassen.
-- Vorgewende Überlappung: Es ist ein standard Wert eingestellt, der immer verwendet wird. Dieser kann aber mit dieser Einstellung angepasst werden. Die Überlappung findet innerhalb des Feldes statt und ragt nicht über den Feldrand hinaus.
+- Fahrzeuge auf dem Feld: Mit dieser Einstellung könnt ihr mehr als ein Fahrzeug das Feld abarbeiten lassen. Mehr Details dazu gibt es unter einem extra Punkt im Hilfemenü.
+- Enges Feld: Erzeugt nur an den kürzesten Feldrandseiten ein Vorgewende. Es lässt sich aktuell nicht vermeiden, dass Fahrzeuge an den langen Seiten im Vorgewende das Feld verlassen.
+- Vorgewende Überlappung: Es ist ein Standardwert eingestellt, der immer verwendet wird. Dieser kann aber mit dieser Einstellung angepasst werden. Die Überlappung findet innerhalb des Feldes statt und ragt nicht über den Feldrand hinaus.
 - Feldgrenze: Mit dieser Einstellung lässt sich die Feldgrenze weiter nach innen oder außen verschieben und somit lässt sich der normale Feldrand verschieben.
-- Feldrand für Bahnen: Ein ganz neues Feature, was nur auf bestimmten Feldern funktioniert. Hat man ein Feld als Feldgrenze einem langen Bogen und setzt den Feldmarker in die Nähe dieses Feldrands, so werden die Bahnen in der Mitte den Verlauf des Feldrands nehmen.
+- Feldrand für Bahnen: Ein ganz neues Feature, welches nur auf bestimmten Feldern funktioniert. Hat man ein Feld mit einem langen Bogen als Feldgrenze und setzt den Feldmarker in die Nähe dieses Feldrands, so werden die Bahnen in der Mitte den Verlauf des Feldrands annehmen.
 ANMERKUNG: Sollte ein Kurs nicht sauber generiert werden, funktioniert diese Funktion nicht auf dem Feld oder mit dem Feldrand. Es wird dafür auch kein Update geben!
 ]]></Text>
 			<Text language="en"><![CDATA[
@@ -2804,7 +2804,7 @@ Emptying a trailer with AutoDrive works the same as using a loading wagon, check
 Auch hier wird das Feld mit dem Zielmarker gewählt, auf dem eure Drescher oder Ernter fahren.
 Zum Starten stellt man den Abfahrer auf das Feld oder nahe der Feldgrenze.
 Der Überladewagen sucht sich ganz automatisch einen Abfahrer am Feldrand zum Überladen aus.
-Wenn beim Überladen der Anhänger voll wird, dann wird für den Rest im Überladewagen ein neuer Anhänger gesucht.
+Wenn beim Überladen der Anhänger voll wird, wird für den Rest im Überladewagen ein neuer Anhänger gesucht.
 Ist kein Anhänger verfügbar, wird der Drescher weiter abgetankt bis der Überladewagen voll ist.
 ]]></Text>
 			<Text language="en"><![CDATA[
@@ -2865,7 +2865,7 @@ Ohne Verteiler oder Schild wird durch das Durchschalten des Startpunkts zum Bunk
 Ebenfalls kann die Fahrtrichtung, mit welcher in das Silo gefahren wird, angegeben werden.
 Mit dem Zielknopf im HUD wird auf der Helferkarte der Bunker ausgewählt. 
 Der ausgewählte Bunkerumriss auf der Karte wird dann weiß.
-Die Parkposition wird mit dem Marker "Parkposition" gesetzt und wird angefahren, wenn sich Abfahrer nahe des Silos befinden.
+Die Parkposition wird mit dem Marker "Parkposition" gesetzt und wird angefahren, wenn sich der Abfahrer nahe des Silos befinden.
 Die Parkposition kann auch genutzt werden, um mit dem Giants Helfer zum Bunker zu fahren, bevor mit der Arbeit begonnen wird.
 ]]></Text>
 			<Text language="en"><![CDATA[
@@ -2889,7 +2889,7 @@ Ebenfalls ist es möglich damit Silos zu entleeren.
 Der Lader kann durch einen Courseplay-Abfahrer entladen werden.
 Lässt man Courseplay direkt zum Haufen fahren, klappt dieser sich in einer Standardposition aus und lädt den Haufen auf.
 Passt euch die Position so nicht, könnt ihr den Fahrer stoppen und die Position des Arms wie gewohnt einstellen und den Fahrer wieder starten.
-Bedenkt dabei, dass das automatische Abtanken mit CP in Fahrtrichtung des Laders erfolgt. Lasst dem Abfahrer genug Platz am Lader vorbei zu kommen.
+Bedenkt dabei, dass das automatische Abtanken mit CP in Fahrtrichtung des Laders erfolgt. Lasst dem Abfahrer genug Platz, um am Lader vorbeizukommen.
 ]]></Text>
 			<Text language="en"><![CDATA[
 You can use this job with a Ropa Maus or similar to pick up heaps on or near the field and unload into a Courseplay unloader.
@@ -2960,8 +2960,8 @@ Um einen Radladerfahrer zu starten, müssen zunächst über das Ziel-Icon im HUD
 Die Ladeposition wird wie auch bereits beim Lader gewählt. Ein blauer Rahmen entsteht um den gefundenen Haufen.
 
 Die Abladeposition hängt davon ab, ob du in einen Anhänger oder in eine Abladestation entladen möchtest.
-Falls Abladen in einen Anhänger aktiviert ist, muss der Bereich, wo der Anhänger abgestellt wird, auf der AI Karte ausgewählt werden.
-Der Helfer fährt automatisch zu stehenden Anhänger in diesem Bereich. Die Richtung des Pfeils von der AI Karte spielt hier keine Rolle.
+Falls Abladen in einen Anhänger aktiviert ist, muss der Bereich, wo der Anhänger abgestellt wird, auf der AI-Karte ausgewählt werden.
+Der Helfer fährt automatisch zu stehenden Anhängern in diesem Bereich. Die Richtung des Pfeils auf der AI-Karte spielt hier keine Rolle.
 Möchtest du in eine Abladestation entladen, muss zunächst das Ziel umgestellt werden und anschließend der Marker auf den Trigger gesetzt werden.
 ]]></Text>
 			<Text language="en"><![CDATA[
@@ -2980,7 +2980,7 @@ Die Auswahl eines Triggers wirkt zunächst kompliziert, ist aber im Prinzip rech
 Da Gebäude mehrere Trigger haben können, muss dieser selbst gewählt werden.
 Die verfügbaren Trigger werden als orangene Kreuze dargestellt.
 Um einen Trigger zu wählen, setzt du den Punkt in der Mitte des runden Icons einfach mittig auf das Kreuz.
-Die Richtung des Pfeils entspricht hierbei die Anfahrtsrichtung vom Helfer.
+Die Richtung des Pfeils entspricht hierbei der Anfahrtsrichtung vom Helfer.
 Das Kreuz sollte jetzt, wie im Bild dargestellt, gelb sein.
 ]]></Text>
 			<Text language="en"><![CDATA[
