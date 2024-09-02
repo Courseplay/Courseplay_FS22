@@ -549,7 +549,6 @@ Ustawienie przesunięcia pasa jest używane tylko wtedy, gdy chcesz mieć wielu 
 "/>
     <text name="CP_help_page_readyJobMenuFunctions_text" text="Gdy pozycja zostanie prawidłowo umieszczona na polu, na mapie pojawi się granica pola.
 Jeśli tworzysz CP: Prace polowe, uzyskasz dostęp do ustawień generatora kursów."/>
-
     <text name="CP_help_page_JobMenuExtras_text" text="Teraz można wysłać kierowcę bezpośrednio z menu. Pomocnik Giantsa przejedzie do pozycji docelowej, a stamtąd CP automatycznie przejmie zadanie.
 Alternatywnie możesz również wysłać kierowcę z HUDa, jeśli jesteś blisko pola z pojazdem lub używając modu AutoDrive, aby dojechał blisko pola i CP mógł zacząć swoją pracę.
 "/>
