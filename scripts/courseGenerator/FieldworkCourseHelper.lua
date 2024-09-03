@@ -113,5 +113,24 @@ function FieldworkCourseHelper.createVirtualHeadland(fieldBoundary, isClockwise,
     return CourseGenerator.Headland(fieldBoundary, isClockwise, 0, workingWidth / 2, true)
 end
 
+--- Get the offset vector for CourseGenerator.Offset.generate() when creating a headland
+---@param clockwise boolean the boundary we use to generate the headland is clockwise
+---@param outward boolean the headland should be generated outside the boundary
+---@return Vector
+function FieldworkCourseHelper.getOffsetVectorForHeadland(clockwise, outward)
+    local offsetVector
+    if clockwise then
+        -- to generate headland inside the polygon we need to offset the polygon to the right if
+        -- the polygon is clockwise
+        offsetVector = Vector(0, -1)
+    else
+        offsetVector = Vector(0, 1)
+    end
+    if outward then
+        offsetVector = -offsetVector
+    end
+    return offsetVector
+end
+
 ---@class CourseGenerator.FieldworkCourseHelper
 CourseGenerator.FieldworkCourseHelper = FieldworkCourseHelper
