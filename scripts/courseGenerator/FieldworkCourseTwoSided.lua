@@ -52,6 +52,11 @@ function FieldworkCourseTwoSided:init(context)
     self.center:generate()
 end
 
+---@return number number of headlands as in the context (always the same as the actual ones)
+function FieldworkCourseTwoSided:getNumberOfHeadlands()
+    return self.context.nHeadlands
+end
+
 ---@return Polyline
 function FieldworkCourseTwoSided:getHeadlandPath()
     local headlandPath = Polyline()

@@ -97,6 +97,11 @@ function FieldworkCourse:getHeadlands()
     return self.headlands
 end
 
+---@return number number of actually generated headlands (may be less than requested)
+function FieldworkCourse:getNumberOfHeadlands()
+    return self.nHeadlands
+end
+
 ---@return CourseGenerator.Center
 function FieldworkCourse:getCenter()
     return self.center
