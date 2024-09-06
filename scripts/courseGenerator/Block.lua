@@ -104,9 +104,10 @@ end
 --- a sequence in which the rows must be worked on
 ---@param entry CourseGenerator.RowPattern.Entry the entry to be used for this block
 ---@param rowWaypointDistance number distance between waypoints on a row
+---@param context CourseGenerator.FieldworkContext for downstream processing
 ---@return Vertex the last vertex of the last row, the exit point from this block (to be used to find the entry
 --- to the next one.
-function Block:finalize(entry, rowWaypointDistance)
+function Block:finalize(entry, rowWaypointDistance, context)
     self.logger:debug('Finalizing, entry %s', entry)
     self.logger:debug('Generating row sequence for %d rows, pattern: %s', #self.rows, self.rowPattern)
     local sequence, exit = self.rowPattern:getWorkSequenceAndExit(self.rows, entry)
@@ -122,7 +123,7 @@ function Block:finalize(entry, rowWaypointDistance)
         row:setAdjacentRowInfo(rowOnLeftWorked, rowOnRightWorked, leftSideBlockBoundary, rightSideBlockBoundary)
         self.logger:debug('row %d is now at position %d, left/right worked %s/%s, headland %s/%s',
                 row:getOriginalSequenceNumber(), i, rowOnLeftWorked, rowOnRightWorked, leftSideBlockBoundary, rightSideBlockBoundary)
-        row:adjustLength()
+        row:adjustLength(context)
         -- need vertices close enough so the smoothing in goAround() only starts close to the island
         row:splitEdges(rowWaypointDistance or CourseGenerator.cRowWaypointDistance)
         row:setRowNumber(i)

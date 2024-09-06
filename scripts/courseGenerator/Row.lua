@@ -251,9 +251,11 @@ end
 --- half workwidth.
 --- In case of a field boundary we have to drive up all the way to the boundary.
 --- The value obviously depends on the angle.
-function Row:adjustLength()
-    CourseGenerator.FieldworkCourseHelper.adjustLengthAtStart(self, self.workingWidth, self.startHeadlandAngle)
-    CourseGenerator.FieldworkCourseHelper.adjustLengthAtEnd(self, self.workingWidth, self.endHeadlandAngle)
+---@param context CourseGenerator.FieldworkContext The context to get the row width and the headland width to calculate
+--- the length of the row. These can be different when generating courses for multiple vehicles.
+function Row:adjustLength(context)
+    CourseGenerator.FieldworkCourseHelper.adjustLengthAtStart(self, context, self.startHeadlandAngle)
+    CourseGenerator.FieldworkCourseHelper.adjustLengthAtEnd(self, context, self.endHeadlandAngle)
 end
 
 --- Find the first two intersections with another polyline or polygon and replace the section
