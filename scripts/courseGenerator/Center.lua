@@ -497,6 +497,8 @@ function Center:_wrapUpConnectingPaths()
             -- using the pathfinder anyway
             self.logger:debug('Work starts on the field center, remove first connecting path.')
             self.connectingPaths[1] = Polyline()
+            -- also, when transitioning from the center to the headland, use the pathfinder
+            self.blocks[#self.blocks]:getExitVertex():getAttributes():setUsePathfinderToNextWaypoint()
         end
         for _, c in ipairs(self.connectingPaths) do
             c:setAttribute(nil, CourseGenerator.WaypointAttributes.setOnConnectingPath, true)
