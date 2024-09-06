@@ -88,6 +88,7 @@ function LineSegment:offset(dx, dy)
     local offsetAngle = math.atan2(dy, dx) + self.slope:heading()
     self.base.x = self.base.x + length * math.cos(offsetAngle)
     self.base.y = self.base.y + length * math.sin(offsetAngle)
+    return self
 end
 
 function LineSegment.__eq(a, b)
