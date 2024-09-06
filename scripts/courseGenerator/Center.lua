@@ -19,7 +19,7 @@ function Center:init(context, boundary, headland, startLocation, bigIslands)
         -- if there are no headlands, we generate a virtual one, from the field boundary
         -- so using this later is equivalent of having an actual headland
         local virtualHeadland = CourseGenerator.FieldworkCourseHelper.createVirtualHeadland(boundary, self.context.headlandClockwise,
-                self.context.workingWidth)
+                self.context:getHeadlandWorkingWidth())
         if self.context.sharpenCorners then
             virtualHeadland:sharpenCorners(self.context.turningRadius)
         end
@@ -85,7 +85,7 @@ function Center:generate()
     -- but odd shaped, concave fields or fields with island may have more blocks
     if self.useBaselineEdge then
         self.rows = CourseGenerator.CurvedPathHelper.generateCurvedUpDownRows(self.headlandPolygon, self.context.baselineEdge,
-                self.context.workingWidth, self.context.turningRadius, nil)
+                self.context:getCenterRowSpacing(), self.context.turningRadius, nil)
     else
         local angle = self.context.autoRowAngle and self:_findBestRowAngle() or self.context.rowAngle
         self.rows = self:_generateStraightUpDownRows(angle)
@@ -176,7 +176,7 @@ function Center:generate()
     self.blocks = blocksInSequence
     local lastLocation = self.startLocation
     for _, b in ipairs(self.blocks) do
-        lastLocation = b:finalize(entries[b], self.context.rowWaypointDistance)
+        lastLocation = b:finalize(entries[b], self.context.rowWaypointDistance, self.context)
     end
     self:_wrapUpConnectingPaths()
     self.logger:debug('Found %d block(s), %d connecting path(s).', #self.blocks, #self.connectingPaths)
@@ -231,7 +231,7 @@ function Center:_generateStraightUpDownRows(rowAngle, suppressLog)
     -- move the baseline to the edge of the area we want to cover
     baseline = baseline:createNext(dMin)
     local rowOffsets = self:_calculateRowDistribution(
-            self.context.workingWidth, dMax - dMin, self.context.evenRowDistribution, overlapLast)
+            self.context:getCenterRowSpacing(), dMax - dMin, self.context.evenRowDistribution, overlapLast)
 
     local rows = {}
     local row = baseline:createNext(rowOffsets[1])
