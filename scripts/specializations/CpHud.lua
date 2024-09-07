@@ -206,10 +206,10 @@ function CpHud:onLoad(savegame)
         end
         self:raiseDirtyFlags(spec.availableClientJobModesDirtyFlag)
     end
-    if savegame == nil or savegame.resetVehicles then return end
-    CpSettingsUtil.loadFromXmlFile(spec.hudSettings, savegame.xmlFile, 
-                        savegame.key .. CpHud.KEY .. CpHud.SETTINGS_KEY, self)
-
+    if savegame then 
+        CpSettingsUtil.loadFromXmlFile(spec.hudSettings, savegame.xmlFile, 
+            savegame.key .. CpHud.KEY .. CpHud.SETTINGS_KEY, self)
+    end
     spec.availableClientJobModes = {
         values = {},
         texts = {}
@@ -324,6 +324,12 @@ function CpHud:onUpdate(dt)
     local spec = self.spec_cpHud
     local strategy = self:getCpDriveStrategy()
     spec.status:update(dt, self:getIsCpActive(), strategy)
+    if self.isServer and self.finishedFirstUpdate then 
+        if not self.hasAppliedSavedValue then 
+            spec.hudSettings.selectedJob:resetToLoadedValue()
+        end
+        self.hasAppliedSavedValue = false
+    end
 end
 
 function CpHud:onDraw()
