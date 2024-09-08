@@ -70,7 +70,9 @@ end
 
 function Waypoint:setXmlValue(xmlFile, baseKey, i)
 	local key = string.format("%s%s(%d)", baseKey, Waypoint.xmlKey, i - 1)
-	xmlFile:setValue(key .. "#position", self.x, self.y, self.z)
+	-- round to two decimal places, to make the file smaller, centimeter precision is enough
+	xmlFile:setValue(key .. "#position", math.floor(self.x * 100) / 100,
+			math.floor(self.y * 100) / 100, math.floor(self.z * 100) / 100)
 	CpUtil.setXmlValue(xmlFile, key .. "#rev", self.rev)
 	self.attributes:setXmlValue(xmlFile, key)
 end
