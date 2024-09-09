@@ -190,7 +190,7 @@ end
 --- crosses them.
 ---@param circle boolean when true, make a full circle on the other polygon, else just go around and continue
 function Center:bypassSmallIsland(islandHeadlandPolygon, circle)
-    local thisIslandCircled = circle
+    local thisIslandCircled = not circle
     -- first the up/down rows in each block ...
     for _, block in ipairs(self.blocks) do
         thisIslandCircled = block:bypassSmallIsland(islandHeadlandPolygon, not thisIslandCircled) or thisIslandCircled
@@ -202,6 +202,7 @@ function Center:bypassSmallIsland(islandHeadlandPolygon, circle)
                     islandHeadlandPolygon, 1, not thisIslandCircled) or thisIslandCircled
         end
     end
+    return thisIslandCircled
 end
 
 --- Connecting paths should also drive around big islands

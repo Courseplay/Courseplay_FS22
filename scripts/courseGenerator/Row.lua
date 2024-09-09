@@ -266,8 +266,8 @@ end
 ---@param circle boolean when true, make a full circle on the other polygon, else just go around and continue
 ---@return boolean, number true if there was an intersection and we actually went around, index of last vertex
 --- after the bypass
-function Row:bypassSmallIsland(context, other, startIx, circle)
-    CourseGenerator.FieldworkCourseHelper.bypassSmallIsland(self, context, other, startIx, circle)
+function Row:bypassSmallIsland(other, startIx, circle)
+    return CourseGenerator.FieldworkCourseHelper.bypassSmallIsland(self, self.workingWidth, other, startIx, circle)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
