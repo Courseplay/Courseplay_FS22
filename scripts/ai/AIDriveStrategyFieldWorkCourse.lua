@@ -681,8 +681,8 @@ function AIDriveStrategyFieldWorkCourse:startConnectingPath(ix)
                 self.onPathfindingFailedToConnectingPathEnd)
         self:debug('Connecting path has %d waypoints, start pathfinding to target waypoint %d, zOffset %.1f',
                 #connectingPath, targetWaypointIx, zOffset)
-        self.pathfinderController:findPathToNode(context, targetNode, 0, zOffset)
         self.state = self.states.WAITING_FOR_PATHFINDER
+        self.pathfinderController:findPathToNode(context, targetNode, 0, zOffset)
     end
 end
 
