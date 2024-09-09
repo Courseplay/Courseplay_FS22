@@ -37,7 +37,9 @@ function FieldworkCourseMultiVehicle:init(context)
     end
 
     self:_setContext(context)
+    self.paths = {}
     self.headlandPaths = {}
+    self.centerPaths = {}
     self.circledIslands = {}
     self.headlandCache = CourseGenerator.CacheMap()
 
@@ -85,7 +87,7 @@ function FieldworkCourseMultiVehicle:init(context)
     if self.context.bypassIslands then
         self:bypassSmallIslandsInCenter()
         self.logger:debug('### Bypassing big islands in the center: create path around them ###')
-        self:circleBigIslands()
+        --self:circleBigIslands()
     end
 end
 
@@ -105,23 +107,24 @@ function FieldworkCourseMultiVehicle:getCenterPath(position)
 end
 
 --- Returns a continuous Polyline covering the entire field. This is the
---- path a vehicle (the one defined in context.positionInGroup) would follow to complete work on the field.
+--- path a vehicle would follow to complete work on the field.
 --- The vertices of the path contain WaypointAttributes which provide additional navigation information
 --- for the vehicle.
----@return Polyline
-function FieldworkCourseMultiVehicle:getPath()
-    if not self.path then
-        self.path = Polyline()
+---@param position number an integer defining the position of this vehicle within the group
+---@return Polyline[]
+function FieldworkCourseMultiVehicle:getPath(position)
+    if not self.paths[position] then
+        self.paths[position] = Polyline()
         if self.context.headlandFirst then
-            self.path:appendMany(self:getHeadlandPath(self.context.positionInGroup))
-            self.path:appendMany(self:getCenterPath(self.context.positionInGroup))
+            self.paths[position]:appendMany(self:getHeadlandPath(position))
+            self.paths[position]:appendMany(self:getCenterPath(position))
         else
-            self.path:appendMany(self:getCenterPath(self.context.positionInGroup))
-            self.path:appendMany(self:getHeadlandPath(self.context.positionInGroup))
+            self.paths[position]:appendMany(self:getCenterPath(position))
+            self.paths[position]:appendMany(self:getHeadlandPath(position))
         end
-        self.path:calculateProperties()
+        self.paths[position]:calculateProperties()
     end
-    return self.path
+    return self.paths[position]
 end
 
 --- Get the index of the headland for a given vehicle in the group.
@@ -179,7 +182,6 @@ end
 --- Generate the center path for all vehicles in the group, by offsetting the single, multi-vehicle center path.
 function FieldworkCourseMultiVehicle:_generateCenterForAllVehicles()
     self.logger:debug('### Generating center for all vehicles ###')
-    self.centerPaths = {}
     for v = 1, self.context.nVehicles do
         local centerPath = Polyline()
         local offsetVector = self:_indexToOffsetVector(v)
@@ -195,41 +197,48 @@ function FieldworkCourseMultiVehicle:_generateCenterForAllVehicles()
             centerPath:append(newWp)
         end
         self.centerPaths[v] = self:_regenerateConnectingPaths(centerPath, self.headlandsForVehicle[v][#self.headlandsForVehicle[v]])
-        --self.centerPaths[v] = centerPath
         self.centerPaths[v]:calculateProperties()
     end
 end
 
 --- Connecting paths were generated for the single-vehicle center course with the multi-vehicle working width.
---- They
+--- They are on the innermost headland (as that is the boundary of the center), which is only correct for the
+--- vehicle which worked on that headland. For the other vehicles, the connecting paths need to be regenerated
+--- to be on the headland that vehicle works as the innermost.
 function FieldworkCourseMultiVehicle:_regenerateConnectingPaths(path, innermostHeadlandForVehicle)
-    local fixedPath = Polyline()
+    local regeneratedPath = Polyline()
     local i, firstVertexOfConnectingPath = 1, nil
     repeat
         -- always know on which headland we are
         if path[i]:getAttributes():isOnConnectingPath() then
             if not firstVertexOfConnectingPath then
+                -- remember the first vertex of the connecting path and skip the rest
                 self.logger:debug('Found a connecting path at %d', i)
                 firstVertexOfConnectingPath = path[i - 1] or path[i]
             end
             i = i + 1
         else
             if firstVertexOfConnectingPath then
-                self.logger:debug('Connecting path ended at %d, regenerating on headland %s', i, tostring(path[i]:getAttributes():getHeadlandPassNumber()))
+                -- once the connecting path ends, regenerate it, using the innermost headland for the vehicle
+                self.logger:debug('Connecting path ended at %d, regenerating on %s', i, innermostHeadlandForVehicle)
                 local connectingPath = self:_findShortestPathOnHeadland(innermostHeadlandForVehicle,
                         firstVertexOfConnectingPath, path[i])
-                -- TODO: add attributes
                 firstVertexOfConnectingPath = nil
                 for _, v in ipairs(connectingPath) do
-                    fixedPath:append(v)
+                    regeneratedPath:append(v)
                 end
             else
-                fixedPath:append(path[i])
+                regeneratedPath:append(path[i])
                 i = i + 1
             end
         end
     until i >= #path
-    return fixedPath
+    regeneratedPath:setAttribute(nil, CourseGenerator.WaypointAttributes.setHeadlandPassNumber,
+            innermostHeadlandForVehicle:getPassNumber())
+    regeneratedPath:setAttribute(nil, CourseGenerator.WaypointAttributes.setBoundaryId,
+            innermostHeadlandForVehicle:getBoundaryId())
+    regeneratedPath:setAttribute(nil, CourseGenerator.WaypointAttributes.setOnConnectingPath, true)
+    return regeneratedPath
 end
 
 function FieldworkCourseMultiVehicle:_findShortestPathOnHeadland(headland, v1, v2)
