@@ -2,6 +2,7 @@ local Offset = {}
 Offset.logger = Logger('Offset', Logger.level.debug)
 local recursionCount = 0
 
+---@return Polygon
 function Offset.generate(polygon, offsetVector, targetOffset, currentOffset)
     currentOffset = currentOffset or 0
     -- done!

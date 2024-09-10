@@ -264,7 +264,7 @@ end
 ---@return boolean, number true if there was an intersection and we actually went around, index of last vertex
 --- after the bypass
 function Row:bypassSmallIsland(other, startIx, circle)
-    CourseGenerator.FieldworkCourseHelper.bypassSmallIsland(self, self.workingWidth, other, startIx, circle)
+    return CourseGenerator.FieldworkCourseHelper.bypassSmallIsland(self, self.workingWidth, other, startIx, circle)
 end
 
 ------------------------------------------------------------------------------------------------------------------------

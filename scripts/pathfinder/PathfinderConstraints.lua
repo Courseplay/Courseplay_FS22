@@ -89,6 +89,7 @@ function PathfinderConstraints:resetCounts()
     self.collisionNodeCount = 0
     self.trailerCollisionNodeCount = 0
     self.areaToAvoidPenaltyCount = 0
+    self.preferredPathPenaltyCount = 0
 end
 
 --- Calculate penalty for this node. The penalty will be added to the cost of the node. This allows for
@@ -141,16 +142,23 @@ function PathfinderConstraints:calculatePreferredPathPenalty(node)
     if self.preferredPath == nil then
         return 0
     end
+    local minDistanceSquared = math.huge
     for _, waypoint in ipairs(self.preferredPath) do
         local dx = node.x - waypoint.x
         local dz = -node.y - waypoint.z
-        -- if any point of the preferred path is within the affinity limit meters of the node, we reduce the penalty
+        -- if any point of the preferred path is outside the affinity limit meters of the node, we add penalty
         local distanceSquared = dx * dx + dz * dz
-        if distanceSquared < self.preferredPathAffinitySquared then
-            return - math.sqrt(self.preferredPathAffinitySquared - distanceSquared)
+        if distanceSquared < minDistanceSquared then
+            minDistanceSquared = distanceSquared
         end
     end
-    return 0
+    if minDistanceSquared > self.preferredPathAffinitySquared then
+        self.preferredPathPenaltyCount = self.preferredPathPenaltyCount + 1
+        return 4
+    else
+        return 0
+    end
+    return minDistanceSquared
 end
 
 --- When the pathfinder tries an analytic solution for the entire path from start to goal, we can't use node penalties
@@ -233,9 +241,9 @@ function PathfinderConstraints:resetStrictMode()
 end
 
 function PathfinderConstraints:showStatistics()
-    self:debug('Nodes: %d, Penalties: fruit: %d, off-field: %d, not owned field: %d, collisions: %d, trailer collisions: %d, area to avoid: %d',
+    self:debug('Nodes: %d, Penalties: fruit: %d, off-field: %d, not owned field: %d, collisions: %d, trailer collisions: %d, area to avoid: %d, preferred path: %d',
             self.totalNodeCount, self.fruitPenaltyNodeCount, self.offFieldPenaltyNodeCount, self.notOwnedFieldPenaltyNodeCount,
-            self.collisionNodeCount, self.trailerCollisionNodeCount, self.areaToAvoidPenaltyCount)
+            self.collisionNodeCount, self.trailerCollisionNodeCount, self.areaToAvoidPenaltyCount, self.preferredPathPenaltyCount)
     self:debug('  max fruit %.1f %%, off-field penalty: %.1f',
             self.maxFruitPercent, self.offFieldPenalty)
 end

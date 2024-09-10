@@ -658,7 +658,7 @@ function AIDriveStrategyFieldWorkCourse:startConnectingPath(ix)
     local targetWaypointIx
     for i = ix + 1, self.fieldWorkCourse:getNumberOfWaypoints() do
         if self.fieldWorkCourse:isOnConnectingPath(i) then
-            local x, z = self.fieldWorkCourse:getWaypointPosition(i)
+            local x, _, z = self.fieldWorkCourse:getWaypointPosition(i)
             table.insert(connectingPath, {x = x, z = z})
         else
             targetWaypointIx = i
@@ -681,6 +681,7 @@ function AIDriveStrategyFieldWorkCourse:startConnectingPath(ix)
                 self.onPathfindingFailedToConnectingPathEnd)
         self:debug('Connecting path has %d waypoints, start pathfinding to target waypoint %d, zOffset %.1f',
                 #connectingPath, targetWaypointIx, zOffset)
+        self.state = self.states.WAITING_FOR_PATHFINDER
         self.pathfinderController:findPathToNode(context, targetNode, 0, zOffset)
     end
 end
