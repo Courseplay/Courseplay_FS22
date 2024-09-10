@@ -244,7 +244,7 @@ function Center:_generateStraightUpDownRows(rowAngle, suppressLog)
         self.logger:debug('Created %d rows at %.0f° to cover an area %.1f wide, %.1f/%.1f m',
                 #rowOffsets, math.deg(rowAngle), dMax - dMin, rowOffsets[1], rowOffsets[#rowOffsets] or 0)
         self.logger:debug('    even distribution %s, remainder last %s', self.context.evenRowDistribution, overlapLast)
-        self.logger:debug('    dMin: %1.f, dMax: %.1f, startLocationDistance: %.1f', dMin, dMax, startLocationDistance)
+        self.logger:debug('    dMin: %.1f, dMax: %.1f, startLocationDistance: %.1f', dMin, dMax, startLocationDistance)
     end
     return rows
 end
@@ -321,7 +321,7 @@ end
 ---   3. leave the width of all rows the same working width. Here, part of the first or last row will be
 ---      outside of the field (work width * number of rows > field width). We always do this if there is a headland,
 ---      as the remainder will overlap with the headland.
----@param workingWidth
+---@param centerWorkingWidth number working width on the up/down rows in the center
 ---@param fieldWidth number distance between the headland centerlines we need to fill with rows. If there is no
 --- headland, this is the distance between the virtual headland centerlines, which is half working width wider than
 --- the actual field boundary.
@@ -330,32 +330,32 @@ end
 --- false at the beginning
 ---@return number, number, number, number number of rows, offset of first row from the field edge, offset of
 --- rows from the previous row for the next rows, offset of last row from the next to last row.
-function Center:_calculateRowDistribution(workingWidth, fieldWidth, sameWidth, overlapLast)
-    local nRows = math.floor(fieldWidth / workingWidth)
+function Center:_calculateRowDistribution(centerWorkingWidth, fieldWidth, sameWidth, overlapLast)
+    local nRows = math.floor(fieldWidth / centerWorkingWidth)
     if nRows == 0 then
         -- only one row fits between the headlands
         if overlapLast then
-            return { workingWidth / 2 }
+            return { centerWorkingWidth / 2 }
         else
-            return { fieldWidth - workingWidth / 2 }
+            return { fieldWidth - centerWorkingWidth / 2 }
         end
     else
         local width
         if sameWidth then
             -- #1
-            width = (fieldWidth - workingWidth) / (nRows - 1)
+            width = (fieldWidth - centerWorkingWidth) / (nRows - 1)
         else
             -- #2 and #3
-            width = workingWidth
+            width = centerWorkingWidth
         end
         local firstRowOffset
         local rowOffsets = {}
         if self.mayOverlapHeadland then
             -- #3 we have headlands
             if overlapLast then
-                firstRowOffset = workingWidth
+                firstRowOffset = centerWorkingWidth
             else
-                firstRowOffset = fieldWidth - (workingWidth + width * (nRows - 1))
+                firstRowOffset = fieldWidth - (centerWorkingWidth + width * (nRows - 1))
             end
             rowOffsets = { firstRowOffset }
             for _ = firstRowOffset, fieldWidth, width do
@@ -363,13 +363,13 @@ function Center:_calculateRowDistribution(workingWidth, fieldWidth, sameWidth, o
             end
         else
             -- #2, no headlands
-            for _ = workingWidth, fieldWidth - workingWidth, width do
+            for _ = centerWorkingWidth, fieldWidth - centerWorkingWidth, width do
                 table.insert(rowOffsets, width)
             end
             if overlapLast then
-                table.insert(rowOffsets, fieldWidth - (workingWidth + width * #rowOffsets))
+                table.insert(rowOffsets, fieldWidth - (centerWorkingWidth + width * #rowOffsets))
             else
-                rowOffsets[2] = fieldWidth - (workingWidth + width * #rowOffsets)
+                rowOffsets[2] = fieldWidth - (centerWorkingWidth + width * #rowOffsets)
                 table.insert(rowOffsets, width)
             end
 

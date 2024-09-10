@@ -65,6 +65,7 @@ function FieldworkCourseMultiVehicle:init(context)
         for v = 1, self.context.nVehicles do
             -- create a headland path for each vehicle
             self.headlandPaths[v] = CourseGenerator.HeadlandConnector.connectHeadlandsFromOutside(self.headlandsForVehicle[v],
+                    -- TODO is this really the headland working width? Not the combined width?
                     self.context.startLocation, self.context:getHeadlandWorkingWidth(), self.context.turningRadius)
         end
         self:routeHeadlandsAroundSmallIslands()
@@ -78,6 +79,7 @@ function FieldworkCourseMultiVehicle:init(context)
         for v = 1, self.context.nVehicles do
             -- create a headland path for each vehicle
             self.headlandPaths[v] = CourseGenerator.HeadlandConnector.connectHeadlandsFromInside(self.headlandsForVehicle[v],
+            -- TODO is this really the headland working width? Not the combined width?
                     endOfLastRow, self.context:getHeadlandWorkingWidth(), self.context.turningRadius)
         end
         self:routeHeadlandsAroundSmallIslands()
@@ -113,6 +115,7 @@ end
 ---@param position number an integer defining the position of this vehicle within the group
 ---@return Polyline[]
 function FieldworkCourseMultiVehicle:getPath(position)
+    position = position or 1
     if not self.paths[position] then
         self.paths[position] = Polyline()
         if self.context.headlandFirst then
@@ -125,6 +128,24 @@ function FieldworkCourseMultiVehicle:getPath(position)
         self.paths[position]:calculateProperties()
     end
     return self.paths[position]
+end
+
+--- Iterates through the paths of all vehicles of the multi-vehicle group.
+---@return number, Polyline[] position and path for each vehicle
+function FieldworkCourseMultiVehicle:pathIterator()
+    local last = math.floor(self.context.nVehicles / 2)
+    local position = - last - 1
+    return function()
+        if position < last then
+            if position == -1 and self.context.nVehicles % 2 == 0 then
+                -- with even number of vehicles there is no 0 position, so skip that
+                position = position + 2
+            else
+                position = position + 1
+            end
+            return position, self:getPath(position)
+        end
+    end
 end
 
 --- Get the index of the headland for a given vehicle in the group.
@@ -179,12 +200,47 @@ function FieldworkCourseMultiVehicle:setupHeadlandsForVehicle(v)
     end
 end
 
+------------------------------------------------------------------------------------------------------------------------
+--- Up/down rows
+------------------------------------------------------------------------------------------------------------------------
+function FieldworkCourseMultiVehicle:generateCenter()
+    -- if there are no headlands, or there are, but we start working in the middle, then use the
+    -- designated start location, otherwise the point where the innermost headland ends.
+    if #self.headlands == 0 then
+        self.center = CourseGenerator.Center(self.context, self.boundary, nil, self.context.startLocation, self.bigIslands)
+    else
+        -- The center is generated with the combined width of all vehicles and it assumes that the headland
+        -- is the same width. This is however not the case, since we generate the headlands with the single
+        -- working width. We need a boundary for the center which is the same as the innermost headland would be
+        -- if it had been generated with the combined width.
+        local centerBoundary
+        local referenceHeadland = self.headlands[#self.headlands - math.floor(self.context.nVehicles / 2)]
+        if self.context.nVehicles % 2 ~= 0 then
+            -- odd number of vehicles, we already have that headland
+            centerBoundary = referenceHeadland
+        else
+            centerBoundary = CourseGenerator.Headland(referenceHeadland:getPolygon(), self.context.headlandClockwise,
+                    #self.headlands - 1, self.context:getHeadlandWorkingWidth() / 2, false)
+        end
+
+        CourseGenerator.addDebugPolyline(centerBoundary:getPolygon())
+        local innerMostHeadlandPolygon = self.headlands[#self.headlands]:getPolygon()
+        self.center = CourseGenerator.Center(self.context, self.boundary, centerBoundary,
+                self.context.headlandFirst and
+                        innerMostHeadlandPolygon[#innerMostHeadlandPolygon] or
+                        self.context.startLocation,
+                self.bigIslands)
+    end
+    return self.center:generate()
+end
+
 --- Generate the center path for all vehicles in the group, by offsetting the single, multi-vehicle center path.
 function FieldworkCourseMultiVehicle:_generateCenterForAllVehicles()
     self.logger:debug('### Generating center for all vehicles ###')
     for v = 1, self.context.nVehicles do
         local centerPath = Polyline()
         local offsetVector = self:_indexToOffsetVector(v)
+        self.logger:debug('  Generating center for vehicle %d, offset %.1f', v, offsetVector.y)
         for _, wp in ipairs(self.center:getPath()) do
             local newWp, offsetEdge = wp:clone()
             if wp:getAttributes():isRowEnd() then
@@ -194,6 +250,7 @@ function FieldworkCourseMultiVehicle:_generateCenterForAllVehicles()
                 offsetEdge = wp:getExitEdge():clone():offset(offsetVector.x, offsetVector.y)
                 newWp:set(offsetEdge:getBase().x, offsetEdge:getBase().y, wp.ix)
             end
+            print(wp, newWp)
             centerPath:append(newWp)
         end
         self.centerPaths[v] = self:_regenerateConnectingPaths(centerPath, self.headlandsForVehicle[v][#self.headlandsForVehicle[v]])

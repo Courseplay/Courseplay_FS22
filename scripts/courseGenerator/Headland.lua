@@ -228,7 +228,7 @@ function Headland:_continueUntilStraightSection(ix, straightSectionLength, searc
         count = count + 1
     end
     -- no straight section found, bail out here
-    self.logger:debug('No straight section found after %1.f m for headland change to next', dTotal)
+    self.logger:debug('No straight section found after %.1f m for headland change to next', dTotal)
     return waypoints
 end
 
