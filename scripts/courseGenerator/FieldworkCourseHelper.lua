@@ -27,7 +27,7 @@ end
 function FieldworkCourseHelper.adjustLengthAtStart(polyline, context, angle)
     local offsetStart = 0
     offsetStart = -getDistanceBetweenRowEndAndHeadland(context:getCenterRowWidthForAdjustment(),
-            context:getHeadlandWorkingWidth(), angle)
+            context:getHeadlandWidthForAdjustment(), angle)
     if offsetStart >= 0 then
         polyline:extendStart(offsetStart)
     else
@@ -40,7 +40,7 @@ end
 function FieldworkCourseHelper.adjustLengthAtEnd(polyline, context, angle)
     local offsetEnd = 0
     offsetEnd = -getDistanceBetweenRowEndAndHeadland(context:getCenterRowWidthForAdjustment(),
-            context:getHeadlandWorkingWidth(), angle)
+            context:getHeadlandWidthForAdjustment(), angle)
     if offsetEnd >= 0 then
         polyline:extendEnd(offsetEnd)
     else
