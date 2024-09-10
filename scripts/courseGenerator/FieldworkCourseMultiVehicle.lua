@@ -215,6 +215,8 @@ function FieldworkCourseMultiVehicle:generateCenter()
         -- if it had been generated with the combined width.
         local centerBoundary
         local referenceHeadland = self.headlands[#self.headlands - math.floor(self.context.nVehicles / 2)]
+        -- But for the row length adjustment for angled headlands, we need to calculate with the combined working width.
+        self.context:setHeadlandWidthForAdjustment(self.context.nVehicles * self.context.workingWidth)
         if self.context.nVehicles % 2 ~= 0 then
             -- odd number of vehicles, we already have that headland
             centerBoundary = referenceHeadland
@@ -241,16 +243,16 @@ function FieldworkCourseMultiVehicle:_generateCenterForAllVehicles()
         local centerPath = Polyline()
         local offsetVector = self:_indexToOffsetVector(v)
         self.logger:debug('  Generating center for vehicle %d, offset %.1f', v, offsetVector.y)
-        for _, wp in ipairs(self.center:getPath()) do
+        for i, wp in ipairs(self.center:getPath()) do
             local newWp, offsetEdge = wp:clone()
-            if wp:getAttributes():isRowEnd() then
+            if wp:getAttributes():isRowEnd() or i == #self.center:getPath() then
                 offsetEdge = wp:getEntryEdge():clone():offset(offsetVector.x, offsetVector.y)
                 newWp:set(offsetEdge:getEnd().x, offsetEdge:getEnd().y, wp.ix)
             else
                 offsetEdge = wp:getExitEdge():clone():offset(offsetVector.x, offsetVector.y)
                 newWp:set(offsetEdge:getBase().x, offsetEdge:getBase().y, wp.ix)
             end
-            print(wp, newWp)
+            print(i, wp, newWp)
             centerPath:append(newWp)
         end
         self.centerPaths[v] = self:_regenerateConnectingPaths(centerPath, self.headlandsForVehicle[v][#self.headlandsForVehicle[v]])
@@ -289,7 +291,7 @@ function FieldworkCourseMultiVehicle:_regenerateConnectingPaths(path, innermostH
                 i = i + 1
             end
         end
-    until i >= #path
+    until i > #path
     regeneratedPath:setAttribute(nil, CourseGenerator.WaypointAttributes.setHeadlandPassNumber,
             innermostHeadlandForVehicle:getPassNumber())
     regeneratedPath:setAttribute(nil, CourseGenerator.WaypointAttributes.setBoundaryId,

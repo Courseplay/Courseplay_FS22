@@ -249,6 +249,9 @@ function FieldworkContext:getHeadlandWorkingWidth()
     return self.headlandWorkingWidth or self.workingWidth * (1 - self.overlap)
 end
 
+------------------------------------------------------------------------------------------------------------------------
+--- Multi vehicle support
+------------------------------------------------------------------------------------------------------------------------
 --- Distance between the rows in the field center
 --- In the center there is one row for multiple vehicles, and the rows for the individual vehicles
 --- are created from this single row by offsetting it. In that case, we consider the row as wide as the number
@@ -270,8 +273,19 @@ function FieldworkContext:setCenterRowWidthForAdjustment(width)
     self.centerRowWidthForAdjustment = width
 end
 
---- Width to use when adjusting a row length for full coverage where it meets the headland
+--- Width of the row to use when adjusting a row length for full coverage where it meets the headland at an angle
 ---@return number
 function FieldworkContext:getCenterRowWidthForAdjustment()
     return self.centerRowWidthForAdjustment or self.workingWidth
+end
+
+---@see Row.adjustLength()
+function FieldworkContext:setHeadlandWidthForAdjustment(width)
+    self.headlandWidthForAdjustment = width
+end
+
+--- Width of the headland to use when adjusting a row length for full coverage where it meets the headland at an angle
+---@return number
+function FieldworkContext:getHeadlandWidthForAdjustment()
+    return self.headlandWidthForAdjustment or self.workingWidth
 end
