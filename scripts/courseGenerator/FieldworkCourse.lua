@@ -70,6 +70,20 @@ function FieldworkCourse:getPath()
     return self.path
 end
 
+--- Iterates through the paths of all vehicles in the group. For compatibility with the FieldworkCourseMultiVehicle,
+--- primarily for testing.
+---@return number, Polyline[] position and path for each vehicle
+function FieldworkCourse:pathIterator()
+    local position = - 1
+    return function()
+        -- we iterate exactly over one element, the only path this course has, which belongs to position 0
+        if position < 0 then
+            position = position + 1
+            return position, self:getPath()
+        end
+    end
+end
+
 --- Reverse the course, so the vehicle drives it in the opposite direction. The only changes made
 --- during reversing is flipping the attributes where applicable, for instance, row ends become row
 --- starts.
