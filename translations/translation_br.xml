@@ -151,7 +151,7 @@
     <!---->
     <!--Hud settings-->
     <!---->
-    <text name="CP_hud_settings_selectedJob_title" text="TODO: Selected Job:"/>
+    <text name="CP_hud_settings_selectedJob_title" text="TODO: Trabalho selecionado:"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -280,48 +280,48 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Valores positivos reduzem o tamanho do campo para adicionar um buffer ao redor da área trabalhada, valores negativos aumentam a área trabalhada além do limite do campo."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Pular fileiras"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Pular fileiras para cima ou para baixo ao mudar para próxima fileira"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Number of circles for racetrack. Value: 1 - 12"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Quantidade de circulos"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Número de círculos na trilha. Valor: 1 - 12"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="fileiras por campo"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="Quando o modo central é 'terras', essas várias fileiras estão em cada bloco"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_title" text="Center direction"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_title" text="Island Headland direction"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_clockwise" text="clockwise"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_counterclockwise" text="counterclockwise"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_clockwise" text="clockwise"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_counterclockwise" text="counterclockwise"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_clockwise" text="clockwise"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_counterclockwise" text="counterclockwise"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Direção na cabeceira"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip" text="O veículo deve circular no sentido horário ou anti-horário na cabeceira."/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_title" text="Direção no centro"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip" text="O veículo deve circular no sentido horário ou anti-horário na cabeceira."/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_title" text="direção na ilha na cabeceira"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="O veículo deve circular no sentido horário ou anti-horário na cabeceira."/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_clockwise" text="horário"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_counterclockwise" text="anti-horário"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_clockwise" text="horário"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_counterclockwise" text="anti-horário"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_clockwise" text="horário"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_counterclockwise" text="anti-horário"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Centro do campo"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Centro do campo"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="Cima / Baixo"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="Espiral"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="Circular"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Terras"/>
-    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_title" text="Spiral from inside"/>
-    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip" text="Starts the spiral from inside."/>
-    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="Even row with"/>
-    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Reduces the working width to achieve an even distribution across all lanes."/>
-    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title" text="Sharpen headland corners"/>
-    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="Sharpen corners of non-rounded headlands"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Number of round corners"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Number of round corners, starting with the first headland."/>
-    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_title" text="Corner radius"/>
-    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Radius of round corners, based on the turning radius of the vehicle. Value: 5 - 15"/>
-    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Up/down row direction"/>
-    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Direction of the rows in the center of the field."/>
-    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="automatic"/>
+    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_title" text="dentro da espiral"/>
+    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip" text="Iniciar dentro da espiral."/>
+    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="Faixas uniformes"/>
+    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Reduz a largura de trabalho para obter uma distribuição uniforme em todas as faixas."/>
+    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title" text="Cantos afiados nas cabedeiras"/>
+    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="Cantos afiados nas cabeceiras não arredondados"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Número de cantos arredondados"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Número de cantos arredondados, iniciar ns primeira cabeceira."/>
+    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_title" text="Centro do raio"/>
+    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Raio de cantos arredondados, com base no raio de giro do veículo. Valor: 5 - 15"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Direção da faixa para cima/baixo"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Direção das faixas no centro do campo."/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="automático"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_manual" text="manual"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Ângulo das fileiras para cima/para baixo"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Ângulo das fileiras para cima/para baixo (0 será norte) quando for manual"/>
-    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>
-    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="How the course should bypass islands in the field."/>
-    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title" text="Island headlands"/>
-    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Number of headlands around islands. Value: 1 - 10"/>
+    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Mode bypass nas ilhas"/>
+    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="Como a rota deve contornar ilhas no campo."/>
+    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title" text="Ilhas na cabeceira"/>
+    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Número de cabeceiras ao redor das ilhas. Value: 1 - 10"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Iniciar em"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Iniciar em"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="Cabeceira"/>
@@ -329,9 +329,9 @@
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Multiplos implementos"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Números dos veículos na mesma rota."/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Field edge for line form"/>
-    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="The rows follow the curvature of the field edge nearest to the field marker."/>
-    <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Narrow field"/>
-    <text name="CP_vehicle_courseGeneratorSetting_narrowField_tooltip" text="Generates the headland only at the short edges of the field."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="As faixas seguem a curvatura da borda do campo mais próxima do marcador de campo."/>
+    <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Campo estreito"/>
+    <text name="CP_vehicle_courseGeneratorSetting_narrowField_tooltip" text="Gera  cabeceira apenas nas bordas curtas do campo."/>
     <!---->
     <!--Vine course generator settings-->
     <!---->
@@ -559,7 +559,7 @@ Se você estiver criando um trabalho CP: Trabalho no campo, você terá acesso �
 Agora é possível iniciar o motorista diretamente do menu. O ajuda do Giants irá dirigir até a posição alvo e a partir daí o trabalho de CP assume automaticamente.
 Alternativamente, você também pode iniciar o motorista a partir do HUD se estiver perto do campo com o veículo ou usando o mod AutoDrive para entregar o trabalho de CP perto do campo.
 "/>
-    <text name="CP_help_page_courseGeneratorBasic_title" text="Course generator basics"/>
+    <text name="CP_help_page_courseGeneratorBasic_title" text="Gerador de rotas basico"/>
     <text name="CP_help_page_courseGeneratorBase_text" text="
 Cada rota de trabalho de campo é criado pelo gerador de rotas. Esta é uma ferramenta poderosa, que permite personalizar a rota criada de acordo com suas necessidades.
 Se você é novo nisso, provavelmente deve começar alterando apenas a configuração da quantidade de cabeceira.
@@ -596,64 +596,66 @@ Round levará em consideração o raio de giro dos veículos selecionados atualm
 - Sobreposição de cabeceira: Qual a % de sobreposição que todas as cabeceiras devem ter. O primeiro não terá sobreposição com a borda do campo, mas os internos se sobreporão ao vizinho.
 "/>
     <text name="CP_help_page_courseGeneratorCenter_text" text="
-For the center of the field, different strategies are available to do the work. Mostly the selected tool is a reason to choose a specific strategie over the other. The available strategies where created based on feedback and informations from our community.
-The simple up down strategie works almost every time for any tool. But it can be better to choose another, for example when harvesting with a combine, lands is a better way to keep the pipe outside of the fruit for a more efficient unloading.
-For Chopping, racetrack can be a better solution for less narrow turns to make the work for the unloader easier.
-Spirale is a better solution for towed harvester with an offset, to keep the tool in the fruit and the tractor outside.
+Para o centro do campo, diferentes estratégias estão disponíveis para fazer o trabalho. Geralmente, a ferramenta selecionada é um motivo para escolher uma estratégia específica em vez da outra. As estratégias disponíveis foram criadas com base no feedback e nas informações da nossa comunidade.
+A estratégia simples de cima para baixo funciona quase sempre para qualquer ferramenta. Mas pode ser melhor escolher outra, por exemplo, ao colher com uma colheitadeira, as terras são uma maneira melhor de manter o tubo fora da fruta para um descarregamento mais eficiente.
+Para cortar, a pista de corrida pode ser uma solução melhor para curvas menos estreitas para facilitar o trabalho do descarregador.
+A espiral é uma solução melhor para colheitadeiras rebocadas com um deslocamento, para manter a ferramenta no campo e o trator do lado de fora.
 "/>
     <text name="CP_help_page_courseGeneratorCenterFunctions_text" text="
-- Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
-Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have the combine's pipe point out of the fruit most of the time to easier unload them.
-- Center direction: Works the same as the headland, but can now be set independantly.
-- Even row width: If the center of a field have a total width, that can't be evenly split over the work width of the tool, the 1st or last line will have a narrow rest work. To prevent this the width of each row gets reduced to have a even split over all lines.
-- Row direction: automatic mostly finds the best direction, but sometimes the longest edge fits better. If you are not happy with either one, choose manual and set the direction manually.
-- Row angle: When the row direction is set to manual, this setting appears and will tell the generator the direction of the rows.
+- Centro do campo: Existem diferentes modos de como o padrão do centro do seu campo deve ficar. O clássico e mais usado é para cima/baixo.
+Espiral, Pista de corrida e Terras têm suas próprias vantagens específicas sobre os outros. Terras, por exemplo, terão o tubo da colheitadeira apontando para fora da fruta na maioria das vezes para facilitar o descarregamento delas.
+- Direção do centro: Funciona da mesma forma que a cabeceira, mas agora pode ser definido de forma independente.
+- Largura uniforme da faixa: Se o centro de um campo tiver uma largura total que não possa ser dividida uniformemente sobre a largura de trabalho da ferramenta, a 1ª ou a última faixa terá um trabalho de descanso estreito. Para evitar isso, a largura de cada faixa é reduzida para ter uma divisão uniforme sobre todas as faixas.
+- Direção da linha: automático geralmente encontra a melhor direção, mas às vezes a borda mais longa se encaixa melhor. Se você não estiver satisfeito com nenhuma delas, escolha manual e defina a direção manualmente.
+- Ângulo da faixa: Quando a direção da faixa é definida como manual, esta configuração aparece e informará ao gerador a direção das faixas.
 
-These settings appear only for specific settings you have done before:
-- Rows to skip: Appears when field center is set to &quot;up/down&quot;. This is a very helpful option to accelerate your work, as tools won't have to back up to turn into the next row.
-- Rows per Land: Appears when field center is set to &quot;lands&quot;. This has only impact when the field center is set to lands and will tell the generator how many rows each land should have. The more rows, the fewer lands will be generated.
-- Spiral from inside: Appears when field center is set to &quot;spiral&quot;.
-- Number of circles: Appears when field center is set to &quot;racetrack&quot;.
+
+660 / 5.000
+Essas configurações aparecem apenas para configurações específicas que você fez antes:
+- Pular faixas: aparece quando o centro do campo está definido como &quot;up/down&quot;. Esta é uma opção muito útil para acelerar seu trabalho, pois as ferramentas não terão que voltar para virar na próxima faixa.
+- faixas por terreno: aparece quando o centro do campo está definido como &quot;lands&quot;. Isso só tem impacto quando o centro do campo está definido como terrenos e dirá ao gerador quantas faixas cada terreno deve ter. Quanto mais faixas, menos terrenos serão gerados.
+- Espiral de dentro: aparece quando o centro do campo está definido como &quot;spiral&quot;.
+- Número de círculos: aparece quando o centro do campo está definido como &quot;racetrack&quot;.
 "/>
     <text name="CP_help_page_courseGeneratorCenterExampleUpdown_text" text="
-up/down
+cima/baixo
 "/>
     <text name="CP_help_page_courseGeneratorCenterExampleLands_text" text="
-lands
+terras
 "/>
     <text name="CP_help_page_courseGeneratorCenterExampleSpiral_text" text="
-spiral
+espiral
 "/>
     <text name="CP_help_page_courseGeneratorCenterExampleRacetrack_text" text="
 racetrack
 "/>
     <text name="CP_help_page_courseGeneratorIsland_text" text="
-Driving arround the island is now only possible with a complete round arround it.
-Even in the new generator, limits for island too close to the field border.
-The work width of the tool is decisive if the island is too close or not.
-Like how many headlands do fit between the island and the field border.
+Dirigir ao redor da ilha agora só é possível com uma volta completa ao redor dela.
+Mesmo no novo gerador, os limites para a ilha estão muito próximos da borda do campo.
+A largura de trabalho da ferramenta é decisiva se a ilha está muito próxima ou não.
+Como quantas cabeceiras cabem entre a ilha e a borda do campo.
 "/>
     <text name="CP_help_page_courseGeneratorIslandFunctions_text" text="
-- Island bypass: Turns on or off the bypass of the island, if an island is found. This does not work for custom fields!
-- Island headlands: The amount of rounds arround the island can now be set indipendantly from the headland setting.
-- Island headland direction: In which direction the driver drives arround the island, to not have strange direction changes. This can be tricky to set up as it depends on the field and the rest of the course.
+- Desvio da ilha: liga ou desliga o desvio da ilha, se uma ilha for encontrada. Isso não funciona para campos personalizados!
+- Cabeceiras da ilha: a quantidade de rodadas ao redor da ilha agora pode ser definida independentemente da configuração da cabeceira.
+- Direção da cabeceira da ilha: em qual direção o motorista dirige ao redor da ilha, para não ter mudanças estranhas de direção. Isso pode ser complicado de configurar, pois depende do campo e do resto da rota.
 "/>
     <text name="CP_help_page_courseGeneratorExpert_text" text="
-Some settings are only visible, if you set the expert mode to active on the global courseplay settings.
-Before you play arround with those settings, you should make sure you know what the basic settings do.
-Some expert settings only work properly under some conditions.
+Algumas configurações só são visíveis se você definir o modo especialista como ativo nas configurações globais do courseplay.
+Antes de brincar com essas configurações, você deve ter certeza de que sabe o que as configurações básicas fazem.
+Algumas configurações de especialista só funcionam corretamente sob algumas condições.
 
-- Multiple Tools: This setting is used when you want more then just one vehicle to work on your course. As this gets a bit more complicated, there is a separate help topic for it.
-- Narrow field: Creates the headland only at two short edges of the field. In that case, it is not possible to keep your vehicle on the field on the longest edges at the headland.
-- Headland overlap: There is a default value that will always be used. This value can be changed with this setting. The overlap will be withing the field and won't overlap the field border.
-- Field margin: This setting lets you move the field border in- or outwards of the original border.
-- Use base line edge: A completly new feature, what only works on specific fields. If you have a field with a long radial border and place the field marker near it, the center line will follow that border.
-IMPORTANT NOTE: Should the generated course not be perfect or even bad, the selected edge or the field will not work with this feature. There also won't be an Update for this!
+- Ferramentas múltiplas: esta configuração é usada quando você quer mais de um veículo para trabalhar em sua rota. Como isso fica um pouco mais complicado, há um tópico de ajuda separado para isso.
+- Campo estreito: cria a cabeceira apenas em duas bordas curtas do campo. Nesse caso, não é possível manter seu veículo no campo nas bordas mais longas da cabeceira.
+- Sobreposição da cabeceira: há um valor padrão que sempre será usado. Este valor pode ser alterado com esta configuração. A sobreposição estará dentro do campo e não se sobreporá à borda do campo.
+- Margem do campo: esta configuração permite que você mova a borda do campo para dentro ou para fora da borda original.
+- Usar borda da faixa de base: um recurso completamente novo, que só funciona em campos específicos. Se você tiver um campo com uma borda radial longa e colocar o marcador de campo próximo a ele, a faixa central seguirá essa borda.
+NOTA IMPORTANTE: se a rota geradaa não for perfeito ou mesmo ruim, a borda selecionada ou o campo não funcionarão com este recurso. Também não haverá uma atualização para isso!
 "/>
-    <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
-    <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
-    <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>
-    <text name="CP_help_page_courseGeneratorExpert_title" text="Course generator expert"/>
+    <text name="CP_help_page_courseGeneratorHeadland_title" text="Gerador de rotas na cabeceira"/>
+    <text name="CP_help_page_courseGeneratorCenter_title" text="Gerador de rotas centro"/>
+    <text name="CP_help_page_courseGeneratorIsland_title" text="Gerador de ilhas na rota"/>
+    <text name="CP_help_page_courseGeneratorExpert_title" text="Gerador de rotas especialista"/>
     <text name="CP_help_page_courseManager_title" text="Gerenciar rotas"/>
     <text name="CP_help_page_courseManagerBase_text" text="
 O gerenciador de rotas permite que você salve rotas e carregue a rota salvo novamente mais tarde.
