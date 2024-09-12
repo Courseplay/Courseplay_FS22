@@ -176,7 +176,7 @@ function Center:generate()
     self.blocks = blocksInSequence
     local lastLocation = self.startLocation
     for _, b in ipairs(self.blocks) do
-        lastLocation = b:finalize(entries[b], self.context.rowWaypointDistance, self.context)
+        lastLocation = b:finalize(entries[b])
     end
     self:_wrapUpConnectingPaths()
     self.logger:debug('Found %d block(s), %d connecting path(s).', #self.blocks, #self.connectingPaths)
@@ -432,7 +432,7 @@ function Center:_splitIntoBlocks(rows, headland)
             self.logger:trace('  %.1f m, %d vertices, overlaps with %d block(s)',
                     section:getLength(), #section, #overlappedBlocks)
             if #overlappedBlocks == 0 or #overlappedBlocks > 1 then
-                local newBlock = CourseGenerator.Block(self.context.rowPattern, blockId)
+                local newBlock = CourseGenerator.Block(self.context, blockId)
                 blockId = blockId + 1
                 newBlock:addRow(section)
                 -- remember that we added a section for row #i

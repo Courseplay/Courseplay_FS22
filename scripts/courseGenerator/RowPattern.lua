@@ -31,7 +31,7 @@ end
 
 --- For a given number of rows, the same pattern always result in the same sequence. Therefore,
 --- before calling _generateSequence() we always check if we have already generated it for this number of rows.
-function RowPattern:_getSequence(nRows)
+function RowPattern:getSequence(nRows)
     if #self.sequence == nRows  then
         return self.sequence
     else
@@ -58,7 +58,7 @@ end
 ---@param rows CourseGenerator.Row[] rows to work on
 function RowPattern:iterator(rows)
     local i = 0
-    local sequence = self:_getSequence(#rows)
+    local sequence = self:getSequence(#rows)
     return function()
         i = i + 1
         if i <= #sequence then
@@ -230,7 +230,7 @@ end
 ---@param rows CourseGenerator.Row[]
 ---@return CourseGenerator.RowPattern.Entry[] list of entries usable for this pattern
 function RowPatternSkip:getPossibleEntries(rows)
-    local sequence = self:_getSequence(#rows)
+    local sequence = self:getSequence(#rows)
     self.logger:debug('%d rows, first row is %d, last %d', #rows, sequence[1], sequence[#sequence])
     local firstRowBefore, lastRowBefore = rows[1], rows[#rows]
     -- last row when we start at either end of rows[1]
@@ -345,7 +345,7 @@ function RowPatternSpiral:getPossibleEntries(rows)
             row:reverse()
         end
     end
-    local sequence = self:_getSequence(#rows)
+    local sequence = self:getSequence(#rows)
     local odd = #rows % 2 ~= 0
     local firstRow = rows[sequence[1]]
     local secondRow = rows[sequence[2]]
@@ -510,7 +510,7 @@ end
 ---@param rows CourseGenerator.Row[]
 ---@return CourseGenerator.RowPattern.Entry[] list of entries usable for this pattern
 function RowPatternLands:getPossibleEntries(rows)
-    local sequence = self:_getSequence(#rows)
+    local sequence = self:getSequence(#rows)
     local firstRow = rows[sequence[1]]
     local lastRow = rows[#rows - sequence[1] + 1]
     if not firstRow or not lastRow then

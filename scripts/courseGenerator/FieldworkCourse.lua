@@ -30,7 +30,7 @@ function FieldworkCourse:init(context)
         self.logger:debug('### Connecting headlands (%d) from the outside towards the inside ###', #self.headlands)
         self.headlandPath = CourseGenerator.HeadlandConnector.connectHeadlandsFromOutside(self.headlands,
                 context.startLocation, self.context:getHeadlandWorkingWidth(), self.context.turningRadius)
-        self:routeHeadlandsAroundSmallIslands()
+        self:routeHeadlandsAroundSmallIslands(self.headlandPath)
         self.logger:debug('### Generating up/down rows ###')
         self:generateCenter()
     else
@@ -40,7 +40,7 @@ function FieldworkCourse:init(context)
         self.logger:debug('### Connecting headlands (%d) from the inside towards the outside ###', #self.headlands)
         self.headlandPath = CourseGenerator.HeadlandConnector.connectHeadlandsFromInside(self.headlands,
                 endOfLastRow, self.context:getHeadlandWorkingWidth(), self.context.turningRadius)
-        self:routeHeadlandsAroundSmallIslands()
+        self:routeHeadlandsAroundSmallIslands(self.headlandPath)
     end
 
     if self.context.bypassIslands then
@@ -260,7 +260,7 @@ end
 
 --- We do this after we have connected the individual headlands so the links between the headlands
 --- are also routed around the islands.
-function FieldworkCourse:routeHeadlandsAroundSmallIslands()
+function FieldworkCourse:routeHeadlandsAroundSmallIslands(headlandPath)
     self.logger:debug('### Bypassing small islands on the headland ###')
     for _, island in pairs(self.smallIslands) do
         local startIx, circled = 1, false
@@ -268,7 +268,7 @@ function FieldworkCourse:routeHeadlandsAroundSmallIslands()
             self.logger:debug('Bypassing island %d on the headland, at %d', island:getId(), startIx)
             --- Remember the islands we circled already, as even if multiple tracks cross it, we only want to
             --- circle once, subsequent bypasses just pick the shortest way around it.
-            circled, startIx = self.headlandPath:goAround(
+            circled, startIx = headlandPath:goAround(
                     island:getHeadlands()[1]:getPolygon(), startIx, not self.circledIslands[island])
             self.circledIslands[island] = circled or self.circledIslands[island]
         end

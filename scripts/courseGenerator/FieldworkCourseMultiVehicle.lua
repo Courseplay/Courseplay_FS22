@@ -14,6 +14,11 @@
 ---
 --- For the headlands though, it is better to generate them with the single working width and then pick and connect
 --- the headlands for the individual vehicles.
+---
+--- The drawback of using different working widths for the headland and the center, is that the headlands are used
+--- to cut the rows at the end in the center. Also, headlands around the islands used to detect if a row has to
+--- be routed around the island or not. Therefore, when cutting rows and bypassing islands, we must use a headland
+--- with the combined working width for these to work correctly.
 
 ---@class FieldworkCourseMultiVehicle : CourseGenerator.FieldworkCourse
 local FieldworkCourseMultiVehicle = CpObject(CourseGenerator.FieldworkCourse)
@@ -26,14 +31,17 @@ function FieldworkCourseMultiVehicle:init(context)
     context:setCenterRowWidthForAdjustment(context.workingWidth * context.nVehicles)
 
     if context.nHeadlands % context.nVehicles ~= 0 then
-        local nHeadlands = context.nHeadlands
+        local origHeadlands = context.nHeadlands
         if context.nHeadlands < context.nVehicles then
             context:setHeadlands(context.nVehicles)
+            context:setIslandHeadlands(context.nVehicles)
         else
-            context:setHeadlands(math.ceil(context.nHeadlands / context.nVehicles) * context.nVehicles)
+            local nHeadlands = math.ceil(context.nHeadlands / context.nVehicles) * context.nVehicles
+            context:setHeadlands(nHeadlands)
+            context:setIslandHeadlands(nHeadlands)
         end
         self.logger:debug('Number of headlands (%d) adjusted to %d, be a multiple of the number of vehicles (%d)',
-                nHeadlands, context.nHeadlands, context.nVehicles)
+                origHeadlands, context.nHeadlands, context.nVehicles)
     end
 
     self:_setContext(context)
@@ -67,8 +75,8 @@ function FieldworkCourseMultiVehicle:init(context)
             self.headlandPaths[v] = CourseGenerator.HeadlandConnector.connectHeadlandsFromOutside(self.headlandsForVehicle[v],
                     -- TODO is this really the headland working width? Not the combined width?
                     self.context.startLocation, self.context:getHeadlandWorkingWidth(), self.context.turningRadius)
+            self:routeHeadlandsAroundSmallIslands(self.headlandPaths[v])
         end
-        self:routeHeadlandsAroundSmallIslands()
         self.logger:debug('### Generating up/down rows ###')
         self:generateCenter()
     else
@@ -81,16 +89,16 @@ function FieldworkCourseMultiVehicle:init(context)
             self.headlandPaths[v] = CourseGenerator.HeadlandConnector.connectHeadlandsFromInside(self.headlandsForVehicle[v],
             -- TODO is this really the headland working width? Not the combined width?
                     endOfLastRow, self.context:getHeadlandWorkingWidth(), self.context.turningRadius)
+            self:routeHeadlandsAroundSmallIslands(self.headlandPaths[v])
         end
-        self:routeHeadlandsAroundSmallIslands()
     end
 
-    self:_generateCenterForAllVehicles()
     if self.context.bypassIslands then
         self:bypassSmallIslandsInCenter()
         self.logger:debug('### Bypassing big islands in the center: create path around them ###')
         --self:circleBigIslands()
     end
+    self:_generateCenterForAllVehicles()
 end
 
 ---@return Polyline
@@ -210,7 +218,7 @@ function FieldworkCourseMultiVehicle:generateCenter()
         self.center = CourseGenerator.Center(self.context, self.boundary, nil, self.context.startLocation, self.bigIslands)
     else
         -- The center is generated with the combined width of all vehicles and it assumes that the headland
-        -- is the same width. This is however not the case, since we generate the headlands with the single
+        -- is of the same width. This is however not the case, since we generate the headlands with the single
         -- working width. We need a boundary for the center which is the same as the innermost headland would be
         -- if it had been generated with the combined width.
         local centerBoundary
@@ -224,7 +232,6 @@ function FieldworkCourseMultiVehicle:generateCenter()
             centerBoundary = CourseGenerator.Headland(referenceHeadland:getPolygon(), self.context.headlandClockwise,
                     #self.headlands - 1, self.context:getHeadlandWorkingWidth() / 2, false)
         end
-
         CourseGenerator.addDebugPolyline(centerBoundary:getPolygon())
         local innerMostHeadlandPolygon = self.headlands[#self.headlands]:getPolygon()
         self.center = CourseGenerator.Center(self.context, self.boundary, centerBoundary,
@@ -234,6 +241,21 @@ function FieldworkCourseMultiVehicle:generateCenter()
                 self.bigIslands)
     end
     return self.center:generate()
+end
+
+
+function FieldworkCourseMultiVehicle:bypassSmallIslandsInCenter()
+    self.logger:debug('### Bypassing small islands in the center ###')
+    for _, island in pairs(self.smallIslands) do
+        self.logger:debug('Bypassing small island %d on the center', island:getId())
+        -- just like when adjusting row lengths, we need here a headland with the combined working width so
+        -- we can reliably detect if a row has to be routed around the island or not
+        local offset = self.context.nVehicles * self.context.workingWidth / 2 - self.context.workingWidth / 2
+        local referenceHeadland = CourseGenerator.Headland(island:getInnermostHeadland():getPolygon(),
+                self.context.islandHeadlandClockwise, 1, offset, true)
+        CourseGenerator.addDebugPolyline(referenceHeadland:getPolygon())
+        self.center:bypassSmallIsland(referenceHeadland:getPolygon(), not self.circledIslands[island])
+    end
 end
 
 --- Generate the center path for all vehicles in the group, by offsetting the single, multi-vehicle center path.
@@ -252,7 +274,6 @@ function FieldworkCourseMultiVehicle:_generateCenterForAllVehicles()
                 offsetEdge = wp:getExitEdge():clone():offset(offsetVector.x, offsetVector.y)
                 newWp:set(offsetEdge:getBase().x, offsetEdge:getBase().y, wp.ix)
             end
-            print(i, wp, newWp)
             centerPath:append(newWp)
         end
         self.centerPaths[v] = self:_regenerateConnectingPaths(centerPath, self.headlandsForVehicle[v][#self.headlandsForVehicle[v]])
