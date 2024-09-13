@@ -89,6 +89,11 @@ function Vertex:getAttributes()
     return self.attributes
 end
 
+---@param attributes CourseGenerator.WaypointAttributes
+function Vertex:setAttributes(attributes)
+    self.attributes = attributes:clone()
+end
+
 --- Add info related to the neighbouring vertices
 ---@param entry Vertex the previous vertex in the polyline/polygon
 ---@param exit Vertex the next vertex in the polyline/polygon

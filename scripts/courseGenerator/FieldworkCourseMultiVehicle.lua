@@ -15,10 +15,13 @@
 --- For the headlands though, it is better to generate them with the single working width and then pick and connect
 --- the headlands for the individual vehicles.
 ---
---- The drawback of using different working widths for the headland and the center, is that the headlands are used
+--- The drawback of using different working widths for the headland and the center is that the headlands are used
 --- to cut the rows at the end in the center. Also, headlands around the islands used to detect if a row has to
 --- be routed around the island or not. Therefore, when cutting rows and bypassing islands, we must use a headland
 --- with the combined working width for these to work correctly.
+---
+--- This currently may be a bit backwards as the multi-vehicle course is derived from the single vehicle course, but
+--- in reality, it is probably the opposite: the single vehicle course is a special case of the multi-vehicle course.
 
 ---@class FieldworkCourseMultiVehicle : CourseGenerator.FieldworkCourse
 local FieldworkCourseMultiVehicle = CpObject(CourseGenerator.FieldworkCourse)
@@ -49,19 +52,16 @@ function FieldworkCourseMultiVehicle:init(context)
     self.headlandPaths = {}
     self.centerPaths = {}
     self.circledIslands = {}
+    self.circledBigIslands = {}
     self.headlandCache = CourseGenerator.CacheMap()
 
     self.logger:debug('### Generating headlands around the field perimeter ###')
     self:generateHeadlands()
-
-    -- array of headlands for one vehicle, indexed by the vehicle index (1 - nVehicles)
-    self.headlandsForVehicle = {}
-    for v = 1, self.context.nVehicles do
-        self:setupHeadlandsForVehicle(v)
-    end
+    self:_setupHeadlandsForVehicles()
 
     self.logger:debug('### Setting up islands ###')
     self:setupAndSortIslands()
+    self:_setupIslandHeadlandsForVehicles()
 
     if self.context.bypassIslands then
         self:routeHeadlandsAroundBigIslands()
@@ -73,7 +73,7 @@ function FieldworkCourseMultiVehicle:init(context)
         for v = 1, self.context.nVehicles do
             -- create a headland path for each vehicle
             self.headlandPaths[v] = CourseGenerator.HeadlandConnector.connectHeadlandsFromOutside(self.headlandsForVehicle[v],
-                    -- TODO is this really the headland working width? Not the combined width?
+            -- TODO is this really the headland working width? Not the combined width?
                     self.context.startLocation, self.context:getHeadlandWorkingWidth(), self.context.turningRadius)
             self:routeHeadlandsAroundSmallIslands(self.headlandPaths[v])
         end
@@ -95,10 +95,15 @@ function FieldworkCourseMultiVehicle:init(context)
 
     if self.context.bypassIslands then
         self:bypassSmallIslandsInCenter()
-        self.logger:debug('### Bypassing big islands in the center: create path around them ###')
-        --self:circleBigIslands()
     end
     self:_generateCenterForAllVehicles()
+    if self.context.bypassIslands then
+        self.logger:debug('### Bypassing big islands in the center: create path around them ###')
+        for i, _, path in self:pathIterator() do
+            -- this will modify the path in place
+            self:circleBigIslands(path, i)
+        end
+    end
 end
 
 ---@return Polyline
@@ -139,10 +144,11 @@ function FieldworkCourseMultiVehicle:getPath(position)
 end
 
 --- Iterates through the paths of all vehicles of the multi-vehicle group.
----@return number, Polyline[] position and path for each vehicle
+---@return number, number, Polyline[] index, position and path for each vehicle
 function FieldworkCourseMultiVehicle:pathIterator()
     local last = math.floor(self.context.nVehicles / 2)
-    local position = - last - 1
+    local position = -last - 1
+    local i = 0
     return function()
         if position < last then
             if position == -1 and self.context.nVehicles % 2 == 0 then
@@ -151,7 +157,8 @@ function FieldworkCourseMultiVehicle:pathIterator()
             else
                 position = position + 1
             end
-            return position, self:getPath(position)
+            i = i + 1
+            return i, position, self:getPath(position)
         end
     end
 end
@@ -198,13 +205,16 @@ function FieldworkCourseMultiVehicle:_indexToOffsetVector(ix)
     return Vector(0, leftmostVehicleOffset - (ix - 1) * self.context.workingWidth)
 end
 
---- Pick the headlands this vehicle will need to work on.
----@param v number index of the vehicle in the group
+--- Pick the headlands each vehicle will need to work on.
 ---@return CourseGenerator.Headland[]
-function FieldworkCourseMultiVehicle:setupHeadlandsForVehicle(v)
-    self.headlandsForVehicle[v] = {}
-    for i = v, self.nHeadlands, self.context.nVehicles do
-        table.insert(self.headlandsForVehicle[v], self.headlands[i])
+function FieldworkCourseMultiVehicle:_setupHeadlandsForVehicles()
+    -- array of headlands for each vehicle, indexed by the vehicle index (1 .. nVehicles)
+    self.headlandsForVehicle = {}
+    for v = 1, self.context.nVehicles do
+        self.headlandsForVehicle[v] = {}
+        for i = v, self.nHeadlands, self.context.nVehicles do
+            table.insert(self.headlandsForVehicle[v], self.headlands[i])
+        end
     end
 end
 
@@ -243,7 +253,6 @@ function FieldworkCourseMultiVehicle:generateCenter()
     return self.center:generate()
 end
 
-
 function FieldworkCourseMultiVehicle:bypassSmallIslandsInCenter()
     self.logger:debug('### Bypassing small islands in the center ###')
     for _, island in pairs(self.smallIslands) do
@@ -258,27 +267,137 @@ function FieldworkCourseMultiVehicle:bypassSmallIslandsInCenter()
     end
 end
 
+------------------------------------------------------------------------------------------------------------------------
+--- Helper functions for circleBigIsland(), to override in derived classes, like in FieldworkCourseMultiVehicle
+--- where the logic of getting the headlands is different.
+function FieldworkCourseMultiVehicle:getIslandHeadlands(island, vehicle)
+    return self.islandHeadlandsForVehicle[vehicle][island]
+end
+
+--- Here we only have one vehicle, so we only need to circle an island once and ignore the vehicle.
+function FieldworkCourseMultiVehicle:isBigIslandCircled(island, vehicle)
+    return self.circledBigIslands[vehicle][island]
+end
+
+function FieldworkCourseMultiVehicle:setBigIslandCircled(island, vehicle)
+    self.circledBigIslands[vehicle][island] = true
+end
+
+--- Set up everything needed to circle the big islands.
+---@return CourseGenerator.Headland[]
+function FieldworkCourseMultiVehicle:_setupIslandHeadlandsForVehicles()
+    self.islandHeadlandsForVehicle = {}
+    for v = 1, self.context.nVehicles do
+        -- two dimensional array of island headlands for each vehicle and island,
+        -- indexed by the vehicle index (1 .. nVehicles) and by the island
+        self.islandHeadlandsForVehicle[v] = {}
+        -- two dimensional array indexed by the vehicle index and with the island. If the entry exists,
+        -- this vehicle circled the island
+        self.circledBigIslands[v] = {}
+        for _, island in pairs(self.bigIslands) do
+            self.islandHeadlandsForVehicle[v][island] = {}
+            for i = v, #island:getHeadlands(), self.context.nVehicles do
+                table.insert(self.islandHeadlandsForVehicle[v][island], island:getHeadlands()[i])
+            end
+        end
+    end
+end
+------------------------------------------------------------------------------------------------------------------------
+
+
 --- Generate the center path for all vehicles in the group, by offsetting the single, multi-vehicle center path.
 function FieldworkCourseMultiVehicle:_generateCenterForAllVehicles()
     self.logger:debug('### Generating center for all vehicles ###')
     for v = 1, self.context.nVehicles do
-        local centerPath = Polyline()
+        local offsetPath = Polyline()
         local offsetVector = self:_indexToOffsetVector(v)
+        local rowOffsetVector = offsetVector:clone()
         self.logger:debug('  Generating center for vehicle %d, offset %.1f', v, offsetVector.y)
-        for i, wp in ipairs(self.center:getPath()) do
-            local newWp, offsetEdge = wp:clone()
-            if wp:getAttributes():isRowEnd() or i == #self.center:getPath() then
-                offsetEdge = wp:getEntryEdge():clone():offset(offsetVector.x, offsetVector.y)
-                newWp:set(offsetEdge:getEnd().x, offsetEdge:getEnd().y, wp.ix)
+        local i, path = 1, self.center:getPath()
+        repeat
+            local wp = path[i]
+            if wp:getAttributes():isRowStart() then
+                if self.context.useSameTurnWidth then
+                    -- at each turn, vehicles shift positions, so the turn width is the same for all vehicles
+                    rowOffsetVector = -rowOffsetVector
+                end
+                i = self:_offsetRow(path, i, rowOffsetVector, offsetPath)
+            elseif wp:getAttributes():isOnConnectingPath() then
+                i = self:_offsetConnectingPath(path, i, offsetVector, offsetPath)
             else
-                offsetEdge = wp:getExitEdge():clone():offset(offsetVector.x, offsetVector.y)
-                newWp:set(offsetEdge:getBase().x, offsetEdge:getBase().y, wp.ix)
+                offsetPath:append(wp:clone())
+                i = i + 1
             end
-            centerPath:append(newWp)
-        end
-        self.centerPaths[v] = self:_regenerateConnectingPaths(centerPath, self.headlandsForVehicle[v][#self.headlandsForVehicle[v]])
+        until i > #path
+        self.centerPaths[v] = offsetPath
         self.centerPaths[v]:calculateProperties()
+        self.logger:debug('  path for vehicle %d with %d waypoints generated', v, #self.centerPaths[v])
     end
+end
+
+--- Generate offset of a section
+---@param polyline Polyline the original path
+---@param offsetVector Vector offset vector, the direction and length of the offset (left: y > 0, right: y < 0)
+local function _generateOffsetSection(polyline, offsetVector)
+    local offsetUnitVector = offsetVector / offsetVector:length()
+    return CourseGenerator.Offset.generate(polyline, offsetUnitVector, offsetVector:length())
+end
+
+--- Append a newly generated offset section to the offset path, copying the attributes from the original section.
+--- Preserve the attributes from first and last original waypoint, since they are likely special, such as a row
+--- start or end.
+---@param original Polyline the original path
+---@param offset Polyline the offset path
+---@param offsetPath Polyline the path to append the offset path to
+local function _appendOffsetSection(original, offset, offsetPath)
+    -- copy the attributes of the first vertex
+    offset[1]:setAttributes(original[1]:getAttributes())
+    offsetPath:append(offset[1])
+    -- copy the attributes of the last vertex
+    offset[#offset]:setAttributes(original[#original]:getAttributes())
+    for j = 2, #offset - 1 do
+        -- attributes in between
+        offset[j]:setAttributes(original[2]:getAttributes())
+        offsetPath:append(offset[j])
+    end
+    offsetPath:append(offset[#offset])
+end
+
+--- Find and offset a row, starting at ix in the path.
+---@param path Polyline the original path
+---@param ix number start of the section in path to offset
+---@param offsetVector Vector the vector to offset the path
+---@param offsetPath Polyline the path to append the offset path to
+---@return number index of the next waypoint after the row end
+function FieldworkCourseMultiVehicle:_offsetRow(path, ix, offsetVector, offsetPath)
+    -- extract the row to a polyline
+    local i, row = ix, Polyline()
+    repeat
+        row:append(path[i])
+        i = i + 1
+    until i > #path or path[i]:getAttributes():isRowEnd()
+    row:append(path[i])
+    local offsetRow = _generateOffsetSection(row, offsetVector)
+    _appendOffsetSection(row, offsetRow, offsetPath)
+    return i + 1
+end
+
+--- Find and offset a connecting path, starting at ix in the path. This is very similar
+---@param path Polyline the original path
+---@param ix number start of the section in path to offset
+---@param offsetVector Vector the vector to offset the path
+---@param offsetPath Polyline the path to append the offset path to
+---@return number index of the next waypoint after the row end
+function FieldworkCourseMultiVehicle:_offsetConnectingPath(path, ix, offsetVector, offsetPath)
+    -- extract the row to a polyline
+    local i, section = ix, Polyline()
+    repeat
+        section:append(path[i])
+        i = i + 1
+    until i > #path or not path[i]:getAttributes():isOnConnectingPath()
+    local offsetConnectingPath = _generateOffsetSection(section, offsetVector)
+    _appendOffsetSection(section, offsetConnectingPath, offsetPath)
+    return i
 end
 
 --- Connecting paths were generated for the single-vehicle center course with the multi-vehicle working width.
@@ -300,7 +419,8 @@ function FieldworkCourseMultiVehicle:_regenerateConnectingPaths(path, innermostH
         else
             if firstVertexOfConnectingPath then
                 -- once the connecting path ends, regenerate it, using the innermost headland for the vehicle
-                self.logger:debug('Connecting path ended at %d, regenerating on %s', i, innermostHeadlandForVehicle)
+                self.logger:debug('Connecting path ended at %d, boundary %s, regenerating on %s', i,
+                        path[i]:getAttributes():getAtBoundaryId(), innermostHeadlandForVehicle)
                 local connectingPath = self:_findShortestPathOnHeadland(innermostHeadlandForVehicle,
                         firstVertexOfConnectingPath, path[i])
                 firstVertexOfConnectingPath = nil
@@ -315,7 +435,7 @@ function FieldworkCourseMultiVehicle:_regenerateConnectingPaths(path, innermostH
     until i > #path
     regeneratedPath:setAttribute(nil, CourseGenerator.WaypointAttributes.setHeadlandPassNumber,
             innermostHeadlandForVehicle:getPassNumber())
-    regeneratedPath:setAttribute(nil, CourseGenerator.WaypointAttributes.setBoundaryId,
+    regeneratedPath:setAttribute(nil, CourseGenerator.WaypointAttributes.setAtBoundaryId,
             innermostHeadlandForVehicle:getBoundaryId())
     regeneratedPath:setAttribute(nil, CourseGenerator.WaypointAttributes.setOnConnectingPath, true)
     return regeneratedPath
