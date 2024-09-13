@@ -198,7 +198,7 @@ function Center:bypassSmallIsland(islandHeadlandPolygon, circle)
     -- and then we have those connecting paths between the blocks
     for _, connectingPath in ipairs(self.connectingPaths) do
         if #connectingPath > 1 then
-            thisIslandCircled = CourseGenerator.FieldworkCourseHelper.bypassSmallIsland(connectingPath, self.context.workingWidth,
+            thisIslandCircled = CourseGenerator.FieldworkCourseHelper.bypassSmallIsland(connectingPath, self.context,
                     islandHeadlandPolygon, 1, not thisIslandCircled) or thisIslandCircled
         end
     end
@@ -209,7 +209,7 @@ end
 function Center:bypassBigIsland(islandHeadlandPolygon)
     for _, connectingPath in ipairs(self.connectingPaths) do
         if #connectingPath > 1 then
-            CourseGenerator.FieldworkCourseHelper.bypassSmallIsland(connectingPath, self.context.workingWidth,
+            CourseGenerator.FieldworkCourseHelper.bypassSmallIsland(connectingPath, self.context,
                     islandHeadlandPolygon, 1, false)
         end
     end

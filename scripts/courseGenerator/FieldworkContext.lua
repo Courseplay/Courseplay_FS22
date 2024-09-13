@@ -40,8 +40,9 @@ function FieldworkContext:init(field, workingWidth, turningRadius, nHeadlands)
     
     self.reverseCourse = false
     self.spiralFromInside = false
+    -- multi vehicle support
     self.nVehicles = 1
-    self.positionInGroup = 0
+    self.useSameTurnWidth = false
 end
 
 function FieldworkContext:log()
@@ -51,7 +52,8 @@ function FieldworkContext:log()
             self.fieldCornerRadius, self.sharpenCorners, self.bypassIslands, self.nIslandHeadlands, self.islandHeadlandClockwise)
     self.logger:debug('row pattern: %s, row angle auto: %s, %.1fº, even row distribution: %s, use baseline edge: %s, small overlaps: %s',
             self.rowPattern, self.autoRowAngle, math.deg(self.rowAngle), self.evenRowDistribution, self.useBaselineEdge, self.enableSmallOverlapsWithHeadland)
-    self.logger:debug('start location %s, baseline edge %s', self.startLocation, self.baselineEdge)
+    self.logger:debug('start location %s, baseline edge %s, vehicles %d, same turn width %s',
+            self.startLocation, self.baselineEdge, self.nVehicles, self.useSameTurnWidth)
 end
 
 function FieldworkContext:addError(logger, ...)
@@ -223,12 +225,6 @@ function FieldworkContext:setFieldMargin(margin)
     return self
 end
 
----@param nVehicles number number of vehicles that'll work on the course at the same time
-function FieldworkContext:setNumberOfVehicles(nVehicles)
-    self.nVehicles = nVehicles
-    return self
-end
-
 --- Override the working width for headland passes
 ---@param w number
 function FieldworkContext:setHeadlandWorkingWidth(w)
@@ -243,6 +239,20 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 --- Multi vehicle support
 ------------------------------------------------------------------------------------------------------------------------
+
+---@param nVehicles number number of vehicles that'll work on the course at the same time
+function FieldworkContext:setNumberOfVehicles(nVehicles)
+    self.nVehicles = nVehicles
+    return self
+end
+
+--- @param useSameTurnWidth boolean row end turns are always the same width: 'symmetric lane change' enabled, meaning
+--- after each turn we reverse the offset
+function FieldworkContext:setUseSameTurnWidth(useSameTurnWidth)
+    self.useSameTurnWidth = useSameTurnWidth
+    return self
+end
+
 --- Distance between the rows in the field center
 --- In the center there is one row for multiple vehicles, and the rows for the individual vehicles
 --- are created from this single row by offsetting it. In that case, we consider the row as wide as the number
