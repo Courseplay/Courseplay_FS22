@@ -2344,12 +2344,14 @@ Es gibt zwei Möglichkeiten, ein eigenes Feld zu erstellen.
 Die erste Option ist mit dem "Aufzeichnen"-Button im HUD.
 Starte die Aufnahme und fahre deinen Feldrand ab, den du aufzeichnen möchtest.
 Bist du wieder am Startpunkt angekommen, drücke den "Aufzeichnen"-Button noch mal und du wirst gefragt, ob du den Feldrand speichern möchtest.
+Start und Ende dürfen sich nicht überlappen!
 ]]></Text>
 			<Text language="en"><![CDATA[
 There are two ways to create custom fields.
 The first one is to use the record function of the HUD.
 First press the course record button and then drive the field border that you want to record.
 Once your finished, simply press the button again and you will be asked if you want to save it.
+Start and End should not overlap!
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_customFieldDone_text">

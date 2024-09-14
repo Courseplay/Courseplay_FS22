@@ -185,7 +185,13 @@ function Headland:connectTo(other, ix, workingWidth, turningRadius, headlandFirs
                 self.logger:warning('Generated path to next headland too long (%.1f > %.1f), try %d.',
                         length, maxPlausiblePathLength, i)
             end
-            transitionEndIx = transitionEndIx + 1
+            if 0.8 * radius > turningRadius then
+                radius = 0.8 * radius
+                self.logger:debug('Transition radius %.1f > turning radius %.1f, reducing transition radius.', radius, turningRadius)
+            else
+                transitionEndIx = transitionEndIx + 1
+                self.logger:debug('Can\'t generate a proper transition, try a little further.')
+            end
         end
         self.logger:error('Could not connect to next headland after %d tries, giving up', tries)
     else
@@ -222,7 +228,7 @@ function Headland:_continueUntilStraightSection(ix, straightSectionLength, searc
         count = count + 1
     end
     -- no straight section found, bail out here
-    self.logger:debug('No straight section found after %1.f m for headland change to next', dTotal)
+    self.logger:debug('No straight section found after %.1f m for headland change to next', dTotal)
     return waypoints
 end
 

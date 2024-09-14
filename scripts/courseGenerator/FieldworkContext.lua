@@ -13,7 +13,7 @@ function FieldworkContext:init(field, workingWidth, turningRadius, nHeadlands)
     self.field = field
     self.startLocation = Vector(0, 0)
     self.workingWidth = workingWidth
-    self.headlandWorkingWidth = (1 - CourseGenerator.cDefaultHeadlandOverlapPercentage / 100) * workingWidth
+    self.overlap = CourseGenerator.cDefaultHeadlandOverlapPercentage / 100
     self.turningRadius = turningRadius
 
     self.fieldMargin = 0
@@ -40,7 +40,9 @@ function FieldworkContext:init(field, workingWidth, turningRadius, nHeadlands)
     
     self.reverseCourse = false
     self.spiralFromInside = false
-
+    -- multi vehicle support
+    self.nVehicles = 1
+    self.useSameTurnWidth = false
 end
 
 function FieldworkContext:log()
@@ -50,7 +52,8 @@ function FieldworkContext:log()
             self.fieldCornerRadius, self.sharpenCorners, self.bypassIslands, self.nIslandHeadlands, self.islandHeadlandClockwise)
     self.logger:debug('row pattern: %s, row angle auto: %s, %.1fº, even row distribution: %s, use baseline edge: %s, small overlaps: %s',
             self.rowPattern, self.autoRowAngle, math.deg(self.rowAngle), self.evenRowDistribution, self.useBaselineEdge, self.enableSmallOverlapsWithHeadland)
-    self.logger:debug('start location %s, baseline edge %s', self.startLocation, self.baselineEdge)
+    self.logger:debug('start location %s, baseline edge %s, vehicles %d, same turn width %s',
+            self.startLocation, self.baselineEdge, self.nVehicles, self.useSameTurnWidth)
 end
 
 function FieldworkContext:addError(logger, ...)
@@ -112,11 +115,11 @@ function FieldworkContext:setSharpenCorners(sharpen)
     return self
 end
 
----@param overlap number Headland overlap percentage. We make headland passes slightly narrower than the working width, so they overlap
+---@param overlapPercentage number Headland overlap percentage. We make headland passes slightly narrower than the working width, so they overlap
 --- a bit to make sure there are no unworked gaps remaining when maneuvering. This is the overlap in percentage of
 --- the working width.
-function FieldworkContext:setHeadlandOverlap(overlap)
-    self.headlandWorkingWidth = (1 - overlap / 100) * self.workingWidth
+function FieldworkContext:setHeadlandOverlap(overlapPercentage)
+    self.overlap = overlapPercentage / 100
     return self
 end
 
@@ -220,4 +223,70 @@ end
 function FieldworkContext:setFieldMargin(margin)
     self.fieldMargin = margin
     return self
+end
+
+--- Override the working width for headland passes
+---@param w number
+function FieldworkContext:setHeadlandWorkingWidth(w)
+    self.headlandWorkingWidth = w
+end
+
+---@return number width of a headland pass in meters. Default is the working width less the overlap.
+function FieldworkContext:getHeadlandWorkingWidth()
+    return self.headlandWorkingWidth or self.workingWidth * (1 - self.overlap)
+end
+
+------------------------------------------------------------------------------------------------------------------------
+--- Multi vehicle support
+------------------------------------------------------------------------------------------------------------------------
+
+---@param nVehicles number number of vehicles that'll work on the course at the same time
+function FieldworkContext:setNumberOfVehicles(nVehicles)
+    self.nVehicles = nVehicles
+    return self
+end
+
+--- @param useSameTurnWidth boolean row end turns are always the same width: 'symmetric lane change' enabled, meaning
+--- after each turn we reverse the offset
+function FieldworkContext:setUseSameTurnWidth(useSameTurnWidth)
+    self.useSameTurnWidth = useSameTurnWidth
+    return self
+end
+
+--- Distance between the rows in the field center
+--- In the center there is one row for multiple vehicles, and the rows for the individual vehicles
+--- are created from this single row by offsetting it. In that case, we consider the row as wide as the number
+--- of vehicles times the working width of a single vehicle, this way, the offset rows (without individually adjusting
+----- their lengths) will still yield full coverage. However, the headlands are single vehicle wide, so we need to
+----- use different widths for them.
+---@param w number
+function FieldworkContext:setCenterRowSpacing(w)
+    self.centerRowSpacing = w
+end
+
+---@return number distance between two adjacent up/down rows.
+function FieldworkContext:getCenterRowSpacing()
+    return self.centerRowSpacing or self.workingWidth
+end
+
+---@see Row.adjustLength()
+function FieldworkContext:setCenterRowWidthForAdjustment(width)
+    self.centerRowWidthForAdjustment = width
+end
+
+--- Width of the row to use when adjusting a row length for full coverage where it meets the headland at an angle
+---@return number
+function FieldworkContext:getCenterRowWidthForAdjustment()
+    return self.centerRowWidthForAdjustment or self.workingWidth
+end
+
+---@see Row.adjustLength()
+function FieldworkContext:setHeadlandWidthForAdjustment(width)
+    self.headlandWidthForAdjustment = width
+end
+
+--- Width of the headland to use when adjusting a row length for full coverage where it meets the headland at an angle
+---@return number
+function FieldworkContext:getHeadlandWidthForAdjustment()
+    return self.headlandWidthForAdjustment or self.workingWidth
 end

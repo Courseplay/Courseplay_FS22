@@ -251,20 +251,23 @@ end
 --- half workwidth.
 --- In case of a field boundary we have to drive up all the way to the boundary.
 --- The value obviously depends on the angle.
-function Row:adjustLength()
-    CourseGenerator.FieldworkCourseHelper.adjustLengthAtStart(self, self.workingWidth, self.startHeadlandAngle)
-    CourseGenerator.FieldworkCourseHelper.adjustLengthAtEnd(self, self.workingWidth, self.endHeadlandAngle)
+---@param context CourseGenerator.FieldworkContext The context to get the row width and the headland width to calculate
+--- the length of the row. These can be different when generating courses for multiple vehicles.
+function Row:adjustLength(context)
+    CourseGenerator.FieldworkCourseHelper.adjustLengthAtStart(self, context, self.startHeadlandAngle)
+    CourseGenerator.FieldworkCourseHelper.adjustLengthAtEnd(self, context, self.endHeadlandAngle)
 end
 
 --- Find the first two intersections with another polyline or polygon and replace the section
 --- between those points with the vertices of the other polyline or polygon.
+---@param context CourseGenerator.FieldworkContext
 ---@param other Polyline
 ---@param startIx number index of the vertex we want to start looking for intersections.
 ---@param circle boolean when true, make a full circle on the other polygon, else just go around and continue
 ---@return boolean, number true if there was an intersection and we actually went around, index of last vertex
 --- after the bypass
-function Row:bypassSmallIsland(other, startIx, circle)
-    CourseGenerator.FieldworkCourseHelper.bypassSmallIsland(self, self.workingWidth, other, startIx, circle)
+function Row:bypassSmallIsland(context, other, startIx, circle)
+    CourseGenerator.FieldworkCourseHelper.bypassSmallIsland(self, context, other, startIx, circle)
 end
 
 ------------------------------------------------------------------------------------------------------------------------

@@ -19,8 +19,8 @@
 
 local Block = CpObject()
 
----@param rowPattern CourseGenerator.RowPattern pattern to use for the up/down rows
-function Block:init(rowPattern, id)
+---@param context CourseGenerator.FieldworkContext
+function Block:init(context, id)
     self.id = id or 0
     self.logger = Logger('Block ' .. self.id)
     -- rows in the order they were added, first vertex of each row is on the same side
@@ -28,7 +28,8 @@ function Block:init(rowPattern, id)
     -- rows in the order they will be worked on, every second row in this sequence is reversed
     -- so we remain on the same side of the block when switching to the next row
     self.rowsInWorkSequence = {}
-    self.rowPattern = rowPattern or CourseGenerator.RowPatternAlternating()
+    self.rowPattern = context.rowPattern or CourseGenerator.RowPatternAlternating()
+    self.context = context
 end
 
 function Block:getId()
@@ -103,10 +104,9 @@ end
 --- Finalize this block, set the entry we will be using, rearrange rows accordingly, set all row attributes and create
 --- a sequence in which the rows must be worked on
 ---@param entry CourseGenerator.RowPattern.Entry the entry to be used for this block
----@param rowWaypointDistance number distance between waypoints on a row
 ---@return Vertex the last vertex of the last row, the exit point from this block (to be used to find the entry
 --- to the next one.
-function Block:finalize(entry, rowWaypointDistance)
+function Block:finalize(entry)
     self.logger:debug('Finalizing, entry %s', entry)
     self.logger:debug('Generating row sequence for %d rows, pattern: %s', #self.rows, self.rowPattern)
     local sequence, exit = self.rowPattern:getWorkSequenceAndExit(self.rows, entry)
@@ -122,9 +122,9 @@ function Block:finalize(entry, rowWaypointDistance)
         row:setAdjacentRowInfo(rowOnLeftWorked, rowOnRightWorked, leftSideBlockBoundary, rightSideBlockBoundary)
         self.logger:debug('row %d is now at position %d, left/right worked %s/%s, headland %s/%s',
                 row:getOriginalSequenceNumber(), i, rowOnLeftWorked, rowOnRightWorked, leftSideBlockBoundary, rightSideBlockBoundary)
-        row:adjustLength()
+        row:adjustLength(self.context)
         -- need vertices close enough so the smoothing in goAround() only starts close to the island
-        row:splitEdges(rowWaypointDistance or CourseGenerator.cRowWaypointDistance)
+        row:splitEdges(self.context.rowWaypointDistance or CourseGenerator.cRowWaypointDistance)
         row:setRowNumber(i)
         row:setAllAttributes()
         table.insert(self.rowsInWorkSequence, row)
@@ -152,7 +152,7 @@ end
 function Block:bypassSmallIsland(islandHeadlandPolygon, circle)
     local thisIslandCircled = circle
     for _, row in ipairs(self.rowsInWorkSequence) do
-        thisIslandCircled = row:bypassSmallIsland(islandHeadlandPolygon, 1, not thisIslandCircled) or thisIslandCircled
+        thisIslandCircled = row:bypassSmallIsland(self.context, islandHeadlandPolygon, 1, not thisIslandCircled) or thisIslandCircled
         -- make sure all new bypass waypoints have the proper attributes
         row:setAllAttributes()
     end

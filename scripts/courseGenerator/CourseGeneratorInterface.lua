@@ -87,7 +87,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     end
 
     -- the actual number of headlands generated may be less than the requested
-    local numberOfHeadlands = #CourseGeneratorInterface.generatedCourse:getHeadlands()
+    local numberOfHeadlands = CourseGeneratorInterface.generatedCourse:getNumberOfHeadlands()
 
     CourseGeneratorInterface.logger:debug('Generated course: %d/%d headland/center waypoints',
             #CourseGeneratorInterface.generatedCourse:getHeadlandPath(), #CourseGeneratorInterface.generatedCourse:getCenterPath())
