@@ -328,6 +328,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="Rangées"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Outils multiples"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Nombre de véhicules sur la même course avec le même outil. La distance entre les véhicules est fixée avec le paramètre convoi."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_title" text="Switching lanes"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_tooltip" text="Sets the lanes to always switch. This leads to similar turns. See help menu for more details."/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Orientation dynamique des rangs"/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="L'orientation des rangs suit les courbures du champ."/>
     <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Champ"/>

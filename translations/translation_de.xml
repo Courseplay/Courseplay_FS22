@@ -328,6 +328,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="Bahnen"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Fahrzeuge auf dem Kurs"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Wie viele Fahrzeuge zusammen auf dem Kurs fahren."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_title" text="Bahnen tauschen"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_tooltip" text="Stellt ein ob die Bahnen in der Feldmitte getauscht werden sollen. Das führt zu gleichmäßigen Wendemanövern. Siehe Hilfemenü für mehr Details."/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Bahnenform anhand Feldkante"/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="Die Feldkante, die am nächsten am Feldmarker ist, wird verwendet, um den Verlauf der Bahnen zu bestimmen."/>
     <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Schmales Feld"/>
@@ -641,6 +643,7 @@ Einige Einstellungen sind erst dann sichtbar, wenn in den globalen CP Einstellun
 Bevor ihr euch mit den Einstellmöglichkeiten beschäftigt, solltet ihr euch erst mit den normalen Einstellungen vertraut machen, da nicht alle Experten Einstellungen ohne Einschränkung funktionieren werden.
 
 - Fahrzeuge auf dem Feld: Mit dieser Einstellung könnt ihr mehr als ein Fahrzeug das Feld abarbeiten lassen. Mehr Details dazu gibt es unter einem extra Punkt im Hilfemenü.
+- Bahnen tauschen: Ist diese Option aktiviert, wird die Seite des Fahrzeug &quot;vertauscht&quot;, dafür sind die Wendemanöver für alle Bahnen gleich breit. Für mehr Details, schau dir dazu die Hilfeseite &quot;Bahnen tauschen&quot; an.
 - Enges Feld: Erzeugt nur an den kürzesten Feldrandseiten ein Vorgewende. Es lässt sich aktuell nicht vermeiden, dass Fahrzeuge an den langen Seiten im Vorgewende das Feld verlassen.
 - Vorgewende Überlappung: Es ist ein Standardwert eingestellt, der immer verwendet wird. Dieser kann aber mit dieser Einstellung angepasst werden. Die Überlappung findet innerhalb des Feldes statt und ragt nicht über den Feldrand hinaus.
 - Feldgrenze: Mit dieser Einstellung lässt sich die Feldgrenze weiter nach innen oder außen verschieben und somit lässt sich der normale Feldrand verschieben.
