@@ -58,7 +58,7 @@ function Course:getDebugTable()
         { name = "numTurns", value = self.totalTurns },
         { name = "offsetX", value = self.offsetX },
         { name = "offsetZ", value = self.offsetZ },
-        { name = "multiTools", value = self.multiTools },
+        { name = "multiTools", value = self.nVehicles },
         { name = "numHeadlands", value = self.numberOfHeadlands },
         { name = "totalTurns", value = self.totalTurns },
     }
@@ -174,7 +174,7 @@ function Course:getWaypoint(ix)
 end
 
 function Course:getMultiTools()
-    return self.multiTools or 1
+    return self.nVehicles or 1
 end
 
 ---
@@ -182,7 +182,7 @@ end
 ---@param multiToolsPosition number which tool is this, same as position in calculateOffsetCourse()
 ---@param multiToolsSameTurnWidth boolean turns are of the same width, ame as position in calculateOffsetCourse()
 function Course:hasSameMultiToolSettings(multiTools, multiToolsPosition, multiToolsSameTurnWidth)
-    return self.multiTools == multiTools and self.multiToolsPosition == multiToolsPosition and
+    return self.nVehicles == multiTools and self.multiToolsPosition == multiToolsPosition and
             self.multiToolsSameTurnWidth == multiToolsSameTurnWidth
 end
 
@@ -908,7 +908,7 @@ end
 function Course:copy(vehicle, first, last)
     local newCourse = Course(vehicle or self.vehicle, self.waypoints, self:isTemporary(), first, last)
     newCourse:setName(self:getName())
-    newCourse.multiTools = self.multiTools
+    newCourse.nVehicles = self.nVehicles
     newCourse.multiToolsPosition = self.multiToolsPosition
     newCourse.multiToolsSameTurnWidth = self.multiToolsSameTurnWidth
     newCourse.workWidth = self.workWidth
@@ -1430,7 +1430,7 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
     -- find out the absolute offset in meters first
     local offset = Course.calculateOffsetForMultitools(nVehicles, position, width)
     local offsetCourse = Course(self.vehicle, {})
-    offsetCourse.multiTools = nVehicles
+    offsetCourse.nVehicles = nVehicles
     -- We set these on the course so we know for what settings was it generated, but do not persist, as
     -- we never save multitool offset courses
     offsetCourse.multiToolsPosition = position
@@ -1657,7 +1657,7 @@ function Course:saveToXml(courseXml, courseKey)
     courseXml:setValue(courseKey .. '#name', self.name)
     courseXml:setValue(courseKey .. '#workWidth', self.workWidth or 0)
     courseXml:setValue(courseKey .. '#numHeadlands', self.numberOfHeadlands or 0)
-    courseXml:setValue(courseKey .. '#multiTools', self.multiTools or 0)
+    courseXml:setValue(courseKey .. '#multiTools', self.nVehicles or 0)
     courseXml:setValue(courseKey .. '#wasEdited', self.editedByCourseEditor)
     for i, p in ipairs(self.waypoints) do
         p:setXmlValue(courseXml, courseKey, i)
@@ -1668,7 +1668,7 @@ function Course:writeStream(vehicle, streamId, connection)
     streamWriteString(streamId, self.name or "")
     streamWriteFloat32(streamId, self.workWidth or 0)
     streamWriteInt32(streamId, self.numberOfHeadlands or 0)
-    streamWriteInt32(streamId, self.multiTools or 1)
+    streamWriteInt32(streamId, self.nVehicles or 1)
     streamWriteInt32(streamId, self.multiToolsPosition or 0)
     streamWriteBool(streamId, self.multiToolsSameTurnWidth or false)
     streamWriteInt32(streamId, #self.waypoints or 0)
@@ -1718,7 +1718,7 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
     course.name = name
     course.workWidth = workWidth
     course.numberOfHeadlands = numberOfHeadlands
-    course.multiTools = multiTools
+    course.nVehicles = multiTools
     course.editedByCourseEditor = wasEdited
     CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
     return course
@@ -1741,7 +1741,7 @@ function Course.createFromStream(vehicle, streamId, connection)
     course.name = name
     course.workWidth = workWidth
     course.numberOfHeadlands = numberOfHeadlands
-    course.multiTools = multiTools
+    course.nVehicles = multiTools
     course.multiToolsPosition = multiToolsPosition
     course.multiToolsSameTurnWidth = multiToolsSameTurnWidth
     course.editedByCourseEditor = wasEdited
@@ -1764,7 +1764,8 @@ function Course.createFromGeneratedCourse(vehicle, generatedCourse, workWidth, n
     course.numberOfHeadlands = numberOfHeadlands
     course.nVehicles = nVehicles
     if course.nVehicles > 1 then
-        course.multiVehicleData = Course.MultiVehicleData(0, false)
+        course.multiVehicleData = Course.MultiVehicleData.createFromGeneratedCourse(vehicle, generatedCourse)
+        course:setDefaultPosition()
     end
     course.multiToolsPosition = 0
     course.multiToolsSameTurnWidth = false
@@ -1792,9 +1793,21 @@ end
 --- stores the course for each vehicle (position) of the group. When a new position is selected for a vehicle,
 --- we make Course.waypoints to point to the waypoint array of the selected position in MultiVehicleData.
 ------------------------------------------------------------------------------------------------------------------------
+function Course:setDefaultPosition()
+    if self.nVehicles % 2 == 0 then
+        -- even number of vehicles, default is the left one
+        self:setPosition(-self.nVehicles / 2)
+    else
+        -- odd number of vehicles, the middle vehicle is 0
+        self:setPosition(0)
+    end
+end
+
 function Course:setPosition(position)
     if self.multiVehicleData then
         self.waypoints = self.multiVehicleData.waypoints[position]
+        self:enrichWaypointData()
+        CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course position set to %d (%d waypoints)', position, #self.waypoints)
     else
         CpUtil.errorVehicle(self.vehicle, 'Course:setPosition called on a single vehicle course')
     end
@@ -1816,10 +1829,13 @@ function Course.MultiVehicleData:getSameTurnWidth()
     return self.sameTurnWidth
 end
 
-function Course.MultiVehicleData.createFromGeneratedCourse(generatedCourse)
+function Course.MultiVehicleData.createFromGeneratedCourse(vehicle, generatedCourse)
     local mvd = Course.MultiVehicleData(0, false)
     for _, position, path in generatedCourse:pathIterator() do
         mvd.waypoints[position] = createWaypointsFromGeneratedPath(path)
+        CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'Adding %d waypoints for position %d',
+                #mvd.waypoints[position], position)
+
     end
     return mvd
 end
