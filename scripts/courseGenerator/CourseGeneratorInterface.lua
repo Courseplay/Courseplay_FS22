@@ -104,7 +104,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 
     CourseGeneratorInterface.logger:debug('Generated course: %s', CourseGeneratorInterface.generatedCourse)
 
-    local course = Course.createFromGeneratedCourse(nil, CourseGeneratorInterface.generatedCourse,
+    local course = Course.createFromGeneratedCourse(vehicle, CourseGeneratorInterface.generatedCourse,
             settings.workWidth:getValue(), numberOfHeadlands, settings.multiTools:getValue())
     course:setFieldPolygon(fieldPolygon)
     return true, course
