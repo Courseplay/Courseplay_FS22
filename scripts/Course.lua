@@ -1749,17 +1749,23 @@ function Course.createFromStream(vehicle, streamId, connection)
     return course
 end
 
-function Course.createFromGeneratedCourse(vehicle, generatedCourse, workWidth, numberOfHeadlands, multiTools)
+local function createWaypointsFromGeneratedPath(path)
     local waypoints = {}
-    for i, wp in ipairs(generatedCourse:getPath()) do
+    for i, wp in ipairs(path) do
         table.insert(waypoints, Waypoint.initFromGeneratedWp(wp, i))
     end
+    return waypoints
+end
+
+function Course.createFromGeneratedCourse(vehicle, generatedCourse, workWidth, numberOfHeadlands, nVehicles)
+    local waypoints = createWaypointsFromGeneratedPath(generatedCourse:getPath())
     local course = Course(vehicle or g_currentMission.controlledVehicle, waypoints)
     course.workWidth = workWidth
     course.numberOfHeadlands = numberOfHeadlands
-    course.multiTools = multiTools
-    -- we always generate course for the middle position, other positions and symmetric lane change
-    -- are set in calculateOffsetCourse()
+    course.nVehicles = nVehicles
+    if course.nVehicles > 1 then
+        course.multiVehicleData = Course.MultiVehicleData(0, false)
+    end
     course.multiToolsPosition = 0
     course.multiToolsSameTurnWidth = false
     return course
@@ -1777,4 +1783,43 @@ function Course.createFromAnalyticPath(vehicle, path, isTemporary)
     CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle,
             'Last waypoint of the course created from analytical path: angle set to %.1f°', math.deg(yRot))
     return course
+end
+
+------------------------------------------------------------------------------------------------------------------------
+--- Courses for multiple vehicles working together on the same field as a group (multitool/convoy)
+---
+--- Course.waypoints is always the active course of the vehicle. For multi-vehicle courses, MultiVehicleData
+--- stores the course for each vehicle (position) of the group. When a new position is selected for a vehicle,
+--- we make Course.waypoints to point to the waypoint array of the selected position in MultiVehicleData.
+------------------------------------------------------------------------------------------------------------------------
+function Course:setPosition(position)
+    if self.multiVehicleData then
+        self.waypoints = self.multiVehicleData.waypoints[position]
+    else
+        CpUtil.errorVehicle(self.vehicle, 'Course:setPosition called on a single vehicle course')
+    end
+end
+
+Course.MultiVehicleData = CpObject()
+function Course.MultiVehicleData:init(position, sameTurnWidth)
+    self.position = position or 0
+    self.sameTurnWidth = sameTurnWidth or false
+    -- two dimensional array, first index is the position in the group, second index is the waypoint index
+    self.waypoints = {}
+end
+
+function Course.MultiVehicleData:getPosition()
+    return self.position
+end
+
+function Course.MultiVehicleData:getSameTurnWidth()
+    return self.sameTurnWidth
+end
+
+function Course.MultiVehicleData.createFromGeneratedCourse(generatedCourse)
+    local mvd = Course.MultiVehicleData(0, false)
+    for _, position, path in generatedCourse:pathIterator() do
+        mvd.waypoints[position] = createWaypointsFromGeneratedPath(path)
+    end
+    return mvd
 end

@@ -437,5 +437,9 @@ function FieldworkCourse:_getCachedHeadlands(boundaryId)
     return headlands
 end
 
+function FieldworkCourse:__tostring()
+    return string.format('%d/%d headland/center waypoints', #self:getHeadlandPath(), #self:getCenterPath())
+end
+
 ---@class CourseGenerator.FieldworkCourse
 CourseGenerator.FieldworkCourse = FieldworkCourse

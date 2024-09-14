@@ -80,8 +80,6 @@ end
 function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'setFieldWorkCourse', CpCourseManager.setFieldWorkCourse)
     SpecializationUtil.registerFunction(vehicleType, 'getFieldWorkCourse', CpCourseManager.getFieldWorkCourse)
-    SpecializationUtil.registerFunction(vehicleType, 'setOffsetFieldWorkCourse', CpCourseManager.setOffsetFieldWorkCourse)
-    SpecializationUtil.registerFunction(vehicleType, 'getOffsetFieldWorkCourse', CpCourseManager.getOffsetFieldWorkCourse)
     SpecializationUtil.registerFunction(vehicleType, 'addCpCourse', CpCourseManager.addCourse)
     SpecializationUtil.registerFunction(vehicleType, 'getCpCourses', CpCourseManager.getCourses)
     SpecializationUtil.registerFunction(vehicleType, 'hasCpCourse', CpCourseManager.hasCourse)
@@ -241,24 +239,6 @@ function CpCourseManager:getFieldWorkCourse()
     local spec = self.spec_cpCourseManager 
     --- TODO: For now only returns the first course.
     return spec.courses[1]
-end
-
---- Set the offset course which is generated for a multitool configuration (offset to the left or right when multiple
---- vehicles working on the same field)
---- We store this here as we have to generate the offset course at the start to see how far we need to drive to start working
---- and if we need a drive to task to that point. Now, since we already generated the offset course, we don't want to
---- do that again when the fieldwork task starts.
----@param course Course
-function CpCourseManager:setOffsetFieldWorkCourse(course)
-    local spec = self.spec_cpCourseManager
-    spec.offsetFieldWorkCourse = course
-end
-
---- If the offset course has been calculated for a multitool config, return here
----@return Course offset course
-function CpCourseManager:getOffsetFieldWorkCourse()
-    local spec = self.spec_cpCourseManager
-    return spec.offsetFieldWorkCourse
 end
 
 function CpCourseManager:getCourses()
