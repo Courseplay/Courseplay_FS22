@@ -19,7 +19,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     CourseGenerator.clearDebugObjects()
     local field = CourseGenerator.Field('', 0, CpMathUtil.pointsFromGame(fieldPolygon))
 
-    local context = CourseGenerator.FieldworkContext(field, settings.workWidth:getValue() * settings.multiTools:getValue(),
+    local context = CourseGenerator.FieldworkContext(field, settings.workWidth:getValue(),
             settings.turningRadius:getValue(), settings.numberOfHeadlands:getValue())
     local rowPatternNumber = settings.centerMode:getValue()
     if rowPatternNumber == CourseGenerator.RowPattern.ALTERNATING and settings.rowsToSkip:getValue() == 0 then
@@ -69,6 +69,19 @@ function CourseGeneratorInterface.generate(fieldPolygon,
                     return err
                 end
         )
+    elseif settings.multiTools:getValue() > 1 then
+        context:setNumberOfVehicles(settings.multiTools:getValue())
+        context:setHeadlands(settings.multiTools:getValue() * settings.numberOfHeadlands:getValue())
+        context:setIslandHeadlands(settings.multiTools:getValue() * settings.nIslandHeadlands:getValue())
+        status, CourseGeneratorInterface.generatedCourse = xpcall(
+                function()
+                    return CourseGenerator.FieldworkCourseMultiVehicle(context)
+                end,
+                function(err)
+                    printCallstack();
+                    return err
+                end
+        )
     else
         status, CourseGeneratorInterface.generatedCourse = xpcall(
                 function()
@@ -89,8 +102,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     -- the actual number of headlands generated may be less than the requested
     local numberOfHeadlands = CourseGeneratorInterface.generatedCourse:getNumberOfHeadlands()
 
-    CourseGeneratorInterface.logger:debug('Generated course: %d/%d headland/center waypoints',
-            #CourseGeneratorInterface.generatedCourse:getHeadlandPath(), #CourseGeneratorInterface.generatedCourse:getCenterPath())
+    CourseGeneratorInterface.logger:debug('Generated course: %s', CourseGeneratorInterface.generatedCourse)
 
     local course = Course.createFromGeneratedCourse(nil, CourseGeneratorInterface.generatedCourse,
             settings.workWidth:getValue(), numberOfHeadlands, settings.multiTools:getValue())
@@ -119,7 +131,7 @@ function CourseGeneratorInterface.generateVineCourse(
     CourseGenerator.clearDebugObjects()
     local field = CourseGenerator.Field('', 0, CpMathUtil.pointsFromGame(fieldPolygon))
 
-    local context = CourseGenerator.FieldworkContext(field, workWidth * multiTools, turningRadius, 0)
+    local context = CourseGenerator.FieldworkContext(field, workWidth, turningRadius, 0)
     if rowsToSkip == 0 then
         context:setRowPattern(CourseGenerator.RowPatternAlternating())
     else

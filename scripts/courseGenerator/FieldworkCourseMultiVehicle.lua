@@ -25,7 +25,10 @@
 
 ---@class FieldworkCourseMultiVehicle : CourseGenerator.FieldworkCourse
 local FieldworkCourseMultiVehicle = CpObject(CourseGenerator.FieldworkCourse)
-
+--- nHeadlands: must be the total number of headlands (each of working width) around the field. So with nVehicles == 2,
+--- nHeadlands == 4, each vehicle will work on 2 headlands. We'll round it up to the multiple of nVehicles.
+--- workingWidth: this is the actual working width of a single vehicle.
+---
 ---@param context CourseGenerator.FieldworkContext
 function FieldworkCourseMultiVehicle:init(context)
     self.logger = Logger('FieldworkCourseMultiVehicle', Logger.level.debug)
@@ -446,6 +449,15 @@ function FieldworkCourseMultiVehicle:_findShortestPathOnHeadland(headland, v1, v
     local cv2 = headland:getPolygon():findClosestVertexToPoint(v2)
     return headland:getPolygon():getShortestPathBetween(cv1.ix, cv2.ix)
 end
+
+function FieldworkCourseMultiVehicle:__tostring()
+    local str = string.format('Vehicles: %d', self.context.nVehicles)
+    for _, position, path in self:pathIterator() do
+        str = str .. string.format('\nposition %d: %d waypoints', position, #path)
+    end
+    return str
+end
+
 
 ---@class CourseGenerator.FieldworkCourseMultiVehicle : CourseGenerator.FieldworkCourse
 CourseGenerator.FieldworkCourseMultiVehicle = FieldworkCourseMultiVehicle

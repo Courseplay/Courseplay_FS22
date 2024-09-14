@@ -287,7 +287,7 @@ function Waypoint:setOriginalMultiToolReference(ix)
 	self.originalMultiToolReference = ix
 end
 
---- Get's the reference waypoint of the original fieldwork course,
+--- Gets the reference waypoint of the original fieldwork course,
 --- if the waypoint is part of a multi tool course.
 ---@return number|nil
 function Waypoint:getOriginalMultiToolReference()
