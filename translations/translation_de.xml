@@ -764,6 +764,7 @@ Die Bahnen haben immer den gleichen Namen:
 links(2), links(1), mitte, rechts(1), rechts(2).
 2 Fahrzeuge haben links(1) und rechts (1) zur Auswahl, 4 Fahrzeuge zudem noch links(2) und rechts(2).
 Mit 3 oder 5 Fahrzeugen ist dann auch die mittlere Bahn verfügbar.
+Wird die Bahn geändert, wird auch der sichtbare Kurs gewechselt. Somit wisst ihr immer, welcher Kurs für das jeweilige Fahrzeug benutzt wird.
 "/>
     <text name="CP_help_page_convoyBasic_text" text="
 Der Fahrzeugverband funktioniert nur, wenn die Fahrzeuge einen Multitoolkurs mit dem gleichen Namen geladen haben.
