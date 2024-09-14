@@ -328,6 +328,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="center"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Multiple tools"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Number of vehicles on the same course."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_title" text="Switching lanes"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_tooltip" text="Sets the lanes to always switch. This leads to similar turns. See help menu for more details."/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Rows follow field edge curve"/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="The rows follow the curvature of the field edge nearest to the field marker."/>
     <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Narrow field"/>
@@ -647,6 +649,7 @@ Before you play around with those settings, you should make sure you know what t
 Some expert settings only work properly under some conditions.
 
 - Multiple Tools: This setting is used when you want more than just one vehicle to work on your course. As this gets a bit more complicated, there is a separate help topic for it.
+- Switching lanes: Is this option active, the side of the vehicle will be &quot;switched&quot;, but the turns will always have the same lenght. See the extra help menu &quot;Switching lanes&quot; for more details.
 - Narrow field: Creates the headland only at two short edges of the field. In that case, it is not possible to keep your vehicle on the field on the longest edges at the headland.
 - Headland overlap: By default, headland passes overlap each other (but never the field edge) by a few percent to avoid missing fruit in some edge cases. You can change that overlap here.
 - Field margin: This setting lets you move the field border in- or outwards of the original border.

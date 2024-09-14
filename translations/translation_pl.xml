@@ -328,6 +328,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="Rzędów"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Wiele maszyn"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Ilość pojazdów pracujących na tym samym kurcie."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_title" text="Switching lanes"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_tooltip" text="Sets the lanes to always switch. This leads to similar turns. See help menu for more details."/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Krawędź pola krzywizną ścieżki"/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="Rzędy podążają za krzywizną krawędzi pola najbliżej znacznika pola."/>
     <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Wąskie pole"/>
