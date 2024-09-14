@@ -1101,6 +1101,14 @@
 			<Text language="de"><![CDATA[Wie viele Fahrzeuge zusammen auf dem Kurs fahren.]]></Text>
 			<Text language="en"><![CDATA[Number of vehicles on the same course.]]></Text>
 		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_title">
+			<Text language="de"><![CDATA[Bahnen tauschen]]></Text>
+			<Text language="en"><![CDATA[Switching lanes]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_tooltip">
+			<Text language="de"><![CDATA[Stellt ein ob die Bahnen in der Feldmitte getauscht werden sollen. Das führt zu gleichmäßigen Wendemanövern. Siehe Hilfemenü für mehr Details.]]></Text>
+			<Text language="en"><![CDATA[Sets the lanes to always switch. This leads to similar turns. See help menu for more details.]]></Text>
+		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title">
 			<Text language="de"><![CDATA[Bahnenform anhand Feldkante]]></Text>
 			<Text language="en"><![CDATA[Rows follow field edge curve]]></Text>
@@ -2101,6 +2109,7 @@ Einige Einstellungen sind erst dann sichtbar, wenn in den globalen CP Einstellun
 Bevor ihr euch mit den Einstellmöglichkeiten beschäftigt, solltet ihr euch erst mit den normalen Einstellungen vertraut machen, da nicht alle Experten Einstellungen ohne Einschränkung funktionieren werden.
 
 - Fahrzeuge auf dem Feld: Mit dieser Einstellung könnt ihr mehr als ein Fahrzeug das Feld abarbeiten lassen. Mehr Details dazu gibt es unter einem extra Punkt im Hilfemenü.
+- Bahnen tauschen: Ist diese Option aktiviert, wird die Seite des Fahrzeug "vertauscht", dafür sind die Wendemanöver für alle Bahnen gleich breit. Für mehr Details, schau dir dazu die Hilfeseite "Bahnen tauschen" an.
 - Enges Feld: Erzeugt nur an den kürzesten Feldrandseiten ein Vorgewende. Es lässt sich aktuell nicht vermeiden, dass Fahrzeuge an den langen Seiten im Vorgewende das Feld verlassen.
 - Vorgewende Überlappung: Es ist ein Standardwert eingestellt, der immer verwendet wird. Dieser kann aber mit dieser Einstellung angepasst werden. Die Überlappung findet innerhalb des Feldes statt und ragt nicht über den Feldrand hinaus.
 - Feldgrenze: Mit dieser Einstellung lässt sich die Feldgrenze weiter nach innen oder außen verschieben und somit lässt sich der normale Feldrand verschieben.
@@ -2113,6 +2122,7 @@ Before you play around with those settings, you should make sure you know what t
 Some expert settings only work properly under some conditions.
 
 - Multiple Tools: This setting is used when you want more than just one vehicle to work on your course. As this gets a bit more complicated, there is a separate help topic for it.
+- Switching lanes: Is this option active, the side of the vehicle will be "switched", but the turns will always have the same lenght. See the extra help menu "Switching lanes" for more details.
 - Narrow field: Creates the headland only at two short edges of the field. In that case, it is not possible to keep your vehicle on the field on the longest edges at the headland.
 - Headland overlap: By default, headland passes overlap each other (but never the field edge) by a few percent to avoid missing fruit in some edge cases. You can change that overlap here.
 - Field margin: This setting lets you move the field border in- or outwards of the original border.

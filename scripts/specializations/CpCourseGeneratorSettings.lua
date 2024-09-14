@@ -256,6 +256,11 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 --- Callbacks for the settings to manipulate the gui elements.
 ------------------------------------------------------------------------------------------------------------------------
+function CpCourseGeneratorSettings:hasMoreThenOneVehicle()
+    local spec = self.spec_cpCourseGeneratorSettings
+    return spec.multiTools:getValue() > 1
+end
+
 function CpCourseGeneratorSettings:hasHeadlandsSelected()
     local spec = self.spec_cpCourseGeneratorSettings
     return spec.numberOfHeadlands:getValue() > 0
