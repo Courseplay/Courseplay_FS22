@@ -1451,6 +1451,7 @@ local function saveWaypointsToXml(waypoints, xmlFile, key)
     end
 end
 
+--- From XML -----------------------------------------------------------------------------------------------------------
 local function createWaypointsFromXml(xmlFile, key)
     local waypoints = {}
     -- these are only saved for the row start waypoint, here we add them to all waypoints of the row
@@ -1482,21 +1483,6 @@ function Course:saveToXml(courseXml, courseKey)
     saveWaypointsToXml(self.waypoints, courseXml, courseKey)
     if self.nVehicles > 1 then
         self.multiVehicleData:setXmlValue(courseXml, courseKey)
-    end
-end
-
-function Course:writeStream(vehicle, streamId, connection)
-    streamWriteString(streamId, self.name or "")
-    streamWriteFloat32(streamId, self.workWidth or 0)
-    streamWriteInt32(streamId, self.numberOfHeadlands or 0)
-    streamWriteInt32(streamId, self.nVehicles or 1)
-    streamWriteInt32(streamId, #self.waypoints or 0)
-    streamWriteBool(streamId, self.editedByCourseEditor)
-    for i, p in ipairs(self.waypoints) do
-        p:writeStream(streamId)
-    end
-    if self.nVehicles > 1 then
-        self.multiVehicleData:writeStream(streamId)
     end
 end
 
@@ -1532,6 +1518,22 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
     return course
 end
 
+--- From stream --------------------------------------------------------------------------------------------------------
+function Course:writeStream(vehicle, streamId, connection)
+    streamWriteString(streamId, self.name or "")
+    streamWriteFloat32(streamId, self.workWidth or 0)
+    streamWriteInt32(streamId, self.numberOfHeadlands or 0)
+    streamWriteInt32(streamId, self.nVehicles or 1)
+    streamWriteInt32(streamId, #self.waypoints or 0)
+    streamWriteBool(streamId, self.editedByCourseEditor)
+    for i, p in ipairs(self.waypoints) do
+        p:writeStream(streamId)
+    end
+    if self.nVehicles > 1 then
+        self.multiVehicleData:writeStream(streamId)
+    end
+end
+
 function Course.createFromStream(vehicle, streamId, connection)
     local name = streamReadString(streamId)
     local workWidth = streamReadFloat32(streamId)
@@ -1557,6 +1559,7 @@ function Course.createFromStream(vehicle, streamId, connection)
     return course
 end
 
+--- From generator ------------------------------------------------------------------------------------------------------
 local function createWaypointsFromGeneratedPath(path)
     local waypoints = {}
     for i, wp in ipairs(path) do

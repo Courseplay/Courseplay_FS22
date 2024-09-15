@@ -8,9 +8,9 @@
 --- At that point, most of the semantics of the original course are lost and makes it difficult to restore, things
 --- like headland/center transitions, connecting paths, etc.
 ---
---- The above approach works well for the center, probably the only approach that works for any row pattern so this
---- course will generate the center with the multi-vehicle working width, and provides methods to calculate the
---- center part for the individual vehicles.
+--- The above approach works well for the center though, probably the only approach that works for any row pattern so
+--- this class generates the center with the multi-vehicle working width, and then calculates the offset path for each
+--- individual vehicle.
 ---
 --- For the headlands though, it is better to generate them with the single working width and then pick and connect
 --- the headlands for the individual vehicles.
@@ -51,11 +51,13 @@ function FieldworkCourseMultiVehicle:init(context)
     end
 
     self:_setContext(context)
+    -- these are 2D arrays, since we have everything for each vehicle, therefore, first index is the vehicle
     self.paths = {}
     self.headlandPaths = {}
     self.centerPaths = {}
-    self.circledIslands = {}
     self.circledBigIslands = {}
+
+    self.circledIslands = {}
     self.headlandCache = CourseGenerator.CacheMap()
 
     self.logger:debug('### Generating headlands around the field perimeter ###')
@@ -99,7 +101,9 @@ function FieldworkCourseMultiVehicle:init(context)
     if self.context.bypassIslands then
         self:bypassSmallIslandsInCenter()
     end
+
     self:_generateCenterForAllVehicles()
+
     if self.context.bypassIslands then
         self.logger:debug('### Bypassing big islands in the center: create path around them ###')
         for i, _, path in self:pathIterator() do
@@ -306,8 +310,6 @@ function FieldworkCourseMultiVehicle:_setupIslandHeadlandsForVehicles()
     end
 end
 ------------------------------------------------------------------------------------------------------------------------
-
-
 --- Generate the center path for all vehicles in the group, by offsetting the single, multi-vehicle center path.
 function FieldworkCourseMultiVehicle:_generateCenterForAllVehicles()
     self.logger:debug('### Generating center for all vehicles ###')
@@ -401,53 +403,6 @@ function FieldworkCourseMultiVehicle:_offsetConnectingPath(path, ix, offsetVecto
     local offsetConnectingPath = _generateOffsetSection(section, offsetVector)
     _appendOffsetSection(section, offsetConnectingPath, offsetPath)
     return i
-end
-
---- Connecting paths were generated for the single-vehicle center course with the multi-vehicle working width.
---- They are on the innermost headland (as that is the boundary of the center), which is only correct for the
---- vehicle which worked on that headland. For the other vehicles, the connecting paths need to be regenerated
---- to be on the headland that vehicle works as the innermost.
-function FieldworkCourseMultiVehicle:_regenerateConnectingPaths(path, innermostHeadlandForVehicle)
-    local regeneratedPath = Polyline()
-    local i, firstVertexOfConnectingPath = 1, nil
-    repeat
-        -- always know on which headland we are
-        if path[i]:getAttributes():isOnConnectingPath() then
-            if not firstVertexOfConnectingPath then
-                -- remember the first vertex of the connecting path and skip the rest
-                self.logger:debug('Found a connecting path at %d', i)
-                firstVertexOfConnectingPath = path[i - 1] or path[i]
-            end
-            i = i + 1
-        else
-            if firstVertexOfConnectingPath then
-                -- once the connecting path ends, regenerate it, using the innermost headland for the vehicle
-                self.logger:debug('Connecting path ended at %d, boundary %s, regenerating on %s', i,
-                        path[i]:getAttributes():getAtBoundaryId(), innermostHeadlandForVehicle)
-                local connectingPath = self:_findShortestPathOnHeadland(innermostHeadlandForVehicle,
-                        firstVertexOfConnectingPath, path[i])
-                firstVertexOfConnectingPath = nil
-                for _, v in ipairs(connectingPath) do
-                    regeneratedPath:append(v)
-                end
-            else
-                regeneratedPath:append(path[i])
-                i = i + 1
-            end
-        end
-    until i > #path
-    regeneratedPath:setAttribute(nil, CourseGenerator.WaypointAttributes.setHeadlandPassNumber,
-            innermostHeadlandForVehicle:getPassNumber())
-    regeneratedPath:setAttribute(nil, CourseGenerator.WaypointAttributes.setAtBoundaryId,
-            innermostHeadlandForVehicle:getBoundaryId())
-    regeneratedPath:setAttribute(nil, CourseGenerator.WaypointAttributes.setOnConnectingPath, true)
-    return regeneratedPath
-end
-
-function FieldworkCourseMultiVehicle:_findShortestPathOnHeadland(headland, v1, v2)
-    local cv1 = headland:getPolygon():findClosestVertexToPoint(v1)
-    local cv2 = headland:getPolygon():findClosestVertexToPoint(v2)
-    return headland:getPolygon():getShortestPathBetween(cv1.ix, cv2.ix)
 end
 
 function FieldworkCourseMultiVehicle:__tostring()
