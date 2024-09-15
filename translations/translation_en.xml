@@ -809,13 +809,25 @@ installed you can use it to run and unload the bale collector automatically.
 "/>
     <text name="CP_help_page_symetricLaneChange_title" text="Lane switch"/>
     <text name="CP_help_page_symetricLaneChangeBasic_text" text="
-ENG
+Lane switching is used on multitool course and tells the Helper, in wich lane he should drive after the turn.
+With active lance switch, the vehicle changes the side.
+This is a bit hard to understand so let's have a look at two examples.
 "/>
     <text name="CP_help_page_symetricLaneChangeExampleOff_text" text="
-ENG
+If switching lanes is turned off, the vehicle stays on the left or on the right side of each other.
+Like that, there won't be any conflict with any accommodate other driver.
 "/>
     <text name="CP_help_page_symetricLaneChangeExampleOn_text" text="
-ENG
+If switching lanes is active, for example for two vehicles, vehicle A left and vehicle B right, after then turn the lanes are switched.
+That means A is then on the right and B is then on the left.
+The advantage is that all vehicle have the same turn width and therefore the same distance to drive.
+For combines this setting is important, as it make sure the pipe stays outside of the fruit and not reach in anotehr lane.
+Disadvantage is that vehicles have a chanze to colide with each other when they drive towards each other on near by lanes.
+
+If you have a look at the order of the lanes, from left to right, it will be clear:
+Without symmetric change: left, right, left, right - it is almost like skipping a lane.
+With symmetric change: left, right, right, left - from left to right, one lane after the other.
+In the example with the Combine it means, no Combine will have fruit left and right of its lane.
 "/>
     <text name="CP_help_page_infoPanel_title" text="Info panel"/>
     <text name="CP_help_page_infoPanelBasic_text" text="
