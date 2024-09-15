@@ -796,13 +796,6 @@ function AIDriveStrategyFieldWorkCourse:updateCpStatus(status)
     if self.fieldWorkCourse then
         local ix = self.fieldWorkCourse:getCurrentWaypointIx()
         local numWps = self.fieldWorkCourse:getNumberOfWaypoints()
-        if self.fieldWorkCourse:getMultiTools()>1 then 
-            numWps = self.originalGeneratedFieldWorkCourse:getNumberOfWaypoints()
-            --- Find the closed waypoint to the vehicle
-            ix = self.fieldWorkCourse:getCurrentWaypointReferenceIx()
-           
-        end
-
         status:setWaypointData(ix, numWps, self.remainingTime:getText())
     end
 end
