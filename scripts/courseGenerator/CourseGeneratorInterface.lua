@@ -73,6 +73,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
         context:setNumberOfVehicles(settings.multiTools:getValue())
         context:setHeadlands(settings.multiTools:getValue() * settings.numberOfHeadlands:getValue())
         context:setIslandHeadlands(settings.multiTools:getValue() * settings.nIslandHeadlands:getValue())
+        context:setUseSameTurnWidth(settings.useSameTurnWidth:getValue())
         status, CourseGeneratorInterface.generatedCourse = xpcall(
                 function()
                     return CourseGenerator.FieldworkCourseMultiVehicle(context)
