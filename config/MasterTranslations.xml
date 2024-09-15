@@ -2398,9 +2398,11 @@ Click the save button at the bottom to finish drawing the field.
 		<Translation name="CP_help_page_multitoolBasic_text">
 			<Text language="de"><![CDATA[
 Es ist möglich, bis zu 5 Fahrzeuge zusammen auf einem Feld in einem Fahrzeugverband arbeiten zu lassen (auch Multitoolkurs genannt).
+Die einzelnen Kurse für die Fahrzeuge werden alle zusammen generiert und können über das HUD gewechselt werden.
 ]]></Text>
 			<Text language="en"><![CDATA[
 It is possible to have up to 5 vehicles working together on the same field in a convoy (also called multi tools course).
+All courses for the vehicle being generated together and can be switched on the HUD.
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_multitoolFunction_text">
