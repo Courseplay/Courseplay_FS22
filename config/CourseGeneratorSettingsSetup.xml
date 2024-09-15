@@ -11,6 +11,7 @@
 	<SettingSubTitle title="basic">
 		<Setting classType="AIParameterSettingList" name="workWidth" min="0.5" max="50" incremental="0.1" unit="2" setDefault="setAutomaticWorkWidthAndOffset" onChangeCallback="cpShowWorkWidth" isVisible="isWorkWidthSettingVisible"/>
 		<Setting classType="AIParameterSettingList" name="multiTools" min="1" max="5" default="1" isExpertModeOnly="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="useSameTurnWidth" isVisible="hasMoreThenOneVehicle" isExpertModeOnly="true"/>
 		<Setting classType="AIParameterSettingList" name="numberOfHeadlands" min="0" max="40"/>
 		<Setting classType="AIParameterBooleanSetting" name="narrowField" defaultBool="false" isVisible="hasHeadlandsSelected" isExpertModeOnly="true"/>
 		<Setting classType="AIParameterBooleanSetting" name="startOnHeadland" defaultBool="true" isVisible="canStartOnRows">
@@ -60,7 +61,6 @@
 		</Setting>
 		<Setting classType="AIParameterBooleanSetting" name="evenRowWidth" defaultBool="false"/>
 		<Setting classType="AIParameterBooleanSetting" name="useBaseLineEdge" defaultBool="false" isExpertModeOnly="true"/>
-		<!--For Testing only:<Setting classType="AIParameterBooleanSetting" name="reverse" defaultBool="false"/>-->
 		<Setting classType="AIParameterBooleanSetting" name="autoRowAngle" defaultBool="true">
 			<Texts>
 				<Text>manual</Text>

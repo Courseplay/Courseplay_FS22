@@ -328,6 +328,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="center"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Multiple tools"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Number of vehicles on the same course."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_title" text="Switching lanes"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_tooltip" text="Sets the lanes to always switch. This leads to similar turns. See help menu for more details."/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Rows follow field edge curve"/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="The rows follow the curvature of the field edge nearest to the field marker."/>
     <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Narrow field"/>
@@ -647,6 +649,7 @@ Before you play around with those settings, you should make sure you know what t
 Some expert settings only work properly under some conditions.
 
 - Multiple Tools: This setting is used when you want more than just one vehicle to work on your course. As this gets a bit more complicated, there is a separate help topic for it.
+- Switching lanes: Is this option active, the side of the vehicle will be &quot;switched&quot;, but the turns will always have the same lenght. See the extra help menu &quot;Switching lanes&quot; for more details.
 - Narrow field: Creates the headland only at two short edges of the field. In that case, it is not possible to keep your vehicle on the field on the longest edges at the headland.
 - Headland overlap: By default, headland passes overlap each other (but never the field edge) by a few percent to avoid missing fruit in some edge cases. You can change that overlap here.
 - Field margin: This setting lets you move the field border in- or outwards of the original border.
@@ -761,6 +764,7 @@ Click the save button at the bottom to finish drawing the field.
     <text name="CP_help_page_multiConvoy_title" text="Multitool and Convoy"/>
     <text name="CP_help_page_multitoolBasic_text" text="
 It is possible to have up to 5 vehicles working together on the same field in a convoy (also called multi tools course).
+All courses for the vehicle being generated together and can be switched on the HUD.
 "/>
     <text name="CP_help_page_multitoolFunction_text" text="
 Once a multi tool course is loaded you will need to select the lane for the driver.
@@ -768,6 +772,7 @@ Those lanes are always named the same:
 left(2), left(1), center, right(1), right(2).
 2 vehicles will have left(1) and right(1), 4 will have left(2) and right(2).
 With 3 or 5 vehicles you will also gain the center option.
+Selecting a different lane, the visual course will also change. Like that you will always know which course is for the current vehicle.
 "/>
     <text name="CP_help_page_convoyBasic_text" text="
 The convoy only works if the vehicles have the same multi tool course with the same name loaded.
@@ -803,21 +808,23 @@ Collecting bales works kinda the same, with or without a course.
 When the collector is full, it will stop the work and tells the user it needs to be unloaded. If you have AutoDrive
 installed you can use it to run and unload the bale collector automatically.
 "/>
-    <text name="CP_help_page_symetricLaneChange_title" text="Symetric lange change"/>
+    <text name="CP_help_page_symetricLaneChange_title" text="Lane switch"/>
     <text name="CP_help_page_symetricLaneChangeBasic_text" text="
-Symmetric lane change is used in multitool courses and tells the driver in which lane he has to drive after the turn.
+Lane switching is used on multitool course and tells the Helper, in wich lane he should drive after the turn.
+With active lance switch, the vehicle changes the side.
 This is a bit hard to understand so let's have a look at two examples.
 "/>
     <text name="CP_help_page_symetricLaneChangeExampleOff_text" text="
-When the symmetric lane change is turned off, the vehicle stays on it's offset lane.
-That means he always drives left or right from the course.
-This ensures, that the helpers are not driving alongside each other.
-There won't be a risk of on conflict with another driver.
+If switching lanes is turned off, the vehicle stays on the left or on the right side of each other.
+Like that, there won't be any conflict with any accommodate other driver.
 "/>
     <text name="CP_help_page_symetricLaneChangeExampleOn_text" text="
-If symmetric lane change is turned on, left and right will be exchanged (but not shown in the HUD).
-Vehicles can conflict with each other, when they drive towards each other.
-What is the advantage of symmetric lange change then ?
+If switching lanes is active, for example for two vehicles, vehicle A left and vehicle B right, after then turn the lanes are switched.
+That means A is then on the right and B is then on the left.
+The advantage is that all vehicle have the same turn width and therefore the same distance to drive.
+For combines this setting is important, as it make sure the pipe stays outside of the fruit and not reach in anotehr lane.
+Disadvantage is that vehicles have a chanze to colide with each other when they drive towards each other on near by lanes.
+
 If you have a look at the order of the lanes, from left to right, it will be clear:
 Without symmetric change: left, right, left, right - it is almost like skipping a lane.
 With symmetric change: left, right, right, left - from left to right, one lane after the other.

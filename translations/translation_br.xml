@@ -328,6 +328,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="Cabeceira"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Multiplos implementos"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Números dos veículos na mesma rota."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_title" text="Switching lanes"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_tooltip" text="Sets the lanes to always switch. This leads to similar turns. See help menu for more details."/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Field edge for line form"/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="As faixas seguem a curvatura da borda do campo mais próxima do marcador de campo."/>
     <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Campo estreito"/>

@@ -328,6 +328,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="Bahnen"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Fahrzeuge auf dem Kurs"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Wie viele Fahrzeuge zusammen auf dem Kurs fahren."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_title" text="Bahnen tauschen"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_tooltip" text="Stellt ein ob die Bahnen in der Feldmitte getauscht werden sollen. Das führt zu gleichmäßigen Wendemanövern. Siehe Hilfemenü für mehr Details."/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Bahnenform anhand Feldkante"/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="Die Feldkante, die am nächsten am Feldmarker ist, wird verwendet, um den Verlauf der Bahnen zu bestimmen."/>
     <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Schmales Feld"/>
@@ -641,6 +643,7 @@ Einige Einstellungen sind erst dann sichtbar, wenn in den globalen CP Einstellun
 Bevor ihr euch mit den Einstellmöglichkeiten beschäftigt, solltet ihr euch erst mit den normalen Einstellungen vertraut machen, da nicht alle Experten Einstellungen ohne Einschränkung funktionieren werden.
 
 - Fahrzeuge auf dem Feld: Mit dieser Einstellung könnt ihr mehr als ein Fahrzeug das Feld abarbeiten lassen. Mehr Details dazu gibt es unter einem extra Punkt im Hilfemenü.
+- Bahnen tauschen: Ist diese Option aktiviert, wird die Seite des Fahrzeug &quot;vertauscht&quot;, dafür sind die Wendemanöver für alle Bahnen gleich breit. Für mehr Details, schau dir dazu die Hilfeseite &quot;Bahnen tauschen&quot; an.
 - Enges Feld: Erzeugt nur an den kürzesten Feldrandseiten ein Vorgewende. Es lässt sich aktuell nicht vermeiden, dass Fahrzeuge an den langen Seiten im Vorgewende das Feld verlassen.
 - Vorgewende Überlappung: Es ist ein Standardwert eingestellt, der immer verwendet wird. Dieser kann aber mit dieser Einstellung angepasst werden. Die Überlappung findet innerhalb des Feldes statt und ragt nicht über den Feldrand hinaus.
 - Feldgrenze: Mit dieser Einstellung lässt sich die Feldgrenze weiter nach innen oder außen verschieben und somit lässt sich der normale Feldrand verschieben.
@@ -754,6 +757,7 @@ Mit einem weiteren Rechtsklick wird eine Linie von deinem ersten zum zweiten Pun
     <text name="CP_help_page_multiConvoy_title" text="Multitool und Fahrzeugverband"/>
     <text name="CP_help_page_multitoolBasic_text" text="
 Es ist möglich, bis zu 5 Fahrzeuge zusammen auf einem Feld in einem Fahrzeugverband arbeiten zu lassen (auch Multitoolkurs genannt).
+Die einzelnen Kurse für die Fahrzeuge werden alle zusammen generiert und können über das HUD gewechselt werden.
 "/>
     <text name="CP_help_page_multitoolFunction_text" text="
 Sobald ein Multitoolkurs geladen ist, muss die Bahn gewählt werden, auf der gefahren werden soll.
@@ -761,6 +765,7 @@ Die Bahnen haben immer den gleichen Namen:
 links(2), links(1), mitte, rechts(1), rechts(2).
 2 Fahrzeuge haben links(1) und rechts (1) zur Auswahl, 4 Fahrzeuge zudem noch links(2) und rechts(2).
 Mit 3 oder 5 Fahrzeugen ist dann auch die mittlere Bahn verfügbar.
+Wird die Bahn geändert, wird auch der sichtbare Kurs gewechselt. Somit wisst ihr immer, welcher Kurs für das jeweilige Fahrzeug benutzt wird.
 "/>
     <text name="CP_help_page_convoyBasic_text" text="
 Der Fahrzeugverband funktioniert nur, wenn die Fahrzeuge einen Multitoolkurs mit dem gleichen Namen geladen haben.
@@ -795,24 +800,26 @@ Das Sammeln von Ballen funktioniert im Grunde genauso wie das Wickeln, mit und o
 Wenn der Sammler voll ist, wird er stehen bleiben und eine Meldung im Infofenster ausgeben, dass er entladen werden muss.
 Hast du AutoDrive installiert, lässt sich das Entladen auch komplett automatisieren. Siehe dir dazu AutoDrive-Tutorials an.
 "/>
-    <text name="CP_help_page_symetricLaneChange_title" text="Symmetrischer Bahnenwechsel"/>
+    <text name="CP_help_page_symetricLaneChange_title" text="Bahnen tauschen"/>
     <text name="CP_help_page_symetricLaneChangeBasic_text" text="
-Der symmetrische Bahnenwechsel wird in Multitoolkursen benutzt und sagt dem Helfer, in welche Bahn er nach dem Wendemanöver fahren soll.
+Das tauschen der Bahnen wird in Multitoolkursen benutzt und sagt dem Helfer, in welche Bahn er nach dem Wendemanöver fahren soll.
+Beim aktiven tauschen, wechseln die Fahrer die Seite.
 Da dies etwas zu kompliziert zu erklären ist, werfen wir einen Blick auf 2 Beispiele.
 "/>
     <text name="CP_help_page_symetricLaneChangeExampleOff_text" text="
-Ist der symmetrische Bahnenwechsel ausgeschaltet, bleibt das Fahrzeug immer auf seiner Offset-Bahn.
-Das heißt, er fährt immer links oder rechts vom Kurs.
-Das hat den Vorteil, dass die Offset-Bahnen keinen direkten Begegnungsverkehr haben.
-Somit wird es keinen Kontakt zwischen 2 Geräten geben, falls sie aufeinander fahren.
+Ist Bahnen tauschen ausgeschaltet, bleibt das Fahrzeug immer links oder rechts vom jeweils anderen.
+Somit entsteht auch kein direkter Gegenverkehr und kein Kontakt zwischen den Fahrzeugen.
 "/>
     <text name="CP_help_page_symetricLaneChangeExampleOn_text" text="
-Bei eingeschaltetem Bahnenwechsel wird beim Wendemanöver links und rechts getauscht (nicht aber im HUD).
-Das führt dazu, dass Fahrzeuge auf direkt aneinader liegenden Bahnen fahren können. Sollten die Geräte zu breit sein, kann es zu einer Kollision kommen.
-Was bringt der symmetrische Bahnenwechsel dann?
+Ist Bahnen tauschen eingeschaltet wird bei z.B. zwei Fahrzeugen, Fahrzeug A links und Fahrzeug B rechts, nach dem Wendemanöver die Bahn getauscht.
+Das heist dann ist Fahrzeug A rechts und Fahrzeug B links.
+Der Vorteil ist, dass alle Fahrzeuge die gleiche breite eines Wendemanövers haben und somit die gleiche Strecke zurücklegen.
+Für Ernter ist das relativ wichtig, da so das Rohr immer frei zugängig ist.
+Nachteil ist, dass sich die Fahrzeug so begegnen können.
+
 Schaut man sich die Reihenfolge der Bahnen an, die von links nach rechts bearbeitet werden, wird es klar:
-Ohne symmetrischen Wechsel: links, rechts, links, rechts - fast wie eine Bahn überspringen.
-Mit symmetrischen Wechsel: links, rechts, rechts, links - von links nach rechts, also eine Bahn nach der anderen.
+Ohne Bahnen tauschen: links, rechts, links, rechts - fast wie eine Bahn überspringen.
+Mit Bahnen tauschen: links, rechts, rechts, links - von links nach rechts, also eine Bahn nach der anderen.
 In dem Beispiel mit den Dreschern sorgt das dafür, dass kein Drescher links und rechts eine Bahn mit Frucht neben sich hat.
 "/>
     <text name="CP_help_page_infoPanel_title" text="Infofenster"/>
