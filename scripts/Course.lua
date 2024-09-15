@@ -1508,11 +1508,19 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
     local nVehicles = courseXml:getValue(courseKey .. '#nVehicles')
     local wasEdited = courseXml:getValue(courseKey .. '#wasEdited', false)
     local waypoints = createWaypointsFromXml(courseXml, courseKey)
+    if #waypoints == 0 then
+        CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'No waypoints loaded, trying old format')
+        courseXml:iterate(courseKey .. '.waypoints' .. Waypoint.xmlKey, function(ix, key)
+            local d
+            d = CpUtil.getXmlVectorValues(courseXml:getString(key))
+            table.insert(waypoints, Waypoint.initFromXmlFileLegacyFormat(d, ix))
+        end)
+    end
     local course = Course(vehicle, waypoints)
     course.name = name
     course.workWidth = workWidth
     course.numberOfHeadlands = numberOfHeadlands
-    course.nVehicles = nVehicles or multiTools
+    course.nVehicles = nVehicles or 1
     course.editedByCourseEditor = wasEdited
     if nVehicles and nVehicles > 1 then
         course.multiVehicleData = Course.MultiVehicleData.createFromXmlFile(courseXml, courseKey)
