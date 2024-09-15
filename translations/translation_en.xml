@@ -764,6 +764,7 @@ Click the save button at the bottom to finish drawing the field.
     <text name="CP_help_page_multiConvoy_title" text="Multitool and Convoy"/>
     <text name="CP_help_page_multitoolBasic_text" text="
 It is possible to have up to 5 vehicles working together on the same field in a convoy (also called multi tools course).
+All courses for the vehicle being generated together and can be switched on the HUD.
 "/>
     <text name="CP_help_page_multitoolFunction_text" text="
 Once a multi tool course is loaded you will need to select the lane for the driver.
