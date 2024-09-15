@@ -14,7 +14,7 @@ function FieldScanner:init(resolution)
     -- sure if it is 1 or 0.5, so 0.2 seems to be a safe bet
     self.resolution = resolution or 0.2
     self.highResolution = 0.1
-    self.normalTracerLookahead = 2.0
+    self.normalTracerLookahead = 3.0
     self.shortTracerLookahead = self.normalTracerLookahead / 10
     self.angleStep = self.highResolution / self.normalTracerLookahead
 end
