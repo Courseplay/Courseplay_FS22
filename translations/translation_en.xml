@@ -807,25 +807,15 @@ Collecting bales works kinda the same, with or without a course.
 When the collector is full, it will stop the work and tells the user it needs to be unloaded. If you have AutoDrive
 installed you can use it to run and unload the bale collector automatically.
 "/>
-    <text name="CP_help_page_symetricLaneChange_title" text="Symetric lange change"/>
+    <text name="CP_help_page_symetricLaneChange_title" text="Lane switch"/>
     <text name="CP_help_page_symetricLaneChangeBasic_text" text="
-Symmetric lane change is used in multitool courses and tells the driver in which lane he has to drive after the turn.
-This is a bit hard to understand so let's have a look at two examples.
+ENG
 "/>
     <text name="CP_help_page_symetricLaneChangeExampleOff_text" text="
-When the symmetric lane change is turned off, the vehicle stays on it's offset lane.
-That means he always drives left or right from the course.
-This ensures, that the helpers are not driving alongside each other.
-There won't be a risk of on conflict with another driver.
+ENG
 "/>
     <text name="CP_help_page_symetricLaneChangeExampleOn_text" text="
-If symmetric lane change is turned on, left and right will be exchanged (but not shown in the HUD).
-Vehicles can conflict with each other, when they drive towards each other.
-What is the advantage of symmetric lange change then ?
-If you have a look at the order of the lanes, from left to right, it will be clear:
-Without symmetric change: left, right, left, right - it is almost like skipping a lane.
-With symmetric change: left, right, right, left - from left to right, one lane after the other.
-In the example with the Combine it means, no Combine will have fruit left and right of its lane.
+ENG
 "/>
     <text name="CP_help_page_infoPanel_title" text="Info panel"/>
     <text name="CP_help_page_infoPanelBasic_text" text="
