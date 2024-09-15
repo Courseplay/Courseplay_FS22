@@ -1495,6 +1495,9 @@ function Course:writeStream(vehicle, streamId, connection)
     for i, p in ipairs(self.waypoints) do
         p:writeStream(streamId)
     end
+    if self.nVehicles > 1 then
+        self.multiVehicleData:writeStream(streamId)
+    end
 end
 
 ---@param vehicle  table
@@ -1533,7 +1536,7 @@ function Course.createFromStream(vehicle, streamId, connection)
     local name = streamReadString(streamId)
     local workWidth = streamReadFloat32(streamId)
     local numberOfHeadlands = streamReadInt32(streamId)
-    local multiTools = streamReadInt32(streamId)
+    local nVehicles = streamReadInt32(streamId)
     local numWaypoints = streamReadInt32(streamId)
     local wasEdited = streamReadBool(streamId)
     local waypoints = {}
@@ -1544,9 +1547,13 @@ function Course.createFromStream(vehicle, streamId, connection)
     course.name = name
     course.workWidth = workWidth
     course.numberOfHeadlands = numberOfHeadlands
-    course.nVehicles = multiTools
+    course.nVehicles = nVehicles
     course.editedByCourseEditor = wasEdited
-    CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
+    if nVehicles > 1 then
+        course.multiVehicleData = Course.MultiVehicleData.createFromStream(streamId, nVehicles)
+    end
+    CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER, vehicle, 'Course with %d waypoints, %d vehicles loaded.',
+            #course.waypoints, nVehicles)
     return course
 end
 
@@ -1642,6 +1649,7 @@ function Course.MultiVehicleData.createFromGeneratedCourse(vehicle, generatedCou
     return mvd
 end
 
+--- XML ----------------------------------------------------------------------------------------------------------------
 function Course.MultiVehicleData.registerXmlSchema(schema, baseKey)
     local key = baseKey .. Course.MultiVehicleData.key
     schema:register(XMLValueType.INT, key .. "#selectedPosition", "Selected position")
@@ -1672,5 +1680,31 @@ function Course.MultiVehicleData.createFromXmlFile(xmlFile, baseKey)
         local position = xmlFile:getValue(posKey .. '#position')
         mvd.waypoints[position] = createWaypointsFromXml(xmlFile, posKey)
     end)
+    return mvd
+end
+
+--- Stream -------------------------------------------------------------------------------------------------------------
+function Course.MultiVehicleData:writeStream(stream)
+    streamWriteInt32(stream, self.position)
+    for position, waypoints in pairs(self.waypoints) do
+        streamWriteInt32(stream, position)
+        streamWriteInt32(stream, #waypoints)
+        for i, wp in ipairs(waypoints) do
+            wp:writeStream(stream)
+        end
+    end
+end
+
+function Course.MultiVehicleData.createFromStream(stream, nVehicles)
+    local selectedPosition = streamReadInt32(stream)
+    local mvd = Course.MultiVehicleData(selectedPosition)
+    for i = 1, nVehicles do
+        local position = streamReadInt32(stream)
+        local nWaypoints = streamReadInt32(stream)
+        mvd.waypoints[position] = {}
+        for ix = 1, nWaypoints do
+            table.insert(mvd.waypoints[position], Waypoint.createFromStream(stream, ix))
+        end
+    end
     return mvd
 end
