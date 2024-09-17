@@ -1576,7 +1576,6 @@ function Course.createFromGeneratedCourse(vehicle, generatedCourse, workWidth, n
     course.nVehicles = nVehicles
     if course.nVehicles > 1 then
         course.multiVehicleData = Course.MultiVehicleData.createFromGeneratedCourse(vehicle, generatedCourse)
-        course:setPosition(vehicle:getCpLaneOffsetSetting():getValue())
     end
     return course
 end

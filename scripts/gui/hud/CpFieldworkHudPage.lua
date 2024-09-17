@@ -64,9 +64,6 @@ function CpFieldWorkHudPageElement:setupElements(baseHud, vehicle, lines, wMargi
     self.laneOffsetBtn = baseHud:addRightLineTextButton(self, 5, CpBaseHud.defaultFontSize, 
     function (vehicle)
         vehicle:getCpLaneOffsetSetting():setNextItem()
-        vehicle:getFieldWorkCourse():setPosition(vehicle:getCpLaneOffsetSetting():getValue())
-        -- TODO: is this the good way to refresh the course?
-        SpecializationUtil.raiseEvent(vehicle, "onCpCourseChange", vehicle:getFieldWorkCourse(), false)
     end, vehicle)
 
 

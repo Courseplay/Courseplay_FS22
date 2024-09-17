@@ -226,6 +226,11 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
     end
 
     vehicle:setFieldWorkCourse(course)
+    if course and course:getMultiTools() > 1 then
+        --- Um das Setting zu übernehmen warten wir bis der Kurs ins Fahrzeug geladen ist.
+        --- Zusätzlich muss dieses jetzt noch geupdated werden.
+        course:setPosition(vehicle:getCpLaneOffsetSetting():getValue())
+    end
 end
 
 function CpAIJobFieldWork:isPipeOnLeftSide(vehicle)
