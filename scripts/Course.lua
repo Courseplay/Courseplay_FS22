@@ -1513,7 +1513,7 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
     course.editedByCourseEditor = wasEdited
     if nVehicles and nVehicles > 1 then
         course.multiVehicleData = Course.MultiVehicleData.createFromXmlFile(courseXml, courseKey)
-        vehicle:getCpLaneOffsetSetting():setLaneOffset(course.multiVehicleData:getPosition())
+        vehicle:getCpLaneOffsetSetting():setValue(course.multiVehicleData:getPosition())
     end
     CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
     return course
@@ -1554,7 +1554,7 @@ function Course.createFromStream(vehicle, streamId, connection)
     course.editedByCourseEditor = wasEdited
     if nVehicles > 1 then
         course.multiVehicleData = Course.MultiVehicleData.createFromStream(streamId, nVehicles)
-        vehicle:getCpLaneOffsetSetting():setLaneOffset(course.multiVehicleData:getPosition())
+        vehicle:getCpLaneOffsetSetting():setValue(course.multiVehicleData:getPosition())
     end
     CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER, vehicle, 'Course with %d waypoints, %d vehicles loaded.',
             #course.waypoints, nVehicles)
