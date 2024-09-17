@@ -1608,7 +1608,7 @@ end
 --- there are at least 4 vehicles in the group), a 0 means the vehicle in the middle
 function Course:setPosition(position)
     if self.multiVehicleData then
-        if not self.waypoints[position] then
+        if not self.multiVehicleData.waypoints[position] then
             CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course position %d does not exist, setting default',
                     position, #self.waypoints)
             -- set to leftmost vehicle
