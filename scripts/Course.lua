@@ -66,10 +66,6 @@ function Course:getDebugTable()
 
 end
 
-function Course:isFieldworkCourse()
-    return (self.workWidth and self.workWidth > 0) or (self.numberOfHeadlands and self.numberOfHeadlands > 0)
-end
-
 function Course:setName(name)
     self.name = name
 end
@@ -177,7 +173,6 @@ end
 function Course:getMultiTools()
     return self.nVehicles or 1
 end
-
 
 --- Is this a temporary course? Can be used to differentiate between recorded and dynamically generated courses
 -- The Course() object does not use this attribute for anything
@@ -896,6 +891,9 @@ function Course:copy(vehicle, first, last)
     newCourse.nVehicles = self.nVehicles
     newCourse.workWidth = self.workWidth
     newCourse.numberOfHeadlands = self.numberOfHeadlands
+    if self.nVehicles > 1 then
+        newCourse.multiVehicleData = self.multiVehicleData:copy()
+    end
     return newCourse
 end
 
@@ -1652,6 +1650,17 @@ function Course.MultiVehicleData.createFromGeneratedCourse(vehicle, generatedCou
                 #mvd.waypoints[position], position)
     end
     return mvd
+end
+
+function Course.MultiVehicleData:copy()
+    local copy = Course.MultiVehicleData(self.position)
+    for position, waypoints in pairs(self.waypoints) do
+        copy.waypoints[position] = {}
+        for i, wp in ipairs(waypoints) do
+            table.insert(copy.waypoints[position], Waypoint(wp))
+        end
+    end
+    return copy
 end
 
 --- XML ----------------------------------------------------------------------------------------------------------------
