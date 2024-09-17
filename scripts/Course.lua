@@ -1576,7 +1576,7 @@ function Course.createFromGeneratedCourse(vehicle, generatedCourse, workWidth, n
     course.nVehicles = nVehicles
     if course.nVehicles > 1 then
         course.multiVehicleData = Course.MultiVehicleData.createFromGeneratedCourse(vehicle, generatedCourse)
-        course:setDefaultPosition()
+        course:setPosition(vehicle:getCpLaneOffsetSetting():getValue())
     end
     return course
 end
@@ -1602,23 +1602,18 @@ end
 --- stores the course for each vehicle (position) of the group. When a new position is selected for a vehicle,
 --- we make Course.waypoints to point to the waypoint array of the selected position in MultiVehicleData.
 ------------------------------------------------------------------------------------------------------------------------
---- Set the position of the vehicle in the group to a reasonable default (middle for even numbers, left for odd).
-function Course:setDefaultPosition()
-    if self.nVehicles % 2 == 0 then
-        -- even number of vehicles, default is the left one
-        self:setPosition(-self.nVehicles / 2)
-    else
-        -- odd number of vehicles, the middle vehicle is 0
-        self:setPosition(0)
-    end
-end
-
 --- Set the position of the vehicle in the group and activate the course for that position.
 --- @param position number an integer defining the position of this vehicle within the group, negative numbers are to
 --- the left, positives to the right. For example, a -2 means that this is the second vehicle to the left (and thus,
 --- there are at least 4 vehicles in the group), a 0 means the vehicle in the middle
 function Course:setPosition(position)
     if self.multiVehicleData then
+        if not self.waypoints[position] then
+            CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course position %d does not exist, setting default',
+                    position, #self.waypoints)
+            -- set to leftmost vehicle
+            position = -math.floor(self.nVehicles / 2)
+        end
         self.waypoints = self.multiVehicleData.waypoints[position]
         self.multiVehicleData.position = position
         self:enrichWaypointData()
