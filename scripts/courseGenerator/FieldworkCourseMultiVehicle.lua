@@ -408,7 +408,7 @@ end
 function FieldworkCourseMultiVehicle:__tostring()
     local str = string.format('Vehicles: %d', self.context.nVehicles)
     for _, position, path in self:pathIterator() do
-        str = str .. string.format('\nposition %d: %d waypoints', position, #path)
+        str = str .. string.format(', position %d: %d waypoints', position, #path)
     end
     return str
 end
