@@ -183,7 +183,7 @@ function CpFieldWorkJobParameters:onLaneOffsetChanged(setting)
     if vehicle then
         local course = vehicle:getFieldWorkCourse()
         if course and course:getMultiTools() > 1 then
-            vehicle:getFieldWorkCourse():setPosition(vehicle:getCpLaneOffsetSetting():getValue())
+            vehicle:getFieldWorkCourse():setPosition(setting:getValue())
             SpecializationUtil.raiseEvent(vehicle, "onCpCourseChange", vehicle:getFieldWorkCourse(), true)
         end
     end

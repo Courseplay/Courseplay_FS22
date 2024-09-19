@@ -230,6 +230,7 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
         --- Um das Setting zu übernehmen warten wir bis der Kurs ins Fahrzeug geladen ist.
         --- Zusätzlich muss dieses jetzt noch geupdated werden.
         course:setPosition(vehicle:getCpLaneOffsetSetting():getValue())
+        SpecializationUtil.raiseEvent(vehicle, "onCpCourseChange", vehicle:getFieldWorkCourse(), true)
     end
 end
 

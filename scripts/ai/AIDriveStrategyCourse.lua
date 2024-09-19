@@ -156,16 +156,7 @@ function AIDriveStrategyCourse:delete()
 end
 
 function AIDriveStrategyCourse:getGeneratedCourse(jobParameters)
-    local course = self.vehicle:getFieldWorkCourse()
-    local numMultiTools = course:getMultiTools()
-    local position = numMultiTools > 1 and jobParameters.laneOffset:getValue() or 0
-    if numMultiTools == 1 then
-        self:debug('Single vehicle fieldwork course')
-    else
-        self:debug('Multi-vehicle course, position %d', position)
-        course:setPosition(position)
-    end
-    return course
+    return self.vehicle:getFieldWorkCourse()
 end
 
 function AIDriveStrategyCourse:getStartingPointWaypointIx(course, startAt)
