@@ -49,6 +49,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     -- the Course Generator UI uses the geographical direction angles (0 - North, 90 - East, etc), convert it to
     -- the mathematical angle (0 - x+, 90 - y+, etc)
     context:setRowAngle(math.rad(-(settings.manualRowAngleDeg:getValue() - 90)))
+    context:setEvenRowDistribution(settings.evenRowWidth:getValue())
     context:setBypassIslands(settings.bypassIslands:getValue())
     context:setIslandHeadlands(settings.nIslandHeadlands:getValue())
     if settings.bypassIslands:getValue() then
