@@ -6,27 +6,28 @@ local FieldworkCourseHelper = {}
 FieldworkCourseHelper.logger = Logger('FieldworkCourseHelper')
 
 -- how far to drive beyond the field edge/headland if we hit it at an angle, to cover the row completely
-local function getDistanceBetweenRowEndAndFieldBoundary(workingWidth, angle)
+local function getDistanceBetweenRowEndAndFieldBoundary(rowWorkingWidth, angle)
     -- with very low angles this becomes too much, in that case you need a headland, so limit it here
-    return math.abs(workingWidth / 2 / math.tan(math.max(math.abs(angle), math.pi / 12)))
+    return math.abs(rowWorkingWidth / 2 / math.tan(math.max(math.abs(angle), math.pi / 12))) -- width of the row
 end
 
 -- if the up/down tracks were perpendicular to the boundary, we'd have to cut them off
 -- width/2 meters from the intersection point with the boundary. But if we drive on to the
 -- boundary at an angle, we have to drive further if we don't want to miss fruit.
-local function getDistanceBetweenRowEndAndHeadland(workingWidth, angle)
+local function getDistanceBetweenRowEndAndHeadland(rowWorkingWidth, headlandWorkingWidth, angle)
     angle = math.max(math.abs(angle), math.pi / 12)
     -- distance between headland centerline and side at an angle
     -- (is width / 2 when angle is 90 degrees)
-    local dHeadlandCenterAndSide = math.abs(workingWidth / 2 / math.sin(angle))
-    return dHeadlandCenterAndSide - getDistanceBetweenRowEndAndFieldBoundary(workingWidth, angle)
+    local dHeadlandCenterAndSide = math.abs(headlandWorkingWidth / 2 / math.sin(angle)) -- width of the headland
+    return dHeadlandCenterAndSide - getDistanceBetweenRowEndAndFieldBoundary(rowWorkingWidth, angle)
 end
 
 --- If polyline is a fieldwork course, intersecting a headland or a field boundary at an angle,
 --- adjust the start of the polyline to make sure that there are no missed spots
-function FieldworkCourseHelper.adjustLengthAtStart(polyline, workingWidth, angle)
+function FieldworkCourseHelper.adjustLengthAtStart(polyline, context, angle)
     local offsetStart = 0
-    offsetStart = -getDistanceBetweenRowEndAndHeadland(workingWidth, angle)
+    offsetStart = -getDistanceBetweenRowEndAndHeadland(context:getCenterRowWidthForAdjustment(),
+            context:getHeadlandWidthForAdjustment(), angle)
     if offsetStart >= 0 then
         polyline:extendStart(offsetStart)
     else
@@ -36,9 +37,10 @@ end
 
 --- If polyline is a fieldwork course, intersecting a headland or a field boundary at an angle,
 --- adjust the end of the polyline to make sure that there are no missed spots
-function FieldworkCourseHelper.adjustLengthAtEnd(polyline, workingWidth, angle)
+function FieldworkCourseHelper.adjustLengthAtEnd(polyline, context, angle)
     local offsetEnd = 0
-    offsetEnd = -getDistanceBetweenRowEndAndHeadland(workingWidth, angle)
+    offsetEnd = -getDistanceBetweenRowEndAndHeadland(context:getCenterRowWidthForAdjustment(),
+            context:getHeadlandWidthForAdjustment(), angle)
     if offsetEnd >= 0 then
         polyline:extendEnd(offsetEnd)
     else
@@ -53,7 +55,7 @@ end
 ---@param circle boolean when true, make a full circle on the other polygon, else just go around and continue
 ---@return boolean, number true if there was an intersection and we actually went around, index of last vertex
 --- after the bypass
-function FieldworkCourseHelper.bypassSmallIsland(polyline, workingWidth, other, startIx, circle)
+function FieldworkCourseHelper.bypassSmallIsland(polyline, context, other, startIx, circle)
     local intersections = polyline:getIntersections(other, startIx)
     local is1, is2 = intersections[1], intersections[2]
     if is1 and is2 then
@@ -70,7 +72,7 @@ function FieldworkCourseHelper.bypassSmallIsland(polyline, workingWidth, other, 
             polyline:cutEndAtIx(is1.ixA)
             polyline:append(is1.is)
             polyline:calculateProperties()
-            FieldworkCourseHelper.adjustLengthAtEnd(polyline, workingWidth, is1:getAngle())
+            FieldworkCourseHelper.adjustLengthAtEnd(polyline, context, is1:getAngle())
             polyline:setAttribute(#polyline, CourseGenerator.WaypointAttributes.setUsePathfinderToNextWaypoint)
         else
             polyline.logger:debug('Start of row is on an island, removing all vertices up to index %d (of %d)',
@@ -79,7 +81,7 @@ function FieldworkCourseHelper.bypassSmallIsland(polyline, workingWidth, other, 
             polyline:cutStartAtIx(is1.ixA + 1)
             polyline:prepend(is1.is)
             polyline:calculateProperties()
-            FieldworkCourseHelper.adjustLengthAtStart(polyline, workingWidth, is1:getAngle())
+            FieldworkCourseHelper.adjustLengthAtStart(polyline, context, is1:getAngle())
             polyline:setAttribute(1, CourseGenerator.WaypointAttributes.setUsePathfinderToThisWaypoint)
         end
         return false
@@ -111,6 +113,25 @@ function FieldworkCourseHelper.createVirtualHeadland(fieldBoundary, isClockwise,
     -- width wider than the field boundary so the rows in the center cover the area between the original
     -- field boundaries.
     return CourseGenerator.Headland(fieldBoundary, isClockwise, 0, workingWidth / 2, true)
+end
+
+--- Get the offset vector for CourseGenerator.Offset.generate() when creating a headland
+---@param clockwise boolean the boundary we use to generate the headland is clockwise
+---@param outward boolean the headland should be generated outside the boundary
+---@return Vector
+function FieldworkCourseHelper.getOffsetVectorForHeadland(clockwise, outward)
+    local offsetVector
+    if clockwise then
+        -- to generate headland inside the polygon we need to offset the polygon to the right if
+        -- the polygon is clockwise
+        offsetVector = Vector(0, -1)
+    else
+        offsetVector = Vector(0, 1)
+    end
+    if outward then
+        offsetVector = -offsetVector
+    end
+    return offsetVector
 end
 
 ---@class CourseGenerator.FieldworkCourseHelper

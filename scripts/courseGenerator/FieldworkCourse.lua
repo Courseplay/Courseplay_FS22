@@ -29,8 +29,8 @@ function FieldworkCourse:init(context)
         -- connect the headlands first as the center needs to start where the headlands finish
         self.logger:debug('### Connecting headlands (%d) from the outside towards the inside ###', #self.headlands)
         self.headlandPath = CourseGenerator.HeadlandConnector.connectHeadlandsFromOutside(self.headlands,
-                context.startLocation, self.context.headlandWorkingWidth, self.context.turningRadius)
-        self:routeHeadlandsAroundSmallIslands()
+                context.startLocation, self.context:getHeadlandWorkingWidth(), self.context.turningRadius)
+        self:routeHeadlandsAroundSmallIslands(self.headlandPath)
         self.logger:debug('### Generating up/down rows ###')
         self:generateCenter()
     else
@@ -39,14 +39,14 @@ function FieldworkCourse:init(context)
         local endOfLastRow = self:generateCenter()
         self.logger:debug('### Connecting headlands (%d) from the inside towards the outside ###', #self.headlands)
         self.headlandPath = CourseGenerator.HeadlandConnector.connectHeadlandsFromInside(self.headlands,
-                endOfLastRow, self.context.headlandWorkingWidth, self.context.turningRadius)
-        self:routeHeadlandsAroundSmallIslands()
+                endOfLastRow, self.context:getHeadlandWorkingWidth(), self.context.turningRadius)
+        self:routeHeadlandsAroundSmallIslands(self.headlandPath)
     end
 
     if self.context.bypassIslands then
         self:bypassSmallIslandsInCenter()
         self.logger:debug('### Bypassing big islands in the center: create path around them ###')
-        self:circleBigIslands()
+        self:circleBigIslands(self:getPath())
     end
 end
 
@@ -68,6 +68,20 @@ function FieldworkCourse:getPath()
         self.path:calculateProperties()
     end
     return self.path
+end
+
+--- Iterates through the paths of all vehicles in the group. For compatibility with the FieldworkCourseMultiVehicle,
+--- primarily for testing.
+---@return number, number, Polyline[] index, position and path for each vehicle
+function FieldworkCourse:pathIterator()
+    local position = - 1
+    return function()
+        -- we iterate exactly over one element, the only path this course has, which belongs to position 0
+        if position < 0 then
+            position = position + 1
+            return position, position, self:getPath()
+        end
+    end
 end
 
 --- Reverse the course, so the vehicle drives it in the opposite direction. The only changes made
@@ -115,7 +129,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 --- Headlands
 ------------------------------------------------------------------------------------------------------------------------
---- Generate the headlands based on the current context or the context passed in here
+--- Generate the headlands based on the current context
 function FieldworkCourse:generateHeadlands()
     self.headlands = {}
     self.logger:debug('generating %d headlands with round corners, then %d with sharp corners',
@@ -124,11 +138,11 @@ function FieldworkCourse:generateHeadlands()
         self:generateHeadlandsFromInside()
         if self.nHeadlands > self.nHeadlandsWithRoundCorners and #self.headlands < self.nHeadlands then
             self:generateHeadlandsFromOutside(self.boundary,
-                    (self.nHeadlandsWithRoundCorners + 0.5) * self.context.headlandWorkingWidth,
+                    (self.nHeadlandsWithRoundCorners + 0.5) * self.context:getHeadlandWorkingWidth(),
                     #self.headlands + 1)
         end
     elseif self.nHeadlands > 0 then
-        self:generateHeadlandsFromOutside(self.boundary, self.context.headlandWorkingWidth / 2, 1)
+        self:generateHeadlandsFromOutside(self.boundary, self.context:getHeadlandWorkingWidth() / 2, 1)
     end
 end
 
@@ -152,7 +166,7 @@ function FieldworkCourse:generateHeadlandsFromOutside(boundary, firstHeadlandWid
     end
     for i = startIx + 1, self.nHeadlands do
         self.headlands[i] = CourseGenerator.Headland(self.headlands[i - 1]:getPolygon(), self.context.headlandClockwise, i,
-                self.context.headlandWorkingWidth, false, self.headlands[1]:getPolygon())
+                self.context:getHeadlandWorkingWidth(), false, self.headlands[1]:getPolygon())
         if self.headlands[i]:isValid() then
             if self.context.sharpenCorners then
                 self.headlands[i]:sharpenCorners(self.context.turningRadius)
@@ -175,7 +189,7 @@ function FieldworkCourse:generateHeadlandsFromInside()
     -- headlands may be more than what actually fits into the field)
     while self.nHeadlandsWithRoundCorners > 0 do
         self.headlands[self.nHeadlandsWithRoundCorners] = CourseGenerator.Headland(self.boundary, self.context.headlandClockwise,
-                self.nHeadlandsWithRoundCorners, (self.nHeadlandsWithRoundCorners - 0.5) * self.context.headlandWorkingWidth,
+                self.nHeadlandsWithRoundCorners, (self.nHeadlandsWithRoundCorners - 0.5) * self.context:getHeadlandWorkingWidth(),
                 false, self.boundary)
         if self.headlands[self.nHeadlandsWithRoundCorners]:isValid() then
             self.headlands[self.nHeadlandsWithRoundCorners]:roundCorners(self.context.turningRadius)
@@ -188,7 +202,7 @@ function FieldworkCourse:generateHeadlandsFromInside()
     end
     for i = self.nHeadlandsWithRoundCorners - 1, 1, -1 do
         self.headlands[i] = CourseGenerator.Headland(self.headlands[i + 1]:getPolygon(), self.context.headlandClockwise, i,
-                self.context.headlandWorkingWidth, true, self.boundary)
+                self.context:getHeadlandWorkingWidth(), true, self.boundary)
         self.headlands[i]:roundCorners(self.context.turningRadius)
     end
 end
@@ -246,7 +260,7 @@ end
 
 --- We do this after we have connected the individual headlands so the links between the headlands
 --- are also routed around the islands.
-function FieldworkCourse:routeHeadlandsAroundSmallIslands()
+function FieldworkCourse:routeHeadlandsAroundSmallIslands(headlandPath)
     self.logger:debug('### Bypassing small islands on the headland ###')
     for _, island in pairs(self.smallIslands) do
         local startIx, circled = 1, false
@@ -254,7 +268,7 @@ function FieldworkCourse:routeHeadlandsAroundSmallIslands()
             self.logger:debug('Bypassing island %d on the headland, at %d', island:getId(), startIx)
             --- Remember the islands we circled already, as even if multiple tracks cross it, we only want to
             --- circle once, subsequent bypasses just pick the shortest way around it.
-            circled, startIx = self.headlandPath:goAround(
+            circled, startIx = headlandPath:goAround(
                     island:getHeadlands()[1]:getPolygon(), startIx, not self.circledIslands[island])
             self.circledIslands[island] = circled or self.circledIslands[island]
         end
@@ -270,7 +284,9 @@ function FieldworkCourse:bypassSmallIslandsInCenter()
 end
 
 -- Once we have the whole course laid out, we add the headland passes around the big islands
-function FieldworkCourse:circleBigIslands()
+---@param path Polyline the complete path
+---@param vehicle number|nil the vehicle index, if nil, we assume there is only one vehicle
+function FieldworkCourse:circleBigIslands(path, vehicle)
     for _, i in ipairs(self.context.field:getIslands()) do
         self.logger:debug('Island %d: circled %s, big %s',
                 i:getId(), self.circledIslands[i], i:isTooBigToBypass(self.context.workingWidth))
@@ -278,7 +294,6 @@ function FieldworkCourse:circleBigIslands()
     -- if we are harvesting (headlandFirst = true) we want to take care of the island headlands
     -- when we first get to them. For other field works it is the opposite, we want all the up/down rows
     -- done before working on the island headlands.
-    local path = self:getPath()
     local first = self.context.headlandFirst and 1 or #path
     local step = self.context.headlandFirst and 1 or -1
     local last = self.context.headlandFirst and #path or 1
@@ -286,39 +301,56 @@ function FieldworkCourse:circleBigIslands()
     local found = false
     while i ~= last and not found do
         local island = path[i]:getAttributes():_getAtIsland()
-        if island and not self.circledIslands[island] and path[i]:getAttributes():isRowEnd() then
+        if island and not self:isBigIslandCircled(island, vehicle) and path[i]:getAttributes():isRowEnd() then
             self.logger:debug('Found island %s at %d', island:getId(), i)
             -- we bumped upon an island which the path does not circle yet and we are at the end of a row.
             -- so now work on the island's headlands and then continue with the next row.
-            local outermostHeadlandPolygon = island:getOutermostHeadland():getPolygon()
+            local islandHeadlands = self:getIslandHeadlands(island, vehicle)
+            local outermostHeadlandPolygon = islandHeadlands[#islandHeadlands]:getPolygon()
             -- find a vertex on the outermost headland to start working on the island headlands,
             -- far enough that we can generate a Dubins path to it
             local slider = CourseGenerator.Slider(outermostHeadlandPolygon,
                     outermostHeadlandPolygon:findClosestVertexToPoint(path[i]).ix, 3 * self.context.turningRadius)
 
             -- 'inside' since with islands, everything is backwards
-            local headlandPath = CourseGenerator.HeadlandConnector.connectHeadlandsFromInside(island:getHeadlands(),
-                    slider.ix, self.context.headlandWorkingWidth, self.context.turningRadius)
+            local headlandPath = CourseGenerator.HeadlandConnector.connectHeadlandsFromInside(islandHeadlands,
+                    slider.ix, self.context:getHeadlandWorkingWidth(), self.context.turningRadius)
 
             -- from the row end to the start of the headland, we instruct the driver to use
             -- the pathfinder.
             path:setAttribute(i, CourseGenerator.WaypointAttributes.setUsePathfinderToNextWaypoint)
             headlandPath:setAttribute(#headlandPath, CourseGenerator.WaypointAttributes.setUsePathfinderToNextWaypoint)
             headlandPath:setAttribute(nil, CourseGenerator.WaypointAttributes.setIslandHeadland)
-
             self.logger:debug('Added headland path around island %d with %d points', island:getId(), #headlandPath)
             for j = #headlandPath, 1, -1 do
                 table.insert(path, i + 1, headlandPath[j])
             end
 
             path:calculateProperties()
-            self.circledIslands[island] = true
+            self:setBigIslandCircled(island, vehicle)
             -- if we are iterating backwards, we still want to stop at the first vertex.
             last = self.context.headlandFirst and last + #headlandPath or 1
         end
         i = i + step
     end
 end
+
+------------------------------------------------------------------------------------------------------------------------
+--- Helper functions for circleBigIsland(), to override in derived classes, like in FieldworkCourseMultiVehicle
+--- where the logic of getting the headlands is different.
+function FieldworkCourse:getIslandHeadlands(island, vehicle)
+    return island:getHeadlands()
+end
+
+--- Here we only have one vehicle, so we only need to circle an island once and ignore the vehicle.
+function FieldworkCourse:isBigIslandCircled(island, vehicle)
+    return self.circledIslands[island]
+end
+
+function FieldworkCourse:setBigIslandCircled(island, vehicle)
+    self.circledIslands[island] = true
+end
+------------------------------------------------------------------------------------------------------------------------
 
 --- Find the path to the next row on the headland.
 ---@param boundaryId string the boundary ID, telling if this is a boundary around the field or around an island. Will
@@ -334,9 +366,9 @@ end
 --- the headland path and from the headland into the next row
 function FieldworkCourse:findPathToNextRow(boundaryId, rowEnd, rowStart, minDistanceFromRowEnd)
     local headlands = self:_getCachedHeadlands(boundaryId)
-    local headlandWidth = #headlands * self.context.headlandWorkingWidth
+    local headlandWidth = #headlands * self.context:getHeadlandWorkingWidth()
     local usableHeadlandWidth = headlandWidth - (minDistanceFromRowEnd or 0)
-    local headlandPassNumber = CourseGenerator.clamp(math.floor(usableHeadlandWidth / self.context.headlandWorkingWidth), 1, #headlands)
+    local headlandPassNumber = CourseGenerator.clamp(math.floor(usableHeadlandWidth / self.context:getHeadlandWorkingWidth()), 1, #headlands)
     local headland = headlands[headlandPassNumber]
     if headland == nil then
         return Polyline()
@@ -403,6 +435,10 @@ function FieldworkCourse:_getCachedHeadlands(boundaryId)
         self.headlandCache:put(boundaryId, headlands)
     end
     return headlands
+end
+
+function FieldworkCourse:__tostring()
+    return string.format('%d/%d headland/center waypoints', #self:getHeadlandPath(), #self:getCenterPath())
 end
 
 ---@class CourseGenerator.FieldworkCourse

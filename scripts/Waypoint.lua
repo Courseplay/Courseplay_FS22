@@ -43,7 +43,6 @@ function Waypoint:init(wp)
 	self.dToNext = wp.dToNext
 	self.yRot = wp.yRot
 	--- Set, when generated for a multi tool course
-	self.originalMultiToolReference = wp.originalMultiToolReference
 	self.usePathfinderToThisWaypoint = wp.usePathfinderToThisWaypoint
 	self.usePathfinderToNextWaypoint = wp.usePathfinderToNextWaypoint
 	self.headlandTransition = wp.headlandTransition
@@ -281,31 +280,6 @@ end
 
 function Waypoint:setOnConnectingPath(onConnectingPath)
 	self.attributes:setOnConnectingPath(onConnectingPath)
-end
-
-function Waypoint:setOriginalMultiToolReference(ix)
-	self.originalMultiToolReference = ix
-end
-
---- Get's the reference waypoint of the original fieldwork course,
---- if the waypoint is part of a multi tool course.
----@return number|nil
-function Waypoint:getOriginalMultiToolReference()
-	return self.originalMultiToolReference
-end
-
---- Makes sure the original fieldwork course waypoints are referenced here for multi tool course.
---- The multi tool course might have more or less waypoints then the original.
---- For a given section the closest reference point is linear interpolated.
----@param wps table Waypoint section
----@param sIx number First original field work course waypoint, that gets changed by this section
----@param deltaIx number Number of waypoints of the original field work course section
-function Waypoint.applyOriginalMultiToolReference(wps, sIx, deltaIx)
-	local factor, dIx = deltaIx / #wps, 0
-	for ix=1, #wps do 
-		dIx = math.floor(ix * factor)
-		wps[ix]:setOriginalMultiToolReference(math.max(1, dIx) + sIx-1)
-	end
 end
 
 -- a node related to a waypoint

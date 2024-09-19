@@ -47,7 +47,6 @@ function AIDriveStrategyDriveToFieldWorkStart:init(task, job)
     self.debugChannel = CpDebug.DBG_FIELDWORK
     self.prepareTimeout = 0
     self.emergencyBrake = CpTemporaryObject(true)
-    self.multitoolOffset = 0
 end
 
 function AIDriveStrategyDriveToFieldWorkStart:delete()
@@ -79,11 +78,6 @@ function AIDriveStrategyDriveToFieldWorkStart:start(course, startIx, jobParamete
         self:setCurrentTaskFinished()
     else
         self:debug('Start driving to work start waypoint')
-        local nVehicles = course:getMultiTools()
-        self.multitoolOffset = Course.calculateOffsetForMultitools(
-                nVehicles,
-                nVehicles > 1 and jobParameters.laneOffset:getValue() or 0,
-                course:getWorkWidth() / nVehicles)
         local implement = AIUtil.getImplementWithSpecialization(self.vehicle, Cutter)
         if self.settings.foldImplementAtEnd:getValue() then
             self.vehicle:prepareForAIDriving()
@@ -182,8 +176,7 @@ function AIDriveStrategyDriveToFieldWorkStart:startCourseWithPathfinding(course,
     self:debug('Pathfinding to waypoint %d, with zOffset %.1f = min(%.1f, %.1f)', ix, self.zOffset,
             -self.frontMarkerDistance, -steeringLength)
 
-    self.pathfinderController:findPathToWaypoint(context, course, 
-        ix, self.multitoolOffset, self.zOffset, 1)
+    self.pathfinderController:findPathToWaypoint(context, course, ix, 0, self.zOffset, 1)
 end
 
 --- Pathfinding has finished

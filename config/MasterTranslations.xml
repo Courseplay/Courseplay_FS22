@@ -1101,6 +1101,14 @@
 			<Text language="de"><![CDATA[Wie viele Fahrzeuge zusammen auf dem Kurs fahren.]]></Text>
 			<Text language="en"><![CDATA[Number of vehicles on the same course.]]></Text>
 		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_title">
+			<Text language="de"><![CDATA[Bahnen tauschen]]></Text>
+			<Text language="en"><![CDATA[Switching lanes]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_tooltip">
+			<Text language="de"><![CDATA[Stellt ein ob die Bahnen in der Feldmitte getauscht werden sollen. Das führt zu gleichmäßigen Wendemanövern. Siehe Hilfemenü für mehr Details.]]></Text>
+			<Text language="en"><![CDATA[Sets the lanes to always switch. This leads to similar turns. See help menu for more details.]]></Text>
+		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title">
 			<Text language="de"><![CDATA[Bahnenform anhand Feldkante]]></Text>
 			<Text language="en"><![CDATA[Rows follow field edge curve]]></Text>
@@ -2101,6 +2109,7 @@ Einige Einstellungen sind erst dann sichtbar, wenn in den globalen CP Einstellun
 Bevor ihr euch mit den Einstellmöglichkeiten beschäftigt, solltet ihr euch erst mit den normalen Einstellungen vertraut machen, da nicht alle Experten Einstellungen ohne Einschränkung funktionieren werden.
 
 - Fahrzeuge auf dem Feld: Mit dieser Einstellung könnt ihr mehr als ein Fahrzeug das Feld abarbeiten lassen. Mehr Details dazu gibt es unter einem extra Punkt im Hilfemenü.
+- Bahnen tauschen: Ist diese Option aktiviert, wird die Seite des Fahrzeug "vertauscht", dafür sind die Wendemanöver für alle Bahnen gleich breit. Für mehr Details, schau dir dazu die Hilfeseite "Bahnen tauschen" an.
 - Enges Feld: Erzeugt nur an den kürzesten Feldrandseiten ein Vorgewende. Es lässt sich aktuell nicht vermeiden, dass Fahrzeuge an den langen Seiten im Vorgewende das Feld verlassen.
 - Vorgewende Überlappung: Es ist ein Standardwert eingestellt, der immer verwendet wird. Dieser kann aber mit dieser Einstellung angepasst werden. Die Überlappung findet innerhalb des Feldes statt und ragt nicht über den Feldrand hinaus.
 - Feldgrenze: Mit dieser Einstellung lässt sich die Feldgrenze weiter nach innen oder außen verschieben und somit lässt sich der normale Feldrand verschieben.
@@ -2113,6 +2122,7 @@ Before you play around with those settings, you should make sure you know what t
 Some expert settings only work properly under some conditions.
 
 - Multiple Tools: This setting is used when you want more than just one vehicle to work on your course. As this gets a bit more complicated, there is a separate help topic for it.
+- Switching lanes: With this option active, vehicles switch lanes at each turn, so every vehicle's turn is of the same width. See the extra help menu "Switching lanes" for more details.
 - Narrow field: Creates the headland only at two short edges of the field. In that case, it is not possible to keep your vehicle on the field on the longest edges at the headland.
 - Headland overlap: By default, headland passes overlap each other (but never the field edge) by a few percent to avoid missing fruit in some edge cases. You can change that overlap here.
 - Field margin: This setting lets you move the field border in- or outwards of the original border.
@@ -2388,9 +2398,11 @@ Click the save button at the bottom to finish drawing the field.
 		<Translation name="CP_help_page_multitoolBasic_text">
 			<Text language="de"><![CDATA[
 Es ist möglich, bis zu 5 Fahrzeuge zusammen auf einem Feld in einem Fahrzeugverband arbeiten zu lassen (auch Multitoolkurs genannt).
+Die einzelnen Kurse für die Fahrzeuge werden alle zusammen generiert und können über das HUD gewechselt werden.
 ]]></Text>
 			<Text language="en"><![CDATA[
-It is possible to have up to 5 vehicles working together on the same field in a convoy (also called multi tools course).
+It is possible to have up to 5 vehicles working together on the same field in a group (also called multi tools course).
+You can switch the position (lane) of the vehicle in the group on the HUD (left-center-right).
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_multitoolFunction_text">
@@ -2400,13 +2412,15 @@ Die Bahnen haben immer den gleichen Namen:
 links(2), links(1), mitte, rechts(1), rechts(2).
 2 Fahrzeuge haben links(1) und rechts (1) zur Auswahl, 4 Fahrzeuge zudem noch links(2) und rechts(2).
 Mit 3 oder 5 Fahrzeugen ist dann auch die mittlere Bahn verfügbar.
+Wird die Bahn geändert, wird auch der sichtbare Kurs gewechselt. Somit wisst ihr immer, welcher Kurs für das jeweilige Fahrzeug benutzt wird.
 ]]></Text>
 			<Text language="en"><![CDATA[
-Once a multi tool course is loaded you will need to select the lane for the driver.
+Once a multi tool course is loaded you will need to select the position (lane) for the driver.
 Those lanes are always named the same:
 left(2), left(1), center, right(1), right(2).
-2 vehicles will have left(1) and right(1), 4 will have left(2) and right(2).
-With 3 or 5 vehicles you will also gain the center option.
+2 vehicles have left(1) and right(1), 4 have left(2) and right(2) as well.
+With 3 or 5 vehicles you there is also a center option.
+Selecting a different lane also updates the course display to show the actual course for that vehicle.
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_convoyBasic_text">
@@ -2448,7 +2462,7 @@ Der Zähler im HUD zeigt die noch auf dem Feld verbleibenden Ballen seit dem let
 			<Text language="en"><![CDATA[
 Wrapping and collecting bales can be done in two different ways.
 The first one is to load the same course you used for your baler and let the wrapper or collector run that course.
-However this can be tricky, as some bales love to roll or fly off the path.
+However, this can be tricky, as some bales love to roll or fly off the path.
 At this point, our wrap and collect job type can help as it doesn't need a course.
 With the target-icon on the HUD, you need to select the field, where you want to collect or wrap the bales. After that you can start the driver near the field.
 You can also use the AI Map to send him to a field to start the job.
@@ -2491,47 +2505,53 @@ installed you can use it to run and unload the bale collector automatically.
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_symetricLaneChange_title">
-			<Text language="de"><![CDATA[Symmetrischer Bahnenwechsel]]></Text>
-			<Text language="en"><![CDATA[Symetric lange change]]></Text>
+			<Text language="de"><![CDATA[Bahnen tauschen]]></Text>
+			<Text language="en"><![CDATA[Lane switch]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_symetricLaneChangeBasic_text">
 			<Text language="de"><![CDATA[
-Der symmetrische Bahnenwechsel wird in Multitoolkursen benutzt und sagt dem Helfer, in welche Bahn er nach dem Wendemanöver fahren soll.
+Das tauschen der Bahnen wird in Multitoolkursen benutzt und sagt dem Helfer, in welche Bahn er nach dem Wendemanöver fahren soll.
+Beim aktiven tauschen, wechseln die Fahrer die Seite.
 Da dies etwas zu kompliziert zu erklären ist, werfen wir einen Blick auf 2 Beispiele.
 ]]></Text>
 			<Text language="en"><![CDATA[
-Symmetric lane change is used in multitool courses and tells the driver in which lane he has to drive after the turn.
+Lane switching is used on multitool course and tells the Helper, in wich lane he should drive after the turn.
+With lane switch active, the vehicle changes the side after each turn.
 This is a bit hard to understand so let's have a look at two examples.
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_symetricLaneChangeExampleOff_text">
 			<Text language="de"><![CDATA[
-Ist der symmetrische Bahnenwechsel ausgeschaltet, bleibt das Fahrzeug immer auf seiner Offset-Bahn.
-Das heißt, er fährt immer links oder rechts vom Kurs.
-Das hat den Vorteil, dass die Offset-Bahnen keinen direkten Begegnungsverkehr haben.
-Somit wird es keinen Kontakt zwischen 2 Geräten geben, falls sie aufeinander fahren.
+Ist Bahnen tauschen ausgeschaltet, bleibt das Fahrzeug immer links oder rechts vom jeweils anderen.
+Somit entsteht auch kein direkter Gegenverkehr und kein Kontakt zwischen den Fahrzeugen.
 ]]></Text>
 			<Text language="en"><![CDATA[
-When the symmetric lane change is turned off, the vehicle stays on it's offset lane.
-That means he always drives left or right from the course.
-This ensures, that the helpers are not driving alongside each other.
-There won't be a risk of on conflict with another driver.
+If switching lanes is turned off, the vehicle stays on the same side during the entire course where it was started.
+If it started on the leftmost lane, it will always stay in the leftmost lane. This avoids conflicts with other drivers,
+but vehicles on the inside of the turn (leftmost for left turns, rightmost for right turns) will have to make tighter
+turns as they continue on the adjacent lane.
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_symetricLaneChangeExampleOn_text">
 			<Text language="de"><![CDATA[
-Bei eingeschaltetem Bahnenwechsel wird beim Wendemanöver links und rechts getauscht (nicht aber im HUD).
-Das führt dazu, dass Fahrzeuge auf direkt aneinader liegenden Bahnen fahren können. Sollten die Geräte zu breit sein, kann es zu einer Kollision kommen.
-Was bringt der symmetrische Bahnenwechsel dann?
+Ist Bahnen tauschen eingeschaltet wird bei z.B. zwei Fahrzeugen, Fahrzeug A links und Fahrzeug B rechts, nach dem Wendemanöver die Bahn getauscht.
+Das heist dann ist Fahrzeug A rechts und Fahrzeug B links.
+Der Vorteil ist, dass alle Fahrzeuge die gleiche breite eines Wendemanövers haben und somit die gleiche Strecke zurücklegen.
+Für Ernter ist das relativ wichtig, da so das Rohr immer frei zugängig ist.
+Nachteil ist, dass sich die Fahrzeug so begegnen können.
+
 Schaut man sich die Reihenfolge der Bahnen an, die von links nach rechts bearbeitet werden, wird es klar:
-Ohne symmetrischen Wechsel: links, rechts, links, rechts - fast wie eine Bahn überspringen.
-Mit symmetrischen Wechsel: links, rechts, rechts, links - von links nach rechts, also eine Bahn nach der anderen.
+Ohne Bahnen tauschen: links, rechts, links, rechts - fast wie eine Bahn überspringen.
+Mit Bahnen tauschen: links, rechts, rechts, links - von links nach rechts, also eine Bahn nach der anderen.
 In dem Beispiel mit den Dreschern sorgt das dafür, dass kein Drescher links und rechts eine Bahn mit Frucht neben sich hat.
 ]]></Text>
 			<Text language="en"><![CDATA[
-If symmetric lane change is turned on, left and right will be exchanged (but not shown in the HUD).
-Vehicles can conflict with each other, when they drive towards each other.
-What is the advantage of symmetric lange change then ?
+If switching lanes is active, for example for two vehicles, vehicle A left and vehicle B right, after then turn the lanes are switched.
+That means A is then on the right and B is then on the left.
+The advantage is that all vehicles have the same turn width and therefore the same distance to drive.
+For combines this setting is important, as it makes sure the pipe stays out of the fruit and won't reach in another lane.
+Disadvantage is that vehicles have a chance to collide with each other when they drive towards each other on nearby lanes.
+
 If you have a look at the order of the lanes, from left to right, it will be clear:
 Without symmetric change: left, right, left, right - it is almost like skipping a lane.
 With symmetric change: left, right, right, left - from left to right, one lane after the other.

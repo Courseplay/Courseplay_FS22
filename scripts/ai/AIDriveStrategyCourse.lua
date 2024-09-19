@@ -156,34 +156,7 @@ function AIDriveStrategyCourse:delete()
 end
 
 function AIDriveStrategyCourse:getGeneratedCourse(jobParameters)
-    local course = self.vehicle:getFieldWorkCourse()
-    local numMultiTools = course:getMultiTools()
-    local position = numMultiTools > 1 and jobParameters.laneOffset:getValue() or 0
-    if numMultiTools < 2 then
-        self:debug('Single vehicle fieldwork course')
-        self.vehicle:setOffsetFieldWorkCourse(nil)
-        return course
-    elseif position == 0 then
-        self:debug('Multitool course, center vehicle, using original course')
-        self.vehicle:setOffsetFieldWorkCourse(nil)
-        return course
-    else
-        --- only one vehicle can have position zero (center)
-        local symmetricLaneChange = self.settings.symmetricLaneChange:getValue()
-        local offsetCourse = self.vehicle:getOffsetFieldWorkCourse()
-        if offsetCourse == nil or not offsetCourse:hasSameMultiToolSettings(numMultiTools, position, symmetricLaneChange) then
-            self:debug('Multitool course, non-center vehicle, generating offset course for position number %d, symmetric lane change %s',
-                    position, tostring(symmetricLaneChange))
-            --- Work width of a single vehicle.
-            local width = course:getWorkWidth() / numMultiTools
-            offsetCourse = course:calculateOffsetCourse(numMultiTools, position, width, symmetricLaneChange)
-            self.vehicle:setOffsetFieldWorkCourse(offsetCourse, position)
-        else
-            self:debug('Multitool course, non-center vehicle, offset course for position number %d, symmetric lane change %s already exists, reusing',
-                    position, tostring(symmetricLaneChange))
-        end
-        return offsetCourse
-    end
+    return self.vehicle:getFieldWorkCourse()
 end
 
 function AIDriveStrategyCourse:getStartingPointWaypointIx(course, startAt)

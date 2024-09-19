@@ -178,6 +178,17 @@ function CpFieldWorkJobParameters:lessThanThreeMultiTools()
     return self:getMultiTools() < 4
 end
 
+function CpFieldWorkJobParameters:onLaneOffsetChanged(setting)
+    local vehicle = self.job:getVehicle()
+    if vehicle then
+        local course = vehicle:getFieldWorkCourse()
+        if course and course:getMultiTools() > 1 then
+            vehicle:getFieldWorkCourse():setPosition(setting:getValue())
+            SpecializationUtil.raiseEvent(vehicle, "onCpCourseChange", vehicle:getFieldWorkCourse(), true)
+        end
+    end
+end
+
 --- Are the setting values roughly equal.
 ---@param otherParameters CpJobParameters
 ---@return boolean

@@ -1,4 +1,4 @@
---- This is to encapsulate the specifics of a field center up/down rows generated
+    --- This is to encapsulate the specifics of a field center up/down rows generated
 --- for the two-side headland pattern.
 --- With that pattern, we always use baseline edges, that is, the rows following the
 --- field edge (instead of always being straight) and do not allow multiple blocks.
@@ -18,7 +18,7 @@ function CenterTwoSided:init(context, boundary, headland, startLocation, bigIsla
 end
 
 function CenterTwoSided:_splitIntoBlocks(rows)
-    local block = CourseGenerator.Block(self.context.rowPattern)
+    local block = CourseGenerator.Block(self.context)
     for _, row in ipairs(rows) do
         local sections = row:split(self.headland, {}, true)
         if #sections == 1 then

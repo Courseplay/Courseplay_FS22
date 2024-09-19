@@ -36,6 +36,7 @@ jobs:
           lua CacheMapTest.lua
           lua FieldTest.lua
           lua FieldworkCourseTest.lua
+          lua FieldworkCourseMultiVehicleTest.lua
           lua HeadlandConnectorTest.lua
           lua LineSegmentTest.lua
           lua PolygonTest.lua
