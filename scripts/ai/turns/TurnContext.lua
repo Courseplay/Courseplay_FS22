@@ -227,6 +227,11 @@ function TurnContext:isPointingToTurnEnd(node, thresholdDeg)
     return math.abs(math.atan2(lx, lz)) < math.rad(thresholdDeg)
 end
 
+---@return number angle (radian) between the row and the headland, 90 degrees means the headland is perpendicular to the row
+function TurnContext:getHeadlandAngle()
+    return  math.abs(CpMathUtil.getDeltaAngle(math.rad(self.turnEndWp.angle), math.rad(self.turnStartWp.angle)))
+end
+
 function TurnContext:isHeadlandCorner()
 	-- in headland turns there's no significant direction change at the turn start waypoint, as the turn end waypoint
 	-- marks the actual corner. In a non-headland turn (usually 180) there is about 90 degrees direction change at
@@ -320,13 +325,6 @@ function TurnContext:isDirectionPerpendicularToTurnEndDirection(node, thresholdD
     local lx, _, lz = localDirectionToLocal(self.turnEndWpNode.node, node, self:isLeftTurn() and -1 or 1, 0, 0)
     return math.abs(math.atan2(lx, lz)) < math.rad(thresholdDeg or 5)
 end
-
---- An angle of 0 means the headland is perpendicular to the up/down rows
-function TurnContext:getHeadlandAngle()
-    local lx, _, lz = localDirectionToLocal(self.turnEndWpNode.node, self.turnStartWpNode.node, self:isLeftTurn() and -1 or 1, 0, 0)
-    return math.abs(math.atan2(lx, lz))
-end
-
 
 function TurnContext:getAverageEndAngleDeg()
     -- use the average angle of the turn end and the next wp as there is often a bend there

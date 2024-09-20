@@ -311,18 +311,7 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 	local turnEndNode, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(self.steeringLength)
 	self.course = self:findAnalyticPath(vehicleDirectionNode, 0, turnEndNode, 0, goalOffset, self.turningRadius)
 	local endingTurnLength
-	local dzMax = self:getDzMax(self.course)
-	local spaceNeededOnFieldForTurn = dzMax + workWidth / 2
-	distanceToFieldEdge = distanceToFieldEdge or 500  -- if not given, assume we have a lot of space
-	if self.turnContext:getTurnEndForwardOffset() < 0 then
-		-- in an offset turn, where the turn start (and thus, the vehicle) is on the longer leg,
-		-- so the turn end is behind the turn start, we have in reality less space, as we measured the
-		-- distance to the field edge from the turn start, but we need to measure it from the turn end,
-		-- where there's less space
-		distanceToFieldEdge = distanceToFieldEdge + self.turnContext:getTurnEndForwardOffset()
-	end
-	print(self.turnContext:getTurnEndForwardOffset())
-	local dBack = spaceNeededOnFieldForTurn - distanceToFieldEdge
+	local dBack = self:getDistanceToMoveBack(self.course, workWidth, distanceToFieldEdge)
 	local canReverse = AIUtil.canReverse(vehicle)
 	if dBack > 0 and canReverse then
 		dBack = dBack < 2 and 2 or dBack
@@ -334,8 +323,6 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 		end
 		local ixBeforeEndingTurnSection = self.course:getNumberOfWaypoints()
 		endingTurnLength = self.turnContext:appendEndingTurnCourse(self.course, steeringLength, self.applyTightTurnOffset)
-		self:debug('dzMax=%.1f, workWidth=%.1f, spaceNeeded=%.1f, distanceToFieldEdge=%.1f, ixBeforeEndingTurnSection=%d, canReverse=%s',
-				dzMax, workWidth, spaceNeededOnFieldForTurn, distanceToFieldEdge, ixBeforeEndingTurnSection, canReverse)
 		self.course = self:adjustCourseToFitField(self.course, dBack, ixBeforeEndingTurnSection, endingTurnLength)
 	else
 		if self.applyTightTurnOffset then
@@ -350,6 +337,26 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 				g_vehicleConfigurations:getRecursively(vehicle, 'tightTurnOffsetDistanceInTurns') or 10)
 	end
 	TurnManeuver.setLowerImplements(self.course, endingTurnLength, true)
+end
+
+---@return number How far back this course needs to be moved back to stay on the field
+function AnalyticTurnManeuver:getDistanceToMoveBack(course, workWidth, distanceToFieldEdge)
+	local dzMax = self:getDzMax(course)
+	local spaceNeededOnFieldForTurn = dzMax + workWidth / 2
+	distanceToFieldEdge = distanceToFieldEdge or 500  -- if not given, assume we have a lot of space
+	if self.turnContext:getTurnEndForwardOffset() < 0 then
+		-- in an offset turn, where the turn start (and thus, the vehicle) is on the longer leg,
+		-- so the turn end is behind the turn start, we have in reality less space, as we measured the
+		-- distance to the field edge from the turn start, but we need to measure it from the turn end,
+		-- where there's less space
+		distanceToFieldEdge = distanceToFieldEdge + self.turnContext:getTurnEndForwardOffset()
+	end
+	-- with a headland at angle, we have to move further back, so the left/right edge of the swath also stays on
+	-- the field, not only the center
+	distanceToFieldEdge = distanceToFieldEdge - (workWidth / 2 / math.abs(math.tan(self.turnContext:getHeadlandAngle())))
+	self:debug('dzMax=%.1f, workWidth=%.1f, spaceNeeded=%.1f, distanceToFieldEdge=%.1f', dzMax, workWidth,
+			spaceNeededOnFieldForTurn, distanceToFieldEdge)
+	return spaceNeededOnFieldForTurn - distanceToFieldEdge
 end
 
 ---@class DubinsTurnManeuver : AnalyticTurnManeuver
