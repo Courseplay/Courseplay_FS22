@@ -331,13 +331,6 @@ function TurnContext:isDirectionPerpendicularToTurnEndDirection(node, thresholdD
     return math.abs(math.atan2(lx, lz)) < math.rad(thresholdDeg or 5)
 end
 
---- An angle of 0 means the headland is perpendicular to the up/down rows
-function TurnContext:getHeadlandAngle()
-    local lx, _, lz = localDirectionToLocal(self.turnEndWpNode.node, self.turnStartWpNode.node, self:isLeftTurn() and -1 or 1, 0, 0)
-    return math.abs(math.atan2(lx, lz))
-end
-
-
 function TurnContext:getAverageEndAngleDeg()
     -- use the average angle of the turn end and the next wp as there is often a bend there
     return math.deg(CpMathUtil.getAverageAngle(math.rad(self.turnEndWp.angle), math.rad(self.afterTurnEndWp.angle)))
