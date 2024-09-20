@@ -276,6 +276,11 @@ function TurnContext:isLeftTurn()
     end
 end
 
+---@return number offset of the turn end in meters forward (>0) or back (<0)
+function TurnContext:getTurnEndForwardOffset()
+    return self.dz
+end
+
 function TurnContext:setTargetNode(node)
     self.targetNode = node
 end
