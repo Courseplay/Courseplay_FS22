@@ -328,8 +328,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="Centro"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Veicoli multipli"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Numero di veicoli sullo stesso percorso."/>
-    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_title" text="Switching lanes"/>
-    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_tooltip" text="Sets the lanes to always switch. This leads to similar turns. See help menu for more details."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_title" text="Cambio corsia"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_tooltip" text="Imposta le corsie in modo che vengano sempre scambiate. Ciò porta a svolte simili. Consulta il menu di aiuto per maggiori dettagli."/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Bordo del campo per la forma della linea"/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="Le file seguono la curvatura del bordo del campo più vicino al marcatore del campo."/>
     <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Campo stretto"/>
