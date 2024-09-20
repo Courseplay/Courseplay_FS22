@@ -150,7 +150,21 @@ end
 --- Initial plow rotation based on the ridge marker side selection by the course generator.
 function AIDriveStrategyPlowCourse:rotatePlows()
     self:debug('Starting work: check if plow needs to be turned.')
-    local plowShouldBeOnTheLeft = self.course:getPlowOnLeft(self.ppc:getCurrentWaypointIx())
+    -- on the headland just check which side was worked last, on the center, check the direction of the next turn
+    -- as at the first pass both sides are unworked and need some other indication on which side the plow should be
+    local ix = self.ppc:getCurrentWaypointIx()
+    local plowShouldBeOnTheLeft
+    if self.course:isOnHeadland(ix) then
+        plowShouldBeOnTheLeft = self.course:isLeftSideWorked(ix)
+    else
+        local isNextTurnLeft = self.course:isNextTurnLeft(ix)
+        if isNextTurnLeft == nil then
+            -- don't know if left or right, so just use the last worked side
+            plowShouldBeOnTheLeft = self.course:isLeftSideWorked(ix)
+        else
+            plowShouldBeOnTheLeft = not isNextTurnLeft
+        end
+    end
     self:debug('Plow should be on the left %s', tostring(plowShouldBeOnTheLeft))
     for _, controller in pairs(self.controllers) do 
         if controller.rotate then 

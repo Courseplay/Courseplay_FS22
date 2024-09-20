@@ -89,6 +89,7 @@ function TurnContext:init(vehicle, course, turnStartIx, turnEndIx, turnNodes, wo
 
     self.dx, _, self.dz = localToLocal(self.turnEndWpNode.node, self.workEndNode, 0, 0, 0)
     self.leftTurn = self.dx > 0
+    self.nextTurnLeft = course:isNextTurnLeft(turnEndIx)
     self:debug('start ix = %d, back marker = %.1f, front marker = %.1f',
             turnStartIx, self.backMarkerDistance, self.frontMarkerDistance)
 end
@@ -230,6 +231,10 @@ end
 ---@return number angle (radian) between the row and the headland, 90 degrees means the headland is perpendicular to the row
 function TurnContext:getHeadlandAngle()
     return  math.abs(CpMathUtil.getDeltaAngle(math.rad(self.turnEndWp.angle), math.rad(self.turnStartWp.angle)))
+end
+
+function TurnContext:isNextTurnLeft()
+    return self.nextTurnLeft
 end
 
 function TurnContext:isHeadlandCorner()

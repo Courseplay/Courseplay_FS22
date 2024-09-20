@@ -632,10 +632,18 @@ function Course:getRidgeMarkerState(ix)
     end
 end
 
----@return boolean true if the plow should be rotated to the left side of the course (as the right side was already
---- worked on)
-function Course:getPlowOnLeft(ix)
+function Course:isLeftSideWorked(ix)
     return self.waypoints[ix].attributes:isLeftSideWorked()
+end
+
+---@return boolean true if the next 180 turn is to the left, false if to the right, nil if we don't know
+function Course:isNextTurnLeft(ix)
+    if self.waypoints[ix].nextRowStartIx == nil then
+        return nil
+    else
+        local turnStartWaypointIx = self.waypoints[ix].nextRowStartIx - 1
+        return CpMathUtil.getDeltaAngle(self.waypoints[turnStartWaypointIx].yRot, self.waypoints[turnStartWaypointIx - 1].yRot) < 0
+    end
 end
 
 function Course:getIxRollover(ix)
