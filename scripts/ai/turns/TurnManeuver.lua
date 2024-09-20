@@ -1,4 +1,3 @@
-local abs, min, max, floor, ceil, square, pi, rad, deg = math.abs, math.min, math.max, math.floor, math.ceil, math.sqrt, math.pi, math.rad, math.deg
 ---@class TurnManeuver
 TurnManeuver = CpObject()
 TurnManeuver.wpDistance = 1.5  -- Waypoint Distance in Straight lines
@@ -126,9 +125,9 @@ function TurnManeuver:generateTurnCircle(center, startDir, stopDir, radius, cloc
 
 	-- Get the start and end rotation
 	local dx, dz = CpMathUtil.getPointDirection(center, startDir, false)
-	startRot = deg(MathUtil.getYRotationFromDirection(dx, dz))
+	startRot = math.deg(MathUtil.getYRotationFromDirection(dx, dz))
 	dx, dz = CpMathUtil.getPointDirection(center, stopDir, false)
-	endRot = deg(MathUtil.getYRotationFromDirection(dx, dz))
+	endRot = math.deg(MathUtil.getYRotationFromDirection(dx, dz))
 
 	-- Create new transformGroupe to use for placing waypoints
 	local point = createTransformGroup("cpTempGenerateTurnCircle")
@@ -139,7 +138,7 @@ function TurnManeuver:generateTurnCircle(center, startDir, stopDir, radius, cloc
 	setTranslation(point, center.x, cY, center.z)
 
 	-- Rotate it to the start direction
-	setRotation(point, 0, rad(startRot), 0)
+	setRotation(point, 0, math.rad(startRot), 0)
 
 	-- Fix the rotation values in some special cases
 	if clockwise == 1 then
@@ -161,7 +160,7 @@ function TurnManeuver:generateTurnCircle(center, startDir, stopDir, radius, cloc
 			startRot, endRot, (degreeStep * clockwise), degreeToTurn, clockwise)
 
 	-- Get the number of waypoints
-	numWP = ceil(degreeToTurn / degreeStep)
+	numWP = math.ceil(degreeToTurn / degreeStep)
 	-- Recalculate degreeStep
 	degreeStep = (degreeToTurn / numWP) * clockwise
 	-- Add extra waypoint if addEndPoint is true
@@ -173,16 +172,16 @@ function TurnManeuver:generateTurnCircle(center, startDir, stopDir, radius, cloc
 	for i = 1, numWP, 1 do
 		if i ~= 1 then
 			local _,currentRot,_ = getRotation(point)
-			local newRot = deg(currentRot) + degreeStep
+			local newRot = math.deg(currentRot) + degreeStep
 
-			setRotation(point, 0, rad(newRot), 0)
+			setRotation(point, 0, math.rad(newRot), 0)
 		end
 
 		local x,_,z = localToWorld(point, 0, 0, radius)
 		self:addWaypoint(x, z, nil, reverse, nil, nil, true)
 
 		local _,rot,_ = getRotation(point)
-		self:debug("generateTurnCircle: waypoint %d currentRotation=%d", i, deg(rot))
+		self:debug("generateTurnCircle: waypoint %d currentRotation=%d", i, math.deg(rot))
 	end
 
 	-- Clean up the created node.
@@ -315,6 +314,14 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 	local dzMax = self:getDzMax(self.course)
 	local spaceNeededOnFieldForTurn = dzMax + workWidth / 2
 	distanceToFieldEdge = distanceToFieldEdge or 500  -- if not given, assume we have a lot of space
+	if self.turnContext:getTurnEndForwardOffset() < 0 then
+		-- in an offset turn, where the turn start (and thus, the vehicle) is on the longer leg,
+		-- so the turn end is behind the turn start, we have in reality less space, as we measured the
+		-- distance to the field edge from the turn start, but we need to measure it from the turn end,
+		-- where there's less space
+		distanceToFieldEdge = distanceToFieldEdge + self.turnContext:getTurnEndForwardOffset()
+	end
+	print(self.turnContext:getTurnEndForwardOffset())
 	local dBack = spaceNeededOnFieldForTurn - distanceToFieldEdge
 	local canReverse = AIUtil.canReverse(vehicle)
 	if dBack > 0 and canReverse then
