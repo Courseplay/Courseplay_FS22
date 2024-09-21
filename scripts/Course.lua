@@ -1485,6 +1485,8 @@ function Course:saveToXml(courseXml, courseKey)
     courseXml:setValue(courseKey .. '#workWidth', self.workWidth or 0)
     courseXml:setValue(courseKey .. '#numHeadlands', self.numberOfHeadlands or 0)
     courseXml:setValue(courseKey .. '#nVehicles', self.nVehicles or 1)
+    courseXml:setValue(courseKey .. '#headlandClockwise', self.headlandClockwise)
+    courseXml:setValue(courseKey .. '#islandHeadlandClockwise', self.islandHeadlandClockwise)
     courseXml:setValue(courseKey .. '#wasEdited', self.editedByCourseEditor)
     saveWaypointsToXml(self.waypoints, courseXml, courseKey)
     if self.nVehicles > 1 then
@@ -1501,6 +1503,8 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
     local numberOfHeadlands = courseXml:getValue(courseKey .. '#numHeadlands')
     local multiTools = courseXml:getValue(courseKey .. '#multiTools')
     local nVehicles = courseXml:getValue(courseKey .. '#nVehicles')
+    local headlandClockwise = courseXml:getValue(courseKey .. '#headlandClockwise')
+    local islandHeadlandClockwise = courseXml:getValue(courseKey .. '#islandHeadlandClockwise')
     local wasEdited = courseXml:getValue(courseKey .. '#wasEdited', false)
     local waypoints = createWaypointsFromXml(courseXml, courseKey)
     if #waypoints == 0 then
@@ -1516,6 +1520,8 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
     course.workWidth = workWidth
     course.numberOfHeadlands = numberOfHeadlands
     course.nVehicles = nVehicles or 1
+    course.headlandClockwise = headlandClockwise
+    course.islandHeadlandClockwise = islandHeadlandClockwise
     course.editedByCourseEditor = wasEdited
     if nVehicles and nVehicles > 1 then
         course.multiVehicleData = Course.MultiVehicleData.createFromXmlFile(courseXml, courseKey)
@@ -1531,6 +1537,8 @@ function Course:writeStream(vehicle, streamId, connection)
     streamWriteFloat32(streamId, self.workWidth or 0)
     streamWriteInt32(streamId, self.numberOfHeadlands or 0)
     streamWriteInt32(streamId, self.nVehicles or 1)
+    CpUtil.streamWriteBool(streamId, self.headlandClockwise)
+    CpUtil.streamWriteBool(streamId, self.islandHeadlandClockwise)
     streamWriteInt32(streamId, #self.waypoints or 0)
     streamWriteBool(streamId, self.editedByCourseEditor)
     for i, p in ipairs(self.waypoints) do
@@ -1546,6 +1554,8 @@ function Course.createFromStream(vehicle, streamId, connection)
     local workWidth = streamReadFloat32(streamId)
     local numberOfHeadlands = streamReadInt32(streamId)
     local nVehicles = streamReadInt32(streamId)
+    local headlandClockwise = CpUtil.streamReadBool(streamId)
+    local islandHeadlandClockwise = CpUtil.streamReadBool(streamId)
     local numWaypoints = streamReadInt32(streamId)
     local wasEdited = streamReadBool(streamId)
     local waypoints = {}
@@ -1557,6 +1567,8 @@ function Course.createFromStream(vehicle, streamId, connection)
     course.workWidth = workWidth
     course.numberOfHeadlands = numberOfHeadlands
     course.nVehicles = nVehicles
+    course.headlandClockwise = headlandClockwise
+    course.islandHeadlandClockwise = islandHeadlandClockwise
     course.editedByCourseEditor = wasEdited
     if nVehicles > 1 then
         course.multiVehicleData = Course.MultiVehicleData.createFromStream(streamId, nVehicles)
@@ -1576,12 +1588,15 @@ local function createWaypointsFromGeneratedPath(path)
     return waypoints
 end
 
-function Course.createFromGeneratedCourse(vehicle, generatedCourse, workWidth, numberOfHeadlands, nVehicles)
+function Course.createFromGeneratedCourse(vehicle, generatedCourse, workWidth, numberOfHeadlands, nVehicles,
+                                          headlandClockwise, islandHeadlandClockwise)
     local waypoints = createWaypointsFromGeneratedPath(generatedCourse:getPath())
     local course = Course(vehicle or g_currentMission.controlledVehicle, waypoints)
     course.workWidth = workWidth
     course.numberOfHeadlands = numberOfHeadlands
     course.nVehicles = nVehicles
+    course.headlandClockwise = headlandClockwise
+    course.islandHeadlandClockwise = islandHeadlandClockwise
     if course.nVehicles > 1 then
         course.multiVehicleData = Course.MultiVehicleData.createFromGeneratedCourse(vehicle, generatedCourse)
     end

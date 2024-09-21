@@ -52,6 +52,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     context:setEvenRowDistribution(settings.evenRowWidth:getValue())
     context:setBypassIslands(settings.bypassIslands:getValue())
     context:setIslandHeadlands(settings.nIslandHeadlands:getValue())
+    context:setIslandHeadlandClockwise(settings.islandHeadlandClockwise:getValue())
     if settings.bypassIslands:getValue() then
         context.field:findIslands()
         context.field:setupIslands()
@@ -107,7 +108,8 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     CourseGeneratorInterface.logger:debug('Generated course: %s', CourseGeneratorInterface.generatedCourse)
 
     local course = Course.createFromGeneratedCourse(vehicle, CourseGeneratorInterface.generatedCourse,
-            settings.workWidth:getValue(), numberOfHeadlands, settings.multiTools:getValue())
+            settings.workWidth:getValue(), numberOfHeadlands, settings.multiTools:getValue(),
+            settings.headlandClockwise:getValue(), settings.islandHeadlandClockwise:getValue())
     course:setFieldPolygon(fieldPolygon)
     return true, course
 end
