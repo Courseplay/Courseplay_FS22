@@ -172,7 +172,7 @@ Changelog 7.5.0.0:
 - Linienvorschau beim Zeichnen eines eigenen Feldes und mit gedrückter linker Shift-Taste lassen sich gerade linien ziehen.
 - HUD umgebaut für ein zukünftiges Projekt.
 - Wegpunkte erzeugen keine Schatten mehr, was die performance etwas verbessern sollte, wenn alle Wegpunkte angezeigt werden.
-- Schauelposition ist jetzt leicht nach unten gekippt und kann feiner eingestellt werden. (0.05er Schritte). Sollte dabei helfen, einige Silage Silos besser zu entleeren.
+- Schauelposition ist jetzt leicht nach unten gekippt und kann feiner eingestellt werden. (0.05er Schritte). Sollte dabei helfen, einige Silagesilos besser zu entleeren.
 - Kurse auf der KI Karte zeigen jetzt kleine Pfeile um die Richtung der Bahnen anzuzeigen.
 
 Changelog 7.4.0.0:
