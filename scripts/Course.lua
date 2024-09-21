@@ -1471,7 +1471,7 @@ local function createWaypointsFromXml(xmlFile, key)
             rightSideWorked = last.rightSideWorked
         elseif last.rowEnd then
             rowNumber, leftSideWorked, rightSideWorked = nil, nil, nil
-        else
+        elseif rowNumber then
             last.rowNumber = rowNumber
             last.leftSideWorked = leftSideWorked
             last.rightSideWorked = rightSideWorked
