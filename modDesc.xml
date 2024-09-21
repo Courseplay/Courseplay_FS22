@@ -168,11 +168,11 @@ Changelog 7.5.0.0:
 - Neuer Kurs Generator 2.0 mit neuen Features und aktualisiertem Hilfemenü.
 - Multitool Kurse beinhalten jetzt 2-5 einzelne Kurse für jede Bahn, abhänging von der Anzahl Fahrzeuge die gewählt wurden.
 - Futtermischer, Dünger-, Kalk-, und Miststreuer, sowie Göweil LT Master als Ziel für den Schaufelmodus hinzugefügt.
-- Häcksler können wieder abgetankt werden, wie man es aus FS19 kennt. (Das vorzeitige rufen von einem 2ten Abfahrer ist nicht verfügbar).
-- Linienvorschau beim zeichnen eines eigenen Feldes und mit gedrückter linker shift taste lassen sich gerade linien ziehen.
+- Häcksler können wieder abgetankt werden, wie man es aus FS19 kennt. (Das vorzeitige Rufen von einem 2ten Abfahrer ist nicht verfügbar).
+- Linienvorschau beim Zeichnen eines eigenen Feldes und mit gedrückter linker Shift-Taste lassen sich gerade linien ziehen.
 - HUD umgebaut für ein zukünftiges Projekt.
 - Wegpunkte erzeugen keine Schatten mehr, was die performance etwas verbessern sollte, wenn alle Wegpunkte angezeigt werden.
-- Schauelposition ist jetzt leicht nach unten gekippt und kann feiner eingestellt werden. (0.05er Schritte). Sollte dabei helfen einige silage silos besser zu entleeren.
+- Schauelposition ist jetzt leicht nach unten gekippt und kann feiner eingestellt werden. (0.05er Schritte). Sollte dabei helfen, einige Silage Silos besser zu entleeren.
 - Kurse auf der KI Karte zeigen jetzt kleine Pfeile um die Richtung der Bahnen anzuzeigen.
 
 Changelog 7.4.0.0:
