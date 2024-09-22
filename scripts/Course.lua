@@ -445,6 +445,22 @@ function Course:isOnHeadland(ix, n, boundaryId)
     end
 end
 
+---@param ix number
+---@return boolean|nil true if ix is on a clockwise headland (around the field, or around an island). False if
+--- it is on a counterclockwise headland, and nil, if is is not on a headland.
+function Course:isOnClockwiseHeadland(ix)
+    local boundaryId = self.waypoints[ix].attributes:getBoundaryId()
+    if boundaryId == nil then
+        return nil
+    end
+    if CourseGenerator.isHeadland(boundaryId) then
+        return self.headlandClockwise
+    elseif CourseGenerator.isIslandHeadland(boundaryId) then
+        return self.islandHeadlandClockwise
+    end
+    return nil
+end
+
 function Course:isHeadlandTransition(ix)
     return self.waypoints[ix]:isHeadlandTransition()
 end

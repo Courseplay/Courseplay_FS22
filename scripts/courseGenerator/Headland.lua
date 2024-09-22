@@ -1,5 +1,8 @@
 local Headland = CpObject()
 
+--- Headlands around the field will always have a boundary ID starting with 'F' (for field)
+Headland.boundaryIdPrefix = 'F'
+
 --- Create a headland from a base polygon. The headland is a new polygon, offset by width, that is, inside
 --- of the base polygon.
 ---
@@ -251,7 +254,7 @@ end
 --- A short ID to identify the boundary this headland is based on when serializing/deserializing. By default, this
 --- is the field boundary.
 function Headland:getBoundaryId()
-   return 'F'
+   return Headland.boundaryIdPrefix
 end
 
 function Headland:__tostring()
@@ -264,6 +267,9 @@ CourseGenerator.Headland = Headland
 --- For headlands around islands, as there everything is backwards, at least the transitions
 ---@class IslandHeadland
 local IslandHeadland = CpObject(CourseGenerator.Headland)
+
+--- Headlands around the field will always have a boundary ID starting with 'I' (for island)
+IslandHeadland.boundaryIdPrefix = 'I'
 
 --- Create an island headland around a base polygon. The headland is a new polygon, offset by width, that is, outside
 --- of the base polygon.
@@ -305,7 +311,7 @@ end
 
 --- A short ID in the form I<island ID> to identify the boundary this headland is based on when serializing/deserializing
 function IslandHeadland:getBoundaryId()
-    return 'I' .. self.island:getId()
+    return IslandHeadland.boundaryIdPrefix .. self.island:getId()
 end
 
 function IslandHeadland:__tostring()
