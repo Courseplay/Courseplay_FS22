@@ -39,7 +39,7 @@ Changelog 7.5.0.0:
 - New course generator 2.0 with new features and updated help menu.
 - A multitool course now contains 2-5 single course for each lane depending on the amount of vehicles you selected.
 - Added food mixer wagon, fertilizer/lime/manure sprayer and Göweil LT Master as valid target for shovel mode. 
-- Added chopper unloader support known from FS19 back in. (Premature calling of a second unloader is not available.)
+- Added chopper unloader support known from FS19 back in. (Second unloader not supported.)
 - Added line preview when drawing a custom field on the map and can hold left shift to draw straight lines.
 - HUD reworked for a future project.
 - Waypoints no more cast a shadow, this might increase performance a bit, when waypoints are active.
