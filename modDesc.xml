@@ -39,7 +39,7 @@ Changelog 7.5.0.0:
 - New course generator 2.0 with new features and updated help menu.
 - A multitool course now contains 2-5 single course for each lane depending on the amount of vehicles you selected.
 - Added food mixer wagon, fertilizer/lime/manure sprayer and Göweil LT Master as valid target for shovel mode. 
-- Added chopper unloader support known from FS19 back in.
+- Added chopper unloader support known from FS19 back in. (Premature calling of a second unloader is not available.)
 - Added line preview when drawing a custom field on the map and can hold left shift to draw straight lines.
 - HUD reworked for a future project.
 - Waypoints no more cast a shadow, this might increase performance a bit, when waypoints are active.
@@ -169,11 +169,11 @@ Changelog 7.5.0.0:
 - Multitool Kurse beinhalten jetzt 2-5 einzelne Kurse für jede Bahn, abhänging von der Anzahl Fahrzeuge die gewählt wurden.
 - Futtermischer, Dünger-, Kalk-, und Miststreuer, sowie Göweil LT Master als Ziel für den Schaufelmodus hinzugefügt.
 - Häcksler können wieder abgetankt werden, wie man es aus FS19 kennt. (Das vorzeitige Rufen von einem 2ten Abfahrer ist nicht verfügbar).
-- Linienvorschau beim Zeichnen eines eigenen Feldes und mit gedrückter linker Shift-Taste lassen sich gerade linien ziehen.
+- Linienvorschau beim Zeichnen eines eigenen Feldes und mit gedrückter linker Shift-Taste lassen sich gerade Linien ziehen.
 - HUD umgebaut für ein zukünftiges Projekt.
 - Wegpunkte erzeugen keine Schatten mehr, was die performance etwas verbessern sollte, wenn alle Wegpunkte angezeigt werden.
-- Schauelposition ist jetzt leicht nach unten gekippt und kann feiner eingestellt werden. (0.05er Schritte). Sollte dabei helfen, einige Silagesilos besser zu entleeren.
-- Kurse auf der KI Karte zeigen jetzt kleine Pfeile um die Richtung der Bahnen anzuzeigen.
+- Schaufelposition ist jetzt leicht nach unten gekippt und kann feiner eingestellt werden. (0.05er Schritte). Sollte dabei helfen, einige Silagesilos besser zu entleeren.
+- Kurse auf der KI Karte zeigen jetzt kleine Pfeile, um die Richtung der Bahnen anzuzeigen.
 
 Changelog 7.4.0.0:
 - Forstmulcher und Handmäher können jetzt für die Feldarbeit verwendet werden.
