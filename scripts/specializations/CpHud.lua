@@ -400,7 +400,7 @@ end
 
 function CpHud:generateClientStates(setting, lastvalue)
     local spec = self.spec_cpHud
-    if #spec.availableClientJobModes.values > 0 then
+    if spec.availableClientJobModes and #spec.availableClientJobModes.values > 0 then
         return spec.availableClientJobModes.values, spec.availableClientJobModes.texts
     end
     return {99}, "Client update error!"
