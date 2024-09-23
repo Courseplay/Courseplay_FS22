@@ -281,7 +281,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Пропускать проходов"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Сколько пропускать проходов при переходе к следующему проходу при челночном методе. Значение: 0 - 6."/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Количество кругов"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Количество кругов для racetrack. Значение: 1 - 12"/> <!-- !!!!!!!! -->
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Количество кругов для racetrack. Значение: 1 - 12"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Проходов в загоне"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="При выборе метода движения 'загонами', указывается к-во проходов к каждой загонке. Значение: 0 - 24."/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Обход разворотной полосы"/>
