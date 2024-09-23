@@ -170,7 +170,7 @@ function Island:isTooBigToBypass(width)
     end
 end
 
-------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------- ---------------
 -- Find islands in the game.
 ------------------------------------------------------------------------------------------------------------------------
 function Island.findIslands(field)
@@ -179,9 +179,11 @@ function Island.findIslands(field)
     Island.logger:debug('Generating grid for field with grid spacing %.1f', Island.gridSpacing)
     local context = CourseGenerator.FieldworkContext(field, Island.gridSpacing, 5, 0)
     context:setAutoRowAngle(false):setRowAngle(0):setRowWaypointDistance(1)
-    local course = CourseGenerator.FieldworkCourse(context)
+    context:_setGenerateBlocksOnly()
+    local boundary = CourseGenerator.FieldworkCourseHelper.createUsableBoundary(context.field:getBoundary(), context.headlandClockwise)
+    local center = CourseGenerator.Center(context, boundary, nil, context.startLocation, {})
     local islandVertices = {}
-    for _, b in ipairs(course:getCenter():getBlocks()) do
+    for _, b in ipairs(center:getBlocks()) do
         for _, r in ipairs(b:getRows()) do
             for _, v in ipairs(r) do
                 local isOnField, _ = FSDensityMapUtil.getFieldDataAtWorldPosition(v.x, 0, -v.y)
@@ -198,5 +200,6 @@ function Island.findIslands(field)
             end
         end
     end
+    Island.logger:debug('\t Found %d island vertices', #islandVertices)
     return islandVertices
 end

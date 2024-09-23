@@ -96,6 +96,13 @@ function Center:generate()
         self.logger:debug('No blocks could be generated')
         return
     end
+    
+    if self.context:_generateBlocksOnly() then
+        self.logger:debug('Generating blocks only, no sequencing or connecting paths.')
+        self.blocks = blocks
+        self.connectingPaths = {}
+        return
+    end
 
     -- now connect all blocks
     -- if there are more than one block, we need to figure out in what sequence those blocks
