@@ -81,6 +81,11 @@ function Block:getRows()
     return self.rowsInWorkSequence
 end
 
+---@return CourseGenerator.Row[] rows in the order they were created, same direction as they were created
+function Block:getUnsequencedRows()
+    return self.rows
+end
+
 ---@return CourseGenerator.Row first row of the block in the work sequence
 function Block:getFirstRow()
     return self.rowsInWorkSequence[1]

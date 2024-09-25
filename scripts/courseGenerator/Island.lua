@@ -178,14 +178,17 @@ function Island.findIslands(field)
     -- to end up with a 1x1 grid of nodes covering the islands of the field.
     Island.logger:debug('Generating grid for field with grid spacing %.1f', Island.gridSpacing)
     local context = CourseGenerator.FieldworkContext(field, Island.gridSpacing, 5, 0)
-    context:setAutoRowAngle(false):setRowAngle(0):setRowWaypointDistance(1)
+    context:setAutoRowAngle(false):setRowAngle(0):setRowWaypointDistance(Island.gridSpacing)
     context:_setGenerateBlocksOnly()
     local boundary = CourseGenerator.FieldworkCourseHelper.createUsableBoundary(context.field:getBoundary(), context.headlandClockwise)
     local center = CourseGenerator.Center(context, boundary, nil, context.startLocation, {})
     center:generate()
     local islandVertices = {}
     for _, b in ipairs(center:getBlocks()) do
-        for _, r in ipairs(b:getRows()) do
+        Island.logger:debug('\t Block %s, %d rows', b, #b:getUnsequencedRows())
+        for _, r in ipairs(b:getUnsequencedRows()) do
+            r:splitEdges(Island.gridSpacing)
+            Island.logger:debug('\t has %d waypoints', #r)
             for _, v in ipairs(r) do
                 local isOnField, _ = FSDensityMapUtil.getFieldDataAtWorldPosition(v.x, 0, -v.y)
                 if not isOnField then
