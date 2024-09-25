@@ -182,6 +182,7 @@ function Island.findIslands(field)
     context:_setGenerateBlocksOnly()
     local boundary = CourseGenerator.FieldworkCourseHelper.createUsableBoundary(context.field:getBoundary(), context.headlandClockwise)
     local center = CourseGenerator.Center(context, boundary, nil, context.startLocation, {})
+    center:generate()
     local islandVertices = {}
     for _, b in ipairs(center:getBlocks()) do
         for _, r in ipairs(b:getRows()) do
