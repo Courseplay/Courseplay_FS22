@@ -36,10 +36,10 @@ function createFolder(folder)
 end
 
 function getFiles(folder, callback, object)
-    for dir in io.popen('dir "' .. folder .. '" /b /ad'):lines() do
+    for dir in io.popen('ls --file-type "' .. folder .. '" | grep \'/$\' | sed -e \'s/\\///\''):lines() do
         object[callback](object, dir, true)
     end
-    for file in io.popen('dir "' .. folder .. '" /b /a-d'):lines() do
+    for file in io.popen('ls --file-type "' .. folder .. '" | grep -v \'/$\''):lines() do
         object[callback](object, file, false)
     end
 end
@@ -54,9 +54,7 @@ function deleteFile(fullPath)
 end
 
 function deleteFolder(fullPath)
-    os.execute('del /s /q "' .. fullPath .. '\\*"')
-    os.execute('for /d %i in ("' .. fullPath .. '\\*") do rd /s /q "%i"')
-    os.remove(fullPath)
+    os.execute('rm -rf "' .. fullPath .. '"')
 end
 
 function fileExists(path)
