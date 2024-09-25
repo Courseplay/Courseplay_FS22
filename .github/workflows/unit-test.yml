@@ -22,7 +22,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Setup Lua
-        uses: xpol/setup-lua@v0.3
+        uses: leafo/gh-actions-lua@v10
+        with:
+          # because atan2 is deprecated in 5.3
+          luaVersion: "5.2.4
       - name: Run unit tests
         run: |
           cd scripts/test
