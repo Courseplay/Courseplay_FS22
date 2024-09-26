@@ -56,6 +56,18 @@ CourseGenerator.cDefaultHeadlandOverlapPercentage = 5
 CourseGenerator.debugPoints = {}
 CourseGenerator.debugPolylines = {}
 
+---@param boundaryId string boundary ID from the waypoint attributes
+---@return boolean true if this boundary ID is associated with a headland around the field
+function CourseGenerator.isHeadland(boundaryId)
+    return string.sub(boundaryId, 1) == CourseGenerator.Headland.boundaryIdPrefix
+end
+
+---@param boundaryId string boundary ID from the waypoint attributes
+---@return boolean true if this boundary ID is associated with a headland around an island
+function CourseGenerator.isIslandHeadland(boundaryId)
+    return string.sub(boundaryId, 1) == CourseGenerator.IslandHeadland.boundaryIdPrefix
+end
+
 --- Return true when running in the game
 -- used by file and log functions to determine how exactly to do things,
 -- for example, io.flush is not available from within the game.

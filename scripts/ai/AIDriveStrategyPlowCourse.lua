@@ -155,18 +155,21 @@ function AIDriveStrategyPlowCourse:rotatePlows()
     local ix = self.ppc:getCurrentWaypointIx()
     local plowShouldBeOnTheLeft
     if self.course:isOnHeadland(ix) then
-        plowShouldBeOnTheLeft = self.course:isLeftSideWorked(ix)
+        local clockwise = self.course:isOnClockwiseHeadland(ix)
+        plowShouldBeOnTheLeft = not clockwise
+        self:debug('On a headland (clockwise %s), plow should be on the left %s', tostring(clockwise), tostring(plowShouldBeOnTheLeft))
     else
         local isNextTurnLeft = self.course:isNextTurnLeft(ix)
         if isNextTurnLeft == nil then
             -- don't know if left or right, so just use the last worked side
             plowShouldBeOnTheLeft = self.course:isLeftSideWorked(ix)
+            self:debug('On the center, next turn direction unknown, plow should be on the left %s', tostring(plowShouldBeOnTheLeft))
         else
             plowShouldBeOnTheLeft = not isNextTurnLeft
+            self:debug('On the center, plow should be on the left %s', tostring(plowShouldBeOnTheLeft))
         end
     end
-    self:debug('Plow should be on the left %s', tostring(plowShouldBeOnTheLeft))
-    for _, controller in pairs(self.controllers) do 
+    for _, controller in pairs(self.controllers) do
         if controller.rotate then 
             controller:rotate(plowShouldBeOnTheLeft)
         end
