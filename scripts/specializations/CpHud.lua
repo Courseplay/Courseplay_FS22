@@ -243,6 +243,7 @@ function CpHud:onWriteUpdateStream(streamId, connection, dirtyMask)
             for _, value in pairs(spec.hudSettings.selectedJob.values) do 
                 streamWriteUInt8(streamId, value)
             end
+            spec.hudSettings.selectedJob:writeStream(streamId, connection)
         end
     end
 end
@@ -253,10 +254,8 @@ function CpHud:onReadUpdateStream(streamId, timestamp, connection)
     if connection:getIsServer() then
         if streamReadBool(streamId) then
             local numValues = streamReadUInt8(streamId)
-            spec.availableClientJobModes = {
-                values = {},
-                texts = {}
-            }
+            spec.availableClientJobModes.values = {}
+            spec.availableClientJobModes.texts = {}
             ---@type AIParameterSettingList
             local setting = spec.hudSettings.selectedJob
             for i=1, numValues do 
@@ -269,6 +268,8 @@ function CpHud:onReadUpdateStream(streamId, timestamp, connection)
                         setting.data.texts[ix])
                 end
             end
+            spec.hudSettings.selectedJob:refresh()
+            spec.hudSettings.selectedJob:readStream(streamId, connection)
         end
     end
 end
@@ -400,7 +401,11 @@ end
 
 function CpHud:generateClientStates(setting, lastvalue)
     local spec = self.spec_cpHud
-    if spec.availableClientJobModes and #spec.availableClientJobModes.values > 0 then
+    if spec.availableClientJobModes == nil then 
+        CpUtil.errorVehicle(self, "Failed to find client hud settings table!")
+        return {99}, "Client update error!"
+    end
+    if #spec.availableClientJobModes.values > 0 then
         return spec.availableClientJobModes.values, spec.availableClientJobModes.texts
     end
     return {99}, "Client update error!"
