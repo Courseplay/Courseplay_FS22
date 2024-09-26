@@ -236,6 +236,18 @@ function FieldworkContext:getHeadlandWorkingWidth()
     return self.headlandWorkingWidth or self.workingWidth * (1 - self.overlap)
 end
 
+--- Disable sequencing of blocks, just generate them, with the rows and then stop.
+--- Block sequencing uses a genetic algorithm to find the best order of blocks to work on.
+--- When we perform an island detection only, we just want a grid across the field, but that may result in many blocks,
+--- no need for a CPU intensive, very long running block sequencing.
+function FieldworkContext:_setGenerateBlocksOnly()
+    self.generateBlocksOnly = true
+end
+
+function FieldworkContext:_generateBlocksOnly()
+    return self.generateBlocksOnly
+end
+
 ------------------------------------------------------------------------------------------------------------------------
 --- Multi vehicle support
 ------------------------------------------------------------------------------------------------------------------------

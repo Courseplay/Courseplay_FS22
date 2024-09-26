@@ -9,17 +9,15 @@ require('FileSystem')
 --- Still WIP
 
 -- clean up
-local workingDir = io.popen"cd":read'*l'
-deleteFolder(workingDir .. '\\modSettings')
-local coursesDir = 'modSettings\\Courseplay_FS22\\Courses'
-os.execute('mkdir ' .. coursesDir)
-local mapCoursesDir = workingDir .. '\\' .. coursesDir .. '\\' .. g_currentMission.missionInfo.mapId
+local workingDir = io.popen("pwd"):read'*l'
+deleteFolder(workingDir .. '/modSettings')
+local coursesDir = 'modSettings/Courseplay_FS22/Courses'
+os.execute('mkdir -p ' .. coursesDir)
 
 
 ------------------------------------------------------------------------------------------------------------------------
 -- File
 ------------------------------------------------------------------------------------------------------------------------
-
 local file = File(coursesDir,"testFile")
 assert(file.name == "testFile")
 assert(file.parentPath == coursesDir)
@@ -35,7 +33,6 @@ assert(not fileExists(file:getFullPath()))
 ------------------------------------------------------------------------------------------------------------------------
 -- Directory
 ------------------------------------------------------------------------------------------------------------------------
-
 local dir = Directory(coursesDir,"testDir")
 assert(dir:isDirectory() == true)
 assert(next(dir:getEntries(true,true)) == nil)
@@ -44,16 +41,16 @@ assert(dir:isEmpty() == true)
 dir:addFile("testFile")
 assert(dir.entries["testFile"] ~=nil)
 
-dir:addDirectory("testDir")
-assert(dir.entries["testDir"] ~=nil)
+dir:addDirectory("testDir2")
+assert(dir.entries["testDir2"] ~=nil)
 assert(dir:isEmpty() == false)
 
 dir:delete(true)
+
 ------------------------------------------------------------------------------------------------------------------------
 -- FileSystem
 ------------------------------------------------------------------------------------------------------------------------
-
-local fileSystem = FileSystem(workingDir .. '\\' .. coursesDir, g_currentMission.missionInfo.mapId)
+local fileSystem = FileSystem(workingDir .. '/' .. coursesDir, g_currentMission.missionInfo.mapId)
 
 local currentView = fileSystem.currentDirectoryView
 --assert(currentView.name == "Singleplayer")
