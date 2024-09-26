@@ -1467,9 +1467,15 @@ function Course:getProgress(ix)
     return self.waypoints[ix].dToHere / self.length, ix, ix == #self.waypoints
 end
 
-local function saveWaypointsToXml(waypoints, xmlFile, key)
-    for i, wp in ipairs(waypoints) do
-        wp:setXmlValue(xmlFile, key, i)
+---@param compact boolean skip waypoints between row start and end (as for straight rows, these can be regenerated
+--- easily after the course is loaded)
+local function saveWaypointsToXml(waypoints, xmlFile, key, compact)
+    local i = 1
+    for _, wp in ipairs(waypoints) do
+        if not compact or (not wp:getRowNumber() or wp:isRowStart() or wp:isRowEnd()) then
+            wp:setXmlValue(xmlFile, key, i)
+            i = i + 1
+        end
     end
 end
 
@@ -1486,7 +1492,7 @@ function Course:addWaypointsForRows()
     for i = 1, #self.waypoints - 1 do
         table.insert(waypoints, Waypoint(self.waypoints[i]))
         local p = self.waypoints[i]
-        if self:isTurnEndAtIx(i) and self:isTurnStartAtIx(i + 1) and
+        if self.waypoints[i]:isRowStart() and self.waypoints[i + 1]:isRowEnd() and
                 p.dToNext > CourseGenerator.cRowWaypointDistance + 0.1 then
             CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: adding waypoints for row, length %.1f', p.dToNext)
             for n = 1, (p.dToNext / CourseGenerator.cRowWaypointDistance) - 1 do
@@ -1535,11 +1541,12 @@ function Course:saveToXml(courseXml, courseKey)
     CpUtil.setXmlValue(courseXml, courseKey .. '#headlandClockwise', self.headlandClockwise)
     CpUtil.setXmlValue(courseXml, courseKey .. '#islandHeadlandClockwise', self.islandHeadlandClockwise)
     courseXml:setValue(courseKey .. '#wasEdited', self.editedByCourseEditor)
+    courseXml:setValue(courseKey .. '#compacted', self.compacted)
     if self.nVehicles > 1 then
-        self.multiVehicleData:setXmlValue(courseXml, courseKey)
+        self.multiVehicleData:setXmlValue(courseXml, courseKey, self.compacted)
     else
         -- only write the current waypoints if we are not a multi-vehicle course
-        saveWaypointsToXml(self.waypoints, courseXml, courseKey)
+        saveWaypointsToXml(self.waypoints, courseXml, courseKey, self.compacted)
     end
 end
 
@@ -1547,40 +1554,36 @@ end
 ---@param courseXml XmlFile
 ---@param courseKey string key to the course in the XML
 function Course.createFromXml(vehicle, courseXml, courseKey)
-    local name = courseXml:getValue(courseKey .. '#name')
-    local workWidth = courseXml:getValue(courseKey .. '#workWidth')
-    local numberOfHeadlands = courseXml:getValue(courseKey .. '#numHeadlands')
-    local multiTools = courseXml:getValue(courseKey .. '#multiTools')
-    local nVehicles = courseXml:getValue(courseKey .. '#nVehicles')
-    local headlandClockwise = courseXml:getValue(courseKey .. '#headlandClockwise')
-    local islandHeadlandClockwise = courseXml:getValue(courseKey .. '#islandHeadlandClockwise')
-    local wasEdited = courseXml:getValue(courseKey .. '#wasEdited', false)
-    local waypoints = {}
-    if not nVehicles or nVehicles == 1 then -- TODO: not nVehicles for backwards compatibility, remove later
+    local course = Course(vehicle, {})
+    course.name = courseXml:getValue(courseKey .. '#name')
+    course.workWidth = courseXml:getValue(courseKey .. '#workWidth')
+    course.numberOfHeadlands = courseXml:getValue(courseKey .. '#numHeadlands')
+    course.nVehicles = courseXml:getValue(courseKey .. '#nVehicles', 1)
+    course.headlandClockwise = courseXml:getValue(courseKey .. '#headlandClockwise')
+    course.islandHeadlandClockwise = courseXml:getValue(courseKey .. '#islandHeadlandClockwise')
+    course.editedByCourseEditor = courseXml:getValue(courseKey .. '#compacted', false)
+    course.compacted = courseXml:getValue(courseKey .. '#compacted', false)
+    course.waypoints = {}
+    if not course.nVehicles or course.nVehicles == 1 then
+        -- TODO: not nVehicles for backwards compatibility, remove later
         -- for multi-vehicle courses, we load the multi-vehicle data and restore the current course
         -- from there, so we don't need to write the same course twice in the savegame
-        waypoints = createWaypointsFromXml(courseXml, courseKey)
-        if #waypoints == 0 then
+        course.waypoints = createWaypointsFromXml(courseXml, courseKey)
+        if #course.waypoints == 0 then
             CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'No waypoints loaded, trying old format')
             courseXml:iterate(courseKey .. '.waypoints' .. Waypoint.xmlKey, function(ix, key)
                 local d
                 d = CpUtil.getXmlVectorValues(courseXml:getString(key))
-                table.insert(waypoints, Waypoint.initFromXmlFileLegacyFormat(d, ix))
+                table.insert(course.waypoints, Waypoint.initFromXmlFileLegacyFormat(d, ix))
             end)
         end
     end
-    local course = Course(vehicle, waypoints)
-    course.name = name
-    course.workWidth = workWidth
-    course.numberOfHeadlands = numberOfHeadlands
-    course.nVehicles = nVehicles or 1
-    course.headlandClockwise = headlandClockwise
-    course.islandHeadlandClockwise = islandHeadlandClockwise
-    course.editedByCourseEditor = wasEdited
-    if nVehicles and nVehicles > 1 then
+    if course.nVehicles and course.nVehicles > 1 then
         course.multiVehicleData = Course.MultiVehicleData.createFromXmlFile(courseXml, courseKey)
         course:setPosition(course.multiVehicleData:getPosition())
         vehicle:getCpLaneOffsetSetting():setValue(course.multiVehicleData:getPosition())
+    else
+        course:enrichWaypointData()
     end
     CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
     return course
@@ -1605,32 +1608,26 @@ function Course:writeStream(vehicle, streamId, connection)
 end
 
 function Course.createFromStream(vehicle, streamId, connection)
-    local name = streamReadString(streamId)
-    local workWidth = streamReadFloat32(streamId)
-    local numberOfHeadlands = streamReadInt32(streamId)
-    local nVehicles = streamReadInt32(streamId)
-    local headlandClockwise = CpUtil.streamReadBool(streamId)
-    local islandHeadlandClockwise = CpUtil.streamReadBool(streamId)
+    local course = Course(vehicle, {})
+    course.name = streamReadString(streamId)
+    course.workWidth = streamReadFloat32(streamId)
+    course.numberOfHeadlands = streamReadInt32(streamId)
+    course.nVehicles = streamReadInt32(streamId)
+    course.headlandClockwise = CpUtil.streamReadBool(streamId)
+    course.islandHeadlandClockwise = CpUtil.streamReadBool(streamId)
     local numWaypoints = streamReadInt32(streamId)
-    local wasEdited = streamReadBool(streamId)
-    local waypoints = {}
+    course.editedByCourseEditor = streamReadBool(streamId)
+    course.waypoints = {}
     for ix = 1, numWaypoints do
-        table.insert(waypoints, Waypoint.createFromStream(streamId, ix))
+        table.insert(course.waypoints, Waypoint.createFromStream(streamId, ix))
     end
-    local course = Course(vehicle, waypoints)
-    course.name = name
-    course.workWidth = workWidth
-    course.numberOfHeadlands = numberOfHeadlands
-    course.nVehicles = nVehicles
-    course.headlandClockwise = headlandClockwise
-    course.islandHeadlandClockwise = islandHeadlandClockwise
-    course.editedByCourseEditor = wasEdited
-    if nVehicles > 1 then
-        course.multiVehicleData = Course.MultiVehicleData.createFromStream(streamId, nVehicles)
+    if course.nVehicles > 1 then
+        course.multiVehicleData = Course.MultiVehicleData.createFromStream(streamId, course.nVehicles)
         vehicle:getCpLaneOffsetSetting():setValue(course.multiVehicleData:getPosition())
     end
+    course:enrichWaypointData()
     CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER, vehicle, 'Course with %d waypoints, %d vehicles loaded.',
-            #course.waypoints, nVehicles)
+            #course.waypoints, course.nVehicles)
     return course
 end
 
@@ -1643,13 +1640,16 @@ local function createWaypointsFromGeneratedPath(path)
     return waypoints
 end
 
+---@param straightRows boolean rows are straight, so are fully defined by the row start and end waypoints, therefore
+--- waypoints between them don't have to be saved (for better performance) as they can be restored when loading
 function Course.createFromGeneratedCourse(vehicle, generatedCourse, workWidth, numberOfHeadlands, nVehicles,
-                                          headlandClockwise, islandHeadlandClockwise)
+                                          headlandClockwise, islandHeadlandClockwise, straightRows)
     local waypoints = createWaypointsFromGeneratedPath(generatedCourse:getPath())
     local course = Course(vehicle or g_currentMission.controlledVehicle, waypoints)
     course.workWidth = workWidth
     course.numberOfHeadlands = numberOfHeadlands
     course.nVehicles = nVehicles
+    course.compacted = straightRows
     course.headlandClockwise = headlandClockwise
     course.islandHeadlandClockwise = islandHeadlandClockwise
     if course.nVehicles > 1 then
@@ -1744,7 +1744,7 @@ function Course.MultiVehicleData.registerXmlSchema(schema, baseKey)
     Waypoint.registerXmlSchema(schema, key)
 end
 
-function Course.MultiVehicleData:setXmlValue(xmlFile, baseKey)
+function Course.MultiVehicleData:setXmlValue(xmlFile, baseKey, compacted)
     local mvdKey = baseKey .. Course.MultiVehicleData.key
     xmlFile:setValue(mvdKey .. '#selectedPosition', self.position)
     local i = 0
@@ -1752,7 +1752,7 @@ function Course.MultiVehicleData:setXmlValue(xmlFile, baseKey)
     for position, waypoints in pairs(self.waypoints) do
         local posKey = string.format("%s%s(%d)", mvdKey, '.waypoints', i)
         xmlFile:setValue(posKey .. '#position', position)
-        saveWaypointsToXml(waypoints, xmlFile, posKey)
+        saveWaypointsToXml(waypoints, xmlFile, posKey, compacted)
         i = i + 1
     end
 end
