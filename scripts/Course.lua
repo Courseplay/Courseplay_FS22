@@ -1516,6 +1516,7 @@ local function createWaypointsFromXml(xmlFile, key)
             -- normal row waypoint, copy the row data from the row start waypoint
             wp:copyRowData(rowStart)
         end
+        table.insert(waypoints, wp)
     end)
     return waypoints
 end
