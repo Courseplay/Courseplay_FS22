@@ -185,10 +185,8 @@ function Island.findIslands(field)
     center:generate()
     local islandVertices = {}
     for _, b in ipairs(center:getBlocks()) do
-        Island.logger:debug('\t Block %s, %d rows', b, #b:getUnsequencedRows())
         for _, r in ipairs(b:getUnsequencedRows()) do
             r:splitEdges(Island.gridSpacing)
-            Island.logger:debug('\t has %d waypoints', #r)
             for _, v in ipairs(r) do
                 local isOnField, _ = FSDensityMapUtil.getFieldDataAtWorldPosition(v.x, 0, -v.y)
                 if not isOnField then
