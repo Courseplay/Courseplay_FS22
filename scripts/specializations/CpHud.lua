@@ -200,24 +200,19 @@ function CpHud:onLoad(savegame)
     spec.availableClientJobModesDirtyFlag = self:getNextDirtyFlag()
     --- Clones the generic settings to create different settings containers for each vehicle. 
     CpSettingsUtil.cloneSettingsTable(spec.hudSettings, CpHud.hudSettings.settings, self, CpHud)
+    spec.availableClientJobModes = {
+        values = {},
+        texts = {}
+    }
     if self.isServer then
-        for _, setting in ipairs(spec.hudSettings.settings) do
-            setting:refresh()
-        end
-        self:raiseDirtyFlags(spec.availableClientJobModesDirtyFlag)
+        spec.hudSettings.selectedJob.data.generateValuesFunction = nil
+    else 
+        spec.hudSettings.selectedJob.data.generateValuesFunction = "generateClientStates"
     end
     if savegame then 
         CpSettingsUtil.loadFromXmlFile(spec.hudSettings, savegame.xmlFile, 
             savegame.key .. CpHud.KEY .. CpHud.SETTINGS_KEY, self)
     end
-    spec.availableClientJobModes = {
-        values = {},
-        texts = {}
-    }
-    if not self.isServer then
-        spec.hudSettings.selectedJob.data.generateValuesFunction = "generateClientStates"
-    end
-
 end
 
 function CpHud:onReadStream(streamId, connection)
@@ -243,6 +238,7 @@ function CpHud:onWriteUpdateStream(streamId, connection, dirtyMask)
             for _, value in pairs(spec.hudSettings.selectedJob.values) do 
                 streamWriteUInt8(streamId, value)
             end
+            spec.hudSettings.selectedJob:writeStream(streamId, connection)
         end
     end
 end
@@ -253,15 +249,18 @@ function CpHud:onReadUpdateStream(streamId, timestamp, connection)
     if connection:getIsServer() then
         if streamReadBool(streamId) then
             local numValues = streamReadUInt8(streamId)
-            spec.availableClientJobModes = {
-                values = {},
-                texts = {}
-            }
+            spec.availableClientJobModes.values = {}
+            spec.availableClientJobModes.texts = {}
             ---@type AIParameterSettingList
             local setting = spec.hudSettings.selectedJob
+            --- Resets the setting values, so we can gather the 
+            --- allowed values by the server.
+            setting:resetValuesBackToSetupValues()
             for i=1, numValues do 
                 local value = streamReadUInt8(streamId)
                 local ix = setting:getClosestIx(value)
+                CpUtil.debugVehicle(CpDebug.DBG_HUD, self, 
+                    "Selected job is allowed by the server: %d(ix: %d)", value, ix)
                 if ix then
                     table.insert(spec.availableClientJobModes.values, 
                         setting.data.values[ix])
@@ -269,6 +268,8 @@ function CpHud:onReadUpdateStream(streamId, timestamp, connection)
                         setting.data.texts[ix])
                 end
             end
+            spec.hudSettings.selectedJob:refresh()
+            spec.hudSettings.selectedJob:readStream(streamId, connection)
         end
     end
 end
@@ -316,6 +317,8 @@ function CpHud:onStateChange(state, data)
             end
             self:raiseDirtyFlags(spec.availableClientJobModesDirtyFlag)
         end
+    elseif state == Vehicle.STATE_CHANGE_ENTER_VEHICLE then
+        self:raiseDirtyFlags(spec.availableClientJobModesDirtyFlag)
     end
 end
 
@@ -325,10 +328,12 @@ function CpHud:onUpdate(dt)
     local strategy = self:getCpDriveStrategy()
     spec.status:update(dt, self:getIsCpActive(), strategy)
     if self.isServer and self.finishedFirstUpdate then 
-        if not self.hasAppliedSavedValue then 
+        if not spec.hasAppliedSavedValue then 
+            spec.hudSettings.selectedJob:refresh()
             spec.hudSettings.selectedJob:resetToLoadedValue()
+            self:raiseDirtyFlags(spec.availableClientJobModesDirtyFlag)
         end
-        self.hasAppliedSavedValue = false
+        spec.hasAppliedSavedValue = true
     end
 end
 
@@ -400,6 +405,10 @@ end
 
 function CpHud:generateClientStates(setting, lastvalue)
     local spec = self.spec_cpHud
+    if spec.availableClientJobModes == nil then 
+        CpUtil.errorVehicle(self, "Failed to find client hud settings table!")
+        return {99}, "Client update error!"
+    end
     if #spec.availableClientJobModes.values > 0 then
         return spec.availableClientJobModes.values, spec.availableClientJobModes.texts
     end
