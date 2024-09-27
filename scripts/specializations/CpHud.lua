@@ -200,24 +200,23 @@ function CpHud:onLoad(savegame)
     spec.availableClientJobModesDirtyFlag = self:getNextDirtyFlag()
     --- Clones the generic settings to create different settings containers for each vehicle. 
     CpSettingsUtil.cloneSettingsTable(spec.hudSettings, CpHud.hudSettings.settings, self, CpHud)
+    spec.availableClientJobModes = {
+        values = {},
+        texts = {}
+    }
     if self.isServer then
+        spec.hudSettings.selectedJob.data.generateValuesFunction = nil
         for _, setting in ipairs(spec.hudSettings.settings) do
             setting:refresh()
         end
         self:raiseDirtyFlags(spec.availableClientJobModesDirtyFlag)
+    else 
+        spec.hudSettings.selectedJob.data.generateValuesFunction = "generateClientStates"
     end
     if savegame then 
         CpSettingsUtil.loadFromXmlFile(spec.hudSettings, savegame.xmlFile, 
             savegame.key .. CpHud.KEY .. CpHud.SETTINGS_KEY, self)
     end
-    spec.availableClientJobModes = {
-        values = {},
-        texts = {}
-    }
-    if not self.isServer then
-        spec.hudSettings.selectedJob.data.generateValuesFunction = "generateClientStates"
-    end
-
 end
 
 function CpHud:onReadStream(streamId, connection)
