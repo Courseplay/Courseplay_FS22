@@ -1533,7 +1533,7 @@ function Course:saveToXml(courseXml, courseKey)
     CpUtil.setXmlValue(courseXml, courseKey .. '#headlandClockwise', self.headlandClockwise)
     CpUtil.setXmlValue(courseXml, courseKey .. '#islandHeadlandClockwise', self.islandHeadlandClockwise)
     courseXml:setValue(courseKey .. '#wasEdited', self.editedByCourseEditor)
-    CpUtil.setXmlValue(courseKey .. '#compacted', self.compacted)
+    CpUtil.setXmlValue(courseXml, courseKey .. '#compacted', self.compacted)
     if self.nVehicles > 1 then
         self.multiVehicleData:setXmlValue(courseXml, courseKey, self.compacted)
     else
