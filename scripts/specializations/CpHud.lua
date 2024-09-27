@@ -330,7 +330,7 @@ function CpHud:onUpdate(dt)
             spec.hudSettings.selectedJob:refresh()
             spec.hudSettings.selectedJob:resetToLoadedValue()
         end
-        self.hasAppliedSavedValue = false
+        self.hasAppliedSavedValue = true
     end
 end
 
