@@ -227,7 +227,6 @@ function CpHud:onWriteStream(streamId, connection)
     for _, setting in ipairs(spec.hudSettings.settings) do
         setting:writeStream(streamId, connection)
     end
-    self:raiseDirtyFlags(spec.availableClientJobModesDirtyFlag)
 end
 
 function CpHud:onWriteUpdateStream(streamId, connection, dirtyMask)
@@ -318,6 +317,8 @@ function CpHud:onStateChange(state, data)
             end
             self:raiseDirtyFlags(spec.availableClientJobModesDirtyFlag)
         end
+    elseif state == Vehicle.STATE_CHANGE_ENTER_VEHICLE then
+        self:raiseDirtyFlags(spec.availableClientJobModesDirtyFlag)
     end
 end
 
