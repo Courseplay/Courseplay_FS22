@@ -206,10 +206,6 @@ function CpHud:onLoad(savegame)
     }
     if self.isServer then
         spec.hudSettings.selectedJob.data.generateValuesFunction = nil
-        for _, setting in ipairs(spec.hudSettings.settings) do
-            setting:refresh()
-        end
-        self:raiseDirtyFlags(spec.availableClientJobModesDirtyFlag)
     else 
         spec.hudSettings.selectedJob.data.generateValuesFunction = "generateClientStates"
     end
@@ -231,6 +227,7 @@ function CpHud:onWriteStream(streamId, connection)
     for _, setting in ipairs(spec.hudSettings.settings) do
         setting:writeStream(streamId, connection)
     end
+    self:raiseDirtyFlags(spec.availableClientJobModesDirtyFlag)
 end
 
 function CpHud:onWriteUpdateStream(streamId, connection, dirtyMask)
@@ -333,6 +330,7 @@ function CpHud:onUpdate(dt)
         if not spec.hasAppliedSavedValue then 
             spec.hudSettings.selectedJob:refresh()
             spec.hudSettings.selectedJob:resetToLoadedValue()
+            self:raiseDirtyFlags(spec.availableClientJobModesDirtyFlag)
         end
         spec.hasAppliedSavedValue = true
     end
