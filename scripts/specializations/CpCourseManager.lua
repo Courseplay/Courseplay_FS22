@@ -30,6 +30,7 @@ function CpCourseManager.registerXmlSchemaValues(schema,baseKey)
     schema:register(XMLValueType.BOOL, baseKey .. "#headlandClockwise", "Headlands are clockwise.")
     schema:register(XMLValueType.BOOL, baseKey .. "#islandHeadlandClockwise", "Headlands around islands are clockwise.")
     schema:register(XMLValueType.BOOL, baseKey .. "#wasEdited", "Was the course edited by the course editor.")
+    schema:register(XMLValueType.BOOL, baseKey .. "#compacted", "Rows are compacted, only start and end is saved.")
     schema:register(XMLValueType.STRING, baseKey .. ".waypoints", "Course serialized waypoints") -- old save format
     Waypoint.registerXmlSchema(schema, baseKey)
     Course.MultiVehicleData.registerXmlSchema(schema, baseKey)

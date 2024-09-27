@@ -179,6 +179,10 @@ function Waypoint:getDistanceFromPoint(x, z)
 	return MathUtil.getPointPointDistance(x, z, self.x, self.z)
 end
 
+function Waypoint:getDistanceFromOther(other)
+	return self:getDistanceFromPoint(other.x, other.z)
+end
+
 function Waypoint:getDistanceFromVehicle(vehicle)
 	local vx, _, vz = getWorldTranslation(vehicle:getAIDirectionNode() or vehicle.rootNode)
 	return self:getDistanceFromPoint(vx, vz)
@@ -280,6 +284,12 @@ end
 
 function Waypoint:setOnConnectingPath(onConnectingPath)
 	self.attributes:setOnConnectingPath(onConnectingPath)
+end
+
+function Waypoint:copyRowData(other)
+	self.attributes.rowNumber = other.attributes.rowNumber
+	self.attributes.leftSideWorked = other.attributes.leftSideWorked
+	self.attributes.rightSideWorked = other.attributes.rightSideWorked
 end
 
 -- a node related to a waypoint
