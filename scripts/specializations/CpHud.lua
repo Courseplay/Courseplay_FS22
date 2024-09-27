@@ -327,6 +327,7 @@ function CpHud:onUpdate(dt)
     spec.status:update(dt, self:getIsCpActive(), strategy)
     if self.isServer and self.finishedFirstUpdate then 
         if not self.hasAppliedSavedValue then 
+            spec.hudSettings.selectedJob:refresh()
             spec.hudSettings.selectedJob:resetToLoadedValue()
         end
         self.hasAppliedSavedValue = false
