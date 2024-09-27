@@ -326,11 +326,11 @@ function CpHud:onUpdate(dt)
     local strategy = self:getCpDriveStrategy()
     spec.status:update(dt, self:getIsCpActive(), strategy)
     if self.isServer and self.finishedFirstUpdate then 
-        if not self.hasAppliedSavedValue then 
+        if not spec.hasAppliedSavedValue then 
             spec.hudSettings.selectedJob:refresh()
             spec.hudSettings.selectedJob:resetToLoadedValue()
         end
-        self.hasAppliedSavedValue = true
+        spec.hasAppliedSavedValue = true
     end
 end
 
