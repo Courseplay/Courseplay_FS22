@@ -257,9 +257,14 @@ function CpHud:onReadUpdateStream(streamId, timestamp, connection)
             spec.availableClientJobModes.texts = {}
             ---@type AIParameterSettingList
             local setting = spec.hudSettings.selectedJob
+            --- Resets the setting values, so we can gather the 
+            --- allowed values by the server.
+            setting:resetValuesBackToSetupValues()
             for i=1, numValues do 
                 local value = streamReadUInt8(streamId)
                 local ix = setting:getClosestIx(value)
+                CpUtil.debugVehicle(CpDebug.DBG_HUD, self, 
+                    "Selected job is allowed by the server: %d(ix: %d)", value, ix)
                 if ix then
                     table.insert(spec.availableClientJobModes.values, 
                         setting.data.values[ix])

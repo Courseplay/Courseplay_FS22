@@ -460,6 +460,12 @@ function AIParameterSettingList:resetToLoadedValue()
 	end
 end
 
+--- Resets the disabled values back to the orignal value table
+function AIParameterSettingList:resetValuesBackToSetupValues()
+	self.values = table.copy(self.data.values)
+	self.texts = table.copy(self.data.texts)
+end
+
 --- Gets a specific value.
 function AIParameterSettingList:getValue()
 	--- In the simple mode, the default value will be returned, but only in singleplayer.
