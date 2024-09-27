@@ -202,6 +202,6 @@ function Island.findIslands(field)
             end
         end
     end
-    Island.logger:debug('\t Found %d island vertices', #islandVertices)
+    Island.logger:debug('    Found %d island vertices', #islandVertices)
     return islandVertices
 end

@@ -27,7 +27,7 @@ Course = CpObject()
 function Course:init(vehicle, waypoints, temporary, first, last)
     -- add waypoints from current vehicle course
     ---@type Waypoint[]
-    self.waypoints = self:initWaypoints()
+    self.waypoints = Course.initWaypoints()
     for i = first or 1, last or #waypoints do
         table.insert(self.waypoints, Waypoint(waypoints[i]))
     end
@@ -110,7 +110,11 @@ function Course:getAllWaypoints()
     return self.waypoints
 end
 
-function Course:initWaypoints()
+--- Function to create the waypoints table in the Course object. This makes sure, that
+--- the index is always within the bounds of the table, and avoids crashes, but may result
+--- in other errors.
+---@return table
+function Course.initWaypoints()
     return setmetatable({}, {
         -- add a function to clamp the index between 1 and #self.waypoints
         __index = function(tbl, key)
@@ -1037,7 +1041,7 @@ function Course:adjustForReversing(extensionLength)
 end
 
 function Course:extendCusps(extensionLength, selectionFunc)
-    local waypoints = {}
+    local waypoints = Course.initWaypoints()
     for i = 1, #self.waypoints do
         if selectionFunc(i) then
             local wp = self.waypoints[i]
@@ -1497,7 +1501,7 @@ end
 
 --- From XML -----------------------------------------------------------------------------------------------------------
 local function createWaypointsFromXml(xmlFile, key)
-    local waypoints = {}
+    local waypoints = Course.initWaypoints()
     -- these are only saved for the row start waypoint, here we add them to all waypoints of the row
     local rowStart
     xmlFile:iterate(key .. Waypoint.xmlKey, function(ix, wpKey)
@@ -1551,7 +1555,6 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
     course.islandHeadlandClockwise = courseXml:getValue(courseKey .. '#islandHeadlandClockwise')
     course.editedByCourseEditor = courseXml:getValue(courseKey .. '#compacted', false)
     course.compacted = courseXml:getValue(courseKey .. '#compacted', false)
-    course.waypoints = {}
     if not course.nVehicles or course.nVehicles == 1 then
         -- TODO: not nVehicles for backwards compatibility, remove later
         -- for multi-vehicle courses, we load the multi-vehicle data and restore the current course
@@ -1605,7 +1608,6 @@ function Course.createFromStream(vehicle, streamId, connection)
     course.islandHeadlandClockwise = CpUtil.streamReadBool(streamId)
     local numWaypoints = streamReadInt32(streamId)
     course.editedByCourseEditor = streamReadBool(streamId)
-    course.waypoints = {}
     for ix = 1, numWaypoints do
         table.insert(course.waypoints, Waypoint.createFromStream(streamId, ix))
     end
@@ -1621,7 +1623,7 @@ end
 
 --- From generator ------------------------------------------------------------------------------------------------------
 local function createWaypointsFromGeneratedPath(path)
-    local waypoints = {}
+    local waypoints = Course.initWaypoints()
     for i, wp in ipairs(path) do
         table.insert(waypoints, Waypoint.initFromGeneratedWp(wp, i))
     end
