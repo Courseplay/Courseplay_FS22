@@ -106,7 +106,7 @@ end
 function PlowController:onFinishRow(isHeadlandTurn)
     -- no need to rotate to center on headland turns
     if self:isRotatablePlow() and not isHeadlandTurn then
-        self.implement:setRotationCenter()
+        PlowCenterTurnEvent.sendEvent(self.implement)
     end
 end
 
