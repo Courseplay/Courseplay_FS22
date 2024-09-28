@@ -1324,9 +1324,10 @@ function Course:getSectionAsNewCourse(startIx, endIx, reverse, allAttributes)
 end
 
 --- @param node number the node around we are looking for waypoints
+--- @param startIx number|nil start looking for waypoints at this index
 --- @return number, number, number, number the waypoint closest to node, its distance, the waypoint closest to the node
 --- pointing approximately (+-45) in the same direction as the node and its distance
-function Course:getNearestWaypoints(node)
+function Course:getNearestWaypoints(node, startIx)
     local nx, _, nz = getWorldTranslation(node)
     local lx, _, lz = localDirectionToWorld(node, 0, 0, 1)
     local nodeAngle = math.atan2(lx, lz)
@@ -1334,7 +1335,8 @@ function Course:getNearestWaypoints(node)
     local dClosest, dClosestRightDirection = math.huge, math.huge
     local ixClosest, ixClosestRightDirection = 1, 1
 
-    for i, p in ipairs(self.waypoints) do
+    for i = startIx or 1, #self.waypoints do
+        local p = self.waypoints[i]
         local x, _, z = self:getWaypointPosition(i)
         local d = MathUtil.getPointPointDistance(x, z, nx, nz)
         if d < dClosest then

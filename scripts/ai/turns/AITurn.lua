@@ -663,7 +663,11 @@ function CourseTurn:changeDirectionWhenAligned()
             local nextDirectionChangeIx = self.turnCourse:getNextDirectionChangeFromIx(self.turnCourse:getCurrentWaypointIx())
             if nextDirectionChangeIx then
                 self:debug('skipping to next direction change at %d', nextDirectionChangeIx + 1)
-                self.ppc:initialize(nextDirectionChangeIx + 1)
+                if self.turnCourse:isReverseAt(nextDirectionChangeIx + 1) then
+                    self.ppc:initializeForReversing(nextDirectionChangeIx + 1)
+                else
+                    self.ppc:initialize(nextDirectionChangeIx + 1)
+                end
             end
         end
     end
