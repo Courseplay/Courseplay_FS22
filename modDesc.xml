@@ -481,6 +481,7 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/events/CpJobStartAtLastWpSyncEvent.lua"/>
 		<sourceFile filename="scripts/events/CpJobSyncOnLeaveEvent.lua"/>
 		<sourceFile filename="scripts/events/DriveNowRequestEvent.lua"/>
+		<sourceFile filename="scripts/events/PlowCenterTurnEvent.lua"/>
 	</extraSourceFiles>
 
 	<specializations>
