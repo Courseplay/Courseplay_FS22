@@ -554,6 +554,8 @@ You can define the following custom settings:
              turnRadius = "7.5"
              implementWheelAlwaysOnGround = "true"
 			 workingWidth = "10.5"
+             raiseLate = "true"
+             lowerEarly = "true"
     />
     <!--Mod: KOECKERLING Vector 460-->
 	<Vehicle name="vector460.xml"

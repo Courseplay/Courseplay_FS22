@@ -163,6 +163,28 @@ function PurePursuitController:initialize(ix)
 	self.case = 0
 end
 
+-- Initialize to a waypoint when reversing.
+-- TODO: this has to be called explicitly but could be done automatically by the vanilla initialize()
+-- make sure the waypoint we initialize to is close to the controlled node, otherwise the PPC will
+-- remain in initializing mode if the waypoint is too far back from the controlled node, and just
+-- reverse forever
+function PurePursuitController:initializeForReversing(ix)
+    local reverserNode = self:getReverserNode()
+    if reverserNode then
+        self:debug('Reverser node found, initializing with it')
+        -- don't use ix as it is, instead, find the waypoint closest to the reverser node
+        local dPrev, d = math.huge, self.course:getWaypoint(ix):getDistanceFromNode(reverserNode)
+        while d < dPrev and self.course:isReverseAt(ix) and ix < self.course:getNumberOfWaypoints() do
+            dPrev = d
+            ix = ix + 1
+            d = self.course:getWaypoint(ix):getDistanceFromNode(reverserNode)
+        end
+    else
+        self:debug('No reverser node found, initializing with default controlled node')
+    end
+    self:initialize(ix)
+end
+
 -- TODO: make this more generic and allow registering multiple listeners?
 -- could also implement listeners for events like notify me when within x meters of a waypoint, etc.
 function PurePursuitController:registerListeners(waypointListener, onWaypointPassedFunc, onWaypointChangeFunc)
@@ -230,16 +252,21 @@ function PurePursuitController:getLastPassedWaypointIx()
     return self.lastPassedWaypointIx
 end
 
+---@return number, string node that would be used for reversing, debug text explaining what node it is
+function PurePursuitController:getReverserNode()
+    if not self.reversingImplement then
+        self.reversingImplement = AIUtil.getFirstReversingImplementWithWheels(self.vehicle, true)
+    end
+    return AIUtil.getReverserNode(self.vehicle, self.reversingImplement, true)
+end
+
 --- When reversing, use the towed implement's node as a reference
 function PurePursuitController:switchControlledNode()
     local lastControlledNode = self.controlledNode
     local debugText = 'AIDirectionNode'
     local reverserNode
     if self:isReversing() then
-        if not self.reversingImplement then
-            self.reversingImplement = AIUtil.getFirstReversingImplementWithWheels(self.vehicle, true)
-        end
-        reverserNode, debugText = AIUtil.getReverserNode(self.vehicle, self.reversingImplement, true)
+        reverserNode, debugText = self:getReverserNode()
         if reverserNode then
             self:setControlledNode(reverserNode)
         else
