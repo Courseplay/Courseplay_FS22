@@ -110,3 +110,62 @@ end
 function VehicleUserSettingsEvent.debug(vehicle, str, ...)
 	CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER, vehicle, "VehicleUserSettingsEvent: "..str, ...)
 end
+
+---@class CourseGeneratorSettingsEvent
+CourseGeneratorSettingsEvent = {}
+
+local CourseGeneratorSettingsEvent_mt = Class(CourseGeneratorSettingsEvent, Event)
+
+InitEventClass(CourseGeneratorSettingsEvent, "CourseGeneratorSettingsEvent")
+
+function CourseGeneratorSettingsEvent.emptyNew()
+	return Event.new(CourseGeneratorSettingsEvent_mt)
+end
+
+--- Creates a new Event
+function CourseGeneratorSettingsEvent.new(vehicle, setting)
+	local self = CourseGeneratorSettingsEvent.emptyNew()
+	self.vehicle = vehicle
+	self.setting = setting
+	return self
+end
+
+--- Reads the serialized data on the receiving end of the event.
+function CourseGeneratorSettingsEvent:readStream(streamId, connection)
+	self.vehicle = NetworkUtil.readNodeObject(streamId)
+	CourseGeneratorSettingsEvent.debug(self.vehicle, "readStream")
+	local name = streamReadString(streamId)
+	local setting = self.vehicle:getCourseGeneratorSettings()[name]
+	setting:readStream(streamId, connection)
+	self:run(connection, setting);
+end
+
+--- Writes the serialized data from the sender.
+function CourseGeneratorSettingsEvent:writeStream(streamId, connection) 
+	CourseGeneratorSettingsEvent.debug(self.vehicle, "writeStream")
+	NetworkUtil.writeNodeObject(streamId, self.vehicle)
+	streamWriteString(streamId, self.setting:getName())
+	self.setting:writeStream(streamId, connection)
+end
+
+--- Runs the event on the receiving end of the event.
+function CourseGeneratorSettingsEvent:run(connection, setting) 
+	--- If the receiver was the client make sure every clients gets also updated.
+	if not connection:getIsServer() then
+		CourseGeneratorSettingsEvent.debug(self.vehicle, "broadcastEvent")
+		g_server:broadcastEvent(CourseGeneratorSettingsEvent.new(self.vehicle, setting), nil, connection, self.vehicle)
+	end
+end
+
+function CourseGeneratorSettingsEvent.sendEvent(vehicle, setting)
+	if g_server ~= nil then
+		CourseGeneratorSettingsEvent.debug(vehicle, "sendEvent")
+		g_server:broadcastEvent(CourseGeneratorSettingsEvent.new(vehicle, setting), nil, nil, vehicle)
+	else
+		g_client:getServerConnection():sendEvent(CourseGeneratorSettingsEvent.new(vehicle, setting))
+	end
+end
+
+function CourseGeneratorSettingsEvent.debug(vehicle, str, ...)
+	CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER, vehicle, "CourseGeneratorSettingsEvent: "..str, ...)
+end
