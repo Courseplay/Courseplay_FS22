@@ -638,10 +638,13 @@ function CourseTurn:onWaypointChange(ix)
     if self.turnCourse then
         if self.forceTightTurnOffset or (self.enableTightTurnOffset and self.turnCourse:useTightTurnOffset(ix)) then
             -- adjust the course a bit to the outside in a curve to keep a towed implement on the course
-            -- TODO_22
             self.tightTurnOffset = AIUtil.calculateTightTurnOffset(self.vehicle, self.turningRadius, self.turnCourse,
                     self.tightTurnOffset, true)
             self.turnCourse:setOffset(self.tightTurnOffset, 0)
+        else
+            -- reset offset to 0 if tight turn offset is not on
+            self.tightTurnOffset = 0
+            self.turnCourse:setOffset(0, 0)
         end
     end
 end
