@@ -268,7 +268,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_title" text="工作路线设置 (%s)"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_basic" text="基本设置"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_headland" text="田间地头设置"/>
-    <text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="中心路线设置"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="路径规划设置"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_island" text="障碍绕行设置"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_title" text="工作宽度"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip" text="调整工作宽度。 调整范围: 0 - 50"/>
@@ -282,12 +282,12 @@
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="决定到达当前路径的终点时要跳过多少行路径。 调整范围: 0 - 6"/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="绕地圈数"/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="设置车辆围绕地块工作的圈数。 调整范围: 1 - 12"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="中心路径行数"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="如果选择“中心路线”模式，则每块田地中有多少行路径。 调整范围: 0 - 24"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="区域路径行数"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="设置每个区域中有多少行路径。 调整范围: 0 - 24"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="转角方向"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip" text="车辆在转角处是顺时针行驶还是逆时针行驶。"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_title" text="中心线路方向"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip" text="车辆在中心线路上是顺时针行驶还是逆时针行驶。"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip" text="设置车辆在转角处是顺时针行驶还是逆时针行驶。"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_title" text="路径规划方向"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip" text="设置车辆在路径规划上是顺时针行驶还是逆时针行驶。"/>
     <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_title" text="障碍绕行方向"/>
     <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="车辆在遇到障碍绕行时是顺时针行驶还是逆时针行驶。"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_clockwise" text="顺时针"/>
@@ -296,24 +296,24 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_counterclockwise" text="逆时针"/>
     <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_clockwise" text="顺时针"/>
     <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_counterclockwise" text="逆时针"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="田地中心路径"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="选择中心路径类型。"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="田地路径规划"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="选择路径规划类型。"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="往返"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="螺旋（回转）"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="圆形（由外到内）"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="区域（由内到外）"/>
-    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_title" text="Spiral from inside"/>
-    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip" text="Starts the spiral from inside."/>
+    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_title" text="从内部螺旋（回转）"/>
+    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip" text="从内部开始螺旋（回转）。"/>
     <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="均分车道"/>
     <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="减小工作宽度，以实现所有车道的均匀分布。"/>
-    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title" text="优化转角"/>
+    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title" text="转角优化"/>
     <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="改善非圆形转角的弧度"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="圆角数量"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="从第一个转角开始的圆角数量。"/>
     <text name="CP_vehicle_courseGeneratorSetting_turningRadius_title" text="圆角半径"/>
     <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="基于车辆的转弯半径设置圆角半径。 调整范围: 5 - 15"/>
-    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="往返行方向"/>
-    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="设置田地中心行的往返方向"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="往返方向"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="设置田地路径规划为往返时的方向"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="自动"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_manual" text="手动"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="方向角度"/>
@@ -432,7 +432,7 @@
     <text name="CP_courseManager_noAccessError" text="无法访问该文件夹 (%s)!"/>
     <text name="CP_courseManager_targetIsNoFolderError" text="目标位置不是一个文件夹 (%s)!"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="目标位置不是任务 (%s)!"/>
-    <text name="CP_courseManager_invalidNameError" text="Course name (%s) is invalid!"/>
+    <text name="CP_courseManager_invalidNameError" text="任务名(%s) 无效!"/>
     <text name="CP_courseManager_basicSettings" text="任务交互。 "/>
     <text name="CP_courseManager_advancedSettings" text="编辑文件。"/>
     <text name="CP_courseManager_activate" text="加载激活"/>
