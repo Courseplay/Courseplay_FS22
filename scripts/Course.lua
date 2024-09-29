@@ -1450,16 +1450,29 @@ function Course:getProgress(ix)
     return self.waypoints[ix].dToHere / self.length, ix, ix == #self.waypoints
 end
 
+--- Calculate the y rotation of the waypoint. This is to avoid having to call enrichWaypointData() for each multitool
+--- course, as this is the only thing we need to figure out if a row is straight or not.
+local function calculateYRot(waypoints, i)
+    local x1, z1 = waypoints[i].x, waypoints[i].z
+    local x2, z2 = waypoints[i + 1].x, waypoints[i + 1].z
+    local nx, nz = MathUtil.vector2Normalize(x2 - x1, z2 - z1)
+    -- check for NaN
+    if nx == nx and nz == nz then
+        return MathUtil.getYRotationFromDirection(nx, nz)
+    else
+        return 0
+    end
+end
 --- When compaction is enabled we only save the start and end of a row, except when it isn't straight, for instance
 --- because it is bypassing an island. For those rows, we save all waypoints.
 --- Baseline edge courses (with rows following a curved field edge) have the compaction disabled anyway.
 ---@return number, number index of next unsaved waypoint, index of next waypoint entry in the XML file
 local function saveRowToXml(waypoints, xmlFile, key, compact, rowStartIx, xmlIx)
     local row = {}
-    local i, straight, rowAngle = rowStartIx, true, waypoints[rowStartIx].angle
-    while i <= #waypoints and not waypoints[i]:isRowEnd() do
+    local i, straight, rowAngle = rowStartIx, true, calculateYRot(waypoints, rowStartIx)
+    while i < #waypoints and not waypoints[i]:isRowEnd() do
         table.insert(row, waypoints[i])
-        if math.abs(waypoints[i].angle - rowAngle) > 0.01 then
+        if math.abs(calculateYRot(waypoints, i) - rowAngle) > 0.01 then
             straight = false
         end
         i = i + 1
