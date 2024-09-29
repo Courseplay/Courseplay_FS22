@@ -267,6 +267,7 @@ end
 --- before we reach the vehicle position at turn end, there's no reversing needed at the turn end.
 function TurnManeuver:adjustCourseToFitField(course, dBack, ixBeforeEndingTurnSection)
     self:debug('moving course back: d=%.1f', dBack)
+    local endingTurnLength
     local reversingOffset = self:getReversingOffset()
     -- generate a straight reverse section first (less than 1 m step should make sure we always end up with
     -- at least two waypoints
@@ -296,6 +297,7 @@ function TurnManeuver:adjustCourseToFitField(course, dBack, ixBeforeEndingTurnSe
                 0, dFromTurnEnd + self.steeringLength - 1,
                 math.min(dFromTurnEnd, self.turnContext.backMarkerDistance, -reversingOffset), -0.8, true)
         courseWithReversing:append(reverseAfterTurn)
+        endingTurnLength = reverseAfterTurn:getLength()
     elseif self.turnContext.turnEndForwardOffset <= 0 and dFromTurnEnd >= 0 then
         self:debug('Reverse to work start (implement in front)')
         -- the work start is in front of the vehicle at the turn end
@@ -310,10 +312,12 @@ function TurnManeuver:adjustCourseToFitField(course, dBack, ixBeforeEndingTurnSe
         local reverseAfterTurn = Course.createFromNode(self.vehicle, self.turnContext.workStartNode,
                 0, -reversingOffset, -reversingOffset + self.turnContext.turnEndForwardOffset, -1, true)
         courseWithReversing:append(reverseAfterTurn)
+        endingTurnLength = reverseAfterTurn:getLength()
     else
         self:debug('Reverse to work start not needed')
+        endingTurnLength = self.turnContext:appendEndingTurnCourse(courseWithReversing, self.steeringLength, self.applyTightTurnOffset)
     end
-    return courseWithReversing
+    return courseWithReversing, endingTurnLength
 end
 
 ---@class AnalyticTurnManeuver : TurnManeuver
@@ -338,8 +342,7 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
                     g_vehicleConfigurations:getRecursively(vehicle, 'tightTurnOffsetDistanceInTurns') or 10)
         end
         local ixBeforeEndingTurnSection = self.course:getNumberOfWaypoints()
-        endingTurnLength = 10 --self.turnContext:appendEndingTurnCourse(self.course, steeringLength, self.applyTightTurnOffset)
-        self.course = self:adjustCourseToFitField(self.course, dBack, ixBeforeEndingTurnSection)
+        self.course, endingTurnLength = self:adjustCourseToFitField(self.course, dBack, ixBeforeEndingTurnSection)
     else
         if self.applyTightTurnOffset then
             self.course:setUseTightTurnOffsetForLastWaypoints(
