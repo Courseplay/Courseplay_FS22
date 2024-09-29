@@ -17,7 +17,7 @@ CourseGenerator.cMinEdgeLength = 0.5
 -- edge so the result is an arc. Over this angle, we won't offset, so corners are kept sharp.
 CourseGenerator.cMaxDeltaAngleForMaxEdgeLength = math.rad(30)
 -- Approximate distance of waypoints on up/down rows
-CourseGenerator.cRowWaypointDistance = 10
+CourseGenerator.cRowWaypointDistance = 7
 -- Maximum cross track error we tolerate when a vehicle follows a path. This is used to
 -- find corners which the vehicle can't make due to its turning radius, without deviating more than
 -- cMaxCrossTrackError meters from the vertex in the corner.
