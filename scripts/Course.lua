@@ -1226,7 +1226,8 @@ end
 function Course:draw()
     for i = 1, self:getNumberOfWaypoints() do
         local x, y, z = self:getWaypointPosition(i)
-        Utils.renderTextAtWorldPosition(x, y + 3.2, z, tostring(i), getCorrectTextSize(0.012), 0)
+        local color = self:isReverseAt(i) and {0.8, 0.3, 0.3} or {0.3, 0.3, 0.8}
+        Utils.renderTextAtWorldPosition(x, y + 3.2, z, tostring(i), getCorrectTextSize(0.012), 0, color)
         if i < self:getNumberOfWaypoints() then
             local nx, ny, nz = self:getWaypointPosition(i + 1)
             DebugUtil.drawDebugLine(x, y + 3, z, nx, ny + 3, nz, 0, 0, 100)
