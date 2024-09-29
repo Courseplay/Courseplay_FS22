@@ -44,8 +44,6 @@ function Course:init(vehicle, waypoints, temporary, first, last)
     self.temporary = temporary or false
     self.currentWaypoint = 1
     self.length = 0
-    self.workingLength = 0
-    self.headlandLength = 0
     self.totalTurns = 0
     self:enrichWaypointData()
 end
@@ -193,32 +191,14 @@ function Course:enrichWaypointData(startIx)
     if not startIx then
         -- initialize only if recalculating the whole course, otherwise keep (and update) the old values)
         self.length = 0
-        self.workingLength = 0
-        self.headlandLength = 0
-        self.firstHeadlandWpIx = nil
-        self.firstCenterWpIx = nil
     end
     for i = startIx or 1, #self.waypoints - 1 do
         self.waypoints[i].dToHere = self.length
-        self.waypoints[i].dToHereOnHeadland = self.headlandLength
         local cx, _, cz = self:getWaypointPosition(i)
         local nx, _, nz = self:getWaypointPosition(i + 1)
         local dToNext = MathUtil.getPointPointDistance(cx, cz, nx, nz)
         self.waypoints[i].dToNext = dToNext
         self.length = self.length + dToNext
-        if not self:isOnConnectingPath(i) then
-            -- working length is where we do actual fieldwork
-            self.workingLength = self.workingLength + dToNext
-        end
-        if self:isOnHeadland(i) then
-            self.headlandLength = self.headlandLength + dToNext
-            self.firstHeadlandWpIx = self.firstHeadlandWpIx or i
-        else
-            -- TODO: this and firstHeadlandWpIx works only if there is one block on the field and
-            -- no islands, as then we have more than one group of headlands. But these are only
-            -- for the convoy mode anyway so it is ok if it does not work in all possible situations
-            self.firstCenterWpIx = self.firstCenterWpIx or i
-        end
         if self:isTurnStartAtIx(i) then
             self.totalTurns = self.totalTurns + 1
         end
@@ -256,9 +236,6 @@ function Course:enrichWaypointData(startIx)
     self.waypoints[#self.waypoints].dz = self.waypoints[#self.waypoints - 1].dz
     self.waypoints[#self.waypoints].dToNext = 0
     self.waypoints[#self.waypoints].dToHere = self.length
-    self.waypoints[#self.waypoints].dToHereOnHeadland = self:isOnHeadland(#self.waypoints - 1) and
-            self.waypoints[#self.waypoints - 1].dToHereOnHeadland + self.waypoints[#self.waypoints - 1].dToNext or
-            self.waypoints[#self.waypoints - 1].dToHereOnHeadland
     self.waypoints[#self.waypoints].turnsToHere = self.totalTurns
     self.waypoints[#self.waypoints].calculatedRadius = math.huge
     self.waypoints[#self.waypoints].curvature = 0
@@ -1756,7 +1733,7 @@ end
 function Course.MultiVehicleData:copy()
     local copy = Course.MultiVehicleData(self.position)
     for position, waypoints in pairs(self.waypoints) do
-        copy.waypoints[position] = {}
+        copy.waypoints[position] = Course.initWaypoints()
         for i, wp in ipairs(waypoints) do
             table.insert(copy.waypoints[position], Waypoint(wp))
         end
