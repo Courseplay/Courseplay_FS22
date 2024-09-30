@@ -53,7 +53,7 @@
 				<Text>circular</Text>
 			</Texts>
 		</Setting>
-		<Setting classType="AIParameterBooleanSetting" name="centerClockwise" defaultBool="true">
+		<Setting classType="AIParameterBooleanSetting" name="centerClockwise" defaultBool="false">
 			<Texts>
 				<Text>counterclockwise</Text>
 				<Text>clockwise</Text>

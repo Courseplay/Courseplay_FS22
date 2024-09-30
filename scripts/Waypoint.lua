@@ -164,7 +164,7 @@ function Waypoint:getOffsetPosition(offsetX, offsetZ, dx, dz)
 	-- check for NaN
 	if deltaX and deltaZ and deltaX == deltaX and deltaZ == deltaZ then
 		-- X offset should be inverted if we drive reverse here (left is always left regardless of the driving direction)
-		local reverse = self.reverseOffset and -1 or 1
+		local reverse = self.rev and -1 or 1
 		x = x - deltaZ * reverse * offsetX + deltaX * offsetZ
 		z = z + deltaX * reverse * offsetX + deltaZ * offsetZ
 	end

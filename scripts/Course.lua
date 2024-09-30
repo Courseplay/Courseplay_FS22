@@ -44,8 +44,6 @@ function Course:init(vehicle, waypoints, temporary, first, last)
     self.temporary = temporary or false
     self.currentWaypoint = 1
     self.length = 0
-    self.workingLength = 0
-    self.headlandLength = 0
     self.totalTurns = 0
     self:enrichWaypointData()
 end
@@ -193,32 +191,14 @@ function Course:enrichWaypointData(startIx)
     if not startIx then
         -- initialize only if recalculating the whole course, otherwise keep (and update) the old values)
         self.length = 0
-        self.workingLength = 0
-        self.headlandLength = 0
-        self.firstHeadlandWpIx = nil
-        self.firstCenterWpIx = nil
     end
     for i = startIx or 1, #self.waypoints - 1 do
         self.waypoints[i].dToHere = self.length
-        self.waypoints[i].dToHereOnHeadland = self.headlandLength
         local cx, _, cz = self:getWaypointPosition(i)
         local nx, _, nz = self:getWaypointPosition(i + 1)
         local dToNext = MathUtil.getPointPointDistance(cx, cz, nx, nz)
         self.waypoints[i].dToNext = dToNext
         self.length = self.length + dToNext
-        if not self:isOnConnectingPath(i) then
-            -- working length is where we do actual fieldwork
-            self.workingLength = self.workingLength + dToNext
-        end
-        if self:isOnHeadland(i) then
-            self.headlandLength = self.headlandLength + dToNext
-            self.firstHeadlandWpIx = self.firstHeadlandWpIx or i
-        else
-            -- TODO: this and firstHeadlandWpIx works only if there is one block on the field and
-            -- no islands, as then we have more than one group of headlands. But these are only
-            -- for the convoy mode anyway so it is ok if it does not work in all possible situations
-            self.firstCenterWpIx = self.firstCenterWpIx or i
-        end
         if self:isTurnStartAtIx(i) then
             self.totalTurns = self.totalTurns + 1
         end
@@ -256,9 +236,6 @@ function Course:enrichWaypointData(startIx)
     self.waypoints[#self.waypoints].dz = self.waypoints[#self.waypoints - 1].dz
     self.waypoints[#self.waypoints].dToNext = 0
     self.waypoints[#self.waypoints].dToHere = self.length
-    self.waypoints[#self.waypoints].dToHereOnHeadland = self:isOnHeadland(#self.waypoints - 1) and
-            self.waypoints[#self.waypoints - 1].dToHereOnHeadland + self.waypoints[#self.waypoints - 1].dToNext or
-            self.waypoints[#self.waypoints - 1].dToHereOnHeadland
     self.waypoints[#self.waypoints].turnsToHere = self.totalTurns
     self.waypoints[#self.waypoints].calculatedRadius = math.huge
     self.waypoints[#self.waypoints].curvature = 0
@@ -1249,7 +1226,8 @@ end
 function Course:draw()
     for i = 1, self:getNumberOfWaypoints() do
         local x, y, z = self:getWaypointPosition(i)
-        Utils.renderTextAtWorldPosition(x, y + 3.2, z, tostring(i), getCorrectTextSize(0.012), 0)
+        local color = self:isReverseAt(i) and {0.8, 0.3, 0.3} or {0.3, 0.3, 0.8}
+        Utils.renderTextAtWorldPosition(x, y + 3.2, z, tostring(i), getCorrectTextSize(0.012), 0, color)
         if i < self:getNumberOfWaypoints() then
             local nx, ny, nz = self:getWaypointPosition(i + 1)
             DebugUtil.drawDebugLine(x, y + 3, z, nx, ny + 3, nz, 0, 0, 100)
@@ -1473,14 +1451,64 @@ function Course:getProgress(ix)
     return self.waypoints[ix].dToHere / self.length, ix, ix == #self.waypoints
 end
 
+--- Calculate the y rotation of the waypoint. This is to avoid having to call enrichWaypointData() for each multitool
+--- course, as this is the only thing we need to figure out if a row is straight or not.
+local function calculateYRot(waypoints, i)
+    local x1, z1 = waypoints[i].x, waypoints[i].z
+    local x2, z2 = waypoints[i + 1].x, waypoints[i + 1].z
+    local nx, nz = MathUtil.vector2Normalize(x2 - x1, z2 - z1)
+    -- check for NaN
+    if nx == nx and nz == nz then
+        return MathUtil.getYRotationFromDirection(nx, nz)
+    else
+        return 0
+    end
+end
+--- When compaction is enabled we only save the start and end of a row, except when it isn't straight, for instance
+--- because it is bypassing an island. For those rows, we save all waypoints.
+--- Baseline edge courses (with rows following a curved field edge) have the compaction disabled anyway.
+---@return number, number index of next unsaved waypoint, index of next waypoint entry in the XML file
+local function saveRowToXml(waypoints, xmlFile, key, compact, rowStartIx, xmlIx)
+    local row = {}
+    local i, straight, rowAngle = rowStartIx, true, calculateYRot(waypoints, rowStartIx)
+    while i < #waypoints and not waypoints[i]:isRowEnd() do
+        table.insert(row, waypoints[i])
+        if math.abs(calculateYRot(waypoints, i) - rowAngle) > 0.01 then
+            straight = false
+        end
+        i = i + 1
+    end
+    -- i points to the row end, add it to the row
+    local rowEndIx = i
+    table.insert(row, waypoints[i])
+    if straight and compact then
+        -- only save the row start and end
+        waypoints[rowStartIx]:setXmlValue(xmlFile, key, xmlIx)
+        waypoints[rowEndIx]:setXmlValue(xmlFile, key, xmlIx + 1)
+        return rowEndIx + 1, xmlIx + 2
+    else
+        i = xmlIx
+        -- save all waypoints
+        for _, wp in ipairs(row) do
+            wp:setXmlValue(xmlFile, key, i)
+            i = i + 1
+        end
+        return rowEndIx + 1, i
+    end
+end
+
 ---@param compact boolean skip waypoints between row start and end (as for straight rows, these can be regenerated
 --- easily after the course is loaded)
 local function saveWaypointsToXml(waypoints, xmlFile, key, compact)
-    local i = 1
-    for _, wp in ipairs(waypoints) do
-        if not compact or (not wp:getRowNumber() or wp:isRowStart() or wp:isRowEnd()) then
-            wp:setXmlValue(xmlFile, key, i)
-            i = i + 1
+    local wpIx, xmlIx = 1, 1
+    while wpIx <= #waypoints do
+        local wp = waypoints[wpIx]
+        if wp:isRowStart() then
+            wpIx, xmlIx = saveRowToXml(waypoints, xmlFile, key, compact, wpIx, xmlIx)
+        else
+            wp:setXmlValue(xmlFile, key, xmlIx)
+            wpIx = wpIx + 1
+            xmlIx = xmlIx + 1
         end
     end
 end
@@ -1492,7 +1520,7 @@ end
 -- points can be generated by this function
 local function addIntermediateWaypoints(d, waypoints, rowStart, rowEnd)
     local dx, dz = (rowEnd.x - rowStart.x) / d, (rowEnd.z - rowStart.z) / d
-    for n = 1, (d / CourseGenerator.cRowWaypointDistance) - 1 do
+    for n = 1, math.floor((d -1) / CourseGenerator.cRowWaypointDistance) do
         local newWp = Waypoint({})
         newWp.x = rowStart.x + n * CourseGenerator.cRowWaypointDistance * dx
         newWp.z = rowStart.z + n * CourseGenerator.cRowWaypointDistance * dz
@@ -1719,7 +1747,7 @@ end
 function Course.MultiVehicleData:copy()
     local copy = Course.MultiVehicleData(self.position)
     for position, waypoints in pairs(self.waypoints) do
-        copy.waypoints[position] = {}
+        copy.waypoints[position] = Course.initWaypoints()
         for i, wp in ipairs(waypoints) do
             table.insert(copy.waypoints[position], Waypoint(wp))
         end
