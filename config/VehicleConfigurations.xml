@@ -551,7 +551,7 @@ You can define the following custom settings:
     <!--Implements-->
     <!--Mod: Gregoire Besson SPSL9 -->
     <Vehicle name="spsl9.xml"
-             turnRadius = "7.5"
+             turnRadius = "9.0"
              implementWheelAlwaysOnGround = "true"
 			 workingWidth = "10.5"
              raiseLate = "true"
