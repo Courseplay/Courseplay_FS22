@@ -275,6 +275,11 @@ end
 
 --- Give back control the the drive strategy
 function AITurn:resumeFieldworkAfterTurn(ix)
+    -- just in case, raise this event so plows are rotated to the working position. Should really never end up
+    -- here though, as the course should be long enough for the normal turn end processing to be triggered.
+    self.driveStrategy:raiseControllerEvent(AIDriveStrategyCourse.onTurnEndProgressEvent,
+            self.turnContext.workStartNode, self.ppc:isReversing(), true, self.turnContext:isLeftTurn())
+
     if self.proximityController then
         self.proximityController:unregisterBlockingObjectListener()
     end
