@@ -224,7 +224,7 @@ function Course:enrichWaypointData(startIx)
         self.waypoints[i].curvature = i == 1 and 0 or 1 / self:calculateSignedRadius(i)
         if (self:isReverseAt(i) and not self:switchingToForwardAt(i)) or self:switchingToReverseAt(i) then
             -- X offset must be reversed at waypoints where we are driving in reverse
-            self.waypoints[i]:setReverseOffset()
+            self.waypoints[i]:setReverseOffset(true)
         end
     end
     -- make the last waypoint point to the same direction as the previous so we don't
