@@ -328,8 +328,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="Rzędów"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Wiele maszyn"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Ilość pojazdów pracujących na tym samym kurcie."/>
-    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_title" text="Switching lanes"/>
-    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_tooltip" text="Sets the lanes to always switch. This leads to similar turns. See help menu for more details."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_title" text="Zmiana pasów"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_tooltip" text="Ustala czy zmiana pasów ma zawsze występować. Umożliwia to wykonywanie podobnych nawrotów. Więcej informacji można znaleźć w menu pomocy."/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Krawędź pola krzywizną ścieżki"/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="Rzędy podążają za krzywizną krawędzi pola najbliżej znacznika pola."/>
     <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Wąskie pole"/>
@@ -638,6 +638,7 @@ Zanim zaczniesz bawić się tymi ustawieniami, upewnij się, że wiesz, co robi�
 Niektóre ustawienia zaawansowane działają poprawnie tylko w określonych warunkach.
 
 - Wiele maszyn: To ustawienie jest używane, gdy na kursie ma pracować więcej niż tylko jeden pojazd. Ponieważ jest to nieco bardziej skomplikowane, istnieje osobny temat pomocy.
+- Zamiana pasów: Jeśli ta opcja jest aktywna, strona pojazdu będzie wyświetlana jako &quot;zmieniona&quot;, ale nawrót zawsze będzie miał tę samą długość. Po więcej informacji sprawdź menu dodatkowej pomocy &quot;Zmiana pasów&quot;.
 - Wąskie pole: Tworzy uwrocie tylko na dwóch krótkich krawędziach pola. W takim przypadku nie jest możliwe utrzymanie pojazdu na polu na najdłuższych krawędziach uwrocia.
 - Nakładka na uwrociach: Istnieje wartość domyślna, która będzie zawsze używana. Wartość tę można zmienić za pomocą tego ustawienia. Nakładka będzie tylko wewnątrz pola i nie będzie nachodzić na granicę pola.
 - Obrys pola: To ustawienie umożliwia przesunięcie obrysu pola do wewnątrz lub na zewnątrz oryginalnego.
@@ -701,8 +702,8 @@ E: Użyj symbolu po prawej stronie, aby skopiować bieżący kurs do schowka. Na
 "/>
     <text name="CP_help_page_minihud_combineunload_title" text="Rozładunek kombajnu"/>
     <text name="CP_help_page_minihud_combineunload_text" text="
-A: Wybierz typ pojazdu, który Pracownik SI ma rozładować. Jest to przydatne, jeśli na tym samym polu pracują różne typy pojazdów, np. kombajn i oczyszczarka (jak ROPA Maus).
-B: Ustaw poziom napełnienia (40% - 100%), z jakim Pracownik SI powinien dojechać do miejsca rozładunku. Kliknij przycisk +/- lub użyj kółka przewijania nad liczbą, aby ją zmienić.
+A: Wybierz typ pojazdu, który Pomocnik SI ma rozładować. Jest to przydatne, jeśli na tym samym polu pracują różne typy pojazdów, np. kombajn i oczyszczarka (jak ROPA Maus).
+B: Ustaw poziom napełnienia (40% - 100%), z jakim Pomocnik SI powinien dojechać do miejsca rozładunku. Kliknij przycisk +/- lub użyj kółka przewijania nad liczbą, aby ją zmienić.
 C: Czasami pozycja rozładunku pod rurą nie jest idealna. Może to być spowodowane przez przyczepę lub rurę kombajnu, a czasem przez nachylenie pola. W tym miejscu można ręcznie skorygować odległość od kombajnu.
 D: To samo, co powyżej, ale tutaj można dostosować położenie rozładunku w przód/tył względem rury.
 E: Podobnie jak w przypadku kopiowania kursu, w tym miejscu można skopiować pozycje znaczników do innego pojazdu.
@@ -725,7 +726,7 @@ D: Podobnie jak w przypadku rozładunku, można skopiować pozycje znaczników d
 A: Podobnie jak w przypadku załadunku pryzmy, wysokość lemiesza ma kluczowe znaczenie. Można ją wyregulować tutaj.
 B: Pokazuje postęp zagęszczania. Kliknięcie na niego przełącza opcję zatrzymania kierowcy po osiągnięciu pełnego zagęszczenia.
 C: W tym miejscu można w razie potrzeby zmienić szerokość roboczą.
-D: To ustawienie nakazuje Pracownikowi SI czekać w silosie lub w wybranej pozycji parkingowej, gdy do silosu zbliża się kierowca.
+D: To ustawienie nakazuje Pomocnikowi SI czekać w silosie lub w wybranej pozycji parkingowej, gdy do silosu zbliża się kierowca.
 "/>
     <text name="CP_help_page_customField_title" text="Nowe pola"/>
     <text name="CP_help_page_customFieldRecord_text" text="Są dwie możliwości stworzenia nowego pola.
@@ -745,6 +746,7 @@ Następne prawe kliknięcie narysuje linię od punktu początkowego do obecnej p
     <text name="CP_help_page_multiConvoy_title" text="Wiele maszyn i konwój"/>
     <text name="CP_help_page_multitoolBasic_text" text="
 Możliwe jest posiadanie do 5 pojazdów pracujących razem na tym samym polu w konwoju (tzw. kurs wielu maszyn).
+Wszystkie kursy dla pojazdu są generowane razem i mogą być przełączane na HUD.
 "/>
     <text name="CP_help_page_multitoolFunction_text" text="
 Po załadowaniu kursu wielu maszyn należy wybrać pas dla kierowcy.
@@ -752,6 +754,7 @@ Te pasy mają zawsze takie same nazwy:
 lewo(2), lewo(1), środek, prawo(1), prawo(2).
 2 pojazdy będą miały lewy(1) i prawy(1), 4 - lewy(2) i prawy(2).
 Przy 3 lub 5 pojazdach zyskasz również opcję środkową.
+Po wybraniu innego pasa ruchu zmieni się również wizualny kurs. Dzięki temu zawsze będziesz wiedzieć, który kurs jest przeznaczony dla bieżącego pojazdu.
 "/>
     <text name="CP_help_page_convoyBasic_text" text="
 Konwój działa tylko wtedy, gdy pojazdy mają ten sam kurs wielu maszyn z załadowaną tą samą nazwą.
@@ -783,25 +786,22 @@ Automatyczne cofanie, jeśli przed pojazdem znajduje się bela lub jeśli znajdu
 Zbieranie bel działa podobnie, z kursem lub bez.
 Gdy przyczepa jest pełna, zatrzyma pracę i poinformuje użytkownika, że należy go rozładować. Jeśli masz zainstalowany AutoDrive, możesz go użyć do automatycznego rozładunku.
 "/>
-    <text name="CP_help_page_symetricLaneChange_title" text="Symetryczna zmiana pasa"/>
+    <text name="CP_help_page_symetricLaneChange_title" text="Zmiana pasa"/>
     <text name="CP_help_page_symetricLaneChangeBasic_text" text="
-Symetryczna zmiana pasa jest stosowana w kursach z wieloma maszynami i informuje kierowcę, którym pasem ma jechać po nawróceniu.
+Zmiana pasa jest stosowana w kursach z wieloma maszynami i informuje kierowcę, którym pasem ma jechać po nawróceniu.
+Z aktywną funkcją zmiany pasa, pojazd zmienia stronę.
 Jest to trochę trudne do zrozumienia, więc spójrzmy na dwa przykłady.
 "/>
     <text name="CP_help_page_symetricLaneChangeExampleOff_text" text="
-Gdy symetryczna zmiana pasa jest wyłączona, pojazd pozostaje na przesuniętym pasie.
-Oznacza to, że zawsze jedzie w lewo lub w prawo z kursu.
-Gwarantuje to, że pomocnicy nie jadą obok siebie.
-Nie będzie ryzyka stłuczki z innym kierowcą.
+Jeśli zmiana pasów jest wyłączona, pojazd pozostaje po lewej lub prawej stronie.
+W ten sposób nie dojdzie do konfliktu z żadnym innym pomocnikiem.
 "/>
     <text name="CP_help_page_symetricLaneChangeExampleOn_text" text="
-Jeśli symetryczna zmiana pasa jest włączona, lewa i prawa strona zostaną zamienione (ale nie zostanie to pokazane na HUDzie).
-Pojazdy mogą ze sobą kolidować, gdy jadą naprzeciw siebie.
-Jaka jest zatem zaleta symetrycznej zmiany pasa?
-Jeśli spojrzysz na kolejność pasów, od lewej do prawej, będzie jasne:
-Bez zmiany symetrycznej: lewo, prawo, lewo, prawo - to prawie jak pomijanie pasa.
-Z symetryczną zmianą: lewy, prawy, prawy, lewy - od lewej do prawej, jeden pas za drugim.
-W przykładzie z kombajnem oznacza to, że żaden kombajn nie będzie miał roślin na lewo i prawo od swojej linii.
+Jeśli zmiana pasów jest aktywne, np. dla dwóch pojazdów, pojazdu A po lewej i pojazd B po prawej, po zawróceniu pasy zostaną zmienione.
+Oznacza to, że A znajduje się po prawej stronie, a B po lewej.
+Zaletą jest to, że wszystkie pojazdy mają taką samą szerokość nawrotu, a zatem taką samą odległość do przejechania.
+W przypadku kombajnów to ustawienie jest ważne, ponieważ zapewnia, że rura wyładowcza pozostaje na skoszonej części i nie sięga do innego pasa.
+Wadą jest to, że pojazdy mają szansę zderzyć się ze sobą, gdy jadą na wprost siebie na sąsiednich pasach.
 "/>
     <text name="CP_help_page_infoPanel_title" text="Panel informacyjny"/>
     <text name="CP_help_page_infoPanelBasic_text" text="
@@ -871,22 +871,22 @@ W kategorii zaawansowanej znajdują się:
 "/>
     <text name="CP_help_page_unloader_title" text="Rozładunek kombajnu"/>
     <text name="CP_help_page_unloaderGeneral_text" text="
-Tryb rozładunku w Courseplay działa z kombajnami i kombajnami półzawieszanymi sterowanymi przez pracownika Courseplay.
+Tryb rozładunku w Courseplay działa z kombajnami i kombajnami półzawieszanymi sterowanymi przez pomocnika Courseplay.
 !! Nie działa z sieczkarniami !!
 Możesz użyć pojedynczej przyczepy lub wozu przeładunkowego, aby rozładować kombajn.
 Aby opróżnić przyczepy, możesz użyć Pomocnika SI z gry lub AutoDrive.
 Uruchomienie rozładunku wymaga kilku rzeczy:
 - Musisz mieć podłączoną jedną przyczepę lub wóz przeładunkowy. Zestaw przyczep nie jest obsługiwany.
-- Użyj ikony 'celu' na HUD, aby wybrać koszone pole. Rozładowane zostaną wszystkie kombajny sterowane przez pracownika Courseplay pracujące na tym polu.
+- Użyj ikony 'celu' na HUD, aby wybrać koszone pole. Rozładowane zostaną wszystkie kombajny sterowane przez pomocnika Courseplay pracujące na tym polu.
 - Musisz być na polu lub w odległości 20 metrów od niego by móc aktywować rozładunek.
 
 Dostępnych jest tylko kilka ustawień, które możesz zmienić:
-- Możesz ustawić poziom napełnienia, przy którym pracownik będzie uważał podłączoną przyczepę za pełną. Ma to na celu uniknięcie czekania na kombajn z prawie pełną przyczepą.
+- Możesz ustawić poziom napełnienia, przy którym pomocnik będzie uważał podłączoną przyczepę za pełną. Ma to na celu uniknięcie czekania na kombajn z prawie pełną przyczepą.
 - Możesz użyć przesunięć w HUD, aby dostosować pozycję pomocnika rozładowującego pod rurą kombajnu.
 "/>
     <text name="CP_help_page_unloaderTrailer_title" text="Używanie przyczep"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
-Jeśli używasz zwykłej przyczepy do rozładunku, istnieją dwa sposoby transportu zbiorów do silosu lub punktu sprzedaży: Pracownik SI z gry lub AutoDrive.
+Jeśli używasz zwykłej przyczepy do rozładunku, istnieją dwa sposoby transportu zbiorów do silosu lub punktu sprzedaży: Pomocnik SI z gry lub AutoDrive.
 Możesz użyć menu AI i utworzyć zadanie, a następnie aktywować funkcję Pomocnika SI i cel rozładunku na dole listy lub aktywując ikonę koła na HUD.
 W tym drugim przypadku musisz wybrać punkt rozładunku po tym, jak ikona koła zmieni kolor na niebieski.
 
@@ -918,9 +918,9 @@ W przypadku silosów klinowych stosuje się lemiesz, który popycha sieczkę na 
 "/>
     <text name="CP_help_page_bunkerBasic_text" text="
 Jeśli pojazd ma zamocowany roztrząsacz lub lemiesz, wstępnie wybrany jest tryb Silos. Tylko z obciążnikiem lub wałem przechodzisz przez punkt początkowy, aż pojawi się tryb.
-Oprócz szerokości roboczej można również wybrać kierunek, w którym pracownik powinien wjechać do silosu. Z założonym lemieszem, kierunek jest wybierany automatycznie.
+Oprócz szerokości roboczej można również wybrać kierunek, w którym pomocnik powinien wjechać do silosu. Z założonym lemieszem, kierunek jest wybierany automatycznie.
 Użyj ikony 'celu' na HUD, aby wybrać silos na mapie AI. Jeśli zostanie zaznaczone, zostanie pokazane z niebieskimi liniami i podświetli się na biało.
-Pozycję parkowania ustawia się za pomocą znacznika &quot;pozycja parkowania&quot; którego można również użyć, aby pojechać tam z pracownikiem SI przed rozpoczęciem właściwej pracy.
+Pozycję parkowania ustawia się za pomocą znacznika &quot;pozycja parkowania&quot; którego można również użyć, aby pojechać tam z pomocnikiem SI przed rozpoczęciem właściwej pracy.
 "/>
     <text name="CP_help_page_siloLoader_title" text="Załadunek pryzmy"/>
     <text name="CP_help_page_siloLoaderGeneral_text" text="
@@ -941,7 +941,7 @@ Zebrany ładunek może zostać automatycznie wyładowany na pobliską przyczepę
 W przypadku, gdy tryb nie jest bezpośrednio widoczny na HUDzie, możesz przełączyć &quot;Pozycję początkową&quot; aż tryb ładowarki się pojawi.
 
 Ikony celu na HUDzie można użyć do otwarcia mapy AI w celu wybrania celów ładowania i rozładowywania.
-HUD pokazuje również pozostałą zawartość pryzmy lub silosu, gdy pracownik pracuje.
+HUD pokazuje również pozostałą zawartość pryzmy lub silosu, gdy pomocnik pracuje.
 Jeśli celem załadunku jest silos bunkrowy, może być konieczne dostosowanie szerokości roboczej, aby uniknąć uderzenia w boczne ściany silosu.
 
 Ustawienie przesunięcia wysokości służy do regulacji wysokości nad poziomem gruntu, ponieważ nie dla wszystkich łyżek można obliczyć to poprawnie.
