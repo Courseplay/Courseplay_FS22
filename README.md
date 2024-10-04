@@ -1,6 +1,7 @@
 # Courseplay Beta for Farming Simulator 2022
 
-[![Modhub release (latest by date)](https://img.shields.io/badge/dynamic/xml?color=blue&style=flat-square&label=Modhub+Release&prefix=v&query=%2F%2Fdiv%5B%40class%3D%27table-cell%27%5D%5B2%5D%5Bcontains%28text%28%29%2C%227.%22%29%5D&url=https%3A%2F%2Fwww.farming-simulator.com%2Fmod.php%3Flang%3Dde%26country%3Dde%26mod_id%3D248390%26title%3Dfs2022)](https://www.farming-simulator.com/mod.php?lang=de&country=de&mod_id=248390&title=fs2022)
+<!-- [![Modhub release (latest by date)](https://img.shields.io/badge/dynamic/xml?color=blue&style=flat-square&label=Modhub+Release&prefix=v&query=%2F%2Fdiv%5B%40class%3D%27table-cell%27%5D%5B2%5D%5Bcontains%28text%28%29%2C%227.%22%29%5D&url=https%3A%2F%2Fwww.farming-simulator.com%2Fmod.php%3Flang%3Dde%26country%3Dde%26mod_id%3D248390%26title%3Dfs2022)](https://www.farming-simulator.com/mod.php?lang=de&country=de&mod_id=248390&title=fs2022) -->
+[![Modhub release](https://img.shields.io/badge/Modhub%20Release-Modification-blue.svg)](https://www.farming-simulator.com/mod.php?mod_id=248390)
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Courseplay/Courseplay_FS22?include_prereleases&style=flat-square&label=Github+Release)](https://github.com/Courseplay/Courseplay_FS22/releases/latest)
 [![GitHub Pre-Releases (by Asset)](https://img.shields.io/github/downloads-pre/Courseplay/Courseplay_FS22/latest/FS22_Courseplay.zip?style=flat-square)](https://github.com/Courseplay/Courseplay_FS22/releases/latest/download/FS22_Courseplay.zip)
 [![GitHub issues](https://img.shields.io/github/issues/Courseplay/Courseplay_FS22?style=flat-square)](https://github.com/Courseplay/Courseplay_FS22/issues)
