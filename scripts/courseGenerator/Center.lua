@@ -307,13 +307,13 @@ function Center:_createStraightBaseline(rowAngle)
     local w, h = x2 - x1 + margin, y2 - y1 + margin
     local baselineStart, baselineEnd
     if rowAngle >= 0 then
-        local lowerLeft = Vector(x1 - margin / 2, y1 - margin / 2)
-        baselineStart = lowerLeft - Vector(h * math.sin(rowAngle), 0):setHeading(-rowAngle)
-        baselineEnd = lowerLeft + Vector(w * math.cos(rowAngle), 0):setHeading(-rowAngle)
-    else
         local lowerRight = Vector(x2 + margin / 2, y1 - margin / 2)
-        baselineStart = lowerRight - Vector(w * math.cos(rowAngle), 0):setHeading(-rowAngle)
-        baselineEnd = lowerRight + Vector(h * math.sin(rowAngle), 0):setHeading(-rowAngle)
+        baselineStart = lowerRight - Vector(w * math.cos(rowAngle), 0):setHeading(rowAngle)
+        baselineEnd = lowerRight + Vector(h * math.sin(rowAngle), 0):setHeading(rowAngle)
+    else
+        local lowerLeft = Vector(x1 - margin / 2, y1 - margin / 2)
+        baselineStart = lowerLeft - Vector(h * math.sin(rowAngle), 0):setHeading(rowAngle)
+        baselineEnd = lowerLeft + Vector(w * math.cos(rowAngle), 0):setHeading(rowAngle)
     end
     return CourseGenerator.Row(self.context.workingWidth, { baselineStart, baselineEnd })
 end
