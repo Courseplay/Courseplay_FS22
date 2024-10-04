@@ -1483,6 +1483,10 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="de"><![CDATA[Kurseditor]]></Text>
 			<Text language="en"><![CDATA[Course editor]]></Text>
 		</Translation>
+		<Translation name="CP_editor_change_lane_offset">
+			<Text language="de"><![CDATA[Ausgewählten Bahnenversatz(%s) ändern]]></Text>
+			<Text language="en"><![CDATA[Change selected lane offset(%s)]]></Text>
+		</Translation>
 		<Translation name="CP_editor_delete_title">
 			<Text language="de"><![CDATA[Wegpunkte löschen]]></Text>
 			<Text language="en"><![CDATA[Delete waypoints]]></Text>

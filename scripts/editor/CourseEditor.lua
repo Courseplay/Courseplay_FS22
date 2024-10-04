@@ -30,7 +30,7 @@ function CourseEditor:loadCourse()
 	local function load(self, xmlFile, baseKey, noEventSend, name)
 		xmlFile:iterate(baseKey, function (i, key)
 			CpUtil.debugVehicle(CpDebug.DBG_COURSES, self, "Loading assigned course: %s", key)
-			local course = Course.createFromXml(self, xmlFile, key)
+			local course = Course.createFromXml(nil, xmlFile, key)
 			course:setName(name)
 			self.courseWrapper = EditorCourseWrapper(course)
 		end)    
@@ -38,6 +38,10 @@ function CourseEditor:loadCourse()
     self.file:load(CpCourseManager.xmlSchema, CpCourseManager.xmlKeyFileManager, 
     load, self, false)
 	self.courseDisplay:setCourse(self.courseWrapper)
+	local course = self.courseWrapper:getCourse()
+	if course and course:getMultiTools() > 1 then
+		self.needsMultiToolDialog = true
+	end
 end
 
 --- Saves the course, might be a good idea to consolidate this with the saving of CpCourseManager.
@@ -51,6 +55,40 @@ function CourseEditor:saveCourse()
 	end
 	self.file:save(CpCourseManager.rootKeyFileManager, CpCourseManager.xmlSchema, 
 		CpCourseManager.xmlKeyFileManager, save, self)
+end
+
+function CourseEditor:update(dt)
+	-- if not g_gui:getIsDialogVisible() and self.needsMultiToolDialog then
+	-- 	self.needsMultiToolDialog = false
+	-- end
+end
+
+function CourseEditor:onClickLaneOffsetSetting(closure, ignoreDialog)
+	local course = self.courseWrapper:getCourse()
+	local allowedValues = Course.MultiVehicleData.getAllowedPositions(course:getMultiTools())
+	local texts = CpFieldWorkJobParameters.laneOffset:getTextsForValues(allowedValues)
+	if not ignoreDialog and not g_gui:getIsDialogVisible() then 
+		g_gui:showOptionDialog({
+			title = "",
+			text = CpFieldWorkJobParameters.laneOffset:getTitle(),
+			options = texts,
+			callback = function (item)
+				if item > 0 then
+					local value = allowedValues[item]
+					self.courseWrapper:getCourse():setPosition(value)
+					self.courseDisplay:setCourse(self.courseWrapper)
+					closure(texts[item])
+				end
+			end
+		})
+	else
+		local position = course.multiVehicleData.position
+		for ix, v in ipairs(allowedValues) do 
+			if v == position then 
+				closure(texts[ix])
+			end
+		end
+	end
 end
 
 --- Activates the editor with a given course file.
@@ -99,6 +137,7 @@ function CourseEditor:deactivate()
 	self.file = nil 
 	self.field = nil
 	self.courseWrapper = nil
+	self.needsMultiToolDialog = false
 end
 
 
@@ -400,6 +439,24 @@ local function resetMenuState(screen)
 	end
 end
 ConstructionScreen.resetMenuState = Utils.appendedFunction(ConstructionScreen.resetMenuState, resetMenuState)
+
+local function registerMenuActionEvents(screen)
+	if g_courseEditor.isActive and g_courseEditor.needsMultiToolDialog then 
+		local _, eventId = screen.inputManager:registerActionEvent(InputAction.CONSTRUCTION_ACTION_SNAPPING, screen, 
+			function(screen, actionName)
+				local event = screen.inputManager:getFirstActiveEventForActionName(actionName)
+				g_courseEditor:onClickLaneOffsetSetting(function(text)
+					screen.inputManager:setActionEventText(event.id, string.format(g_i18n:getText("CP_editor_change_lane_offset"), text))
+				end)
+			end, false, true, false, true)
+		g_courseEditor:onClickLaneOffsetSetting(function(text)
+			screen.inputManager:setActionEventText(eventId, string.format(g_i18n:getText("CP_editor_change_lane_offset"), text))
+		end, true)
+		screen.inputManager:setActionEventActive(eventId, true)
+		screen.inputManager:setActionEventTextVisibility(eventId, true)
+	end
+end
+ConstructionScreen.registerMenuActionEvents = Utils.appendedFunction(ConstructionScreen.registerMenuActionEvents, registerMenuActionEvents)
 
 
 g_courseEditor = CourseEditor.new()
