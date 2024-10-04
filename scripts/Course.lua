@@ -1816,3 +1816,16 @@ function Course.MultiVehicleData.createFromStream(stream, nVehicles)
     end
     return mvd
 end
+
+function Course.MultiVehicleData.getAllowedPositions(nMultiToolVehicles)
+    if nMultiToolVehicles == 2 then 
+        return {-1,1}
+    elseif nMultiToolVehicles == 3 then 
+        return {-1,0,1}
+    elseif nMultiToolVehicles == 4 then 
+        return {-2,-1,1,2}
+    elseif nMultiToolVehicles == 5 then 
+        return {-2,-1,0,1,2}
+    end
+    return {0}
+end

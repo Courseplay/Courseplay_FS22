@@ -220,6 +220,18 @@ function AIParameterSettingList:refresh()
 	self:validateTexts()
 end
 
+--- Gets the texts for the given values.
+---@param values table
+---@return table
+function AIParameterSettingList:getTextsForValues(values)
+	local texts = {}
+	for _, v in ipairs(values) do 
+		local ix = self:getClosestIx(v)
+		table.insert(texts, self.data.texts[ix])
+	end
+	return texts
+end
+
 function AIParameterSettingList:validateCurrentValue()
 	local new = self:checkAndSetValidValue(self.current)
 	if new ~= self.current then
