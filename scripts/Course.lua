@@ -1572,8 +1572,8 @@ function Course:saveToXml(courseXml, courseKey)
     end
 end
 
----@param vehicle  table
----@param courseXml XmlFile
+---@param vehicle  table|nil
+---@param courseXml table
 ---@param courseKey string key to the course in the XML
 function Course.createFromXml(vehicle, courseXml, courseKey)
     local course = Course(vehicle, {})
@@ -1602,7 +1602,9 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
     if course.nVehicles and course.nVehicles > 1 then
         course.multiVehicleData = Course.MultiVehicleData.createFromXmlFile(courseXml, courseKey)
         course:setPosition(course.multiVehicleData:getPosition())
-        vehicle:getCpLaneOffsetSetting():setValue(course.multiVehicleData:getPosition())
+        if vehicle then
+            vehicle:getCpLaneOffsetSetting():setValue(course.multiVehicleData:getPosition())
+        end
     else
         course:enrichWaypointData()
     end
