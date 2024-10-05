@@ -25,6 +25,7 @@ function CpAIJobFieldWork:setupTasks(isServer)
     self.attachHeaderTask = CpAITaskAttachHeader(isServer, self)
     self.driveToFieldWorkStartTask = CpAITaskDriveTo(isServer, self)
     self.fieldWorkTask = CpAITaskFieldWork(isServer, self)
+    -- self.refuelTask = CpAITaskRefuel(isServer, self)
 end
 
 function CpAIJobFieldWork:onPreStart()
@@ -32,6 +33,7 @@ function CpAIJobFieldWork:onPreStart()
     self:removeTask(self.attachHeaderTask)
     self:removeTask(self.driveToFieldWorkStartTask)
     self:removeTask(self.fieldWorkTask)
+    -- self:removeTask(self.refuelTask)
     local vehicle = self:getVehicle()
     if vehicle and (AIUtil.hasCutterOnTrailerAttached(vehicle) 
         or AIUtil.hasCutterAsTrailerAttached(vehicle)) then 
@@ -40,6 +42,8 @@ function CpAIJobFieldWork:onPreStart()
     end
     self:addTask(self.driveToFieldWorkStartTask)
     self:addTask(self.fieldWorkTask)
+    ---TODO: only if refuelling is possible ..
+    -- self:addTask(self.refuelTask)
 end
 
 function CpAIJobFieldWork:setupJobParameters()
@@ -47,8 +51,27 @@ function CpAIJobFieldWork:setupJobParameters()
     self:setupCpJobParameters(CpFieldWorkJobParameters(self))
 end
 
+function CpAIJobFieldWork:isFinishingAllowed(message)
+    local nextTaskIndex = self:getNextTaskIndex()
+	if message:isa(AIMessageErrorOutOfFill) then 
+        
+        local vehicle = self:getVehicle()
+        local setting = vehicle:getCpSettings().refillOnTheField
+
+        if setting:getValue() == CpVehicleSettings.REFILL_ON_FIELD_DISABLED then 
+            return true
+        elseif setting:getValue() == CpVehicleSettings.REFILL_ON_FIELD_WAITING then
+            self.fieldWorkTask:setWaitingForRefuelActive()
+        elseif setting:getValue() == CpVehicleSettings.REFILL_ON_FIELD_ACTIVE then 
+            self.fieldWorkTask:skip()
+        end
+        return false
+    end
+    return true
+end
+
 ---@param vehicle table
----@param mission Mission
+---@param mission table
 ---@param farmId number
 ---@param isDirectStart boolean disables the drive to by giants
 ---@param isStartPositionInvalid boolean resets the drive to target position by giants and the field position to the vehicle position.

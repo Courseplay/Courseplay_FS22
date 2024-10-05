@@ -4,11 +4,31 @@ CpAITaskFieldWork = CpObject(CpAITask)
 
 function CpAITaskFieldWork:reset()
 	self.startPosition = nil
+	self.waitingForRefuelActive = false
 	CpAITask.reset(self)
 end
 
 function CpAITaskFieldWork:setStartPosition(startPosition)
 	self.startPosition = startPosition
+end
+
+function CpAITaskFieldWork:setWaitingForRefuelActive()
+	self.waitingForRefuelActive = true
+	local cpSpec = self.vehicle.spec_cpAIFieldWorker
+	cpSpec.driveStrategy:prepareFilling()
+end
+
+function CpAITaskFieldWork:update(dt)
+	if self.waitingForRefuelActive then 
+		self.vehicle:cpHold(150, true)
+		local cpSpec = self.vehicle.spec_cpAIFieldWorker
+		self.vehicle:setCpInfoTextActive(InfoTextManager.NEEDS_FILLING)
+		if cpSpec.driveStrategy:updateFilling() then 
+			cpSpec.driveStrategy:finishedFilling()
+			self.waitingForRefuelActive = false
+			self.vehicle:resetCpActiveInfoText(InfoTextManager.NEEDS_FILLING)
+		end
+	end
 end
 
 --- Makes sure the cp fieldworker gets started.

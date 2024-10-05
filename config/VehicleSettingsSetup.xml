@@ -75,6 +75,18 @@
 		<Setting classType="AIParameterSettingList" name="fullThreshold" min="40" max="100" incremental="5" default="85" unit="4" isVisible="areCombineUnloaderSettingsVisible"/>
 		<!--Silage additives needed?-->
 		<Setting classType="AIParameterBooleanSetting" name="useAdditiveFillUnit" defaultBool="false" isVisible="isAdditiveFillUnitSettingVisible" isExpertModeOnly="true"/>
+		<Setting classType="AIParameterSettingList" name="refillOnTheField" isVisible="isRefillOnTheFieldSettingVisible" default="1">
+			<Values>
+				<Value name="REFILL_ON_FIELD_DISABLED">0</Value>
+				<Value name="REFILL_ON_FIELD_WAITING">1</Value>
+				<!-- <Value name="REFILL_ON_FIELD_ACTIVE">2</Value> -->
+			</Values>
+			<Texts>
+				<Text prefix="false">CP_deactivated</Text>
+				<Text>waiting</Text>
+				<Text>active</Text>
+			</Texts>
+		</Setting>
 	</SettingSubTitle>
 
 	<SettingSubTitle title="bunkerSilo" isVisible="areBunkerSiloSettingsVisible">

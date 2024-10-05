@@ -46,7 +46,7 @@ function AIDriveStrategyFieldWorkCourse:init(task, job)
     self.aiOffsetX, self.aiOffsetZ = 0, 0
     self.debugChannel = CpDebug.DBG_FIELDWORK
     self.waitingForPrepare = CpTemporaryObject(false)
-
+    self.fillingTimer = CpTemporaryObject(true)
 end
 
 function AIDriveStrategyFieldWorkCourse:delete()
@@ -806,7 +806,7 @@ end
 
 -----------------------------------------------------------------------------------------------------------------------
 --- Convoy management
-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:getProgress()
     return self.fieldWorkCourse:getProgress()
 end
@@ -818,6 +818,131 @@ end
 function AIDriveStrategyFieldWorkCourse:getFieldWorkProximity(node)
     return self.fieldWorkerProximityController:getFieldWorkProximity(node)
 end
+
+-----------------------------------------------------------------------------------------------------------------------
+--- Waiting for refilling on the field
+-----------------------------------------------------------------------------------------------------------------------
+
+function AIDriveStrategyFieldWorkCourse:prepareFilling()
+    --- Gather the correct fill unit to open the cover and so on..
+    self.fillingTimer:set(false, 30 * 1000)
+    local validSowingMachines, validSprayers, validTreePlanters = {}, {}, {}
+    local fillUnitsData = {}
+    if not g_currentMission.missionInfo.helperBuySeeds then
+        local sowingMachines, found = AIUtil.getAllChildVehiclesWithSpecialization(self.vehicle, SowingMachine)
+        if found then 
+            for _, s in pairs(sowingMachines) do 
+                table.insert(fillUnitsData, 
+                    {implement = s, fillUnitIndex = s.spec_sowingMachine.fillUnitIndex})
+            end
+        end
+        validSowingMachines = sowingMachines
+    end
+    local sprayers, found = AIUtil.getAllChildVehiclesWithSpecialization(self.vehicle, Sprayer)
+    if found then 
+        for _, s in pairs(sprayers) do 
+            if not s:getIsSprayerExternallyFilled() then
+                table.insert(validSprayers, s)
+                table.insert(fillUnitsData, 
+                {implement = s, fillUnitIndex = s.spec_sprayer.fillUnitIndex})
+            end
+        end
+        validSprayers = sprayers
+    end
+    if not g_currentMission.missionInfo.helperBuySeeds then
+        local treePlanters, found = AIUtil.getAllChildVehiclesWithSpecialization(self.vehicle, TreePlanter)
+        if found then 
+            for _, s in pairs(treePlanters) do 
+                table.insert(fillUnitsData, 
+                {implement = s, fillUnitIndex = s.spec_treePlanter.fillUnitIndex})
+            end
+        end
+        validTreePlanters = treePlanters
+    end
+
+    local implements = {unpack(validSowingMachines), unpack(validSprayers), unpack(validTreePlanters)}
+
+    self.fillingData = {
+        implements = implements,
+        fillUnitsData = fillUnitsData,
+        lastFillLevels = {}
+    }
+    for _, data in ipairs(self.fillingData.fillUnitsData) do 
+        if data.implement:getFillUnitFillLevel(data.fillUnitIndex) <= 0 then 
+            data.implement:aiPrepareLoading(data.fillUnitIndex)
+        end
+    end
+
+end
+
+function AIDriveStrategyFieldWorkCourse:updateFilling()
+    --- Trys to load if possible
+    if self.fillingData == nil then 
+        return
+    end
+    
+    local isFilling = false
+    for _, implement in ipairs(self.fillingData.implements) do 
+        local spec = implement.spec_fillUnit
+        local activatable = spec.fillTrigger.activatable
+        if not spec.fillTrigger.isFilling then 
+            if activatable:getIsActivatable(true) then 
+                activatable:run()
+            end
+        else 
+            isFilling = true
+        end
+    end
+    for _, data in ipairs(self.fillingData.fillUnitsData) do 
+        local fillLevel = data.implement:getFillUnitFillLevel(data.fillUnitIndex)
+        if #self.fillingData.lastFillLevels == 0 then
+            if self.fillingData.lastFillLevels[data.implement] == nil then
+                self.fillingData.lastFillLevels[data.implement] = {}
+            end
+            self.fillingData.lastFillLevels[data.implement][data.fillUnitIndex] = fillLevel
+        else
+            isFilling = isFilling or self.fillingData.lastFillLevels[data.implement][data.fillUnitIndex] ~= fillLevel
+
+            self.fillingData.lastFillLevels[data.implement][data.fillUnitIndex] = fillLevel
+        end
+    end
+    if isFilling then 
+        self.fillingTimer:set(false, 10 * 1000)
+    end
+
+    return self.fillingTimer:get()
+end
+
+function AIDriveStrategyFieldWorkCourse:finishedFilling()
+    if self.fillingData == nil then 
+        return
+    end
+    for _, data in ipairs(self.fillingData.fillUnitsData) do 
+        data.implement:aiFinishLoading()
+    end
+end
+
+--- Allows the usage of the function while cp is active.
+local function getIsActivatable(activatable, superFunc, allowAILoad)
+    local rootVehicle = activatable.vehicle.rootVehicle
+    local ret
+    if allowAILoad and rootVehicle:getIsCpActive() then
+        local oldFunc = activatable.vehicle.getIsActiveForInput
+        activatable.vehicle.getIsActiveForInput = function ()
+            return true
+        end
+
+        ret = superFunc(activatable)
+
+        activatable.vehicle.getIsActiveForInput = oldFunc
+    else
+        ret = superFunc(activatable)
+    end
+    return ret
+end
+FillActivatable.getIsActivatable = Utils.overwrittenFunction(FillActivatable.getIsActivatable, getIsActivatable)
+
+
 -----------------------------------------------------------------------------------------------------------------------
 --- Overwrite implement functions, to enable a different cp functionality compared to giants fieldworker.
 --- TODO: might have to find a better solution for these kind of problems.

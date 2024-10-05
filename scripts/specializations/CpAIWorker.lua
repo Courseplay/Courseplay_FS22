@@ -341,6 +341,10 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
                 end
             end
         end
+        local job = self:getJob()
+        if not job:isFinishingAllowed(message) then 
+            return
+        end
     end
     superFunc(self, message,...)
 end
@@ -417,10 +421,10 @@ function CpAIWorker:unfreezeCp()
 end
 
 --- Holds the driver for a given amount of milliseconds.
-function CpAIWorker:cpHold(ms)
+function CpAIWorker:cpHold(ms, fuelSaveAllowed)
     local strategy = self:getCpDriveStrategy()
     if strategy then
-        return strategy:hold(ms)
+        return strategy:hold(ms, fuelSaveAllowed)
     end
 end
 

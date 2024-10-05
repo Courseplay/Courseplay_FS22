@@ -50,6 +50,7 @@ function AIDriveStrategyCourse:init(task, job)
     self.registeredInfoTexts = {}
     --- To temporary hold a vehicle (will force speed to 0)
     self.held = CpTemporaryObject()
+    self.fuelSaveActiveWhileHeld = false
 
     self.currentTask = task
     self.job = job
@@ -247,17 +248,7 @@ end
 
 --- Checks if any controller disables fuel save, for example a round baler that is dropping a bale.
 function AIDriveStrategyCourse:isFuelSaveAllowed()
-    --[[ TODO: implement this, when fuel save is implemented for every vehicle combo and not only harvesters.
-         for _, controller in pairs(self.controllers) do
-            ---@type ImplementController
-            if controller:isEnabled() then
-                if not controller:isFuelSaveAllowed() then 
-                    return false
-                end
-            end
-        end
-    ]]
-    return false
+    return self.fuelSaveActiveWhileHeld
 end
 
 function AIDriveStrategyCourse:initializeImplementControllers(vehicle)
@@ -499,11 +490,12 @@ end
 --- Hold the vehicle (set speed to 0) temporary. This is meant to be used for other vehicles to coordinate movements,
 --- for instance tell a vehicle it should not move as the other vehicle is driving around it.
 ---@param milliseconds number milliseconds to hold
-function AIDriveStrategyCourse:hold(milliseconds)
+function AIDriveStrategyCourse:hold(milliseconds, fuelSaveAllowed)
     if not self.held:get() then
         self:debug('Hold requested for %.1f seconds', milliseconds / 1000)
     end
     self.held:set(true, milliseconds)
+    self.fuelSaveActiveWhileHeld = fuelSaveAllowed
 end
 
 --- Release a hold anytime, even before it is released automatically after the time given at hold()
@@ -512,11 +504,16 @@ function AIDriveStrategyCourse:unhold()
         self:debug("Hold reset")
     end
     self.held:reset()
+    self.fuelSaveActiveWhileHeld = false
 end
 
 --- Are we currently being held?
 function AIDriveStrategyCourse:isBeingHeld()
-    return self.held:get()
+    local isHeld = self.held:get()
+    if not isHeld then 
+        self.fuelSaveActiveWhileHeld = false
+    end
+    return isHeld
 end
 
 --- Freeze (force speed to 0), but keep everything up and running otherwise, showing all debug
