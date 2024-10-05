@@ -181,11 +181,11 @@
 	<Category name="AI bale finder job parameters">	
 		<Translation name="CP_baleFinderJobParameters_subTitle_baleWrapType">
 			<Text language="de"><![CDATA[Ballentyp:]]></Text>
-			<Text language="en"><![CDATA[Baletype:]]></Text>
+			<Text language="en"><![CDATA[Bale type:]]></Text>
 		</Translation>
 		<Translation name="CP_baleFinderJobParameters_baleWrapType_title">
 			<Text language="de"><![CDATA[Ballentyp:]]></Text>
-			<Text language="en"><![CDATA[Baletype:]]></Text>
+			<Text language="en"><![CDATA[Bale type:]]></Text>
 		</Translation>
 		<Translation name="CP_baleFinderJobParameters_baleWrapType_all_bales">
 			<Text language="de"><![CDATA[Alle Ballen]]></Text>
@@ -362,27 +362,27 @@
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - left the course!]]></Text>
 		</Translation>
 		<Translation name="CP_ai_messageErrorWrongBaleWrapType">
-			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - keinen Ballen des gewählten Typs gefunden!]]></Text>
+			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - Keinen Ballen des gewählten Typs gefunden!]]></Text>
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - no bales of selected type found!]]></Text>
 		</Translation>
 		<Translation name="CP_ai_messageErrorNoPathFound">
-			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - keinen Weg gefunden!]]></Text>
-			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - no Path found!]]></Text>
+			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - Keinen Weg gefunden!]]></Text>
+			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - no path found!]]></Text>
 		</Translation>
 		<Translation name="CP_ai_messageErrorGroundUnloadNotSupported">
-			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - abladen auf dem Boden nicht möglich!]]></Text>
+			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - Abladen auf dem Boden nicht möglich!]]></Text>
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - unloading on the field not possible!]]></Text>
 		</Translation>
 		<Translation name="CP_ai_messageErrorCutterNotSupported">
-			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - ankuppeln des Schneidwerks nicht möglich!]]></Text>
+			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - Ankuppeln des Schneidwerks nicht möglich!]]></Text>
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - attaching of the header is impossible!]]></Text>
 		</Translation>
 		<Translation name="CP_ai_messageErrorAutomaticCutterAttachNotActive">
-			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - automatisches Schneidwerk ankuppeln deaktiviert!]]></Text>
+			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - Schneidwerk automatisch ankuppeln deaktiviert!]]></Text>
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!]]></Text>
 		</Translation>
 		<Translation name="CP_ai_messageErrorWrongMissionFruitType">
-			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - falsche Frucht für die Mission ausgewählt!]]></Text>
+			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - Falsche Frucht für die Mission ausgewählt!]]></Text>
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - wrong fill type for mission selected!]]></Text>
 		</Translation>
 	</Category>
@@ -412,11 +412,11 @@
 			<Text language="en"><![CDATA[Waits for combine]]></Text>
 		</Translation>
 		<Translation name="CP_ai_taskDescriptionUnloadSiloLoader">
-			<Text language="de"><![CDATA[Entlädt Lade Fahrzeug]]></Text>
+			<Text language="de"><![CDATA[Entlädt Ladefahrzeug]]></Text>
 			<Text language="en"><![CDATA[Unloads loader]]></Text>
 		</Translation>
 		<Translation name="CP_ai_taskDescriptionWaitsForTargetSiloLoader">
-			<Text language="de"><![CDATA[Wartet auf Lade Fahrzeug]]></Text>
+			<Text language="de"><![CDATA[Wartet auf Ladefahrzeug]]></Text>
 			<Text language="en"><![CDATA[Waits for loader]]></Text>
 		</Translation>
 		<Translation name="CP_ai_taskDescriptionUnloadingToHeap">
@@ -492,7 +492,7 @@
 			<Text language="en"><![CDATA[Debug settings]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_showCourse_title">
-			<Text language="de"><![CDATA[Zeige Kurs]]></Text>
+			<Text language="de"><![CDATA[Kurs anzeigen]]></Text>
 			<Text language="en"><![CDATA[Show course]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_showCourse_tooltip">
@@ -513,11 +513,11 @@
 		</Translation>
 		<Translation name="CP_vehicle_setting_openHudWithMouse_title">
 			<Text language="de"><![CDATA[HUD mit Maus öffnen]]></Text>
-			<Text language="en"><![CDATA[Open Hud with mouse]]></Text>
+			<Text language="en"><![CDATA[Open HUD with mouse]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_openHudWithMouse_tooltip">
 			<Text language="de"><![CDATA[Wenn deaktiviert, kann das HUD nur über die Tastenbelegung geöffnet werden.]]></Text>
-			<Text language="en"><![CDATA[When deactivated, Hud can only be opened with the Keybind.]]></Text>
+			<Text language="en"><![CDATA[When deactivated, the HUD can only be opened with the keybind.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_fuelSave_title">
 			<Text language="de"><![CDATA[Kraftstoff sparen]]></Text>
@@ -533,7 +533,7 @@
 		</Translation>
 		<Translation name="CP_vehicle_setting_stopAtEnd_tooltip">
 			<Text language="de"><![CDATA[Fahrzeug bleibt nach der Arbeit am Endpunkt stehen.]]></Text>
-			<Text language="en"><![CDATA[Stop at end.]]></Text>
+			<Text language="en"><![CDATA[Vehicle stops at the end point after work.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_allowReversePathfinding_title">
 			<Text language="de"><![CDATA[Pathfinder darf rückwärtsfahren]]></Text>
@@ -544,7 +544,7 @@
 			<Text language="en"><![CDATA[When applicable, allow the pathfinder to generate courses containing reverse driving.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_allowPathfinderTurns_title">
-			<Text language="de"><![CDATA[Benutze Pathfinder im Wendemanöver]]></Text>
+			<Text language="de"><![CDATA[Pathfinder im Wendemanöver benutzen]]></Text>
 			<Text language="en"><![CDATA[Allow using the pathfinder in turns]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_allowPathfinderTurns_tooltip">
@@ -636,7 +636,7 @@
 			<Text language="en"><![CDATA[Offset left/right]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_combineOffsetX_tooltip">
-			<Text language="de"><![CDATA[Versatz zum Drescher Rohr Rechts(+) und Links(-)]]></Text>
+			<Text language="de"><![CDATA[Versatz zum Drescherrohr rechts(+) und links(-)]]></Text>
 			<Text language="en"><![CDATA[Offset for harvester pipe right(+) and left(-)]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_combineOffsetZ_title">
@@ -644,8 +644,8 @@
 			<Text language="en"><![CDATA[Offset forwards/backwards]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_combineOffsetZ_tooltip">
-			<Text language="de"><![CDATA[Versatz zum Drescher Rohr Vorne(+) und Hinten(-)]]></Text>
-			<Text language="en"><![CDATA[Offset for harvester pipe with forwards(+) and backwards(-)]]></Text>
+			<Text language="de"><![CDATA[Versatz zum Drescherrohr vorne(+) und hinten(-)]]></Text>
+			<Text language="en"><![CDATA[Offset for harvester pipe forwards(+) and backwards(-)]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_fullThreshold_title">
 			<Text language="de"><![CDATA[Entleeren wenn über:]]></Text>
@@ -672,7 +672,7 @@
 			<Text language="en"><![CDATA[Symmetric lane change]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_convoyDistance_title">
-			<Text language="de"><![CDATA[Entfernung Fahrzeugverband ]]></Text>
+			<Text language="de"><![CDATA[Entfernung Fahrzeugverband]]></Text>
 			<Text language="en"><![CDATA[Convoy Distance]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_convoyDistance_tooltip">
@@ -680,7 +680,7 @@
 			<Text language="en"><![CDATA[Distance between vehicles. Value: 40 - 400]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_debugActive_title">
-			<Text language="de"><![CDATA[Fahrzeug debug]]></Text>
+			<Text language="de"><![CDATA[Fahrzeug-Debug]]></Text>
 			<Text language="en"><![CDATA[Vehicle debug]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_debugActive_tooltip">
@@ -707,11 +707,11 @@
 		</Translation>
 		<Translation name="CP_vehicle_setting_levelerHeightOffset_tooltip">
 			<Text language="de"><![CDATA[Höhenversatz vom Schild zum Boden. Wert: 0 - 1]]></Text>
-			<Text language="en"><![CDATA[Offset of the shield form the ground. Value: 0 - 1]]></Text>
+			<Text language="en"><![CDATA[Offset of the shield from the ground. Value: 0 - 1]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_loadingShovelHeightOffset_title">
-			<Text language="de"><![CDATA[Versatz Schaufelhöhe.]]></Text>
-			<Text language="en"><![CDATA[Shovel hight offset.]]></Text>
+			<Text language="de"><![CDATA[Versatz Schaufelhöhe]]></Text>
+			<Text language="en"><![CDATA[Shovel hight offset]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip">
 			<Text language="de"><![CDATA[Höhenversatz der Schaufel für die Ladeposition. Wert: -1 - 1]]></Text>
@@ -816,7 +816,7 @@
 			<Text language="en"><![CDATA[Combine self unload]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_selfUnload_tooltip">
-			<Text language="de"><![CDATA[Drescher sucht sich einen Anhänger in der Nähe des Feldes, um dort selbständig abzutanken. Keine Unterstützung bei Multitool Kursen.]]></Text>
+			<Text language="de"><![CDATA[Drescher sucht sich einen Anhänger in der Nähe des Feldes, um dort selbständig abzutanken. Keine Unterstützung bei Multitoolkursen.]]></Text>
 			<Text language="en"><![CDATA[Combine drives to trailer on or near the field to unload. Not supported in multitools or convoy mode.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_unloadOnFirstHeadland_title">
@@ -854,7 +854,7 @@
 			<Text language="en"><![CDATA[Course generator settings of (%s)]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_subTitle_basic">
-			<Text language="de"><![CDATA[Basis Einstellungen]]></Text>
+			<Text language="de"><![CDATA[Grundeinstellungen]]></Text>
 			<Text language="en"><![CDATA[Basic settings]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_subTitle_headland">
@@ -914,7 +914,7 @@
 			<Text language="en"><![CDATA[Number of circles]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip">
-			<Text language="de"><![CDATA[Anzahl Runden für Kreisförmig. Wert: 1 - 12]]></Text>
+			<Text language="de"><![CDATA[Anzahl Runden für kreisförmig. Wert: 1 - 12]]></Text>
 			<Text language="en"><![CDATA[Number of circles for racetrack. Value: 1 - 12]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title">
@@ -930,8 +930,8 @@
 			<Text language="en"><![CDATA[Headland direction]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip">
-			<Text language="de"><![CDATA[Das Fahrzeug kann auf dem Vorgewende im oder gegen den Uhrzeigersinn fahren.]]></Text>
-			<Text language="en"><![CDATA[Should the vehicle drive clockwise or counterclockwise on the headland.]]></Text>
+			<Text language="de"><![CDATA[Auf dem Vorgewende im oder gegen den Uhrzeigersinn fahren.]]></Text>
+			<Text language="en"><![CDATA[Drive clockwise or counterclockwise on the headland.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_centerClockwise_title">
 			<Text language="de"><![CDATA[Mitte-Richtung]]></Text>
@@ -946,8 +946,8 @@
 			<Text language="en"><![CDATA[Island Headland direction]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip">
-			<Text language="de"><![CDATA[Die Insel im oder gegen den Uhrzeigersinn umfahren.]]></Text>
-			<Text language="en"><![CDATA[Bypass the island clockwise or counterclockwise.]]></Text>
+			<Text language="de"><![CDATA[Inseln im oder gegen den Uhrzeigersinn umfahren.]]></Text>
+			<Text language="en"><![CDATA[Bypass islands clockwise or counterclockwise.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_headlandClockwise_clockwise">
 			<Text language="de"><![CDATA[Im Uhrzeigersinn]]></Text>
@@ -1034,7 +1034,7 @@
 			<Text language="en"><![CDATA[Corner radius]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip">
-			<Text language="de"><![CDATA[Radius der Runden Ecken, basierend auf dem Wenderadius des Fahrzeugs. Wert: 5 - 15]]></Text>
+			<Text language="de"><![CDATA[Radius der runden Ecken, basierend auf dem Wenderadius des Fahrzeugs. Wert: 5 - 15]]></Text>
 			<Text language="en"><![CDATA[Radius of round corners, based on the turning radius of the vehicle. Value: 5 - 15]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title">
@@ -1230,15 +1230,15 @@
 			<Text language="en"><![CDATA[Driver will be released, if the vehicle or an implement is more broken. 100% is off.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_stopThreshingDuringRain_title">
-			<Text language="de"><![CDATA[Stoppt Drescher während Regen]]></Text>
-			<Text language="en"><![CDATA[Stops harvester, while it's raining]]></Text>
+			<Text language="de"><![CDATA[Drescher während Regen stoppen]]></Text>
+			<Text language="en"><![CDATA[Stop harvesters while it's raining]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_stopThreshingDuringRain_tooltip">
 			<Text language="de"><![CDATA[Wenn die Einstellung aktiviert ist, dann warten alle Drescher solange, bis der Regen aufhört.]]></Text>
-			<Text language="en"><![CDATA[If the setting is active, then all harvester wait for the raining to stop.]]></Text>
+			<Text language="en"><![CDATA[If the setting is active, then all harvesters wait for the raining to stop.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_fruitDestruction_title">
-			<Text language="de"><![CDATA[Helfer Fruchtzerstörung]]></Text>
+			<Text language="de"><![CDATA[Fruchtzerstörung Helfer]]></Text>
 			<Text language="en"><![CDATA[AI Helper fruit destruction]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_fruitDestruction_tooltip">
@@ -1251,7 +1251,7 @@
 		</Translation>
 		<Translation name="CP_global_setting_fruitDestruction_all_helpers">
 			<Text language="de"><![CDATA[Aktiviert für alle Helfer]]></Text>
-			<Text language="en"><![CDATA[Activated for every helpers]]></Text>
+			<Text language="en"><![CDATA[Activated for all helpers]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Global settings user settings">
@@ -1269,14 +1269,14 @@
 		</Translation>
 		<Translation name="CP_global_setting_controllerHudSelected_title">
 			<Text language="de"><![CDATA[Gamepadfreundliches HUD]]></Text>
-			<Text language="en"><![CDATA[Gamepad friendly Hud]]></Text>
+			<Text language="en"><![CDATA[Gamepad friendly HUD]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_controllerHudSelected_tooltip">
 			<Text language="de"><![CDATA[Benutze das HUD, welches sich über ein Gamepad bedienen lässt.]]></Text>
-			<Text language="en"><![CDATA[Use the Hud, wich can be controlled with a Gamepad.]]></Text>
+			<Text language="en"><![CDATA[Use the HUD, which can be controlled with a gamepad.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_showActionEventHelp_title">
-			<Text language="de"><![CDATA[Zeige Tastenbelegung]]></Text>
+			<Text language="de"><![CDATA[Tastenbelegung anzeigen]]></Text>
 			<Text language="en"><![CDATA[Action event help]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_showActionEventHelp_tooltip">
@@ -1284,16 +1284,16 @@
 			<Text language="en"><![CDATA[Shows action event help texts.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_showsAllActiveCourses_title">
-			<Text language="de"><![CDATA[Zeige alle Kurse]]></Text>
-			<Text language="en"><![CDATA[Shows all active courses]]></Text>
+			<Text language="de"><![CDATA[Alle Kurse anzeigen]]></Text>
+			<Text language="en"><![CDATA[Show all active courses]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_showsAllActiveCourses_tooltip">
 			<Text language="de"><![CDATA[Zeigt alle geladenen Kurse auf der Karte.]]></Text>
 			<Text language="en"><![CDATA[Shows all active courses on the in game map.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_drawOntoTheHudMap_title">
-			<Text language="de"><![CDATA[Zeige Kurse auf der Minikarte]]></Text>
-			<Text language="en"><![CDATA[Shows courses on the minimap]]></Text>
+			<Text language="de"><![CDATA[Kurse auf der Minikarte anzeigen]]></Text>
+			<Text language="en"><![CDATA[Show courses on the minimap]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_drawOntoTheHudMap_tooltip">
 			<Text language="de"><![CDATA[Ermöglicht die Anzeige des Kurses auf der kleinen Karte.]]></Text>
@@ -1320,7 +1320,7 @@
 			<Text language="en"><![CDATA[Enables/disables the player mouse event for the info text display outside of a vehicle.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_preferCustomFields_title">
-			<Text language="de"><![CDATA[Bevorzuge erstellten Feldrand]]></Text>
+			<Text language="de"><![CDATA[Erstellten Feldrand bevorzugen]]></Text>
 			<Text language="en"><![CDATA[Prefer custom fields]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_preferCustomFields_tooltip">
@@ -1466,12 +1466,12 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Course name (%s) is invalid!]]></Text>
 		</Translation>
 		<Translation name="CP_courseManager_basicSettings">
-			<Text language="de"><![CDATA[Kurse speichern/laden.]]></Text>
-			<Text language="en"><![CDATA[Course interaction.]]></Text>
+			<Text language="de"><![CDATA[Kurse speichern/laden]]></Text>
+			<Text language="en"><![CDATA[Course interaction]]></Text>
 		</Translation>
 		<Translation name="CP_courseManager_advancedSettings">
-			<Text language="de"><![CDATA[Kurse/Ordner editieren.]]></Text>
-			<Text language="en"><![CDATA[Edit files.]]></Text>
+			<Text language="de"><![CDATA[Kurse/Ordner editieren]]></Text>
+			<Text language="en"><![CDATA[Edit files]]></Text>
 		</Translation>
 		<Translation name="CP_courseManager_activate">
 			<Text language="de"><![CDATA[aktivieren]]></Text>
@@ -1661,7 +1661,7 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Needs to be refueled]]></Text>
 		</Translation>
 		<Translation name="CP_infoTexts_needsRepair">
-			<Text language="de"><![CDATA[Sollte repariert werden]]></Text>
+			<Text language="de"><![CDATA[Muss repariert werden]]></Text>
 			<Text language="en"><![CDATA[Needs to be repaired]]></Text>
 		</Translation>
 		<Translation name="CP_infoTexts_needsFilling">
@@ -1733,11 +1733,11 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Wrong fruit for mission selected]]></Text>
 		</Translation>
 		<Translation name="CP_infoTexts_errorPalletsAreFull">
-			<Text language="de"><![CDATA[Paletten sind voll.]]></Text>
+			<Text language="de"><![CDATA[Paletten sind voll]]></Text>
 			<Text language="en"><![CDATA[Pallets are full]]></Text>
 		</Translation>
 		<Translation name="CP_infoTexts_errorPalletsAreEmpty">
-			<Text language="de"><![CDATA[Keine Palette]]></Text>
+			<Text language="de"><![CDATA[Keine Paletten]]></Text>
 			<Text language="en"><![CDATA[No pallets]]></Text>
 		</Translation>
 	</Category>
@@ -1783,20 +1783,20 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Save custom field]]></Text>
 		</Translation>
 		<Translation name="CP_controllerGui_startRecording">
-			<Text language="de"><![CDATA[Starte Feldrandaufnahme.]]></Text>
-			<Text language="en"><![CDATA[Start custom field recording.]]></Text>
+			<Text language="de"><![CDATA[Feldrandaufnahme starten]]></Text>
+			<Text language="en"><![CDATA[Start custom field recording]]></Text>
 		</Translation>
 		<Translation name="CP_controllerGui_stopRecording">
-			<Text language="de"><![CDATA[Stoppe Feldrandaufnahme.]]></Text>
-			<Text language="en"><![CDATA[Stop custom field recording.]]></Text>
+			<Text language="de"><![CDATA[Feldrandaufnahme stoppen]]></Text>
+			<Text language="en"><![CDATA[Stop custom field recording]]></Text>
 		</Translation>
 		<Translation name="CP_controllerGui_pauseRecording">
-			<Text language="de"><![CDATA[Pausieren der Feldrandaufnahme.]]></Text>
-			<Text language="en"><![CDATA[Pause custom field recording.]]></Text>
+			<Text language="de"><![CDATA[Feldrandaufnahme pausieren]]></Text>
+			<Text language="en"><![CDATA[Pause custom field recording]]></Text>
 		</Translation>
 		<Translation name="CP_controllerGui_unpauseRecording">
-			<Text language="de"><![CDATA[Fortsetzen der Feldrandaufnahme.]]></Text>
-			<Text language="en"><![CDATA[Unpause custom field recording.]]></Text>
+			<Text language="de"><![CDATA[Feldrandaufnahme fortsetzen]]></Text>
+			<Text language="en"><![CDATA[Unpause custom field recording]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Help menu">	
@@ -1981,9 +1981,9 @@ Headlands are highly recommended to prevent tools leaving the field when turning
 		</Translation>
 		<Translation name="CP_help_page_courseGeneratorHeadlandFunctions_text">
 			<Text language="de"><![CDATA[
-- Scharfe Ecken: Erzwingt die Ecken scharf zu fahren, was bedeutet das ein Wendemanöver durchgeführt wird.
+- Scharfe Ecken: Erzwingt die Ecken scharf zu fahren, sodass ein Wendemanöver durchgeführt wird.
 - Anzahl runde Ecken: Hat man z.B. drei Vorgewende und stellt die Anzahl runder Ecken auf eins, wird vom ersten Vorgewende an gezählt, die Ecken des ersten Vorgewendes auf Rund gestellt, basierend auf den Eckenradius.
-- Eckenradius: Bestimmt den Radius den runde Ecken haben sollen. Weis man bereits, dass ein nachfolgender Arbeitsschritt mit einem Gerät bearbeitet wird, was einen minimalen Radius von 10 hat, kann man für den Kurs bereits diesen Radius einstellen.
+- Eckenradius: Bestimmt den Radius den runde Ecken haben sollen. Weiß man bereits, dass ein nachfolgender Arbeitsschritt mit einem Gerät bearbeitet wird, was einen minimalen Radius von 10 hat, kann man für den Kurs bereits diesen Radius einstellen.
 - Vorgewende-Richtung: Im Uhrzeigersinn oder gegen den Uhrzeigersinn. Das kann für Drescher oder Ernter entscheidend sein, abhängig davon auf welcher Seite sich das Abladerohr oder Förderband befindet.
 - Vorgewende-Überlappung: Wie viel % Überlappung die Vorgewende haben sollen. Die erste Vorgewendebahn hat keine Überlappung mit dem Feldrand, alle weiteren Bahnen überlappen mit der jeweils vorherigen Bahn.
 - Feldgrenze: Positive Werte reduzieren den Arbeitsbereich, um einen Puffer zum Feldrand zu generieren. Das ist nützlich, sollten sich einige Objekte zu dicht an der Feldkante befinden.
@@ -2004,13 +2004,13 @@ Negative values enlarge worked area beyond the field boundary to cover up field 
 		</Translation>
 		<Translation name="CP_help_page_courseGeneratorCenter_text">
 			<Text language="de"><![CDATA[
-Für die Mitte gibt es die verschiedenste Strategien das Feld ab zu arbeiten. Oft spielt das gewählte Tool eine Rolle. Die verfügbaren Strategien entstanden durch Feedback und Informationen aus unserer Community.
-Das einfache hoch und runter fahren funktioniert an sich immer. Es kann aber besser sein, zum Dreschen z.B. Beete zu verwenden, damit das Rohr öffter außerhalb der Frucht liegt, das ein effizienteres Abtanken ermöglicht.
+Für die Mitte gibt es die verschiedenste Strategien das Feld ab zu arbeiten. Oft spielt das gewählte Gerät eine Rolle. Die verfügbaren Strategien entstanden durch Feedback und Informationen aus unserer Community.
+Das einfache hoch und runter fahren funktioniert an sich immer. Es kann aber besser sein, zum Dreschen z.B. Beete zu verwenden, damit das Rohr öfter außerhalb der Frucht liegt, was ein effizienteres Abtanken ermöglicht.
 Beim Häckseln möchte man möglichst wenig enge Wendemanöver haben, damit der Abfahrer einfacher hinterher fahren kann. Dafür ist Kreisförmig eine gute Wahl.
 Spiralförmig hingegen kann man gut für schmale gezogene Ernter verwenden, so dass man durch dessen Offset das Arbeitsgerät immer zur Frucht stellt, den Traktor aber außerhalb dieser fährt.
 ]]></Text>
 			<Text language="en"><![CDATA[
-The Generator provides several different patterns to generate the course for the center of the field. The best pattern is
+The generator provides several different patterns to generate the course for the center of the field. The best pattern is
 usually determined by the job and the implements selected. The patterns were created based on feedback and information from
 our community.
 The simple up down pattern works almost every time for any tool. Other patterns may improve efficiency, such as using the
@@ -2022,7 +2022,7 @@ Spiral is a best for towed harvesters with an offset to keep the tool in the fru
 		<Translation name="CP_help_page_courseGeneratorCenterFunctions_text">
 			<Text language="de"><![CDATA[
 - Feldmitte: Es gibt verschiedene Arbeitsweisen, um die Feldmitte zu bearbeiten. Der klassische Weg ist hoch/runter.
-Spiralförmig, Kreisförmig und Beete haben jeweils ihre eigenen Vorteile gegenüber den anderen. Bei Beeten zum Beispiel wird der Drescher die meiste Zeit mit dem Rohr außerhalb der Frucht fahren, um ein einfacheres Entladen zu ermöglichen.
+Spiralförmig, kreisförmig und Beete haben jeweils ihre eigenen Vorteile gegenüber den anderen. Bei Beeten zum Beispiel wird der Drescher die meiste Zeit mit dem Rohr außerhalb der Frucht fahren, um ein einfacheres Entladen zu ermöglichen.
 - Mitte Richtung: Funktioniert genau so wie beim Vorgewende, ist jetzt aber unabhängig davon einstellbar.
 - Gleichmäßige Bahnenbreite: Wenn die Feldmitte eine gesammte Breite hat, die sich nicht gleichmäßig auf die Arbeitsbreite des Tools aufteilen lässt, wird am Anfang oder am Ende eine sehr schmale Bahn gezogen. Um das zu vermeiden, wird die Bahnenbreite so reduziert, dass alle Bahnen die gleiche Breite haben.
 - Startrichtung: Automatisch findet meistens die beste Startrichtung, manchmal hilft es aber auch, die längste Kante zu nehmen. Sollte das auch nicht passen, kannst du den Wert auf Manuell stellen.
@@ -2031,8 +2031,8 @@ Spiralförmig, Kreisförmig und Beete haben jeweils ihre eigenen Vorteile gegen�
 Folgende Einstellungen erscheinen erst Anhand bestimmter vorheriger Einstellung:
 - Reihen überspringen: Erscheint bei Feldmitte "hoch/runter". Mit Reihen überspringen lässt sich die Arbeit beschleunigen, da die Arbeitsgeräte nicht rückwärtsfahren müssen, um in die nächste Reihe zu kommen.
 - Reihen pro Beet: Erscheint bei Feldmitte "Beete". Diese Einstellung wirkt sich nur auf Beete aus. Je mehr Reihen pro Beete eingestellt werden, desto weniger Beete werden generiert.
-- Spirale von Innen: Erscheint bei Feldmitte "Spiralförmig".
-- Anzahl Runden: Erscheint bei Feldmitte "Kreisförmig".
+- Spirale von Innen: Erscheint bei Feldmitte "spiralförmig".
+- Anzahl Runden: Erscheint bei Feldmitte "kreisförmig".
 ]]></Text>
 			<Text language="en"><![CDATA[
 - Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
@@ -2059,7 +2059,7 @@ up/down
 		</Translation>
 		<Translation name="CP_help_page_courseGeneratorCenterExampleLands_text">
 			<Text language="de"><![CDATA[
-beete
+Beete
 ]]></Text>
 			<Text language="en"><![CDATA[
 lands
@@ -2097,9 +2097,9 @@ headlands if the island is too close to the field boundary
 		</Translation>
 		<Translation name="CP_help_page_courseGeneratorIslandFunctions_text">
 			<Text language="de"><![CDATA[
-- Insel Umfahrung: Schaltet das Umfahren der Insel ein oder aus, sollte eine Insel gefunden werden. Inselumfahrung funktioniert nicht auf selbst erstellten Feldern!
+- Inselumfahrung: Schaltet das Umfahren der Insel ein oder aus, sollte eine Insel gefunden werden. Inselumfahrung funktioniert nicht auf selbst erstellten Feldern!
 - Insel Vorgewende: Die Anzahl an Umrundungen um die Insel kann jetzt separat von den Vorgewende eingestellt werden.
-- Insel Vorgewende Richtung: In welche Richtung die Insel umfahren werden soll, um eventuelle Richtungswechsel zu vermeiden. Das kann je nach Feld und den Rest des Kurses auf Versuche ankommen.
+- Insel Vorgewende-Richtung: In welche Richtung die Insel umfahren werden soll, um eventuelle Richtungswechsel zu vermeiden. Das kann je nach Feld und den Rest des Kurses auf Versuche ankommen.
 ]]></Text>
 			<Text language="en"><![CDATA[
 - Island bypass: Turns on or off the bypass of the island, if an island is found. This does not work for custom fields!
@@ -2109,13 +2109,13 @@ headlands if the island is too close to the field boundary
 		</Translation>
 		<Translation name="CP_help_page_courseGeneratorExpert_text">
 			<Text language="de"><![CDATA[
-Einige Einstellungen sind erst dann sichtbar, wenn in den globalen CP Einstellungen den "Experten Modus" eingeschaltet habt.
-Bevor ihr euch mit den Einstellmöglichkeiten beschäftigt, solltet ihr euch erst mit den normalen Einstellungen vertraut machen, da nicht alle Experten Einstellungen ohne Einschränkung funktionieren werden.
+Einige Einstellungen sind erst dann sichtbar, wenn ihr in den globalen CP-Einstellungen den "Expertenmodus" einschaltet.
+Bevor ihr euch mit den Einstellmöglichkeiten beschäftigt, solltet ihr euch erst mit den normalen Einstellungen vertraut machen, da nicht alle Experteneinstellungen ohne Einschränkung funktionieren werden.
 
 - Fahrzeuge auf dem Feld: Mit dieser Einstellung könnt ihr mehr als ein Fahrzeug das Feld abarbeiten lassen. Mehr Details dazu gibt es unter einem extra Punkt im Hilfemenü.
 - Bahnen tauschen: Ist diese Option aktiviert, wird die Seite des Fahrzeug "vertauscht", dafür sind die Wendemanöver für alle Bahnen gleich breit. Für mehr Details, schau dir dazu die Hilfeseite "Bahnen tauschen" an.
 - Enges Feld: Erzeugt nur an den kürzesten Feldrandseiten ein Vorgewende. Es lässt sich aktuell nicht vermeiden, dass Fahrzeuge an den langen Seiten im Vorgewende das Feld verlassen.
-- Vorgewende Überlappung: Es ist ein Standardwert eingestellt, der immer verwendet wird. Dieser kann aber mit dieser Einstellung angepasst werden. Die Überlappung findet innerhalb des Feldes statt und ragt nicht über den Feldrand hinaus.
+- Vorgewende-Überlappung: Es ist ein Standardwert eingestellt, der immer verwendet wird. Dieser kann aber mit dieser Einstellung angepasst werden. Die Überlappung findet innerhalb des Feldes statt und ragt nicht über den Feldrand hinaus.
 - Feldgrenze: Mit dieser Einstellung lässt sich die Feldgrenze weiter nach innen oder außen verschieben und somit lässt sich der normale Feldrand verschieben.
 - Feldrand für Bahnen: Ein ganz neues Feature, welches nur auf bestimmten Feldern funktioniert. Hat man ein Feld mit einem langen Bogen als Feldgrenze und setzt den Feldmarker in die Nähe dieses Feldrands, so werden die Bahnen in der Mitte den Verlauf des Feldrands annehmen.
 ANMERKUNG: Sollte ein Kurs nicht sauber generiert werden, funktioniert diese Funktion nicht auf dem Feld oder mit dem Feldrand. Es wird dafür auch kein Update geben!
@@ -2238,13 +2238,13 @@ Directories must be empty if you want to delete them.
 		</Translation>
 		<Translation name="CP_help_page_minihud_general_text">
 			<Text language="de"><![CDATA[
-A: Mit gedrückter linker Maustaste auf der Kopfzeile lässt sich das HUD auf eine beliebige Position verschieben. Auf der rechten Seite wird die Version angezeigt und ein X zum schließen mit der Maustaste.
+A: Mit gedrückter linker Maustaste auf der Kopfzeile lässt sich das HUD auf eine beliebige Position verschieben. Auf der rechten Seite wird die Version angezeigt und ein X zum Schließen mit der Maustaste.
 B: Um schnell zu den globalen Einstellungen zu gelangen, kannst du mit der Maus auf das CP-Icon klicken.
 C: Hier wird der Name deines Fahrzeugs angezeigt, klickst du darauf, gelangst du direkt in die CP-Fahrzeugeinstellungen.
-D: Diese Symbole sind dafür da um (1) den aktuell geladenen Kurs zu löschen, (2a) die Anzeige des geladenen Kurs durch zu schalten (2b) wenn kein Kurs geladen ist, einen Rekord Button um einen Feldrandkurs aufzuzeichnen, (3) den Helfer zu starten und zu stoppen.
-E: Dieses Ziel Icon hat verschiedene Funktionen. Je nach dem gewähltem Modus gelangt man direkt auf die Helferkarte mit dem passenden Helfer Job. Dort können dann mögliche fehlende Marker, wie die Feldposition platziert werden. Links davon wird bei der Feldarbeit die verbleibende Zeit vom Kurs angezeigt.
-F: Durch das Klicken auf diesen Text werden die erlaubten Modi je nach Fahrzeug Gespannt durchgeschaltet.
-G: Unterhalb dieser Linie befinden sich Modi abhängige Einstellungen, die in den nachfolgenden Bildern erklärt werden.
+D: Diese Symbole sind dafür da um (1) den aktuell geladenen Kurs zu löschen, (2a) die Anzeige des geladenen Kurs durch zu schalten (2b) wenn kein Kurs geladen ist, ein Aufnahme-Button um einen Feldrandkurs aufzuzeichnen, (3) den Helfer zu starten und zu stoppen.
+E: Dieses Ziel Icon hat verschiedene Funktionen. Je nach dem gewähltem Modus gelangt man direkt auf die Helferkarte mit dem passenden Helferjob. Dort können dann mögliche fehlende Marker, wie die Feldposition platziert werden. Links davon wird bei der Feldarbeit die verbleibende Zeit vom Kurs angezeigt.
+F: Durch das Klicken auf diesen Text werden die erlaubten Modi je nach Fahrzeuggespann durchgeschaltet.
+G: Unterhalb dieser Linie befinden sich modusabhängige Einstellungen, die in den nachfolgenden Bildern erklärt werden.
 ]]></Text>
 			<Text language="en"><![CDATA[
 A: Hold the left mouse button on the headline to drag the HUD to a position you like. On the right side, the installed version is shown and the X will close the HUD with a mouse click.
@@ -2262,14 +2262,14 @@ G: The settings shown under this line depend on the current job. These will be e
 		</Translation>
 		<Translation name="CP_help_page_minihud_fieldwork_text">
 	<Text language="de"><![CDATA[
-A: Mit der Maus lässt sich hier der Startpunkt per Mausklick durchschalten. Ist ein Multitool Kurs geladen, kann auf der rechten Seite die Bahn gewählt werden.
-B: Hier wird der aktuell Name des geladenen Kurses angezeigt. Ein neu generierter Kurs wird mit dem Namen "temporärer Kurs" angezeigt. Die Striche auf der rechten Seite zeigen den aktuellen Fortschritt mit dem aktuellen Wegpunkt zu der gesamten Anzahl an Wegpunkten.
+A: Mit der Maus lässt sich hier der Startpunkt per Mausklick durchschalten. Ist ein Multitoolkurs geladen, kann auf der rechten Seite die Bahn gewählt werden.
+B: Hier wird der aktuelle Name des geladenen Kurses angezeigt. Ein neu generierter Kurs wird mit dem Namen "temporärer Kurs" angezeigt. Die Striche auf der rechten Seite zeigen den aktuellen Fortschritt mit dem aktuellen Wegpunkt zu der gesamten Anzahl an Wegpunkten.
 C: Die Arbeitsbreite kann hier mit einem Mausklick neu berechnet werden, auf der rechten Seite kannst du mit klick auf + und - oder mit dem Mausrad auf der Zahl die Arbeitsbreite verstellen.
-D: Hier kann ein Geräte Versatz zur Mitte des Fahrzeugs eingestellt werden. Dieses wird bei manchen Anbaugeräten benötigt. Das Einstellen läuft genauso wie bei der Arbeitsbreite.
+D: Hier kann ein Geräteversatz zur Mitte des Fahrzeugs eingestellt werden. Dies wird bei manchen Anbaugeräten benötigt. Das Einstellen läuft genauso wie bei der Arbeitsbreite.
 E: Mit einem Klick auf das Symbol auf der rechten Seite wird der Kurs des Fahrzeuges kopiert. Solange ein Kurs in der Zwischenablage ist wird auf der linken Seite der Name des Kurses angezeigt. Durch das neu erschiene Symbol kann der Kurs in ein anderes Fahrzeug geladen werden. Das Papierkorb Symbol löscht den aktuellen Kurs aus der Zwischenablage.
 ]]></Text>
 	<Text language="en"><![CDATA[
-A: Click to select where to the start the work. If a multitool course is loaded, on the right side you can select the lane.
+A: Click to select where to the start the work. If a multitool course is loaded, you can select the lane on the right side.
 B: Displays the name of the loaded course. If you just generated a course, it shows 'temporary course'. On the right side you'll see the current/total waypoints once the job is started.
 C: Clicking on the text will recalculate the working width, or you can set it manually on the right by clicking +/-, or with the mouse wheel over the number.
 D: Some tools need an offset to the side. Courseplay will calculate it automatically when clicking on the text, or you can change it manually just like the working width.
@@ -2283,7 +2283,7 @@ E: Use the symbol on the right side to copy the current course to the clipboard.
 		<Translation name="CP_help_page_minihud_combineunload_text">
 	<Text language="de"><![CDATA[
 A: Da sowohl ein Drescher als auch ein Lader (z.B. ROPA Maus) gleichzeitig auf einem Feld arbeiten könnten, kann hier gewählt werden, welches Gerät abgetankt werden soll.
-B: Hier kannst du bestimmen, ab wie viel Prozent der Abfahrer zum entladen fahren soll. Einstellbar zwischen 40% und 100%. Die Bedienung ist gleich wie bei der Arbeitsbreite vom Feldarbeitsmodus.
+B: Hier kannst du bestimmen, ab wie viel Prozent der Abfahrer zum Entladen fahren soll. Einstellbar zwischen 40% und 100%. Die Bedienung ist gleich wie bei der Arbeitsbreite vom Feldarbeitsmodus.
 C: Es kann vorkommen, dass die Position des Abfahrers nicht perfekt passt. Das kann am Anhänger oder am Abladerohr des Ernters liegen. Manchmal reicht auch ein Gefälle des Feldes aus. Hier kannst du den Abstand zum Ernter einstellen.
 D: Das gleiche lässt sich auch für eine Korrektur nach vorne oder nach hinten zum Ernter einstellen.
 E: Ähnlich wie beim Kopieren eines Kurses, werden hier die Positionen der Marker für den Abfahrer kopiert und können dann auf weiteren Abfahrer übertragen werden.
@@ -2304,7 +2304,7 @@ E: Similar to copying a course, here you can copy the marker positions to anothe
 	<Text language="de"><![CDATA[
 A: Ballen die nach dem letzten automatischen Scan noch auf dem Feld liegen.
 B: Ballen die gesammelt oder bearbeitet werden sollen (z.B. nur gewickelte Ballen sammeln).
-C: Dieser Offset stellt den Versatz ein der zwischen Traktormitte und der mitte der Gabel liegt. Es kann nötig sein, bei einem breiterem Traktor (z.B. Breitreifen) diesen Wert an zu passen.
+C: Versatz zwischen Traktormitte und der Mitte der Ballenaufnahme. Es kann nötig sein, bei einem breiterem Traktor (z.B. Breitreifen) diesen Wert anzupassen.
 ]]></Text>
 	<Text language="en"><![CDATA[
 A: Remaining bales on the field.
@@ -2313,14 +2313,14 @@ C: Offset between the tractor's centerline and the loader arm's centerline. You 
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_minihud_siloloader_title">
-			<Text language="de"><![CDATA[Silo Lader]]></Text>
+			<Text language="de"><![CDATA[Silolader]]></Text>
 			<Text language="en"><![CDATA[Silo loader]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_minihud_siloloader_text">
 	<Text language="de"><![CDATA[
 A: Die aktuelle Füllmenge des gewählten Haufens.
 B: Arbeitsbreite des Laders oder der Schaufel, genauso wie bei der Feldarbeit.
-C: Offset für die Ladehöhe einer Schaufel. Dieser kann genutzt werden falls die Schaufel nicht tief genug gesenkt wird oder sogar zu tief gesenkt wird.
+C: Versatz für die Ladehöhe einer Schaufel. Kann genutzt werden falls die Schaufel nicht tief genug oder zu tief gesenkt wird.
 D: Wie schon beim Abfahrer, kannst du hier die benötigten Marker kopieren und auf ein weiteres Gerät einfügen.
 ]]></Text>
 	<Text language="en"><![CDATA[
@@ -2336,10 +2336,10 @@ D: Just like with the unloader, you can copy the marker positions to another veh
 		</Translation>
 		<Translation name="CP_help_page_minihud_siloworker_text">
 	<Text language="de"><![CDATA[
-A: Wie auch beim Silo Lader, ist die Schildhöhe entscheident. Die kannst du hier anpassen.
+A: Wie auch beim Silolader, ist die Schildhöhe entscheidend. Die kannst du hier anpassen.
 B: Diese Anzeige zeigt dir den aktuellen Fortschritt der Siloverdichtung an. Durch einen Mausklick auf den Text, kannst du umschalten, ob der Abfahrer automatisch bei 100% Siloverdichtung stoppen soll.
 C: Auch hier spielt die Arbeitsbreite eine Rolle und kannst diese hier anpassen.
-D: Hier kannst du entscheiden, ob der Silo Arbeiter im Silo oder auf einer gewählten Parkposition warten soll, wenn sich ein Abfahrer dem Silo nähert.
+D: Hier kannst du entscheiden, ob der Siloarbeiter im Silo oder auf einer gewählten Parkposition warten soll, wenn sich ein Abfahrer dem Silo nähert.
 ]]></Text>
 	<Text language="en"><![CDATA[
 A: Similar to the silo loader, the height of the leveler is critical. You can adjust it here.
@@ -2375,7 +2375,7 @@ Wenn du auf den Namen klickst, kannst du den Kurs löschen, umbenennen, oder mit
 ]]></Text>
 			<Text language="en"><![CDATA[
 The custom field borders will be displayed in the AI menu.
-By clicking on the name you will get the option to either delete, rename or edit it with the Editor.
+By clicking on the name you will get the option to either delete, rename or edit it with the editor.
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_customFieldDraw_text">
@@ -2574,8 +2574,8 @@ Fährst du mit der Maus über den Text, wird der Name des Fahrzeugs angezeigt.
 Klickst du darauf, springst du direkt in das entsprechende Fahrzeug.
 ]]></Text>
 			<Text language="en"><![CDATA[
-This is our Info Panel, it can be moved around with the mouse courser, just like our Mini HUD.
-Beside the name and the version of our mod, it also shows status information about the Courseplay drivers.
+This is our info panel, it can be moved around with the mouse cursor, just like our mini HUD.
+Besides the name and the version of our mod, it also shows status information about the Courseplay drivers.
 While hovering the status message, the name of the vehicle will be displayed.
 By clicking on it, you can jump directly into the vehicle.
 ]]></Text>
@@ -2587,7 +2587,7 @@ Die Informationen sind:
 - Wird blockiert
 - Sollte aufgetankt werden
 - Muss aufgetankt werden
-- Sollte repariert werden
+- Muss repariert werden
 - Muss aufgefüllt werden
 - Muss entladen werden
 - Arbeit beendet
@@ -2595,6 +2595,7 @@ Die Informationen sind:
 - ÜLW entladen
 - Kein Geld mehr
 - Wartet auf besseres Wetter
+- Warte solange Schnee liegt
 - Warte auf Abfahrer
 - Hat den Kurs verlassen, gestoppt
 - Ballentyp nicht gefunden
@@ -2602,9 +2603,13 @@ Die Informationen sind:
 - Abladen zum Boden nicht möglich
 - Schneidwerk nicht unterstützt
 - Schneidwerk ankuppeln deaktiviert
+- Falsche Jahreszeit
+- Falsche Frucht für Mission ausgewählt
+- Paletten sind voll
+- Keine Paletten
 ]]></Text>
 			<Text language="en"><![CDATA[
-The Informations are the following:
+The status messages are:
 - Helper is stuck
 - Blocked by an object
 - Should be refueled
@@ -2617,6 +2622,7 @@ The Informations are the following:
 - Driving to trailer
 - Ouf of money
 - Waiting for rain to finish
+- Waits for snow to disappear
 - Waiting on unloader
 - Left the course, stopped
 - Wrong bale type
@@ -2624,6 +2630,10 @@ The Informations are the following:
 - Tipping to ground not possible
 - Cutter not supported
 - Cutter attaching deactivated
+- Wrong season for fruit
+- Wrong fruit for mission selected
+- Pallets are full
+- No pallets
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_vineWork_title">
@@ -2928,12 +2938,12 @@ Keep in mind that the automatic unloading with CP goes in the same direction as 
 		</Translation>
 		<Translation name="CP_help_page_siloLoaderBasic_text">
 			<Text language="de"><![CDATA[
-Als erstes muss auf der Helferkarte der Lade-Marker gesetzt werden.
-Dieses erkennt vorhandende Haufen oder Silos und markiert den ausgewählten.
+Als erstes muss auf der Helferkarte der Lademarker gesetzt werden.
+Dieser erkennt vorhandende Haufen oder Silos und markiert den ausgewählten.
 Anschließend kann der Helfer gestartet werden.
 ]]></Text>
 			<Text language="en"><![CDATA[
-To start the loading-marker on the AI menu needs to be set.
+To start, the loading marker on the AI menu needs to be set.
 The marker detects heaps or silos and highlights them on the map.
 Now it's possible to start the helper.
 ]]></Text>
@@ -2945,7 +2955,7 @@ Now it's possible to start the helper.
 		
 		<Translation name="CP_help_page_shovelLoaderGeneral_text">
 			<Text language="de"><![CDATA[
-Mit einem Radlader oder Traktor mit Frontlader und Schaufel lassen sich Haufen vom Boden oder aus einem Bunker Silo automatisch aufnehmen und in einen Anhänger oder Lager abladen.
+Mit einem Radlader oder Traktor mit Frontlader und Schaufel lassen sich Haufen vom Boden oder aus einem Bunkersilo automatisch aufnehmen und in einen Anhänger oder Lager abladen.
 Die Schaufel wird dabei automatisch an die richtigen Positionen gefahren.
 Ist der Modus im HUD nicht direkt zu sehen, schalte die "Startposition" durch bis der Modus erscheint.
 
@@ -2957,7 +2967,7 @@ Der Versatz der Schaufelhöhe dient dazu, die Höhe über dem Boden anzupassen. 
 oder damit der Radlader nicht an Kanten fest hängt. Wird der Wert verändert, fährt die Schaufel automatisch auf die Position und die eingestellte Höhe.
 Ein Klick auf den Text, setzt den Wert auf 0 zurück. Der Wert lässt sich zwischen +1 bis -1 anpassen.
 
-Schaufeln mit Gebiss öffnen dieses automatisch beim Laden und Abladen und schließen dieses zum Transport.
+Schaufeln mit Gebiss öffnen dieses automatisch beim Laden und Abladen und schließen es zum Transport.
 Die Schaufel zum Zerkleinern von Zuckerrüben wird mit allen Funktionen unterstützt.
 ]]></Text>
 			<Text language="en"><![CDATA[
@@ -2965,19 +2975,19 @@ This mode enables wheel loader and tractors with a front loader.
 With a shovel attached a heap can be picked up from the ground or loading from a bunker silo can be accomplished.
 The picked up fill level can be unloaded automatically into a nearby trailer or a selected unloading station like a BGA.
 The shovel will automatically be moved to the correct positions for loading, unloading and so on.
-In case the mode is not directly visable on the hud, you can toggle the "start position" until the shovel mode appears.
+In case the mode is not directly visable on the HUD, you can toggle the "start position" until the shovel mode appears.
 
-The target icon on the hud can be used to open the AI map to select the loading and the unloading targets.
-The hud also shows the leftover fill level of the heap or silo, while the helper is working.
+The target icon on the HUD can be used to open the AI map to select the loading and the unloading targets.
+The HUD also shows the leftover fill level of the heap or silo, while the helper is working.
 If the loading target is a bunker silo, then the work width might need to be adjusted to avoid hitting the side walls of the silo.
 
 The hight offset setting is used to adjust the hight above the ground, as not all shovel can calculated correctly. 
 This should be checked, if the shovel is to low for loading and the driver can't turn anymore or the shovel is to high and fill level is missed to the ground.
 If the value gets changed, the shovel will automatically move to the loading position to show the impact of the offset.
-To reset the offset you need to click on the settings text in the hud. The value can be adjusted from +1 to -1 in 0.1 setps.
+To reset the offset you need to click on the settings text in the HUD. The value can be adjusted from +1 to -1 in 0.1 setps.
 
 Shovels with a silage grab will open and close automatically for loading and unloading.
-The shovel to shred sugar beets is completly functional as well.
+The shovel to shred sugar beets is completely functional as well.
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_shovelLoaderBasic_text">
@@ -2991,7 +3001,7 @@ Der Helfer fährt automatisch zu stehenden Anhängern in diesem Bereich. Die Ric
 Möchtest du in eine Abladestation entladen, muss zunächst das Ziel umgestellt werden und anschließend der Marker auf den Trigger gesetzt werden.
 ]]></Text>
 			<Text language="en"><![CDATA[
-To start a wheel loader helper, you need to set the load and unload positions by clicking the target icon on the hud.
+To start a wheel loader helper, you need to set the load and unload positions by clicking the target icon on the HUD.
 The loading position works the same like the one from the loader mode. A blue square will be created around the heap.
 
 The unloading position depends if you want to unload into a trailer or into an unloading station.
@@ -3032,12 +3042,12 @@ TPS extension
 	</Category>
 	<Category name="Input bindings">	
 		<Translation name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS">
-			<Text language="de"><![CDATA[CP: Nächsten Debugkanal auswählen]]></Text>
-			<Text language="en"><![CDATA[CP: Select next debug channel]]></Text>
-		</Translation>
-		<Translation name="input_CP_DBG_CHANNEL_SELECT_NEXT">
 			<Text language="de"><![CDATA[CP: Vorherigen Debugkanal auswählen]]></Text>
 			<Text language="en"><![CDATA[CP: Select previous debug channel]]></Text>
+		</Translation>
+		<Translation name="input_CP_DBG_CHANNEL_SELECT_NEXT">
+			<Text language="de"><![CDATA[CP: Nächsten Debugkanal auswählen]]></Text>
+			<Text language="en"><![CDATA[CP: Select next debug channel]]></Text>
 		</Translation>
 		<Translation name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT">
 			<Text language="de"><![CDATA[CP: Aktuellen Debugkanal ein-/ausschalten]]></Text>
@@ -3056,7 +3066,7 @@ TPS extension
 			<Text language="en"><![CDATA[CP: Start/stop driver]]></Text>
 		</Translation>
 		<Translation name="input_CP_CHANGE_SELECTED_JOB">
-			<Text language="de"><![CDATA[CP: Aktueller ausgewählten Job ändern]]></Text>
+			<Text language="de"><![CDATA[CP: Aktuell ausgewählten Job ändern]]></Text>
 			<Text language="en"><![CDATA[CP: Change current selected job]]></Text>
 		</Translation>
 		<Translation name="input_CP_CHANGE_STARTING_POINT">
