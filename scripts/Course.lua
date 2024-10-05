@@ -194,8 +194,8 @@ function Course:enrichWaypointData(startIx)
     end
     for i = startIx or 1, #self.waypoints - 1 do
         self.waypoints[i].dToHere = self.length
-        local cx, _, cz = self:getWaypointPosition(i)
-        local nx, _, nz = self:getWaypointPosition(i + 1)
+        local cx, _, cz = self.waypoints[i]:getPosition()
+        local nx, _, nz = self.waypoints[i + 1]:getPosition()
         local dToNext = MathUtil.getPointPointDistance(cx, cz, nx, nz)
         self.waypoints[i].dToNext = dToNext
         self.length = self.length + dToNext
@@ -356,6 +356,10 @@ function Course:isTurnStartAtIx(ix)
             (self.waypoints[ix + 1] and self.waypoints[ix + 1]:isHeadlandTurn())
 end
 
+function Course:isHeadlandTurnAtIx(ix)
+    return ix <= #self.waypoints and self.waypoints[ix]:isHeadlandTurn()
+end
+
 function Course:isTurnEndAtIx(ix)
     return (self.waypoints[ix]:isRowStart() and not self:shouldUsePathfinderToThisWaypoint(ix)) or
             self.waypoints[ix]:isHeadlandTurn()
@@ -497,10 +501,11 @@ end
 ---@param ix number waypoint index
 ---@return number, number, number x, y, z
 function Course:getWaypointPosition(ix)
-    if self:isTurnStartAtIx(ix) then
+    if self:isTurnStartAtIx(ix) and not self:isHeadlandTurnAtIx(ix) then
         -- turn start waypoints point to the turn end wp, for example at the row end they point 90 degrees to the side
         -- from the row direction. This is a problem when there's an offset so use the direction of the previous wp
-        -- when calculating the offset for a turn start wp.
+        -- when calculating the offset for a turn start wp, except for headlands turns where we actually drive the
+        -- section between turn start and turn end.
         return self:getOffsetPositionWithOtherWaypointDirection(ix, ix - 1)
     else
         return self.waypoints[ix]:getOffsetPosition(self.offsetX + self.temporaryOffsetX:get(), self.offsetZ + self.temporaryOffsetZ:get())
