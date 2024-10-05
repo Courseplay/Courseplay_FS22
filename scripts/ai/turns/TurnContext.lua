@@ -243,6 +243,7 @@ function TurnContext:isHeadlandCorner()
 	-- both the turn start and end waypoints
     -- a turn is a headland turn only when there is minimal direction change at the turn start and the total direction
     -- change is less than 150 degrees
+    -- TODO: consider using course:isHeadlandTurnAtIx() instead as with the current generator, we know the turn type
 	return math.abs(CpMathUtil.getDeltaAngle(math.rad(self.turnStartWp.angle), math.rad(self.beforeTurnStartWp.angle))) < (math.pi / 6) and
             math.abs( self.directionChangeDeg ) < 150
 end
