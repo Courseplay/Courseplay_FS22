@@ -212,6 +212,10 @@
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Расстояние между техникой при работе нескольких орудий. Значение: 40 - 400"/>
     <text name="CP_vehicle_setting_debugActive_title" text="Отладка техники"/>
     <text name="CP_vehicle_setting_debugActive_tooltip" text="Вкл/выкл отладку текущей техники."/>
+    <text name="CP_vehicle_setting_refillOnTheField_title" text="Refill tool"/>
+    <text name="CP_vehicle_setting_refillOnTheField_tooltip" text="Refill tool on the field"/>
+    <text name="CP_vehicle_setting_refillOnTheField_waiting" text="Waiting"/>
+    <text name="CP_vehicle_setting_refillOnTheField_active" text="Active"/>
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->

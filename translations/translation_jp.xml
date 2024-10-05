@@ -212,6 +212,10 @@
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="隊列走行及び複数同時作業時の車間距離（40～400m）"/>
     <text name="CP_vehicle_setting_debugActive_title" text="車両デバッグ"/>
     <text name="CP_vehicle_setting_debugActive_tooltip" text="車両のデバッグを有効/無効にします"/>
+    <text name="CP_vehicle_setting_refillOnTheField_title" text="Refill tool"/>
+    <text name="CP_vehicle_setting_refillOnTheField_tooltip" text="Refill tool on the field"/>
+    <text name="CP_vehicle_setting_refillOnTheField_waiting" text="Waiting"/>
+    <text name="CP_vehicle_setting_refillOnTheField_active" text="Active"/>
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->

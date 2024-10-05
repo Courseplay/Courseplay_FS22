@@ -212,6 +212,10 @@
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Avståndet mellan fordon. Värde: 20 - 200"/>
     <text name="CP_vehicle_setting_debugActive_title" text="Fordons debug"/>
     <text name="CP_vehicle_setting_debugActive_tooltip" text="Akrivera/inaktivera debug för detta fordon."/>
+    <text name="CP_vehicle_setting_refillOnTheField_title" text="Refill tool"/>
+    <text name="CP_vehicle_setting_refillOnTheField_tooltip" text="Refill tool on the field"/>
+    <text name="CP_vehicle_setting_refillOnTheField_waiting" text="Waiting"/>
+    <text name="CP_vehicle_setting_refillOnTheField_active" text="Active"/>
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->
