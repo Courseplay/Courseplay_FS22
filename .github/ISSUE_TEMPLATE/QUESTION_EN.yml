@@ -8,7 +8,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Please your this template to ask your question!
+        Please use this template to ask your question!
         Please make sure to read our [Wiki Page](https://github.com/Courseplay/Courseplay_FS22/wiki) before creating a new issue!
 
   - type: dropdown
@@ -64,6 +64,6 @@ body:
     attributes:
       label: Screenshots
       description: Use drag and drop into the textbox to upload the screenshots.
-      placeholder: If you have any helpful screenshots to discribe your situation, please add them here.
+      placeholder: If you have any helpful screenshots to describe your situation, please add them here.
     validations:
       required: true

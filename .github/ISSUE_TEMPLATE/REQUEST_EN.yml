@@ -40,17 +40,17 @@ body:
     id: what-does
     attributes:
       label: What can be done with your Idea?
-      description: Beschreibe bitte so gut es geht was für ein Problem deine Idee löst oder was sie verbessert.
-      placeholder: Discribe as good as possible.
+      description: Please describe as good as possible, what problem your idea solves.
+      placeholder: Describe as good as possible.
     validations:
       required: true
 
   - type: textarea
     id: how-to
     attributes:
-      label: How could you Imagine, how your Idea could look like in CP.
+      label: How could you imagine, how your idea could look like in CP.
       description: Describe the solution you'd like.
-      placeholder: Discribe as good as possible.
+      placeholder: Describe as good as possible.
     validations:
       required: true
   
@@ -59,7 +59,7 @@ body:
     attributes:
       label: Is there an alternative?
       description: Is there an alternatives you've considered?
-      placeholder: Discribe as good as possible.
+      placeholder: Describe as good as possible.
     validations:
       required: true
 

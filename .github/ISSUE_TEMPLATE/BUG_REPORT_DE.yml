@@ -8,7 +8,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Danke, dass du dir Zeit nimmst diesen Bugreport auszufüllen.
+        Danke, dass du dir Zeit nimmst, diesen Bugreport auszufüllen.
         Lese dir bitte zuerst unsere [Wiki Seite](https://github.com/Courseplay/Courseplay_FS22/wiki) durch, bevor du ein neues Issue erstellst!
 
   - type: dropdown
@@ -71,7 +71,7 @@ body:
     id: what-happened
     attributes:
       label: Was ist passiert?
-      description: Bitte beschreibe so gut es geht was passiert ist.
+      description: Bitte beschreibe so gut es geht, was passiert ist.
       placeholder: Erzähle uns, was du gesehen hast!
     validations:
       required: true
@@ -80,7 +80,7 @@ body:
     id: how-to
     attributes:
       label: Wie können wir diesen Fehler nachstellen?
-      description: Beschreibe bitte, Wenn möglich, wie wir den Fehler reproduzieren können.
+      description: Beschreibe bitte, wenn möglich, wie wir den Fehler reproduzieren können.
       placeholder: Beschreibe es so gut es geht.
     validations:
       required: true
@@ -98,7 +98,7 @@ body:
     id: logs
     attributes:
       label: Bitte hänge deine log.txt an!
-      description: Ziehe die Datei in die Textbox um die log.txt hoch zu laden oder verwende [Gist](https://gist.github.com/) oder [Pastebin](http://pastebin.com/).
+      description: Ziehe die Datei in die Textfeld, um die log.txt hoch zu laden oder verwende [Gist](https://gist.github.com/) oder [Pastebin](http://pastebin.com/).
       placeholder: Bitte füge deine log.txt von file path ("C:\\Users\\<USER_NAME>\\Documents\\My Games\\FarmingSimulator2022\\log.txt") an.
     validations:
       required: true
@@ -107,7 +107,7 @@ body:
     id: screenshots
     attributes:
       label: Screenshots
-      description: Ziehe deine Screenshots in das Textfeld um diese hoch zu laden.
-      placeholder: Wenn du Screenshots hast die helfen dein Problem zu beschreiben, füge sie hier ein.
+      description: Ziehe deine Screenshots in das Textfeld, um diese hoch zu laden.
+      placeholder: Wenn du Screenshots hast, die helfen dein Problem zu beschreiben, füge sie hier ein.
     validations:
       required: true

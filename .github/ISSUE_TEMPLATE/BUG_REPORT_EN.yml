@@ -71,7 +71,7 @@ body:
     id: what-happened
     attributes:
       label: What did happened?
-      description: Please discribe what happend.
+      description: Please describe what happended.
       placeholder: Tell us what you see!
     validations:
       required: true
@@ -80,8 +80,8 @@ body:
     id: how-to
     attributes:
       label: How can we reproduce this?
-      description: If you can, please discribe how we can reproduce this to check closeer what is happening.
-      placeholder: Discribe as good as possible.
+      description: If you can, please describe how we can reproduce this to check closeer what is happening.
+      placeholder: Describe as good as possible.
     validations:
       required: true
   
@@ -90,7 +90,7 @@ body:
     attributes:
       label: What do you expect to happen?
       description: What expectation did you have when you tried that function and the bug occurred.
-      placeholder: Discribe as good as possible.
+      placeholder: Describe as good as possible.
     validations:
       required: true
 
@@ -108,6 +108,6 @@ body:
     attributes:
       label: Screenshots
       description: Use drag and drop into the textbox to upload the screenshots.
-      placeholder: If you have any helpful screenshots to discribe your situation, please add them here.
+      placeholder: If you have any helpful screenshots to describe your situation, please add them here.
     validations:
       required: true

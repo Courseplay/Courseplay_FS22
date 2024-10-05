@@ -8,7 +8,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Bitte benutze diese Vorlage um deine Frage zu stellen!
+        Bitte benutze diese Vorlage, um deine Frage zu stellen!
         Lese dir bitte zuerst unsere [Wiki Seite](https://github.com/Courseplay/Courseplay_FS22/wiki) durch, bevor du ein neues Issue erstellst!
 
   - type: dropdown
@@ -64,7 +64,7 @@ body:
     id: screenshots
     attributes:
       label: Screenshots
-      description: Ziehe deine Screenshots in das Textfeld um diese hoch zu laden.
-      placeholder: Wenn du Screenshots hast die helfen dein Frage zu beschreiben, füge sie hier ein.
+      description: Ziehe deine Screenshots in das Textfeld, um diese hoch zu laden.
+      placeholder: Wenn du Screenshots hast, die helfen dein Frage zu beschreiben, füge sie hier ein.
     validations:
       required: false
