@@ -48,7 +48,7 @@ body:
   - type: textarea
     id: how-to
     attributes:
-      label: How could you imagine, how your idea could look like in CP.
+      label: If applicable, how would the user interface look like for this enhancement?
       description: Describe the solution you'd like.
       placeholder: Describe as good as possible.
     validations:
