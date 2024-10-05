@@ -15,7 +15,7 @@ body:
     id: mod-version
     attributes:
       label: Version
-      description: What is the current CP Version, that you use?
+      description: Which CoursePlay version are you using?
       options:
         - 7.5.0.0
         - 7.5.0.1
@@ -28,7 +28,7 @@ body:
     id: spmp
     attributes:
       label: SP/MP
-      description: Is your Idea for SP oder MP?
+      description: Is your idea for SP oder MP?
       options:
         - SP (Singleplayer)
         - MP (Multiplayer)
@@ -39,8 +39,8 @@ body:
   - type: textarea
     id: what-does
     attributes:
-      label: What can be done with your Idea?
-      description: Please describe as good as possible, what problem your idea solves.
+      label: What can be done with your idea?
+      description: Please describe as good as possible the problem your idea solves.
       placeholder: Describe as good as possible.
     validations:
       required: true
@@ -58,7 +58,7 @@ body:
     id: alternative
     attributes:
       label: Is there an alternative?
-      description: Is there an alternatives you've considered?
+      description: Are there any alternatives you've considered?
       placeholder: Describe as good as possible.
     validations:
       required: true
@@ -68,6 +68,6 @@ body:
     attributes:
       label: Screenshots
       description: Use drag and drop into the textbox to upload the screenshots.
-      placeholder: If you have any helpful screenshots to discribe your Idea, please add them here.
+      placeholder: If you have any helpful screenshots to describe your idea, please add them here.
     validations:
       required: true

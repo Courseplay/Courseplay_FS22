@@ -15,7 +15,7 @@ body:
     id: mod-version
     attributes:
       label: Version
-      description: Select the version you have active when the bug occurs.
+      description: Which CoursePlay version are you using?
       options:
         - 7.5.0.0
         - 7.5.0.1
@@ -64,6 +64,6 @@ body:
     attributes:
       label: Screenshots
       description: Use drag and drop into the textbox to upload the screenshots.
-      placeholder: If you have any helpful screenshots to describe your situation, please add them here.
+      placeholder: If you have any helpful screenshots to describe the situation, please add them here.
     validations:
       required: true
