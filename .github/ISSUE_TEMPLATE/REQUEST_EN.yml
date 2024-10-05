@@ -1,0 +1,73 @@
+name: Feature Idea/Request [EN]
+description: A feature request or Idea.
+labels:
+  - Suggestion
+assignees:
+  - Tensuko
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this report!
+        Please make sure to read our [Wiki Page](https://github.com/Courseplay/Courseplay_FS22/wiki) before creating a new issue!
+
+  - type: dropdown
+    id: mod-version
+    attributes:
+      label: Version
+      description: What is the current CP Version, that you use?
+      options:
+        - 7.5.0.0
+        - 7.5.0.1
+        - 8.0.0.0
+      default: 0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: spmp
+    attributes:
+      label: SP/MP
+      description: Is your Idea for SP oder MP?
+      options:
+        - SP (Singleplayer)
+        - MP (Multiplayer)
+      default: 0
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-does
+    attributes:
+      label: What can be done with your Idea?
+      description: Beschreibe bitte so gut es geht was für ein Problem deine Idee löst oder was sie verbessert.
+      placeholder: Discribe as good as possible.
+    validations:
+      required: true
+
+  - type: textarea
+    id: how-to
+    attributes:
+      label: How could you Imagine, how your Idea could look like in CP.
+      description: Describe the solution you'd like.
+      placeholder: Discribe as good as possible.
+    validations:
+      required: true
+  
+  - type: textarea
+    id: alternative
+    attributes:
+      label: Is there an alternative?
+      description: Is there an alternatives you've considered?
+      placeholder: Discribe as good as possible.
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Use drag and drop into the textbox to upload the screenshots.
+      placeholder: If you have any helpful screenshots to discribe your Idea, please add them here.
+    validations:
+      required: true

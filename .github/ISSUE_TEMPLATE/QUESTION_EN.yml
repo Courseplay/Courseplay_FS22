@@ -1,0 +1,69 @@
+name: Question [EN]
+description: You got a question? Just ask!
+labels:
+  - question
+assignees:
+  - Tensuko
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please your this template to ask your question!
+        Please make sure to read our [Wiki Page](https://github.com/Courseplay/Courseplay_FS22/wiki) before creating a new issue!
+
+  - type: dropdown
+    id: mod-version
+    attributes:
+      label: Version
+      description: Select the version you have active when the bug occurs.
+      options:
+        - 7.5.0.0
+        - 7.5.0.1
+        - 8.0.0.0
+      default: 0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: spmp
+    attributes:
+      label: SP/MP
+      description: Did the bug happen in SP or MP?
+      options:
+        - SP (Singleplayer)
+        - MP (Multiplayer)
+      default: 0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: about
+    attributes:
+      label: What is your question about?
+      description: Select a category.
+      options:
+        - Course creation
+        - Vehicle settings
+        - Global CP settings
+        - more later
+      default: 0
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: What is your question?
+      description: Question
+      placeholder: Question
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Use drag and drop into the textbox to upload the screenshots.
+      placeholder: If you have any helpful screenshots to discribe your situation, please add them here.
+    validations:
+      required: true
