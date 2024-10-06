@@ -18,8 +18,11 @@ function Center:init(context, boundary, headland, startLocation, bigIslands)
     if headland == nil then
         -- if there are no headlands, we generate a virtual one, from the field boundary
         -- so using this later is equivalent of having an actual headland
+        -- using the center row spacing as the width of the headland, since we want to
+        -- cover the entire field with the center rows and the headland width may be the single
+        -- working width with multi vehicles
         local virtualHeadland = CourseGenerator.FieldworkCourseHelper.createVirtualHeadland(boundary, self.context.headlandClockwise,
-                self.context:getHeadlandWorkingWidth())
+                self.context:getCenterRowSpacing())
         if self.context.sharpenCorners then
             virtualHeadland:sharpenCorners(self.context.turningRadius)
         end
