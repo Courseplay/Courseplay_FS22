@@ -825,51 +825,74 @@ end
 
 function AIDriveStrategyFieldWorkCourse:prepareFilling()
     --- Gather the correct fill unit to open the cover and so on..
+    self:debug("Preparing for refilling ...")
     self.fillingTimer:set(false, 30 * 1000)
-    local validSowingMachines, validSprayers, validTreePlanters = {}, {}, {}
-    local fillUnitsData = {}
+    local fillUnitsData, implements = {}, {}
     if not g_currentMission.missionInfo.helperBuySeeds then
         local sowingMachines, found = AIUtil.getAllChildVehiclesWithSpecialization(self.vehicle, SowingMachine)
         if found then 
             for _, s in pairs(sowingMachines) do 
+                self:debug("Found a sowing machine that needs to be filled: %s", CpUtil.getName(s))
                 table.insert(fillUnitsData, 
                     {implement = s, fillUnitIndex = s.spec_sowingMachine.fillUnitIndex})
+                table.insert(implements, s)
             end
         end
-        validSowingMachines = sowingMachines
     end
     local sprayers, found = AIUtil.getAllChildVehiclesWithSpecialization(self.vehicle, Sprayer)
     if found then 
         for _, s in pairs(sprayers) do 
-            if not s:getIsSprayerExternallyFilled() then
-                table.insert(validSprayers, s)
+            local spec = s.spec_sprayer
+            local skipSprayer = false
+		    if spec.isSlurryTanker and g_currentMission.missionInfo.helperSlurrySource > 1 or 
+                spec.isManureSpreader and g_currentMission.missionInfo.helperManureSource > 1 or 
+                spec.isFertilizerSprayer and g_currentMission.missionInfo.helperBuyFertilizer then 
+                
+                skipSprayer = true
+            end
+            if not skipSprayer then
+                self:debug("Found a sprayer that needs to be filled: %s", CpUtil.getName(s))
+                table.insert(implements, s)
                 table.insert(fillUnitsData, 
-                {implement = s, fillUnitIndex = s.spec_sprayer.fillUnitIndex})
+                    {implement = s, fillUnitIndex = s.spec_sprayer.fillUnitIndex})
+                local foundAdditionalVehicles = {}
+                for _, supportedSprayType in ipairs(spec.supportedSprayTypes) do
+                    for _, src in ipairs(spec.fillTypeSources[supportedSprayType]) do
+                        self:debug("Found an additional sprayer tank that needs to be filled: %s", CpUtil.getName(s))
+                        if not foundAdditionalVehicles[src.vehicle] then
+                            table.insert(implements, src.vehicle)
+                            table.insert(fillUnitsData, 
+                                {implement = src.vehicle, fillUnitIndex = src.fillUnitIndex})
+                        end
+                        foundAdditionalVehicles[src.vehicle] = true
+                    end
+                end
             end
         end
-        validSprayers = sprayers
     end
     if not g_currentMission.missionInfo.helperBuySeeds then
         local treePlanters, found = AIUtil.getAllChildVehiclesWithSpecialization(self.vehicle, TreePlanter)
         if found then 
             for _, s in pairs(treePlanters) do 
+                self:debug("Found a tree planter that needs to be filled: %s", CpUtil.getName(s))
                 table.insert(fillUnitsData, 
-                {implement = s, fillUnitIndex = s.spec_treePlanter.fillUnitIndex})
+                    {implement = s, fillUnitIndex = s.spec_treePlanter.fillUnitIndex})
+                table.insert(implements, s)
             end
         end
-        validTreePlanters = treePlanters
     end
-
-    local implements = {unpack(validSowingMachines), unpack(validSprayers), unpack(validTreePlanters)}
 
     self.fillingData = {
         implements = implements,
         fillUnitsData = fillUnitsData,
-        lastFillLevels = {}
+        lastFillLevels = {},
+        hasChanged = false
     }
     for _, data in ipairs(self.fillingData.fillUnitsData) do 
         if data.implement:getFillUnitFillLevel(data.fillUnitIndex) <= 0 then 
-            data.implement:aiPrepareLoading(data.fillUnitIndex)
+            if data.implement.aiPrepareLoading ~= nil then
+                data.implement:aiPrepareLoading(data.fillUnitIndex)
+            end
         end
     end
 
@@ -882,12 +905,15 @@ function AIDriveStrategyFieldWorkCourse:updateFilling()
     end
     
     local isFilling = false
-    for _, implement in ipairs(self.fillingData.implements) do 
+    for _, implement in pairs(self.fillingData.implements) do 
         local spec = implement.spec_fillUnit
         local activatable = spec.fillTrigger.activatable
         if not spec.fillTrigger.isFilling then 
             if activatable:getIsActivatable(true) then 
                 activatable:run()
+                self:debug("Starting to load implement: %s", CpUtil.getName(implement))
+            else
+                self:debugSparse("Failed to load implement: %s", CpUtil.getName(implement))
             end
         else 
             isFilling = true
@@ -908,17 +934,29 @@ function AIDriveStrategyFieldWorkCourse:updateFilling()
     end
     if isFilling then 
         self.fillingTimer:set(false, 10 * 1000)
+        self.fillingData.hasChanged = true
     end
 
-    return self.fillingTimer:get()
+    return self.fillingTimer:get() and self.fillingData.hasChanged
 end
 
-function AIDriveStrategyFieldWorkCourse:finishedFilling()
+function AIDriveStrategyFieldWorkCourse:finishedFilling(forceStop)
+    self:debug("Finished the refilling.")
     if self.fillingData == nil then 
         return
     end
     for _, data in ipairs(self.fillingData.fillUnitsData) do 
-        data.implement:aiFinishLoading()
+        if data.implement.aiFinishLoading ~= nil then
+            data.implement:aiFinishLoading()
+        end
+    end
+    if forceStop then 
+        for _, implement in pairs(self.fillingData.implements) do 
+            local spec = implement.spec_fillUnit
+            if spec.fillTrigger.isFilling then 
+                implement:setFillUnitIsFilling(false)
+            end
+        end
     end
 end
 

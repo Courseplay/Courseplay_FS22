@@ -13,14 +13,16 @@ function CpAITaskFieldWork:setStartPosition(startPosition)
 end
 
 function CpAITaskFieldWork:setWaitingForRefuelActive()
-	self.waitingForRefuelActive = true
-	local cpSpec = self.vehicle.spec_cpAIFieldWorker
-	cpSpec.driveStrategy:prepareFilling()
+	if not self.waitingForRefuelActive then
+		self.waitingForRefuelActive = true
+		local cpSpec = self.vehicle.spec_cpAIFieldWorker
+		cpSpec.driveStrategy:prepareFilling()
+	end
 end
 
 function CpAITaskFieldWork:update(dt)
 	if self.waitingForRefuelActive then 
-		self.vehicle:cpHold(150, true)
+		self.vehicle:cpHold(1500, true)
 		local cpSpec = self.vehicle.spec_cpAIFieldWorker
 		self.vehicle:setCpInfoTextActive(InfoTextManager.NEEDS_FILLING)
 		if cpSpec.driveStrategy:updateFilling() then 
@@ -79,6 +81,10 @@ function CpAITaskFieldWork:start()
 end
 
 function CpAITaskFieldWork:stop(wasJobStopped)
+	if self.waitingForRefuelActive then 
+		local cpSpec = self.vehicle.spec_cpAIFieldWorker
+		cpSpec.driveStrategy:finishedFilling(true)
+	end
 	if self.isServer then 
 		self:debug("Field work task stopped.")
 		self.vehicle:stopFieldWorker()

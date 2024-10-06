@@ -313,9 +313,7 @@ end
 --- TODO: this might by only called on the client, so 
 --- server depended code has to be moved to stopJob or similar code.
 function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
-    if message then
-        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "stop message: %s", message:getMessage())
-    else
+    if message == nil then
         CpUtil.infoVehicle(self, "no stop message was given.")
         return superFunc(self, message, ...)
     end
@@ -346,6 +344,7 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
             return
         end
     end
+    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "stop message: %s", message:getMessage())
     superFunc(self, message,...)
 end
 
