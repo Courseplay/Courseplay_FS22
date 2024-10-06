@@ -18,8 +18,7 @@ body:
       description: Which CoursePlay version are you using?
       options:
         - 7.5.0.0
-        - 7.5.0.1
-        - 8.0.0.0
+        - 7.4.2.3
       default: 0
     validations:
       required: true
