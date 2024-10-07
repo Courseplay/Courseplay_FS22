@@ -692,7 +692,7 @@
 			<Text language="en"><![CDATA[Refill tool]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_refillOnTheField_tooltip">
-			<Text language="de"><![CDATA[Gerät wartet auf dem Feld zum auffüllen.]]></Text>
+			<Text language="de"><![CDATA[Gerät wartet auf dem Feld, um aufgefüllt zu werden.]]></Text>
 			<Text language="en"><![CDATA[Tool waits on the field to be refilled.]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_refillOnTheField_waiting">
