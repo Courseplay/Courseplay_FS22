@@ -345,7 +345,6 @@ function Center:_calculateRowDistribution(fieldWidth, overlapLast)
     -- making the field width 1 cm less to avoid generating the last row exactly on the headland if
     -- the field width is an exact multiple of the working width
     local nRows = math.floor((fieldWidth - headlandWorkingWidth - 0.01) / centerWorkingWidth) + 1
-    print('nRows', nRows, self.mayOverlapHeadland)
     if nRows == 0 then
         -- only one row fits between the headlands
         if overlapLast then
