@@ -37,6 +37,7 @@ jobs:
           cd scripts/courseGenerator/test
           lua BlockSequencerTest.lua
           lua CacheMapTest.lua
+          lua CenterTest.lua
           lua FieldTest.lua
           lua FieldworkCourseTest.lua
           lua FieldworkCourseMultiVehicleTest.lua
