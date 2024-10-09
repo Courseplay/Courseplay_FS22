@@ -208,7 +208,7 @@
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="If active and silage additive is emtpy, the driver will stop."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Symmetric lane change"/>
     <text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="Symmetric lane change"/>
-    <text name="CP_vehicle_setting_convoyDistance_title" text="Convoy Distance"/>
+    <text name="CP_vehicle_setting_convoyDistance_title" text="Convoy distance"/>
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Distance between vehicles. Value: 40 - 400"/>
     <text name="CP_vehicle_setting_debugActive_title" text="Vehicle debug"/>
     <text name="CP_vehicle_setting_debugActive_tooltip" text="Enables/disables debug for this vehicle."/>
@@ -220,7 +220,7 @@
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
     <text name="CP_vehicle_setting_levelerHeightOffset_title" text="Shield height offset"/>
     <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Offset of the shield from the ground. Value: 0 - 1"/>
-    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Shovel hight offset"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Shovel height offset"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Offset for the shovel loading position. Value: -1 - 1"/>
     <!---->
     <!--Vehicle settings speed-->
@@ -248,7 +248,7 @@
     <!--Vehicle settings combine-->
     <!---->
     <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatic cutter attach"/>
-    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Allows automatic attachment of a cutter, which needs to be attach as a trailer or on a seperate header trailer."/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Allows automatic attaching of a cutter, which needs to be attached as a trailer or on a seperate header trailer."/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="Always unfold the pipe"/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="Always unfold the pipe when combine is full and waiting for unloader."/>
     <text name="CP_vehicle_setting_stopForUnload_title" text="Stop while unloading"/>
@@ -356,7 +356,7 @@
     <text name="CP_global_setting_wageModifier_title" text="Cp driver wages"/>
     <text name="CP_global_setting_wageModifier_tooltip" text="Cp driver wages as percentage of normal worker's wages."/>
     <text name="CP_global_setting_autoRepair_title" text="Automatic repair"/>
-    <text name="CP_global_setting_autoRepair_tooltip" text="Cp driver automatically repair, while driving."/>
+    <text name="CP_global_setting_autoRepair_tooltip" text="Cp drivers automatically repair, while driving."/>
     <text name="CP_global_setting_autoRepair_off" text="Don't repair"/>
     <text name="CP_global_setting_autoRepair_less_than_25" text="&lt; 25%"/>
     <text name="CP_global_setting_autoRepair_less_than_70" text="&lt; 70%"/>
@@ -366,7 +366,7 @@
     <text name="CP_global_setting_brokenThreshold_title" text="Broken threshold"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Driver will be released, if the vehicle or an implement is more broken. 100% is off."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stop harvesters while it's raining"/>
-    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvesters wait for the raining to stop."/>
+    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, all harvesters will wait for the rain to stop."/>
     <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
     <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
     <text name="CP_global_setting_fruitDestruction_only_cp" text="Activated for Courseplay helpers"/>
@@ -564,7 +564,7 @@ Alternatively you can also start the driver from the HUD if you are close to the
 "/>
     <text name="CP_help_page_courseGeneratorBasic_title" text="Course Generator Basics"/>
     <text name="CP_help_page_courseGeneratorBase_text" text="
-Courseplay's course generator is a sophisticated tool that can generate Fieldwork courses customized for every possible job.
+Courseplay's course generator is a sophisticated tool that can generate fieldwork courses customized for every possible job.
 It has many settings and it may take some time to familiarize yourself with it. If you are new to Courseplay, you should
 probably start playing with the number of headlands first and then venture into the more advanced settings.
 After changing a parameter, hit Generate to see what impact the setting has. The best way to explore all the possibilities
@@ -681,7 +681,7 @@ For loading a course you would have to select the folder first, then select the 
 Clicking on change mode activates the edit mode of the course manager.
 "/>
     <text name="CP_help_page_courseManagerEdit_text" text="
-With the edit mode is active you have these options:
+When the edit mode is active you have these options:
 - Moving a course into another directory.
 - Deleting courses or directories.
 - Renaming courses or directories.
@@ -772,7 +772,7 @@ Once a multi tool course is loaded you will need to select the position (lane) f
 Those lanes are always named the same:
 left(2), left(1), center, right(1), right(2).
 2 vehicles have left(1) and right(1), 4 have left(2) and right(2) as well.
-With 3 or 5 vehicles you there is also a center option.
+With 3 or 5 vehicles there is a center option as well.
 Selecting a different lane also updates the course display to show the actual course for that vehicle.
 "/>
     <text name="CP_help_page_convoyBasic_text" text="
@@ -811,7 +811,7 @@ installed you can use it to run and unload the bale collector automatically.
 "/>
     <text name="CP_help_page_symetricLaneChange_title" text="Lane switch"/>
     <text name="CP_help_page_symetricLaneChangeBasic_text" text="
-Lane switching is used on multitool course and tells the Helper, in wich lane he should drive after the turn.
+Lane switching is used on multitool courses and tells the helper, in which lane he should drive after the turn.
 With lane switch active, the vehicle changes the side after each turn.
 This is a bit hard to understand so let's have a look at two examples.
 "/>
@@ -886,8 +886,8 @@ E.g. the default harvester needs to drive and work on the vine.
 A vine course should be generated on the vines, as it got to drive and work on the vines.
 "/>
     <text name="CP_help_page_vineWorkPruner_text" text="
-The pre-pruner works on the vines, so the course have to be generated on the vines.
-The Tools comes with an offset for the tractor, so the tractor drives between the vines.
+The pre-pruner works on the vines, so the course has to be generated on the vines.
+The tool comes with an offset for the tractor, so the tractor drives between the vines.
 "/>
     <text name="CP_help_page_vineWorkSprayer_text" text="
 The sprayer works next to the vines, so it has to drive either left or right from the vines.
@@ -1002,18 +1002,18 @@ Now it's possible to start the helper.
 "/>
     <text name="CP_help_page_shovelLoader_title" text="Wheel loader/Front loader"/>
     <text name="CP_help_page_shovelLoaderGeneral_text" text="
-This mode enables wheel loader and tractors with a front loader. 
+This mode enables the use of wheel loaders and tractors with a front loader. 
 With a shovel attached a heap can be picked up from the ground or loading from a bunker silo can be accomplished.
 The picked up fill level can be unloaded automatically into a nearby trailer or a selected unloading station like a BGA.
 The shovel will automatically be moved to the correct positions for loading, unloading and so on.
-In case the mode is not directly visable on the HUD, you can toggle the &quot;start position&quot; until the shovel mode appears.
+In case the mode is not directly visible on the HUD, you can toggle the &quot;start position&quot; until the shovel mode appears.
 
 The target icon on the HUD can be used to open the AI map to select the loading and the unloading targets.
 The HUD also shows the leftover fill level of the heap or silo, while the helper is working.
 If the loading target is a bunker silo, then the work width might need to be adjusted to avoid hitting the side walls of the silo.
 
-The hight offset setting is used to adjust the hight above the ground, as not all shovel can calculated correctly. 
-This should be checked, if the shovel is to low for loading and the driver can't turn anymore or the shovel is to high and fill level is missed to the ground.
+The height offset setting is used to adjust the height above the ground, as not all shovels can be calculated correctly. 
+This should be checked, if the shovel is too low for loading and the driver can't turn anymore or the shovel is too high and fill level is missed to the ground.
 If the value gets changed, the shovel will automatically move to the loading position to show the impact of the offset.
 To reset the offset you need to click on the settings text in the HUD. The value can be adjusted from +1 to -1 in 0.1 setps.
 
