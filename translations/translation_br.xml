@@ -440,7 +440,7 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <!--Course editor-->
     <!---->
     <text name="CP_editor_course_title" text="Editor de rota"/>
-    <text name="CP_editor_change_lane_offset" text="Change selected lane offset(%s)"/>
+    <text name="CP_editor_change_lane_offset" text="Mudar para distânciamento da faixa (%s)"/>
     <text name="CP_editor_delete_title" text="Excluir waypoints"/>
     <text name="CP_editor_delete_primary_text" text="primário"/>
     <text name="CP_editor_delete_secondary_text" text="secundário"/>
@@ -1031,7 +1031,7 @@ Agora sua seleção deve ser semelhante à imagem.
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Mostrar canal de debug sim/não."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Abrir mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Dirigir/stop motorista"/>
-    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Change current selected job"/>
+    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Alterar trabalho selecionado atual"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Mudar ponto inicial"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: Limpa a rota atual"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Ecibir a  rota atual do veículo"/>
