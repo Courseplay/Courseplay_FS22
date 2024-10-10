@@ -21,16 +21,32 @@ function CpAITaskFieldWork:setWaitingForRefuelActive()
 end
 
 function CpAITaskFieldWork:update(dt)
+	-- Hack to reevaluate the refill condition for the new setting state after it changed.
+	local settingWasChanged = false
+	if self.lastSettingValues then 
+		if self.lastSettingValues.optionalFertilizer ~= self.vehicle:getCpSettings().sowingMachineFertilizerEnabled:getValue() then
+			settingWasChanged = true
+		end
+		if self.lastSettingValues.optionalSowing ~= self.vehicle:getCpSettings().optionalSowingMachineEnabled:getValue() then
+			settingWasChanged = true
+		end
+	end
+
 	if self.waitingForRefuelActive then 
 		self.vehicle:cpHold(1500, true)
 		local cpSpec = self.vehicle.spec_cpAIFieldWorker
 		self.vehicle:setCpInfoTextActive(InfoTextManager.NEEDS_FILLING)
-		if cpSpec.driveStrategy:updateFilling() then 
+		if cpSpec.driveStrategy:updateFilling() or settingWasChanged then 
 			cpSpec.driveStrategy:finishedFilling()
 			self.waitingForRefuelActive = false
 			self.vehicle:resetCpActiveInfoText(InfoTextManager.NEEDS_FILLING)
 		end
 	end
+	self.lastSettingValues = {
+		optionalFertilizer = self.vehicle:getCpSettings().sowingMachineFertilizerEnabled:getValue(),
+		optionalSowing = self.vehicle:getCpSettings().optionalSowingMachineEnabled:getValue()
+	}
+
 end
 
 --- Makes sure the cp fieldworker gets started.
