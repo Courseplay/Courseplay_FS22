@@ -212,6 +212,10 @@
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Afstand mellem kørtøjer. Værdi: 40 - 400"/>
     <text name="CP_vehicle_setting_debugActive_title" text="køretøj debug"/>
     <text name="CP_vehicle_setting_debugActive_tooltip" text="Debuginformationer for køretøj tænd/sluk. Visuel og logindtastninger"/>
+    <text name="CP_vehicle_setting_refillOnTheField_title" text="Refill tool"/>
+    <text name="CP_vehicle_setting_refillOnTheField_tooltip" text="Refill tool on the field"/>
+    <text name="CP_vehicle_setting_refillOnTheField_waiting" text="Waiting"/>
+    <text name="CP_vehicle_setting_refillOnTheField_active" text="Active"/>
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->

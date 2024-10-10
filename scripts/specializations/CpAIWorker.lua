@@ -313,9 +313,7 @@ end
 --- TODO: this might by only called on the client, so 
 --- server depended code has to be moved to stopJob or similar code.
 function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
-    if message then
-        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "stop message: %s", message:getMessage())
-    else
+    if message == nil then
         CpUtil.infoVehicle(self, "no stop message was given.")
         return superFunc(self, message, ...)
     end
@@ -341,7 +339,12 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
                 end
             end
         end
+        local job = self:getJob()
+        if not job:isFinishingAllowed(message) then 
+            return
+        end
     end
+    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "stop message: %s", message:getMessage())
     superFunc(self, message,...)
 end
 
@@ -417,10 +420,10 @@ function CpAIWorker:unfreezeCp()
 end
 
 --- Holds the driver for a given amount of milliseconds.
-function CpAIWorker:cpHold(ms)
+function CpAIWorker:cpHold(ms, fuelSaveAllowed)
     local strategy = self:getCpDriveStrategy()
     if strategy then
-        return strategy:hold(ms)
+        return strategy:hold(ms, fuelSaveAllowed)
     end
 end
 

@@ -11,6 +11,7 @@
 ---@field superClass function
 ---@field getIsLooping function
 ---@field resetTasks function
+---@field skipCurrentTask function
 ---@field tasks table
 ---@field groupedParameters table
 ---@field isServer boolean
@@ -67,6 +68,10 @@ function CpAIJob:setupCpJobParameters(jobParameters)
 	self.cpJobParameters = jobParameters
 	CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(self.cpJobParameters.settingsBySubTitle,self,self.cpJobParameters)
 	self.cpJobParameters:validateSettings()
+end
+
+function CpAIJob:isFinishingAllowed(message)
+	return true
 end
 
 --- Gets the first task to start with.

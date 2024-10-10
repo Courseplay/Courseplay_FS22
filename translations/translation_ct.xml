@@ -212,6 +212,10 @@
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="車輛之間的距離。 數值範圍: 40 - 400"/>
     <text name="CP_vehicle_setting_debugActive_title" text="車輛除錯"/>
     <text name="CP_vehicle_setting_debugActive_tooltip" text="啟用/禁用此車輛的除錯。"/>
+    <text name="CP_vehicle_setting_refillOnTheField_title" text="Refill tool"/>
+    <text name="CP_vehicle_setting_refillOnTheField_tooltip" text="Refill tool on the field"/>
+    <text name="CP_vehicle_setting_refillOnTheField_waiting" text="Waiting"/>
+    <text name="CP_vehicle_setting_refillOnTheField_active" text="Active"/>
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->

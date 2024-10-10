@@ -212,6 +212,10 @@
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="车辆之间的距离。 调整范围: 40 - 400"/>
     <text name="CP_vehicle_setting_debugActive_title" text="车辆调试"/>
     <text name="CP_vehicle_setting_debugActive_tooltip" text="启用/禁用此车辆的调试。"/>
+    <text name="CP_vehicle_setting_refillOnTheField_title" text="Refill tool"/>
+    <text name="CP_vehicle_setting_refillOnTheField_tooltip" text="Refill tool on the field"/>
+    <text name="CP_vehicle_setting_refillOnTheField_waiting" text="Waiting"/>
+    <text name="CP_vehicle_setting_refillOnTheField_active" text="Active"/>
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->

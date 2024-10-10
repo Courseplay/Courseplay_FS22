@@ -212,6 +212,10 @@
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Követési távolság ha több gép dolgozik ugyanazon a táblán. 40 - 400 m"/>
     <text name="CP_vehicle_setting_debugActive_title" text="Jármű hibakeresés"/>
     <text name="CP_vehicle_setting_debugActive_tooltip" text="Engedélyezi/letiltja a hibakeresést ennél a járműnél."/>
+    <text name="CP_vehicle_setting_refillOnTheField_title" text="Refill tool"/>
+    <text name="CP_vehicle_setting_refillOnTheField_tooltip" text="Refill tool on the field"/>
+    <text name="CP_vehicle_setting_refillOnTheField_waiting" text="Waiting"/>
+    <text name="CP_vehicle_setting_refillOnTheField_active" text="Active"/>
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->
