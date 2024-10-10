@@ -232,6 +232,8 @@ function FieldworkCourseMultiVehicle:generateCenter()
     -- if there are no headlands, or there are, but we start working in the middle, then use the
     -- designated start location, otherwise the point where the innermost headland ends.
     if #self.headlands == 0 then
+        -- the virtual headland the center uses is the combined working width
+        self.context:setHeadlandWidthForAdjustment(self.context.nVehicles * self.context.workingWidth)
         self.center = CourseGenerator.Center(self.context, self.boundary, nil, self.context.startLocation, self.bigIslands)
     else
         -- The center is generated with the combined width of all vehicles and it assumes that the headland

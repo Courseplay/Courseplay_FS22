@@ -18,8 +18,10 @@ function Center:init(context, boundary, headland, startLocation, bigIslands)
     if headland == nil then
         -- if there are no headlands, we generate a virtual one, from the field boundary
         -- so using this later is equivalent of having an actual headland
+        -- using the nominal (without overlap) working the width for the headland, since the rows adjacent to the
+        -- headland must not extend beyond the field boundary
         local virtualHeadland = CourseGenerator.FieldworkCourseHelper.createVirtualHeadland(boundary, self.context.headlandClockwise,
-                self.context:getHeadlandWorkingWidth())
+                self.context.workingWidth)
         if self.context.sharpenCorners then
             virtualHeadland:sharpenCorners(self.context.turningRadius)
         end
@@ -238,8 +240,7 @@ function Center:_generateStraightUpDownRows(rowAngle, suppressLog)
     end
     -- move the baseline to the edge of the area we want to cover
     baseline = baseline:createNext(dMin)
-    local rowOffsets = self:_calculateRowDistribution(
-            self.context:getCenterRowSpacing(), dMax - dMin, self.context.evenRowDistribution, overlapLast)
+    local rowOffsets = self:_calculateRowDistribution(dMax - dMin, overlapLast)
 
     local rows = {}
     local row = baseline:createNext(rowOffsets[1])
@@ -329,17 +330,21 @@ end
 ---   3. leave the width of all rows the same working width. Here, part of the first or last row will be
 ---      outside of the field (work width * number of rows > field width). We always do this if there is a headland,
 ---      as the remainder will overlap with the headland.
----@param centerWorkingWidth number working width on the up/down rows in the center
 ---@param fieldWidth number distance between the headland centerlines we need to fill with rows. If there is no
 --- headland, this is the distance between the virtual headland centerlines, which is half working width wider than
 --- the actual field boundary.
----@param sameWidth boolean make all rows of the same width (#1 above)
 ---@param overlapLast boolean where should the overlapping row be in the sequence we create, true if at the end,
 --- false at the beginning
----@return number, number, number, number number of rows, offset of first row from the field edge, offset of
---- rows from the previous row for the next rows, offset of last row from the next to last row.
-function Center:_calculateRowDistribution(centerWorkingWidth, fieldWidth, sameWidth, overlapLast)
-    local nRows = math.floor(fieldWidth / centerWorkingWidth)
+---@return number[] offset of each row from the previous, the first offset is from the baseline
+function Center:_calculateRowDistribution(fieldWidth, overlapLast)
+    local centerWorkingWidth = self.context:getCenterRowSpacing()
+    -- only use the overlap-corrected headland width if we have headlands, otherwise, must use the
+    -- nominal working width to avoid generating rows extending outside of the field
+    local headlandWorkingWidth = self.mayOverlapHeadland and self.context:getHeadlandWorkingWidth() or
+            self.context.workingWidth
+    -- making the field width 1 cm less to avoid generating the last row exactly on the headland if
+    -- the field width is an exact multiple of the working width
+    local nRows = math.floor((fieldWidth - headlandWorkingWidth - 0.01) / centerWorkingWidth) + 1
     if nRows == 0 then
         -- only one row fits between the headlands
         if overlapLast then
@@ -348,39 +353,37 @@ function Center:_calculateRowDistribution(centerWorkingWidth, fieldWidth, sameWi
             return { fieldWidth - centerWorkingWidth / 2 }
         end
     else
-        local width
-        if sameWidth then
+        if self.context.evenRowDistribution then
             -- #1
-            width = (fieldWidth - centerWorkingWidth) / (nRows - 1)
-        else
-            -- #2 and #3
-            width = centerWorkingWidth
+            centerWorkingWidth = (fieldWidth - centerWorkingWidth) / (nRows - 1)
         end
         local firstRowOffset
         local rowOffsets = {}
+        -- the first/last row's offset from the surrounding headland centerline
+        local outermostRowOffset = headlandWorkingWidth / 2 + centerWorkingWidth / 2
         if self.mayOverlapHeadland then
             -- #3 we have headlands
             if overlapLast then
-                firstRowOffset = centerWorkingWidth
+                firstRowOffset = outermostRowOffset
             else
-                firstRowOffset = fieldWidth - (centerWorkingWidth + width * (nRows - 1))
+                firstRowOffset = fieldWidth - outermostRowOffset - (centerWorkingWidth * (nRows - 1))
             end
             rowOffsets = { firstRowOffset }
-            for _ = firstRowOffset, fieldWidth, width do
-                table.insert(rowOffsets, width)
+            for _ = 2, nRows do
+                table.insert(rowOffsets, centerWorkingWidth)
             end
         else
             -- #2, no headlands
-            for _ = centerWorkingWidth, fieldWidth - centerWorkingWidth, width do
-                table.insert(rowOffsets, width)
+            rowOffsets = { outermostRowOffset }
+            for _ = 2, nRows - 1 do
+                table.insert(rowOffsets, centerWorkingWidth)
             end
             if overlapLast then
-                table.insert(rowOffsets, fieldWidth - (centerWorkingWidth + width * #rowOffsets))
+                table.insert(rowOffsets, fieldWidth - 2 * outermostRowOffset - (centerWorkingWidth * (nRows - 2)))
             else
-                rowOffsets[2] = fieldWidth - (centerWorkingWidth + width * #rowOffsets)
-                table.insert(rowOffsets, width)
+                rowOffsets[2] = fieldWidth - 2 * outermostRowOffset - (centerWorkingWidth * (nRows - 2))
+                table.insert(rowOffsets, centerWorkingWidth)
             end
-
         end
         return rowOffsets
     end
