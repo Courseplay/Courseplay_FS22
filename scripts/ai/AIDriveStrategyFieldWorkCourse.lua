@@ -918,6 +918,14 @@ function AIDriveStrategyFieldWorkCourse:updateFilling()
         else 
             isFilling = true
         end
+        spec = implement.spec_treePlanter
+        if spec then 
+            if spec.palletIdToMount then
+                isFilling = true
+            elseif spec.mountedSaplingPallet == nil and spec.nearestSaplingPallet ~= nil then
+                implement:loadPallet(NetworkUtil.getObjectId(spec.nearestSaplingPallet))
+            end
+        end
     end
     for _, data in ipairs(self.fillingData.fillUnitsData) do 
         local fillLevel = data.implement:getFillUnitFillLevel(data.fillUnitIndex)

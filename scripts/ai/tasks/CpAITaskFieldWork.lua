@@ -13,9 +13,9 @@ function CpAITaskFieldWork:setStartPosition(startPosition)
 end
 
 function CpAITaskFieldWork:setWaitingForRefuelActive()
-	if not self.waitingForRefuelActive then
+	local cpSpec = self.vehicle.spec_cpAIFieldWorker
+	if not self.waitingForRefuelActive and cpSpec.driveStrategy then
 		self.waitingForRefuelActive = true
-		local cpSpec = self.vehicle.spec_cpAIFieldWorker
 		cpSpec.driveStrategy:prepareFilling()
 	end
 end
