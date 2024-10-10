@@ -108,6 +108,9 @@ end
 function AITurn:onBlocked()
     -- unregister here before the AITurn object is destructed
     self.proximityController:unregisterBlockingObjectListener()
+    -- restore onWaypoint* listeners before giving back control to the drive strategy, otherwise they'll be lost
+    -- when the recovery turn is instantiated and registers its own listeners
+    self.ppc:restorePreviouslyRegisteredListeners()
     self.driveStrategy:startRecoveryTurn(1 * self.turningRadius)
 end
 

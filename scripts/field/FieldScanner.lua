@@ -177,7 +177,7 @@ function FieldScanner:findContour(x, z)
         else
             if not done and not lost then
                 self:debug('%d. try, edge not found, we may have hit an island or corner, reset/rotate the probe a bit and retry', i)
-                setRotation(probe, 0, i * math.pi / 7, 0)
+                setRotation(probe, 0, i * math.pi / 6, 0)
             elseif lost then
                 self:info('Could not trace field edge, limit search to field %d and retry', fieldId)
                 limitToFieldId = fieldId
