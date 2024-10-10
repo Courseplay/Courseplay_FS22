@@ -920,10 +920,9 @@ function AIDriveStrategyFieldWorkCourse:updateFilling()
         end
         spec = implement.spec_treePlanter
         if spec then 
-            if spec.palletIdToMount then
-                isFilling = true
-            elseif spec.mountedSaplingPallet == nil and spec.nearestSaplingPallet ~= nil then
+            if spec.mountedSaplingPallet == nil and spec.nearestSaplingPallet ~= nil then
                 implement:loadPallet(NetworkUtil.getObjectId(spec.nearestSaplingPallet))
+                isFilling = true
             end
         end
     end

@@ -61,7 +61,9 @@ function CpAIJobFieldWork:isFinishingAllowed(message)
         if setting:getValue() == CpVehicleSettings.REFILL_ON_FIELD_DISABLED then 
             return true
         elseif setting:getValue() == CpVehicleSettings.REFILL_ON_FIELD_WAITING then
-            self.fieldWorkTask:setWaitingForRefuelActive()
+            if self.currentTaskIndex == self.fieldWorkTask.taskIndex then
+                self.fieldWorkTask:setWaitingForRefuelActive()
+            end
         elseif setting:getValue() == CpVehicleSettings.REFILL_ON_FIELD_ACTIVE then 
             self.fieldWorkTask:skip()
         end
