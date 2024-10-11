@@ -320,7 +320,7 @@ function Polyline:removeGlitches()
     local i = 1
     while i < #self do
         local dA = self:at(i).dA
-        if dA and dA > math.pi - 0.2 then
+        if dA and math.abs(dA) > math.pi - 0.2 then
             table.remove(self, i)
         else
             i = i + 1
@@ -329,11 +329,24 @@ function Polyline:removeGlitches()
     self:calculateProperties()
 end
 
+function Polyline:_canRemoveVertex(i, maxDeltaAngle)
+    if not maxDeltaAngle then
+        return true
+    else
+        -- only remove vertices which aren't around a corner
+        return math.abs(self:at(i + 1).dA) < maxDeltaAngle and math.abs(self:at(i).dA) < maxDeltaAngle
+    end
+end
+
+
 --- If two vertices are closer than minimumLength, replace them with one between.
-function Polyline:ensureMinimumEdgeLength(minimumLength)
+---@param minimumLength number After this operation, no two vertices will be closer than minimumLength
+---@param maxDeltaAngle number|nil when specified, vertices where the delta angle is bigger than this are not removed,
+--- thus, corners are preserved
+function Polyline:ensureMinimumEdgeLength(minimumLength, maxDeltaAngle)
     local i = 1
     while i < #self do
-        if (self:at(i + 1) - self:at(i)):length() < minimumLength then
+        if (self:at(i + 1) - self:at(i)):length() < minimumLength and self:_canRemoveVertex(i, maxDeltaAngle) then
             table.remove(self, i + 1)
         else
             i = i + 1
