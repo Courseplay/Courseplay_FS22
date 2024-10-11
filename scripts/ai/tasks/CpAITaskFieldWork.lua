@@ -38,11 +38,11 @@ function CpAITaskFieldWork:update(dt)
 		local cpSpec = self.vehicle.spec_cpAIFieldWorker
 		self.vehicle:setCpInfoTextActive(InfoTextManager.NEEDS_FILLING)
 
-		local readyToContinue, fillLevelHasChanged = false, false
+		local readyToContinue, fillLevelHasChanged = true, false
 		cpSpec.driveStrategy:raiseControllerEventWithLambda(
 			AIDriveStrategyCourse.onUpdateRefillingEvent,
 			function(timerHasFinished, hasChanged)
-				readyToContinue = readyToContinue or timerHasFinished
+				readyToContinue = readyToContinue and timerHasFinished
 				fillLevelHasChanged = fillLevelHasChanged or hasChanged
 			end)
 		if readyToContinue and fillLevelHasChanged or settingWasChanged then
