@@ -62,6 +62,7 @@ function SprayerController:onStartRefilling(ignore)
                 end
             end
         end
+        self.refillData.timer:set(false, 10 * 1000)
 	end
     ImplementUtil.hasFillLevelChanged(self.refillData.lastFillLevels, true)
     self.refillData.hasChanged = false

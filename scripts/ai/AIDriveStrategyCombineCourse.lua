@@ -1290,7 +1290,8 @@ function AIDriveStrategyCombineCourse:isFuelSaveAllowed()
     if self.combine:getIsThreshingDuringRain() then
         return true
     end
-    return self:isWaitingForUnload() or self:isChopperWaitingForUnloader()
+    return self:isWaitingForUnload() or self:isChopperWaitingForUnloader() 
+        or AIDriveStrategyCourse.isFuelSaveAllowed(self)
 end
 
 --- Check if the vehicle should stop during a turn for example while it

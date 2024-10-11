@@ -12,6 +12,16 @@ function MotorController:init(vehicle, implement)
 	self.vehicle.spec_cpAIWorker.motorDisabled = false
 	self.isValid = true
 	self.fuelThresholdSetting = g_Courseplay.globalSettings.fuelThreshold
+	self.refuelData = {
+		timer = CpTemporaryObject(true),
+		hasChanged = false,
+		lastFillLevels = {
+			[self.implement] = {}
+		}
+	}
+	for _, fillUnitIndex in ipairs(self.motorSpec.propellantFillUnitIndices) do
+		self.refuelData.lastFillLevels[self.implement][fillUnitIndex] = -1
+	end
 end
 
 function MotorController:update()
@@ -82,4 +92,30 @@ function MotorController:stopMotor()
 	self.implement:stopMotor()
 	self.vehicle.spec_cpAIWorker.motorDisabled = true
 	self:debug("Stopped motor for fuel save.")
+end
+
+function MotorController:onStartRefuelling() 
+	ImplementUtil.hasFillLevelChanged(self.refuelData.lastFillLevels, true)
+	self.refuelData.hasChanged = false
+	self.refuelData.timer:set(false, 10 * 1000)
+end
+
+function MotorController:onUpdateRefuelling()
+	if ImplementUtil.tryAndCheckRefillingFillUnits(self.refuelData.lastFillLevels) or 
+		ImplementUtil.hasFillLevelChanged(self.refuelData.lastFillLevels) then 
+		self.refuelData.timer:set(false, 10 * 1000)
+        self.refuelData.hasChanged = true
+	end
+	return self.refuelData.timer:get(), self.refuelData.hasChanged
+end
+
+function MotorController:onStopRefuelling()
+	local spec = self.implement.spec_fillUnit
+	if spec.fillTrigger.isFilling then 
+		self.implement:setFillUnitIsFilling(false)
+	end
+end
+
+function MotorController:onFinished()
+	self:onStopRefuelling()
 end

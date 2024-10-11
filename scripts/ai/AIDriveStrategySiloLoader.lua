@@ -152,6 +152,7 @@ end
 --- Fuel save only allowed when no trailer is there to unload into.
 function AIDriveStrategySiloLoader:isFuelSaveAllowed()
     return self.state == self.states.WORKING and not self.conveyorController:canDischargeToObject()
+        or AIDriveStrategyCourse.isFuelSaveAllowed(self)
 end
 
 -----------------------------------------------------------------------------------------------------------------------

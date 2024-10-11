@@ -1237,6 +1237,14 @@
 			<Text language="de"><![CDATA[Fahrer wird entlassen, wenn Kraftstoff unter diesem Wert liegt.]]></Text>
 			<Text language="en"><![CDATA[Driver will be released, if the fuel percentage is less.]]></Text>
 		</Translation>
+		<Translation name="CP_global_setting_waitForRefueling_title">
+			<Text language="de"><![CDATA[Wartet auf auftanken]]></Text>
+			<Text language="en"><![CDATA[Waits for refueling]]></Text>
+		</Translation>
+		<Translation name="CP_global_setting_waitForRefueling_tooltip">
+			<Text language="de"><![CDATA[Fahrzeug wartet vor Ord, um aufgefüllt zu werden.]]></Text>
+			<Text language="en"><![CDATA[Vehicle waits until it is refueled.]]></Text>
+		</Translation>
 		<Translation name="CP_global_setting_brokenThreshold_title">
 			<Text language="de"><![CDATA[Minimum Zustand]]></Text>
 			<Text language="en"><![CDATA[Broken threshold]]></Text>

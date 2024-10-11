@@ -1,5 +1,7 @@
 
 --- Global class
+---@class Courseplay
+---@operator call:Courseplay
 Courseplay = CpObject()
 Courseplay.MOD_NAME = g_currentModName
 Courseplay.BASE_DIRECTORY = g_currentModDirectory

@@ -28,6 +28,7 @@ AIDriveStrategyCourse.myStates = {
 }
 
 --- Implement controller events.
+--- TODO_25 a more generic implementation
 AIDriveStrategyCourse.onRaisingEvent = "onRaising"
 AIDriveStrategyCourse.onLoweringEvent = "onLowering"
 AIDriveStrategyCourse.onFinishedEvent = "onFinished"
@@ -35,6 +36,9 @@ AIDriveStrategyCourse.onStartEvent = "onStart"
 AIDriveStrategyCourse.onStartRefillingEvent = "onStartRefilling"
 AIDriveStrategyCourse.onStopRefillingEvent = "onStopRefilling"
 AIDriveStrategyCourse.onUpdateRefillingEvent = "onUpdateRefilling"
+AIDriveStrategyCourse.onStartRefuellingEvent = "onStartRefuelling"
+AIDriveStrategyCourse.onStopRefuellingEvent = "onStopRefuelling"
+AIDriveStrategyCourse.onUpdateRefuellingEvent = "onUpdateRefuelling"
 AIDriveStrategyCourse.updateEvent = "update"
 AIDriveStrategyCourse.deleteEvent = "delete"
 --- A row has just been finished, implements are being raised and about to start the actual turn
