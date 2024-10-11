@@ -20,6 +20,7 @@ function SprayerController:init(vehicle, sprayer)
 	}
     for _, supportedSprayType in ipairs(self.sprayerSpec.supportedSprayTypes) do
         for _, src in ipairs(self.sprayerSpec.fillTypeSources[supportedSprayType]) do
+            self:debug("Found additional tank for refilling: %s|%d", src.vehicle, src.fillUnitIndex)
             if not self.refillData.lastFillLevels[src.vehicle] then 
                 self.refillData.lastFillLevels[src.vehicle] = {}
             end
@@ -63,11 +64,13 @@ function SprayerController:onStartRefilling(ignore)
         end
 	end
     ImplementUtil.hasFillLevelChanged(self.refillData.lastFillLevels, true)
+    self.refillData.hasChanged = false
 end
 
 function SprayerController:onUpdateRefilling()
 	if ImplementUtil.tryAndCheckRefillingFillUnits(self.refillData.lastFillLevels) or 
 		ImplementUtil.hasFillLevelChanged(self.refillData.lastFillLevels) then 
+        self:debugSparse("Waiting for refilling to finish ..")
 		self.refillData.timer:set(false, 10 * 1000)
         self.refillData.hasChanged = true
 	end

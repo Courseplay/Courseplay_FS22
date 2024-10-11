@@ -334,7 +334,7 @@ function Courseplay.removePlayerActionEvents(player)
 end
 
 --- Registers all cp specializations.
----@param typeManager TypeManager
+---@param typeManager table
 function Courseplay.register(typeManager)
 	--- TODO: make this function async. 
 	for typeName, typeEntry in pairs(typeManager.types) do	
@@ -352,6 +352,7 @@ function Courseplay.register(typeManager)
 		CpInfoTexts.register(typeManager, typeName, typeEntry.specializations)
 		CpShovelPositions.register(typeManager, typeName, typeEntry.specializations)
 	end
+	typeManager:addSpecialization("fillableImplement", "aiLoadable")
 end
 TypeManager.finalizeTypes = Utils.prependedFunction(TypeManager.finalizeTypes, Courseplay.register)
 
