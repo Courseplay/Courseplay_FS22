@@ -367,6 +367,8 @@
     <text name="CP_global_setting_autoRepair_always" text="Manter sempre reparado"/>
     <text name="CP_global_setting_fuelThreshold_title" text="Limite de combustível"/>
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Motorista será liberado, se a porcentagem de combustível for menor."/>
+    <text name="CP_global_setting_waitForRefueling_title" text="Waits for refueling"/>
+    <text name="CP_global_setting_waitForRefueling_tooltip" text="Vehicle waits until it is refueled."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Limite de danos"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Motorista será liberado, se o veículo ou implemento estiver 100% danificado."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Parar a colheitadeira, enquanto estiver chovendo"/>

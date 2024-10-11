@@ -367,6 +367,8 @@
     <text name="CP_global_setting_autoRepair_always" text="Mantener siempre apunto"/>
     <text name="CP_global_setting_fuelThreshold_title" text="Límite de Combustible"/>
     <text name="CP_global_setting_fuelThreshold_tooltip" text="El conductor será liberado, si el porcentaje de combustible es menor."/>
+    <text name="CP_global_setting_waitForRefueling_title" text="Waits for refueling"/>
+    <text name="CP_global_setting_waitForRefueling_tooltip" text="Vehicle waits until it is refueled."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Límite de ruptura"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="El conductor será liberado, si el vehículo o un implemento está más desgastado. Si es 100% se desactiva."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Detener Cosechadoras, mientras llueve"/>

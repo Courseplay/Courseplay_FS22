@@ -367,6 +367,8 @@
     <text name="CP_global_setting_autoRepair_always" text="Instandhalten"/>
     <text name="CP_global_setting_fuelThreshold_title" text="Minimum Kraftstoff"/>
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Fahrer wird entlassen, wenn Kraftstoff unter diesem Wert liegt."/>
+    <text name="CP_global_setting_waitForRefueling_title" text="Wartet auf auftanken"/>
+    <text name="CP_global_setting_waitForRefueling_tooltip" text="Fahrzeug wartet vor Ord, um aufgefüllt zu werden."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Minimum Zustand"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Fahrer wird entlassen, wenn der Schaden des Fahrzeugs oder Arbeitsgeräts über diesem Wert liegt. 100% ist aus."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stoppt Drescher während Regen"/>

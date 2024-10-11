@@ -367,6 +367,8 @@
     <text name="CP_global_setting_autoRepair_always" text="保持100%"/>
     <text name="CP_global_setting_fuelThreshold_title" text="燃料臨界值"/>
     <text name="CP_global_setting_fuelThreshold_tooltip" text="如果燃料剩餘量過低，司機將停止工作。"/>
+    <text name="CP_global_setting_waitForRefueling_title" text="Waits for refueling"/>
+    <text name="CP_global_setting_waitForRefueling_tooltip" text="Vehicle waits until it is refueled."/>
     <text name="CP_global_setting_brokenThreshold_title" text="損壞臨界值"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="如果車輛或工具損壞過多，司機將停止工作。100%為關閉。"/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="下雨時停止收割機工作"/>
