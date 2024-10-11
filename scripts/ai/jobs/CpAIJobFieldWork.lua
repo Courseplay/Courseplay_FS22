@@ -25,7 +25,6 @@ function CpAIJobFieldWork:setupTasks(isServer)
     self.attachHeaderTask = CpAITaskAttachHeader(isServer, self)
     self.driveToFieldWorkStartTask = CpAITaskDriveTo(isServer, self)
     self.fieldWorkTask = CpAITaskFieldWork(isServer, self)
-    -- self.refuelTask = CpAITaskRefuel(isServer, self)
 end
 
 function CpAIJobFieldWork:onPreStart()
@@ -33,7 +32,6 @@ function CpAIJobFieldWork:onPreStart()
     self:removeTask(self.attachHeaderTask)
     self:removeTask(self.driveToFieldWorkStartTask)
     self:removeTask(self.fieldWorkTask)
-    -- self:removeTask(self.refuelTask)
     local vehicle = self:getVehicle()
     if vehicle and (AIUtil.hasCutterOnTrailerAttached(vehicle) 
         or AIUtil.hasCutterAsTrailerAttached(vehicle)) then 
@@ -42,8 +40,6 @@ function CpAIJobFieldWork:onPreStart()
     end
     self:addTask(self.driveToFieldWorkStartTask)
     self:addTask(self.fieldWorkTask)
-    ---TODO: only if refuelling is possible ..
-    -- self:addTask(self.refuelTask)
 end
 
 function CpAIJobFieldWork:setupJobParameters()
