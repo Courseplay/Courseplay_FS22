@@ -226,9 +226,9 @@ function Polygon:getLongestEdgeDirection()
     return self.longestEdgeDirection
 end
 
-function Polygon:ensureMinimumEdgeLength(minimumLength)
-    Polyline.ensureMinimumEdgeLength(self, minimumLength)
-    if (self[1] - self[#self]):length() < minimumLength then
+function Polygon:ensureMinimumEdgeLength(minimumLength, maxDeltaAngle)
+    Polyline.ensureMinimumEdgeLength(self, minimumLength, maxDeltaAngle)
+    if (self[1] - self[#self]):length() < minimumLength and self:_canRemoveVertex(#self, maxDeltaAngle) then
         table.remove(self, #self)
     end
     self:calculateProperties(#self - 1)

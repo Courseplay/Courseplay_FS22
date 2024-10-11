@@ -402,8 +402,11 @@ function FieldworkCourseMultiVehicle:_offsetConnectingPath(path, ix, offsetVecto
         section:append(path[i])
         i = i + 1
     until i > #path or not path[i]:getAttributes():isOnConnectingPath()
-    local offsetConnectingPath = _generateOffsetSection(section, offsetVector)
-    _appendOffsetSection(section, offsetConnectingPath, offsetPath)
+    if #section > 1 then
+        -- connecting paths with a single vertex can be ignored
+        local offsetConnectingPath = _generateOffsetSection(section, offsetVector)
+        _appendOffsetSection(section, offsetConnectingPath, offsetPath)
+    end
     return i
 end
 
