@@ -687,6 +687,22 @@
 			<Text language="de"><![CDATA[Debuginformationen für das Fahrzeug ein- oder ausschalten. Visuell und Logeinträge.]]></Text>
 			<Text language="en"><![CDATA[Enables/disables debug for this vehicle.]]></Text>
 		</Translation>
+		<Translation name="CP_vehicle_setting_refillOnTheField_title">
+			<Text language="de"><![CDATA[Gerät auffüllen]]></Text>
+			<Text language="en"><![CDATA[Refill tool]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_refillOnTheField_tooltip">
+			<Text language="de"><![CDATA[Gerät wartet auf dem Feld, um aufgefüllt zu werden.]]></Text>
+			<Text language="en"><![CDATA[Tool waits on the field to be refilled.]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_refillOnTheField_waiting">
+			<Text language="de"><![CDATA[Warten]]></Text>
+			<Text language="en"><![CDATA[Waiting]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_refillOnTheField_active">
+			<Text language="de"><![CDATA[Aktiv]]></Text>
+			<Text language="en"><![CDATA[Active]]></Text>
+		</Translation>
 	</Category>
 	<Category name="Vehicle bunker silo settings">
 		<Translation name="CP_vehicle_setting_subTitle_bunkerSilo">

@@ -4,11 +4,59 @@ CpAITaskFieldWork = CpObject(CpAITask)
 
 function CpAITaskFieldWork:reset()
 	self.startPosition = nil
+	self.waitingForRefillingActive = false
 	CpAITask.reset(self)
 end
 
 function CpAITaskFieldWork:setStartPosition(startPosition)
 	self.startPosition = startPosition
+end
+
+function CpAITaskFieldWork:setWaitingForRefillingActive()
+	local cpSpec = self.vehicle.spec_cpAIFieldWorker
+	if not self.waitingForRefillingActive and cpSpec.driveStrategy then
+		self.waitingForRefillingActive = true
+		cpSpec.driveStrategy:raiseControllerEvent(
+			AIDriveStrategyCourse.onStartRefillingEvent)
+	end
+end
+
+function CpAITaskFieldWork:update(dt)
+	-- Hack to reevaluate the refill condition for the new setting state after it changed.
+	local settingWasChanged = false
+	if self.lastSettingValues then 
+		if self.lastSettingValues.optionalFertilizer ~= self.vehicle:getCpSettings().sowingMachineFertilizerEnabled:getValue() then
+			settingWasChanged = true
+		end
+		if self.lastSettingValues.optionalSowing ~= self.vehicle:getCpSettings().optionalSowingMachineEnabled:getValue() then
+			settingWasChanged = true
+		end
+	end
+
+	if self.waitingForRefillingActive then 
+		self.vehicle:cpHold(1500, true)
+		local cpSpec = self.vehicle.spec_cpAIFieldWorker
+		self.vehicle:setCpInfoTextActive(InfoTextManager.NEEDS_FILLING)
+
+		local readyToContinue, fillLevelHasChanged = true, false
+		cpSpec.driveStrategy:raiseControllerEventWithLambda(
+			AIDriveStrategyCourse.onUpdateRefillingEvent,
+			function(timerHasFinished, hasChanged)
+				readyToContinue = readyToContinue and timerHasFinished
+				fillLevelHasChanged = fillLevelHasChanged or hasChanged
+			end)
+		if readyToContinue and fillLevelHasChanged or settingWasChanged then
+			cpSpec.driveStrategy:raiseControllerEvent(
+				AIDriveStrategyCourse.onStopRefillingEvent)
+			self.waitingForRefillingActive = false
+			self.vehicle:resetCpActiveInfoText(InfoTextManager.NEEDS_FILLING)
+		end
+	end
+	self.lastSettingValues = {
+		optionalFertilizer = self.vehicle:getCpSettings().sowingMachineFertilizerEnabled:getValue(),
+		optionalSowing = self.vehicle:getCpSettings().optionalSowingMachineEnabled:getValue()
+	}
+
 end
 
 --- Makes sure the cp fieldworker gets started.
@@ -59,6 +107,11 @@ function CpAITaskFieldWork:start()
 end
 
 function CpAITaskFieldWork:stop(wasJobStopped)
+	if self.waitingForRefillingActive then 
+		local cpSpec = self.vehicle.spec_cpAIFieldWorker
+		cpSpec.driveStrategy:raiseControllerEvent(
+				AIDriveStrategyCourse.onStopRefillingEvent)
+	end
 	if self.isServer then 
 		self:debug("Field work task stopped.")
 		self.vehicle:stopFieldWorker()

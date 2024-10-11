@@ -32,6 +32,9 @@ AIDriveStrategyCourse.onRaisingEvent = "onRaising"
 AIDriveStrategyCourse.onLoweringEvent = "onLowering"
 AIDriveStrategyCourse.onFinishedEvent = "onFinished"
 AIDriveStrategyCourse.onStartEvent = "onStart"
+AIDriveStrategyCourse.onStartRefillingEvent = "onStartRefilling"
+AIDriveStrategyCourse.onStopRefillingEvent = "onStopRefilling"
+AIDriveStrategyCourse.onUpdateRefillingEvent = "onUpdateRefilling"
 AIDriveStrategyCourse.updateEvent = "update"
 AIDriveStrategyCourse.deleteEvent = "delete"
 --- A row has just been finished, implements are being raised and about to start the actual turn
@@ -50,6 +53,7 @@ function AIDriveStrategyCourse:init(task, job)
     self.registeredInfoTexts = {}
     --- To temporary hold a vehicle (will force speed to 0)
     self.held = CpTemporaryObject()
+    self.fuelSaveActiveWhileHeld = false
 
     self.currentTask = task
     self.job = job
@@ -247,17 +251,7 @@ end
 
 --- Checks if any controller disables fuel save, for example a round baler that is dropping a bale.
 function AIDriveStrategyCourse:isFuelSaveAllowed()
-    --[[ TODO: implement this, when fuel save is implemented for every vehicle combo and not only harvesters.
-         for _, controller in pairs(self.controllers) do
-            ---@type ImplementController
-            if controller:isEnabled() then
-                if not controller:isFuelSaveAllowed() then 
-                    return false
-                end
-            end
-        end
-    ]]
-    return false
+    return self.fuelSaveActiveWhileHeld and self:isBeingHeld()
 end
 
 function AIDriveStrategyCourse:initializeImplementControllers(vehicle)
@@ -293,11 +287,15 @@ end
 
 --- Raises a event for the controllers.
 function AIDriveStrategyCourse:raiseControllerEvent(eventName, ...)
+    self:raiseControllerEventWithLambda(eventName, function () end, ...)
+end
+
+function AIDriveStrategyCourse:raiseControllerEventWithLambda(eventName, lambda, ...)
     for _, controller in pairs(self.controllers) do
         ---@type ImplementController
         if controller:isEnabled() then
             if controller[eventName] then
-                controller[eventName](controller, ...)
+                lambda(controller[eventName](controller, ...))
             end
         end
     end
@@ -499,11 +497,13 @@ end
 --- Hold the vehicle (set speed to 0) temporary. This is meant to be used for other vehicles to coordinate movements,
 --- for instance tell a vehicle it should not move as the other vehicle is driving around it.
 ---@param milliseconds number milliseconds to hold
-function AIDriveStrategyCourse:hold(milliseconds)
+---@param fuelSaveAllowed boolean enables the fuel save, while the vehicle is being held.
+function AIDriveStrategyCourse:hold(milliseconds, fuelSaveAllowed)
     if not self.held:get() then
         self:debug('Hold requested for %.1f seconds', milliseconds / 1000)
     end
     self.held:set(true, milliseconds)
+    self.fuelSaveActiveWhileHeld = fuelSaveAllowed
 end
 
 --- Release a hold anytime, even before it is released automatically after the time given at hold()
@@ -512,6 +512,7 @@ function AIDriveStrategyCourse:unhold()
         self:debug("Hold reset")
     end
     self.held:reset()
+    self.fuelSaveActiveWhileHeld = false
 end
 
 --- Are we currently being held?

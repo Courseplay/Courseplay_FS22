@@ -46,7 +46,6 @@ function AIDriveStrategyFieldWorkCourse:init(task, job)
     self.aiOffsetX, self.aiOffsetZ = 0, 0
     self.debugChannel = CpDebug.DBG_FIELDWORK
     self.waitingForPrepare = CpTemporaryObject(false)
-
 end
 
 function AIDriveStrategyFieldWorkCourse:delete()
@@ -267,7 +266,7 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
 
     self:addImplementController(vehicle, SoilSamplerController, nil, defaultDisabledStates, "spec_soilSampler")
     self:addImplementController(vehicle, StumpCutterController, StumpCutter, defaultDisabledStates)
-
+    self:addImplementController(vehicle, TreePlanterController, TreePlanter, {})
 
 end
 
@@ -806,7 +805,7 @@ end
 
 -----------------------------------------------------------------------------------------------------------------------
 --- Convoy management
-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:getProgress()
     return self.fieldWorkCourse:getProgress()
 end
@@ -818,6 +817,7 @@ end
 function AIDriveStrategyFieldWorkCourse:getFieldWorkProximity(node)
     return self.fieldWorkerProximityController:getFieldWorkProximity(node)
 end
+
 -----------------------------------------------------------------------------------------------------------------------
 --- Overwrite implement functions, to enable a different cp functionality compared to giants fieldworker.
 --- TODO: might have to find a better solution for these kind of problems.
