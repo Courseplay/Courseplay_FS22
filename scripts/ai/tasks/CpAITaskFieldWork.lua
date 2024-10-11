@@ -4,7 +4,7 @@ CpAITaskFieldWork = CpObject(CpAITask)
 
 function CpAITaskFieldWork:reset()
 	self.startPosition = nil
-	self.waitingForRefuelActive = false
+	self.waitingForRefillingActive = false
 	CpAITask.reset(self)
 end
 
@@ -12,11 +12,12 @@ function CpAITaskFieldWork:setStartPosition(startPosition)
 	self.startPosition = startPosition
 end
 
-function CpAITaskFieldWork:setWaitingForRefuelActive()
+function CpAITaskFieldWork:setWaitingForRefillingActive()
 	local cpSpec = self.vehicle.spec_cpAIFieldWorker
-	if not self.waitingForRefuelActive and cpSpec.driveStrategy then
-		self.waitingForRefuelActive = true
-		cpSpec.driveStrategy:prepareFilling()
+	if not self.waitingForRefillingActive and cpSpec.driveStrategy then
+		self.waitingForRefillingActive = true
+		cpSpec.driveStrategy:raiseControllerEvent(
+			AIDriveStrategyCourse.onStartRefillingEvent)
 	end
 end
 
@@ -32,13 +33,22 @@ function CpAITaskFieldWork:update(dt)
 		end
 	end
 
-	if self.waitingForRefuelActive then 
+	if self.waitingForRefillingActive then 
 		self.vehicle:cpHold(1500, true)
 		local cpSpec = self.vehicle.spec_cpAIFieldWorker
 		self.vehicle:setCpInfoTextActive(InfoTextManager.NEEDS_FILLING)
-		if cpSpec.driveStrategy:updateFilling() or settingWasChanged then 
-			cpSpec.driveStrategy:finishedFilling()
-			self.waitingForRefuelActive = false
+
+		local readyToContinue, fillLevelHasChanged = false, false
+		cpSpec.driveStrategy:raiseControllerEventWithLambda(
+			AIDriveStrategyCourse.onUpdateRefillingEvent,
+			function(timerHasFinished, hasChanged)
+				readyToContinue = readyToContinue or timerHasFinished
+				fillLevelHasChanged = fillLevelHasChanged or hasChanged
+			end)
+		if readyToContinue and fillLevelHasChanged or settingWasChanged then
+			cpSpec.driveStrategy:raiseControllerEvent(
+				AIDriveStrategyCourse.onStopRefillingEvent)
+			self.waitingForRefillingActive = false
 			self.vehicle:resetCpActiveInfoText(InfoTextManager.NEEDS_FILLING)
 		end
 	end
@@ -97,9 +107,10 @@ function CpAITaskFieldWork:start()
 end
 
 function CpAITaskFieldWork:stop(wasJobStopped)
-	if self.waitingForRefuelActive then 
+	if self.waitingForRefillingActive then 
 		local cpSpec = self.vehicle.spec_cpAIFieldWorker
-		cpSpec.driveStrategy:finishedFilling(true)
+		cpSpec.driveStrategy:raiseControllerEvent(
+				AIDriveStrategyCourse.onStopRefillingEvent)
 	end
 	if self.isServer then 
 		self:debug("Field work task stopped.")

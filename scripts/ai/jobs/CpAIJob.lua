@@ -70,6 +70,10 @@ function CpAIJob:setupCpJobParameters(jobParameters)
 	self.cpJobParameters:validateSettings()
 end
 
+--- Is the ai job allowed to finish ?
+--- This entry point allowes us to catch giants stop conditions.
+---@param message table Stop reason can be used to reverse engineer the cause.
+---@return boolean
 function CpAIJob:isFinishingAllowed(message)
 	return true
 end

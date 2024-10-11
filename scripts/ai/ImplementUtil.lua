@@ -541,3 +541,51 @@ function ImplementUtil.getCanLoadTo(loadTargetImplement, implementToLoadFrom, di
     return validTarget, targetFillUnitIndex, fillType, exactFillRootNode, alternativeFillType
 end
 
+--- Checks the passed in implements for a fill level change 
+--- and also caches the current fill levels.
+--- Example input table format: {["implement"]["fillUnitIndex"] = 200}  
+---@param fillLevelData table<table, table<number, number>>
+---@param reset boolean|nil
+function ImplementUtil.hasFillLevelChanged(fillLevelData, reset)
+    local hasChanged = false
+    for implement, data in pairs(fillLevelData) do 
+        for fillUnitIndex, fillLevel in pairs(data) do
+            local curFillLevel = implement:getFillUnitFillLevel(fillUnitIndex) 
+            if reset then 
+                fillLevelData[implement][fillUnitIndex] = -1
+            else
+                if fillLevel > -1 and curFillLevel ~= fillLevel then 
+                    hasChanged = true
+                end
+                fillLevelData[implement][fillUnitIndex] = curFillLevel
+            end
+        end
+    end 
+    return hasChanged
+end
+
+--- Trys to start loading from triggers, pallets and so on nearby.
+---@param implements table<table, ...>
+---@return boolean refilling is currently refilling
+function ImplementUtil.tryAndCheckRefillingFillUnits(implements)
+    local isFilling = false
+    for implement, _ in pairs(implements) do
+        local spec = implement.spec_fillUnit
+        local activatable = spec.fillTrigger.activatable
+        if not spec.fillTrigger.isFilling then 
+            local rootVehicle = activatable.vehicle
+            if rootVehicle then 
+                local oldFunc = rootVehicle.getIsActiveForInput
+                rootVehicle.getIsActiveForInput = function ()
+                    return true
+                end
+                if activatable:getIsActivatable() then 
+                    activatable:run()
+                end
+                rootVehicle.getIsActiveForInput = oldFunc
+            end
+        end
+        isFilling = isFilling or spec.fillTrigger.isFilling
+    end
+    return isFilling
+end
