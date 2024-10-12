@@ -1242,7 +1242,7 @@
 			<Text language="en"><![CDATA[Waits for refueling]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_waitForRefueling_tooltip">
-			<Text language="de"><![CDATA[Fahrzeug wartet vor Ord, um aufgefüllt zu werden.]]></Text>
+			<Text language="de"><![CDATA[Fahrzeug wartet vor Ort, um aufgefüllt zu werden.]]></Text>
 			<Text language="en"><![CDATA[Vehicle waits until it is refueled.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_brokenThreshold_title">
