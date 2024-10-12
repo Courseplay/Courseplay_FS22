@@ -135,8 +135,20 @@ function testRowDistributionMultiVehicleNoHeadland()
     lu.assertAlmostEquals(rowOffsets[1], 7.5)
     lu.assertAlmostEquals(rowOffsets[2], 5)
     lu.assertAlmostEquals(rowOffsets[#rowOffsets], 10)
-
 end
 
+function testEvenRowDistribution()
+    local rowOffsets
+    local center = {context = createContext(5, 5, true), mayOverlapHeadland = true}
+    rowOffsets = CourseGenerator.Center._calculateRowDistribution(center, 49, false)
+    lu.assertEquals(#rowOffsets, 9)
+    lu.assertAlmostEquals(rowOffsets[1], 4.94)
+    lu.assertAlmostEquals(rowOffsets[#rowOffsets], 4.88)
+    rowOffsets = CourseGenerator.Center._calculateRowDistribution(center, 50, false)
+    lu.assertEquals(#rowOffsets, 9)
+    lu.assertAlmostEquals(rowOffsets[1], 5)
+    lu.assertAlmostEquals(rowOffsets[#rowOffsets], 5)
+    center.mayOverlapHeadland = false
+end
 
 os.exit(lu.LuaUnit.run())
