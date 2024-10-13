@@ -13,6 +13,7 @@ function MotorController:init(vehicle, implement)
 	self.isValid = true
 	self.fuelThresholdSetting = g_Courseplay.globalSettings.fuelThreshold
 	self.refuelData = {
+		active = false,
 		timer = CpTemporaryObject(true),
 		hasChanged = false,
 		lastFillLevels = {
@@ -56,7 +57,7 @@ function MotorController:update()
 		end
 	end
 	local needsFuelLowInfo = false
-	if self.refuelData.timer:get() then
+	if self.refuelData.active then
 		--- Only apply this if no refueling is active.
 		if self:isFuelLow(self.fuelThresholdSetting:getValue()) then
 			self.vehicle:stopCurrentAIJob(AIMessageErrorOutOfFuel.new())
@@ -106,6 +107,7 @@ function MotorController:onStartRefuelling()
 	ImplementUtil.hasFillLevelChanged(self.refuelData.lastFillLevels, true)
 	self.refuelData.hasChanged = false
 	self.refuelData.timer:set(false, 10 * 1000)
+	self.refuelData.active = true
 end
 
 function MotorController:onUpdateRefuelling()
@@ -122,6 +124,7 @@ function MotorController:onStopRefuelling()
 	if spec.fillTrigger.isFilling then 
 		self.implement:setFillUnitIsFilling(false)
 	end
+	self.refuelData.active = false
 end
 
 function MotorController:onFinished()
