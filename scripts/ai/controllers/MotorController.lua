@@ -55,9 +55,17 @@ function MotorController:update()
 			end
 		end
 	end
-	if self:isFuelLow(self.fuelThresholdSetting:getValue()) then
+	local needsFuelLowInfo = false
+	if self.refuelData.timer:get() then
+		--- Only apply this if no refueling is active.
+		if self:isFuelLow(self.fuelThresholdSetting:getValue()) then
+			self.vehicle:stopCurrentAIJob(AIMessageErrorOutOfFuel.new())
+		elseif self:isFuelLow(self.fuelThresholdSetting:getValue() + 5) then
+			needsFuelLowInfo = true
+		end
+	end
+	if needsFuelLowInfo then 
 		self:setInfoText(InfoTextManager.FUEL_IS_LOW)
-		self.vehicle:stopCurrentAIJob(AIMessageErrorOutOfFuel.new())
 	else
 		self:clearInfoText(InfoTextManager.FUEL_IS_LOW)
 	end
