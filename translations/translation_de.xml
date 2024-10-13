@@ -113,12 +113,12 @@
     <!---->
     <text name="CP_ai_messageErrorIsFull" text="Helfer %s hat die Arbeit gestoppt - Gerät ist voll!"/>
     <text name="CP_ai_messageError" text="Helfer %s hat die Arbeit gestoppt - Kurs verlassen!"/>
-    <text name="CP_ai_messageErrorWrongBaleWrapType" text="Helfer %s hat die Arbeit gestoppt - keinen Ballen des gewählten Typs gefunden!"/>
-    <text name="CP_ai_messageErrorNoPathFound" text="Helfer %s hat die Arbeit gestoppt - keinen Weg gefunden!"/>
-    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Helfer %s hat die Arbeit gestoppt - abladen auf dem Boden nicht möglich!"/>
-    <text name="CP_ai_messageErrorCutterNotSupported" text="Helfer %s hat die Arbeit gestoppt - ankuppeln des Schneidwerks nicht möglich!"/>
-    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="Helfer %s hat die Arbeit gestoppt - automatisches Schneidwerk ankuppeln deaktiviert!"/>
-    <text name="CP_ai_messageErrorWrongMissionFruitType" text="Helfer %s hat die Arbeit gestoppt - falsche Frucht für die Mission ausgewählt!"/>
+    <text name="CP_ai_messageErrorWrongBaleWrapType" text="Helfer %s hat die Arbeit gestoppt - Keinen Ballen des gewählten Typs gefunden!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="Helfer %s hat die Arbeit gestoppt - Keinen Weg gefunden!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Helfer %s hat die Arbeit gestoppt - Abladen auf dem Boden nicht möglich!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="Helfer %s hat die Arbeit gestoppt - Ankuppeln des Schneidwerks nicht möglich!"/>
+    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="Helfer %s hat die Arbeit gestoppt - Schneidwerk automatisch ankuppeln deaktiviert!"/>
+    <text name="CP_ai_messageErrorWrongMissionFruitType" text="Helfer %s hat die Arbeit gestoppt - Falsche Frucht für die Mission ausgewählt!"/>
     <!---->
     <!--AI fieldwork task descriptions-->
     <!---->
@@ -133,8 +133,8 @@
     <!---->
     <text name="CP_ai_taskDescriptionUnloadCombine" text="Entlädt Drescher"/>
     <text name="CP_ai_taskDescriptionWaitsForTargetCombine" text="Wartet auf Drescher"/>
-    <text name="CP_ai_taskDescriptionUnloadSiloLoader" text="Entlädt Lade Fahrzeug"/>
-    <text name="CP_ai_taskDescriptionWaitsForTargetSiloLoader" text="Wartet auf Lade Fahrzeug"/>
+    <text name="CP_ai_taskDescriptionUnloadSiloLoader" text="Entlädt Ladefahrzeug"/>
+    <text name="CP_ai_taskDescriptionWaitsForTargetSiloLoader" text="Wartet auf Ladefahrzeug"/>
     <text name="CP_ai_taskDescriptionUnloadingToHeap" text="Entlädt auf einem Haufen"/>
     <text name="CP_ai_taskDescriptionUnloadingToTrailer" text="Entlädt in einen Anhänger"/>
     <text name="CP_ai_taskDescriptionUnloadingWithGiants" text="Entlädt mit Giants Helfer"/>
@@ -163,7 +163,7 @@
     <text name="CP_vehicle_setting_subTitle_multitool" text="Multitooleinstellungen"/>
     <text name="CP_vehicle_setting_subTitle_speed" text="Geschwindigkeiten"/>
     <text name="CP_vehicle_setting_subTitle_debug" text="Debugeinstellungen"/>
-    <text name="CP_vehicle_setting_showCourse_title" text="Zeige Kurs"/>
+    <text name="CP_vehicle_setting_showCourse_title" text="Kurs anzeigen"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Zeigt den Kurs des aktuell gewählten Fahrzeugs."/>
     <text name="CP_vehicle_setting_showCourse_startStop" text="Nur Start/Ende"/>
     <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="Aktuelle Wegpunkte"/>
@@ -176,11 +176,11 @@
     <text name="CP_vehicle_setting_stopAtEnd_tooltip" text="Fahrzeug bleibt nach der Arbeit am Endpunkt stehen."/>
     <text name="CP_vehicle_setting_allowReversePathfinding_title" text="Pathfinder darf rückwärtsfahren"/>
     <text name="CP_vehicle_setting_allowReversePathfinding_tooltip" text="Erlaubt dem Pathfinder, einen Rückwärtskurs zu generieren."/>
-    <text name="CP_vehicle_setting_allowPathfinderTurns_title" text="Benutze Pathfinder im Wendemanöver"/>
+    <text name="CP_vehicle_setting_allowPathfinderTurns_title" text="Pathfinder im Wendemanöver benutzen"/>
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Aktiviert den Pathfinder für Wendemanöver, zum Beispiel um Objekten oder der Frucht auszuweichen."/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Geräte am Ende einklappen"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Geräte am Ende des Kurses einklappen oder nicht."/>
-    <text name="CP_vehicle_setting_returnToStart_title" text="Zum Startpunkt zurück fahren"/>
+    <text name="CP_vehicle_setting_returnToStart_title" text="Zum Startpunkt zurückfahren"/>
     <text name="CP_vehicle_setting_returnToStart_tooltip" text="Fährt nach erledigter Arbeit zum Startpunkt zurück."/>
     <text name="CP_vehicle_setting_raiseImplementLate_title" text="Gerät anheben"/>
     <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Geräte früh oder spät anheben."/>
@@ -199,18 +199,18 @@
     <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Ballenaufnahmeversatz"/>
     <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Versatz für den Ballensammler"/>
     <text name="CP_vehicle_setting_combineOffsetX_title" text="Versatz links/rechts"/>
-    <text name="CP_vehicle_setting_combineOffsetX_tooltip" text="Versatz zum Drescher Rohr Rechts(+) und Links(-)"/>
+    <text name="CP_vehicle_setting_combineOffsetX_tooltip" text="Versatz zum Drescherrohr rechts(+) und links(-)"/>
     <text name="CP_vehicle_setting_combineOffsetZ_title" text="Versatz vorne/hinten"/>
-    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Versatz zum Drescher Rohr Vorne(+) und Hinten(-)"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Versatz zum Drescherrohr vorne(+) und hinten(-)"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Entleeren wenn über:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="Wenn der Füllstand des Abfahrers über diesem Wert liegt, wird er nicht auf den Drescher warten."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Siliermittel überwachen"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Wenn aktiv und das Siliermittel leer ist, wird der Fahrer gestoppt."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Symmetrischer Bahnenwechsel"/>
     <text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="Symmetrischer Bahnenwechsel"/>
-    <text name="CP_vehicle_setting_convoyDistance_title" text="Entfernung Fahrzeugverband "/>
+    <text name="CP_vehicle_setting_convoyDistance_title" text="Entfernung Fahrzeugverband"/>
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Entfernung zwischen den Fahrzeugen. Wert: 40 - 400"/>
-    <text name="CP_vehicle_setting_debugActive_title" text="Fahrzeug debug"/>
+    <text name="CP_vehicle_setting_debugActive_title" text="Fahrzeug-Debug"/>
     <text name="CP_vehicle_setting_debugActive_tooltip" text="Debuginformationen für das Fahrzeug ein- oder ausschalten. Visuell und Logeinträge."/>
     <text name="CP_vehicle_setting_refillOnTheField_title" text="Gerät auffüllen"/>
     <text name="CP_vehicle_setting_refillOnTheField_tooltip" text="Gerät wartet auf dem Feld, um aufgefüllt zu werden."/>
@@ -224,7 +224,7 @@
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Arbeitsbreite. Wert: 0 - 50"/>
     <text name="CP_vehicle_setting_levelerHeightOffset_title" text="Versatz Schildhöhe"/>
     <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Höhenversatz vom Schild zum Boden. Wert: 0 - 1"/>
-    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Versatz Schaufelhöhe."/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Versatz Schaufelhöhe"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Höhenversatz der Schaufel für die Ladeposition. Wert: -1 - 1"/>
     <!---->
     <!--Vehicle settings speed-->
@@ -258,7 +258,7 @@
     <text name="CP_vehicle_setting_stopForUnload_title" text="Beim Entladen stehen bleiben"/>
     <text name="CP_vehicle_setting_stopForUnload_tooltip" text="Drescher bleibt stehen, solange er entladen wird."/>
     <text name="CP_vehicle_setting_selfUnload_title" text="Drescher selbst abtanken"/>
-    <text name="CP_vehicle_setting_selfUnload_tooltip" text="Drescher sucht sich einen Anhänger in der Nähe des Feldes, um dort selbständig abzutanken. Keine Unterstützung bei Multitool Kursen."/>
+    <text name="CP_vehicle_setting_selfUnload_tooltip" text="Drescher sucht sich einen Anhänger in der Nähe des Feldes, um dort selbständig abzutanken. Keine Unterstützung bei Multitoolkursen."/>
     <text name="CP_vehicle_setting_unloadOnFirstHeadland_title" text="Entladen im ersten Vorgewende"/>
     <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="Wenn aktiv, ruft der Drescher den Abfahrer im ersten Vorgewende, auch wenn dieser dann außerhalb des Feldes fahren muss. Wenn deaktiviert, baut der Drescher erst eine Tasche, bevor der Abfahrer gerufen wird."/>
     <text name="CP_vehicle_setting_strawSwath_title" text="Strohablage"/>
@@ -270,7 +270,7 @@
     <!--Course generator settings-->
     <!---->
     <text name="CP_vehicle_courseGeneratorSetting_title" text="Kursgenerator-Einstellungen von (%s)"/>
-    <text name="CP_vehicle_courseGeneratorSetting_subTitle_basic" text="Basis Einstellungen"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_basic" text="Grundeinstellungen"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_headland" text="Einstellungen Vorgewende"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="Einstellungen Mitte"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_island" text="Einstellungen Insel"/>
@@ -283,17 +283,17 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="Feldgrenze"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Positive Werte reduzieren die Feldgröße, negative Werte vergrößern den Arbeitsbereich. Wert: -2 - 5.8"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Reihen überspringen"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Zu überspringende Reihen, wenn auf nächste Reihe gewendet wird. Nur für Hoch/Runter. Wert: 0 - 6"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Zu überspringende Reihen, wenn auf nächste Reihe gewendet wird. Nur für hoch/runter. Wert: 0 - 6"/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Anzahl Runden"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Anzahl Runden für Kreisförmig. Wert: 1 - 12"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Anzahl Runden für kreisförmig. Wert: 1 - 12"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Reihen pro Beet"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="Wenn Zentrierung Beete ausgewählt ist, dann befinden sich so viele Reihen im Block. Wert: 0 - 24"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Vorgewende-Richtung"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip" text="Das Fahrzeug kann auf dem Vorgewende im oder gegen den Uhrzeigersinn fahren."/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip" text="Auf dem Vorgewende im oder gegen den Uhrzeigersinn fahren."/>
     <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_title" text="Mitte-Richtung"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip" text="Die Mitte des Feldes im oder gegen den Uhrzeigersinn fahren."/>
     <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_title" text="Insel Vorgewende-Richtung"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="Die Insel im oder gegen den Uhrzeigersinn umfahren."/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="Inseln im oder gegen den Uhrzeigersinn umfahren."/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_clockwise" text="Im Uhrzeigersinn"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_counterclockwise" text="Gegen den Uhrzeigersinn"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_clockwise" text="Im Uhrzeigersinn"/>
@@ -315,7 +315,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Anzahl runde Ecken"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Anzahl runde Ecken, beginnend mit dem ersten Vorgewende."/>
     <text name="CP_vehicle_courseGeneratorSetting_turningRadius_title" text="Eckenradius"/>
-    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Radius der Runden Ecken, basierend auf dem Wenderadius des Fahrzeugs. Wert: 5 - 15"/>
+    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Radius der runden Ecken, basierend auf dem Wenderadius des Fahrzeugs. Wert: 5 - 15"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Startrichtung"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Richtung, in der die Bahnen gefahren werden sollen."/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="Automatisch"/>
@@ -371,11 +371,11 @@
     <text name="CP_global_setting_waitForRefueling_tooltip" text="Fahrzeug wartet vor Ort, um aufgefüllt zu werden."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Minimum Zustand"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Fahrer wird entlassen, wenn der Schaden des Fahrzeugs oder Arbeitsgeräts über diesem Wert liegt. 100% ist aus."/>
-    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stoppt Drescher während Regen"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Drescher während Regen stoppen"/>
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Wenn die Einstellung aktiviert ist, dann warten alle Drescher solange, bis der Regen aufhört."/>
-    <text name="CP_global_setting_fruitDestruction_title" text="Helfer Fruchtzerstörung"/>
+    <text name="CP_global_setting_fruitDestruction_title" text="Fruchtzerstörung Helfer"/>
     <text name="CP_global_setting_fruitDestruction_tooltip" text="Aktiviert/deaktiviert die Fruchtzerstörung von Helfern."/>
-    <text name="CP_global_setting_fruitDestruction_only_cp" text="Aktiviert für Courseplay Helfer"/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Aktiviert für Courseplay-Helfer"/>
     <text name="CP_global_setting_fruitDestruction_all_helpers" text="Aktiviert für alle Helfer"/>
     <!---->
     <!--Global settings user settings-->
@@ -385,18 +385,18 @@
     <text name="CP_global_setting_expertModeActive_tooltip" text="Schaltet den Expertenmodus an/aus, um weitere Einstellungen freizuschalten."/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Gamepadfreundliches HUD"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Benutze das HUD, welches sich über ein Gamepad bedienen lässt."/>
-    <text name="CP_global_setting_showActionEventHelp_title" text="Zeige Tastenbelegung"/>
+    <text name="CP_global_setting_showActionEventHelp_title" text="Tastenbelegung anzeigen"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Schaltet die Anzeige der Tastenbelegung an oder aus."/>
-    <text name="CP_global_setting_showsAllActiveCourses_title" text="Zeige alle Kurse"/>
+    <text name="CP_global_setting_showsAllActiveCourses_title" text="Alle Kurse anzeigen"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Zeigt alle geladenen Kurse auf der Karte."/>
-    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Zeige Kurse auf der Minikarte"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Kurse auf der Minikarte anzeigen"/>
     <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Ermöglicht die Anzeige des Kurses auf der kleinen Karte."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Helfer-Infofenster"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Schaltet das Infofenster für die CP-Helfer an, an bei Info oder aus."/>
     <text name="CP_global_setting_infoTextHudActive_active_hide_without_message" text="Aktiv mit Nachricht"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Spielermaus"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Aktiviert/deaktiviert die Mausinteraktion außerhalb eines Fahrzeugs."/>
-    <text name="CP_global_setting_preferCustomFields_title" text="Bevorzuge erstellten Feldrand"/>
+    <text name="CP_global_setting_preferCustomFields_title" text="Erstellten Feldrand bevorzugen"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Bevorzugt den selbst erstellten Feldrand, wenn dieser auf einem normalen Feld liegt."/>
     <text name="CP_global_setting_distanceUnit_title" text="Distanzeinheit"/>
     <text name="CP_global_setting_distanceUnit_tooltip" text="Distanzeinheit Meter oder Fuß."/>
@@ -439,8 +439,8 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_courseManager_targetIsNoFolderError" text="Ziel ist kein Ordner (%s)!"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="Ziel ist kein Kurs (%s)!"/>
     <text name="CP_courseManager_invalidNameError" text="Kursname (%s) ist ungültig!"/>
-    <text name="CP_courseManager_basicSettings" text="Kurse speichern/laden."/>
-    <text name="CP_courseManager_advancedSettings" text="Kurse/Ordner editieren."/>
+    <text name="CP_courseManager_basicSettings" text="Kurse speichern/laden"/>
+    <text name="CP_courseManager_advancedSettings" text="Kurse/Ordner editieren"/>
     <text name="CP_courseManager_activate" text="aktivieren"/>
     <!---->
     <!--Course editor-->
@@ -478,7 +478,7 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_infoTexts_blockedByObject" text="Wird blockiert"/>
     <text name="CP_infoTexts_shouldRefuel" text="Sollte aufgetankt werden"/>
     <text name="CP_infoTexts_needsFuel" text="Muss aufgetankt werden"/>
-    <text name="CP_infoTexts_needsRepair" text="Sollte repariert werden"/>
+    <text name="CP_infoTexts_needsRepair" text="Muss repariert werden"/>
     <text name="CP_infoTexts_needsFilling" text="Muss aufgefüllt werden"/>
     <text name="CP_infoTexts_needsUnloading" text="Muss entladen werden"/>
     <text name="CP_infoTexts_workFinished" text="Arbeit beendet"/>
@@ -496,8 +496,8 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Schneidwerk ankuppeln deaktiviert"/>
     <text name="CP_infoTexts_errorWrongSeason" text="Falsche Jahreszeit"/>
     <text name="CP_infoTexts_errorWrongMissionFruitType" text="Falsche Frucht für Mission ausgewählt"/>
-    <text name="CP_infoTexts_errorPalletsAreFull" text="Paletten sind voll."/>
-    <text name="CP_infoTexts_errorPalletsAreEmpty" text="Keine Palette"/>
+    <text name="CP_infoTexts_errorPalletsAreFull" text="Paletten sind voll"/>
+    <text name="CP_infoTexts_errorPalletsAreEmpty" text="Keine Paletten"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -511,10 +511,10 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_customFieldManager_draw_header" text="Zeichne Linien mit Rechtsklick."/>
     <text name="CP_customFieldManager_draw_sub_header" text="Halte die linke Shift-Taste für eine gerade Linie."/>
     <text name="CP_customFieldManager_save" text="Randkurs speichern"/>
-    <text name="CP_controllerGui_startRecording" text="Starte Feldrandaufnahme."/>
-    <text name="CP_controllerGui_stopRecording" text="Stoppe Feldrandaufnahme."/>
-    <text name="CP_controllerGui_pauseRecording" text="Pausieren der Feldrandaufnahme."/>
-    <text name="CP_controllerGui_unpauseRecording" text="Fortsetzen der Feldrandaufnahme."/>
+    <text name="CP_controllerGui_startRecording" text="Feldrandaufnahme starten"/>
+    <text name="CP_controllerGui_stopRecording" text="Feldrandaufnahme stoppen"/>
+    <text name="CP_controllerGui_pauseRecording" text="Feldrandaufnahme pausieren"/>
+    <text name="CP_controllerGui_unpauseRecording" text="Feldrandaufnahme fortsetzen"/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -594,23 +594,23 @@ Du erhältst Zugang zu Einstellungen, wie z.B. dem Wendemanöver für die Ecken,
 Vorgewende sind empfohlen, damit die Arbeitsgeräte beim Wenden von einer Feldbahn zur nächsten auf dem Feld bleiben.
 "/>
     <text name="CP_help_page_courseGeneratorHeadlandFunctions_text" text="
-- Scharfe Ecken: Erzwingt die Ecken scharf zu fahren, was bedeutet das ein Wendemanöver durchgeführt wird.
+- Scharfe Ecken: Erzwingt die Ecken scharf zu fahren, sodass ein Wendemanöver durchgeführt wird.
 - Anzahl runde Ecken: Hat man z.B. drei Vorgewende und stellt die Anzahl runder Ecken auf eins, wird vom ersten Vorgewende an gezählt, die Ecken des ersten Vorgewendes auf Rund gestellt, basierend auf den Eckenradius.
-- Eckenradius: Bestimmt den Radius den runde Ecken haben sollen. Weis man bereits, dass ein nachfolgender Arbeitsschritt mit einem Gerät bearbeitet wird, was einen minimalen Radius von 10 hat, kann man für den Kurs bereits diesen Radius einstellen.
+- Eckenradius: Bestimmt den Radius den runde Ecken haben sollen. Weiß man bereits, dass ein nachfolgender Arbeitsschritt mit einem Gerät bearbeitet wird, was einen minimalen Radius von 10 hat, kann man für den Kurs bereits diesen Radius einstellen.
 - Vorgewende-Richtung: Im Uhrzeigersinn oder gegen den Uhrzeigersinn. Das kann für Drescher oder Ernter entscheidend sein, abhängig davon auf welcher Seite sich das Abladerohr oder Förderband befindet.
 - Vorgewende-Überlappung: Wie viel % Überlappung die Vorgewende haben sollen. Die erste Vorgewendebahn hat keine Überlappung mit dem Feldrand, alle weiteren Bahnen überlappen mit der jeweils vorherigen Bahn.
 - Feldgrenze: Positive Werte reduzieren den Arbeitsbereich, um einen Puffer zum Feldrand zu generieren. Das ist nützlich, sollten sich einige Objekte zu dicht an der Feldkante befinden.
 Negative Werte vergrößern den Arbeitsbereich über das Feld hinaus, um eine größere Abdeckung zu bekommen, z.B. wenn der Feldrand nicht genau genug erkannt wurde.
 "/>
     <text name="CP_help_page_courseGeneratorCenter_text" text="
-Für die Mitte gibt es die verschiedenste Strategien das Feld ab zu arbeiten. Oft spielt das gewählte Tool eine Rolle. Die verfügbaren Strategien entstanden durch Feedback und Informationen aus unserer Community.
-Das einfache hoch und runter fahren funktioniert an sich immer. Es kann aber besser sein, zum Dreschen z.B. Beete zu verwenden, damit das Rohr öffter außerhalb der Frucht liegt, das ein effizienteres Abtanken ermöglicht.
+Für die Mitte gibt es die verschiedenste Strategien das Feld ab zu arbeiten. Oft spielt das gewählte Gerät eine Rolle. Die verfügbaren Strategien entstanden durch Feedback und Informationen aus unserer Community.
+Das einfache hoch und runter fahren funktioniert an sich immer. Es kann aber besser sein, zum Dreschen z.B. Beete zu verwenden, damit das Rohr öfter außerhalb der Frucht liegt, was ein effizienteres Abtanken ermöglicht.
 Beim Häckseln möchte man möglichst wenig enge Wendemanöver haben, damit der Abfahrer einfacher hinterher fahren kann. Dafür ist Kreisförmig eine gute Wahl.
 Spiralförmig hingegen kann man gut für schmale gezogene Ernter verwenden, so dass man durch dessen Offset das Arbeitsgerät immer zur Frucht stellt, den Traktor aber außerhalb dieser fährt.
 "/>
     <text name="CP_help_page_courseGeneratorCenterFunctions_text" text="
 - Feldmitte: Es gibt verschiedene Arbeitsweisen, um die Feldmitte zu bearbeiten. Der klassische Weg ist hoch/runter.
-Spiralförmig, Kreisförmig und Beete haben jeweils ihre eigenen Vorteile gegenüber den anderen. Bei Beeten zum Beispiel wird der Drescher die meiste Zeit mit dem Rohr außerhalb der Frucht fahren, um ein einfacheres Entladen zu ermöglichen.
+Spiralförmig, kreisförmig und Beete haben jeweils ihre eigenen Vorteile gegenüber den anderen. Bei Beeten zum Beispiel wird der Drescher die meiste Zeit mit dem Rohr außerhalb der Frucht fahren, um ein einfacheres Entladen zu ermöglichen.
 - Mitte Richtung: Funktioniert genau so wie beim Vorgewende, ist jetzt aber unabhängig davon einstellbar.
 - Gleichmäßige Bahnenbreite: Wenn die Feldmitte eine gesammte Breite hat, die sich nicht gleichmäßig auf die Arbeitsbreite des Tools aufteilen lässt, wird am Anfang oder am Ende eine sehr schmale Bahn gezogen. Um das zu vermeiden, wird die Bahnenbreite so reduziert, dass alle Bahnen die gleiche Breite haben.
 - Startrichtung: Automatisch findet meistens die beste Startrichtung, manchmal hilft es aber auch, die längste Kante zu nehmen. Sollte das auch nicht passen, kannst du den Wert auf Manuell stellen.
@@ -619,14 +619,14 @@ Spiralförmig, Kreisförmig und Beete haben jeweils ihre eigenen Vorteile gegen�
 Folgende Einstellungen erscheinen erst Anhand bestimmter vorheriger Einstellung:
 - Reihen überspringen: Erscheint bei Feldmitte &quot;hoch/runter&quot;. Mit Reihen überspringen lässt sich die Arbeit beschleunigen, da die Arbeitsgeräte nicht rückwärtsfahren müssen, um in die nächste Reihe zu kommen.
 - Reihen pro Beet: Erscheint bei Feldmitte &quot;Beete&quot;. Diese Einstellung wirkt sich nur auf Beete aus. Je mehr Reihen pro Beete eingestellt werden, desto weniger Beete werden generiert.
-- Spirale von Innen: Erscheint bei Feldmitte &quot;Spiralförmig&quot;.
-- Anzahl Runden: Erscheint bei Feldmitte &quot;Kreisförmig&quot;.
+- Spirale von Innen: Erscheint bei Feldmitte &quot;spiralförmig&quot;.
+- Anzahl Runden: Erscheint bei Feldmitte &quot;kreisförmig&quot;.
 "/>
     <text name="CP_help_page_courseGeneratorCenterExampleUpdown_text" text="
 hoch/runter
 "/>
     <text name="CP_help_page_courseGeneratorCenterExampleLands_text" text="
-beete
+Beete
 "/>
     <text name="CP_help_page_courseGeneratorCenterExampleSpiral_text" text="
 spiralförmig
@@ -641,18 +641,18 @@ Es spielt natürlich eine Rolle, wie breit das Arbeitsgerät ist, ob die Runden 
 Z.B. wie viele Vorgewende passen zwischen Insel und Feldrand.
 "/>
     <text name="CP_help_page_courseGeneratorIslandFunctions_text" text="
-- Insel Umfahrung: Schaltet das Umfahren der Insel ein oder aus, sollte eine Insel gefunden werden. Inselumfahrung funktioniert nicht auf selbst erstellten Feldern!
+- Inselumfahrung: Schaltet das Umfahren der Insel ein oder aus, sollte eine Insel gefunden werden. Inselumfahrung funktioniert nicht auf selbst erstellten Feldern!
 - Insel Vorgewende: Die Anzahl an Umrundungen um die Insel kann jetzt separat von den Vorgewende eingestellt werden.
-- Insel Vorgewende Richtung: In welche Richtung die Insel umfahren werden soll, um eventuelle Richtungswechsel zu vermeiden. Das kann je nach Feld und den Rest des Kurses auf Versuche ankommen.
+- Insel Vorgewende-Richtung: In welche Richtung die Insel umfahren werden soll, um eventuelle Richtungswechsel zu vermeiden. Das kann je nach Feld und den Rest des Kurses auf Versuche ankommen.
 "/>
     <text name="CP_help_page_courseGeneratorExpert_text" text="
-Einige Einstellungen sind erst dann sichtbar, wenn in den globalen CP Einstellungen den &quot;Experten Modus&quot; eingeschaltet habt.
-Bevor ihr euch mit den Einstellmöglichkeiten beschäftigt, solltet ihr euch erst mit den normalen Einstellungen vertraut machen, da nicht alle Experten Einstellungen ohne Einschränkung funktionieren werden.
+Einige Einstellungen sind erst dann sichtbar, wenn ihr in den globalen CP-Einstellungen den &quot;Expertenmodus&quot; einschaltet.
+Bevor ihr euch mit den Einstellmöglichkeiten beschäftigt, solltet ihr euch erst mit den normalen Einstellungen vertraut machen, da nicht alle Experteneinstellungen ohne Einschränkung funktionieren werden.
 
 - Fahrzeuge auf dem Feld: Mit dieser Einstellung könnt ihr mehr als ein Fahrzeug das Feld abarbeiten lassen. Mehr Details dazu gibt es unter einem extra Punkt im Hilfemenü.
 - Bahnen tauschen: Ist diese Option aktiviert, wird die Seite des Fahrzeug &quot;vertauscht&quot;, dafür sind die Wendemanöver für alle Bahnen gleich breit. Für mehr Details, schau dir dazu die Hilfeseite &quot;Bahnen tauschen&quot; an.
 - Enges Feld: Erzeugt nur an den kürzesten Feldrandseiten ein Vorgewende. Es lässt sich aktuell nicht vermeiden, dass Fahrzeuge an den langen Seiten im Vorgewende das Feld verlassen.
-- Vorgewende Überlappung: Es ist ein Standardwert eingestellt, der immer verwendet wird. Dieser kann aber mit dieser Einstellung angepasst werden. Die Überlappung findet innerhalb des Feldes statt und ragt nicht über den Feldrand hinaus.
+- Vorgewende-Überlappung: Es ist ein Standardwert eingestellt, der immer verwendet wird. Dieser kann aber mit dieser Einstellung angepasst werden. Die Überlappung findet innerhalb des Feldes statt und ragt nicht über den Feldrand hinaus.
 - Feldgrenze: Mit dieser Einstellung lässt sich die Feldgrenze weiter nach innen oder außen verschieben und somit lässt sich der normale Feldrand verschieben.
 - Feldrand für Bahnen: Ein ganz neues Feature, welches nur auf bestimmten Feldern funktioniert. Hat man ein Feld mit einem langen Bogen als Feldgrenze und setzt den Feldmarker in die Nähe dieses Feldrands, so werden die Bahnen in der Mitte den Verlauf des Feldrands annehmen.
 ANMERKUNG: Sollte ein Kurs nicht sauber generiert werden, funktioniert diese Funktion nicht auf dem Feld oder mit dem Feldrand. Es wird dafür auch kein Update geben!
@@ -698,26 +698,26 @@ Ordner müssen leer sein damit sie gelöscht werden können.
     <text name="CP_help_page_minihud_title" text="Mini-HUD"/>
     <text name="CP_help_page_minihud_general_title" text="Grundfunktionen"/>
     <text name="CP_help_page_minihud_general_text" text="
-A: Mit gedrückter linker Maustaste auf der Kopfzeile lässt sich das HUD auf eine beliebige Position verschieben. Auf der rechten Seite wird die Version angezeigt und ein X zum schließen mit der Maustaste.
+A: Mit gedrückter linker Maustaste auf der Kopfzeile lässt sich das HUD auf eine beliebige Position verschieben. Auf der rechten Seite wird die Version angezeigt und ein X zum Schließen mit der Maustaste.
 B: Um schnell zu den globalen Einstellungen zu gelangen, kannst du mit der Maus auf das CP-Icon klicken.
 C: Hier wird der Name deines Fahrzeugs angezeigt, klickst du darauf, gelangst du direkt in die CP-Fahrzeugeinstellungen.
-D: Diese Symbole sind dafür da um (1) den aktuell geladenen Kurs zu löschen, (2a) die Anzeige des geladenen Kurs durch zu schalten (2b) wenn kein Kurs geladen ist, einen Rekord Button um einen Feldrandkurs aufzuzeichnen, (3) den Helfer zu starten und zu stoppen.
-E: Dieses Ziel Icon hat verschiedene Funktionen. Je nach dem gewähltem Modus gelangt man direkt auf die Helferkarte mit dem passenden Helfer Job. Dort können dann mögliche fehlende Marker, wie die Feldposition platziert werden. Links davon wird bei der Feldarbeit die verbleibende Zeit vom Kurs angezeigt.
-F: Durch das Klicken auf diesen Text werden die erlaubten Modi je nach Fahrzeug Gespannt durchgeschaltet.
-G: Unterhalb dieser Linie befinden sich Modi abhängige Einstellungen, die in den nachfolgenden Bildern erklärt werden.
+D: Diese Symbole sind dafür da um (1) den aktuell geladenen Kurs zu löschen, (2a) die Anzeige des geladenen Kurs durch zu schalten (2b) wenn kein Kurs geladen ist, ein Aufnahme-Button um einen Feldrandkurs aufzuzeichnen, (3) den Helfer zu starten und zu stoppen.
+E: Dieses Ziel Icon hat verschiedene Funktionen. Je nach dem gewähltem Modus gelangt man direkt auf die Helferkarte mit dem passenden Helferjob. Dort können dann mögliche fehlende Marker, wie die Feldposition platziert werden. Links davon wird bei der Feldarbeit die verbleibende Zeit vom Kurs angezeigt.
+F: Durch das Klicken auf diesen Text werden die erlaubten Modi je nach Fahrzeuggespann durchgeschaltet.
+G: Unterhalb dieser Linie befinden sich modusabhängige Einstellungen, die in den nachfolgenden Bildern erklärt werden.
 "/>
     <text name="CP_help_page_minihud_fieldwork_title" text="Feldarbeit"/>
     <text name="CP_help_page_minihud_fieldwork_text" text="
-A: Mit der Maus lässt sich hier der Startpunkt per Mausklick durchschalten. Ist ein Multitool Kurs geladen, kann auf der rechten Seite die Bahn gewählt werden.
-B: Hier wird der aktuell Name des geladenen Kurses angezeigt. Ein neu generierter Kurs wird mit dem Namen &quot;temporärer Kurs&quot; angezeigt. Die Striche auf der rechten Seite zeigen den aktuellen Fortschritt mit dem aktuellen Wegpunkt zu der gesamten Anzahl an Wegpunkten.
+A: Mit der Maus lässt sich hier der Startpunkt per Mausklick durchschalten. Ist ein Multitoolkurs geladen, kann auf der rechten Seite die Bahn gewählt werden.
+B: Hier wird der aktuelle Name des geladenen Kurses angezeigt. Ein neu generierter Kurs wird mit dem Namen &quot;temporärer Kurs&quot; angezeigt. Die Striche auf der rechten Seite zeigen den aktuellen Fortschritt mit dem aktuellen Wegpunkt zu der gesamten Anzahl an Wegpunkten.
 C: Die Arbeitsbreite kann hier mit einem Mausklick neu berechnet werden, auf der rechten Seite kannst du mit klick auf + und - oder mit dem Mausrad auf der Zahl die Arbeitsbreite verstellen.
-D: Hier kann ein Geräte Versatz zur Mitte des Fahrzeugs eingestellt werden. Dieses wird bei manchen Anbaugeräten benötigt. Das Einstellen läuft genauso wie bei der Arbeitsbreite.
+D: Hier kann ein Geräteversatz zur Mitte des Fahrzeugs eingestellt werden. Dies wird bei manchen Anbaugeräten benötigt. Das Einstellen läuft genauso wie bei der Arbeitsbreite.
 E: Mit einem Klick auf das Symbol auf der rechten Seite wird der Kurs des Fahrzeuges kopiert. Solange ein Kurs in der Zwischenablage ist wird auf der linken Seite der Name des Kurses angezeigt. Durch das neu erschiene Symbol kann der Kurs in ein anderes Fahrzeug geladen werden. Das Papierkorb Symbol löscht den aktuellen Kurs aus der Zwischenablage.
 "/>
     <text name="CP_help_page_minihud_combineunload_title" text="Drescher Abfahrer"/>
     <text name="CP_help_page_minihud_combineunload_text" text="
 A: Da sowohl ein Drescher als auch ein Lader (z.B. ROPA Maus) gleichzeitig auf einem Feld arbeiten könnten, kann hier gewählt werden, welches Gerät abgetankt werden soll.
-B: Hier kannst du bestimmen, ab wie viel Prozent der Abfahrer zum entladen fahren soll. Einstellbar zwischen 40% und 100%. Die Bedienung ist gleich wie bei der Arbeitsbreite vom Feldarbeitsmodus.
+B: Hier kannst du bestimmen, ab wie viel Prozent der Abfahrer zum Entladen fahren soll. Einstellbar zwischen 40% und 100%. Die Bedienung ist gleich wie bei der Arbeitsbreite vom Feldarbeitsmodus.
 C: Es kann vorkommen, dass die Position des Abfahrers nicht perfekt passt. Das kann am Anhänger oder am Abladerohr des Ernters liegen. Manchmal reicht auch ein Gefälle des Feldes aus. Hier kannst du den Abstand zum Ernter einstellen.
 D: Das gleiche lässt sich auch für eine Korrektur nach vorne oder nach hinten zum Ernter einstellen.
 E: Ähnlich wie beim Kopieren eines Kurses, werden hier die Positionen der Marker für den Abfahrer kopiert und können dann auf weiteren Abfahrer übertragen werden.
@@ -726,21 +726,21 @@ E: Ähnlich wie beim Kopieren eines Kurses, werden hier die Positionen der Marke
     <text name="CP_help_page_minihud_balecollect_text" text="
 A: Ballen die nach dem letzten automatischen Scan noch auf dem Feld liegen.
 B: Ballen die gesammelt oder bearbeitet werden sollen (z.B. nur gewickelte Ballen sammeln).
-C: Dieser Offset stellt den Versatz ein der zwischen Traktormitte und der mitte der Gabel liegt. Es kann nötig sein, bei einem breiterem Traktor (z.B. Breitreifen) diesen Wert an zu passen.
+C: Versatz zwischen Traktormitte und der Mitte der Ballenaufnahme. Es kann nötig sein, bei einem breiterem Traktor (z.B. Breitreifen) diesen Wert anzupassen.
 "/>
-    <text name="CP_help_page_minihud_siloloader_title" text="Silo Lader"/>
+    <text name="CP_help_page_minihud_siloloader_title" text="Silolader"/>
     <text name="CP_help_page_minihud_siloloader_text" text="
 A: Die aktuelle Füllmenge des gewählten Haufens.
 B: Arbeitsbreite des Laders oder der Schaufel, genauso wie bei der Feldarbeit.
-C: Offset für die Ladehöhe einer Schaufel. Dieser kann genutzt werden falls die Schaufel nicht tief genug gesenkt wird oder sogar zu tief gesenkt wird.
+C: Versatz für die Ladehöhe einer Schaufel. Kann genutzt werden falls die Schaufel nicht tief genug oder zu tief gesenkt wird.
 D: Wie schon beim Abfahrer, kannst du hier die benötigten Marker kopieren und auf ein weiteres Gerät einfügen.
 "/>
     <text name="CP_help_page_minihud_siloworker_title" text="Silo Arbeiter"/>
     <text name="CP_help_page_minihud_siloworker_text" text="
-A: Wie auch beim Silo Lader, ist die Schildhöhe entscheident. Die kannst du hier anpassen.
+A: Wie auch beim Silolader, ist die Schildhöhe entscheidend. Die kannst du hier anpassen.
 B: Diese Anzeige zeigt dir den aktuellen Fortschritt der Siloverdichtung an. Durch einen Mausklick auf den Text, kannst du umschalten, ob der Abfahrer automatisch bei 100% Siloverdichtung stoppen soll.
-C: Auch hier spielt die Arbeitsbreite eine Rolle und kannst diese hier anpassen.
-D: Hier kannst du entscheiden, ob der Silo Arbeiter im Silo oder auf einer gewählten Parkposition warten soll, wenn sich ein Abfahrer dem Silo nähert.
+C: Auch hier spielt die Arbeitsbreite eine Rolle und du kannst diese hier anpassen.
+D: Hier kannst du entscheiden, ob der Siloarbeiter im Silo oder auf einer gewählten Parkposition warten soll, wenn sich ein Abfahrer dem Silo nähert.
 "/>
     <text name="CP_help_page_customField_title" text="Selbst erstellte Felder"/>
     <text name="CP_help_page_customFieldRecord_text" text="
@@ -809,8 +809,8 @@ Hast du AutoDrive installiert, lässt sich das Entladen auch komplett automatisi
 "/>
     <text name="CP_help_page_symetricLaneChange_title" text="Bahnen tauschen"/>
     <text name="CP_help_page_symetricLaneChangeBasic_text" text="
-Das tauschen der Bahnen wird in Multitoolkursen benutzt und sagt dem Helfer, in welche Bahn er nach dem Wendemanöver fahren soll.
-Beim aktiven tauschen, wechseln die Fahrer die Seite.
+Das Tauschen der Bahnen wird in Multitoolkursen benutzt und sagt dem Helfer, in welche Bahn er nach dem Wendemanöver fahren soll.
+Beim aktiven Tauschen, wechseln die Fahrer die Seite.
 Da dies etwas zu kompliziert zu erklären ist, werfen wir einen Blick auf 2 Beispiele.
 "/>
     <text name="CP_help_page_symetricLaneChangeExampleOff_text" text="
@@ -819,8 +819,8 @@ Somit entsteht auch kein direkter Gegenverkehr und kein Kontakt zwischen den Fah
 "/>
     <text name="CP_help_page_symetricLaneChangeExampleOn_text" text="
 Ist Bahnen tauschen eingeschaltet wird bei z.B. zwei Fahrzeugen, Fahrzeug A links und Fahrzeug B rechts, nach dem Wendemanöver die Bahn getauscht.
-Das heist dann ist Fahrzeug A rechts und Fahrzeug B links.
-Der Vorteil ist, dass alle Fahrzeuge die gleiche breite eines Wendemanövers haben und somit die gleiche Strecke zurücklegen.
+Das heißt dann ist Fahrzeug A rechts und Fahrzeug B links.
+Der Vorteil ist, dass alle Fahrzeuge die gleiche Breite eines Wendemanövers haben und somit die gleiche Strecke zurücklegen.
 Für Ernter ist das relativ wichtig, da so das Rohr immer frei zugängig ist.
 Nachteil ist, dass sich die Fahrzeug so begegnen können.
 
@@ -842,7 +842,7 @@ Die Informationen sind:
 - Wird blockiert
 - Sollte aufgetankt werden
 - Muss aufgetankt werden
-- Sollte repariert werden
+- Muss repariert werden
 - Muss aufgefüllt werden
 - Muss entladen werden
 - Arbeit beendet
@@ -850,6 +850,7 @@ Die Informationen sind:
 - ÜLW entladen
 - Kein Geld mehr
 - Wartet auf besseres Wetter
+- Warte solange Schnee liegt
 - Warte auf Abfahrer
 - Hat den Kurs verlassen, gestoppt
 - Ballentyp nicht gefunden
@@ -857,6 +858,10 @@ Die Informationen sind:
 - Abladen zum Boden nicht möglich
 - Schneidwerk nicht unterstützt
 - Schneidwerk ankuppeln deaktiviert
+- Falsche Jahreszeit
+- Falsche Frucht für Mission ausgewählt
+- Paletten sind voll
+- Keine Paletten
 "/>
     <text name="CP_help_page_vineWork_title" text="Arbeit auf Reben"/>
     <text name="CP_help_page_vineWorkConditions_text" text="
@@ -985,25 +990,25 @@ Passt euch die Position so nicht, könnt ihr den Fahrer stoppen und die Position
 Bedenkt dabei, dass das automatische Abtanken mit CP in Fahrtrichtung des Laders erfolgt. Lasst dem Abfahrer genug Platz, um am Lader vorbeizukommen.
 "/>
     <text name="CP_help_page_siloLoaderBasic_text" text="
-Als erstes muss auf der Helferkarte der Lade-Marker gesetzt werden.
-Dieses erkennt vorhandende Haufen oder Silos und markiert den ausgewählten.
+Als erstes muss auf der Helferkarte der Lademarker gesetzt werden.
+Dieser erkennt vorhandende Haufen oder Silos und markiert den ausgewählten.
 Anschließend kann der Helfer gestartet werden.
 "/>
     <text name="CP_help_page_shovelLoader_title" text="Radlader/Frontlader"/>
     <text name="CP_help_page_shovelLoaderGeneral_text" text="
-Mit einem Radlader oder Traktor mit Frontlader und Schaufel lassen sich Haufen vom Boden oder aus einem Bunker Silo automatisch aufnehmen und in einen Anhänger oder Lager abladen.
+Mit einem Radlader oder Traktor mit Frontlader und Schaufel lassen sich Haufen vom Boden oder aus einem Bunkersilo automatisch aufnehmen und in einen Anhänger oder Lager abladen.
 Die Schaufel wird dabei automatisch an die richtigen Positionen gefahren.
 Ist der Modus im HUD nicht direkt zu sehen, schalte die &quot;Startposition&quot; durch bis der Modus erscheint.
 
-Im HUD erscheint dann das gewohnte Ziel-Icon um direkt mit dem richtigen Modus auf der Helfer Karte zu landen.
-Es gibt eine Anzeige, die die verbleibenden Füllmenge des Haufens anzeigt.
-Die Arbeitsbreite muss im HUD eventuell angepasst werden, wenn ihr ein Bunker Silo leeren möchtet, um nicht seitlich in die Wand zu fahren.
+Im HUD erscheint dann das gewohnte Ziel-Icon um direkt mit dem richtigen Modus auf der Helferkarte zu landen.
+Es gibt eine Anzeige, die die verbleibende Füllmenge des Haufens anzeigt.
+Die Arbeitsbreite muss im HUD eventuell angepasst werden, wenn ihr ein Bunkersilo leeren möchtet, um nicht seitlich in die Wand zu fahren.
 
 Der Versatz der Schaufelhöhe dient dazu, die Höhe über dem Boden anzupassen. Diese Höhe sollte relativ genau sein, damit auch alles eingesammelt wird
 oder damit der Radlader nicht an Kanten fest hängt. Wird der Wert verändert, fährt die Schaufel automatisch auf die Position und die eingestellte Höhe.
-Ein Klick auf den Text, setzt den Wert auf 0 zurück. Der Wert lässt sich zwischen +1 bis -1 anpassen.
+Ein Klick auf den Text setzt den Wert auf 0 zurück. Der Wert lässt sich zwischen +1 bis -1 anpassen.
 
-Schaufeln mit Gebiss öffnen dieses automatisch beim Laden und Abladen und schließen dieses zum Transport.
+Schaufeln mit Gebiss öffnen dieses automatisch beim Laden und Abladen und schließen es zum Transport.
 Die Schaufel zum Zerkleinern von Zuckerrüben wird mit allen Funktionen unterstützt.
 "/>
     <text name="CP_help_page_shovelLoaderBasic_text" text="
@@ -1011,8 +1016,8 @@ Um einen Radladerfahrer zu starten, müssen zunächst über das Ziel-Icon im HUD
 Die Ladeposition wird wie auch bereits beim Lader gewählt. Ein blauer Rahmen entsteht um den gefundenen Haufen.
 
 Die Abladeposition hängt davon ab, ob du in einen Anhänger oder in eine Abladestation entladen möchtest.
-Falls Abladen in einen Anhänger aktiviert ist, muss der Bereich, wo der Anhänger abgestellt wird, auf der AI-Karte ausgewählt werden.
-Der Helfer fährt automatisch zu stehenden Anhängern in diesem Bereich. Die Richtung des Pfeils auf der AI-Karte spielt hier keine Rolle.
+Falls Abladen in einen Anhänger aktiviert ist, muss der Bereich, wo der Anhänger abgestellt wird, auf der Helferkarte ausgewählt werden.
+Der Helfer fährt automatisch zu stehenden Anhängern in diesem Bereich. Die Richtung des Pfeils auf der Helferkarte spielt hier keine Rolle.
 Möchtest du in eine Abladestation entladen, muss zunächst das Ziel umgestellt werden und anschließend der Marker auf den Trigger gesetzt werden.
 "/>
     <text name="CP_help_page_shovelLoaderTrigger_text" text="
@@ -1026,13 +1031,13 @@ Das Kreuz sollte jetzt, wie im Bild dargestellt, gelb sein.
     <!---->
     <!--Input bindings-->
     <!---->
-    <text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" text="CP: Nächsten Debugkanal auswählen"/>
-    <text name="input_CP_DBG_CHANNEL_SELECT_NEXT" text="CP: Vorherigen Debugkanal auswählen"/>
+    <text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" text="CP: Vorherigen Debugkanal auswählen"/>
+    <text name="input_CP_DBG_CHANNEL_SELECT_NEXT" text="CP: Nächsten Debugkanal auswählen"/>
     <text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT" text="CP: Aktuellen Debugkanal ein-/ausschalten"/>
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Debugkanäle-Menü anzeigen/ausblenden"/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Mini-GUI öffnen"/>
     <text name="input_CP_START_STOP" text="CP: CP-Helfer starten/stoppen"/>
-    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Aktueller ausgewählten Job ändern"/>
+    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Aktuell ausgewählten Job ändern"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Startpunkt ändern"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: Aktuell geladenen Kurs löschen"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="CP: Kurs Sichtbarkeit ändern"/>

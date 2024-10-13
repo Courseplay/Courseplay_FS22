@@ -55,8 +55,8 @@
     <!---->
     <!--AI bale finder job parameters-->
     <!---->
-    <text name="CP_baleFinderJobParameters_subTitle_baleWrapType" text="Baletype:"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_title" text="Baletype:"/>
+    <text name="CP_baleFinderJobParameters_subTitle_baleWrapType" text="Bale type:"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_title" text="Bale type:"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="all bales"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="only wrapped"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="only not wrapped"/>
@@ -114,7 +114,7 @@
     <text name="CP_ai_messageErrorIsFull" text="AI worker %s has stopped work unexpectedly - tank is full!"/>
     <text name="CP_ai_messageError" text="AI worker %s has stopped work unexpectedly - left the course!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI worker %s has stopped work unexpectedly - no bales of selected type found!"/>
-    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no path found!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
     <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
     <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!"/>
@@ -168,12 +168,12 @@
     <text name="CP_vehicle_setting_showCourse_startStop" text="Start/stop only"/>
     <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="Current waypoints"/>
     <text name="CP_vehicle_setting_showCourse_all" text="All waypoints"/>
-    <text name="CP_vehicle_setting_openHudWithMouse_title" text="Open Hud with mouse"/>
-    <text name="CP_vehicle_setting_openHudWithMouse_tooltip" text="When deactivated, Hud can only be opened with the Keybind."/>
+    <text name="CP_vehicle_setting_openHudWithMouse_title" text="Open HUD with mouse"/>
+    <text name="CP_vehicle_setting_openHudWithMouse_tooltip" text="When deactivated, the HUD can only be opened with the keybind."/>
     <text name="CP_vehicle_setting_fuelSave_title" text="Fuel save"/>
     <text name="CP_vehicle_setting_fuelSave_tooltip" text="Turns off the vehicle, while waiting."/>
     <text name="CP_vehicle_setting_stopAtEnd_title" text="Stop at end"/>
-    <text name="CP_vehicle_setting_stopAtEnd_tooltip" text="Stop at end."/>
+    <text name="CP_vehicle_setting_stopAtEnd_tooltip" text="Vehicle stops at the end point after work."/>
     <text name="CP_vehicle_setting_allowReversePathfinding_title" text="Allow reverse for pathfinding"/>
     <text name="CP_vehicle_setting_allowReversePathfinding_tooltip" text="When applicable, allow the pathfinder to generate courses containing reverse driving."/>
     <text name="CP_vehicle_setting_allowPathfinderTurns_title" text="Allow using the pathfinder in turns"/>
@@ -201,14 +201,14 @@
     <text name="CP_vehicle_setting_combineOffsetX_title" text="Offset left/right"/>
     <text name="CP_vehicle_setting_combineOffsetX_tooltip" text="Offset for harvester pipe right(+) and left(-)"/>
     <text name="CP_vehicle_setting_combineOffsetZ_title" text="Offset forwards/backwards"/>
-    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Offset for harvester pipe with forwards(+) and backwards(-)"/>
+    <text name="CP_vehicle_setting_combineOffsetZ_tooltip" text="Offset for harvester pipe forwards(+) and backwards(-)"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="If the unloader's fill level is over this value, it won't wait for the combine."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Check for silage additive"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="If active and silage additive is emtpy, the driver will stop."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Symmetric lane change"/>
     <text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="Symmetric lane change"/>
-    <text name="CP_vehicle_setting_convoyDistance_title" text="Convoy Distance"/>
+    <text name="CP_vehicle_setting_convoyDistance_title" text="Convoy distance"/>
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Distance between vehicles. Value: 40 - 400"/>
     <text name="CP_vehicle_setting_debugActive_title" text="Vehicle debug"/>
     <text name="CP_vehicle_setting_debugActive_tooltip" text="Enables/disables debug for this vehicle."/>
@@ -223,8 +223,8 @@
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
     <text name="CP_vehicle_setting_levelerHeightOffset_title" text="Shield height offset"/>
-    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Offset of the shield form the ground. Value: 0 - 1"/>
-    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Shovel hight offset."/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Offset of the shield from the ground. Value: 0 - 1"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Shovel height offset"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Offset for the shovel loading position. Value: -1 - 1"/>
     <!---->
     <!--Vehicle settings speed-->
@@ -252,7 +252,7 @@
     <!--Vehicle settings combine-->
     <!---->
     <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatic cutter attach"/>
-    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Allows automatic attachment of a cutter, which needs to be attach as a trailer or on a seperate header trailer."/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Allows automatic attaching of a cutter, which needs to be attached as a trailer or on a seperate header trailer."/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="Always unfold the pipe"/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="Always unfold the pipe when combine is full and waiting for unloader."/>
     <text name="CP_vehicle_setting_stopForUnload_title" text="Stop while unloading"/>
@@ -289,11 +289,11 @@
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Rows per land"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="When the center mode is 'lands', this many rows are in each block. Value: 0 - 24"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip" text="Drive clockwise or counterclockwise on the headland."/>
     <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_title" text="Center direction"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip" text="Drive the center of the field clockwise or counterclockwise."/>
     <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_title" text="Island Headland direction"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="Bypass the island clockwise or counterclockwise."/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="Bypass islands clockwise or counterclockwise."/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_clockwise" text="clockwise"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_counterclockwise" text="counterclockwise"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_clockwise" text="clockwise"/>
@@ -360,7 +360,7 @@
     <text name="CP_global_setting_wageModifier_title" text="Cp driver wages"/>
     <text name="CP_global_setting_wageModifier_tooltip" text="Cp driver wages as percentage of normal worker's wages."/>
     <text name="CP_global_setting_autoRepair_title" text="Automatic repair"/>
-    <text name="CP_global_setting_autoRepair_tooltip" text="Cp driver automatically repair, while driving."/>
+    <text name="CP_global_setting_autoRepair_tooltip" text="Cp drivers automatically repair, while driving."/>
     <text name="CP_global_setting_autoRepair_off" text="Don't repair"/>
     <text name="CP_global_setting_autoRepair_less_than_25" text="&lt; 25%"/>
     <text name="CP_global_setting_autoRepair_less_than_70" text="&lt; 70%"/>
@@ -371,25 +371,25 @@
     <text name="CP_global_setting_waitForRefueling_tooltip" text="Vehicle waits until it is refueled."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Broken threshold"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Driver will be released, if the vehicle or an implement is more broken. 100% is off."/>
-    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
-    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stop harvesters while it's raining"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, all harvesters will wait for the rain to stop."/>
     <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
     <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
     <text name="CP_global_setting_fruitDestruction_only_cp" text="Activated for Courseplay helpers"/>
-    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for all helpers"/>
     <!---->
     <!--Global settings user settings-->
     <!---->
     <text name="CP_global_setting_subTitle_userSettings" text="User settings"/>
     <text name="CP_global_setting_expertModeActive_title" text="Expert mode "/>
     <text name="CP_global_setting_expertModeActive_tooltip" text="Enables/disables expert mode with additional features."/>
-    <text name="CP_global_setting_controllerHudSelected_title" text="Gamepad friendly Hud"/>
-    <text name="CP_global_setting_controllerHudSelected_tooltip" text="Use the Hud, wich can be controlled with a Gamepad."/>
+    <text name="CP_global_setting_controllerHudSelected_title" text="Gamepad friendly HUD"/>
+    <text name="CP_global_setting_controllerHudSelected_tooltip" text="Use the HUD, which can be controlled with a gamepad."/>
     <text name="CP_global_setting_showActionEventHelp_title" text="Action event help"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Shows action event help texts."/>
-    <text name="CP_global_setting_showsAllActiveCourses_title" text="Shows all active courses"/>
+    <text name="CP_global_setting_showsAllActiveCourses_title" text="Show all active courses"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Shows all active courses on the in game map."/>
-    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Shows courses on the minimap"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Show courses on the minimap"/>
     <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Enables drawing of the course onto the mini map."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Show info texts window"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Displays an info text window."/>
@@ -439,8 +439,8 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_courseManager_targetIsNoFolderError" text="Target location is not a folder (%s)!"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="Target location is not a course (%s)!"/>
     <text name="CP_courseManager_invalidNameError" text="Course name (%s) is invalid!"/>
-    <text name="CP_courseManager_basicSettings" text="Course interaction."/>
-    <text name="CP_courseManager_advancedSettings" text="Edit files."/>
+    <text name="CP_courseManager_basicSettings" text="Course interaction"/>
+    <text name="CP_courseManager_advancedSettings" text="Edit files"/>
     <text name="CP_courseManager_activate" text="Activate"/>
     <!---->
     <!--Course editor-->
@@ -511,10 +511,10 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_customFieldManager_draw_header" text="Draw custom field lines with right click."/>
     <text name="CP_customFieldManager_draw_sub_header" text="Hold the left shift key for a straight line."/>
     <text name="CP_customFieldManager_save" text="Save custom field"/>
-    <text name="CP_controllerGui_startRecording" text="Start custom field recording."/>
-    <text name="CP_controllerGui_stopRecording" text="Stop custom field recording."/>
-    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
-    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
+    <text name="CP_controllerGui_startRecording" text="Start custom field recording"/>
+    <text name="CP_controllerGui_stopRecording" text="Stop custom field recording"/>
+    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording"/>
+    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording"/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -570,7 +570,7 @@ Alternatively you can also start the driver from the HUD if you are close to the
 "/>
     <text name="CP_help_page_courseGeneratorBasic_title" text="Course Generator Basics"/>
     <text name="CP_help_page_courseGeneratorBase_text" text="
-Courseplay's course generator is a sophisticated tool that can generate Fieldwork courses customized for every possible job.
+Courseplay's course generator is a sophisticated tool that can generate fieldwork courses customized for every possible job.
 It has many settings and it may take some time to familiarize yourself with it. If you are new to Courseplay, you should
 probably start playing with the number of headlands first and then venture into the more advanced settings.
 After changing a parameter, hit Generate to see what impact the setting has. The best way to explore all the possibilities
@@ -605,7 +605,7 @@ wich side the pipe or conveyor belt is.
 Negative values enlarge worked area beyond the field boundary to cover up field borders that are not perfectly detected.
 "/>
     <text name="CP_help_page_courseGeneratorCenter_text" text="
-The Generator provides several different patterns to generate the course for the center of the field. The best pattern is
+The generator provides several different patterns to generate the course for the center of the field. The best pattern is
 usually determined by the job and the implements selected. The patterns were created based on feedback and information from
 our community.
 The simple up down pattern works almost every time for any tool. Other patterns may improve efficiency, such as using the
@@ -687,7 +687,7 @@ For loading a course you would have to select the folder first, then select the 
 Clicking on change mode activates the edit mode of the course manager.
 "/>
     <text name="CP_help_page_courseManagerEdit_text" text="
-With the edit mode is active you have these options:
+When the edit mode is active you have these options:
 - Moving a course into another directory.
 - Deleting courses or directories.
 - Renaming courses or directories.
@@ -714,7 +714,7 @@ G: The settings shown under this line depend on the current job. These will be e
 "/>
     <text name="CP_help_page_minihud_fieldwork_title" text="Fieldwork"/>
     <text name="CP_help_page_minihud_fieldwork_text" text="
-A: Click to select where to the start the work. If a multitool course is loaded, on the right side you can select the lane.
+A: Click to select where to the start the work. If a multitool course is loaded, you can select the lane on the right side.
 B: Displays the name of the loaded course. If you just generated a course, it shows 'temporary course'. On the right side you'll see the current/total waypoints once the job is started.
 C: Clicking on the text will recalculate the working width, or you can set it manually on the right by clicking +/-, or with the mouse wheel over the number.
 D: Some tools need an offset to the side. Courseplay will calculate it automatically when clicking on the text, or you can change it manually just like the working width.
@@ -758,7 +758,7 @@ Start and End should not overlap!
 "/>
     <text name="CP_help_page_customFieldDone_text" text="
 The custom field borders will be displayed in the AI menu.
-By clicking on the name you will get the option to either delete, rename or edit it with the Editor.
+By clicking on the name you will get the option to either delete, rename or edit it with the editor.
 "/>
     <text name="CP_help_page_customFieldDraw_text" text="
 The second option is to draw the custom field on the map of the AI menu.
@@ -778,7 +778,7 @@ Once a multi tool course is loaded you will need to select the position (lane) f
 Those lanes are always named the same:
 left(2), left(1), center, right(1), right(2).
 2 vehicles have left(1) and right(1), 4 have left(2) and right(2) as well.
-With 3 or 5 vehicles you there is also a center option.
+With 3 or 5 vehicles there is a center option as well.
 Selecting a different lane also updates the course display to show the actual course for that vehicle.
 "/>
     <text name="CP_help_page_convoyBasic_text" text="
@@ -817,7 +817,7 @@ installed you can use it to run and unload the bale collector automatically.
 "/>
     <text name="CP_help_page_symetricLaneChange_title" text="Lane switch"/>
     <text name="CP_help_page_symetricLaneChangeBasic_text" text="
-Lane switching is used on multitool course and tells the Helper, in wich lane he should drive after the turn.
+Lane switching is used on multitool courses and tells the helper, in which lane he should drive after the turn.
 With lane switch active, the vehicle changes the side after each turn.
 This is a bit hard to understand so let's have a look at two examples.
 "/>
@@ -841,13 +841,13 @@ In the example with the Combine it means, no Combine will have fruit left and ri
 "/>
     <text name="CP_help_page_infoPanel_title" text="Info panel"/>
     <text name="CP_help_page_infoPanelBasic_text" text="
-This is our Info Panel, it can be moved around with the mouse courser, just like our Mini HUD.
-Beside the name and the version of our mod, it also shows status information about the Courseplay drivers.
+This is our info panel, it can be moved around with the mouse cursor, just like our mini HUD.
+Besides the name and the version of our mod, it also shows status information about the Courseplay drivers.
 While hovering the status message, the name of the vehicle will be displayed.
 By clicking on it, you can jump directly into the vehicle.
 "/>
     <text name="CP_help_page_infoPanelMsg_text" text="
-The Informations are the following:
+The status messages are:
 - Helper is stuck
 - Blocked by an object
 - Should be refueled
@@ -860,6 +860,7 @@ The Informations are the following:
 - Driving to trailer
 - Ouf of money
 - Waiting for rain to finish
+- Waits for snow to disappear
 - Waiting on unloader
 - Left the course, stopped
 - Wrong bale type
@@ -867,6 +868,10 @@ The Informations are the following:
 - Tipping to ground not possible
 - Cutter not supported
 - Cutter attaching deactivated
+- Wrong season for fruit
+- Wrong fruit for mission selected
+- Pallets are full
+- No pallets
 "/>
     <text name="CP_help_page_vineWork_title" text="Vine work"/>
     <text name="CP_help_page_vineWorkConditions_text" text="
@@ -887,8 +892,8 @@ E.g. the default harvester needs to drive and work on the vine.
 A vine course should be generated on the vines, as it got to drive and work on the vines.
 "/>
     <text name="CP_help_page_vineWorkPruner_text" text="
-The pre-pruner works on the vines, so the course have to be generated on the vines.
-The Tools comes with an offset for the tractor, so the tractor drives between the vines.
+The pre-pruner works on the vines, so the course has to be generated on the vines.
+The tool comes with an offset for the tractor, so the tractor drives between the vines.
 "/>
     <text name="CP_help_page_vineWorkSprayer_text" text="
 The sprayer works next to the vines, so it has to drive either left or right from the vines.
@@ -997,32 +1002,32 @@ In case this position doesn't fit for your environment, you can stop the driver,
 Keep in mind that the automatic unloading with CP goes in the same direction as the loader. Keep some space for the unloader to bypass the loader at the side.
 "/>
     <text name="CP_help_page_siloLoaderBasic_text" text="
-To start the loading-marker on the AI menu needs to be set.
+To start, the loading marker on the AI menu needs to be set.
 The marker detects heaps or silos and highlights them on the map.
 Now it's possible to start the helper.
 "/>
     <text name="CP_help_page_shovelLoader_title" text="Wheel loader/Front loader"/>
     <text name="CP_help_page_shovelLoaderGeneral_text" text="
-This mode enables wheel loader and tractors with a front loader. 
+This mode enables the use of wheel loaders and tractors with a front loader. 
 With a shovel attached a heap can be picked up from the ground or loading from a bunker silo can be accomplished.
 The picked up fill level can be unloaded automatically into a nearby trailer or a selected unloading station like a BGA.
 The shovel will automatically be moved to the correct positions for loading, unloading and so on.
-In case the mode is not directly visable on the hud, you can toggle the &quot;start position&quot; until the shovel mode appears.
+In case the mode is not directly visible on the HUD, you can toggle the &quot;start position&quot; until the shovel mode appears.
 
-The target icon on the hud can be used to open the AI map to select the loading and the unloading targets.
-The hud also shows the leftover fill level of the heap or silo, while the helper is working.
+The target icon on the HUD can be used to open the AI map to select the loading and the unloading targets.
+The HUD also shows the leftover fill level of the heap or silo, while the helper is working.
 If the loading target is a bunker silo, then the work width might need to be adjusted to avoid hitting the side walls of the silo.
 
-The hight offset setting is used to adjust the hight above the ground, as not all shovel can calculated correctly. 
-This should be checked, if the shovel is to low for loading and the driver can't turn anymore or the shovel is to high and fill level is missed to the ground.
+The height offset setting is used to adjust the height above the ground, as not all shovels can be calculated correctly. 
+This should be checked, if the shovel is too low for loading and the driver can't turn anymore or the shovel is too high and fill level is missed to the ground.
 If the value gets changed, the shovel will automatically move to the loading position to show the impact of the offset.
-To reset the offset you need to click on the settings text in the hud. The value can be adjusted from +1 to -1 in 0.1 setps.
+To reset the offset you need to click on the settings text in the HUD. The value can be adjusted from +1 to -1 in 0.1 setps.
 
 Shovels with a silage grab will open and close automatically for loading and unloading.
-The shovel to shred sugar beets is completly functional as well.
+The shovel to shred sugar beets is completely functional as well.
 "/>
     <text name="CP_help_page_shovelLoaderBasic_text" text="
-To start a wheel loader helper, you need to set the load and unload positions by clicking the target icon on the hud.
+To start a wheel loader helper, you need to set the load and unload positions by clicking the target icon on the HUD.
 The loading position works the same like the one from the loader mode. A blue square will be created around the heap.
 
 The unloading position depends if you want to unload into a trailer or into an unloading station.
@@ -1041,8 +1046,8 @@ Now your selection should look similar to the image.
     <!---->
     <!--Input bindings-->
     <!---->
-    <text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" text="CP: Select next debug channel"/>
-    <text name="input_CP_DBG_CHANNEL_SELECT_NEXT" text="CP: Select previous debug channel"/>
+    <text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" text="CP: Select previous debug channel"/>
+    <text name="input_CP_DBG_CHANNEL_SELECT_NEXT" text="CP: Select next debug channel"/>
     <text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT" text="CP: Change current debug channel"/>
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Show/hide debug channel menu"/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Open mini GUI"/>
