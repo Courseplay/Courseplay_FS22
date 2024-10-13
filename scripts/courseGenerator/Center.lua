@@ -340,8 +340,9 @@ function Center:_calculateRowDistribution(fieldWidth, overlapLast)
     local centerWorkingWidth = self.context:getCenterRowSpacing()
     -- only use the overlap-corrected headland width if we have headlands, otherwise, must use the
     -- nominal working width to avoid generating rows extending outside of the field
-    local headlandWorkingWidth = self.mayOverlapHeadland and self.context:getHeadlandWorkingWidth() or
-            self.context.workingWidth
+    local headlandWorkingWidth = self.mayOverlapHeadland and
+            self.context:getHeadlandWorkingWidth() * (1 - self.context:getHeadlandOverlap()) or
+            self.context:getHeadlandWorkingWidth()
     -- making the field width 1 cm less to avoid generating the last row exactly on the headland if
     -- the field width is an exact multiple of the working width
     local nRows = math.floor((fieldWidth - headlandWorkingWidth - 0.01) / centerWorkingWidth) + 1
@@ -353,14 +354,15 @@ function Center:_calculateRowDistribution(fieldWidth, overlapLast)
             return { fieldWidth - centerWorkingWidth / 2 }
         end
     else
-        if self.context.evenRowDistribution then
-            -- #1
-            centerWorkingWidth = (fieldWidth - headlandWorkingWidth) / nRows
-        end
         local firstRowOffset
         local rowOffsets = {}
         -- the first/last row's offset from the surrounding headland centerline
         local outermostRowOffset = headlandWorkingWidth / 2 + centerWorkingWidth / 2
+        if self.context.evenRowDistribution then
+            -- #1, calculate this after the outermost row offset, so that one uses the real working
+            -- width for the first and last row to not go outside of the field
+            centerWorkingWidth = (fieldWidth - headlandWorkingWidth) / nRows
+        end
         if self.mayOverlapHeadland then
             -- #3 we have headlands
             if overlapLast then

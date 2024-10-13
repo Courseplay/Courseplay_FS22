@@ -52,8 +52,8 @@ function FieldworkContext:log()
             self.fieldCornerRadius, self.sharpenCorners, self.bypassIslands, self.nIslandHeadlands, self.islandHeadlandClockwise)
     self.logger:debug('row pattern: %s, row angle auto: %s, %.1fº, even row distribution: %s, use baseline edge: %s, small overlaps: %s',
             self.rowPattern, self.autoRowAngle, math.deg(self.rowAngle), self.evenRowDistribution, self.useBaselineEdge, self.enableSmallOverlapsWithHeadland)
-    self.logger:debug('start location %s, baseline edge %s, vehicles %d, same turn width %s',
-            self.startLocation, self.baselineEdge, self.nVehicles, self.useSameTurnWidth)
+    self.logger:debug('start location %s, baseline edge %s, vehicles %d, same turn width %s, headland overlap %.1f',
+            self.startLocation, self.baselineEdge, self.nVehicles, self.useSameTurnWidth, self.overlap * 100)
 end
 
 function FieldworkContext:addError(logger, ...)
@@ -225,15 +225,20 @@ function FieldworkContext:setFieldMargin(margin)
     return self
 end
 
---- Override the working width for headland passes
+--- Override the working width for headland passes (if not the same as the working width)
 ---@param w number
 function FieldworkContext:setHeadlandWorkingWidth(w)
     self.headlandWorkingWidth = w
 end
 
----@return number width of a headland pass in meters. Default is the working width less the overlap.
+---@return number width of a headland pass in meters
 function FieldworkContext:getHeadlandWorkingWidth()
-    return self.headlandWorkingWidth or self.workingWidth * (1 - self.overlap)
+    return self.headlandWorkingWidth or self.workingWidth
+end
+
+---@return number headland overlap
+function FieldworkContext:getHeadlandOverlap()
+    return self.overlap
 end
 
 --- Disable sequencing of blocks, just generate them, with the rows and then stop.

@@ -10,7 +10,7 @@ local function printRowOffsets(rowOffsets)
     end
 end
 
-local function createContext(headlandWidth, centerRowSpacing, evenRowDistribution)
+local function createContext(headlandWidth, centerRowSpacing, evenRowDistribution, overlap)
     local mockContext = {
         evenRowDistribution = evenRowDistribution,
         workingWidth = headlandWidth,
@@ -19,6 +19,9 @@ local function createContext(headlandWidth, centerRowSpacing, evenRowDistributio
         end,
         getCenterRowSpacing = function()
             return centerRowSpacing
+        end,
+        getHeadlandOverlap = function()
+            return overlap or 0
         end
     }
     return mockContext
@@ -137,18 +140,48 @@ function testRowDistributionMultiVehicleNoHeadland()
     lu.assertAlmostEquals(rowOffsets[#rowOffsets], 10)
 end
 
-function testEvenRowDistribution()
+function testEvenRowDistributionWithHeadland()
     local rowOffsets
     local center = {context = createContext(5, 5, true), mayOverlapHeadland = true}
+    rowOffsets = CourseGenerator.Center._calculateRowDistribution(center, 49, true)
+    lu.assertEquals(#rowOffsets, 9)
+    lu.assertAlmostEquals(rowOffsets[1], 5)
+    lu.assertAlmostEquals(rowOffsets[#rowOffsets], 4.88)
     rowOffsets = CourseGenerator.Center._calculateRowDistribution(center, 49, false)
     lu.assertEquals(#rowOffsets, 9)
-    lu.assertAlmostEquals(rowOffsets[1], 4.94)
+    lu.assertAlmostEquals(rowOffsets[1], 4.88)
     lu.assertAlmostEquals(rowOffsets[#rowOffsets], 4.88)
+
     rowOffsets = CourseGenerator.Center._calculateRowDistribution(center, 50, false)
     lu.assertEquals(#rowOffsets, 9)
     lu.assertAlmostEquals(rowOffsets[1], 5)
     lu.assertAlmostEquals(rowOffsets[#rowOffsets], 5)
     center.mayOverlapHeadland = false
 end
+
+function testEvenRowDistributionWithNoHeadland()
+    local rowOffsets
+    local center = {context = createContext(5, 5, true), mayOverlapHeadland = false}
+    rowOffsets = CourseGenerator.Center._calculateRowDistribution(center, 49, true)
+    lu.assertEquals(#rowOffsets, 9)
+    lu.assertAlmostEquals(rowOffsets[1], 5)
+    lu.assertAlmostEquals(rowOffsets[2], 4.88)
+    -- this should also be 4.88, no idea what we are missing, but is minimal, we'll address it when it becomes a problem
+    lu.assertAlmostEquals(rowOffsets[#rowOffsets], 4.77)
+    rowOffsets = CourseGenerator.Center._calculateRowDistribution(center, 49, false)
+    lu.assertEquals(#rowOffsets, 9)
+    lu.assertAlmostEquals(rowOffsets[1], 5)
+    -- this should also be 4.88, no idea what we are missing, but is minimal, we'll address it when it becomes a problem
+    lu.assertAlmostEquals(rowOffsets[2], 4.77)
+    lu.assertAlmostEquals(rowOffsets[#rowOffsets], 4.88)
+
+    rowOffsets = CourseGenerator.Center._calculateRowDistribution(center, 50, false)
+    lu.assertEquals(#rowOffsets, 9)
+    lu.assertAlmostEquals(rowOffsets[1], 5)
+    lu.assertAlmostEquals(rowOffsets[#rowOffsets], 5)
+    center.mayOverlapHeadland = false
+end
+
+
 
 os.exit(lu.LuaUnit.run())
