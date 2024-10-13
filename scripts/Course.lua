@@ -212,12 +212,13 @@ function Course:enrichWaypointData(startIx)
         -- of setting dx/dz to 0 (instead of NaN) but should investigate as it does not make sense
         local dx, dz = MathUtil.vector2Normalize(nx - cx, nz - cz)
         -- check for NaN
-        if dx == dx and dz == dz then
+        if dx == dx and dz == dz and not (dx == 0 and dz == 0)then
             self.waypoints[i].dx, self.waypoints[i].dz = dx, dz
             self.waypoints[i].yRot = MathUtil.getYRotationFromDirection(dx, dz)
         else
             self.waypoints[i].dx, self.waypoints[i].dz = 0, 0
-            self.waypoints[i].yRot = 0
+            -- NaN or both 0, use the direction of the previous waypoint
+            self.waypoints[i].yRot = self.waypoints[i - 1].yRot
         end
         self.waypoints[i].angle = math.deg(self.waypoints[i].yRot)
         self.waypoints[i].calculatedRadius = i == 1 and math.huge or self:calculateRadius(i)
@@ -615,8 +616,15 @@ function Course:getWaypointYRotation(ix)
     local cx, _, cz = self:getWaypointPosition(i)
     local nx, _, nz = self:getWaypointPosition(i + 1)
     local dx, dz = MathUtil.vector2Normalize(nx - cx, nz - cz)
-    -- check for NaN
-    if dx ~= dx or dz ~= dz then
+    -- check for NaN, or if current and next are at the same position
+    if dx ~= dx or dz ~= dz or (dx == 0 and dz == 0) then
+        -- use the direction of the previous waypoint if exists, otherwise the next. This is to make sure that
+        -- the WaypointNode used by the PPC has a valid direction
+        if i > 1 then
+            return self.waypoints[i - 1].yRot
+        else
+            return self.waypoints[i + 1].yRot
+        end
         return 0
     end
     return MathUtil.getYRotationFromDirection(dx, dz)
