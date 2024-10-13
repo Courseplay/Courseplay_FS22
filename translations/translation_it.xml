@@ -367,6 +367,8 @@
     <text name="CP_global_setting_autoRepair_always" text="Ripara sempre"/>
     <text name="CP_global_setting_fuelThreshold_title" text="Livello carburante"/>
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Il conducente verrà fermato, se il livello del carburante è basso."/>
+    <text name="CP_global_setting_waitForRefueling_title" text="Waits for refueling"/>
+    <text name="CP_global_setting_waitForRefueling_tooltip" text="Vehicle waits until it is refueled."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Livello riparazione"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Il conducente verrà feramto se il veicolo od un attrezzo ha un livello di riparazione basso. Al 100% è spento."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Ferma la mietitrebbia quando piove."/>

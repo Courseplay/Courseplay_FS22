@@ -192,10 +192,6 @@ function CpAICombineUnloader:getCpCombineUnloaderJobParameters()
     return spec.cpJob:getCpJobParameters() 
 end
 
-function CpAICombineUnloader:getCpDriveStrategy(superFunc)
-    return superFunc(self) or self.spec_cpAICombineUnloader.driveStrategy
-end
-
 --- Makes sure only trailers with discharge nodes are used.
 function CpAICombineUnloader:isValidTrailer(trailer)
     local spec = trailer.spec_dischargeable

@@ -367,6 +367,8 @@
     <text name="CP_global_setting_autoRepair_always" text="Javítsa"/>
     <text name="CP_global_setting_fuelThreshold_title" text="Minimum üzemanagszint"/>
     <text name="CP_global_setting_fuelThreshold_tooltip" text="A segítő abbahagyja a munkát, ha az üzemanyagszint ez alá csökken."/>
+    <text name="CP_global_setting_waitForRefueling_title" text="Waits for refueling"/>
+    <text name="CP_global_setting_waitForRefueling_tooltip" text="Vehicle waits until it is refueled."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Maximum meghibásodás"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="A segítő abbahagyja a munkát, ha a jármű/szerszám ennél jobban meghibásodik. 100% soha nem hagyja abba."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Kombájn megállítása esőben"/>

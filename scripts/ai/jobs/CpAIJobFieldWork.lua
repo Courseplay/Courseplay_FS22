@@ -67,7 +67,7 @@ function CpAIJobFieldWork:isFinishingAllowed(message)
         end
         return false
     end
-    return true
+    return CpAIJob.isFinishingAllowed(self, message)
 end
 
 ---@param vehicle table

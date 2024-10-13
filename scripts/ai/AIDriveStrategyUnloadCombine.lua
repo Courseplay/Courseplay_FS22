@@ -1150,7 +1150,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 
 function AIDriveStrategyUnloadCombine:isFuelSaveAllowed()
-    return self.state.properties.fuelSaveAllowed
+    return self.state.properties.fuelSaveAllowed or AIDriveStrategyCourse.isFuelSaveAllowed(self)
 end
 
 function AIDriveStrategyUnloadCombine:isCoverOpeningAllowed()

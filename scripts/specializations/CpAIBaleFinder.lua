@@ -114,10 +114,6 @@ function CpAIBaleFinder:applyCpBaleFinderJobParameters(job)
     spec.cpJob:copyFrom(job)
 end
 
-function CpAIBaleFinder:getCpDriveStrategy(superFunc)
-    return superFunc(self) or self.spec_cpAIBaleFinder.driveStrategy
-end
-
 --- Is the bale finder allowed?
 function CpAIBaleFinder:getCanStartCpBaleFinder()
 	return (AIUtil.hasImplementWithSpecialization(self, BaleWrapper) and not AIUtil.hasImplementWithSpecialization(self, Baler)) or

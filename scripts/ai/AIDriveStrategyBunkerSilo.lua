@@ -130,7 +130,7 @@ function AIDriveStrategyBunkerSilo:initializeImplementControllers(vehicle)
 end
 
 function AIDriveStrategyBunkerSilo:isFuelSaveAllowed()
-    return self.state.properties.fuelSaveAllowed
+    return self.state.properties.fuelSaveAllowed or AIDriveStrategyCourse.isFuelSaveAllowed(self)
 end
 
 -----------------------------------------------------------------------------------------------------------------------

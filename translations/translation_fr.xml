@@ -367,6 +367,8 @@
     <text name="CP_global_setting_autoRepair_always" text="Maintenir à 100%"/>
     <text name="CP_global_setting_fuelThreshold_title" text="Seuil de carburant"/>
     <text name="CP_global_setting_fuelThreshold_tooltip" text="L'ouvrier CP s'arrêtera si la jauge de carburant descend sous ce seuil."/>
+    <text name="CP_global_setting_waitForRefueling_title" text="Waits for refueling"/>
+    <text name="CP_global_setting_waitForRefueling_tooltip" text="Vehicle waits until it is refueled."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Seuil de maintenance"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="L'ouvrier CP s'arrêtera si le véhicule ou un outil est abimé avec un état d'entretien sous ce seuil. 100% = éteint."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Pas de récolte pendant la pluie"/>

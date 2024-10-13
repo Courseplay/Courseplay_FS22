@@ -367,6 +367,8 @@
     <text name="CP_global_setting_autoRepair_always" text="Sağlıklı tutun"/>
     <text name="CP_global_setting_fuelThreshold_title" text="Yakıt eşiği"/>
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Yakıt yüzdesi daha az ise sürücü serbest bırakılacaktır."/>
+    <text name="CP_global_setting_waitForRefueling_title" text="Waits for refueling"/>
+    <text name="CP_global_setting_waitForRefueling_tooltip" text="Vehicle waits until it is refueled."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Kırık eşik"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Araç veya bir ekipman daha fazla bozulursa sürücü serbest bırakılır. %100 kapalı."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>

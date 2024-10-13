@@ -367,6 +367,8 @@
     <text name="CP_global_setting_autoRepair_always" text="Opretholde 100%"/>
     <text name="CP_global_setting_fuelThreshold_title" text="Brændstofstærskel"/>
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Føreren fyres, hvis brændstofprocenten er mindre end."/>
+    <text name="CP_global_setting_waitForRefueling_title" text="Waits for refueling"/>
+    <text name="CP_global_setting_waitForRefueling_tooltip" text="Vehicle waits until it is refueled."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Vedligholdestærskel"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Føreren fyres, hvis køretøjet eller et redskab er mere ødelagt. 100% er funktionen deaktiveret."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stopper mejetærskere, imens det regner"/>

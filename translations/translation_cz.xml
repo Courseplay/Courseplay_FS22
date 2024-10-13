@@ -367,6 +367,8 @@
     <text name="CP_global_setting_autoRepair_always" text="Udržovat v dobrém stavu"/>
     <text name="CP_global_setting_fuelThreshold_title" text="Hladina paliva"/>
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Řidič bude uvolněn, pokud je procento paliva nižší."/>
+    <text name="CP_global_setting_waitForRefueling_title" text="Waits for refueling"/>
+    <text name="CP_global_setting_waitForRefueling_tooltip" text="Vehicle waits until it is refueled."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Hodnota opotřebení"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Řidič bude propuštěn, pokud je vozidlo nebo nářadí více rozbité. 100% je vypnuto."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Zastavit kombajn, když prší"/>

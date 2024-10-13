@@ -191,7 +191,7 @@ end
 
 --- Fuel save only allowed when no trailer is there to unload into.
 function AIDriveStrategyShovelSiloLoader:isFuelSaveAllowed()
-    return self.state == self.states.WAITING_FOR_TRAILER
+    return self.state == self.states.WAITING_FOR_TRAILER or AIDriveStrategyCourse.isFuelSaveAllowed(self)
 end
 
 -----------------------------------------------------------------------------------------------------------------------

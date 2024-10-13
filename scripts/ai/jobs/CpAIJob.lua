@@ -33,6 +33,11 @@ function CpAIJob.new(isServer, customMt)
 
 	self:setupJobParameters()
 	self:setupTasks(isServer)
+
+	self.isRefuelingActive = false
+
+	g_messageCenter:subscribe(MessageType.CP_FUEL_SETTING_CHANGED, self.stopRefuelling, self)
+
 	return self
 end
 
@@ -75,7 +80,56 @@ end
 ---@param message table Stop reason can be used to reverse engineer the cause.
 ---@return boolean
 function CpAIJob:isFinishingAllowed(message)
+	--- TODO_25 Move the refuel logic into a task ...
+	--- For this we need to seperate strategy,task logic first ..
+	if message:isa(AIMessageErrorOutOfFuel) then 
+		if g_Courseplay.globalSettings.waitForRefueling:getValue() then 			
+			local strategy = self.vehicle:getCpDriveStrategy()
+			if strategy then 		
+				if not self.isRefuelingActive then 
+					self.isRefuelingActive = true
+					strategy:raiseControllerEvent(
+						AIDriveStrategyCourse.onStartRefuellingEvent)
+					self:debug("Starts to wait for refueling")
+				end
+				return false
+			end
+		end
+	end
 	return true
+end
+
+function CpAIJob:update(dt)
+	CpAIJob:superClass().update(self, dt)
+	if self.isRefuelingActive then 
+		local vehicle = self:getVehicle()
+		local strategy = vehicle:getCpDriveStrategy()
+		vehicle:cpHold(1500, true)
+		vehicle:setCpInfoTextActive(InfoTextManager.FUEL_IS_EMPTY)
+		
+		local readyToContinue, fillLevelHasChanged = true, false
+		strategy:raiseControllerEventWithLambda(
+			AIDriveStrategyCourse.onUpdateRefuellingEvent,
+			function(timerHasFinished, hasChanged)
+				readyToContinue = readyToContinue and timerHasFinished
+				fillLevelHasChanged = fillLevelHasChanged or hasChanged
+			end)
+		if readyToContinue and fillLevelHasChanged then
+			self:stopRefuelling()
+		end
+	end
+end
+
+function CpAIJob:stopRefuelling()
+	if self.isRefuelingActive then 
+		local vehicle = self:getVehicle()
+		local strategy = vehicle:getCpDriveStrategy()
+		self:debug("Finished the refueling")
+		strategy:raiseControllerEvent(
+			AIDriveStrategyCourse.onStopRefuellingEvent)
+		self.isRefuelingActive = false
+		vehicle:resetCpActiveInfoText(InfoTextManager.FUEL_IS_EMPTY)
+	end
 end
 
 --- Gets the first task to start with.
@@ -167,6 +221,7 @@ function CpAIJob:stop(aiMessage)
 	if driveStrategy then
 		driveStrategy:onFinished(hasFinished)
 	end
+	g_messageCenter:unsubscribeAll(self)
 end
 
 --- Updates the parameter values.

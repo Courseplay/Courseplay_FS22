@@ -367,6 +367,8 @@
     <text name="CP_global_setting_autoRepair_always" text="Håll den på 100%"/>
     <text name="CP_global_setting_fuelThreshold_title" text="Bränsle Gräns"/>
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Föraren kommer att stanna om bränslegränsen är mindre."/>
+    <text name="CP_global_setting_waitForRefueling_title" text="Waits for refueling"/>
+    <text name="CP_global_setting_waitForRefueling_tooltip" text="Vehicle waits until it is refueled."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Skade Gräns"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Föraren kommer att stoppas om fordonet eller ett redskap är mer skadat. 100% är avstängd."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stoppar tröskan medan det regnar"/>
