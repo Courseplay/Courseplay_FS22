@@ -151,7 +151,7 @@
     <!---->
     <!--Hud settings-->
     <!---->
-    <text name="CP_hud_settings_selectedJob_title" text="TODO: Lavoro selezionato:"/>
+    <text name="CP_hud_settings_selectedJob_title" text="Da fare: Lavoro selezionato:"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -212,10 +212,10 @@
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Distanza tra i veicoli. Intervallo: 40 - 400"/>
     <text name="CP_vehicle_setting_debugActive_title" text="Debug veicolo"/>
     <text name="CP_vehicle_setting_debugActive_tooltip" text="Abilita/disabilita il debug per questo veicolo"/>
-    <text name="CP_vehicle_setting_refillOnTheField_title" text="Refill tool"/>
-    <text name="CP_vehicle_setting_refillOnTheField_tooltip" text="Refill tool on the field"/>
-    <text name="CP_vehicle_setting_refillOnTheField_waiting" text="Waiting"/>
-    <text name="CP_vehicle_setting_refillOnTheField_active" text="Active"/>
+    <text name="CP_vehicle_setting_refillOnTheField_title" text="Strumento di riempimento"/>
+    <text name="CP_vehicle_setting_refillOnTheField_tooltip" text="Strumento di rifornimento sul campo"/>
+    <text name="CP_vehicle_setting_refillOnTheField_waiting" text="Inattesa"/>
+    <text name="CP_vehicle_setting_refillOnTheField_active" text="Attivo"/>
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->
@@ -367,8 +367,8 @@
     <text name="CP_global_setting_autoRepair_always" text="Ripara sempre"/>
     <text name="CP_global_setting_fuelThreshold_title" text="Livello carburante"/>
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Il conducente verrà fermato, se il livello del carburante è basso."/>
-    <text name="CP_global_setting_waitForRefueling_title" text="Waits for refueling"/>
-    <text name="CP_global_setting_waitForRefueling_tooltip" text="Vehicle waits until it is refueled."/>
+    <text name="CP_global_setting_waitForRefueling_title" text="In attesa del rifornimento"/>
+    <text name="CP_global_setting_waitForRefueling_tooltip" text="Il veicolo attende il rifornimento."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Livello riparazione"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Il conducente verrà feramto se il veicolo od un attrezzo ha un livello di riparazione basso. Al 100% è spento."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Ferma la mietitrebbia quando piove."/>
@@ -567,7 +567,7 @@ Se stai creando un lavoro CP: Lavoro sul campo, avrai accesso alle impostazioni 
 Ora è possibile avviare il lavoro direttamente dal menu. L'aiutante dei Giants guiderà verso la posizione di destinazione e da lì il lavoro CP prende automaticamente il sopravvento.
 In alternativa, puoi anche avviare il lavoro dall'HUD se sei vicino al campo con il veicolo o utilizzando la modalità AutoDrive per consegnare il lavoro CP vicino al campo.
 "/>
-    <text name="CP_help_page_courseGeneratorBasic_title" text="Course generator basics"/>
+    <text name="CP_help_page_courseGeneratorBasic_title" text="Nozioni di base sul generatore di corsi"/>
     <text name="CP_help_page_courseGeneratorBase_text" text="
 Ogni percorso sul campo è generato dal generatore di percorso. Questo è uno strumento potente, che ti consente di personalizzare il percorso generato in base alle tue esigenze.
 Se non conosci questo, probabilmente dovresti iniziare modificando solo l'impostazione della quantità di fine campo.
