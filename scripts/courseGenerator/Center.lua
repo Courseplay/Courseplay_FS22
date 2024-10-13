@@ -355,7 +355,7 @@ function Center:_calculateRowDistribution(fieldWidth, overlapLast)
     else
         if self.context.evenRowDistribution then
             -- #1
-            centerWorkingWidth = (fieldWidth - centerWorkingWidth) / (nRows - 1)
+            centerWorkingWidth = (fieldWidth - headlandWorkingWidth) / nRows
         end
         local firstRowOffset
         local rowOffsets = {}
