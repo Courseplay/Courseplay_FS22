@@ -19,7 +19,6 @@ end
 --- Loads settings setup form an xmlFile.
 function CpGlobalSettings:loadSettingsSetup()
     MessageType.CP_DISTANCE_UNIT_CHANGED = nextMessageTypeId()
-    MessageType.CP_FUEL_SETTING_CHANGED = nextMessageTypeId()
 
     local filePath = Utils.getFilename("config/GlobalSettingsSetup.xml", g_Courseplay.BASE_DIRECTORY)
     CpSettingsUtil.loadSettingsFromSetup(self,filePath)
@@ -100,10 +99,6 @@ function CpGlobalSettings:onUnitChanged()
     for i,setting in ipairs(self.settings) do 
         setting:validateTexts()
     end
-end
-
-function CpGlobalSettings:onFuelSettingChanged()
-    g_messageCenter:publish(MessageType.CP_FUEL_SETTING_CHANGED)
 end
 
 function CpGlobalSettings:debug(str,...)

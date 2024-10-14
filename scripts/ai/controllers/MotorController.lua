@@ -13,9 +13,7 @@ function MotorController:init(vehicle, implement)
 	self.isValid = true
 	self.fuelThresholdSetting = g_Courseplay.globalSettings.fuelThreshold
 	self.refuelData = {
-		active = false,
 		timer = CpTemporaryObject(true),
-		hasChanged = false,
 		lastFillLevels = {
 			[self.implement] = {}
 		}
@@ -56,20 +54,45 @@ function MotorController:update()
 			end
 		end
 	end
-	local needsFuelLowInfo = false
-	if not self.refuelData.active then
-		--- Only apply this if no refueling is active.
-		if self:isFuelLow(self.fuelThresholdSetting:getValue()) then
+	local needsFuelLowInfo, needsFuelEmptyInfo = false, false
+	--- Only apply this if no refueling is active.
+	if self:isFuelLow(self.fuelThresholdSetting:getValue()) then
+		if not g_Courseplay.globalSettings.waitForRefueling:getValue() then 
 			self.vehicle:stopCurrentAIJob(AIMessageErrorOutOfFuel.new())
-		elseif self:isFuelLow(self.fuelThresholdSetting:getValue() + 5) then
-			needsFuelLowInfo = true
+		else
+			needsFuelEmptyInfo = true
 		end
+	elseif self:isFuelLow(self.fuelThresholdSetting:getValue() + 5) then
+		needsFuelLowInfo = true
+	end
+	if needsFuelEmptyInfo then 
+		self:setInfoText(InfoTextManager.FUEL_IS_EMPTY)
+	else
+		self:clearInfoText(InfoTextManager.FUEL_IS_EMPTY)
 	end
 	if needsFuelLowInfo then 
 		self:setInfoText(InfoTextManager.FUEL_IS_LOW)
 	else
 		self:clearInfoText(InfoTextManager.FUEL_IS_LOW)
 	end
+end
+
+function MotorController:getDriveData()
+	local maxSpeed
+	if ImplementUtil.tryAndCheckRefillingFillUnits(self.refuelData.lastFillLevels) or 
+		ImplementUtil.hasFillLevelChanged(self.refuelData.lastFillLevels) then 
+		self.refuelData.timer:set(false, 10 * 1000)
+	end
+	if not self.refuelData.timer:get() then 
+		maxSpeed = 0
+	end
+	if g_Courseplay.globalSettings.waitForRefueling:getValue() and 
+		self:isFuelLow(self.fuelThresholdSetting:getValue()) then 
+		
+		maxSpeed = 0
+	end
+
+	return nil, nil, nil, maxSpeed
 end
 
 --- There is a time problem with the release of the driver, when no player is entered,
@@ -103,30 +126,9 @@ function MotorController:stopMotor()
 	self:debug("Stopped motor for fuel save.")
 end
 
-function MotorController:onStartRefuelling() 
-	ImplementUtil.hasFillLevelChanged(self.refuelData.lastFillLevels, true)
-	self.refuelData.hasChanged = false
-	self.refuelData.timer:set(false, 10 * 1000)
-	self.refuelData.active = true
-end
-
-function MotorController:onUpdateRefuelling()
-	if ImplementUtil.tryAndCheckRefillingFillUnits(self.refuelData.lastFillLevels) or 
-		ImplementUtil.hasFillLevelChanged(self.refuelData.lastFillLevels) then 
-		self.refuelData.timer:set(false, 10 * 1000)
-        self.refuelData.hasChanged = true
-	end
-	return self.refuelData.timer:get(), self.refuelData.hasChanged
-end
-
-function MotorController:onStopRefuelling()
+function MotorController:onFinished()
 	local spec = self.implement.spec_fillUnit
 	if spec.fillTrigger.isFilling then 
 		self.implement:setFillUnitIsFilling(false)
 	end
-	self.refuelData.active = false
-end
-
-function MotorController:onFinished()
-	self:onStopRefuelling()
 end
