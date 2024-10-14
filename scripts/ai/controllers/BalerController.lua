@@ -30,7 +30,7 @@ function BalerController:init(vehicle, baler)
     self:debug('Baler controller initialized')
     local additives = self.balerSpec.additives
     if additives.available then 
-        self.refillData[self.implement][additives.fillUnitIndex] = -1
+        self.refillData.lastFillLevels[self.implement][additives.fillUnitIndex] = -1
     end
 end
 

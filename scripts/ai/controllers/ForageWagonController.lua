@@ -11,7 +11,7 @@ function ForageWagonController:init(vehicle, forageWagon)
     self.settings = vehicle:getCpSettings()
     local additives = self.forageWagonSpec.additives
     if additives.available then 
-        self.refillData[self.implement][additives.fillUnitIndex] = -1
+        self.refillData.lastFillLevels[self.implement][additives.fillUnitIndex] = -1
     end
 end
 

@@ -11,7 +11,7 @@ function CombineController:init(vehicle, combine)
     self.isWheeledImplement = ImplementUtil.isWheeledImplement(combine)
     local additives = self.combineSpec.additives
     if additives.available then 
-        self.refillData[self.implement][additives.fillUnitIndex] = -1
+        self.refillData.lastFillLevels[self.implement][additives.fillUnitIndex] = -1
     end
 end
 
