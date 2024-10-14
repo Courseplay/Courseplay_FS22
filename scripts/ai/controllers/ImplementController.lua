@@ -6,6 +6,13 @@ function ImplementController:init(vehicle, implement)
     self.implement = implement
     self.settings = vehicle:getCpSettings()
     self.disabledStates = {}
+    self.refillData = {
+		timer = CpTemporaryObject(true),
+		hasChanged = false,
+		lastFillLevels = {
+            [self.implement] = {}
+        }
+	}
 end
 
 --- Get the controlled implement
@@ -113,4 +120,51 @@ end
 
 function ImplementController:canContinueWork()
     return true
+end
+
+-------------------------------------
+--- Refill
+-------------------------------------
+
+function ImplementController:isRefillingAllowed()
+    return next(self.refillData.lastFillLevels[self.implement]) ~= nil
+end
+
+function ImplementController:needsRefilling()
+	return self:isRefillingAllowed()
+end
+
+function ImplementController:onStartRefilling() 
+    if self:isRefillingAllowed() then
+        if self:needsRefilling() then 
+            self.refillData.timer:set(false, 30 * 1000)
+        end
+        self.refillData.hasChanged = false
+        ImplementUtil.hasFillLevelChanged(self.refillData.lastFillLevels, true)
+    end
+end
+
+function ImplementController:onUpdateRefilling()
+    if self:isRefillingAllowed() then
+        if ImplementUtil.tryAndCheckRefillingFillUnits(self.refillData.lastFillLevels) or 
+            ImplementUtil.hasFillLevelChanged(self.refillData.lastFillLevels) then 
+            
+            self.refillData.timer:set(false, 10 * 1000)
+            self.refillData.hasChanged = true
+        end
+        return self.refillData.timer:get(), self.refillData.hasChanged
+    end
+    return true, false
+end
+
+function ImplementController:onStopRefilling()
+    if self:isRefillingAllowed() then
+        if self.implement.aiFinishLoading ~= nil then
+            self.implement:aiFinishLoading()
+        end
+        local spec = self.implement.spec_fillUnit
+        if spec and spec.fillTrigger.isFilling then 
+            self.implement:setFillUnitIsFilling(false)
+        end
+    end
 end

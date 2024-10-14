@@ -9,6 +9,10 @@ function CombineController:init(vehicle, combine)
     self.beaconLightsActive = false
     self.hasPipe = SpecializationUtil.hasSpecialization(Pipe, combine.specializations)
     self.isWheeledImplement = ImplementUtil.isWheeledImplement(combine)
+    local additives = self.combineSpec.additives
+    if additives.available then 
+        self.refillData[self.implement][additives.fillUnitIndex] = -1
+    end
 end
 
 function CombineController:update()
@@ -224,4 +228,26 @@ function CombineController:updateChopperFillType()
             end
         end
     end
+end
+
+-------------------------
+--- Refill handling
+-------------------------
+
+function CombineController:needsRefilling()
+    if self.combineSpec.additives.available then 
+        if self.implement:getFillUnitFillLevelPercentage(self.combineSpec.additives.fillUnitIndex) <= 0 then 
+            return ImplementController.needsRefilling(self)
+        end
+    end
+    return false
+end
+
+function CombineController:onStartRefilling() 
+	if self:needsRefilling() then 
+		if self.implement.aiPrepareLoading ~= nil then
+			self.implement:aiPrepareLoading(self.combineSpec.additives.fillUnitIndex)
+		end
+	end
+	ImplementController.onStartRefilling(self)
 end

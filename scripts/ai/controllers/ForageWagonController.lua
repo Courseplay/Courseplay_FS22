@@ -9,6 +9,10 @@ function ForageWagonController:init(vehicle, forageWagon)
     ImplementController.init(self, vehicle, forageWagon)
     self.forageWagonSpec = forageWagon.spec_forageWagon
     self.settings = vehicle:getCpSettings()
+    local additives = self.forageWagonSpec.additives
+    if additives.available then 
+        self.refillData[self.implement][additives.fillUnitIndex] = -1
+    end
 end
 
 function ForageWagonController:update()
@@ -39,3 +43,24 @@ function ForageWagonController:getDriveData()
     return nil, nil, nil, maxSpeed
 end
 
+-------------------------
+--- Refill handling
+-------------------------
+
+function ForageWagonController:needsRefilling()
+    if self.forageWagonSpec.additives.available then 
+        if self.implement:getFillUnitFillLevelPercentage(self.forageWagonSpec.additives.fillUnitIndex) <= 0 then 
+            return ImplementController.needsRefilling(self)
+        end
+    end
+    return false
+end
+
+function ForageWagonController:onStartRefilling() 
+	if self:needsRefilling() then 
+		if self.implement.aiPrepareLoading ~= nil then
+			self.implement:aiPrepareLoading(self.forageWagonSpec.additives.fillUnitIndex)
+		end
+	end
+	ImplementController.onStartRefilling(self)
+end
