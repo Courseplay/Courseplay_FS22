@@ -47,6 +47,7 @@ Changelog 7.5.0.0:
 - The course on the AI Menu Map will now have arrows that show the direction of the lines.
 - Multitool courses generated with previous releases won't work, you must regenerate them with this release.
 - Although non-multitool courses saved with previous releases will work, we recommend to regenerate them for best result.
+- Added option for waiting on the field for manuel refilling tools and refill fuel.
 - More bugxies.
 - Increased desc Version to 79 (Game Version 1.14.0.0)
 
@@ -183,6 +184,7 @@ Changelog 7.5.0.0:
 - Kurse auf der KI Karte haben jetzt kleine Pfeile, um die Richtung der Bahnen anzuzeigen.
 - Multitool Kurse, welche mit der vorherigen Version generiert wurden, werden nicht mehr funktionieren. Sie müssen neu generiert werden.
 - Auch wenn nicht-multitool Kurse mit dieser Version geladen werden können, empfehlen wir die Kurse neu zu generieren.
+- Option zum warten auf dem Feld für das nachfüllen von Geräte und nachfüllen von Treibstoff hinzugefügt.
 - Mehrere bugfixes.
 - Desc Version auf 80 erhöht (Spiel Version 1.14.0.0)
 
