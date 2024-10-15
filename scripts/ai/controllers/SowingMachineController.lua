@@ -5,7 +5,7 @@ SowingMachineController = CpObject(ImplementController)
 function SowingMachineController:init(vehicle, implement)
     ImplementController.init(self, vehicle, implement)
     self.sowingMachineSpec = self.implement.spec_sowingMachine
-	self.refillData.lastFillLevels[self.implement][self.sowingMachineSpec.fillUnitIndex] = -1 
+	self:addRefillImplementAndFillUnit(self.implement, self.sowingMachineSpec.fillUnitIndex)
 end
 
 function SowingMachineController:update()
@@ -51,13 +51,4 @@ function SowingMachineController:needsRefilling()
 		end
 	end
 	return false
-end
-
-function SowingMachineController:onStartRefilling() 
-	if self:needsRefilling() then 
-		if self.implement.aiPrepareLoading ~= nil then
-			self.implement:aiPrepareLoading(self.sowingMachineSpec.fillUnitIndex)
-		end
-	end
-	ImplementController.onStartRefilling(self)
 end

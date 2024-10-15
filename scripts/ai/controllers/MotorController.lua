@@ -55,7 +55,6 @@ function MotorController:update()
 		end
 	end
 	local needsFuelLowInfo, needsFuelEmptyInfo = false, false
-	--- Only apply this if no refueling is active.
 	if self:isFuelLow(self.fuelThresholdSetting:getValue()) then
 		if not g_Courseplay.globalSettings.waitForRefueling:getValue() then 
 			self.vehicle:stopCurrentAIJob(AIMessageErrorOutOfFuel.new())

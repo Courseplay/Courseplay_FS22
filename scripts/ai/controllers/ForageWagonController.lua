@@ -11,7 +11,7 @@ function ForageWagonController:init(vehicle, forageWagon)
     self.settings = vehicle:getCpSettings()
     local additives = self.forageWagonSpec.additives
     if additives.available then 
-        self.refillData.lastFillLevels[self.implement][additives.fillUnitIndex] = -1
+        self:addRefillImplementAndFillUnit(self.implement, additives.fillUnitIndex)
     end
 end
 
@@ -20,16 +20,7 @@ function ForageWagonController:update()
         self:debug("Stopped Cp, as the forage wagon is full.")
         self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
     end
-    if self.settings.useAdditiveFillUnit:getValue() then 
-        --- If the silage additive is empty, then stop the driver.
-        local additives = self.forageWagonSpec.additives
-        if additives.available then 
-            if self.implement:getFillUnitFillLevelPercentage(additives.fillUnitIndex) <= 0 then 
-                self:debug("Stopped Cp, as the additive fill unit is empty.")
-                self.vehicle:stopCurrentAIJob(AIMessageErrorOutOfFill.new())
-            end
-        end
-    end
+    self:updateAdditiveFillUnitEmpty(self.forageWagonSpec.additives)
 end
 
 function ForageWagonController:getDriveData()
@@ -41,26 +32,4 @@ function ForageWagonController:getDriveData()
         maxSpeed = 5 + freeFillLevel / self.slowDownFillLevel * self.slowDownStartSpeed
     end
     return nil, nil, nil, maxSpeed
-end
-
--------------------------
---- Refill handling
--------------------------
-
-function ForageWagonController:needsRefilling()
-    if self.forageWagonSpec.additives.available then 
-        if self.implement:getFillUnitFillLevelPercentage(self.forageWagonSpec.additives.fillUnitIndex) <= 0 then 
-            return ImplementController.needsRefilling(self)
-        end
-    end
-    return false
-end
-
-function ForageWagonController:onStartRefilling() 
-	if self:needsRefilling() then 
-		if self.implement.aiPrepareLoading ~= nil then
-			self.implement:aiPrepareLoading(self.forageWagonSpec.additives.fillUnitIndex)
-		end
-	end
-	ImplementController.onStartRefilling(self)
 end

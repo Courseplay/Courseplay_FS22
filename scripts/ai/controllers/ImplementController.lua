@@ -7,12 +7,10 @@ function ImplementController:init(vehicle, implement)
     self.settings = vehicle:getCpSettings()
     self.disabledStates = {}
     self.refillData = {
-		timer = CpTemporaryObject(true),
-		hasChanged = false,
-		lastFillLevels = {
-            [self.implement] = {}
-        }
-	}
+        timer = CpTemporaryObject(true),
+        hasChanged = false,
+        lastFillLevels = {}
+    }
 end
 
 --- Get the controlled implement
@@ -72,7 +70,7 @@ function ImplementController:update(dt)
 end
 
 function ImplementController:delete()
-    
+
 end
 
 --- Called by the drive strategy on lowering of the implements.
@@ -98,7 +96,8 @@ end
 function ImplementController:onFinishRow(isHeadlandTurn)
 end
 
-function ImplementController:onTurnEndProgress(workStartNode, reversing, shouldLower, isLeftTurn)
+function ImplementController:onTurnEndProgress(workStartNode, reversing,
+    shouldLower, isLeftTurn)
 end
 
 --- Any object this controller wants us to ignore, can register here a callback at the proximity controller
@@ -122,21 +121,57 @@ function ImplementController:canContinueWork()
     return true
 end
 
+--- Stops the drive if the use additive fillunit setting is active and the tank is empty. 
+---@param additives table
+function ImplementController:updateAdditiveFillUnitEmpty(additives)
+
+    if self.settings.useAdditiveFillUnit:getValue() then
+        --- If the silage additive is empty, then stop the driver.
+        if additives.available then
+            if self.implement:getFillUnitFillLevelPercentage(
+                additives.fillUnitIndex) <= 0 then
+                self:debug('Stopped Cp, as the additive fill unit is empty.')
+                self.vehicle:stopCurrentAIJob(AIMessageErrorOutOfFill.new())
+            end
+        end
+    end
+end
+
 -------------------------------------
 --- Refill
 -------------------------------------
 
+--- Registers an implement and a fill unit for a possible refilling later.
+---@param implement table
+---@param fillUnitIndex number
+function ImplementController:addRefillImplementAndFillUnit(implement,
+    fillUnitIndex)
+    if self.refillData.lastFillLevels[implement] == nil then
+        self.refillData.lastFillLevels[implement] = {}
+    end
+    self.refillData.lastFillLevels[implement][fillUnitIndex] = -1
+end
+
 function ImplementController:isRefillingAllowed()
-    return next(self.refillData.lastFillLevels[self.implement]) ~= nil
+    return next(self.refillData.lastFillLevels) ~= nil
 end
 
 function ImplementController:needsRefilling()
-	return self:isRefillingAllowed()
+    return self:isRefillingAllowed()
 end
 
-function ImplementController:onStartRefilling() 
+function ImplementController:onStartRefilling()
     if self:isRefillingAllowed() then
-        if self:needsRefilling() then 
+        if self:needsRefilling() then
+            for implement, data in pairs(self.refillData.lastFillLevels) do
+                for fillUnitIndex, _ in pairs(data) do
+                    self:debug('Preparing %s for loading with fill unit index: %d',
+                        CpUtil.getName(implement), fillUnitIndex)
+                    if implement.aiPrepareLoading ~= nil then
+                        implement:aiPrepareLoading(fillUnitIndex)
+                    end
+                end
+            end
             self.refillData.timer:set(false, 30 * 1000)
         end
         self.refillData.hasChanged = false
@@ -144,11 +179,15 @@ function ImplementController:onStartRefilling()
     end
 end
 
+--- Checks if loading from a nearby fill trigger is possible or 
+--- if the fill level is currently being changed by for example an auger wagon.  
+---@return boolean dirty at least one fill unit is currently being filled.
+---@return boolean changed at least one fill unit fill level has been changed since the start.
 function ImplementController:onUpdateRefilling()
     if self:isRefillingAllowed() then
-        if ImplementUtil.tryAndCheckRefillingFillUnits(self.refillData.lastFillLevels) or 
-            ImplementUtil.hasFillLevelChanged(self.refillData.lastFillLevels) then 
-            
+        if ImplementUtil.tryAndCheckRefillingFillUnits(self.refillData.lastFillLevels) or
+            ImplementUtil.hasFillLevelChanged(self.refillData.lastFillLevels) then
+
             self.refillData.timer:set(false, 10 * 1000)
             self.refillData.hasChanged = true
         end
@@ -159,12 +198,14 @@ end
 
 function ImplementController:onStopRefilling()
     if self:isRefillingAllowed() then
-        if self.implement.aiFinishLoading ~= nil then
-            self.implement:aiFinishLoading()
-        end
-        local spec = self.implement.spec_fillUnit
-        if spec and spec.fillTrigger.isFilling then 
-            self.implement:setFillUnitIsFilling(false)
+        for implement, _ in pairs(self.refillData.lastFillLevels) do
+            if implement.aiFinishLoading ~= nil then
+                implement:aiFinishLoading()
+            end
+            local spec = implement.spec_fillUnit
+            if spec and spec.fillTrigger.isFilling then
+                implement:setFillUnitIsFilling(false)
+            end
         end
     end
 end

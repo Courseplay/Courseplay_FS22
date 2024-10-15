@@ -11,21 +11,12 @@ function CombineController:init(vehicle, combine)
     self.isWheeledImplement = ImplementUtil.isWheeledImplement(combine)
     local additives = self.combineSpec.additives
     if additives.available then 
-        self.refillData.lastFillLevels[self.implement][additives.fillUnitIndex] = -1
+        self:addRefillImplementAndFillUnit(self.implement, additives.fillUnitIndex)
     end
 end
 
 function CombineController:update()
-	if self.settings.useAdditiveFillUnit:getValue() then 
-		--- If the silage additive is empty, then stop the driver.
-        local additives = self.combineSpec.additives
-        if additives.available then 
-            if self.implement:getFillUnitFillLevelPercentage(additives.fillUnitIndex) <= 0 then 
-				self:debug("Stopped Cp, as the additive fill unit is empty.")
-                self.vehicle:stopCurrentAIJob(AIMessageErrorOutOfFill.new())
-            end
-        end
-    end
+	self:updateAdditiveFillUnitEmpty(self.combineSpec.additives)
 end
 
 function CombineController:getDriveData()
@@ -228,26 +219,4 @@ function CombineController:updateChopperFillType()
             end
         end
     end
-end
-
--------------------------
---- Refill handling
--------------------------
-
-function CombineController:needsRefilling()
-    if self.combineSpec.additives.available then 
-        if self.implement:getFillUnitFillLevelPercentage(self.combineSpec.additives.fillUnitIndex) <= 0 then 
-            return ImplementController.needsRefilling(self)
-        end
-    end
-    return false
-end
-
-function CombineController:onStartRefilling() 
-	if self:needsRefilling() then 
-		if self.implement.aiPrepareLoading ~= nil then
-			self.implement:aiPrepareLoading(self.combineSpec.additives.fillUnitIndex)
-		end
-	end
-	ImplementController.onStartRefilling(self)
 end

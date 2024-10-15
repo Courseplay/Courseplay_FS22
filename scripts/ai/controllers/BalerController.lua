@@ -30,7 +30,7 @@ function BalerController:init(vehicle, baler)
     self:debug('Baler controller initialized')
     local additives = self.balerSpec.additives
     if additives.available then 
-        self.refillData.lastFillLevels[self.implement][additives.fillUnitIndex] = -1
+        self:addRefillImplementAndFillUnit(self.implement, additives.fillUnitIndex)
     end
 end
 
@@ -40,15 +40,7 @@ function BalerController:getDriveData()
 end
 
 function BalerController:update()
-	if self.settings.useAdditiveFillUnit:getValue() then 
-		--- If the silage additive is empty, then stop the driver.
-        if self.balerSpec.additives.available then 
-            if self.implement:getFillUnitFillLevelPercentage(self.balerSpec.additives.fillUnitIndex) <= 0 then 
-                self:debug("Stopped Cp, as the additive fill unit is empty.")
-                self.vehicle:stopCurrentAIJob(AIMessageErrorOutOfFill.new())
-            end
-        end
-    end
+    self:updateAdditiveFillUnitEmpty(self.balerSpec.additives)
 end
 
 function BalerController:handleBaler()
@@ -176,26 +168,4 @@ function BalerController:canContinueWork()
         return true
     end
     return spec.foldAnimTime == 0 or spec.foldAnimTime == 1
-end
-
--------------------------
---- Refill handling
--------------------------
-
-function BalerController:needsRefilling()
-    if self.balerSpec.additives.available then 
-        if self.implement:getFillUnitFillLevelPercentage(self.balerSpec.additives.fillUnitIndex) <= 0 then 
-            return ImplementController.needsRefilling(self)
-        end
-    end
-    return false
-end
-
-function BalerController:onStartRefilling() 
-	if self:needsRefilling() then 
-		if self.implement.aiPrepareLoading ~= nil then
-			self.implement:aiPrepareLoading(self.balerSpec.additives.fillUnitIndex)
-		end
-	end
-	ImplementController.onStartRefilling(self)
 end
