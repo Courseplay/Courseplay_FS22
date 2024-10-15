@@ -28,6 +28,10 @@ function BalerController:init(vehicle, baler)
     self.baleWrapperSpec = self.baler.spec_baleWrapper
     self.lastDroppedBale = CpTemporaryObject()
     self:debug('Baler controller initialized')
+    local additives = self.balerSpec.additives
+    if additives.available then 
+        self:addRefillImplementAndFillUnit(self.implement, additives.fillUnitIndex)
+    end
 end
 
 function BalerController:getDriveData()
@@ -36,15 +40,7 @@ function BalerController:getDriveData()
 end
 
 function BalerController:update()
-	if self.settings.useAdditiveFillUnit:getValue() then 
-		--- If the silage additive is empty, then stop the driver.
-        if self.balerSpec.additives.available then 
-            if self.implement:getFillUnitFillLevelPercentage(self.balerSpec.additives.fillUnitIndex) <= 0 then 
-                self:debug("Stopped Cp, as the additive fill unit is empty.")
-                self.vehicle:stopCurrentAIJob(AIMessageErrorOutOfFill.new())
-            end
-        end
-    end
+    self:updateAdditiveFillUnitEmpty(self.balerSpec.additives)
 end
 
 function BalerController:handleBaler()

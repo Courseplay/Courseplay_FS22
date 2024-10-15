@@ -5,15 +5,7 @@ SowingMachineController = CpObject(ImplementController)
 function SowingMachineController:init(vehicle, implement)
     ImplementController.init(self, vehicle, implement)
     self.sowingMachineSpec = self.implement.spec_sowingMachine
-	self.refillData = {
-		timer = CpTemporaryObject(true),
-		hasChanged = false,
-		lastFillLevels = {
-			[self.implement] = {
-				[self.sowingMachineSpec.fillUnitIndex] = -1 
-			}
-		}
-	}
+	self:addRefillImplementAndFillUnit(self.implement, self.sowingMachineSpec.fillUnitIndex)
 end
 
 function SowingMachineController:update()
@@ -55,37 +47,8 @@ end
 function SowingMachineController:needsRefilling()
 	if not g_currentMission.missionInfo.helperBuySeeds then
 		if self.implement:getFillUnitFillLevel(self.sowingMachineSpec.fillUnitIndex) <= 0 then 
-			return true
+			return ImplementController.needsRefilling(self)
 		end
 	end
-end
-
-function SowingMachineController:onStartRefilling() 
-	if self:needsRefilling() then 
-		if self.implement.aiPrepareLoading ~= nil then
-			self.implement:aiPrepareLoading(self.sowingMachineSpec.fillUnitIndex)
-		end
-		self.refillData.timer:set(false, 30 * 1000)
-	end
-	self.refillData.hasChanged = false
-	ImplementUtil.hasFillLevelChanged(self.refillData.lastFillLevels, true)
-end
-
-function SowingMachineController:onUpdateRefilling()
-	if ImplementUtil.tryAndCheckRefillingFillUnits(self.refillData.lastFillLevels) or 
-		ImplementUtil.hasFillLevelChanged(self.refillData.lastFillLevels) then 
-		self.refillData.timer:set(false, 10 * 1000)
-        self.refillData.hasChanged = true
-	end
-	return self.refillData.timer:get(), self.refillData.hasChanged
-end
-
-function SowingMachineController:onStopRefilling()
-    if self.implement.aiFinishLoading ~= nil then
-        self.implement:aiFinishLoading()
-    end
-	local spec = self.implement.spec_fillUnit
-	if spec.fillTrigger.isFilling then 
-		self.implement:setFillUnitIsFilling(false)
-	end
+	return false
 end

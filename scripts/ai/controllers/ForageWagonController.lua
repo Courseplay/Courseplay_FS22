@@ -9,6 +9,10 @@ function ForageWagonController:init(vehicle, forageWagon)
     ImplementController.init(self, vehicle, forageWagon)
     self.forageWagonSpec = forageWagon.spec_forageWagon
     self.settings = vehicle:getCpSettings()
+    local additives = self.forageWagonSpec.additives
+    if additives.available then 
+        self:addRefillImplementAndFillUnit(self.implement, additives.fillUnitIndex)
+    end
 end
 
 function ForageWagonController:update()
@@ -16,16 +20,7 @@ function ForageWagonController:update()
         self:debug("Stopped Cp, as the forage wagon is full.")
         self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
     end
-    if self.settings.useAdditiveFillUnit:getValue() then 
-        --- If the silage additive is empty, then stop the driver.
-        local additives = self.forageWagonSpec.additives
-        if additives.available then 
-            if self.implement:getFillUnitFillLevelPercentage(additives.fillUnitIndex) <= 0 then 
-                self:debug("Stopped Cp, as the additive fill unit is empty.")
-                self.vehicle:stopCurrentAIJob(AIMessageErrorOutOfFill.new())
-            end
-        end
-    end
+    self:updateAdditiveFillUnitEmpty(self.forageWagonSpec.additives)
 end
 
 function ForageWagonController:getDriveData()
@@ -38,4 +33,3 @@ function ForageWagonController:getDriveData()
     end
     return nil, nil, nil, maxSpeed
 end
-

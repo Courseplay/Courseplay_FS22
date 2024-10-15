@@ -22,15 +22,15 @@ TreePlanterController = CpObject(ImplementController)
 function TreePlanterController:init(vehicle, implement)
     ImplementController.init(self, vehicle, implement) 
     self.treePlanterSpec = implement.spec_treePlanter
-    self.refillData = {
-		timer = CpTemporaryObject(true),
-		hasChanged = false
-    }
 end
 
 -------------------------
 --- Refill handling
 -------------------------
+
+function TreePlanterController:isRefillingAllowed()
+    return true
+end
 
 function TreePlanterController:needsRefilling()
     return not g_currentMission.missionInfo.helperBuySeeds 

@@ -9,19 +9,14 @@ function CombineController:init(vehicle, combine)
     self.beaconLightsActive = false
     self.hasPipe = SpecializationUtil.hasSpecialization(Pipe, combine.specializations)
     self.isWheeledImplement = ImplementUtil.isWheeledImplement(combine)
+    local additives = self.combineSpec.additives
+    if additives.available then 
+        self:addRefillImplementAndFillUnit(self.implement, additives.fillUnitIndex)
+    end
 end
 
 function CombineController:update()
-	if self.settings.useAdditiveFillUnit:getValue() then 
-		--- If the silage additive is empty, then stop the driver.
-        local additives = self.combineSpec.additives
-        if additives.available then 
-            if self.implement:getFillUnitFillLevelPercentage(additives.fillUnitIndex) <= 0 then 
-				self:debug("Stopped Cp, as the additive fill unit is empty.")
-                self.vehicle:stopCurrentAIJob(AIMessageErrorOutOfFill.new())
-            end
-        end
-    end
+	self:updateAdditiveFillUnitEmpty(self.combineSpec.additives)
 end
 
 function CombineController:getDriveData()

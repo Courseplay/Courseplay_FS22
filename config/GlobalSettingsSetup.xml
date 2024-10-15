@@ -30,8 +30,8 @@
 				<Text>always</Text>
 			</Texts>
 		</Setting>
-		<Setting classType="AIParameterSettingList" name="fuelThreshold" min="0" max="100" incremental="5" default="5" unit="4" onChangeCallback="onFuelSettingChanged"/>
-		<Setting classType="AIParameterBooleanSetting" name="waitForRefueling" defaultBool="false" isExpertModeOnly="true" onChangeCallback="onFuelSettingChanged"/>
+		<Setting classType="AIParameterSettingList" name="fuelThreshold" min="0" max="100" incremental="5" default="5" unit="4"/>
+		<Setting classType="AIParameterBooleanSetting" name="waitForRefueling" defaultBool="false" isExpertModeOnly="true"/>
 		<Setting classType="AIParameterSettingList" name="brokenThreshold" min="0" max="100" incremental="5" default="100" unit="4"/>
 		<Setting classType="AIParameterBooleanSetting" name="stopThreshingDuringRain" defaultBool="true"/>
 		<Setting classType="AIParameterSettingList" name="fruitDestruction">

@@ -469,7 +469,8 @@ end
 function CpVehicleSettings:isRefillOnTheFieldSettingVisible()
     return AIUtil.hasChildVehicleWithSpecialization(self, Sprayer) or 
         AIUtil.hasChildVehicleWithSpecialization(self, SowingMachine) or 
-        AIUtil.hasChildVehicleWithSpecialization(self, TreePlanter)
+        AIUtil.hasChildVehicleWithSpecialization(self, TreePlanter) or 
+        CpVehicleSettings.isAdditiveFillUnitSettingVisible(self)
 end
 
 ---------------------------------------------
