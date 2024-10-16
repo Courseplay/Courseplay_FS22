@@ -184,7 +184,7 @@ Changelog 7.5.0.0:
 - Kurse auf der KI Karte haben jetzt kleine Pfeile, um die Richtung der Bahnen anzuzeigen.
 - Multitool Kurse, welche mit der vorherigen Version generiert wurden, werden nicht mehr funktionieren. Sie müssen neu generiert werden.
 - Auch wenn nicht-multitool Kurse mit dieser Version geladen werden können, empfehlen wir die Kurse neu zu generieren.
-- Option zum warten auf dem Feld für das nachfüllen von Geräte und nachfüllen von Treibstoff hinzugefügt.
+- Option zum Warten auf dem Feld für das Nachfüllen von Geräten und Treibstoff hinzugefügt.
 - Mehrere bugfixes.
 - Desc Version auf 80 erhöht (Spiel Version 1.14.0.0)
 
