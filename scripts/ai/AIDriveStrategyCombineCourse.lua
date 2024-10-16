@@ -503,7 +503,7 @@ function AIDriveStrategyCombineCourse:onWaypointPassed(ix, course)
     if self.state == self.states.UNLOADING_ON_FIELD and
             self.unloadState == self.states.MAKING_POCKET and
             self.unloadInPocketReferenceIx then
-        local _, _, dz = self.course:getWaypointLocalPosition(self.vehicle:getAIDirectionNode(), ix)
+        local _, _, dz = self.course:getWaypointLocalPosition(self.vehicle:getAIDirectionNode(), self.unloadInPocketReferenceIx)
         if dz < 10 then
             -- we are close enough to the reference waypoint, so stop making the pocket and wait for unload.
             self:debug('Waiting for unload in the pocket')
