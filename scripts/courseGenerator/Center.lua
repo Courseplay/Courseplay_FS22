@@ -190,7 +190,7 @@ function Center:generate()
     self:_wrapUpConnectingPaths()
     self.logger:debug('Found %d block(s), %d connecting path(s).', #self.blocks, #self.connectingPaths)
     if not strict then
-        self.context:addError('Could not find the shortest path on headland between blocks')
+        self.context:addError(self.logger, 'Could not find the shortest path on headland between blocks')
     end
     return lastLocation
 end
