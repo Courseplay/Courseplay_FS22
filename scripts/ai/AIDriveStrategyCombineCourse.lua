@@ -502,10 +502,13 @@ function AIDriveStrategyCombineCourse:onWaypointPassed(ix, course)
 
     if self.state == self.states.UNLOADING_ON_FIELD and
             self.unloadState == self.states.MAKING_POCKET and
-            self.unloadInPocketIx and ix == self.unloadInPocketIx then
-        -- we are making a pocket and reached the waypoint where we are going to stop and wait for unload
-        self:debug('Waiting for unload in the pocket')
-        self.unloadState = self.states.WAITING_FOR_UNLOAD_IN_POCKET
+            self.unloadInPocketReferenceIx then
+        local _, _, dz = self.course:getWaypointLocalPosition(self.vehicle:getAIDirectionNode(), ix)
+        if dz < 10 then
+            -- we are close enough to the reference waypoint, so stop making the pocket and wait for unload.
+            self:debug('Waiting for unload in the pocket')
+            self.unloadState = self.states.WAITING_FOR_UNLOAD_IN_POCKET
+        end
     end
 
     if self.returnedFromPocketIx and self.returnedFromPocketIx == ix then
@@ -529,7 +532,7 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
             self:debug('Back from self unload, returning to fieldwork')
             self.workStarter:onLastWaypoint()
         elseif self.unloadState == self.states.REVERSING_TO_MAKE_A_POCKET then
-            self:debug('Reversed, now start making a pocket to waypoint %d', self.unloadInPocketIx)
+            self:debug('Reversed, now start making a pocket to waypoint %d', self.unloadInPocketReferenceIx)
             self:lowerImplements()
             self.state = self.states.UNLOADING_ON_FIELD
             self.unloadState = self.states.MAKING_POCKET
@@ -1259,7 +1262,7 @@ function AIDriveStrategyCombineCourse:createPocketCourse()
         return nil
     end
     -- this is where we'll stop in the pocket for unload
-    self.unloadInPocketIx = startIx - 2
+    self.unloadInPocketReferenceIx = startIx
     -- this where we are back on track after returning from the pocket
     self.returnedFromPocketIx = self.ppc:getCurrentWaypointIx()
     self:debug('Backing up %.1f meters from waypoint %d to %d to make a pocket', self.pocketReverseDistance, startIx, backIx)
