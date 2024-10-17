@@ -518,6 +518,9 @@ You can define the following custom settings:
     <Vehicle name="series3320.xml"
              noReverse = "true"
     />
+    <Vehicle name="series2200.xml"
+             turnRadius = "14"
+    />
     <Vehicle name="series7950b.xml"
              noReverse = "true"
     />
