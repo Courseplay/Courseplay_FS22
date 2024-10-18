@@ -17,7 +17,6 @@ function Field:init(id, num, boundary)
     self.islands = {}
     if boundary then
         self.boundary:calculateProperties()
-        self:_smoothBoundary()
     end
 end
 
@@ -67,7 +66,6 @@ function Field.loadSavedFields(fileName)
     for _, f in pairs(fields) do
         f:getBoundary():calculateProperties()
         f:setupIslands()
-        f:_smoothBoundary()
     end
     return fields
 end
