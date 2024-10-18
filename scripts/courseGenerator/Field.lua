@@ -75,7 +75,7 @@ end
 --- Smooth out zigzags in the boundary. Zigzags are created when the FieldScanner is running at high resolution
 --- bigger than the game field pixel size
 function Field:_smoothBoundary()
-    CourseGenerator.SplineHelper.smooth(self:getBoundary(), 2, 1, #self:getBoundary(), math.rad(5), math.rad(45))
+    CourseGenerator.SplineHelper.smooth(self:getBoundary(), 2, 1, #self:getBoundary(), math.rad(10), math.rad(55))
     self:getBoundary():ensureMinimumEdgeLength(CourseGenerator.cMaxEdgeLength, math.rad(30))
 end
 
