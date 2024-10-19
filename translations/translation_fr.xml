@@ -212,10 +212,10 @@
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Distance entre les véhicules d'un même convoi (avec la même course). Valeurs: 40 - 400"/>
     <text name="CP_vehicle_setting_debugActive_title" text="Debogage du vehicule"/>
     <text name="CP_vehicle_setting_debugActive_tooltip" text="Active/Desactive le debogage du vehicule."/>
-    <text name="CP_vehicle_setting_refillOnTheField_title" text="Refill tool"/>
-    <text name="CP_vehicle_setting_refillOnTheField_tooltip" text="Refill tool on the field"/>
-    <text name="CP_vehicle_setting_refillOnTheField_waiting" text="Waiting"/>
-    <text name="CP_vehicle_setting_refillOnTheField_active" text="Active"/>
+    <text name="CP_vehicle_setting_refillOnTheField_title" text="Point de ravitaillement"/>
+    <text name="CP_vehicle_setting_refillOnTheField_tooltip" text="Ravitaillement sur le terrain"/>
+    <text name="CP_vehicle_setting_refillOnTheField_waiting" text="En attente"/>
+    <text name="CP_vehicle_setting_refillOnTheField_active" text="Actif"/>
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->
@@ -332,8 +332,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="Rangées"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Outils multiples"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Nombre de véhicules sur la même course avec le même outil. La distance entre les véhicules est fixée avec le paramètre convoi."/>
-    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_title" text="Switching lanes"/>
-    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_tooltip" text="Sets the lanes to always switch. This leads to similar turns. See help menu for more details."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_title" text="Basculement des rangs"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_tooltip" text="Force le basculement entre chaque rangée pour aboutir à des tournants identiques.Plus de détails dans le menu d'aide."/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Orientation dynamique des rangs"/>
     <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="L'orientation des rangs suit les courbures du champ."/>
     <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Champ"/>
@@ -367,8 +367,8 @@
     <text name="CP_global_setting_autoRepair_always" text="Maintenir à 100%"/>
     <text name="CP_global_setting_fuelThreshold_title" text="Seuil de carburant"/>
     <text name="CP_global_setting_fuelThreshold_tooltip" text="L'ouvrier CP s'arrêtera si la jauge de carburant descend sous ce seuil."/>
-    <text name="CP_global_setting_waitForRefueling_title" text="Waits for refueling"/>
-    <text name="CP_global_setting_waitForRefueling_tooltip" text="Vehicle waits until it is refueled."/>
+    <text name="CP_global_setting_waitForRefueling_title" text="Attend le ravitaillement en carburant"/>
+    <text name="CP_global_setting_waitForRefueling_tooltip" text="Le véhicule attend jusqu'à son ravitaillement en carburant."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Seuil de maintenance"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="L'ouvrier CP s'arrêtera si le véhicule ou un outil est abimé avec un état d'entretien sous ce seuil. 100% = éteint."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Pas de récolte pendant la pluie"/>
@@ -446,7 +446,7 @@ La course est automatiquement sauvegardée à la fermeture de l'éditeur et remp
     <!--Course editor-->
     <!---->
     <text name="CP_editor_course_title" text="Editeur de course"/>
-    <text name="CP_editor_change_lane_offset" text="Change selected lane offset(%s)"/>
+    <text name="CP_editor_change_lane_offset" text="Modifie le décalage de la ligne sélectionnée(%s)"/>
     <text name="CP_editor_delete_title" text="Supprimer les points"/>
     <text name="CP_editor_delete_primary_text" text="principal"/>
     <text name="CP_editor_delete_secondary_text" text="secondaire"/>
