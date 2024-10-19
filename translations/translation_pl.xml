@@ -212,10 +212,10 @@
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Dystans pomiędzy pojazdami w konwoju. Zakres: 40 - 400"/>
     <text name="CP_vehicle_setting_debugActive_title" text="Debugowanie pojazdu"/>
     <text name="CP_vehicle_setting_debugActive_tooltip" text="Włącz/wyłącz debugowanie dla tego pojazdu pojazdu."/>
-    <text name="CP_vehicle_setting_refillOnTheField_title" text="Refill tool"/>
-    <text name="CP_vehicle_setting_refillOnTheField_tooltip" text="Refill tool on the field"/>
-    <text name="CP_vehicle_setting_refillOnTheField_waiting" text="Waiting"/>
-    <text name="CP_vehicle_setting_refillOnTheField_active" text="Active"/>
+    <text name="CP_vehicle_setting_refillOnTheField_title" text="Narzędzie do uzupełniania"/>
+    <text name="CP_vehicle_setting_refillOnTheField_tooltip" text="Narzędzie do uzupełniania na polu"/>
+    <text name="CP_vehicle_setting_refillOnTheField_waiting" text="Oczekiwanie"/>
+    <text name="CP_vehicle_setting_refillOnTheField_active" text="Aktywne"/>
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->
@@ -367,8 +367,8 @@
     <text name="CP_global_setting_autoRepair_always" text="Zawsze"/>
     <text name="CP_global_setting_fuelThreshold_title" text="Próg paliwa"/>
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Kierowca zostanie zwolniony, jeśli poziom paliwa spadnie poniżej ustawionego progu procentowego."/>
-    <text name="CP_global_setting_waitForRefueling_title" text="Waits for refueling"/>
-    <text name="CP_global_setting_waitForRefueling_tooltip" text="Vehicle waits until it is refueled."/>
+    <text name="CP_global_setting_waitForRefueling_title" text="Oczekiwanie na tankowanie"/>
+    <text name="CP_global_setting_waitForRefueling_tooltip" text="Pojazd czeka na zatankowanie."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Próg zużycia"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Kierowca zostanie zwolniony, jeśli pojazd lub maszyna/narzędzie jest uszkodzona w ustalonym progu procentowym. 100% oznacza wyłączone."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Zatrzymaj młócenie podczas deszczu"/>
@@ -446,7 +446,7 @@ Kurs jest automatycznie zapisywany po zamknięciu edytora i nadpisuje wybrany ku
     <!--Course editor-->
     <!---->
     <text name="CP_editor_course_title" text="Edytor kursu"/>
-    <text name="CP_editor_change_lane_offset" text="Change selected lane offset(%s)"/>
+    <text name="CP_editor_change_lane_offset" text="Zmień przes. wybranego pasa(%s)"/>
     <text name="CP_editor_delete_title" text="Usuń punkt trasy"/>
     <text name="CP_editor_delete_primary_text" text="główny"/>
     <text name="CP_editor_delete_secondary_text" text="dodatkowy"/>
