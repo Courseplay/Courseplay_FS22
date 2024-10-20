@@ -49,7 +49,7 @@ Changelog 7.5.0.0:
 - Although non-multitool courses saved with previous releases will work, we recommend to regenerate them for best result.
 - Added option for waiting on the field for manuel refilling tools and refill fuel.
 - More bugxies.
-- Increased desc Version to 79 (Game Version 1.14.0.0)
+- Increased desc Version to 80 (Game Version 1.14.0.0)
 
 WARNING: while this version is backwards compatible with older savegames, it'll write the courses to the savegame in a new format.
 Older versions WILL NOT BE ABLE TO READ the games saved with this version! If you install this version, and decide to revert to an old one, YOU MUST BACK UP YOUR OLD SAVEGAME before!
