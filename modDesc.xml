@@ -48,7 +48,7 @@ Changelog 7.5.0.0:
 - Multitool courses generated with previous releases won't work, you must regenerate them with this release.
 - Although non-multitool courses saved with previous releases will work, we recommend to regenerate them for best result.
 - Added option for waiting on the field for manuel refilling tools and refill fuel.
-- More bugxies.
+- More bugfixes.
 - Increased desc Version to 80 (Game Version 1.14.0.0)
 
 WARNING: while this version is backwards compatible with older savegames, it'll write the courses to the savegame in a new format.
