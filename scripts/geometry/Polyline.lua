@@ -488,7 +488,7 @@ function Polyline:ensureMinimumRadius(r, makeCorners)
         nextIx = currentIx + 1
         local xte = self:at(currentIx):getXte(r)
         local radius = self:at(currentIx):getRadius()
-        if radius < r or xte > CourseGenerator.cMaxCrossTrackError then
+        if xte > CourseGenerator.cMaxCrossTrackError then
             self.logger:debug('ensureMinimumRadius (%s): found a corner at %d with r: %.1f, r: %.1f, xte: %.1f', debugId, currentIx, radius, r, xte)
             -- looks like we can't make this turn without deviating too much from the course,
             local entry = CourseGenerator.Slider(self, currentIx, 0)

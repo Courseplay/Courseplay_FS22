@@ -51,13 +51,6 @@ function Vertex:getExitHeading()
     return self.exitHeading
 end
 
---- The radius at this vertex, calculated from the direction of the entry/exit edges as unit vectors.
---- Positive values are left turns, negative values right turns
----@return number radius
-function Vertex:getUnitRadius()
-    return self.unitRadius
-end
-
 --- The radius at this vertex, calculated from the direction of the entry/exit edges and the length of
 --- the exit edge. This is the radius a vehicle would need to drive to reach the next waypoint.
 --- Positive values are left turns, negative values right turns
@@ -122,9 +115,9 @@ function Vertex:calculateProperties(entry, exit)
     end
     if self.entryHeading and self.exitHeading then
         self.dA = CpMathUtil.getDeltaAngle(self.entryHeading, self.exitHeading)
-        -- This is the radius of the unit circle written between
-        -- entryEdge and exitEdge, which are tangents of the circle
-        self.unitRadius = 1 / (2 * math.sin(self.dA / 2))
+        -- This is the radius of a circle written between
+        -- entryEdge and exitEdge, which are tangents of the circle, touching them 1 unit away from the vertex
+        self.unitRadius = 1 / (math.tan(self.dA / 2))
         self.curvature = 1 / self.unitRadius
         self.xte = math.abs(1 / math.cos(self.dA / 2)) - 1
     end
