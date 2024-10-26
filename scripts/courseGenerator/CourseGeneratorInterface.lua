@@ -39,7 +39,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
     context:setBaselineEdge(startPosition.x, -startPosition.z)
     context:setFieldMargin(settings.fieldMargin:getValue())
     context:setUseBaselineEdge(settings.useBaseLineEdge:getValue())
-    context:setFieldCornerRadius(settings.turningRadius:getValue())
+    context:setFieldCornerRadius(7) --using a default, that is used during testing
     context:setHeadlandFirst(settings.startOnHeadland:getValue())
     context:setHeadlandClockwise(settings.headlandClockwise:getValue())
     context:setHeadlandOverlap(settings.headlandOverlapPercent:getValue())

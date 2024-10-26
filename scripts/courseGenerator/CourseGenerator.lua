@@ -21,7 +21,7 @@ CourseGenerator.cRowWaypointDistance = 7
 -- Maximum cross track error we tolerate when a vehicle follows a path. This is used to
 -- find corners which the vehicle can't make due to its turning radius, without deviating more than
 -- cMaxCrossTrackError meters from the vertex in the corner.
-CourseGenerator.cMaxCrossTrackError = 0.5
+CourseGenerator.cMaxCrossTrackError = 0.2
 -- Maximum cross track error when generating rows parallel to a non-straight field edge. The row will end when
 -- the cross track error is bigger than this limit
 CourseGenerator.cMaxCrossTrackErrorForCurvedRows = 0.15

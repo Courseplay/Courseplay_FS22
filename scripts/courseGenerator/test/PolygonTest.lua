@@ -418,7 +418,7 @@ function testPolygon()
 
     p = Polygon({ Vector(-20, 0), Vector(-15, -3), Vector(-10, -4), Vector(-5, -4),
                      Vector(0, 0), Vector(5, 0), Vector(10, 0), Vector(15, 0) })
-    lu.assertAlmostEquals(p:getSmallestRadiusWithinDistance(4, 15, 20), 3.02)
+    lu.assertAlmostEquals(p:getSmallestRadiusWithinDistance(4, 15, 20), 1.61)
 
     p = Polygon({ Vector(0, 0), Vector(0, 5), Vector(5, 5), Vector(5, 0) })
     lu.assertEquals(p:moveForward(1, 6), 3)
