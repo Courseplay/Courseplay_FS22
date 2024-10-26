@@ -35,6 +35,27 @@ or go directly to our <a href="https://github.com/Courseplay/Courseplay_FS22">Gi
 
 Many thanks to our translators and to our community for reporting bugs, giving us feedback and great ideas.
 
+Changelog 7.5.0.0:
+- New course generator 2.0 with new features and updated help menu.
+- A multitool course now contains 2-5 single course for each lane depending on the amount of vehicles you selected.
+- Added food mixer wagon, fertilizer/lime/manure sprayer and Göweil LT Master as valid target for shovel mode. 
+- Added chopper unloader support known from FS19 back in. (Second unloader not supported.)
+- Added line preview when drawing a custom field on the map and can hold left shift to draw straight lines.
+- HUD reworked for a future project.
+- Waypoints no more cast a shadow, this might increase performance a bit, when waypoints are active.
+- Shovel position is slightly tilted down and finer hight adjustment (0.05 steps). This should help with some silage silos are not getting empty.
+- The course on the AI Menu Map will now have arrows that show the direction of the lines.
+- Multitool courses generated with previous releases won't work, you must regenerate them with this release.
+- Although non-multitool courses saved with previous releases will work, we recommend to regenerate them for best result.
+- Added option for waiting on the field for manuel refilling tools and refill fuel.
+- More bugfixes.
+- Increased desc Version to 80 (Game Version 1.14.0.0)
+
+WARNING: while this version is backwards compatible with older savegames, it'll write the courses to the savegame in a new format.
+Older versions WILL NOT BE ABLE TO READ the games saved with this version! If you install this version, and decide to revert to an old one, YOU MUST BACK UP YOUR OLD SAVEGAME before!
+
+For a complete changelog please visit our <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release page</a> on GitHub.
+
 Changelog 7.4.0.0:
 - Enable forestry mulchers and lawnmowers for fieldwork
 - Added option to show the info panel only, when at least one message is active.
@@ -49,8 +70,6 @@ Changelog 7.4.0.0:
 - More bugfixes.
 - Added Info texts for vegetable harvester with pallets.
 - Increased desc Version to 79 (Patch 1.13.1.0)
-
-For a complete changelog please visit our <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release page</a> on GitHub.
 
 Changelog 7.3.0.0:
 - Bale collector/wrapper now works the same way as the combine unloader in terms of markers:
@@ -153,6 +172,27 @@ oder du gehst direkt auf unsere <a href="https://github.com/Courseplay/Coursepla
 
 Vielen Dank an unsere Community für die zahlreichen Übersetzungen, Bug Reports, Feedback und Vorschläge zur Verbesserung.
 
+Changelog 7.5.0.0:
+- Neuer Kurs Generator 2.0 mit neuen Features und aktualisiertem Hilfemenü.
+- Multitool Kurse beinhalten jetzt 2-5 einzelne Kurse für jede Bahn, abhänging von der Anzahl Fahrzeuge die gewählt wurden.
+- Futtermischer, Dünger-, Kalk-, und Miststreuer, sowie Göweil LT Master als Ziel für den Schaufelmodus hinzugefügt.
+- Häcksler können wieder abgetankt werden, wie man es aus FS19 kennt. (Das vorzeitige Rufen von einem 2ten Abfahrer ist nicht verfügbar).
+- Linienvorschau beim Zeichnen eines eigenen Feldes und mit gedrückter linker Shift-Taste lassen sich gerade Linien ziehen.
+- HUD umgebaut für ein zukünftiges Projekt.
+- Wegpunkte erzeugen keine Schatten mehr, was die performance etwas verbessern sollte, wenn alle Wegpunkte angezeigt werden.
+- Schaufelposition ist jetzt leicht nach unten gekippt und kann feiner eingestellt werden. (0.05er Schritte). Sollte dabei helfen, einige Silagesilos besser zu entleeren.
+- Kurse auf der KI Karte haben jetzt kleine Pfeile, um die Richtung der Bahnen anzuzeigen.
+- Multitool Kurse, welche mit der vorherigen Version generiert wurden, werden nicht mehr funktionieren. Sie müssen neu generiert werden.
+- Auch wenn nicht-multitool Kurse mit dieser Version geladen werden können, empfehlen wir die Kurse neu zu generieren.
+- Option zum Warten auf dem Feld für das Nachfüllen von Geräten und Treibstoff hinzugefügt.
+- Mehrere bugfixes.
+- Desc Version auf 80 erhöht (Spiel Version 1.14.0.0)
+
+WARNUNG: Auch wenn diese Version abwärtskompatibel mit älteren Speilständen ist, wird diese Version die Kurse in einem neuen Format in das savegame schreiben.
+Ältere Courseplay Versionen werden NICHT IN DER LAGE SEIN, Spielstände von der aktuellen Version zu laden! Wenn du diese Version installierst und dich dazu entscheidest auf eine ältere Version zu wechseln, SICHERE VORHER DEINEN SPIELTAND!
+
+Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release Seite</a> auf GitHub vorbei.
+
 Changelog 7.4.0.0:
 - Forstmulcher und Handmäher können jetzt für die Feldarbeit verwendet werden.
 - Option hinzugefügt, welches das Info Panel nur einblendet, wenn eine Nachricht vorhanden ist.
@@ -167,8 +207,6 @@ Changelog 7.4.0.0:
 - Mehrere bugfixes.
 - Infotext für Gemüseernter mit Paletten hinzugefügt.
 - Desc Version auf 79 erhöht (Patch 1.13.1.0)
-
-Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release Seite</a> auf GitHub vorbei.
 
 Changelog 7.3.0.0:
 - Die Feldauswahl im Ballen sammeln und wickeln Modus funktioniert jetzt genauso wie beim Drescher abtanken.
