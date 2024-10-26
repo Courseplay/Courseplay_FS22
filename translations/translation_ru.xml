@@ -282,8 +282,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="Перекрытие проходов разворотных полос в процентах от рабочей ширины. Значение: 0 - 25."/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="Сдвиг границ поля"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Положительные значения уменьшают размер поля, отрицательные - увеличивают рабочую область за пределы поля. Значение: -2 - 5.8."/>
-    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="Corner radius"/>
-    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="Decides when a corner is marked as sharp"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Пропускать проходов"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Сколько пропускать проходов при переходе к следующему проходу при челночном методе. Значение: 0 - 6."/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Количество кругов"/>

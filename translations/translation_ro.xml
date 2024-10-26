@@ -282,8 +282,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="Overlap headland tracks as percent of working width. Value: 0 - 25"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="Field margin"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Positive values reduce field size, negative increase the field size. Value: -2 - 5.8"/>
-    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="Corner radius"/>
-    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="Decides when a corner is marked as sharp"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Rows to skip"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Rows to skip when changing to the next up/down row. Value: 0 - 6"/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>

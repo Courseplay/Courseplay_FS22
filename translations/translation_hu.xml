@@ -282,8 +282,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="A fordulósáv nyomvonalak átfedése a munkaszélesség százalékában. 0 - 25%"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="Táblaméret igazítása"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Pozitív értékek beljebb húzzák a tábla határát (táblaméret csökken), negatív értékek kijebbtolják (táblaméret nő) -2 - 5.8 m"/>
-    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="Corner radius"/>
-    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="Decides when a corner is marked as sharp"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Kihagyandó sorok"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="A következő fel/le sorra váltáskor átugrandó sorok. 0 - 6"/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>

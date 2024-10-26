@@ -282,8 +282,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="作業幅に対してまくら地の重なる割合を設定します（0～25%）"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="フィールドの余白"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="プラス値ではフィールド領域を縮小し、フィールド外周に余白を作ります。マイナス値ではフィールド領域を拡大します（-5～5.8m）"/>
-    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="Corner radius"/>
-    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="Decides when a corner is marked as sharp"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="レーンのスキップ"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="往復レーンのスキップする数を設定します （0～6レーン）"/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>

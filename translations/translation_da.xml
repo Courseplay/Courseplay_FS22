@@ -282,8 +282,6 @@
     <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="Overlabning af forager i % af Arbejdsbredde. Værdi: 0 - 25"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="Markgrænse"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Positive værdier reducere markstørrelsen for at at opnå en buffer til markrand, negative værdier forstørre arbejdsareal så køre længere ud mod markrand. Værdi: -2 - 5.8"/>
-    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="Corner radius"/>
-    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="Decides when a corner is marked as sharp"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Overspring rækker"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Rækker at springe over, når du skifter vognbane. Værdi: 0 - 6"/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>
