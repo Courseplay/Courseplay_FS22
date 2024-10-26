@@ -10,7 +10,7 @@ body:
       value: |
         Danke, dass du dir Zeit nimmst, diesen Bugreport auszufüllen.
         Lese dir bitte zuerst unsere [Wiki Seite](https://github.com/Courseplay/Courseplay_FS22/wiki) durch, bevor du ein neues Issue erstellst!
-
+        
   - type: dropdown
     id: mod-version
     attributes:
@@ -18,8 +18,7 @@ body:
       description: Welche CP Version verwendest du?
       options:
         - 7.5.0.0
-        - 7.4.2.3
-        
+        - 7.4.2.4
       default: 0
     validations:
       required: true

@@ -10,7 +10,8 @@ body:
       value: |
         Bitte benutze diese Vorlage, um deine Frage zu stellen!
         Lese dir bitte zuerst unsere [Wiki Seite](https://github.com/Courseplay/Courseplay_FS22/wiki) durch, bevor du ein neues Issue erstellst!
-
+        Unsere Hilfe aus dem Spiel, gibt es auch unter [Courseplay.dev]!(https://courseplay.github.io/Courseplay_FS22.github.io/), dort kannst du bereits vieles zu Courseplay erfahren!
+        
   - type: dropdown
     id: mod-version
     attributes:
@@ -18,7 +19,7 @@ body:
       description: Welche CP Version verwendest du?
       options:
         - 7.5.0.0
-        - 7.5.0.0
+        - 7.4.2.4
       default: 0
     validations:
       required: true

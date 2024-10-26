@@ -10,6 +10,7 @@ body:
       value: |
         Please use this template to ask your question!
         Please make sure to read our [Wiki Page](https://github.com/Courseplay/Courseplay_FS22/wiki) before creating a new issue!
+        Our help pages from the game can also be found at [Courseplay.dev]!(https://courseplay.github.io/Courseplay_FS22.github.io/), there you can check out many informations before asking a qustion!
 
   - type: dropdown
     id: mod-version
@@ -18,7 +19,7 @@ body:
       description: Which CoursePlay version are you using?
       options:
         - 7.5.0.0
-        - 7.5.0.0
+        - 7.4.2.4
       default: 0
     validations:
       required: true
