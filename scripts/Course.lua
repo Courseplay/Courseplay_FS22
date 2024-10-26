@@ -218,7 +218,7 @@ function Course:enrichWaypointData(startIx)
         else
             self.waypoints[i].dx, self.waypoints[i].dz = 0, 0
             -- NaN or both 0, use the direction of the previous waypoint
-            self.waypoints[i].yRot = self.waypoints[i - 1].yRot
+            self.waypoints[i].yRot = self.waypoints[i - 1].yRot or 0
         end
         self.waypoints[i].angle = math.deg(self.waypoints[i].yRot)
         self.waypoints[i].calculatedRadius = i == 1 and math.huge or self:calculateRadius(i)
