@@ -35,6 +35,7 @@
 		</Setting>
 		<Setting classType="AIParameterSettingList" name="headlandOverlapPercent" min="0" max="25" default="7" unit="4" isExpertModeOnly="true"/>
 		<Setting classType="AIParameterSettingList" name="fieldMargin" min="-5" max="6" default="0" incremental="0.2" isExpertModeOnly="true"/>
+		<Setting classType="AIParameterSettingList" name="fieldCornerRadius" min="0" max="25" default="7" isExpertModeOnly="true"/>
 	</SettingSubTitle>
 	<!--Center settings-->
 	<SettingSubTitle title="center">
