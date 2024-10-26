@@ -399,6 +399,7 @@ function FieldworkCourse:_setContext(context)
         self.logger:debug('sharpening field boundary corners')
         self.boundary:ensureMinimumRadius(self.context.fieldCornerRadius, true)
     end
+    CourseGenerator.addDebugPolyline(self.boundary, {0, 1, 1, 0.3})
 end
 
 function FieldworkCourse:_removeHeadland(n)
