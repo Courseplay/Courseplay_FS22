@@ -282,6 +282,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="Sovrapposizione delle traccie a fine campo come percentuale della larghezza di lavoro. Intervallo: 0 - 25"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="Margine campo"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="I valori positivi diminuiscono le dimensioni del campo per aggiungere un buffer attorno all'area lavorata. Quelli negativi ingrandiscono l'area lavorata che va oltre il limite del campo. Intervallo: -2 - 5.8"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="Corner radius"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="Decides when a corner is marked as sharp"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="File da saltare"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="File da saltare quando si passa alla linea Su/Giù successiva. Intervallo: 0 - 6"/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>

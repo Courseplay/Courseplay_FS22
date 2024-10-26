@@ -282,6 +282,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="Exprimé en pourcentage de la largeur de travail. Valeurs: 0 - 25"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="Délimitation du champ"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Une valeur positive réduit la taille du champ. Une valeur négative agrandit la zone travaillée au-delà des limites du champ. Valeurs: -2 - 5.8"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="Corner radius"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="Decides when a corner is marked as sharp"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Rangs à ignorer"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Une fois arrivé en bout de rang à l'aller, détermine combien de rangs seront ignorés pour le retour. Valeurs: 0 - 6"/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Quantité de boucles"/>

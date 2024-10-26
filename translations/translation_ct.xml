@@ -282,6 +282,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="以工作寬度的百分比重疊地頭路徑。 數值範圍: 0 - 25"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="田地邊界"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="設置田地邊界。正值會減少田地範圍的大小，負值使工作區域超出了田地範圍的限制。 數值範圍: -5 - 5.8"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="Corner radius"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="Decides when a corner is marked as sharp"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="要跳過的路徑"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="決定到達當前路徑的終點時要跳過多少行路徑。 數值範圍: 0 - 6"/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>

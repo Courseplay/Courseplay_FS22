@@ -282,6 +282,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="Percentagem da largura de trabalho que se sobrepõe por passsagem de cabeceira. Valor: 0 - 25"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="Margem do campo"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Um valor positivo reduz o tamanho do campo, um negativo aumenta o tamanho do campo para além do tamanho original. Valor: -2 - 5,8"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="Corner radius"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="Decides when a corner is marked as sharp"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Saltar faixa"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Faixas que deve de saltar quando vira nas faixas de ida e volta. Valor: 0 - 6"/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>

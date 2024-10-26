@@ -282,6 +282,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="Überlappung Vorgewende in % der Arbeitsbreite. Wert: 0 - 25"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="Feldgrenze"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Positive Werte reduzieren die Feldgröße, negative Werte vergrößern den Arbeitsbereich. Wert: -2 - 5.8"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_title" text="Eckenradius"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldCornerRadius_tooltip" text="Bestimmt ab wann eine Feldecke als Scharf gewertet wird."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Reihen überspringen"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Zu überspringende Reihen, wenn auf nächste Reihe gewendet wird. Nur für hoch/runter. Wert: 0 - 6"/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Anzahl Runden"/>
@@ -314,8 +316,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="Wenn aktiv, werden die Ecken des Feldes als scharfe Ecken generiert."/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Anzahl runde Ecken"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Anzahl runde Ecken, beginnend mit dem ersten Vorgewende."/>
-    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_title" text="Eckenradius"/>
-    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Radius der runden Ecken, basierend auf dem Wenderadius des Fahrzeugs. Wert: 5 - 15"/>
+    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_title" text="Wenderadius"/>
+    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Wenderadius des Fahrzeugs. Wert: 5 - 15"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Startrichtung"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Richtung, in der die Bahnen gefahren werden sollen."/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="Automatisch"/>
