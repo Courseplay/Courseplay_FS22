@@ -125,9 +125,9 @@ end
 
 --- Set temporary value for object
 ---@param value any the temporary value
----@param expiryMs number for expiryMs milliseconds after startMs, the object will return the value set above,
+---@param expiryMs number|nil for expiryMs milliseconds after startMs, the object will return the value set above,
 --- valueWhenExpired otherwise. When nil, it'll remain value forever
----@param startMs number after starMs milliseconds from now, the object will return the value set above
+---@param startMs number|nil after starMs milliseconds from now, the object will return the value set above
 --- (for expiryMs milliseconds). When nil, the value is set immediately.
 function CpTemporaryObject:set(value, expiryMs, startMs)
 	self.value = value

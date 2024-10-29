@@ -207,6 +207,7 @@ function ProximityController:getDriveData(maxSpeed, moveForwards)
                 -- have been blocked by an object long enough
                 CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, self.vehicle, 'An object has been blocking us for a while at %.1f m', d)
                 self:onBlockingObject(not moveForwards)
+                self.blockingObject:set(false, nil, nil)
             elseif not self.blockingObject:isPending() then
                 -- first time we are being blocked
                 CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, self.vehicle, 'An object blocking us at %.1f m', d)

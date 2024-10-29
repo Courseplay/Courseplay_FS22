@@ -105,13 +105,18 @@ function AITurn:turn()
     return nil, nil, nil, self:getForwardSpeed()
 end
 
-function AITurn:onBlocked()
+function AITurn:startRecoveryTurn(...)
+    -- clean up before giving back the control to the drive strategy
     -- unregister here before the AITurn object is destructed
     self.proximityController:unregisterBlockingObjectListener()
     -- restore onWaypoint* listeners before giving back control to the drive strategy, otherwise they'll be lost
     -- when the recovery turn is instantiated and registers its own listeners
     self.ppc:restorePreviouslyRegisteredListeners()
-    self.driveStrategy:startRecoveryTurn(1 * self.turningRadius)
+    self.driveStrategy:startRecoveryTurn(...)
+end
+
+function AITurn:onBlocked()
+    self:startRecoveryTurn(1 * self.turningRadius)
 end
 
 function AITurn:onWaypointChange(ix)
@@ -834,14 +839,13 @@ function RecoveryTurn:onWaypointPassed(ix, course)
 end
 
 function RecoveryTurn:onBlocked()
-    -- unregister here before the AITurn object is destructed
-    self.proximityController:unregisterBlockingObjectListener()
     if self.retryCount < 1 then
         self:debug('Recovering from blocked turn unsuccessful after %d tries, trying again.', self.retryCount + 1)
         -- back up a bit more and see if that works
-        self.driveStrategy:startRecoveryTurn(0.5 * self.turningRadius, self.retryCount + 1)
+        self:startRecoveryTurn(0.5 * self.turningRadius, self.retryCount + 1)
     else
         self:debug('Recovering from blocked turn unsuccessful, giving up after %d tries.', self.retryCount + 1)
+        self:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
     end
 end
 
