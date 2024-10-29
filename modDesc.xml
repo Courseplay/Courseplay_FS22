@@ -35,6 +35,10 @@ or go directly to our <a href="https://github.com/Courseplay/Courseplay_FS22">Gi
 
 Many thanks to our translators and to our community for reporting bugs, giving us feedback and great ideas.
 
+Changelog 7.5.0.1 Hotfix:
+- Fixes a rare Pathfinder bug.
+- Fixes a collision solving bug.
+
 Changelog 7.5.0.0:
 - New course generator 2.0 with new features and updated help menu.
 - A multitool course now contains 2-5 single course for each lane depending on the amount of vehicles you selected.
@@ -171,6 +175,10 @@ Ein Link zu der neuesten Version, der Hilfe Seite und Github, wo du mehr Informa
 oder du gehst direkt auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22">GitHub Webseite</a>.
 
 Vielen Dank an unsere Community für die zahlreichen Übersetzungen, Bug Reports, Feedback und Vorschläge zur Verbesserung.
+
+Changelog 7.5.0.1 Hotfix:
+- Bugfix für einen selten auftretenden Pathfinder Bug.
+- Bugfix für einen Bug bei der Kolisionslösung.
 
 Changelog 7.5.0.0:
 - Neuer Kurs Generator 2.0 mit neuen Features und aktualisiertem Hilfemenü.
