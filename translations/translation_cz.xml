@@ -212,10 +212,10 @@
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Vzdálenost mezi vozidly. Hodnota: 40 - 400"/>
     <text name="CP_vehicle_setting_debugActive_title" text="Ladění vozidla"/>
     <text name="CP_vehicle_setting_debugActive_tooltip" text="Aktivovat/deaktivovat ladění tohoto vozidla."/>
-    <text name="CP_vehicle_setting_refillOnTheField_title" text="Refill tool"/>
-    <text name="CP_vehicle_setting_refillOnTheField_tooltip" text="Refill tool on the field"/>
-    <text name="CP_vehicle_setting_refillOnTheField_waiting" text="Waiting"/>
-    <text name="CP_vehicle_setting_refillOnTheField_active" text="Active"/>
+    <text name="CP_vehicle_setting_refillOnTheField_title" text="Nástroj pro doplňování"/>
+    <text name="CP_vehicle_setting_refillOnTheField_tooltip" text="Nástroj pro doplňování na poli"/>
+    <text name="CP_vehicle_setting_refillOnTheField_waiting" text="Čekání"/>
+    <text name="CP_vehicle_setting_refillOnTheField_active" text="Aktivní"/>
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->
