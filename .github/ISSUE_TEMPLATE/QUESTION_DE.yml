@@ -1,0 +1,73 @@
+name: Frage [DE]
+description: Du hast eine Frage? Stell sie einfach!
+labels:
+- question
+assignees:
+- Tensuko
+body:
+- type: markdown
+  attributes:
+    value: 'Bitte benutze diese Vorlage, um deine Frage zu stellen!
+
+      Lese dir bitte zuerst unsere [Wiki Seite](https://github.com/Courseplay/Courseplay_FS22/wiki)
+      durch, bevor du ein neues Issue erstellst!
+
+      Unsere Hilfe aus dem Spiel, gibt es auch unter [Courseplay.dev]!(https://courseplay.github.io/Courseplay_FS22.github.io/),
+      dort kannst du bereits vieles zu Courseplay erfahren!
+
+      '
+- type: dropdown
+  id: mod-version
+  attributes:
+    label: Version
+    description: Welche CP Version verwendest du?
+    options:
+    - 7.4.0.0
+    - 7.4.2.4
+    - 7.5.0.0
+    - 7.5.0.1
+    default: 3
+  validations:
+    required: true
+- type: dropdown
+  id: spmp
+  attributes:
+    label: SP/MP
+    description: Spielst du im SP oder MP?
+    options:
+    - SP (Singleplayer)
+    - MP (Multiplayer)
+    - egal
+    default: 0
+  validations:
+    required: true
+- type: dropdown
+  id: about
+  attributes:
+    label: Um was geht es bei deiner Frage?
+    description: Bitte wähle was passendes aus.
+    options:
+    - Kurserstellung
+    - Fahrzeug Einstellungen
+    - Globale CP Einstellungen
+    - weiteres später
+    default: 0
+  validations:
+    required: true
+- type: textarea
+  id: question
+  attributes:
+    label: Wie lautet deine Frage?
+    description: Frage
+    placeholder: Frage
+  validations:
+    required: true
+- type: textarea
+  id: screenshots
+  attributes:
+    label: Screenshots
+    description: Ziehe deine Screenshots in das Textfeld, um diese hoch zu laden.
+    placeholder: Wenn du Screenshots hast, die helfen dein Frage zu beschreiben, füge
+      sie hier ein.
+  validations:
+    required: false

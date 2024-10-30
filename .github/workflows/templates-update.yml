@@ -1,0 +1,41 @@
+name: Update-templates
+
+# Controls when the workflow will run
+on: 
+    release:
+
+    push:
+        paths:
+            - "**/ISSUE_TEMPLATE/**"
+            - "**/update-templates/**"
+    # Allows you to run this workflow manually from the Actions tab
+    workflow_dispatch:
+
+
+# The list of jobs this workflow executes
+jobs:
+    # Updates the translations
+    update_templates:
+        name: Update templates
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+              with:
+                  repository: ${{ github.event.pull_request.head.repo.full_name }}
+                  ref: ${{ github.event.pull_request.head.ref }}
+                  fetch-depth: 0
+            - name: Setup python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: '3.11.8' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+                  architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+            - name:
+              run: |
+                python -m pip install pyyaml
+                python .github/scripts/update-templates/updateTemplates.py
+
+            - name: Commit files
+              uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                commit_message: Updated github templates    
