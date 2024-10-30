@@ -36,7 +36,7 @@ or go directly to our <a href="https://github.com/Courseplay/Courseplay_FS22">Gi
 Many thanks to our translators and to our community for reporting bugs, giving us feedback and great ideas.
 
 Changelog 7.5.0.1 Hotfix:
-- Fixes a rare Pathfinder bug.
+- Fixes a rare pathfinder bug.
 - Fixes a collision solving bug.
 
 Changelog 7.5.0.0:
@@ -178,7 +178,7 @@ Vielen Dank an unsere Community für die zahlreichen Übersetzungen, Bug Reports
 
 Changelog 7.5.0.1 Hotfix:
 - Bugfix für einen selten auftretenden Pathfinder Bug.
-- Bugfix für einen Bug bei der Kolisionslösung.
+- Bugfix für einen Bug bei der Kollisionslösung.
 
 Changelog 7.5.0.0:
 - Neuer Kurs Generator 2.0 mit neuen Features und aktualisiertem Hilfemenü.
