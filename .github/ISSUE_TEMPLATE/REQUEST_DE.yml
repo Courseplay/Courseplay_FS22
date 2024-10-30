@@ -1,73 +1,96 @@
 name: Feature Idee/Anfrage [DE]
 description: Eine Anfrage oder Idee für ein Feature.
 labels:
-  - Suggestion
+- Suggestion
 assignees:
-  - Tensuko
+- Tensuko
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Danke, dass du dir Zeit nimmst, diesen Report auszufüllen.
-        Lese dir bitte zuerst unsere [Wiki Seite](https://github.com/Courseplay/Courseplay_FS22/wiki) durch, bevor du ein neues Issue erstellst!
+- type: markdown
+  attributes:
+    value: 'Danke, dass du dir Zeit nimmst, diesen Report auszufüllen.
 
-  - type: dropdown
-    id: mod-version
-    attributes:
-      label: Version
-      description: Welche CP Version verwendest du?
-      options:
-        - 7.5.0.0
-        - 7.4.2.4
-        
-      default: 0
-    validations:
-      required: true
+      Lese dir bitte zuerst unsere [Wiki Seite](https://github.com/Courseplay/Courseplay_FS22/wiki)
+      durch, bevor du ein neues Issue erstellst!
 
-  - type: dropdown
-    id: spmp
-    attributes:
-      label: SP/MP
-      description: Betrifft die Idee SP oder MP?
-      options:
-        - SP (Singleplayer)
-        - MP (Multiplayer)
-      default: 0
-    validations:
-      required: true
-
-  - type: textarea
-    id: what-does
-    attributes:
-      label: Was kann mit deiner Idee gemacht werden?
-      description: Beschreibe bitte so gut es geht, was für ein Problem deine Idee löst oder was sie verbessert.
-      placeholder: Beschreibe es so gut es geht.
-    validations:
-      required: true
-
-  - type: textarea
-    id: how-to
-    attributes:
-      label: Wie könntest du dir vorstellen, wie deine Idee in CP aussehen könnte.
-      description: Beschreibe bitte, wie es in CP passen könnte.
-      placeholder: Beschreibe es so gut es geht.
-    validations:
-      required: true
-  
-  - type: textarea
-    id: alternative
-    attributes:
-      label: Gäbe es eine Alternative?
-      description: Würde es eine Alternative zu deiner Lösung geben?
-      placeholder: Beschreibe es so gut es geht.
-    validations:
-      required: true
-
-  - type: textarea
-    id: screenshots
-    attributes:
-      label: Screenshots
-      description: Ziehe deine Screenshots in das Textfeld, um diese hoch zu laden.
-      placeholder: Wenn du Screenshots hast, die helfen deine Idee besser zu verstehen, füge sie bitte hier ein.
-    validations:
-      required: true
+      '
+- type: dropdown
+  id: mod-version
+  attributes:
+    label: Version
+    description: Welche CP Version verwendest du?
+    options:
+    - 7.1.0.0
+    - 7.1.0.3
+    - 7.2.0.0
+    - 7.2.0.5
+    - 7.3.0.0
+    - 7.3.0.1
+    - 7.3.0.2
+    - 7.3.0.3
+    - 7.3.1.0
+    - 7.3.1.1
+    - 7.3.1.2
+    - 7.3.1.3
+    - 7.3.1.4
+    - 7.3.1.5
+    - 7.4.0.0
+    - 7.4.0.1
+    - 7.4.0.2
+    - 7.4.1.0
+    - 7.4.1.1
+    - 7.4.1.2
+    - 7.4.1.3
+    - 7.4.2.0
+    - 7.4.2.1
+    - 7.4.2.2
+    - 7.4.2.3
+    - 7.4.2.4
+    - 7.5.0.0
+    default: 26
+  validations:
+    required: true
+- type: dropdown
+  id: spmp
+  attributes:
+    label: SP/MP
+    description: Betrifft die Idee SP oder MP?
+    options:
+    - SP (Singleplayer)
+    - MP (Multiplayer)
+    default: 0
+  validations:
+    required: true
+- type: textarea
+  id: what-does
+  attributes:
+    label: Was kann mit deiner Idee gemacht werden?
+    description: Beschreibe bitte so gut es geht, was für ein Problem deine Idee löst
+      oder was sie verbessert.
+    placeholder: Beschreibe es so gut es geht.
+  validations:
+    required: true
+- type: textarea
+  id: how-to
+  attributes:
+    label: Wie könntest du dir vorstellen, wie deine Idee in CP aussehen könnte.
+    description: Beschreibe bitte, wie es in CP passen könnte.
+    placeholder: Beschreibe es so gut es geht.
+  validations:
+    required: true
+- type: textarea
+  id: alternative
+  attributes:
+    label: Gäbe es eine Alternative?
+    description: Würde es eine Alternative zu deiner Lösung geben?
+    placeholder: Beschreibe es so gut es geht.
+  validations:
+    required: true
+- type: textarea
+  id: screenshots
+  attributes:
+    label: Screenshots
+    description: Ziehe deine Screenshots in das Textfeld, um diese hoch zu laden.
+    placeholder: Wenn du Screenshots hast, die helfen deine Idee besser zu verstehen,
+      füge sie bitte hier ein.
+  validations:
+    required: true

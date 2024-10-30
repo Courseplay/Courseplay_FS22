@@ -1,113 +1,136 @@
 name: Bug report [EN]
 description: Reporting a bug.
 labels:
-  - bug
+- bug
 assignees:
-  - Tensuko
+- Tensuko
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Thanks for taking the time to fill out this bug report!
-        Please make sure to read our [Wiki Page](https://github.com/Courseplay/Courseplay_FS22/wiki) before creating a new issue!
+- type: markdown
+  attributes:
+    value: 'Thanks for taking the time to fill out this bug report!
 
-  - type: dropdown
-    id: mod-version
-    attributes:
-      label: Version
-      description: Which CoursePlay version are you using?
-      options:
-        - 7.5.0.0
-        - 7.4.2.4
-        
-      default: 0
-    validations:
-      required: true
+      Please make sure to read our [Wiki Page](https://github.com/Courseplay/Courseplay_FS22/wiki)
+      before creating a new issue!
 
-  - type: dropdown
-    id: game-version
-    attributes:
-      label: Game Version
-      description: What version of the game are you playing?
-      options:
-        - 1.14.0.0
-        - 1.13.1.1
-        - 1.13.1.0
-        - 1.12.0.0
-        - 1.10.1.1
-        - 1.10.1.0
-        - 1.9.1.0
-        - 1.9.0.0
-        - 1.8.2.0
-        - 1.8.1.0
-        - 1.7.1.0
-        - 1.7.0.1
-        - 1.7.0.0
-        - 1.6.0.0
-        - 1.5.0.0
-        - 1.4.1.0
-        - 1.4.0.0
-        - 1.3.1.0
-        - 1.3.0.0
-        - 1.2.0.2
-        - 1.2.0.0
-      default: 0
-    validations:
-      required: true
-
-  - type: dropdown
-    id: spmp
-    attributes:
-      label: SP/MP
-      description: Did the bug happen in SP or MP?
-      options:
-        - SP (Singleplayer)
-        - MP (Multiplayer)
-      default: 0
-    validations:
-      required: true
-
-  - type: textarea
-    id: what-happened
-    attributes:
-      label: What happened?
-      description: Please describe what happened.
-      placeholder: Tell us what you see!
-    validations:
-      required: true
-
-  - type: textarea
-    id: how-to
-    attributes:
-      label: How can we reproduce this?
-      description: If you can, please describe the steps to reproduce this bug.
-      placeholder: Describe as good as possible.
-    validations:
-      required: true
-  
-  - type: textarea
-    id: expect
-    attributes:
-      label: What did you expect to happen?
-      description: What  did you expect to happen when you tried that function and the bug occurred.
-      placeholder: Describe as good as possible.
-    validations:
-      required: true
-
-  - type: textarea
-    id: logs
-    attributes:
-      label: Attach your log.txt!
-      description: Use drag and drop into the textbox to upload the log.txt into the text field or use [Gist](https://gist.github.com/) or [Pastebin](http://pastebin.com/).
-      placeholder: Please add your log.txt from file path ("C:\\Users\\<USER_NAME>\\Documents\\My Games\\FarmingSimulator2022\\log.txt").
-    validations:
-      required: true
-
-  - type: textarea
-    id: screenshots
-    attributes:
-      label: Screenshots
-      description: Use drag and drop into the textbox to upload the screenshots.
-      placeholder: If you have any helpful screenshots to describe your situation, please add them here.
-    validations:
-      required: true
+      '
+- type: dropdown
+  id: mod-version
+  attributes:
+    label: Version
+    description: Which CoursePlay version are you using?
+    options:
+    - 7.1.0.0
+    - 7.1.0.3
+    - 7.2.0.0
+    - 7.2.0.5
+    - 7.3.0.0
+    - 7.3.0.1
+    - 7.3.0.2
+    - 7.3.0.3
+    - 7.3.1.0
+    - 7.3.1.1
+    - 7.3.1.2
+    - 7.3.1.3
+    - 7.3.1.4
+    - 7.3.1.5
+    - 7.4.0.0
+    - 7.4.0.1
+    - 7.4.0.2
+    - 7.4.1.0
+    - 7.4.1.1
+    - 7.4.1.2
+    - 7.4.1.3
+    - 7.4.2.0
+    - 7.4.2.1
+    - 7.4.2.2
+    - 7.4.2.3
+    - 7.4.2.4
+    - 7.5.0.0
+    default: 26
+  validations:
+    required: true
+- type: dropdown
+  id: game-version
+  attributes:
+    label: Game Version
+    description: What version of the game are you playing?
+    options:
+    - 1.2.0.0
+    - 1.2.0.2
+    - 1.3.0.0
+    - 1.3.1.0
+    - 1.4.0.0
+    - 1.4.1.0
+    - 1.5.0.0
+    - 1.6.0.0
+    - 1.7.0.0
+    - 1.7.0.1
+    - 1.7.1.0
+    - 1.8.1.0
+    - 1.8.2.0
+    - 1.9.0.0
+    - 1.9.1.0
+    - 1.10.1.0
+    - 1.10.1.1
+    - 1.12.0.0
+    - 1.13.1.0
+    - 1.13.1.1
+    - 1.14.0.0
+    default: 20
+  validations:
+    required: true
+- type: dropdown
+  id: spmp
+  attributes:
+    label: SP/MP
+    description: Did the bug happen in SP or MP?
+    options:
+    - SP (Singleplayer)
+    - MP (Multiplayer)
+    default: 0
+  validations:
+    required: true
+- type: textarea
+  id: what-happened
+  attributes:
+    label: What happened?
+    description: Please describe what happened.
+    placeholder: Tell us what you see!
+  validations:
+    required: true
+- type: textarea
+  id: how-to
+  attributes:
+    label: How can we reproduce this?
+    description: If you can, please describe the steps to reproduce this bug.
+    placeholder: Describe as good as possible.
+  validations:
+    required: true
+- type: textarea
+  id: expect
+  attributes:
+    label: What did you expect to happen?
+    description: What  did you expect to happen when you tried that function and the
+      bug occurred.
+    placeholder: Describe as good as possible.
+  validations:
+    required: true
+- type: textarea
+  id: logs
+  attributes:
+    label: Attach your log.txt!
+    description: Use drag and drop into the textbox to upload the log.txt into the
+      text field or use [Gist](https://gist.github.com/) or [Pastebin](http://pastebin.com/).
+    placeholder: Please add your log.txt from file path ("C:\\Users\\<USER_NAME>\\Documents\\My
+      Games\\FarmingSimulator2022\\log.txt").
+  validations:
+    required: true
+- type: textarea
+  id: screenshots
+  attributes:
+    label: Screenshots
+    description: Use drag and drop into the textbox to upload the screenshots.
+    placeholder: If you have any helpful screenshots to describe your situation, please
+      add them here.
+  validations:
+    required: true
