@@ -142,7 +142,7 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
     self.pullBackDistanceEnd = self.pullBackDistanceStart + 5
     -- when making a pocket, how far to back up before changing to forward
     -- for very long vehicles, like potato/sugar beet harvesters the 20 meters may not be enough
-    self.pocketReverseDistance = math.max(1.7 * AIUtil.getVehicleAndImplementsTotalLength(self.vehicle), 32)
+    self.pocketReverseDistance = math.max(2.5 * AIUtil.getVehicleAndImplementsTotalLength(self.vehicle), 32)
     -- register ourselves at our boss
     -- TODO_22 g_combineUnloadManager:addCombineToList(self.vehicle, self)
     self.waitingForUnloaderAtEndOfRow = CpTemporaryObject()
@@ -503,7 +503,7 @@ function AIDriveStrategyCombineCourse:onWaypointPassed(ix, course)
     if self.state == self.states.UNLOADING_ON_FIELD and
             self.unloadState == self.states.MAKING_POCKET and
             self.unloadInPocketReferenceIx then
-        if self.course:getDistanceBetweenVehicleAndWaypoint(self.vehicle, self.unloadInPocketReferenceIx) < 15 then
+        if self.course:getDistanceBetweenVehicleAndWaypoint(self.vehicle, self.unloadInPocketReferenceIx) < 17 then
             -- we are close enough to the reference waypoint, so stop making the pocket and wait for unload.
             self:debug('Waiting for unload in the pocket')
             self.unloadState = self.states.WAITING_FOR_UNLOAD_IN_POCKET
