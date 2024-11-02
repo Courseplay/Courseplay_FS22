@@ -63,19 +63,16 @@ end
 function Courseplay:showUserInformation(xmlFile, key)
 	local showInfoDialog = true
 	self.currentVersion = g_modManager:getModByName(self.MOD_NAME).version
+	local lastLoadedVersion = "----"
 	if xmlFile then 
-		local lastLoadedVersion = xmlFile:getValue(key.."#lastVersion")
-		if lastLoadedVersion then 
-			if self.currentVersion == lastLoadedVersion then 
-				showInfoDialog = false
-			end
-			CpUtil.info("Current mod name: %s, Current version: %s, last version: %s", self.MOD_NAME, self.currentVersion, lastLoadedVersion)
-		else 
-			CpUtil.info("Current mod name: %s, Current version: %s, last version: ----", self.MOD_NAME, self.currentVersion)
-		end
+		lastLoadedVersion = xmlFile:getValue(key.."#lastVersion")
+		showInfoDialog = self.currentVersion ~= lastLoadedVersion
 	else 
-		CpUtil.info("Current mod name: %s, first version: %s (no courseplay config file found)", self.MOD_NAME, self.currentVersion)
+		lastLoadedVersion = "no config file!"
 	end
+	CpUtil.info("Current mod name: %s, Current version: %s, Last version: %s", 
+		self.MOD_NAME, self.currentVersion, lastLoadedVersion)
+
 	if showInfoDialog then
 		g_gui:showInfoDialog({
 			text = string.format(g_i18n:getText("CP_infoText"), self.currentVersion)
@@ -96,6 +93,11 @@ function Courseplay:loadMap(filename)
 	self.globalSettings = CpGlobalSettings()
 	self:registerXmlSchema()
 	self:loadUserSettings()
+	--- Savegame infos here
+	CpUtil.info("Map loaded: %s, Savegame name: %s(%d)", 
+		g_currentMission.missionInfo.mapId, 
+		g_currentMission.missionInfo.savegameName,
+		g_currentMission.missionInfo.savegameIndex)
 	self:load()
 	self:setupGui()
 	if g_currentMission.missionInfo.savegameDirectory ~= nil then
