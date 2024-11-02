@@ -212,10 +212,10 @@
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="车辆之间的距离。 调整范围: 40 - 400"/>
     <text name="CP_vehicle_setting_debugActive_title" text="车辆调试"/>
     <text name="CP_vehicle_setting_debugActive_tooltip" text="启用/禁用此车辆的调试。"/>
-    <text name="CP_vehicle_setting_refillOnTheField_title" text="Refill tool"/>
-    <text name="CP_vehicle_setting_refillOnTheField_tooltip" text="Refill tool on the field"/>
-    <text name="CP_vehicle_setting_refillOnTheField_waiting" text="Waiting"/>
-    <text name="CP_vehicle_setting_refillOnTheField_active" text="Active"/>
+    <text name="CP_vehicle_setting_refillOnTheField_title" text="填充工具"/>
+    <text name="CP_vehicle_setting_refillOnTheField_tooltip" text="在田地重新填充工具"/>
+    <text name="CP_vehicle_setting_refillOnTheField_waiting" text="等待"/>
+    <text name="CP_vehicle_setting_refillOnTheField_active" text="激活"/>
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->
@@ -272,7 +272,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_title" text="工作路线设置 (%s)"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_basic" text="基本设置"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_headland" text="田间地头设置"/>
-    <text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="路径规划设置"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="田地中心路线设置"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_island" text="障碍绕行设置"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_title" text="工作宽度"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip" text="调整工作宽度。 调整范围: 0 - 50"/>
@@ -284,8 +284,8 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="设置田地边界。正值会减少田地范围的大小，负值使工作区域超出了田地范围的限制。 调整范围: -5 - 5.8"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="要跳过的路径"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="决定到达当前路径的终点时要跳过多少行路径。 调整范围: 0 - 6"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="绕地圈数"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="设置车辆围绕地块工作的圈数。 调整范围: 1 - 12"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="圆环圈数"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="设置车辆围绕区域地块工作的圈数。 调整范围: 1 - 12"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="区域路径行数"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="设置每个区域中有多少行路径。 调整范围: 0 - 24"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="转角方向"/>
@@ -300,14 +300,14 @@
     <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_counterclockwise" text="逆时针"/>
     <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_clockwise" text="顺时针"/>
     <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_counterclockwise" text="逆时针"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="田地路径规划"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="田地中心路线规划"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="选择路径规划类型。"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="往返"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="螺旋（回转）"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="圆形（由外到内）"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="螺旋"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="圆环（由内向外）"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="区域（由内到外）"/>
-    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_title" text="从内部螺旋（回转）"/>
-    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip" text="从内部开始螺旋（回转）。"/>
+    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_title" text="从内部螺旋"/>
+    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip" text="从内部开始螺旋。"/>
     <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="均分车道"/>
     <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="减小工作宽度，以实现所有车道的均匀分布。"/>
     <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title" text="转角优化"/>
@@ -333,11 +333,11 @@
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="多个工具"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="使用相同工具进行相同任务的车辆数量。 "/>
     <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_title" text="切换车道"/>
-    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_tooltip" text="Sets the lanes to always switch. This leads to similar turns. See help menu for more details."/>
-    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Field edge for line form"/>
-    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="The rows follow the curvature of the field edge nearest to the field marker."/>
-    <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Narrow field"/>
-    <text name="CP_vehicle_courseGeneratorSetting_narrowField_tooltip" text="Generates the headland only at the short edges of the field."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_tooltip" text="设置车道为始终切换模式。这将造成大量相同的转弯。更多详情，请参阅帮助菜单。"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="田地边缘路径规划"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="这些路径遵循着离田地边缘最近的曲度。"/>
+    <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="狭窄田地"/>
+    <text name="CP_vehicle_courseGeneratorSetting_narrowField_tooltip" text="仅在田地短边生成转角。"/>
     <!---->
     <!--Vine course generator settings-->
     <!---->
@@ -367,8 +367,8 @@
     <text name="CP_global_setting_autoRepair_always" text="保持100%"/>
     <text name="CP_global_setting_fuelThreshold_title" text="燃料临界值"/>
     <text name="CP_global_setting_fuelThreshold_tooltip" text="如果燃料剩余量过低，司机将停止工作。"/>
-    <text name="CP_global_setting_waitForRefueling_title" text="Waits for refueling"/>
-    <text name="CP_global_setting_waitForRefueling_tooltip" text="Vehicle waits until it is refueled."/>
+    <text name="CP_global_setting_waitForRefueling_title" text="等待加油"/>
+    <text name="CP_global_setting_waitForRefueling_tooltip" text="车辆等待加油。"/>
     <text name="CP_global_setting_brokenThreshold_title" text="损坏临界值"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="如果车辆或工具损坏过多，司机将停止工作。100%为关闭。"/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="下雨时停止收割机工作"/>
@@ -526,11 +526,12 @@
 Courseplay 允许您生成具有附加功能的任务路线，例如：地头。
 它还可以使用打包机和饲料车，它们可以像以前的割草机或收割机一样行驶到同一路线上。
 另一个大特点是在场地上收集或包装草垛。
-本次 CP 迭代的新功能是葡萄树工作路线。
+本次 CP 迭代的新功能是葡萄藤工作路线。
 可以在多工具模式下设置田地工作路线，这允许使用多达 5 名司机在同一田地的车队中工作。
 也可以将联合收割机自动卸载到田间/附近的拖车中。
 可以分配自定义田地边界供CP使用，例如：在草地的情况下，它不被识别为普通田地。
 最后，cp 有一个 Autodrive 接口，允许在附近的筒仓重新填充播种机或卸载饲料车等。
+使用7.2.1.0或更高版本，还可以使用联合收割机在田地附近卸载。
 
 更多信息请访问我们的github： https://github.com/Courseplay/Courseplay_FS22 .
 您可以在那里获得帮助或报告您遇到的任何问题。
@@ -566,7 +567,7 @@ Courseplay 允许您生成具有附加功能的任务路线，例如：地头。
 现在可以直接从菜单中启动车辆了。 助手将驾驶到目标位置，到了目的地CP工作将自动接管。
 你也可以从迷你HUD启动车辆，如果你驾驶的车辆离田地很近，或者使用AutoDrive mod到达离田地很近的地方，CP作业将会自动接管。
 "/>
-    <text name="CP_help_page_courseGeneratorBasic_title" text="Course generator basics"/>
+    <text name="CP_help_page_courseGeneratorBasic_title" text="任务生成器基础知识"/>
     <text name="CP_help_page_courseGeneratorBase_text" text="
 每个田地作业路线都由路线创建生成。这是一个强大的工具，它允许您根据自己的需要定制生成的工作任务路线。
 如果你是新手，你应该从改变地头数量开始。
@@ -580,12 +581,12 @@ Courseplay 允许您生成具有附加功能的任务路线，例如：地头。
 - 多个工具:当你想要更多的车辆在你的路线上工作时，使用这个设置。由于这变得有点复杂，所以有一个单独的帮助页面。
 - 地头数量:为了让车辆转弯时不行驶出田地范围，从而撞到田边的障碍物，最好的方法是增加地头数量。
 地头数量取决于工具的工作宽度，车辆距离田地边缘转向的距离取决于车辆加上所挂载工具的总长度。
-中心路线设置：
+田地中心路线设置：
 - 田地中心路线：田地中心路线有不同的模式。最经典也是最常用的是往返。
-螺旋、圆形和区域模式都有各自独特的优势。例如，收割机的螺旋钻大部分时间朝向没有作物的方向，以便接粮拖车卸载。
+螺旋、圆环（由外向内）和区域（由内向外）都有各自独特的优势。例如，区域（由内向外）通常能让联合收割机的管道伸出作物之外，从而更便于卸货。
 - 往返：通常会自动找到最佳方向，但有时最长的边更适合。如果您对其中任何一个都不满意，请选择手动并手动设置方向。
 - 要跳过的路径：这是一个非常有用的选项，可以加快您的工作，使车辆不会在地头的转向、倒车时花费太多的时间。
-- 每块土地的行数:这只中心路径被设置为土地时才有影响，并将告诉生成器每块土地应该有多少行。行越多，产生的土地就越少。
+- 每块区域的行数:这只中心路径被设置为区域（由内向外）模式时才有影响，并将告诉任务生成器每块区域应该有多少行。行越多，产生的区域就越少。
 - 方向角度:往返方向设置为手动时,该设置将影响生成方向。
 "/>
     <text name="CP_help_page_courseGeneratorHeadland_text" text="
@@ -603,36 +604,42 @@ Courseplay 允许您生成具有附加功能的任务路线，例如：地头。
 - 地头重叠：所有地头应有多少重叠百分比。 第一个与字田地边界没有重叠，但中间的将与其邻居重叠。
 "/>
     <text name="CP_help_page_courseGeneratorCenter_text" text="
-For the center of the field, different strategies are available to do the work. Mostly the selected tool is a reason to choose a specific strategie over the other. The available strategies where created based on feedback and informations from our community.
-The simple up down strategie works almost every time for any tool. But it can be better to choose another, for example when harvesting with a combine, lands is a better way to keep the pipe outside of the fruit for a more efficient unloading.
-For Chopping, racetrack can be a better solution for less narrow turns to make the work for the unloader easier.
-Spirale is a better solution for towed harvester with an offset, to keep the tool in the fruit and the tractor outside.
+针对于田地的路径规划，可以采取不同的模式来完成工作。
+大多数情况下，所使用工具是选择何种模式的原因所在。
+这些模式是根据我们社区的反馈和信息制定的。
+简单的往返模式几乎适用于任何工具。
+但在某些情况下，选择其他模式可能更佳；
+例如在使用联合收割机收割时，采用区域（由内向外）模式能更好地保证管道位于作物之外，从而提高卸载效率。
+圆环（由外向内）模式可能是减少狭窄转角的最好解决方案，使得收集工作更加容易。
+螺旋模式是给予带偏置的牵引式收割机的更好解决方案， 把工具放在作物里，把拖拉机放在外面。
 "/>
     <text name="CP_help_page_courseGeneratorCenterFunctions_text" text="
-- Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
-Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have the combine's pipe point out of the fruit most of the time to easier unload them.
-- Center direction: Works the same as the headland, but can now be set independantly.
-- Even row width: If the center of a field have a total width, that can't be evenly split over the work width of the tool, the 1st or last line will have a narrow rest work. To prevent this the width of each row gets reduced to have a even split over all lines.
-- Row direction: automatic mostly finds the best direction, but sometimes the longest edge fits better. If you are not happy with either one, choose manual and set the direction manually.
-- Row angle: When the row direction is set to manual, this setting appears and will tell the generator the direction of the rows.
+- 路径规划: 关于你的路径规划模式有多种模式，最经典和常用的是往返。
+          螺旋、圆环（由外向内）和区域（由内向外）在其他田地有其独特优势。
+          例如，条田通常能让联合收割机的管道伸出作物之外，从而更便于卸货。
+- 路径方向：与地头转向设置类似，但现在可以独立设置。
+- 均分车道：如果田地的总宽度不能被工具的作业宽度均匀分配，那么第一行或最后一行将会有一个狭窄的剩余作业区域。
+           为避免这种情况，每行的宽度都会减小，以确保所有行都能均匀分配。
+- 往返方向：程序自动通常会找到最佳方向，但有时最长的边更适合。您如果对其自动生成的方向不满意，请选择手动并设置方向。
+- 方向角度：当往返方向设置为手动时，会出现此设置，手动设置往返方向角度。
 
 These settings appear only for specific settings you have done before:
-- Rows to skip: Appears when field center is set to &quot;up/down&quot;. This is a very helpful option to accelerate your work, as tools won't have to back up to turn into the next row.
-- Rows per Land: Appears when field center is set to &quot;lands&quot;. This has only impact when the field center is set to lands and will tell the generator how many rows each land should have. The more rows, the fewer lands will be generated.
-- Spiral from inside: Appears when field center is set to &quot;spiral&quot;.
-- Number of circles: Appears when field center is set to &quot;racetrack&quot;.
+- 需要跳过的路径: 当田地中心路线设置为&quot;往返&quot;模式时才出现。可以加快您的工作，使车辆不会在地头的转向、倒车时花费太多的时间。
+- 每块区域的行数: 当田地中心路线设置为&quot;区域（由内向外）&quot;模式时才出现。将告诉任务生成器每块区域应该有多少行。行越多，产生的区域就越少。
+- 从内部螺旋: 当田地中心路线设置为&quot;螺旋&quot;模式时才出现。
+- 圆环数量: 当田地中心路线设置为&quot;圆环（由外向内）&quot;模式时才出现。
 "/>
     <text name="CP_help_page_courseGeneratorCenterExampleUpdown_text" text="
-up/down
+往返
 "/>
     <text name="CP_help_page_courseGeneratorCenterExampleLands_text" text="
-lands
+区域（由内向外）
 "/>
     <text name="CP_help_page_courseGeneratorCenterExampleSpiral_text" text="
-spiral
+螺旋
 "/>
     <text name="CP_help_page_courseGeneratorCenterExampleRacetrack_text" text="
-racetrack
+圆环（由外向内）
 "/>
     <text name="CP_help_page_courseGeneratorIsland_text" text="
 Driving arround the island is now only possible with a complete round arround it.
@@ -657,10 +664,10 @@ Some expert settings only work properly under some conditions.
 - Use base line edge: A completly new feature, what only works on specific fields. If you have a field with a long radial border and place the field marker near it, the center line will follow that border.
 IMPORTANT NOTE: Should the generated course not be perfect or even bad, the selected edge or the field will not work with this feature. There also won't be an Update for this!
 "/>
-    <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
+    <text name="CP_help_page_courseGeneratorHeadland_title" text="任务生成器地头"/>
     <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
     <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>
-    <text name="CP_help_page_courseGeneratorExpert_title" text="Course generator expert"/>
+    <text name="CP_help_page_courseGeneratorExpert_title" text="任务生成器专家"/>
     <text name="CP_help_page_courseManager_title" text="任务管理"/>
     <text name="CP_help_page_courseManagerBase_text" text="
 任务管理器允许您保存任务并允许您稍后再次加载保存的任务。 
