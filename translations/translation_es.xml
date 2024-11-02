@@ -212,10 +212,10 @@
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Establece la distancia entre vehículos. Valor: 40 - 400"/>
     <text name="CP_vehicle_setting_debugActive_title" text="Depurar vehículo"/>
     <text name="CP_vehicle_setting_debugActive_tooltip" text="Habilita/Desabilita la depuración para este vehículo."/>
-    <text name="CP_vehicle_setting_refillOnTheField_title" text="Refill tool"/>
-    <text name="CP_vehicle_setting_refillOnTheField_tooltip" text="Refill tool on the field"/>
-    <text name="CP_vehicle_setting_refillOnTheField_waiting" text="Waiting"/>
-    <text name="CP_vehicle_setting_refillOnTheField_active" text="Active"/>
+    <text name="CP_vehicle_setting_refillOnTheField_title" text="Rellenar herramienta"/>
+    <text name="CP_vehicle_setting_refillOnTheField_tooltip" text="Relleno de herramienta en el campo"/>
+    <text name="CP_vehicle_setting_refillOnTheField_waiting" text="Esperando"/>
+    <text name="CP_vehicle_setting_refillOnTheField_active" text="Activo"/>
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->
@@ -223,7 +223,7 @@
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Ancho de trabajo en el silo"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Ajusta el ancho de trabajo en el silo. Valor: 0 - 50"/>
     <text name="CP_vehicle_setting_levelerHeightOffset_title" text="Conpensación de altura del nivelador"/>
-    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Compensa la altura del nivelador respecto al suelo. Value: 0 - 1"/>
+    <text name="CP_vehicle_setting_levelerHeightOffset_tooltip" text="Compensa la altura del nivelador respecto al suelo. Valor: 0 - 1"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Compensación de altura de la pala.  Valor: -1 - 1"/>
     <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Compensa la altura de pala respecto al suelo. Valor: -1 - 1"/>
     <!---->
@@ -270,10 +270,10 @@
     <!--Course generator settings-->
     <!---->
     <text name="CP_vehicle_courseGeneratorSetting_title" text="Configuración del generador de rutas de (%s)"/>
-    <text name="CP_vehicle_courseGeneratorSetting_subTitle_basic" text="Básica"/>
-    <text name="CP_vehicle_courseGeneratorSetting_subTitle_headland" text="Cabecera"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_basic" text="Básicos"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_headland" text="Cabeceras"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="Centro"/>
-    <text name="CP_vehicle_courseGeneratorSetting_subTitle_island" text="Settings island"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_island" text="Islas"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_title" text="Ancho de trabajo"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip" text="Ancho de trabajo. Valor: 0 - 50"/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title" text="Número de cabeceras"/>
@@ -284,60 +284,60 @@
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Valores(+) reducen el tamaño del campo para agregar un búfer alrededor del área trabajada, los (-) aumentan el área trabajada más allá del límite del campo.  Valor: -2 - 5.8"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Filas a omitir"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Filas a omitir al cambiar a la siguiente fila Arriba/Abajo. Valor: 0 - 6"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Number of circles"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Number of circles for racetrack. Value: 1 - 12"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_title" text="Número de círculos"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfCircles_tooltip" text="Número de círculos en las filas ctrales. Valor: 1 - 12"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Filas por bloques"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="Cuando el modo central es 'Circular', habrá esta cantidad de filas en cada bloque. Valor: 0 - 24"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Headland direction"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_title" text="Center direction"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_title" text="Island Headland direction"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland."/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_clockwise" text="clockwise"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_counterclockwise" text="counterclockwise"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_clockwise" text="clockwise"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_counterclockwise" text="counterclockwise"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_clockwise" text="clockwise"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_counterclockwise" text="counterclockwise"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_title" text="Dirección de cabeceras"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_tooltip" text="Si el vehículo conduce en sentido horario o en sentido antihorario en las cabeceras."/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_title" text="Dirección en centro del curso"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_tooltip" text="Si el vehículo conduce en sentido horario o en sentido antihorario en el centro del curso."/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_title" text="Dirección en islas"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_tooltip" text="Si el vehículo conduce en sentido horario o en sentido antihorario en las cabeceras de las islas."/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_clockwise" text="horario"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandClockwise_counterclockwise" text="antihorario"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_clockwise" text="horario"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerClockwise_counterclockwise" text="antihorario"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_clockwise" text="horario"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandHeadlandClockwise_counterclockwise" text="atihorario"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Centro del campo"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Centro del campo"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="Arriba/abajo"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="Espiral"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="Circular"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="Estrecho"/>
-    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_title" text="Spiral from inside"/>
-    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip" text="Starts the spiral from inside."/>
-    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="Even row with"/>
-    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Reduces the working width to achieve an even distribution across all lanes."/>
-    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title" text="Sharpen headland corners"/>
-    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="Sharpen corners of non-rounded headlands"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Number of round corners"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Number of round corners, starting with the first headland."/>
-    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_title" text="Corner radius"/>
-    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Radius of round corners, based on the turning radius of the vehicle. Value: 5 - 15"/>
-    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Up/down row direction"/>
-    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Direction of the rows in the center of the field."/>
-    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="automatic"/>
+    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_title" text="Espiral desde adentro"/>
+    <text name="CP_vehicle_courseGeneratorSetting_spiralFromInside_tooltip" text="Comienza la espiral desde adentro."/>
+    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title" text="Distribución de filas uniformes"/>
+    <text name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip" text="Reduce el ancho de trabajo para lograr una distribución uniforme en todas las filas."/>
+    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_title" text="Afilar esquinas de cabecras"/>
+    <text name="CP_vehicle_courseGeneratorSetting_sharpenCorners_tooltip" text="Afilar esquinas de cabeceras no redondeadas"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_title" text="Número de cabceras con esquinas redondas"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandsWithRoundCorners_tooltip" text="Número de esquinas redondas, comenzando en la primera cabecera."/>
+    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_title" text="Radio de esquina"/>
+    <text name="CP_vehicle_courseGeneratorSetting_turningRadius_tooltip" text="Radio de esquinas redondas, basado en el radio de giro del vehículo.Valor: 5 - 15"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_title" text="Dirección de filas Arriba/Abajo"/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_tooltip" text="Dirección de las filas en el centro del campo."/>
+    <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_automatic" text="automático"/>
     <text name="CP_vehicle_courseGeneratorSetting_autoRowAngle_manual" text="manual"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Ángulo de filas Arriba/Abajo"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Ajusta el ángulo en grados de las filas Arriba/Abajo (0° es Norte) cuando está en modo manual. Valor: 0 - 175 Pasos: 5"/>
-    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Island bypass mode"/>
-    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="How the course should bypass islands in the field."/>
-    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title" text="Island headlands"/>
-    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Number of headlands around islands. Value: 1 - 10"/>
+    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_title" text="Modo de omisión de islas"/>
+    <text name="CP_vehicle_courseGeneratorSetting_bypassIslands_tooltip" text="Cómo el curso debe omitir las islas en el campo."/>
+    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_title" text="Cabeceras de islas"/>
+    <text name="CP_vehicle_courseGeneratorSetting_nIslandHeadlands_tooltip" text="Número de cabeceras alrededor de las islas. Valor: 1 - 10"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Iniciar trabajo en"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Iniciar trabajo en"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="Cabecera"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="Centro"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Multi-Herramientas"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Número de vehículos en la misma ruta."/>
-    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_title" text="Switching lanes"/>
-    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_tooltip" text="Sets the lanes to always switch. This leads to similar turns. See help menu for more details."/>
-    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Field edge for line form"/>
-    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="The rows follow the curvature of the field edge nearest to the field marker."/>
-    <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Narrow field"/>
-    <text name="CP_vehicle_courseGeneratorSetting_narrowField_tooltip" text="Generates the headland only at the short edges of the field."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_title" text="Cambio de carriles"/>
+    <text name="CP_vehicle_courseGeneratorSetting_useSameTurnWidth_tooltip" text="Establece los carriles para que siempre cambien. Esto conduce a giros similares. Consulte el menú de ayuda para más detalles.más detalles."/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_title" text="Forma de línea para el borde de campo "/>
+    <text name="CP_vehicle_courseGeneratorSetting_useBaseLineEdge_tooltip" text="Las filas siguen la curvatura del borde de campo más cercano al marcador de campo."/>
+    <text name="CP_vehicle_courseGeneratorSetting_narrowField_title" text="Campo estrecho"/>
+    <text name="CP_vehicle_courseGeneratorSetting_narrowField_tooltip" text="Genera las cabeceras solo en los bordes cortos del campo."/>
     <!---->
     <!--Vine course generator settings-->
     <!---->
@@ -367,8 +367,8 @@
     <text name="CP_global_setting_autoRepair_always" text="Mantener siempre apunto"/>
     <text name="CP_global_setting_fuelThreshold_title" text="Límite de Combustible"/>
     <text name="CP_global_setting_fuelThreshold_tooltip" text="El conductor será liberado, si el porcentaje de combustible es menor."/>
-    <text name="CP_global_setting_waitForRefueling_title" text="Waits for refueling"/>
-    <text name="CP_global_setting_waitForRefueling_tooltip" text="Vehicle waits until it is refueled."/>
+    <text name="CP_global_setting_waitForRefueling_title" text="Esperando repostar"/>
+    <text name="CP_global_setting_waitForRefueling_tooltip" text="El vehículo espera hasta que se reposte."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Límite de ruptura"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="El conductor será liberado, si el vehículo o un implemento está más desgastado. Si es 100% se desactiva."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Detener Cosechadoras, mientras llueve"/>
