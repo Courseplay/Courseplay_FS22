@@ -327,6 +327,13 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
     elseif self.unloadState == self.states.MAKING_POCKET then
         self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue())
+        local _, _, dz = self.pocketHelperNode:localToLocal(self.vehicle:getAIDirectionNode(), 0, 0,
+                self.pipeController:getPipeOffsetZ())
+        if dz > -13 then
+            -- we are close enough to the reference waypoint, so stop making the pocket and wait for unload.
+            self:debug('Waiting for unload in the pocket')
+            self.unloadState = self.states.WAITING_FOR_UNLOAD_IN_POCKET
+        end
     elseif self.unloadState == self.states.RETURNING_FROM_PULL_BACK then
         self:setMaxSpeed(self.settings.turnSpeed:getValue())
     elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET or
@@ -502,16 +509,6 @@ function AIDriveStrategyCombineCourse:onWaypointPassed(ix, course)
         if not self:alwaysNeedsUnloader() then
             self:estimateDistanceUntilFull(ix)
             self:callUnloaderWhenNeeded()
-        end
-    end
-
-    if self.state == self.states.UNLOADING_ON_FIELD and
-            self.unloadState == self.states.MAKING_POCKET then
-        local _, _, dz = self.pocketHelperNode:localToLocal(self.vehicle:getAIDirectionNode(), 0, 0, 0)
-        if dz < AIUtil.getVehicleAndImplementsTotalLength(self.vehicle) * 1.2 then
-            -- we are close enough to the reference waypoint, so stop making the pocket and wait for unload.
-            self:debug('Waiting for unload in the pocket')
-            self.unloadState = self.states.WAITING_FOR_UNLOAD_IN_POCKET
         end
     end
 
@@ -1299,8 +1296,8 @@ function AIDriveStrategyCombineCourse:isFuelSaveAllowed()
     if self.combine:getIsThreshingDuringRain() then
         return true
     end
-    return self:isWaitingForUnload() or self:isChopperWaitingForUnloader() 
-        or AIDriveStrategyCourse.isFuelSaveAllowed(self)
+    return self:isWaitingForUnload() or self:isChopperWaitingForUnloader()
+            or AIDriveStrategyCourse.isFuelSaveAllowed(self)
 end
 
 --- Check if the vehicle should stop during a turn for example while it
@@ -2055,6 +2052,13 @@ function AIDriveStrategyCombineCourse:onDraw()
         end
     end
 
+    if CpDebug:isChannelActive(CpDebug.DBG_FIELDWORK, self.vehicle) then
+        if self.state == self.states.UNLOADING_ON_FIELD and
+                (self.unloadState == self.states.REVERSING_TO_MAKE_A_POCKET or self.unloadState == self.states.MAKING_POCKET or
+                        self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET) then
+            self.pocketHelperNode:draw()
+        end
+    end
 end
 
 --- Don't slow down when discharging. This is a workaround for unloaders getting into the proximity

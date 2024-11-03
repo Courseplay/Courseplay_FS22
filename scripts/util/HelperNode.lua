@@ -53,6 +53,13 @@ function HelperNode:place(x, y, z, yRotation)
     end
 end
 
+---@param text string|nil
+function HelperNode:draw(text)
+    if entityExists(self.node) then
+        DebugUtil.drawDebugNode(self.node, text or getName(self.node), false, 0)
+    end
+end
+
 -- A helper node that is linked to the terrain root node, and the y coordinate is always
 -- the terrain height at the x, z position.
 ---@class HelperTerrainNode : HelperNode
@@ -70,11 +77,12 @@ end
 ---@param z number
 ---@param yRotation number|nil Rotation set only if not nil
 function HelperTerrainNode:place(x, y, z, yRotation)
-    HelperNode.place(self,
-            x,
-            getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + y,
-            z,
-            yRotation)
+    setTranslation(self.node, x, getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + y, z)
+    if yRotation then
+        -- leave z/x rotation as is
+        local xRotation, _, zRotation = getWorldRotation(node)
+        setRotation(self.node, xRotation, yRotation, zRotation)
+    end
 end
 
 --- Place the node at the same world position and rotation as the given node.
@@ -86,8 +94,9 @@ end
 ---@param lz number|nil z coordinate of the point relative to node
 function HelperTerrainNode:placeAtNode(node, y, lx, ly, lz)
     local x, _, z = localToWorld(node, lx or 0, ly or 0, lz or 0)
-    local _, yRotation, _ = getWorldRotation(node)
-    self:place(x, y or 0, z, yRotation)
+    local xRotation, yRotation, zRotation = getWorldRotation(node)
+    setRotation(self.node, xRotation, yRotation, zRotation)
+    self:place(x, y or 0, z)
 end
 
 --- Get the position of a point relative to node, in the helper node's coordinate system.
