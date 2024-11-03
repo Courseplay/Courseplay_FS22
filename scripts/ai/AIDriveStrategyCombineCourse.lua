@@ -92,7 +92,7 @@ function AIDriveStrategyCombineCourse:init(task, job)
     self.unloaderRequestedToIgnoreProximity = CpTemporaryObject()
     -- we want to keep to pipe open, even if there is no trailer under it
     self.forcePipeOpen = CpTemporaryObject()
-
+    self.pocketHelperNode = HelperTerrainNode('pocketHelperNode')
     --- Register info texts
     self:registerInfoTextForStates(self:getFillLevelInfoText(), {
         states = {
@@ -105,6 +105,11 @@ function AIDriveStrategyCombineCourse:init(task, job)
             [self.states.WAITING_FOR_UNLOAD_IN_POCKET] = true
         }
     })
+end
+
+function AIDriveStrategyCombineCourse:delete()
+    self.pocketHelperNode:destroy()
+    AIDriveStrategyFieldWorkCourse.delete(self)
 end
 
 function AIDriveStrategyCombineCourse:getStateAsString()
@@ -501,9 +506,9 @@ function AIDriveStrategyCombineCourse:onWaypointPassed(ix, course)
     end
 
     if self.state == self.states.UNLOADING_ON_FIELD and
-            self.unloadState == self.states.MAKING_POCKET and
-            self.unloadInPocketReferenceIx then
-        if self.course:getDistanceBetweenVehicleAndWaypoint(self.vehicle, self.unloadInPocketReferenceIx) < AIUtil.getVehicleAndImplementsTotalLength(self.vehicle) * 1.2 then
+            self.unloadState == self.states.MAKING_POCKET then
+        local _, _, dz = self.pocketHelperNode:localToLocal(self.vehicle:getAIDirectionNode(), 0, 0, 0)
+        if dz < AIUtil.getVehicleAndImplementsTotalLength(self.vehicle) * 1.2 then
             -- we are close enough to the reference waypoint, so stop making the pocket and wait for unload.
             self:debug('Waiting for unload in the pocket')
             self.unloadState = self.states.WAITING_FOR_UNLOAD_IN_POCKET
@@ -531,7 +536,7 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
             self:debug('Back from self unload, returning to fieldwork')
             self.workStarter:onLastWaypoint()
         elseif self.unloadState == self.states.REVERSING_TO_MAKE_A_POCKET then
-            self:debug('Reversed, now start making a pocket to waypoint %d', self.unloadInPocketReferenceIx)
+            self:debug('Reversed, now start making a pocket')
             self:lowerImplements()
             self.state = self.states.UNLOADING_ON_FIELD
             self.unloadState = self.states.MAKING_POCKET
@@ -609,6 +614,10 @@ function AIDriveStrategyCombineCourse:changeToUnloadOnField()
             self:debug('No room to the left, making a pocket for unload')
             self.state = self.states.UNLOADING_ON_FIELD
             self.unloadState = self.states.REVERSING_TO_MAKE_A_POCKET
+            -- place a marker at the current pipe position, we'll use this to find out where to stop
+            -- making the pocket
+            self.pocketHelperNode:placeAtNode(self.vehicle:getAIDirectionNode(), 1,
+                    0, 0, self.pipeController:getPipeOffsetZ())
             self:rememberCourse(self.course, nextIx)
             -- raise header for reversing
             self:raiseImplements()
@@ -1260,8 +1269,6 @@ function AIDriveStrategyCombineCourse:createPocketCourse()
     if not backIx then
         return nil
     end
-    -- this is where we'll stop in the pocket for unload
-    self.unloadInPocketReferenceIx = startIx
     -- this where we are back on track after returning from the pocket
     self.returnedFromPocketIx = self.ppc:getCurrentWaypointIx()
     self:debug('Backing up %.1f meters from waypoint %d to %d to make a pocket', self.pocketReverseDistance, startIx, backIx)
