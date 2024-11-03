@@ -72,7 +72,7 @@ end
 function HelperTerrainNode:place(x, y, z, yRotation)
     HelperNode.place(self,
             x,
-            getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode) + y,
+            getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + y,
             z,
             yRotation)
 end
