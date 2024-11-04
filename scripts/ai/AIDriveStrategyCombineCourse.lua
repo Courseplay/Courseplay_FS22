@@ -147,7 +147,7 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
     self.pullBackDistanceEnd = self.pullBackDistanceStart + 5
     -- when making a pocket, how far to back up before changing to forward
     -- for very long vehicles, like potato/sugar beet harvesters the 20 meters may not be enough
-    self.pocketReverseDistance = math.max(2.2 * AIUtil.getVehicleAndImplementsTotalLength(self.vehicle), 30)
+    self.pocketReverseDistance = AIUtil.getVehicleAndImplementsTotalLength(self.vehicle) * 2.2
     -- register ourselves at our boss
     -- TODO_22 g_combineUnloadManager:addCombineToList(self.vehicle, self)
     self.waitingForUnloaderAtEndOfRow = CpTemporaryObject()
@@ -329,7 +329,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
         self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue())
         local _, _, dz = self.pocketHelperNode:localToLocal(self.vehicle:getAIDirectionNode(), 0, 0,
                 self.pipeController:getPipeOffsetZ())
-        if dz > -13 then
+        if dz > -18 then
             -- we are close enough to the reference waypoint, so stop making the pocket and wait for unload.
             self:debug('Waiting for unload in the pocket')
             self.unloadState = self.states.WAITING_FOR_UNLOAD_IN_POCKET
@@ -613,8 +613,7 @@ function AIDriveStrategyCombineCourse:changeToUnloadOnField()
             self.unloadState = self.states.REVERSING_TO_MAKE_A_POCKET
             -- place a marker at the current pipe position, we'll use this to find out where to stop
             -- making the pocket
-            self.pocketHelperNode:placeAtNode(self.vehicle:getAIDirectionNode(), 1,
-                    0, 0, self.pipeController:getPipeOffsetZ())
+            self.pocketHelperNode:placeAtNode(Markers.getFrontMarkerNode(self.vehicle), 1, 0, 0, 0)
             self:rememberCourse(self.course, nextIx)
             -- raise header for reversing
             self:raiseImplements()
