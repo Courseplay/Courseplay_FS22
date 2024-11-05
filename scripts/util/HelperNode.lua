@@ -30,13 +30,17 @@ HelperNode = CpObject()
 function HelperNode:init(name, rootNode)
     self.node = createTransformGroup(name)
     self.rootNode = rootNode
-    link(self.rootNode, self.node)
+    if self.rootNode then
+        link(self.rootNode, self.node)
+    end
 end
 
 --- Safely destroy a node
 function HelperNode:destroy()
     if self.node and entityExists(self.node) then
-        unlink(self.node)
+        if self.rootNode then
+            unlink(self.node)
+        end
         delete(self.node)
     end
 end
@@ -51,6 +55,16 @@ function HelperNode:place(x, y, z, yRotation)
     if yRotation then
         setRotation(self.node, 0, yRotation, 0)
     end
+end
+
+--- Get the position of a point relative to node, in the helper node's coordinate system.
+---@param node number
+---@param lx number x coordinate of the point relative to the node
+---@param ly number y coordinate of the point relative to the node
+---@param lz number z coordinate of the point relative to the node
+---@return number, number, number
+function HelperNode:localToLocal(node, lx, ly, lz)
+    return localToLocal(node, self.node, lx, ly, lz)
 end
 
 ---@param text string|nil
@@ -97,14 +111,4 @@ function HelperTerrainNode:placeAtNode(node, y, lx, ly, lz)
     local xRotation, yRotation, zRotation = getWorldRotation(node)
     setRotation(self.node, xRotation, yRotation, zRotation)
     self:place(x, y or 0, z)
-end
-
---- Get the position of a point relative to node, in the helper node's coordinate system.
----@param node number
----@param lx number x coordinate of the point relative to the node
----@param ly number y coordinate of the point relative to the node
----@param lz number z coordinate of the point relative to the node
----@return number, number, number
-function HelperTerrainNode:localToLocal(node, lx, ly, lz)
-    return localToLocal(node, self.node, lx, ly, lz)
 end
