@@ -1023,7 +1023,7 @@
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_evenRowWidth_title">
 			<Text language="de"><![CDATA[Gleichmäßige Bahnenbreite]]></Text>
-			<Text language="en"><![CDATA[Even row with]]></Text>
+			<Text language="en"><![CDATA[Even row width]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_evenRowWidth_tooltip">
 			<Text language="de"><![CDATA[Reduziert die Arbeitsbreite um eine gleichmäßige Verteilung über alle Bahnen zu erreichen.]]></Text>
