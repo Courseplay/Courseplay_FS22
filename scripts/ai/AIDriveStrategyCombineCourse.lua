@@ -92,7 +92,7 @@ function AIDriveStrategyCombineCourse:init(task, job)
     self.unloaderRequestedToIgnoreProximity = CpTemporaryObject()
     -- we want to keep to pipe open, even if there is no trailer under it
     self.forcePipeOpen = CpTemporaryObject()
-
+    self.pocketHelperNode = HelperTerrainNode('pocketHelperNode')
     --- Register info texts
     self:registerInfoTextForStates(self:getFillLevelInfoText(), {
         states = {
@@ -105,6 +105,11 @@ function AIDriveStrategyCombineCourse:init(task, job)
             [self.states.WAITING_FOR_UNLOAD_IN_POCKET] = true
         }
     })
+end
+
+function AIDriveStrategyCombineCourse:delete()
+    self.pocketHelperNode:destroy()
+    AIDriveStrategyFieldWorkCourse.delete(self)
 end
 
 function AIDriveStrategyCombineCourse:getStateAsString()
@@ -142,7 +147,7 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
     self.pullBackDistanceEnd = self.pullBackDistanceStart + 5
     -- when making a pocket, how far to back up before changing to forward
     -- for very long vehicles, like potato/sugar beet harvesters the 20 meters may not be enough
-    self.pocketReverseDistance = math.max(1.7 * AIUtil.getVehicleAndImplementsTotalLength(self.vehicle), 32)
+    self.pocketReverseDistance = AIUtil.getVehicleAndImplementsTotalLength(self.vehicle) * 2.2
     -- register ourselves at our boss
     -- TODO_22 g_combineUnloadManager:addCombineToList(self.vehicle, self)
     self.waitingForUnloaderAtEndOfRow = CpTemporaryObject()
@@ -322,6 +327,13 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
     elseif self.unloadState == self.states.MAKING_POCKET then
         self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue())
+        local _, _, dz = self.pocketHelperNode:localToLocal(self.vehicle:getAIDirectionNode(), 0, 0,
+                self.pipeController:getPipeOffsetZ())
+        if dz > -18 then
+            -- we are close enough to the reference waypoint, so stop making the pocket and wait for unload.
+            self:debug('Waiting for unload in the pocket')
+            self.unloadState = self.states.WAITING_FOR_UNLOAD_IN_POCKET
+        end
     elseif self.unloadState == self.states.RETURNING_FROM_PULL_BACK then
         self:setMaxSpeed(self.settings.turnSpeed:getValue())
     elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET or
@@ -500,17 +512,6 @@ function AIDriveStrategyCombineCourse:onWaypointPassed(ix, course)
         end
     end
 
-    if self.state == self.states.UNLOADING_ON_FIELD and
-            self.unloadState == self.states.MAKING_POCKET and
-            self.unloadInPocketReferenceIx then
-        local _, _, dz = self.course:getWaypointLocalPosition(self.vehicle:getAIDirectionNode(), self.unloadInPocketReferenceIx)
-        if dz < 15 then
-            -- we are close enough to the reference waypoint, so stop making the pocket and wait for unload.
-            self:debug('Waiting for unload in the pocket')
-            self.unloadState = self.states.WAITING_FOR_UNLOAD_IN_POCKET
-        end
-    end
-
     if self.returnedFromPocketIx and self.returnedFromPocketIx == ix then
         -- back to normal look ahead distance for PPC, no tight turns are needed anymore
         self:debug('Reset PPC to normal lookahead distance')
@@ -532,7 +533,7 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
             self:debug('Back from self unload, returning to fieldwork')
             self.workStarter:onLastWaypoint()
         elseif self.unloadState == self.states.REVERSING_TO_MAKE_A_POCKET then
-            self:debug('Reversed, now start making a pocket to waypoint %d', self.unloadInPocketReferenceIx)
+            self:debug('Reversed, now start making a pocket')
             self:lowerImplements()
             self.state = self.states.UNLOADING_ON_FIELD
             self.unloadState = self.states.MAKING_POCKET
@@ -610,6 +611,9 @@ function AIDriveStrategyCombineCourse:changeToUnloadOnField()
             self:debug('No room to the left, making a pocket for unload')
             self.state = self.states.UNLOADING_ON_FIELD
             self.unloadState = self.states.REVERSING_TO_MAKE_A_POCKET
+            -- place a marker at the current pipe position, we'll use this to find out where to stop
+            -- making the pocket
+            self.pocketHelperNode:placeAtNode(Markers.getFrontMarkerNode(self.vehicle), 1, 0, 0, 0)
             self:rememberCourse(self.course, nextIx)
             -- raise header for reversing
             self:raiseImplements()
@@ -1261,8 +1265,6 @@ function AIDriveStrategyCombineCourse:createPocketCourse()
     if not backIx then
         return nil
     end
-    -- this is where we'll stop in the pocket for unload
-    self.unloadInPocketReferenceIx = startIx
     -- this where we are back on track after returning from the pocket
     self.returnedFromPocketIx = self.ppc:getCurrentWaypointIx()
     self:debug('Backing up %.1f meters from waypoint %d to %d to make a pocket', self.pocketReverseDistance, startIx, backIx)
@@ -1293,8 +1295,8 @@ function AIDriveStrategyCombineCourse:isFuelSaveAllowed()
     if self.combine:getIsThreshingDuringRain() then
         return true
     end
-    return self:isWaitingForUnload() or self:isChopperWaitingForUnloader() 
-        or AIDriveStrategyCourse.isFuelSaveAllowed(self)
+    return self:isWaitingForUnload() or self:isChopperWaitingForUnloader()
+            or AIDriveStrategyCourse.isFuelSaveAllowed(self)
 end
 
 --- Check if the vehicle should stop during a turn for example while it
@@ -2049,6 +2051,13 @@ function AIDriveStrategyCombineCourse:onDraw()
         end
     end
 
+    if CpDebug:isChannelActive(CpDebug.DBG_FIELDWORK, self.vehicle) then
+        if self.state == self.states.UNLOADING_ON_FIELD and
+                (self.unloadState == self.states.REVERSING_TO_MAKE_A_POCKET or self.unloadState == self.states.MAKING_POCKET or
+                        self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET) then
+            self.pocketHelperNode:draw()
+        end
+    end
 end
 
 --- Don't slow down when discharging. This is a workaround for unloaders getting into the proximity
