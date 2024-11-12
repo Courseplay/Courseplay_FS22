@@ -22,7 +22,7 @@ local CpGamePadHudScreen_mt = Class(CpGamePadHudScreen, ScreenElement)
 
 function CpGamePadHudScreen.new(settings, target, custom_mt)
 	local self = ScreenElement.new(target, custom_mt or CpGamePadHudScreen_mt)
-	self:registerControls(CpGamePadHudScreen.CONTROLS)
+	self:exposeControlsAsFields(CpGamePadHudScreen.CONTROLS)
 	self.settings = settings
 	return self
 end

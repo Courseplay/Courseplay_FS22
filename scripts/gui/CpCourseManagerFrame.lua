@@ -74,7 +74,7 @@ local CpCourseManagerFrame_mt = Class(CpCourseManagerFrame, TabbedMenuFrameEleme
 
 function CpCourseManagerFrame.new(courseStorage, target, custom_mt)
 	local self = TabbedMenuFrameElement.new(target, custom_mt or CpCourseManagerFrame_mt)
-	self:registerControls(CpCourseManagerFrame.CONTROLS)
+	self:exposeControlsAsFields(CpCourseManagerFrame.CONTROLS)
 	self.courseStorage = courseStorage
 	return self
 end

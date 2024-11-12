@@ -47,7 +47,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 
 	CpInGameMenuAIFrameExtended.setupButtons(self)		
 
-	self:registerControls({"multiTextOptionPrefab","subTitlePrefab","courseGeneratorLayoutElements",
+	self:exposeControlsAsFields({"multiTextOptionPrefab","subTitlePrefab","courseGeneratorLayoutElements",
 		"courseGeneratorLayout","courseGeneratorHeader","drawingCustomFieldHeader", "drawingCustomFieldSubHeader",
 		"courseGeneratorFrame", "createCpMultiOptionTemplate", "createCpTextTemplate"})
 

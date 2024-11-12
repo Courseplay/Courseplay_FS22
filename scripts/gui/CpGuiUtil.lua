@@ -11,7 +11,7 @@ function CpGuiUtil.fixInGameMenuPage(frame, pageName, uvs, position, predicateFu
 		inGameMenu.controlIDs[v] = nil
 	end
 
-	inGameMenu:registerControls({pageName})
+	inGameMenu:exposeControlsAsFields({pageName})
 	inGameMenu[pageName] = frame
 	inGameMenu.pagingElement:addElement(inGameMenu[pageName])
 

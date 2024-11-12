@@ -17,7 +17,7 @@ local CpGlobalSettingsFrame_mt = Class(CpGlobalSettingsFrame, TabbedMenuFrameEle
 
 function CpGlobalSettingsFrame.new(target, custom_mt)
 	local self = TabbedMenuFrameElement.new(target, custom_mt or CpGlobalSettingsFrame_mt)
-	self:registerControls(CpGlobalSettingsFrame.CONTROLS)
+	self:exposeControlsAsFields(CpGlobalSettingsFrame.CONTROLS)
 	return self
 end
 

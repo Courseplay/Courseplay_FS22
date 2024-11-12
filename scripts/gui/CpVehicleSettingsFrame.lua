@@ -21,7 +21,7 @@ local CpVehicleSettingsFrame_mt = Class(CpVehicleSettingsFrame, TabbedMenuFrameE
 
 function CpVehicleSettingsFrame.new(target, custom_mt)
 	local self = TabbedMenuFrameElement.new(target, custom_mt or CpVehicleSettingsFrame_mt)
-	self:registerControls(CpVehicleSettingsFrame.CONTROLS)
+	self:exposeControlsAsFields(CpVehicleSettingsFrame.CONTROLS)
 	return self
 end
 

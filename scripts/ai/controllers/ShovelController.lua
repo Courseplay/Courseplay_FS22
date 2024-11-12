@@ -10,8 +10,8 @@ ShovelController.POSITIONS = {
 }
 ShovelController.MAX_TRIGGER_HEIGHT = 8
 ShovelController.MIN_TRIGGER_HEIGHT = 1
-ShovelController.TRIGGER_HEIGHT_RAYCAST_COLLISION_MASK = CollisionFlag.STATIC_WORLD + CollisionFlag.STATIC_OBJECTS + 
-                                                         CollisionFlag.STATIC_OBJECT + CollisionFlag.VEHICLE
+ShovelController.TRIGGER_HEIGHT_RAYCAST_COLLISION_MASK =
+    CollisionFlag.DEFAULT + CollisionFlag.STATIC_OBJECT + CollisionFlag.VEHICLE
 
 function ShovelController:init(vehicle, implement, isConsoleCommand)
     ImplementController.init(self, vehicle, implement)

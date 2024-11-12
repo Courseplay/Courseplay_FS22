@@ -74,7 +74,7 @@ function Courseplay:showUserInformation(xmlFile, key)
 		self.MOD_NAME, self.currentVersion, lastLoadedVersion)
 
 	if showInfoDialog then
-		g_gui:showInfoDialog({
+		g_gui:showDialog({
 			text = string.format(g_i18n:getText("CP_infoText"), self.currentVersion)
 		})
 		if xmlFile then 
