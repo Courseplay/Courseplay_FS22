@@ -133,8 +133,8 @@ function Courseplay:setupGui()
 				 "CpVehicleSettingsFrame", vehicleSettingsFrame, true)
 	g_gui:loadGui(Utils.getFilename("config/gui/GlobalSettingsFrame.xml", Courseplay.BASE_DIRECTORY),
 				 "CpGlobalSettingsFrame", globalSettingsFrame, true)
-	g_gui:loadGui(Utils.getFilename("config/gui/CourseManagerFrame.xml", Courseplay.BASE_DIRECTORY),
-				 "CpCourseManagerFrame", courseManagerFrame, true)
+	--g_gui:loadGui(Utils.getFilename("config/gui/CourseManagerFrame.xml", Courseplay.BASE_DIRECTORY),
+	--			 "CpCourseManagerFrame", courseManagerFrame, true)
 	local function predicateFunc()
 		-- Only allow the vehicle bound pages, when a vehicle with cp functionality is chosen/entered.
 		local vehicle = CpInGameMenuAIFrameExtended.getVehicle()
@@ -145,12 +145,14 @@ function Courseplay:setupGui()
 	--- we move it down one position.
 	local pos = g_modIsLoaded["FS22_precisionFarming"] and 4 or 3
 
+--[[ TODO 25
 	CpGuiUtil.fixInGameMenuPage(vehicleSettingsFrame, "pageCpVehicleSettings",
 			{896, 0, 128, 128}, pos + 1, predicateFunc)
 	CpGuiUtil.fixInGameMenuPage(globalSettingsFrame, "pageCpGlobalSettings",
 			{768, 0, 128, 128}, pos + 1, function () return true end)
 	CpGuiUtil.fixInGameMenuPage(courseManagerFrame, "pageCpCourseManager",
 			{256, 0, 128, 128}, pos + 1, predicateFunc)
+]]
 	self.infoTextsHud = CpHudInfoTexts()
 
 	g_currentMission.hud.ingameMap.drawFields = Utils.appendedFunction(g_currentMission.hud.ingameMap.drawFields, Courseplay.drawHudMap)
@@ -352,7 +354,7 @@ function Courseplay.register(typeManager)
 			CpAICombineUnloader.register(typeManager, typeName, typeEntry.specializations)
 			CpAISiloLoaderWorker.register(typeManager, typeName, typeEntry.specializations)
 			CpAIBunkerSiloWorker.register(typeManager, typeName, typeEntry.specializations)
-			CpGamePadHud.register(typeManager, typeName,typeEntry.specializations)
+			-- TODO 25 CpGamePadHud.register(typeManager, typeName,typeEntry.specializations)
 			CpHud.register(typeManager, typeName, typeEntry.specializations)
 			CpInfoTexts.register(typeManager, typeName, typeEntry.specializations)
 			CpShovelPositions.register(typeManager, typeName, typeEntry.specializations)

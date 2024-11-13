@@ -9,12 +9,12 @@
         <GuiElement type="empty" profile="ingameMenuSettingsBox" id="mainBox">
 
             <GuiElement type="empty" profile="ingameMenuPriceLeftColumn" id="leftColumn">
-                <GuiElement type="boxLayout" profile="ingameCalendarHeaderBox" id="tableHeaderBox" size="680px 104px">
+                <GuiElement type="boxLayout" profile="fs25_calendarHeaderBox" id="tableHeaderBox" size="680px 104px">
                     <GuiElement type="text" profile="ingameMenuPriceHeader" size="340px 104px" id="leftColumnHeader"  />
                 </GuiElement>
 
-                <GuiElement type="smoothList" profile="ingameMenuPriceList" id="leftList" focusChangeTop="nil" focusChangeBottom="nil" selectedWithoutFocus="true">
-                    <GuiElement type="listItem" profile="ingameMenuPriceListItem">
+                <GuiElement type="smoothList" profile="fs25_pricesPriceList" id="leftList" focusChangeTop="nil" focusChangeBottom="nil" selectedWithoutFocus="true">
+                    <GuiElement type="listItem" profile="fs25_pricesPriceListItem">
                         <GuiElement type="bitmap" name="icon" profile="ingameMenuPriceGoodsIcon" />
                         <GuiElement type="text" name="title" profile="ingameMenuPriceItemTitle" />
                     </GuiElement>
@@ -26,13 +26,13 @@
             </GuiElement>
 
             <GuiElement type="empty" profile="ingameMenuPriceRightColumn" id="rightColumn">
-                <GuiElement type="boxLayout" profile="ingameCalendarHeaderBox" id="tableHeaderBox" size="680px 104px">
+                <GuiElement type="boxLayout" profile="fs25_calendarHeaderBox" id="tableHeaderBox" size="680px 104px">
                     <GuiElement type="text" profile="ingameMenuPriceHeader" size="330px 104px" id="rightColumnHeader"  />
                 </GuiElement>
 
-                <GuiElement type="smoothList" profile="ingameMenuPriceList" id="rightList" focusChangeTop="nil" focusChangeBottom="nil">
-                    <GuiElement type="listItem" profile="ingameMenuPriceListItem">
-                        <GuiElement type="bitmap" name="icon" profile="ingameMenuPriceItemHotspot" />
+                <GuiElement type="smoothList" profile="fs25_pricesPriceList" id="rightList" focusChangeTop="nil" focusChangeBottom="nil">
+                    <GuiElement type="listItem" profile="fs25_pricesPriceListItem">
+                        <GuiElement type="bitmap" name="icon" profile="fs25_pricesPriceListItemHotspot" />
                         <GuiElement type="text" name="title" profile="ingameMenuPriceSellpointTitle" />
                     </GuiElement>
                 </GuiElement>

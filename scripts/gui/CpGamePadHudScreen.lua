@@ -39,7 +39,7 @@ function CpGamePadHudScreen:onGuiSetupFinished()
 
 	self.clearButton:unlinkElement()
 	FocusManager:removeElement(self.clearButton)
-	self.clearButton:setText(g_i18n:getText("CP_courseManager_clear_current_courses"))
+	-- TODO 25 (didn't we just remove this button above?) self.clearButton:setText(g_i18n:getText("CP_courseManager_clear_current_courses"))
 
 	self.backButton:unlinkElement()
 	FocusManager:removeElement(self.backButton)

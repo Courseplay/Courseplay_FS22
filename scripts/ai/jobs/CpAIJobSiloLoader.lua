@@ -20,10 +20,10 @@ CpAIJobSiloLoader.MAX_UNLOAD_TARGET_DISTANCE_FROM_SILO = 180
 function CpAIJobSiloLoader.new(isServer, customMt)
 	local self = CpAIJob.new(isServer, customMt or AIJobCombineUnloaderCp_mt)
 
-	self.heapPlot = HeapPlot(g_currentMission.inGameMenu.ingameMap)
-    self.heapPlot:setVisible(false)
+	--TODO 25 self.heapPlot = HeapPlot(g_currentMission.inGameMenu.ingameMap)
+	--TODO 25 self.heapPlot:setVisible(false)
 
-	self.trailerAreaPlot = HeapPlot(g_currentMission.inGameMenu.ingameMap)
+	--TODO 25 self.trailerAreaPlot = HeapPlot(g_currentMission.inGameMenu.ingameMap)
 
 
 	self.heapNode = CpUtil.createNode("siloNode", 0, 0, 0, nil)
@@ -101,8 +101,8 @@ function CpAIJobSiloLoader:setValues()
 		if bunkerSilo then 
 			self.bunkerSilo = bunkerSilo
 		elseif heapSilo then
-			self.heapPlot:setArea(heapSilo:getArea())
-			self.heapPlot:setVisible(true)
+			--TODO 25 self.heapPlot:setArea(heapSilo:getArea())
+			--TODO 25 self.heapPlot:setVisible(true)
 			self.heap = heapSilo
 		end
 		self.siloLoaderTask:setSiloAndHeap(self.bunkerSilo, self.heap)
@@ -112,8 +112,8 @@ end
 
 --- Called when parameters change, scan field
 function CpAIJobSiloLoader:validate(farmId)
-	self.heapPlot:setVisible(false)
-	self.trailerAreaPlot:setVisible(false)
+	--TODO 25 self.heapPlot:setVisible(false)
+	--TODO 25 self.trailerAreaPlot:setVisible(false)
 	self.heap = nil
 	self.bunkerSilo = nil
 	self.unloadStation = nil
@@ -136,8 +136,8 @@ function CpAIJobSiloLoader:validate(farmId)
 		if bunkerSilo then 
 			self.bunkerSilo = bunkerSilo
 		elseif heapSilo then
-			self.heapPlot:setArea(heapSilo:getArea())
-			self.heapPlot:setVisible(true)
+			--TODO 25 self.heapPlot:setArea(heapSilo:getArea())
+			--TODO 25 self.heapPlot:setVisible(true)
 			self.heap = heapSilo
 		end
 		self.siloLoaderTask:setSiloAndHeap(self.bunkerSilo, self.heap)
@@ -175,9 +175,9 @@ function CpAIJobSiloLoader:validate(farmId)
 		else 
 			local found, area, validDistanceToSilo = CpAIJobSiloLoader.getTrailerUnloadArea(
 				self.cpJobParameters.unloadPosition, self.bunkerSilo or self.heap)
-			if found then 
-				self.trailerAreaPlot:setVisible(true)
-				self.trailerAreaPlot:setArea(area)
+			if found then
+				--TODO 25 self.trailerAreaPlot:setVisible(true)
+				--TODO 25 self.trailerAreaPlot:setArea(area)
 			end
 			if not validDistanceToSilo then 
 				return false, g_i18n:getText("CP_error_unload_target_to_far_away_from_silo")
@@ -324,7 +324,7 @@ end
 function CpAIJobSiloLoader:draw(map, isOverviewMap)
 	CpAIJob.draw(self, map, isOverviewMap)
 	if not isOverviewMap then
-		self.heapPlot:draw(map)
+		--TODO 25 self.heapPlot:draw(map)
 		g_bunkerSiloManager:drawSilos(map, self.bunkerSilo) 
 		if self.cpJobParameters.unloadAt:getValue() == CpSiloLoaderJobParameters.UNLOAD_TRIGGER then 
 			local fillTypes = self:getConvertedFillTypes()
@@ -335,7 +335,7 @@ function CpAIJobSiloLoader:draw(map, isOverviewMap)
 			g_triggerManager:drawDischargeableTriggers(map, self.unloadTrigger, fillTypes)
 		else 
 			--- Drawing trailer area
-			self.trailerAreaPlot:draw(map)
+			--TODO 25 self.trailerAreaPlot:draw(map)
 		end
 	end
 end

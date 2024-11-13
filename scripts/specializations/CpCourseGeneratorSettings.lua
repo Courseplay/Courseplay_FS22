@@ -92,7 +92,8 @@ function CpCourseGeneratorSettings:onLoad(savegame)
 	--- Register the spec: spec_cpCourseGeneratorSettings
     self.spec_cpCourseGeneratorSettings = self["spec_" .. CpCourseGeneratorSettings.SPEC_NAME]
     local spec = self.spec_cpCourseGeneratorSettings
-    spec.gui = g_currentMission.inGameMenu.pageAI
+    -- TODO 25
+    -- spec.gui = g_currentMission.inGameMenu.pageAI
     --- Clones the generic settings to create different settings containers for each vehicle. 
     CpSettingsUtil.cloneSettingsTable(spec,CpCourseGeneratorSettings.settings,self,CpCourseGeneratorSettings)
 
@@ -246,7 +247,8 @@ end
 ---@param callbackStr string event to be raised
 ---@param setting AIParameterSettingList setting that raised the callback.
 function CpCourseGeneratorSettings:raiseCallback(callbackStr, setting, ...)
-    SpecializationUtil.raiseEvent(self, callbackStr, setting, ...)
+    -- TODO 25 event is registered by the HUD which is now disabled
+    --TODO 25 SpecializationUtil.raiseEvent(self, callbackStr, setting, ...)
 end
 
 function CpCourseGeneratorSettings:raiseDirtyFlag(setting)

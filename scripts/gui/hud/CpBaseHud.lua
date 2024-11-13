@@ -278,7 +278,7 @@ function CpBaseHud:init(vehicle)
     --- Create start/stop button
     local onOffBtnWidth, height = getNormalizedScreenValues(20, 20)
     local onOffIndicatorOverlay = CpGuiUtil.createOverlay({onOffBtnWidth, height},
-                                                        {g_baseUIFilename, GuiUtils.getUVs(MixerWagonHUDExtension.UV.RANGE_MARKER_ARROW)}, 
+                                                        {g_baseUIFilename, GuiUtils.getUVs(self.uvs.streetDriveToSymbol)}, --TODO 25
                                                         self.OFF_COLOR,
                                                         self.alignments.bottomRight)
     self.onOffButton = CpHudButtonElement.new(onOffIndicatorOverlay, self.baseHud)

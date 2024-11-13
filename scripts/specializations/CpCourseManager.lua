@@ -125,7 +125,7 @@ function CpCourseManager:onLoad(savegame)
 	--- Register the spec: spec_cpCourseManager 
     self.spec_cpCourseManager = self["spec_" .. CpCourseManager.SPEC_NAME]
     local spec = self.spec_cpCourseManager 
-    spec.coursePlot = CoursePlot(g_currentMission.inGameMenu.ingameMap)
+    -- TODO 25 spec.coursePlot = CoursePlot(g_currentMission.inGameMenu.ingameMap)
 
     spec.courses = {}
 
