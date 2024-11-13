@@ -249,7 +249,7 @@ function CpBaseHud:init(vehicle)
                             end, self.vehicle)
      
     local x, y = unpack(self.lines[6].left)
-    local spacerLineOverlay = Overlay.new("dataS/scripts/shared/graph_pixel.png", 
+    local spacerLineOverlay = Overlay.new('dataS/menu/base/graph_pixel.dds', 
         x, y, self.width - 2 * self.wMargin, self.hMargin/8)
     spacerLineOverlay:setColor(unpack(self.OFF_COLOR))
     spacerLineOverlay:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE)
