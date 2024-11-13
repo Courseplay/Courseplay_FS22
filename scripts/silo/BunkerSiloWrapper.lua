@@ -287,15 +287,16 @@ end
 
 --- Checks if the silo has a back wall and sets the plot area afterwards. 
 function CpBunkerSilo:initialize()
-	local x, z = self.sx + self.dirXWidth * self.width/2 + self.dirXLength * 2, self.sz + self.dirZWidth * self.width/2 + self.dirZLength * 2
-	local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 2 
+	--- TODO_25
+	-- local x, z = self.sx + self.dirXWidth * self.width/2 + self.dirXLength * 2, self.sz + self.dirZWidth * self.width/2 + self.dirZLength * 2
+	-- local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 2 
 
-	raycastAll(x, y, z, self.dirXLength, 0, self.dirZLength, 'rayCastCallbackOneSidedSilo', self.length + 2, self)
+	-- raycastAll(x, y, z, self.dirXLength, 0, self.dirZLength, 'rayCastCallbackOneSidedSilo', self.length + 2, self)
 
-	local x, z = self.hx + self.dirXWidth * self.width/2 - self.dirXLength * 2, self.hz + self.dirZWidth * self.width/2 - self.dirZLength * 2
-	local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 2 
+	-- local x, z = self.hx + self.dirXWidth * self.width/2 - self.dirXLength * 2, self.hz + self.dirZWidth * self.width/2 - self.dirZLength * 2
+	-- local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 2 
 
-	raycastAll(x, y, z, -self.dirXLength, 0, -self.dirZLength, 'rayCastCallbackOneSidedSiloInverted', self.length + 2, self)
+	-- raycastAll(x, y, z, -self.dirXLength, 0, -self.dirZLength, 'rayCastCallbackOneSidedSiloInverted', self.length + 2, self)
 
 
 	self.plot:setAreas(self:getPlotAreas())

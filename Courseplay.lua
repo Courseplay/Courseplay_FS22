@@ -210,7 +210,7 @@ function Courseplay:update(dt)
             local factor = 2*mapElement.terrainSize/2048
             mapElement.zoomMax = mapElement.zoomMax * factor
         end
-        setIngameMapFix(g_currentMission.inGameMenu.pageAI.ingameMap)
+        -- setIngameMapFix(g_currentMission.inGameMenu.pageAI.ingameMap)
         setIngameMapFix(g_currentMission.inGameMenu.pageMapOverview.ingameMap)
     end
 end
