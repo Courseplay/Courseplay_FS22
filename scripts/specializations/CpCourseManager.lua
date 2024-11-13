@@ -358,8 +358,9 @@ function CpCourseManager:onWriteStream(streamId,connection)
 end
 
 function CpCourseManager:onPreDelete()
-    g_assignedCoursesManager:unregisterVehicle(self,self.id)
-    CpCourseManager.resetCourses(self)
+    g_assignedCoursesManager:unregisterVehicle(self, self.id)
+    --- TODO_25
+    -- CpCourseManager.resetCourses(self)
     local spec = self.spec_cpCourseManager 
     spec.courseDisplay:delete()
 end

@@ -8,7 +8,7 @@ CpInGameMenuAIFrameExtended.positionUvs = GuiUtils.getUVs({
 	4,
 	100,
 	100
-}, AITargetHotspot.FILE_RESOLUTION)
+}, AIPlaceableMarkerHotspot.FILE_RESOLUTION)
 
 CpInGameMenuAIFrameExtended.curDrawPositions={}
 CpInGameMenuAIFrameExtended.drawDelay = g_updateLoopIndex

@@ -155,7 +155,8 @@ function Courseplay:setupGui()
 ]]
 	self.infoTextsHud = CpHudInfoTexts()
 
-	g_currentMission.hud.ingameMap.drawFields = Utils.appendedFunction(g_currentMission.hud.ingameMap.drawFields, Courseplay.drawHudMap)
+	-- TODO_25
+	-- g_currentMission.hud.ingameMap.drawFields = Utils.appendedFunction(g_currentMission.hud.ingameMap.drawFields, Courseplay.drawHudMap)
 
 end
 
@@ -210,8 +211,9 @@ function Courseplay:update(dt)
             local factor = 2*mapElement.terrainSize/2048
             mapElement.zoomMax = mapElement.zoomMax * factor
         end
+		--- TODO_25
         -- setIngameMapFix(g_currentMission.inGameMenu.pageAI.ingameMap)
-        setIngameMapFix(g_currentMission.inGameMenu.pageMapOverview.ingameMap)
+        -- setIngameMapFix(g_currentMission.inGameMenu.pageMapOverview.ingameMap)
     end
 end
 
