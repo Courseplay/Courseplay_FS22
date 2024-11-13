@@ -650,7 +650,7 @@ end
 function CpBunkerSilo:updateUnloaders(dt)
 	--- Searches for new unloaders in the unloader area and remove unloaders, that left.
 	if self.numControllers > 0 and g_updateLoopIndex % 7 == 0 then 
-		for _, vehicle in pairs(g_currentMission.vehicles) do 
+		for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
 			local isValid = false
 			if self:isValidUnloader(vehicle) then 
 				for _, v in pairs(vehicle:getChildVehicles()) do 

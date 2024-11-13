@@ -64,7 +64,7 @@ function DevHelper:update()
 
     else
         -- camera node looks backwards so need to flip everything by 180 degrees
-        self.node = g_currentMission.player.cameraNode
+        self.node = g_currentMission.playerSystem:getLocalPlayer():getCurrentCameraNode()
         lx, _, lz = localDirectionToWorld(self.node, 0, 0, -1)
     end
 
@@ -90,7 +90,7 @@ function DevHelper:update()
     self.data.isOnFieldArea, self.data.onFieldArea, self.data.totalOnFieldArea = CpFieldUtil.isOnFieldArea(self.data.x, self.data.z)
     self.data.nx, self.data.ny, self.data.nz = getTerrainNormalAtWorldPos(g_currentMission.terrainRootNode, self.data.x, y, self.data.z)
 
-    local collisionMask = CollisionFlag.STATIC_WORLD + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE + CollisionFlag.TERRAIN_DELTA
+    local collisionMask = CollisionFlag.DEFAULT + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE + CollisionFlag.TERRAIN_DELTA
     self.data.collidingShapes = ''
     overlapBox(self.data.x, self.data.y + 0.2, self.data.z, 0, self.yRot, 0, 1.6, 1, 8, "overlapBoxCallback", self, collisionMask, true, true, true)
 
@@ -215,7 +215,7 @@ function DevHelper:draw()
 end
 
 function DevHelper:showFillNodes()
-    for _, vehicle in pairs(g_currentMission.vehicles) do
+    for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
         if SpecializationUtil.hasSpecialization(Trailer, vehicle.specializations) then
             DebugUtil.drawDebugNode(vehicle.rootNode, 'Root node')
             local fillUnits = vehicle:getFillUnits()

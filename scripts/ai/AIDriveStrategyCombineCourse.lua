@@ -967,7 +967,7 @@ end
 function AIDriveStrategyCombineCourse:findUnloader(combine, waypoint)
     local bestScore = -math.huge
     local bestUnloader, bestEte
-    for _, vehicle in pairs(g_currentMission.vehicles) do
+    for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
         if AIDriveStrategyUnloadCombine.isActiveCpCombineUnloader(vehicle) then
             local x, _, z = getWorldTranslation(self.vehicle.rootNode)
             ---@type AIDriveStrategyUnloadCombine

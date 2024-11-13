@@ -218,7 +218,7 @@ function CpConsoleCommands:cpSaveAllFields()
 end
 
 function CpConsoleCommands:cpSaveAllVehiclePositions()
-    for _, vehicle in pairs(g_currentMission.vehicles) do
+    for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
 		if SpecializationUtil.hasSpecialization(CpAIWorker, vehicle.specializations) then
 			vehicle.vehiclePositionData = {}
 			CpConsoleCommands.saveVehiclePosition(vehicle, vehicle.vehiclePositionData)
@@ -227,7 +227,7 @@ function CpConsoleCommands:cpSaveAllVehiclePositions()
 end
 
 function CpConsoleCommands:cpRestoreAllVehiclePositions()
-    for _, vehicle in pairs(g_currentMission.vehicles) do
+    for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
         if vehicle.vehiclePositionData then
             CpConsoleCommands.restoreVehiclePosition(vehicle)
         end
@@ -247,7 +247,7 @@ function CpConsoleCommands:cpUnfreeze()
 end
 
 function CpConsoleCommands:cpStopAll()
-	for _, vehicle in pairs(g_currentMission.vehicles) do
+	for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
 		if vehicle.getIsAIActive and vehicle:getIsAIActive() then 
 			vehicle:stopCurrentAIJob(AIMessageErrorUnknown.new())
 		end
