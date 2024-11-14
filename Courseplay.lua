@@ -163,7 +163,7 @@ end
 --- Enables drawing onto the hud map.
 function Courseplay.drawHudMap(map)
 	if g_Courseplay.globalSettings.drawOntoTheHudMap:getValue() then
-		local vehicle = g_currentMission.controlledVehicle
+		local vehicle = CpUtil.getCurrentVehicle()
 		if vehicle and vehicle:getIsEntered() and not g_gui:getIsGuiVisible() and vehicle.spec_cpAIWorker and not vehicle.spec_locomotive then 
 			SpecializationUtil.raiseEvent(vehicle, "onCpDrawHudMap", map)
 		end
@@ -238,7 +238,7 @@ end
 ---@param button number
 function Courseplay:mouseEvent(posX, posY, isDown, isUp, button)
 	if not g_gui:getIsGuiVisible() then
-		local vehicle = g_currentMission.controlledVehicle
+		local vehicle = CpUtil.getCurrentVehicle()
 		local hud = vehicle and vehicle.getCpHud and vehicle:getCpHud()
 		if hud then
 			hud:mouseEvent(posX, posY, isDown, isUp, button)

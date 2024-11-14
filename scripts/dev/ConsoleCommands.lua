@@ -8,7 +8,7 @@ CpConsoleCommands.commands = {
 	{ 'cpReturnToSaveGameSelect', 'Returns to the menu', 'returnToSaveGameSelect' },
 	{ 'print', 'Print a variable', 'printVariable' },
 	{ 'printGlobalCpVariable', 'Print a global cp variable', 'printGlobalCpVariable' },
-	{ 'printVehicleVariable', 'Print g_currentMission.controlledVehicle.variable', 'printVehicleVariable' },
+	{ 'printVehicleVariable', 'Print CpUtil.getCurrentVehicle().variable', 'printVehicleVariable' },
 	{ 'printImplementVariable', 'printImplementVariable <implement index> <variable>', 'printImplementVariable' },
 	{ 'printStrategyVariable', 'Print a CP drive strategy variable', 'printStrategyVariable' },
 	{ 'printAiPageVariable', 'Print a in game menu ai page variable.', 'printAiPageVariable' },
@@ -125,15 +125,16 @@ end
 --- Print the variable in the selected vehicle's namespace
 -- You can omit the dot for data members but if you want to call a function, you must start the variable name with a colon
 function CpConsoleCommands:printVehicleVariable(variableName, maxDepth, printToXML, printToSeparateXmlFiles)
-	local prefix = variableName and 'g_currentMission.controlledVehicle' or 'g_currentMission'
-	variableName = variableName or 'controlledVehicle'
+	local prefix = variableName and 'CpUtil.getCurrentVehicle()' or 'CpUtil'
+	-- if no variable name given, print the whole vehicle
+	variableName = variableName or '.getCurrentVehicle()'
 	self:printVariableInternal( prefix, variableName, maxDepth, printToXML, printToSeparateXmlFiles)
 end
 
 --- Print an implement variable. If implement.object.variable exists, print that, otherwise implement.variable
 ---@param implementIndex number index in getAttachedImplements()
 function CpConsoleCommands:printImplementVariable(implementIndex, variableName, maxDepth, printToXML, printToSeparateXmlFiles)
-	local prefix = string.format('g_currentMission.controlledVehicle:getAttachedImplements()[%d]', implementIndex)
+	local prefix = string.format('CpUtil.getCurrentVehicle():getAttachedImplements()[%d]', implementIndex)
 	local objectVariableName = string.format('%s.object%s', prefix, self:ensureVariableNameSyntax(variableName))
 	local var = CpUtil.getVariable(objectVariableName)
 	if var then
@@ -145,7 +146,7 @@ function CpConsoleCommands:printImplementVariable(implementIndex, variableName, 
 end
 
 function CpConsoleCommands:printStrategyVariable(variableName, maxDepth, printToXML, printToSeparateXmlFiles)
-	local prefix = 'g_currentMission.controlledVehicle:getCpDriveStrategy()'
+	local prefix = 'CpUtil.getCurrentVehicle():getCpDriveStrategy()'
 	self:printVariableInternal( prefix, variableName, maxDepth, printToXML, printToSeparateXmlFiles)
 end
 
@@ -239,11 +240,11 @@ function CpConsoleCommands:cpSetPathfinderDebug(d)
 end
 
 function CpConsoleCommands:cpFreeze()
-	g_currentMission.controlledVehicle:freezeCp()
+	CpUtil.getCurrentVehicle():freezeCp()
 end
 
 function CpConsoleCommands:cpUnfreeze()
-	g_currentMission.controlledVehicle:unfreezeCp()
+	CpUtil.getCurrentVehicle():unfreezeCp()
 end
 
 function CpConsoleCommands:cpStopAll()

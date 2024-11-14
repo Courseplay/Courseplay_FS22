@@ -325,7 +325,7 @@ end
 --- Either prints all settings or a desired setting by the name or index in the setting table.
 ---@param name any
 function CpCourseGeneratorSettings:consoleCommandPrintSetting(name)
-    local vehicle = g_currentMission.controlledVehicle
+    local vehicle = CpUtil.getCurrentVehicle()
     if not vehicle then 
         CpUtil.info("Not entered a valid vehicle!")
         return

@@ -32,7 +32,7 @@ function CpAICombineUnloader.initSpecialization()
 end
 
 local function executePipeControllerCommand(lambdaFunc, ...)
-    local vehicle = g_currentMission.controlledVehicle
+    local vehicle = CpUtil.getCurrentVehicle()
     if not vehicle then 
         CpUtil.info("Could not measure pipe properties without entering a vehicle!")
         return

@@ -113,7 +113,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	local function onOpenInGameMenu(inGameMenu)
 		local pageAI = inGameMenu.pageAI
 		if CpInGameMenuAIFrameExtended.getVehicle() == nil then 
-			pageAI.lastVehicle = g_currentMission.controlledVehicle
+			pageAI.lastVehicle = CpUtil.getCurrentVehicle()
 		end
 	end
 	g_messageCenter:subscribe(MessageType.GUI_AFTER_CLOSE, onCloseInGameMenu, g_currentMission.inGameMenu)

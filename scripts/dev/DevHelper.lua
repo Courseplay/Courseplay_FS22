@@ -50,16 +50,16 @@ function DevHelper:update()
     local lx, lz, hasCollision, vehicle
 
     -- make sure not calling this for something which does not have courseplay installed (only ones with spec_aiVehicle)
-    if g_currentMission.controlledVehicle and g_currentMission.controlledVehicle.spec_cpAIWorker then
-        if self.vehicle ~= g_currentMission.controlledVehicle then
+    if CpUtil.getCurrentVehicle() and CpUtil.getCurrentVehicle().spec_cpAIWorker then
+        if self.vehicle ~= CpUtil.getCurrentVehicle() then
             if self.vehicle then
                 self.vehicle:removeDeleteListener(self, "removedSelectedVehicle")
             end
-            --self.vehicleData = PathfinderUtil.VehicleData(g_currentMission.controlledVehicle, true)
+            --self.vehicleData = PathfinderUtil.VehicleData(CpUtil.getCurrentVehicle(), true)
         end
-        self.vehicle = g_currentMission.controlledVehicle
+        self.vehicle = CpUtil.getCurrentVehicle()
         self.vehicle:addDeleteListener(self, "removedSelectedVehicle")
-        self.node = g_currentMission.controlledVehicle:getAIDirectionNode()
+        self.node = CpUtil.getCurrentVehicle():getAIDirectionNode()
         lx, _, lz = localDirectionToWorld(self.node, 0, 0, 1)
 
     else
@@ -155,11 +155,11 @@ function DevHelper:keyEvent(unicode, sym, modifier, isDown)
         self:debug('Set field %d for pathfinding', self.fieldNumForPathfinding)
     elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_space then
         -- save vehicle position
-        g_currentMission.controlledVehicle.vehiclePositionData = {}
-        DevHelper.saveVehiclePosition(g_currentMission.controlledVehicle, g_currentMission.controlledVehicle.vehiclePositionData)
+        CpUtil.getCurrentVehicle().vehiclePositionData = {}
+        DevHelper.saveVehiclePosition(CpUtil.getCurrentVehicle(), CpUtil.getCurrentVehicle().vehiclePositionData)
     elseif bitAND(modifier, Input.MOD_LCTRL) ~= 0 and isDown and sym == Input.KEY_space then
         -- restore vehicle position
-        DevHelper.restoreVehiclePosition(g_currentMission.controlledVehicle)
+        DevHelper.restoreVehiclePosition(CpUtil.getCurrentVehicle())
     elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_c then
         self:debug('Finding contour of current field')
         local valid, points = g_fieldScanner:findContour(self.data.x, self.data.z)
