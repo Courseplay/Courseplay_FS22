@@ -341,24 +341,23 @@ function CpHud:onDraw()
     if not self:getIsEntered() then 
         return
     end
-    --- TODO_25
-    -- local spec = self.spec_cpHud
+    local spec = self.spec_cpHud
 
-    -- spec.hud:draw(spec.status)
-    -- if spec.hud:getIsOpen() then 
-    --     if spec.lastShownWorkWidthTimeStamp + CpHud.workWidthDisplayDelayMs > g_time then 
-    --         if spec.hud:isBunkerSiloLayoutActive() or spec.hud:isSiloLoaderLayoutActive() then 
-    --             CpHud.showCpBunkerSiloWorkWidth(self)
-    --         elseif spec.hud:isCombineUnloaderLayoutActive() then
-    --             CpHud.showCpCombineUnloaderWorkWidth(self)
-    --         else
-    --             CpHud.showCpCourseWorkWidth(self)
-    --         end
-    --     end
-    --     if spec.lastShownBaleCollectorOffsetTimeStamp + CpHud.workWidthDisplayDelayMs > g_time then 
-    --         ImplementUtil.showBaleCollectorOffset(self, self:getCpSettings().baleCollectorOffset:getValue())
-    --     end
-    -- end
+    spec.hud:draw(spec.status)
+    if spec.hud:getIsOpen() then 
+        if spec.lastShownWorkWidthTimeStamp + CpHud.workWidthDisplayDelayMs > g_time then 
+            if spec.hud:isBunkerSiloLayoutActive() or spec.hud:isSiloLoaderLayoutActive() then 
+                CpHud.showCpBunkerSiloWorkWidth(self)
+            elseif spec.hud:isCombineUnloaderLayoutActive() then
+                CpHud.showCpCombineUnloaderWorkWidth(self)
+            else
+                CpHud.showCpCourseWorkWidth(self)
+            end
+        end
+        if spec.lastShownBaleCollectorOffsetTimeStamp + CpHud.workWidthDisplayDelayMs > g_time then 
+            ImplementUtil.showBaleCollectorOffset(self, self:getCpSettings().baleCollectorOffset:getValue())
+        end
+    end
 end
 
 function CpHud:showCpBunkerSiloWorkWidth()
