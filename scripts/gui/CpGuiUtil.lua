@@ -4,7 +4,7 @@ CpGuiUtil = {}
 
 --- Adds a new page to the in game menu.
 function CpGuiUtil.fixInGameMenuPage(frame, pageName, uvs, position, predicateFunc)
-	local inGameMenu = g_gui.screenControllers[InGameMenu]
+	local inGameMenu = g_inGameMenu -- g_gui.screenControllers[InGameMenu]
 
 	-- remove all to avoid warnings
 	for k, v in pairs({pageName}) do
@@ -41,7 +41,7 @@ function CpGuiUtil.fixInGameMenuPage(frame, pageName, uvs, position, predicateFu
 	inGameMenu:registerPage(inGameMenu[pageName], position, predicateFunc)
 	local iconFileName = Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY)
 	inGameMenu:addPageTab(inGameMenu[pageName], iconFileName, GuiUtils.getUVs(uvs))
-	inGameMenu[pageName]:applyScreenAlignment()
+	-- inGameMenu[pageName]:applyScreenAlignment()
 	inGameMenu[pageName]:updateAbsolutePosition()
 
 	for i = 1, #inGameMenu.pageFrames do

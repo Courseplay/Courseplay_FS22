@@ -9,7 +9,8 @@ Courseplay.baseXmlKey = "Courseplay"
 Courseplay.xmlKey = Courseplay.baseXmlKey.."."
 
 function Courseplay:init()
-	g_gui:loadProfiles( Utils.getFilename("config/gui/GUIProfiles.xml", Courseplay.BASE_DIRECTORY) )
+	---TODO_25
+	-- g_gui:loadProfiles( Utils.getFilename("config/gui/GUIProfiles.xml", Courseplay.BASE_DIRECTORY) )
 
 	--- Base cp folder
 	self.baseDir = getUserProfileAppPath() .. "modSettings/" .. Courseplay.MOD_NAME ..  "/"
@@ -126,30 +127,20 @@ function Courseplay:deleteMap()
 end
 
 function Courseplay:setupGui()
-	local vehicleSettingsFrame = CpVehicleSettingsFrame.new()
-	local globalSettingsFrame = CpGlobalSettingsFrame.new()
-	local courseManagerFrame = CpCourseManagerFrame.new(self.courseStorage)
-	g_gui:loadGui(Utils.getFilename("config/gui/VehicleSettingsFrame.xml", Courseplay.BASE_DIRECTORY),
-				 "CpVehicleSettingsFrame", vehicleSettingsFrame, true)
-	g_gui:loadGui(Utils.getFilename("config/gui/GlobalSettingsFrame.xml", Courseplay.BASE_DIRECTORY),
-				 "CpGlobalSettingsFrame", globalSettingsFrame, true)
-	--g_gui:loadGui(Utils.getFilename("config/gui/CourseManagerFrame.xml", Courseplay.BASE_DIRECTORY),
-	--			 "CpCourseManagerFrame", courseManagerFrame, true)
-	local function predicateFunc()
-		-- Only allow the vehicle bound pages, when a vehicle with cp functionality is chosen/entered.
-		local vehicle = CpInGameMenuAIFrameExtended.getVehicle()
-		return vehicle ~= nil and vehicle.spec_cpAIWorker ~= nil
-	end
-	
-	--- As precision farming decided to be moved in between the normal map and the ai map,
-	--- we move it down one position.
-	local pos = g_modIsLoaded["FS22_precisionFarming"] and 4 or 3
+	CpInGameMenu.setupGui()
+			  
 
 --[[ TODO 25
 	CpGuiUtil.fixInGameMenuPage(vehicleSettingsFrame, "pageCpVehicleSettings",
 			{896, 0, 128, 128}, pos + 1, predicateFunc)
-	CpGuiUtil.fixInGameMenuPage(globalSettingsFrame, "pageCpGlobalSettings",
-			{768, 0, 128, 128}, pos + 1, function () return true end)
+]]
+	
+	-- CpGuiUtil.fixInGameMenuPage(globalSettingsFrame, "pageCpGlobalSettings",
+	-- 		{768, 0, 128, 128}, pos + 1, function () return true end)
+	-- CpGuiUtil.fixInGameMenuPage(globalSettingsFrame, "pageCpGlobalSettings",
+	-- 		{768, 0, 128, 128}, pos + 1, function () return true end)
+
+--[[ TODO 25
 	CpGuiUtil.fixInGameMenuPage(courseManagerFrame, "pageCpCourseManager",
 			{256, 0, 128, 128}, pos + 1, predicateFunc)
 ]]
@@ -158,6 +149,10 @@ function Courseplay:setupGui()
 	-- TODO_25
 	-- g_currentMission.hud.ingameMap.drawFields = Utils.appendedFunction(g_currentMission.hud.ingameMap.drawFields, Courseplay.drawHudMap)
 
+	-- local page = g_gui.currentGui.target.pageSettings
+
+	-- local newPage = page.subCategoryPages[1].copy(page.subCategoryPages[1].parent)
+	-- self:fixGui()
 end
 
 --- Enables drawing onto the hud map.

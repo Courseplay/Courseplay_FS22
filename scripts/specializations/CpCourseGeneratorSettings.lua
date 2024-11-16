@@ -194,11 +194,9 @@ function CpCourseGeneratorSettings.loadSettingsSetup()
     CpSettingsUtil.loadSettingsFromSetup(CpCourseGeneratorSettings.vineSettings,filePath)
 end
 
-function CpCourseGeneratorSettings.getSettingSetup(vehicle)
-    local title = g_i18n:getText(CpCourseGeneratorSettings.pageTitle)
+function CpCourseGeneratorSettings.getSettingSetup()
     return CpCourseGeneratorSettings.settingsBySubTitle, 
-            vehicle and string.format(title, vehicle:getName()) 
-            or title
+        CpCourseGeneratorSettings.pageTitle
 end
 
 function CpCourseGeneratorSettings.getVineSettingSetup(vehicle)
