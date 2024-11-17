@@ -448,22 +448,12 @@ function CpGuiUtil.movesMapCenterTo(map, worldX, worldZ)
     map:moveCenter(-dx, -dy)
 end
 
-function CpGuiUtil.preOpeningInGameMenu(vehicle)
-    local inGameMenu =  g_currentMission.inGameMenu
-    inGameMenu.pageAI.hudVehicle = vehicle
-    if g_gui.currentGuiName ~= "InGameMenu" then
-		g_gui:showGui("InGameMenu")
-	end
-    return inGameMenu
-end
-
 function CpGuiUtil.openCourseManagerGui(vehicle)
-	--- TODO_25
-    -- local inGameMenu = CpGuiUtil.preOpeningInGameMenu(vehicle)
-	-- inGameMenu:goToPage(inGameMenu.pageCpCourseManager)
+	g_messageCenter:publishDelayed(MessageType.GUI_CP_INGAME_OPEN_COURSE_MANAGER)
 end
 
 function CpGuiUtil.openCourseGeneratorGui(vehicle)
+	g_messageCenter:publishDelayed(MessageType.GUI_CP_INGAME_OPEN_COURSE_GENERATOR)
 	--- TODO_25
     -- local inGameMenu = CpGuiUtil.preOpeningInGameMenu(vehicle)
     -- local pageAI = inGameMenu.pageAI
@@ -516,15 +506,11 @@ function CpGuiUtil.openCourseGeneratorGui(vehicle)
 end
 
 function CpGuiUtil.openVehicleSettingsGui(vehicle)
-	--- TODO_25
-    -- local inGameMenu = CpGuiUtil.preOpeningInGameMenu(vehicle)
-    -- inGameMenu:goToPage(inGameMenu.pageCpVehicleSettings)
+	g_messageCenter:publishDelayed(MessageType.GUI_CP_INGAME_OPEN_VEHICLE_SETTINGS)
 end
 
 function CpGuiUtil.openGlobalSettingsGui(vehicle)
-	--- TODO_25
-    -- local inGameMenu = CpGuiUtil.preOpeningInGameMenu(vehicle)
-    -- inGameMenu:goToPage(inGameMenu.pageCpGlobalSettings)
+	g_messageCenter:publishDelayed(MessageType.GUI_CP_INGAME_OPEN_GLOBAL_SETTINGS)
 end
 
 CpGuiUtil.UNIT_EXTENSIONS = {

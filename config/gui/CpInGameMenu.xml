@@ -6,6 +6,7 @@
         <FrameReference ref="cpInGameMenuGlobalSettings" name="cpInGameMenuGlobalSettings" id="pageGlobalSettings" />
         <FrameReference ref="cpInGameMenuVehicleSettings" name="cpInGameMenuVehicleSettings" id="pageVehicleSettings" />
         <FrameReference ref="cpInGameMenuCourseGenerator" name="cpInGameMenuCourseGenerator" id="pageCourseGenerator" />
+        <FrameReference ref="cpInGameMenuCourseManager" name="cpInGameMenuCourseManager" id="pageCourseManager"/>
     </Paging>
     <Bitmap profile="fs25_tabListContainer" id="header">
         <MultiTextOption profile="uiInGameMenuHeaderSelector" onClick="onClickPageSelection"

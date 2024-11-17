@@ -1,17 +1,46 @@
 CpInGameMenu = {}
 local CpInGameMenu_mt = Class(CpInGameMenu, TabbedMenu)
-function CpInGameMenu.new(target, customMt, messageCenter, l10n, inputManager)
+function CpInGameMenu.new(target, customMt, messageCenter, l10n, inputManager, courseStorage)
 	local self = CpInGameMenu:superClass().new(target, customMt or CpInGameMenu_mt, messageCenter, l10n, inputManager)
 
 	self.messageCenter = messageCenter
 	self.l10n = l10n
 	self.inputManager = inputManager
+	self.courseStorage = courseStorage
 
-	-- self:exposeControlsAsFields(CpInGameMenu.CONTROLS)
- 
 	self.defaultMenuButtonInfo = {}
 	self.backButtonInfo = {}
 
+	self.messageCenter:subscribe(MessageType.GUI_CP_INGAME_OPEN, function (menu)
+		g_gui:showGui("CpInGameMenu")
+		self:changeScreen(CpInGameMenu)
+		-- local index = self.pagingElement:getPageMappingIndexByElement(self.page)
+		-- self.pageSelector:setState(pageAIIndex, true)
+	end, self)
+	self.messageCenter:subscribe(MessageType.GUI_CP_INGAME_OPEN_GLOBAL_SETTINGS, function (menu)
+		g_gui:showGui("CpInGameMenu")
+		self:changeScreen(CpInGameMenu)
+		local index = self.pagingElement:getPageMappingIndexByElement(self.pageGlobalSettings)
+		self.pageSelector:setState(index, true)
+	end, self)
+	self.messageCenter:subscribe(MessageType.GUI_CP_INGAME_OPEN_VEHICLE_SETTINGS, function (menu)
+		g_gui:showGui("CpInGameMenu")
+		self:changeScreen(CpInGameMenu)
+		local index = self.pagingElement:getPageMappingIndexByElement(self.pageVehicleSettings)
+		self.pageSelector:setState(index, true)
+	end, self)
+	self.messageCenter:subscribe(MessageType.GUI_CP_INGAME_OPEN_COURSE_GENERATOR, function (menu)
+		g_gui:showGui("CpInGameMenu")
+		self:changeScreen(CpInGameMenu)
+		local index = self.pagingElement:getPageMappingIndexByElement(self.pageCourseGenerator)
+		self.pageSelector:setState(index, true)
+	end, self)
+	self.messageCenter:subscribe(MessageType.GUI_CP_INGAME_OPEN_COURSE_MANAGER, function (menu)
+		g_gui:showGui("CpInGameMenu")
+		self:changeScreen(CpInGameMenu)
+		local index = self.pagingElement:getPageMappingIndexByElement(self.pageCourseManager)
+		self.pageSelector:setState(index, true)
+	end, self)
 	return self
 end
 
@@ -20,11 +49,12 @@ function CpInGameMenu.createFromExistingGui(gui, guiName)
 	CpGlobalSettingsFrame.createFromExistingGui(g_gui.frames.cpInGameMenuGlobalSettings.target, "CpGlobalSettingsFrame")
 	CpVehicleSettingsFrame.createFromExistingGui(g_gui.frames.cpInGameMenuVehicleSettings.target, "CpVehicleSettingsFrame")
 	CpCourseGeneratorFrame.createFromExistingGui(g_gui.frames.cpInGameMenuCourseGenerator.target, "CpCourseGeneratorFrame")
+	CpCourseManagerFrame.createFromExistingGui(g_gui.frames.cpInGameMenuCourseManager.target, "CpCourseManagerFrame")
 
 	local messageCenter = gui.messageCenter
 	local l10n = gui.l10n
 	local inputManager = gui.inputManager
-	local newGui = CpInGameMenu.new(nil, nil, messageCenter, l10n, inputManager)
+	local newGui = CpInGameMenu.new(nil, nil, messageCenter, l10n, inputManager, g_Courseplay.courseStorage)
 
 	g_gui.guis.CpInGameMenu:delete()
 	g_gui.guis.CpInGameMenu.target:delete()
@@ -35,14 +65,22 @@ function CpInGameMenu.createFromExistingGui(gui, guiName)
 	return newGui
 end
 
-function CpInGameMenu.setupGui()
+function CpInGameMenu.setupGui(courseStorage)
+
+	MessageType.GUI_CP_INGAME_OPEN = nextMessageTypeId()
+	MessageType.GUI_CP_INGAME_OPEN_GLOBAL_SETTINGS = nextMessageTypeId()
+	MessageType.GUI_CP_INGAME_OPEN_VEHICLE_SETTINGS = nextMessageTypeId()
+	MessageType.GUI_CP_INGAME_OPEN_COURSE_GENERATOR = nextMessageTypeId()
+	MessageType.GUI_CP_INGAME_OPEN_COURSE_MANAGER = nextMessageTypeId()
+
 	CpCourseGeneratorFrame.setupGui()
 	CpGlobalSettingsFrame.setupGui()
 	CpVehicleSettingsFrame.setupGui()
-	
-	local inGameMenu = CpInGameMenu.new(nil, nil, g_messageCenter, g_i18n, g_inputBinding)
+	CpCourseManagerFrame.setupGui()
+
+	g_cpInGameMenu = CpInGameMenu.new(nil, nil, g_messageCenter, g_i18n, g_inputBinding, courseStorage)
 	g_gui:loadGui(Utils.getFilename("config/gui/CpInGameMenu.xml", Courseplay.BASE_DIRECTORY),
-				"CpInGameMenu", inGameMenu)
+				"CpInGameMenu", g_cpInGameMenu)
 end
 
 -- Lines 279-324
@@ -51,6 +89,8 @@ function CpInGameMenu:initializePages()
 	self.pageGlobalSettings:initialize()
 	self.pageVehicleSettings:initialize()
 	self.pageCourseGenerator:initialize()
+	self.pageCourseManager:initialize()
+	self.pageCourseManager:setCourseStorage(self.courseStorage)
 end
 
 -- Lines 327-362
@@ -77,6 +117,13 @@ function CpInGameMenu:setupMenuPages()
 				return CpUtil.getCurrentVehicle() ~= nil
 			end,
 			{128, 0, 128, 128}
+		},
+		{
+			self.pageCourseManager,
+			function ()
+				return true
+			end,
+			{256, 0, 128, 128}
 		}
 	}
 

@@ -127,23 +127,9 @@ function Courseplay:deleteMap()
 end
 
 function Courseplay:setupGui()
-	CpInGameMenu.setupGui()
+	CpInGameMenu.setupGui(self.courseStorage)
 			  
 
---[[ TODO 25
-	CpGuiUtil.fixInGameMenuPage(vehicleSettingsFrame, "pageCpVehicleSettings",
-			{896, 0, 128, 128}, pos + 1, predicateFunc)
-]]
-	
-	-- CpGuiUtil.fixInGameMenuPage(globalSettingsFrame, "pageCpGlobalSettings",
-	-- 		{768, 0, 128, 128}, pos + 1, function () return true end)
-	-- CpGuiUtil.fixInGameMenuPage(globalSettingsFrame, "pageCpGlobalSettings",
-	-- 		{768, 0, 128, 128}, pos + 1, function () return true end)
-
---[[ TODO 25
-	CpGuiUtil.fixInGameMenuPage(courseManagerFrame, "pageCpCourseManager",
-			{256, 0, 128, 128}, pos + 1, predicateFunc)
-]]
 	self.infoTextsHud = CpHudInfoTexts()
 
 	-- TODO_25
@@ -275,7 +261,6 @@ function Courseplay:load()
 	CpAIMessages.register()	
 	g_vineScanner:setup()
 end
-
 ------------------------------------------------------------------------------------------------------------------------
 -- Player action events
 ------------------------------------------------------------------------------------------------------------------------
