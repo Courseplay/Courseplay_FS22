@@ -255,7 +255,7 @@ function CpAICombineUnloader:startCpAtFirstWp(superFunc)
     if not superFunc(self) then 
         if self:getCanStartCpCombineUnloader() then
             local spec = self.spec_cpAICombineUnloader
-            spec.cpJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
+            spec.cpJob:applyCurrentState(self, g_currentMission, g_currentMission.playerSystem:getLocalPlayer().farmId, true)
             spec.cpJob:setValues()
             local success = spec.cpJob:validate(false)
             if success then
@@ -273,7 +273,7 @@ function CpAICombineUnloader:startCpAtLastWp(superFunc)
     if not superFunc(self) then 
         if self:getCanStartCpCombineUnloader() then
             local spec = self.spec_cpAICombineUnloader
-            spec.cpJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
+            spec.cpJob:applyCurrentState(self, g_currentMission, g_currentMission.playerSystem:getLocalPlayer().farmId, true)
             spec.cpJob:setValues()
             local success = spec.cpJob:validate(false)
             if success then

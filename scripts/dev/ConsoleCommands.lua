@@ -87,7 +87,7 @@ end
 
 ---@param amount number
 function CpConsoleCommands:addMoney(amount)
-	g_currentMission:addMoney(amount ~= nil and tonumber(amount) or 0, g_currentMission.player.farmId, MoneyType.OTHER)	
+	g_currentMission:addMoney(amount ~= nil and tonumber(amount) or 0, g_currentMission.playerSystem:getLocalPlayer().farmId, MoneyType.OTHER)	
 end
 
 ---Prints a variable to the console or a xmlFile.

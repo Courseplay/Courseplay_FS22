@@ -175,7 +175,7 @@ end
 --- Is the land at this position owned by me?
 function PathfinderUtil.isWorldPositionOwned(posX, posZ)
     local farmland = g_farmlandManager:getFarmlandAtWorldPosition(posX, posZ)
-    local missionAllowed = g_missionManager:getIsMissionWorkAllowed(g_currentMission.player.farmId, posX, posZ, nil)
+    local missionAllowed = g_missionManager:getIsMissionWorkAllowed(g_currentMission.playerSystem:getLocalPlayer().farmId, posX, posZ, nil)
     return (farmland and farmland.isOwned) or missionAllowed
 end
 
