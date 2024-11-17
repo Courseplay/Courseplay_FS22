@@ -19,8 +19,8 @@ function CpAIJobCombineUnloader.new(isServer, customMt)
     self.selectedFieldPlot:setVisible(false)
 	self.selectedFieldPlot:setBrightColor(true)
 
-	--TODO 25 self.heapPlot = HeapPlot(g_currentMission.inGameMenu.ingameMap)
-	--TODO 25 self.heapPlot:setVisible(false)
+	self.heapPlot = HeapPlot()
+	self.heapPlot:setVisible(false)
 	self.heapNode = CpUtil.createNode("siloNode", 0, 0, 0, nil)
 
 	--- Giants unload
@@ -138,7 +138,7 @@ end
 --- Called when parameters change, scan field
 function CpAIJobCombineUnloader:validate(farmId)
 	self.selectedFieldPlot:setVisible(false)
-	--TODO 25 self.heapPlot:setVisible(false)
+	self.heapPlot:setVisible(false)
 	local isValid, errorMessage = CpAIJob.validate(self, farmId)
 	if not isValid then
 		return isValid, errorMessage
@@ -221,8 +221,8 @@ function CpAIJobCombineUnloader:validate(farmId)
 		setRotation(self.heapNode, 0, angle, 0)
 		local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(vehicle, self.heapNode, 0, self.maxHeapLength, -10)
 		if found then
-			--TODO 25 self.heapPlot:setArea(heapSilo:getArea())
-			--TODO 25 self.heapPlot:setVisible(true)
+			self.heapPlot:setArea(heapSilo:getArea())
+			self.heapPlot:setVisible(true)
 		end
 	end
 
@@ -233,7 +233,7 @@ function CpAIJobCombineUnloader:draw(map, isOverviewMap)
 	CpAIJob.draw(self, map, isOverviewMap)
 	if not isOverviewMap then
 		self.selectedFieldPlot:draw(map)
-		--TODO 25 self.heapPlot:draw(map)
+		self.heapPlot:draw(map)
 	end
 end
 
