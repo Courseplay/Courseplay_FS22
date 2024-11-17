@@ -26,7 +26,7 @@ function MotorController:update()
         return
     end
     if not self.settings.fuelSave:getValue() then
-        if not self.motorSpec.isMotorStarted then
+        if not self.vehicle:getIsMotorStarted() then
             self:startMotor()
             self.vehicle:raiseAIEvent('onAIFieldWorkerContinue',
                 'onAIImplementContinue')
@@ -36,7 +36,7 @@ function MotorController:update()
     end
     if self:isFuelSaveDisabled() or self.driveStrategy:getMaxSpeed() >
         self.speedThreshold then
-        if not self.motorSpec.isMotorStarted then
+        if not self.vehicle:getIsMotorStarted() then
             self:startMotor()
             self.vehicle:raiseAIEvent('onAIFieldWorkerContinue',
                 'onAIImplementContinue')
@@ -49,7 +49,7 @@ function MotorController:update()
             self.timerSet = true
         end
         if self.timer:get() then
-            if self.motorSpec.isMotorStarted then
+            if self.vehicle:getIsMotorStarted() then
                 self.vehicle:raiseAIEvent('onAIFieldWorkerBlock',
                     'onAIImplementBlock')
                 self:stopMotor()
