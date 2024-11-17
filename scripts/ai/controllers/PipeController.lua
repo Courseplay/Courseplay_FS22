@@ -595,7 +595,7 @@ function PipeController:moveDependedPipePart(tool, dt)
                 1, 0, 0, 0, false)
         end
     end
-    ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, MathUtil.clamp(targetRot, tool.rotMin, tool.rotMax))
+    ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, CpMathUtil.clamp(targetRot, tool.rotMin, tool.rotMax))
 end
 
 function PipeController:movePipeUp(tool, childToolNode, dt)
@@ -659,7 +659,7 @@ function PipeController:movePipeUp(tool, childToolNode, dt)
             end
         end
     end
-    ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, MathUtil.clamp(targetRot, tool.rotMin, tool.rotMax))
+    ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, CpMathUtil.clamp(targetRot, tool.rotMin, tool.rotMax))
 end
 
 function PipeController:delete()

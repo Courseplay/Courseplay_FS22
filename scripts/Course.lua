@@ -210,9 +210,8 @@ function Course:enrichWaypointData(startIx)
         self.waypoints[i].turnsToHere = self.totalTurns
         -- TODO: looks like we may end up with the first two waypoint of a course being the same. This takes care
         -- of setting dx/dz to 0 (instead of NaN) but should investigate as it does not make sense
-        local dx, dz = MathUtil.vector2Normalize(nx - cx, nz - cz)
-        -- check for NaN
-        if dx == dx and dz == dz and not (dx == 0 and dz == 0)then
+        if MathUtil.vector2Length(nx - cx, nz - cz) > 0 then
+            local dx, dz = MathUtil.vector2Normalize(nx - cx, nz - cz)
             self.waypoints[i].dx, self.waypoints[i].dz = dx, dz
             self.waypoints[i].yRot = MathUtil.getYRotationFromDirection(dx, dz)
         else
@@ -276,7 +275,7 @@ end
 
 function Course:calculateSignedRadius(ix)
     local deltaAngle = CpMathUtil.getDeltaAngle(self.waypoints[ix].yRot, self.waypoints[ix - 1].yRot)
-    return self:getDistanceToNextWaypoint(ix) / (2 * math.sin(deltaAngle / 2))
+    return CpMathUtil.divide(self:getDistanceToNextWaypoint(ix), (2 * math.sin(deltaAngle / 2)))
 end
 
 function Course:calculateRadius(ix)

@@ -308,3 +308,12 @@ function CpMathUtil.angleFromGame(angle)
 	end
 	return a
 end
+
+function CpMathUtil.clamp(val, min, max)
+	return math.min(math.max(val, min), max)
+end
+
+--- Divide a by b, but instead of throwing an error when b is 0, return math.huge
+function CpMathUtil.divide(a, b)
+	return b == 0 and math.huge or a / b
+end

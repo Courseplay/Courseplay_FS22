@@ -277,7 +277,7 @@ function CpShovelPositions:controlShovelPosition(dt, targetAngle)
 	local curRot = {}
 	curRot[1], curRot[2], curRot[3] = getRotation(spec.shovelTool.node)
 	local oldShovelRot = curRot[spec.shovelTool.rotationAxis]
-	local goalAngle = MathUtil.clamp(oldShovelRot + targetAngle, spec.shovelTool.rotMin, spec.shovelTool.rotMax)
+	local goalAngle = CpMathUtil.clamp(oldShovelRot + targetAngle, spec.shovelTool.rotMin, spec.shovelTool.rotMax)
 	return ImplementUtil.moveMovingToolToRotation(spec.shovelVehicle, 
 		spec.shovelTool, dt, goalAngle,
 		CpShovelPositions.getMovingToolMinDiffNeeded(self)) or isDirty
@@ -455,7 +455,7 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, height
 
 		alpha = math.atan2(i1y - ay, i1z - az)
 		local beta = -math.atan2(i2y - ay, i2z - az)
-		local a = MathUtil.clamp(oldArmRot - MathUtil.getAngleDifference(
+		local a = CpMathUtil.clamp(oldArmRot - MathUtil.getAngleDifference(
 			alpha, oldRotRelativeArmRot), armTool.rotMin, armTool.rotMax)
 		if not skipArm then
 			isDirty = ImplementUtil.moveMovingToolToRotation(

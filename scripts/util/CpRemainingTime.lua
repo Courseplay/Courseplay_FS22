@@ -83,7 +83,7 @@ function CpRemainingTime:getOptimalSpeed() -- in m/s
 	if speedLimit == math.huge then -- Giants ..., happens when for example the work tool is raised ..
 		return 0
 	end
-	return MathUtil.kmhToMps(MathUtil.clamp(speedLimit, 0, fieldSettingSpeed))
+	return MathUtil.kmhToMps(CpMathUtil.clamp(speedLimit, 0, fieldSettingSpeed))
 end 
 
 --- Estimate of the course time left with penalties increased.

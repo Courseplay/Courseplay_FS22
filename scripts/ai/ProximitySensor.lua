@@ -91,7 +91,7 @@ function ProximitySensor:update()
                 ((self.vehicle.rotatedTime / self.xOffset) >= 0
                 and self.angleToDirectionNode or
                 -self.angleToDirectionNode)
-        self:setRotation(MathUtil.clamp(
+        self:setRotation(CpMathUtil.clamp(
                 self.vehicle.rotatedTime * (2 * self.maxRotation + correction) * self.vehicle:getSteeringDirection(),
                 -2 * self.maxRotation,
                 2 * self.maxRotation))

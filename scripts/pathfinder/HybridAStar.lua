@@ -40,7 +40,7 @@ function coroutine.create(f)
 end
 
 function coroutine.resume(f, ...)
-    return f(...)
+    return true, f(...)
 end
 
 --- coroutine.yield is not supported, always returns false
@@ -717,7 +717,7 @@ function HybridAStarWithAStarInTheMiddle:init(vehicle, hybridRange, yieldAfter, 
     -- path generation phases
     self.vehicle = vehicle
     self.START_TO_MIDDLE = 1
-    self.MIDDLE = 2
+    self.ASTAR = 2
     self.MIDDLE_TO_END = 3
     self.ALL_HYBRID = 4 -- start and goal close enough, we only need a single phase with hybrid
     self.hybridRange = hybridRange
@@ -758,7 +758,7 @@ function HybridAStarWithAStarInTheMiddle:start(start, goal, turnRadius, allowRev
     self.hybridRange = self.hybridRange and self.hybridRange or turnRadius * 3
     -- how far is start/goal apart?
     self.startNode:updateH(self.goalNode, turnRadius)
-    self.phase = self.MIDDLE
+    self.phase = self.ASTAR
     self:debug('Finding fast A* path between start and goal...')
     self.coroutine = coroutine.create(self.aStarPathfinder.findPath)
     self.currentPathfinder = self.aStarPathfinder
@@ -803,6 +803,7 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
     if not ok then
         print(done)
         printCallstack()
+        self:debug('Pathfinding failed')
         self.coroutine = nil
         return PathfinderResult(true, nil, goalNodeInvalid, self.currentPathfinder.nodes.highestDistance,
                 self.constraints)
@@ -818,9 +819,10 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
                 return PathfinderResult(true, nil, goalNodeInvalid, self.currentPathfinder.nodes.highestDistance,
                         self.constraints)
             end
-        elseif self.phase == self.MIDDLE then
+        elseif self.phase == self.ASTAR then
             self.constraints:resetStrictMode()
             if not path then
+                self:debug('fast A*: no path found')
                 return PathfinderResult(true, nil, goalNodeInvalid, self.currentPathfinder.nodes.highestDistance,
                         self.constraints)
             end
