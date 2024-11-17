@@ -30,6 +30,23 @@ https://github.com/karlkurzer/path_planner
 
 ]]
 
+--- TODO 25
+--- Dummy coroutine replacement as Giants removed in 2025. Will see if they have something replacing it, until
+--- then, just run the function synchronously and never yield control back.
+local coroutine = {}
+
+function coroutine.create(f)
+    return f
+end
+
+function coroutine.resume(f, ...)
+    return f(...)
+end
+
+--- coroutine.yield is not supported, always returns false
+function coroutine.running()
+    return false
+end
 
 --- Interface definition for all pathfinders
 ---@class PathfinderInterface
