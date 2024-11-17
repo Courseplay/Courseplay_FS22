@@ -2013,7 +2013,7 @@ function AIDriveStrategyCombineCourse:measureBackDistance()
     -- raycast from a point behind the vehicle forward towards the direction node
     local nx, ny, nz = localDirectionToWorld(AIUtil.getDirectionNode(self.vehicle), 0, 0, 1)
     local x, y, z = localToWorld(AIUtil.getDirectionNode(self.vehicle), 0, 1.5, -self.maxBackDistance)
-    raycastAll(x, y, z, nx, ny, nz, 'raycastBackCallback', self.maxBackDistance, self)
+    raycastAll(x, y, z, nx, ny, nz, self.maxBackDistance, 'raycastBackCallback', self)
 end
 
 -- I believe this tries to figure out how far the back of a combine is from its direction node.
