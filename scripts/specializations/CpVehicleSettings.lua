@@ -120,9 +120,15 @@ function CpVehicleSettings:onUpdate()
     end
 end
 
+-- TODO 25 These are defined somewhere else, not in Vehicle
+Vehicle.STATE_CHANGE_ATTACH = 1
+Vehicle.STATE_CHANGE_DETACH = 2
+
 --- Changes the sprayer work width on fill type change, as it might depend on the loaded fill type.
 --- For example Lime and Fertilizer might have a different work width.
 function CpVehicleSettings:onStateChange(state, data)
+    -- TODO 25
+    CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, self, '%s: onStateChange %s', tostring(state))
     local spec = self.spec_cpVehicleSettings
     if state == Vehicle.STATE_CHANGE_FILLTYPE_CHANGE and self:getIsSynchronized() then
         local _, hasSprayer = AIUtil.getAllChildVehiclesWithSpecialization(self, Sprayer, nil)
