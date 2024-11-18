@@ -123,7 +123,7 @@ function Courseplay:deleteMap()
 	g_courseEditor:delete()
 	BufferedCourseDisplay.deleteBuffer()
 	g_signPrototypes:delete()
-	g_devHelper:delete()
+	g_consoleCommands:delete()
 end
 
 function Courseplay:setupGui()
