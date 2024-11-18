@@ -643,19 +643,19 @@ end
 --------------------------------------------
 
 function CpShovelPositions.initConsoleCommands()
-	g_devHelper.consoleCommands:registerConsoleCommand("cpShovelPositionsPrintShovelDebug", 
+	g_consoleCommands:registerConsoleCommand("cpShovelPositionsPrintShovelDebug",
         "Prints debug information for the shovel", 
         "consoleCommandPrintShovelDebug", CpShovelPositions)
-	g_devHelper.consoleCommands:registerConsoleCommand("cpShovelPositionsSetState", 
+	g_consoleCommands:registerConsoleCommand("cpShovelPositionsSetState",
         "Set's the current shovel state", 
         "consoleCommandSetShovelState", CpShovelPositions)
-	g_devHelper.consoleCommands:registerConsoleCommand("cpShovelPositionsSetArmLimit", 
+	g_consoleCommands:registerConsoleCommand("cpShovelPositionsSetArmLimit",
         "Set's the arm max limit", 
         "consoleCommandSetPreUnloadArmLimit", CpShovelPositions)
-	g_devHelper.consoleCommands:registerConsoleCommand('cpShovelPositionsSetMinimalUnloadHeight', 
+	g_consoleCommands:registerConsoleCommand('cpShovelPositionsSetMinimalUnloadHeight',
 		'Sets the minimal unload height to a fixed value',
 		'consoleCommandSetMinimalUnloadHeight', CpShovelPositions)
-	g_devHelper.consoleCommands:registerConsoleCommand('cpShovelPositionsMeasureAndSetMinUnloadHeight', 
+	g_consoleCommands:registerConsoleCommand('cpShovelPositionsMeasureAndSetMinUnloadHeight',
 		'Measures and sets the minimal unload height',
 		'consoleCommandMeasureAndSetMinimalUnloadHeight', CpShovelPositions)
 end

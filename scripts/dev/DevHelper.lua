@@ -28,11 +28,6 @@ DevHelper = CpObject()
 function DevHelper:init()
     self.data = {}
     self.isEnabled = false
-    self.consoleCommands = CpConsoleCommands(self)
-end
-
-function DevHelper:delete()
-    self.consoleCommands:delete()
 end
 
 function DevHelper:debug(...)
@@ -166,9 +161,17 @@ function DevHelper:keyEvent(unicode, sym, modifier, isDown)
     elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_g then
         local valid, points = g_fieldScanner:findContour(self.data.x, self.data.z)
         self:debug('Generate course')
+
+        local vehicle = CpUtil.getCurrentVehicle()
+        local settings = CpUtil.getCurrentVehicle():getCourseGeneratorSettings()
+        local width, offset, _, _ = WorkWidthUtil.getAutomaticWorkWidthAndOffset(vehicle)
+        settings.workWidth:refresh()
+        settings.workWidth:setFloatValue(width)
+        vehicle:getCpSettings().toolOffsetX:setFloatValue(offset)
+
         local status, ok, course = CourseGeneratorInterface.generate(points,
                 {x = self.data.x, z = self.data.z},
-                0, 6, 6, 1, true)
+                vehicle, settings)
         if ok then
             self.course = course
         end
@@ -312,9 +315,5 @@ function DevHelper:showDriveData()
 end
 
 -- make sure to recreate the global dev helper whenever this script is (re)loaded
-if g_devHelper then
-    g_devHelper:delete()
-end
-
 g_devHelper = DevHelper()
 

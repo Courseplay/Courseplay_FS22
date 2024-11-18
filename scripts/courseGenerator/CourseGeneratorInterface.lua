@@ -171,3 +171,25 @@ function CourseGeneratorInterface.generateVineCourse(
     course:setFieldPolygon(fieldPolygon)
     return true, course
 end
+
+---------------------------------------------
+--- Console Commands
+---------------------------------------------
+
+function CourseGeneratorInterface.generateDefaultCourse(nHeadlands)
+    local vehicle = CpUtil.getCurrentVehicle()
+    local x, _, z = getWorldTranslation(vehicle.rootNode)
+    local valid, points = g_fieldScanner:findContour(x, z)
+    local settings = CpUtil.getCurrentVehicle():getCourseGeneratorSettings()
+    local width, offset, _, _ = WorkWidthUtil.getAutomaticWorkWidthAndOffset(vehicle)
+    settings.workWidth:refresh()
+    settings.workWidth:setFloatValue(width)
+    vehicle:getCpSettings().toolOffsetX:setFloatValue(offset)
+    settings.numberOfHeadlands:setFloatValue(nHeadlands or 3)
+    settings.sharpenCorners:setValue(true)
+    CpUtil.infoVehicle(vehicle, "Generating default course with %d headlands", settings.numberOfHeadlands:getValue())
+    local ok, course = CourseGeneratorInterface.generate(points, {x = x, z = z}, vehicle, settings)
+    if ok then
+        vehicle:setFieldWorkCourse(course)
+    end
+end

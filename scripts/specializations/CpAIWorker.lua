@@ -549,10 +549,10 @@ end
 ---------------------------------------------
 
 function CpAIWorker.registerConsoleCommands()
-    g_devHelper.consoleCommands:registerConsoleCommand("cpVehicleOnWorkStartTest",
+    g_consoleCommands:registerConsoleCommand("cpVehicleOnWorkStartTest",
             "Raise the field work start event.",
             "consoleCommandRaiseWorkStart", CpAIWorker)
-    g_devHelper.consoleCommands:registerConsoleCommand("cpSettingsPrintJob",
+    g_consoleCommands:registerConsoleCommand("cpSettingsPrintJob",
             "Prints the current job parameters",
             "consoleCommandPrintCurrentSelectedJobParameters", CpAIWorker)
     --- TODO: Adding functions to execute the lowering, raising and fieldwork end events.

@@ -313,7 +313,7 @@ end
 ---------------------------------------------
 
 function CpCourseGeneratorSettings.registerConsoleCommands()
-    g_devHelper.consoleCommands:registerConsoleCommand("cpSettingsPrintGenerator", 
+    g_consoleCommands:registerConsoleCommand("cpSettingsPrintGenerator",
         "Prints the course generator settings or a given setting", 
         "consoleCommandPrintSetting", CpCourseGeneratorSettings)
 end

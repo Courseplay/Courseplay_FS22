@@ -21,6 +21,7 @@ CpConsoleCommands.commands = {
 	{ 'cpFreeze', 'Freeze the CP driver', 'cpFreeze' },
 	{ 'cpUnfreeze', 'Unfreeze the CP driver', 'cpUnfreeze' },
 	{ 'cpStopAll', 'Stops all cp drivers', 'cpStopAll' },
+	{ 'cpGenerateDefaultCourse', '[number of headlands ] Generate a default course', 'cpGenerateDefaultCourse' },
 }
 
 function CpConsoleCommands:init(devHelper)
@@ -247,6 +248,11 @@ function CpConsoleCommands:cpUnfreeze()
 	CpUtil.getCurrentVehicle():unfreezeCp()
 end
 
+function CpConsoleCommands:cpGenerateDefaultCourse(nHeadlands)
+	CpUtil.info('Generating default course with %s headlands', nHeadlands)
+	CourseGeneratorInterface.generateDefaultCourse(nHeadlands)
+end
+
 function CpConsoleCommands:cpStopAll()
 	for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
 		if vehicle.getIsAIActive and vehicle:getIsAIActive() then 
@@ -254,3 +260,10 @@ function CpConsoleCommands:cpStopAll()
 		end
 	end
 end
+
+-- when reloading, clean up before re-instantiation
+if g_consoleCommands then
+	g_consoleCommands:delete()
+end
+
+g_consoleCommands = CpConsoleCommands()

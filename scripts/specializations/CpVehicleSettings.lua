@@ -128,7 +128,7 @@ Vehicle.STATE_CHANGE_DETACH = 2
 --- For example Lime and Fertilizer might have a different work width.
 function CpVehicleSettings:onStateChange(state, data)
     -- TODO 25
-    CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, self, '%s: onStateChange %s', tostring(state))
+    CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, self, 'onStateChange %s', tostring(state))
     local spec = self.spec_cpVehicleSettings
     if state == Vehicle.STATE_CHANGE_FILLTYPE_CHANGE and self:getIsSynchronized() then
         local _, hasSprayer = AIUtil.getAllChildVehiclesWithSpecialization(self, Sprayer, nil)
@@ -484,7 +484,7 @@ end
 ---------------------------------------------
 
 function CpVehicleSettings.registerConsoleCommands()
-    g_devHelper.consoleCommands:registerConsoleCommand("cpSettingsPrintVehicle", 
+    g_consoleCommands:registerConsoleCommand("cpSettingsPrintVehicle",
         "Prints the vehicle settings or a given setting", 
         "consoleCommandPrintSetting", CpVehicleSettings)
 end

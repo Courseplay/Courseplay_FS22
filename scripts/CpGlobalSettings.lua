@@ -110,7 +110,7 @@ end
 ---------------------------------------------
 
 function CpGlobalSettings:registerConsoleCommands()
-    g_devHelper.consoleCommands:registerConsoleCommand("cpSettingsPrintGlobal", 
+    g_consoleCommands:registerConsoleCommand("cpSettingsPrintGlobal",
         "Prints the global settings or a given setting", 
         "consoleCommandPrintSetting", self)
 end

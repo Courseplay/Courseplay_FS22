@@ -16,9 +16,9 @@
 Markers = {}
 
 function Markers.registerConsoleCommands()
-    g_devHelper.consoleCommands:registerConsoleCommand("cpFrontAndBackerMarkerCalculate", 
+    g_consoleCommands:registerConsoleCommand("cpFrontAndBackerMarkerCalculate",
         "Calculates the front and back markers", "consoleCommandReload", Markers)
-    g_devHelper.consoleCommands:registerConsoleCommand("cpFrontAndBackerMarkerPrintDebug", 
+    g_consoleCommands:registerConsoleCommand("cpFrontAndBackerMarkerPrintDebug",
         "Print Marker data", "consoleCommandPrintDebug", Markers)
 end
 Markers.registerConsoleCommands()
