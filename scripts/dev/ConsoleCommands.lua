@@ -24,8 +24,7 @@ CpConsoleCommands.commands = {
 	{ 'cpGenerateDefaultCourse', '[number of headlands ] Generate a default course', 'cpGenerateDefaultCourse' },
 }
 
-function CpConsoleCommands:init(devHelper)
-    self.devHelper = devHelper
+function CpConsoleCommands:init()
     self:registerConsoleCommands()
 	self.additionalCommands = {}
 end
@@ -212,7 +211,7 @@ function CpConsoleCommands.restoreVehiclePosition(vehicle)
 end
 
 function CpConsoleCommands:cpToggleDevHelper()
-    self.devHelper:toggle()
+    g_devHelper:toggle()
 end
 
 function CpConsoleCommands:cpSaveAllFields()
