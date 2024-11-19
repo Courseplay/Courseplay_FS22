@@ -183,7 +183,7 @@ function Island.findIslands(field)
     context:setAutoRowAngle(false):setRowAngle(0):setRowWaypointDistance(Island.gridSpacing)
     context:_setGenerateBlocksOnly()
     local boundary = CourseGenerator.FieldworkCourseHelper.createUsableBoundary(context.field:getBoundary(), context.headlandClockwise)
-    local center = CourseGenerator.Center(context, boundary, nil, context.startLocation, {})
+    local center = CourseGenerator.Center(context, boundary, nil, context.startLocation, {}, true)
     center:generate()
     local islandVertices = {}
     for _, b in ipairs(center:getBlocks()) do
