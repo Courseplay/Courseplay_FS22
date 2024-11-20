@@ -794,9 +794,9 @@ function AIDriveStrategyCombineCourse:estimateDistanceUntilFull(ix)
         self.fillLevelAtLastWaypoint = fillLevel
     end
     local litersUntilFull = capacity - fillLevel
-    local dUntilFull = litersUntilFull / self.litersPerMeter
+    local dUntilFull = CpMathUtil.divide(litersUntilFull, self.litersPerMeter)
     local litersUntilCallUnloader = capacity * self.settings.callUnloaderPercent:getValue() / 100 - fillLevel
-    local dUntilCallUnloader = litersUntilCallUnloader / self.litersPerMeter
+    local dUntilCallUnloader = CpMathUtil.divide(litersUntilCallUnloader, self.litersPerMeter)
     self.waypointIxWhenFull = self.course:getNextWaypointIxWithinDistance(ix, dUntilFull) or self.course:getNumberOfWaypoints()
     local wpDistance
     self.waypointIxWhenCallUnloader, wpDistance = self.course:getNextWaypointIxWithinDistance(ix, dUntilCallUnloader)

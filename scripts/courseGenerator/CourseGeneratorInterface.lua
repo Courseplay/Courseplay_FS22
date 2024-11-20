@@ -179,7 +179,12 @@ end
 function CourseGeneratorInterface.generateDefaultCourse(nHeadlands)
     local vehicle = CpUtil.getCurrentVehicle()
     local x, _, z = getWorldTranslation(vehicle.rootNode)
-    local valid, points = g_fieldScanner:findContour(x, z)
+    --local valid, points = g_fieldScanner:findContour(x, z)
+    local field = CpFieldUtil.getFieldAtWorldPosition(x, z)
+    if field == nil then
+        CpUtil.infoVehicle(vehicle, "Not on a field, can't generate")
+        return
+    end
     local settings = CpUtil.getCurrentVehicle():getCourseGeneratorSettings()
     local width, offset, _, _ = WorkWidthUtil.getAutomaticWorkWidthAndOffset(vehicle)
     settings.workWidth:refresh()
@@ -188,7 +193,7 @@ function CourseGeneratorInterface.generateDefaultCourse(nHeadlands)
     settings.numberOfHeadlands:setFloatValue(nHeadlands or 3)
     settings.sharpenCorners:setValue(true)
     CpUtil.infoVehicle(vehicle, "Generating default course with %d headlands", settings.numberOfHeadlands:getValue())
-    local ok, course = CourseGeneratorInterface.generate(points, {x = x, z = z}, vehicle, settings)
+    local ok, course = CourseGeneratorInterface.generate(CpFieldUtil.getFieldPolygon(field), {x = x, z = z}, vehicle, settings)
     if ok then
         vehicle:setFieldWorkCourse(course)
     end
