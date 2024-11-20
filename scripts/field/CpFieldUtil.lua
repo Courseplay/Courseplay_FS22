@@ -31,8 +31,7 @@ function CpFieldUtil.isOnField(x, z, fieldId)
 end
 
 function CpFieldUtil.initFieldMod()
-    local groundTypeMapId, groundTypeFirstChannel, groundTypeNumChannels =
-        g_currentMission.fieldGroundSystem:getDensityMapData(FieldDensityMap.GROUND_TYPE)
+    local groundTypeMapId, groundTypeFirstChannel, groundTypeNumChannels = g_currentMission.fieldGroundSystem:getDensityMapData(FieldDensityMap.GROUND_TYPE)
     CpFieldUtil.groundTypeModifier = DensityMapModifier.new(groundTypeMapId, groundTypeFirstChannel, groundTypeNumChannels,
             g_currentMission.terrainRootNode)
     CpFieldUtil.groundTypeFilter = DensityMapFilter.new(CpFieldUtil.groundTypeModifier)
@@ -62,54 +61,49 @@ function CpFieldUtil.getFieldNumUnderVehicle(vehicle)
     return CpFieldUtil.getFieldNumUnderNode(vehicle.rootNode)
 end
 
---- Returns a field ID for a position. This really is the ID of the first field which is
---- on the same farmland where the given position is. The farmland is what you can buy in the game,
---- including the area around an actual field, and may extend well beyond the actual field.
---- So do not use this the determine the field ID of a given position, as this does not guarantee
---- that the position is actually on a field.
-function CpFieldUtil.getFieldIdAtWorldPosition(posX, posZ)
+--- Returns a field for a position. Looks like in FS25, there is a one-to-one mapping between field and farmland.
+function CpFieldUtil.getFieldAtWorldPosition(posX, posZ)
     local farmland = g_farmlandManager:getFarmlandAtWorldPosition(posX, posZ)
-    if farmland ~= nil then
-        local fieldMapping = g_fieldManager.farmlandIdFieldMapping[farmland.id]
-        if fieldMapping ~= nil and fieldMapping[1] ~= nil then
-            return fieldMapping[1].fieldId
-        end
+    if farmland and farmland:getField() then
+        return farmland:getField()
+    else
+        return nil
     end
-    return 0
 end
 
+--- Returns a field ID for a position, 0 if no field ID found
+function CpFieldUtil.getFieldIdAtWorldPosition(posX, posZ)
+    local field = CpFieldUtil.getFieldAtWorldPosition(posX, posZ)
+    return field and field:getId() or 0
+end
 
 function CpFieldUtil.saveAllFields()
     local fileName = string.format('%s/cpFields.xml', g_Courseplay.debugPrintDir)
     local xmlFile = createXMLFile("cpFields", fileName, "CPFields");
     if xmlFile and xmlFile ~= 0 then
         for _, field in pairs(g_fieldManager:getFields()) do
-            local valid, points = g_fieldScanner:findContour(field.posX, field.posZ)
-            if valid then
-                local key = ("CPFields.field(%d)"):format(field.fieldId);
-                setXMLInt(xmlFile, key .. '#fieldNum',	field.fieldId);
-                setXMLInt(xmlFile, key .. '#numPoints', #points);
-                for i, point in ipairs(points) do
-                    setXMLString(xmlFile, key .. (".point%d#pos"):format(i), ("%.2f %.2f %.2f"):format(point.x, point.y, point.z))
-                end
-                local islandNodes = CourseGenerator.Island.findIslands(
-                        CourseGenerator.Field(field.fieldId, field.fieldId, Polygon(CpMathUtil.pointsFromGameInPlace(points))))
-                CpMathUtil.pointsToGameInPlace(islandNodes)
-                for i, islandNode in ipairs(islandNodes) do
-                    setXMLString(xmlFile, key .. ( ".islandNode%d#pos"):format( i ), ("%.2f %2.f"):format( islandNode.x, islandNode.z ))
-                end
-                CpUtil.info('Field %d saved', field.fieldId)
-            else
-                CpUtil.info('Field %d could not be saved', field.fieldId)
+            local points = CpFieldUtil.getFieldPolygon(field)
+            local key = ("CPFields.field(%s)"):format(field:getId());
+            setXMLInt(xmlFile, key .. '#fieldNum', field:getId());
+            setXMLInt(xmlFile, key .. '#numPoints', #points);
+            for i, point in ipairs(points) do
+                setXMLString(xmlFile, key .. (".point%d#pos"):format(i), ("%.2f %.2f %.2f"):format(point.x, point.y, point.z))
             end
+            local islandNodes = CourseGenerator.Island.findIslands(
+                    CourseGenerator.Field(field:getId(), field:getId(), Polygon(CpMathUtil.pointsFromGameInPlace(points))))
+            CpMathUtil.pointsToGameInPlace(islandNodes)
+            for i, islandNode in ipairs(islandNodes) do
+                setXMLString(xmlFile, key .. (".islandNode%d#pos"):format(i), ("%.2f %2.f"):format(islandNode.x, islandNode.z))
+            end
+            CpUtil.info('Field %s saved', field:getId())
         end
         saveXMLFile(xmlFile);
         delete(xmlFile);
-        
+
         CpUtil.info('Saved all fields to %s', fileName)
     else
-        CpUtil.info("Error: field could not be saved to " , g_Courseplay.debugPrintDir);
-    end;
+        CpUtil.info("Error: field could not be saved to ", g_Courseplay.debugPrintDir);
+    end ;
 end
 
 function CpFieldUtil.initializeFieldMod()
@@ -124,8 +118,8 @@ function CpFieldUtil.isField(x, z, widthX, widthZ)
     end
     widthX = widthX or 0.5
     widthZ = widthZ or 0.5
-    local startWorldX, startWorldZ   = x, z
-    local widthWorldX, widthWorldZ   = x - widthX, z - widthZ
+    local startWorldX, startWorldZ = x, z
+    local widthWorldX, widthWorldZ = x - widthX, z - widthZ
     local heightWorldX, heightWorldZ = x + widthX, z + widthZ
 
     CpFieldUtil.fieldMod.modifier:setParallelogramWorldCoords(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, "ppp")
@@ -134,6 +128,16 @@ function CpFieldUtil.isField(x, z, widthX, widthZ)
     local _, area, totalArea = CpFieldUtil.fieldMod.modifier:executeGet(CpFieldUtil.fieldMod.filter)
     local isField = area > 0
     return isField, area, totalArea
+end
+
+function CpFieldUtil.getFieldPolygon(field)
+    local unpackedVertices = field:getDensityMapPolygon():getVerticesList()
+    local vertices = {}
+    for i = 1, #unpackedVertices, 2 do
+        local x, z = unpackedVertices[i], unpackedVertices[i + 1]
+        table.insert(vertices, { x = x, y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 1, z), z = z })
+    end
+    return vertices
 end
 
 --- Get the field polygon (field edge vertices) at the world position.

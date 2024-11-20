@@ -74,11 +74,9 @@ function DevHelper:update()
 
     self.data.hasFruit, self.data.fruitValue, self.data.fruit = PathfinderUtil.hasFruit(self.data.x, self.data.z, 1, 1)
 
-    self.data.landId =  CpFieldUtil.getFieldIdAtWorldPosition(self.data.x, self.data.z)
+    self.data.fieldId =  CpFieldUtil.getFieldIdAtWorldPosition(self.data.x, self.data.z)
     --self.data.owned =  PathfinderUtil.isWorldPositionOwned(self.data.x, self.data.z)
 	self.data.farmlandId = g_farmlandManager:getFarmlandIdAtWorldPosition(self.data.x, self.data.z)
-	self.data.farmland = g_farmlandManager:getFarmlandAtWorldPosition(self.data.x, self.data.z)
---    self.data.fieldAreaPercent = 100 * self.fieldArea / self.totalFieldArea
 
 	local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, self.data.x, self.data.y, self.data.z)
     self.data.isOnField, self.data.densityBits = FSDensityMapUtil.getFieldDataAtWorldPosition(self.data.x, y, self.data.z)
