@@ -68,8 +68,9 @@ end
 --- Loads courses by the id in which they were saved into the vehicle.
 function AssignedCoursesManager:loadAssignedCoursesByVehicle(vehicle, id)
 	if id then
-		CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, "Loading assigned courses, id: %s", tostring(id))
+		CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, "Loading assigned courses, id: %d", id)
 		if self.xmlFile == nil then
+			-- if not yet open, do it now. We want to avoid closing/opening the file for each vehicle.
 			self.filePath = g_currentMission.missionInfo.savegameDirectory .."/" .. self.fileName
 			self.xmlFile = XMLFile.loadIfExists("assignedCoursesXmlFile", self.filePath, self.xmlSchema)
 		end

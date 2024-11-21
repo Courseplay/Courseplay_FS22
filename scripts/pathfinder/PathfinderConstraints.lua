@@ -104,8 +104,7 @@ function PathfinderConstraints:getNodePenalty(node)
         -- we are on a field
         if not PathfinderUtil.isWorldPositionOwned(node.x, -node.y) then
             -- but we do not own this field
-            local fieldIdUnderNode = CpFieldUtil.getFieldIdAtWorldPosition(node.x, -node.y)
-            if not CpFieldUtil.isActiveMissionField(fieldIdUnderNode) then
+            if not g_missionManager:getMissionAtWorldPosition(node.x, -node.y) then
                 -- the field we are on is not ours and not a mission field, more penalty!
                 offField = true
                 offFieldPenalty = self.offFieldPenalty * 1.2

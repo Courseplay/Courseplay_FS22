@@ -162,11 +162,3 @@ function CpFieldUtil.getFieldPolygonAtWorldPosition(x, z)
     end
     return fieldPolygon, isCustomField
 end
-
---- There is an active mission on fieldId
----@param fieldId number
----@return boolean true if this field is a mission field
-function CpFieldUtil.isActiveMissionField(fieldId)
-    local mission = g_missionManager.fieldToMission[fieldId]
-    return mission and mission.status == AbstractMission.STATUS_RUNNING
-end
