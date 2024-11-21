@@ -1597,29 +1597,18 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
     course.islandHeadlandClockwise = courseXml:getValue(courseKey .. '#islandHeadlandClockwise')
     course.editedByCourseEditor = courseXml:getValue(courseKey .. '#compacted', false)
     course.compacted = courseXml:getValue(courseKey .. '#compacted', false)
-    if not course.nVehicles or course.nVehicles == 1 then
-        -- TODO: not nVehicles for backwards compatibility, remove later
+    if course.nVehicles == 1 then
         -- for multi-vehicle courses, we load the multi-vehicle data and restore the current course
         -- from there, so we don't need to write the same course twice in the savegame
         course.waypoints = createWaypointsFromXml(courseXml, courseKey)
-        if #course.waypoints == 0 then
-            CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'No waypoints loaded, trying old format')
-            courseXml:iterate(courseKey .. '.waypoints' .. Waypoint.xmlKey, function(ix, key)
-                local d
-                d = CpUtil.getXmlVectorValues(courseXml:getString(key))
-                table.insert(course.waypoints, Waypoint.initFromXmlFileLegacyFormat(d, ix))
-            end)
-        end
-    end
-    if course.nVehicles and course.nVehicles > 1 then
+    else
         course.multiVehicleData = Course.MultiVehicleData.createFromXmlFile(courseXml, courseKey)
         course:setPosition(course.multiVehicleData:getPosition())
         if vehicle then
             vehicle:getCpLaneOffsetSetting():setValue(course.multiVehicleData:getPosition())
         end
-    else
-        course:enrichWaypointData()
     end
+    course:enrichWaypointData()
     CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
     return course
 end

@@ -24,14 +24,11 @@ function CpCourseManager.registerXmlSchemaValues(schema,baseKey)
 	schema:register(XMLValueType.STRING, baseKey .. "#name", "Course name")
 	schema:register(XMLValueType.FLOAT, baseKey  .. "#workWidth", "Course work width")
 	schema:register(XMLValueType.INT, baseKey .. "#numHeadlands", "Course number of headlands")
-    -- TODO: remove once backwards compatibility is not needed
-	schema:register(XMLValueType.INT, baseKey .. "#multiTools", "Course multi tools")
 	schema:register(XMLValueType.INT, baseKey .. "#nVehicles", "Number of vehicles for a multi-vehicle course")
     schema:register(XMLValueType.BOOL, baseKey .. "#headlandClockwise", "Headlands are clockwise.")
     schema:register(XMLValueType.BOOL, baseKey .. "#islandHeadlandClockwise", "Headlands around islands are clockwise.")
     schema:register(XMLValueType.BOOL, baseKey .. "#wasEdited", "Was the course edited by the course editor.")
     schema:register(XMLValueType.BOOL, baseKey .. "#compacted", "Rows are compacted, only start and end is saved.")
-    schema:register(XMLValueType.STRING, baseKey .. ".waypoints", "Course serialized waypoints") -- old save format
     Waypoint.registerXmlSchema(schema, baseKey)
     Course.MultiVehicleData.registerXmlSchema(schema, baseKey)
 end

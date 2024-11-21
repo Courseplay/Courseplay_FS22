@@ -108,8 +108,6 @@ function Courseplay:loadMap(filename)
 		if self.xmlFile == nil then return end
 		self.globalSettings:loadFromXMLFile(self.xmlFile, g_Courseplay.xmlKey)
 		self.xmlFile:delete()
-
-		g_assignedCoursesManager:loadAssignedCourses(saveGamePath)
 	end
 
 	--- Ugly hack to get access to the global AutoDrive table, as this global is dependent on the auto drive folder name.
