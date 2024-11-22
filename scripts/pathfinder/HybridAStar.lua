@@ -519,12 +519,21 @@ function HybridAStar:initRun(start, goal, turnRadius, allowReverse, constraints,
     self.iterations = 0
     self.expansions = 0
     self.yields = 0
+    self.initialized = true
     return false
+end
+
+--- Wrap up this run, clean up timer, reset initialized flag so next run will start cleanly
+function HybridAStar:finishRun(result, path)
+    self.initialized = false
+    self.constraints:showStatistics()
+    closeIntervalTimer(self.timer)
+    return result, path
 end
 
 --- Reentry-safe pathfinder runner
 function HybridAStar:run(start, goal, turnRadius, allowReverse, constraints, hitchLength)
-    if self.iterations == 0 then
+    if not self.initialized then
         local done, path, goalNodeInvalid = self:initRun(start, goal, turnRadius, allowReverse, constraints, hitchLength)
         if done then
             return done, path, goalNodeInvalid
@@ -540,10 +549,7 @@ function HybridAStar:run(start, goal, turnRadius, allowReverse, constraints, hit
         if pred:equals(self.goal, self.deltaPosGoal, self.deltaThetaGoal) then
             -- done!
             self:debug('Popped the goal (%d).', self.iterations)
-            self:rollUpPath(pred, self.goal)
-            self.constraints:showStatistics()
-            closeIntervalTimer(self.timer)
-            return true, self.path
+            return self:finishRun(true, self:rollUpPath(pred, self.goal))
         end
         self.count = self.count + 1
         -- yield after the configured iterations or after 20 ms
@@ -565,10 +571,8 @@ function HybridAStar:run(start, goal, turnRadius, allowReverse, constraints, hit
                         self:debug('Found collision free analytic path (%s) at iteration %d', pathType, self.iterations)
                         -- remove first node of returned analytic path as it is the same as pred
                         table.remove(analyticPath, 1)
-                        self:rollUpPath(pred, self.goal, analyticPath)
-                        self.constraints:showStatistics()
-                        closeIntervalTimer(self.timer)
-                        return true, self.path
+                        -- TODO why are we calling rollUpPath here?
+                        return self:finishRun(true, self:rollUpPath(pred, self.goal, analyticPath))
                     end
                 end
             end
@@ -579,10 +583,7 @@ function HybridAStar:run(start, goal, turnRadius, allowReverse, constraints, hit
                 if succ:equals(self.goal, self.deltaPosGoal, self.deltaThetaGoal) then
                     succ.pred = succ.pred
                     self:debug('Successor at the goal (%d).', self.iterations)
-                    self:rollUpPath(succ, self.goal)
-                    self.constraints:showStatistics()
-                    closeIntervalTimer(self.timer)
-                    return true, self.path
+                    return self:finishRun(true, self:rollUpPath(succ, self.goal))
                 end
 
                 local existingSuccNode = self.nodes:get(succ)
@@ -652,12 +653,9 @@ function HybridAStar:run(start, goal, turnRadius, allowReverse, constraints, hit
         end
     end
     --self:printOpenList(self.openList)
-    self.path = {}
     self:debug('No path found: iterations %d, yields %d, cost %.1f - %.1f, deltaTheta %.1f', self.iterations, self.yields,
             self.nodes.lowestCost, self.nodes.highestCost, math.deg(self.deltaThetaGoal))
-    self.constraints:showStatistics()
-    closeIntervalTimer(self.timer)
-    return true, nil
+    return self:finishRun(true, nil)
 end
 
 function HybridAStar:isPathValid(path)
@@ -675,21 +673,22 @@ end
 
 ---@param node State3D
 function HybridAStar:rollUpPath(node, goal, path)
-    self.path = path or {}
+    path = path or {}
     local currentNode = node
     self:debug('Goal node at %.2f/%.2f, cost %.1f (%.1f - %.1f)', goal.x, goal.y, node.cost,
             self.nodes.lowestCost, self.nodes.highestCost)
-    table.insert(self.path, 1, currentNode)
+    table.insert(path, 1, currentNode)
     while currentNode.pred and currentNode ~= currentNode.pred do
         --self:debug('  %s', currentNode.pred)
-        table.insert(self.path, 1, currentNode.pred)
+        table.insert(path, 1, currentNode.pred)
         currentNode = currentNode.pred
     end
     -- TODO: see if this really is needed after it was fixed in the Reeds-Shepp getWaypoints()
     -- start node always points forward, make sure it is reverse if the second node is reverse...
-    self.path[1].gear = self.path[2] and self.path[2].gear or self.path[1].gear
-    self:debug('Nodes %d, iterations %d, yields %d, deltaTheta %.1f', #self.path, self.iterations, self.yields,
+    path[1].gear = path[2] and path[2].gear or path[1].gear
+    self:debug('Nodes %d, iterations %d, yields %d, deltaTheta %.1f', #path, self.iterations, self.yields,
             math.deg(self.deltaThetaGoal))
+    return path
 end
 
 function HybridAStar:printOpenList(openList)
@@ -850,6 +849,7 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
                 return PathfinderResult(true, nil, goalNodeInvalid, self.currentPathfinder.nodes.highestDistance,
                         self.constraints)
             end
+            CourseGenerator.addDebugPolyline(Polyline(path), {1, 0, 0})
             local lMiddlePath = HybridAStar.length(path)
             self:debug('Direct path is %d m', lMiddlePath)
             -- do we even need to use the normal A star or the nodes are close enough that the hybrid A star will be fast enough?
@@ -870,6 +870,7 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
             return self:findPathFromStartToMiddle()
         elseif self.phase == self.START_TO_MIDDLE then
             if path then
+                CourseGenerator.addDebugPolyline(Polyline(path), {0, 1, 0})
                 -- start and middle sections ready, continue with the piece from the middle to the end
                 self.path = path
                 -- create start point at the last waypoint of middlePath before shortening
@@ -890,6 +891,7 @@ function HybridAStarWithAStarInTheMiddle:resume(...)
             end
         elseif self.phase == self.MIDDLE_TO_END then
             if path then
+                CourseGenerator.addDebugPolyline(Polyline(path), {0, 0, 1})
                 -- last piece is ready, this was generated from the goal point to the end of the middle section so
                 -- first remove the last point of the middle section to make the transition smoother
                 -- and then add the last section in reverse order
