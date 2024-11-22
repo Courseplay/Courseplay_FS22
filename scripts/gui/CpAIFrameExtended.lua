@@ -484,10 +484,10 @@ function CpInGameMenuAIFrameExtended:draw()
 			if Input.isKeyPressed(Input.KEY_lshift) then
 				if math.abs(dx) > math.abs(dz) then 
 					dz = 0
-					dx = MathUtil.sign(dx)
+					dx = math.sign(dx)
 				else
 					dx = 0
-					dz = MathUtil.sign(dz)
+					dz = math.sign(dz)
 				end
 				worldX = pos.x + dx * length
 				worldZ = pos.z + dz * length
@@ -786,10 +786,10 @@ function CpInGameMenuAIFrameExtended:mouseEvent(superFunc,posX, posY, isDown, is
 					if Input.isKeyPressed(Input.KEY_lshift) then
 						if math.abs(dx) > math.abs(dz) then 
 							dz = 0
-							dx = MathUtil.sign(dx)
+							dx = math.sign(dx)
 						else
 							dx = 0
-							dz = MathUtil.sign(dz)
+							dz = math.sign(dz)
 						end
 						worldX = pos.x + dx * length
 						worldZ = pos.z + dz * length

@@ -309,6 +309,7 @@ function CpMathUtil.angleFromGame(angle)
 	return a
 end
 
+-- TODO: consider math.clamp instead, that is part of Luau
 function CpMathUtil.clamp(val, min, max)
 	return math.min(math.max(val, min), max)
 end

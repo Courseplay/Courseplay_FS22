@@ -2717,7 +2717,7 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
         else
             --- Makes sure the x offset for unloading to the side is big enough
             --- to make sure the unloader doesn't touch the heap.
-            self.fieldUnloadData.xOffset = MathUtil.sign(self.fieldUnloadData.xOffset) *
+            self.fieldUnloadData.xOffset = math.sign(self.fieldUnloadData.xOffset) *
                     math.max(math.abs(self.fieldUnloadData.xOffset), siloWidth / 2 + 2 * vehicleWidth / 3)
         end
 
@@ -2929,7 +2929,7 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadingFinished()
                 --- First time park position for reverse unload offset always on the left of the heap.
                 self.fieldUnloadData.xOffset = siloWidth / 2 + 2 * vehicleWidth / 3
             else
-                self.fieldUnloadData.xOffset = MathUtil.sign(self.fieldUnloadData.xOffset) *
+                self.fieldUnloadData.xOffset = math.sign(self.fieldUnloadData.xOffset) *
                         math.max(math.abs(self.fieldUnloadData.xOffset), siloWidth / 2 + 2 * vehicleWidth / 3)
             end
             self:debug("Found a heap for field unloading park position xOffset: %.2f", self.fieldUnloadData.xOffset)

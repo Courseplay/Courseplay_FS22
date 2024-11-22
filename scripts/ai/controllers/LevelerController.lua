@@ -134,7 +134,7 @@ end
 
 --- Moves the arm position to achieve a given height from the ground.
 function LevelerController:setCylinderedArmHeight(currentHeight, terrainHeight, min, max)
-	local dir = -MathUtil.sign(currentHeight-terrainHeight - min)
+	local dir = -math.sign(currentHeight-terrainHeight - min)
 	local diff = math.abs(currentHeight-terrainHeight - min)
 	local isDirty = false
 	if max and currentHeight-terrainHeight > max then 
