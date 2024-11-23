@@ -275,7 +275,8 @@ end
 -- true otherwise. Due to some timing issues it may return true just after we started lowering it, so we
 -- set a different state for those implements
 function AIDriveStrategyFieldWorkCourse:startWaitingForLower()
-    if AIUtil.hasAIImplementWithSpecialization(self.vehicle, SowingMachine) or self.ppc:isReversing() then
+    -- TODO 25 looks like we always need to wait that extra cycle with FS25
+    if true or AIUtil.hasAIImplementWithSpecialization(self.vehicle, SowingMachine) or self.ppc:isReversing() then
         -- sowing machines want to stop while the implement is being lowered
         -- also, when reversing, we assume that we'll switch to forward, so stop while lowering, then start forward
         self.state = self.states.WAITING_FOR_LOWER_DELAYED
