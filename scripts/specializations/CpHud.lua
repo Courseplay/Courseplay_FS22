@@ -310,14 +310,14 @@ end
 
 function CpHud:onStateChange(state, data)
     local spec = self.spec_cpHud
-    if state == Vehicle.STATE_CHANGE_ATTACH or state == Vehicle.STATE_CHANGE_DETACH then
+    if state == VehicleStateChange.ATTACH or state == VehicleStateChange.DETACH then
         if self.isServer then
             for _, setting in ipairs(spec.hudSettings.settings) do
                 setting:refresh()
             end
             self:raiseDirtyFlags(spec.availableClientJobModesDirtyFlag)
         end
-    elseif state == Vehicle.STATE_CHANGE_ENTER_VEHICLE then
+    elseif state == VehicleStateChange.ENTER_VEHICLE then
         self:raiseDirtyFlags(spec.availableClientJobModesDirtyFlag)
     end
 end

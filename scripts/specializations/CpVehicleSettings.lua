@@ -120,17 +120,13 @@ function CpVehicleSettings:onUpdate()
     end
 end
 
--- TODO 25 These are defined somewhere else, not in Vehicle
-Vehicle.STATE_CHANGE_ATTACH = 1
-Vehicle.STATE_CHANGE_DETACH = 2
-
 --- Changes the sprayer work width on fill type change, as it might depend on the loaded fill type.
 --- For example Lime and Fertilizer might have a different work width.
 function CpVehicleSettings:onStateChange(state, data)
     -- TODO 25
     CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, self, 'onStateChange %s', tostring(state))
     local spec = self.spec_cpVehicleSettings
-    if state == Vehicle.STATE_CHANGE_FILLTYPE_CHANGE and self:getIsSynchronized() then
+    if state == VehicleStateChange.FILLTYPE_CHANGE and self:getIsSynchronized() then
         local _, hasSprayer = AIUtil.getAllChildVehiclesWithSpecialization(self, Sprayer, nil)
         if hasSprayer then 
             local width, offset = WorkWidthUtil.getAutomaticWorkWidthAndOffset(self, nil, nil)
@@ -140,7 +136,7 @@ function CpVehicleSettings:onStateChange(state, data)
                 self:getCourseGeneratorSettings().workWidth:setFloatValue(width)
             end
         end
-    elseif state == Vehicle.STATE_CHANGE_ATTACH then 
+    elseif state == VehicleStateChange.ATTACH then
         CpVehicleSettings.setAutomaticWorkWidthAndOffset(self)
         CpVehicleSettings.setAutomaticBunkerSiloWorkWidth(self)
         CpVehicleSettings.setAutomaticBaleCollectorOffset(self)
@@ -153,7 +149,7 @@ function CpVehicleSettings:onStateChange(state, data)
         CpVehicleSettings.setFromVehicleConfiguration(self, data.attachedVehicle, 
             spec.loadingShovelHeightOffset, 'loadingShovelOffset')
         spec.needsRefresh = true
-    elseif state == Vehicle.STATE_CHANGE_DETACH then
+    elseif state == VehicleStateChange.DETACH then
         CpVehicleSettings.setAutomaticWorkWidthAndOffset(self, data.attachedVehicle)
         CpVehicleSettings.setAutomaticBunkerSiloWorkWidth(self, data.attachedVehicle)
         

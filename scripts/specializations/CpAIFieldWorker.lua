@@ -105,9 +105,9 @@ end
 
 function CpAIFieldWorker:onStateChange(state, data)
     local spec = self.spec_cpAIFieldWorker
-    if state == Vehicle.STATE_CHANGE_ATTACH then 
+    if state == VehicleStateChange.ATTACH then
         spec.cpJob:getCpJobParameters():validateSettings()
-    elseif state == Vehicle.STATE_CHANGE_DETACH then
+    elseif state == VehicleStateChange.DETACH then
         spec.cpJob:getCpJobParameters():validateSettings()
     end
 end

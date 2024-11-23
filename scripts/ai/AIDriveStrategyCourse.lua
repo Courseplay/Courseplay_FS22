@@ -307,7 +307,7 @@ function AIDriveStrategyCourse:raiseImplements()
     for _, implement in pairs(self.vehicle:getAttachedAIImplements()) do
         implement.object:aiImplementEndLine()
     end
-    self.vehicle:raiseStateChange(Vehicle.STATE_CHANGE_AI_END_LINE)
+    self.vehicle:raiseStateChange(VehicleStateChange.AI_END_LINE)
     --- Raises implements, that are not covered by giants.
     self:raiseControllerEvent(self.onRaisingEvent)
 end
@@ -317,7 +317,7 @@ function AIDriveStrategyCourse:lowerImplements()
     for _, implement in pairs(self.vehicle:getAttachedAIImplements()) do
         implement.object:aiImplementStartLine()
     end
-    self.vehicle:raiseStateChange(Vehicle.STATE_CHANGE_AI_START_LINE)
+    self.vehicle:raiseStateChange(VehicleStateChange.AI_START_LINE)
     --- Lowers implements, that are not covered by giants.
     self:raiseControllerEvent(self.onLoweringEvent)
 end
