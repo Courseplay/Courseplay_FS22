@@ -38,8 +38,8 @@ function MotorController:update()
         self.speedThreshold then
         if not self.vehicle:getIsMotorStarted() then
             self:startMotor()
-            self.vehicle:raiseAIEvent('onAIFieldWorkerContinue',
-                'onAIImplementContinue')
+            self.vehicle:raiseAIEvent('onAIFieldWorkerPrepareForWork',
+                'onAIImplementPrepareForWork')
         end
         self.timerSet = false
     elseif self.vehicle:getLastSpeed() <= self.speedThreshold then
@@ -118,7 +118,7 @@ function MotorController:startMotor()
     self.vehicle.spec_cpAIWorker.motorDisabled = false
     -- TODO 25 for whatever reason, vehicle:getIsMotorStarted() returns true only much later after the motor was started
     -- so we call this and log for quite a few seconds when the motor was not running when the helper was started
-    self.implement:startMotor()
+    self.vehicle:startMotor()
     self:debug('Started motor after fuel save.')
 end
 
