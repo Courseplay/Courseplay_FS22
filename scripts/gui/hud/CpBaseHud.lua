@@ -15,7 +15,7 @@ CpBaseHud.BACKGROUND_COLOR = {0, 0, 0, 0.7}
 CpBaseHud.DARK_BACKGROUND_COLOR = {0, 0, 0, 0.8}
 
 CpBaseHud.HEADER_COLOR = {
-    0, 0.4, 0.6, 1
+    0.22323, 0.40724, 0.00368, 1
 }
 CpBaseHud.BASE_COLOR = {1, 1, 1, 1}
 
@@ -106,6 +106,9 @@ CpBaseHud.uvs = {
     baleFinderSymbol = {
         {7*128, 3*128, 128, 128}
     },
+    playSymbol = {
+        {224, 296, 32, 32}, {256, 512}
+    }
 
 }
 --- Vertical + horizontal overlay alignment
@@ -276,7 +279,7 @@ function CpBaseHud:init(vehicle)
     --- Create start/stop button
     local onOffBtnWidth, height = getNormalizedScreenValues(20, 20)
     local onOffIndicatorOverlay = CpGuiUtil.createOverlay({onOffBtnWidth, height},
-                                                        {g_baseUIFilename, GuiUtils.getUVs(unpack(self.uvs.streetDriveToSymbol))}, --TODO 25
+                                                        {imageFilename, GuiUtils.getUVs(unpack(self.uvs.playSymbol))},
                                                         self.OFF_COLOR,
                                                         self.alignments.bottomRight)
     self.onOffButton = CpHudButtonElement.new(onOffIndicatorOverlay, self.baseHud)

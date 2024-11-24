@@ -20,7 +20,7 @@ CpHudInfoTexts.colorDefault = {
 }
 
 CpHudInfoTexts.colorHeader = {
-    0, 0.4, 0.6, 1
+    0.22323, 0.40724, 0.00368, 1
 }
 
 CpHudInfoTexts.uvs = {
