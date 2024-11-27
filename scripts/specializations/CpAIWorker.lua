@@ -318,6 +318,7 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
         return superFunc(self, message, ...)
     end
     
+    local job = self:getJob()
     local wasCpActive = self:getIsCpActive()
     if wasCpActive then
         local driveStrategy = self:getCpDriveStrategy()
@@ -339,12 +340,11 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
                 end
             end
         end
-        local job = self:getJob()
-        if not job:isFinishingAllowed(message) then 
+        if not job:isFinishingAllowed(message) then
             return
         end
     end
-    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "stop message: %s", message:getMessage())
+    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "stop message: %s", message:getMessage(job))
     superFunc(self, message,...)
 end
 
