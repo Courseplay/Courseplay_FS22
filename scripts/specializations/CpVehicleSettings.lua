@@ -112,6 +112,8 @@ function CpVehicleSettings:onUpdate()
         spec.lowerImplementEarly:resetToLoadedValue()
         spec.bunkerSiloWorkWidth:resetToLoadedValue()
         spec.loadingShovelHeightOffset:resetToLoadedValue()
+        -- for vehicles with a non-attached pipe
+        CpVehicleSettings.setPipeOffset(self)
     end
     spec.finishedFirstUpdate = true
     if spec.needsRefresh then 
@@ -149,6 +151,7 @@ function CpVehicleSettings:onStateChange(state, data)
             spec.bunkerSiloWorkWidth, 'workingWidth')
         CpVehicleSettings.setFromVehicleConfiguration(self, data.attachedVehicle, 
             spec.loadingShovelHeightOffset, 'loadingShovelOffset')
+        CpVehicleSettings.setPipeOffset(self)
         spec.needsRefresh = true
     elseif state == VehicleStateChange.DETACH then
         CpVehicleSettings.setAutomaticWorkWidthAndOffset(self, data.attachedVehicle)
@@ -420,6 +423,26 @@ function CpVehicleSettings:setAutomaticBaleCollectorOffset()
     local configValue = g_vehicleConfigurations:getRecursively(self, "baleCollectorOffset")
     local offset = configValue ~= nil and configValue or halfVehicleWidth + 0.2
     spec.baleCollectorOffset:setFloatValue(offset)
+end
+
+--- If the vehicle has a pipe, instantiate a pipe controller to measure the pipe offsets. This is better
+--- done here and not when the vehicle starts as measuring is a hack and may mess up the vehicle states.
+function CpVehicleSettings:setPipeOffset()
+    local pipeObject = AIUtil.getImplementOrVehicleWithSpecialization(self, Pipe)
+    if pipeObject then
+        local spec = self.spec_cpVehicleSettings
+        -- ask the pipe controller to get the offsets
+        local pipeController = PipeController(self, pipeObject, true)
+        spec.pipeOffsetX:setFloatValue(pipeController:getPipeOffsetX())
+        spec.pipeOffsetZ:setFloatValue(pipeController:getPipeOffsetZ())
+        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, self, 'Pipe offsetX: %.1f, offsetZ: %.1f',
+                pipeController:getPipeOffsetX(), pipeController:getPipeOffsetZ())
+    end
+end
+
+--- For now, we don't want these to show up on the settings page.
+function CpVehicleSettings:isPipeOffsetSettingsVisible()
+    return false
 end
 
 function CpVehicleSettings:isLoadingShovelOffsetSettingVisible()

@@ -46,7 +46,7 @@ local function executePipeControllerCommand(lambdaFunc, ...)
     if vehicle.spec_cpAICombineUnloader and vehicle.spec_cpAICombineUnloader.pipeController then 
         controller = vehicle.spec_cpAICombineUnloader.pipeController
     else 
-        controller = PipeController(vehicle, pipeObject, true)
+        controller = PipeController(vehicle, pipeObject, false)
     end
     if not lambdaFunc(controller, vehicle, ...) then
         vehicle.spec_cpAICombineUnloader.pipeController = nil

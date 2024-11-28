@@ -11,7 +11,11 @@ PipeController.PIPE_STATE_OPEN = 2
 PipeController.moveablePipeHeightOffset = 1 --- Offset to the calculated pipe height.
 PipeController.unloadingToGroundSpeed = 3
 
-function PipeController:init(vehicle, implement, isConsoleCommand)
+
+---@param doMeasure boolean true if the controller should measure the pipe by unfolding/opening. In FS25,
+--- this messes up the vehicle, turns off the harvester and messes up the folded state, etc., so the strategy
+--- should not do this when instantiating the pipe controller.
+function PipeController:init(vehicle, implement, doMeasure)
     self.isConsoleCommand = isConsoleCommand
     ImplementController.init(self, vehicle, implement)
     self.pipeSpec = self.implement.spec_pipe
@@ -23,9 +27,13 @@ function PipeController:init(vehicle, implement, isConsoleCommand)
 
     self.pipeOffsetX, self.pipeOffsetZ = 0, 0
     self.pipeOnLeftSide = true
-    if not isConsoleCommand then
-        -- TODO 25 this messes up the vehicle, turns off the harvester and messes up the folded state
-        --self:measurePipeProperties()
+    if doMeasure then
+        self:measurePipeProperties()
+    else
+        -- the vehicle settings should have measured this automatically on load and changes
+        self.pipeOffsetX = vehicle:getCpSettings().pipeOffsetX:getValue()
+        self.pipeOffsetZ = vehicle:getCpSettings().pipeOffsetZ:getValue()
+        self.pipeOnLeftSide = self.pipeOffsetX >= 0
     end
 
     self.isDischargingTimer = CpTemporaryObject(false)
@@ -342,7 +350,7 @@ function PipeController:instantUnfold(isFolded, currentPipeState, targetPipeStat
         --- First we need to unfold the implement and then open the pipe
         if self.foldableSpec.turnOnFoldDirection == -1 then
             Foldable.setAnimTime(self.implement, 0, false)
-        else 
+        else
             Foldable.setAnimTime(self.implement, 1, false)
         end
         AnimatedVehicle.updateAnimations(self.implement, 99999999, true)
@@ -371,7 +379,7 @@ function PipeController:instantFold()
     self.implement:setFoldDirection(-self.foldableSpec.turnOnFoldDirection, true)
     if self.foldableSpec.turnOnFoldDirection == -1 then
         Foldable.setAnimTime(self.implement, 1, false)
-    else 
+    else
         Foldable.setAnimTime(self.implement, 0, false)
     end
     self.implement:setFoldDirection(0, true)

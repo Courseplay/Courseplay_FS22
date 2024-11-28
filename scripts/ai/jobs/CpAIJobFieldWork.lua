@@ -262,7 +262,7 @@ function CpAIJobFieldWork:isPipeOnLeftSide(vehicle)
     local pipeObject = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Pipe)
     if pipeObject and SpecializationUtil.hasSpecialization(Combine, pipeObject.specializations) then
         --- The controller measures the pipe attributes on creation.
-        local controller = PipeController(vehicle, pipeObject)
+        local controller = PipeController(vehicle, pipeObject, true)
         local isPipeOnLeftSide = controller:isPipeOnTheLeftSide()
         controller:delete()
         return isPipeOnLeftSide
