@@ -24,7 +24,8 @@ function PipeController:init(vehicle, implement, isConsoleCommand)
     self.pipeOffsetX, self.pipeOffsetZ = 0, 0
     self.pipeOnLeftSide = true
     if not isConsoleCommand then
-        self:measurePipeProperties()
+        -- TODO 25 this messes up the vehicle, turns off the harvester and messes up the folded state
+        --self:measurePipeProperties()
     end
 
     self.isDischargingTimer = CpTemporaryObject(false)

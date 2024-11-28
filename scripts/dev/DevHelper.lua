@@ -312,6 +312,15 @@ function DevHelper:showDriveData()
     strategy.reverser:getDriveData()
 end
 
+function DevHelper:showFs25Debug(vehicle)
+    local a, b = vehicle:getCanAIFieldWorkerContinueWork()
+    local c, d = vehicle:getAttachedAIImplements()[1] and vehicle:getAttachedAIImplements()[1].object:getCanAIImplementContinueWork()
+    local e, f = vehicle:getIsMotorStarted()
+    local g, h = vehicle.getCanBeTurnedOn and vehicle:getCanBeTurnedOn()
+    CpUtil.infoVehicle(vehicle, 'fw can work: %s %s | imp1 can work: %s %s | motorstarted: %s %s | canbeturnedon: %s %s', tostring(a), tostring(b), tostring(c), tostring(d), tostring(e), tostring(f), tostring(g), tostring(h))
+    --printCallstack()
+end
+
 -- make sure to recreate the global dev helper whenever this script is (re)loaded
 g_devHelper = DevHelper()
 

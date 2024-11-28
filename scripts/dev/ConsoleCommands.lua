@@ -22,6 +22,8 @@ CpConsoleCommands.commands = {
 	{ 'cpUnfreeze', 'Unfreeze the CP driver', 'cpUnfreeze' },
 	{ 'cpStopAll', 'Stops all cp drivers', 'cpStopAll' },
 	{ 'cpGenerateDefaultCourse', '[number of headlands ] Generate a default course', 'cpGenerateDefaultCourse' },
+	{ 'cpRaiseAIEvent', 'vehicle/fieldworkerEvent AIImplementEvent', 'cpRaiseAIEvent'},
+	{ 'cpRaiseStateChange', 'VehicleStateChange.*', 'cpRaiseStateChange'}
 }
 
 function CpConsoleCommands:init()
@@ -257,6 +259,20 @@ function CpConsoleCommands:cpStopAll()
 		if vehicle.getIsAIActive and vehicle:getIsAIActive() then 
 			vehicle:stopCurrentAIJob(AIMessageErrorUnknown.new())
 		end
+	end
+end
+
+function CpConsoleCommands:cpRaiseAIEvent(vehicleEvent, implementEvent)
+	local vehicle = CpUtil.getCurrentVehicle()
+	if vehicle then
+		vehicle:raiseAIEvent(vehicleEvent, implementEvent)
+	end
+end
+
+function CpConsoleCommands:cpRaiseStateChange(state)
+	local vehicle = CpUtil.getCurrentVehicle()
+	if vehicle then
+		vehicle:raiseStateChange(VehicleStateChange[state])
 	end
 end
 

@@ -11,8 +11,9 @@ if you see it anywhere else, it's a scam.
 
 # TODO
 
-- [ ] Can't start worker when the field is not owned. This may or may not be problem, need to check what happens on mission fields. TurnOnVehicle:getCanBeTurnedOn() returns false, and ever loop when we try to turn the vehicle on, it turns it off in the next loop. 
-- [ ] Pea harvester doesn't lower implements on start.
+- [x] Can't start worker when the field is not owned. This may or may not be problem, need to check what happens on mission fields. TurnOnVehicle:getCanBeTurnedOn() returns false, and ever loop when we try to turn the vehicle on, it turns it off in the next loop. 
+- [x] Pea harvester doesn't lower implements on start.
+- [ ] Measure unfolded pipe somehow as PipeController:measurePipeProperties() messes up the vehicle state
 
 ## Help Us Out
 

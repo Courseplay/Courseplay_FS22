@@ -125,6 +125,7 @@ end
 function CpVehicleSettings:onStateChange(state, data)
     -- TODO 25
     CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, self, 'onStateChange %s', tostring(state))
+    g_devHelper:showFs25Debug(self)
     local spec = self.spec_cpVehicleSettings
     if state == VehicleStateChange.FILLTYPE_CHANGE and self:getIsSynchronized() then
         local _, hasSprayer = AIUtil.getAllChildVehiclesWithSpecialization(self, Sprayer, nil)

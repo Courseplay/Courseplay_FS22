@@ -114,6 +114,7 @@ end
 
 function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
     self.vehicle = vehicle
+    --self:fixTurnOnEvent()
     self.jobParameters = jobParameters
     self:initializeImplementControllers(vehicle)
     self.ppc = PurePursuitController(vehicle)
@@ -149,6 +150,16 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
         self:startWithoutCourse(jobParameters)
     end
     self:raiseControllerEvent(self.onStartEvent)
+end
+
+function AIDriveStrategyCourse:fixTurnOnEvent()
+    for _, action in ipairs(self.vehicle.actionController.actions) do
+        for _, listener in ipairs(action.aiEventListener) do
+            if listener.eventName == 'onAIImplementStart' then
+                listener.direction = 1
+            end
+        end
+    end
 end
 
 --- Does the strategy need the current assigned course?
@@ -313,8 +324,10 @@ function AIDriveStrategyCourse:raiseImplements()
 end
 
 function AIDriveStrategyCourse:lowerImplements()
+    self:debug('Lowering all implements')
     --- Lowers all implements, that are available for the giants field worker.
     for _, implement in pairs(self.vehicle:getAttachedAIImplements()) do
+        CpUtil.debugImplement(CpDebug.DBG_IMPLEMENTS, implement.object,'Lowering implement')
         implement.object:aiImplementStartLine()
     end
     self.vehicle:raiseStateChange(VehicleStateChange.AI_START_LINE)

@@ -89,6 +89,7 @@ function AIDriveStrategyFieldWorkCourse:start(course, startIx, jobParameters)
         self:debug('Close enough to start waypoint %d, no alignment course needed', startIx)
         self:startCourse(course, startIx)
         self.state = self.states.INITIAL
+        self.vehicle:raiseAIEvent('onAIFieldWorkerPrepareForWork', 'onAIImplementPrepareForWork')
     end
     --- Store a reference to the original generated course
     self.originalGeneratedFieldWorkCourse = self.vehicle:getFieldWorkCourse()
@@ -837,3 +838,21 @@ end
 --- Makes sure the automatic work width isn't being reset.
 VariableWorkWidth.onAIFieldWorkerStart = Utils.overwrittenFunction(VariableWorkWidth.onAIFieldWorkerStart, emptyFunction)
 VariableWorkWidth.onAIImplementStart = Utils.overwrittenFunction(VariableWorkWidth.onAIImplementStart, emptyFunction)
+
+-- TODO 25
+-- This seems to be called when the Giants AI is done generating a field course, but we don't want the stock
+-- AI to do anything when the course is loaded, so we just return if the vehicle is a CP vehicle.
+local function noOpWhenCpActive(self, superFunc, ...)
+    -- TODO this also comes when we just stopped a CP vehicle right after it was started
+    if self.vehicle:getIsCpActive() then
+        return
+    end
+    return superFunc(self, ...)
+end
+AIDriveStrategyFieldCourse.onFieldCourseLoadedCallback = Utils.overwrittenFunction(AIDriveStrategyFieldCourse.onFieldCourseLoadedCallback, noOpWhenCpActive)
+
+-- TODO 25
+-- The other thing messing us up is the delete() when we remove the Giants strategies in CpAITaskFieldWork,
+-- because it triggers an AI end line event, raising all implements
+
+AIDriveStrategyFieldCourse.delete = Utils.overwrittenFunction(AIDriveStrategyFieldCourse.delete, noOpWhenCpActive)
