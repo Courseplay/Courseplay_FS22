@@ -461,7 +461,7 @@ function CombineHeadlandTurn:turn(dt)
         maxSpeed = self:getReverseSpeed()
         moveForwards = false
         gx, gz = self:getGoalPointForTurn(moveForwards, nil)
-        if math.abs(dx) < 0.2 then
+        if dx < 0.2 then
             self.state = self.states.REVERSE_ARC
             self:debug('Combine headland turn start reversing arc')
         end
