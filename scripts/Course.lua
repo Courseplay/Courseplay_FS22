@@ -614,9 +614,8 @@ function Course:getWaypointYRotation(ix)
     end
     local cx, _, cz = self:getWaypointPosition(i)
     local nx, _, nz = self:getWaypointPosition(i + 1)
-    local dx, dz = MathUtil.vector2Normalize(nx - cx, nz - cz)
-    -- check for NaN, or if current and next are at the same position
-    if dx ~= dx or dz ~= dz or (dx == 0 and dz == 0) then
+    -- if current and next are at the same position, to avoid division by zero
+    if MathUtil.vector2Length(nx - cx, nz - cz) < 0.00001 then
         -- use the direction of the previous waypoint if exists, otherwise the next. This is to make sure that
         -- the WaypointNode used by the PPC has a valid direction
         if i > 1 then
@@ -626,6 +625,7 @@ function Course:getWaypointYRotation(ix)
         end
         return 0
     end
+    local dx, dz = MathUtil.vector2Normalize(nx - cx, nz - cz)
     return MathUtil.getYRotationFromDirection(dx, dz)
 end
 
