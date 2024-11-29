@@ -288,7 +288,7 @@ function PathfinderUtil.CollisionDetector:overlapBoxCallback(transformId)
         if collidingObject:isa(Bale) then
             self:debug('collision with bale %d', collidingObject.id)
         else
-            self:debug('collision: %s', collidingObject:getName())
+            self:debug('collision: %s', collidingObject.getName and collidingObject:getName() or 'unknown')
         end
     end
     if getHasClassId(transformId, ClassIds.TERRAIN_TRANSFORM_GROUP) then
