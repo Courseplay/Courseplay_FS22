@@ -191,7 +191,7 @@ function CpHudInfoTexts:update()
 end
 
 function CpHudInfoTexts:enterVehicle(vehicle)
-    g_currentMission:requestToEnterVehicle(vehicle)
+    g_localPlayer:requestToEnterVehicle(vehicle)
 end
 
 function CpHudInfoTexts:isVisible()

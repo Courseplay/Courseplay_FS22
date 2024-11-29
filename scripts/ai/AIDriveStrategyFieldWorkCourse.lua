@@ -89,7 +89,7 @@ function AIDriveStrategyFieldWorkCourse:start(course, startIx, jobParameters)
         self:debug('Close enough to start waypoint %d, no alignment course needed', startIx)
         self:startCourse(course, startIx)
         self.state = self.states.INITIAL
-        self.vehicle:raiseAIEvent('onAIFieldWorkerPrepareForWork', 'onAIImplementPrepareForWork')
+        self:prepareForFieldWork()
     end
     --- Store a reference to the original generated course
     self.originalGeneratedFieldWorkCourse = self.vehicle:getFieldWorkCourse()
@@ -98,6 +98,11 @@ function AIDriveStrategyFieldWorkCourse:start(course, startIx, jobParameters)
         self:debug("No field polygon received, so regenerate it by the course.")
         self.fieldPolygon = self.fieldWorkCourse:getFieldPolygon()
     end
+end
+
+--- Make sure all implements are in the working state
+function AIDriveStrategyFieldWorkCourse:prepareForFieldWork()
+    self.vehicle:raiseAIEvent('onAIFieldWorkerPrepareForWork', 'onAIImplementPrepareForWork')
 end
 
 --- Event raised when the driver has finished.
@@ -563,6 +568,7 @@ function AIDriveStrategyFieldWorkCourse:startAlignmentTurn(fieldWorkCourse, star
         alignmentCourse = self:createAlignmentCourse(fieldWorkCourse, startIx)
     end
     self.ppc:setShortLookaheadDistance()
+    self:prepareForFieldWork()
     if alignmentCourse then
         local fm, bm = self:getFrontAndBackMarkers()
         self.turnContext = RowStartOrFinishContext(self.vehicle, fieldWorkCourse, startIx, startIx, self.turnNodes,
