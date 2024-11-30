@@ -7,34 +7,34 @@
             </Bitmap>
             <Text profile="fs25_menuHeaderTitle" id="categoryHeaderText" />
         </GuiElement>
-        <BoxLayout profile="fs25_subCategorySelectorTabbedBox" id="subCategoryBox">
-            <Button profile="fs25_subCategorySelectorTabbedTab" id="subCategoryTabs[1]"
+        <!-- <BoxLayout profile="fs25_subCategorySelectorTabbedBox" id="subCategoryBox"> -->
+            <!-- <Button profile="fs25_subCategorySelectorTabbedTab" id="subCategoryTabs[1]"
                 text="TODO">
                 <ThreePartBitmap profile="fs25_subCategorySelectorTabbedTabBg" name="background" />
             </Button>
             <Button profile="fs25_subCategorySelectorTabbedTab" id="subCategoryTabs[2]"
                 text="TODO">
                 <ThreePartBitmap profile="fs25_subCategorySelectorTabbedTabBg" name="background" />
-            </Button>
-        </BoxLayout>
+            </Button> -->
+        <!-- </BoxLayout> -->
         <ThreePartBitmap profile="fs25_lineSeparatorTopHighlighted" position="0px -57px" />
         <MultiTextOption profile="fs25_subCategorySelectorTabbed" id="subCategoryPaging"
             position="0px -10px" />
         <GuiElement profile="fs25_subCategorySelectorTabbedContainer" id="subCategoryPages[1]">
             <GuiElement profile="fs25_statisticsHeaderBox">
-                <Text profile="fs25_statisticsHeaderText" id="leftColumnHeader" />
-                <Text profile="fs25_statisticsHeaderText" text="..."
-                    position="116px 0px" textAlignment="right" />
-                <Text profile="fs25_statisticsHeaderText" text="..."
-                    position="456px 0px" />
-                <Text profile="fs25_statisticsHeaderText" text="..."
-                    position="877px 0px" />
-                <Bitmap profile="fs25_statisticsHeaderIcon" position="1144px 0px" />
-                <Text profile="fs25_statisticsHeaderText" text="..." position="1134px 0px" />
+                <Text profile="fs25_statisticsHeaderText" id="leftColumnHeader"/>
+                <Text profile="fs25_statisticsHeaderText"
+                    position="116px 0px" textAlignment="right" visible="false"/>
+                <Text profile="fs25_statisticsHeaderText"
+                    position="456px 0px" visible="false"/>
+                <Text profile="fs25_statisticsHeaderText"
+                    position="877px 0px" visible="false"/>
+                <Bitmap profile="fs25_statisticsHeaderIcon" position="1144px 0px" visible="false"/>
+                <Text profile="fs25_statisticsHeaderText" position="1134px 0px" visible="false"/>
                 <Bitmap profile="fs25_statisticsHeaderIcon" position="1390px 0px"
-                    imageSliceId="gui.prices_selling" />
+                    imageSliceId="gui.prices_selling" visible="false"/>
                 <Text profile="fs25_statisticsHeaderText" 
-                    position="1376px 0px" id="rightColumnHeader"/>
+                    position="1376px 0px" id="rightColumnHeader" visible="false"/>
                 <ThreePartBitmap profile="fs25_lineSeparatorBottom" position="0px -2dp" />
             </GuiElement>
             <GuiElement id="leftColumn">

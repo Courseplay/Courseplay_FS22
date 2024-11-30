@@ -100,8 +100,7 @@ function CourseEditor:activate(file)
 		self.file = file
 		self:loadCourse()
 		g_gui:showGui("ShopMenu")
-		local shopMenu = g_currentMission.shopMenu
-		shopMenu:onButtonConstruction()
+		g_shopMenu:onButtonConstruction()
 	end
 end
 
@@ -116,8 +115,7 @@ function CourseEditor:activateCustomField(file, field)
 		self.courseWrapper = EditorCourseWrapper(Course(nil, field:getVertices()))
 		self.courseDisplay:setCourse(self.courseWrapper)
 		g_gui:showGui("ShopMenu")
-		local shopMenu = g_currentMission.shopMenu
-		shopMenu:onButtonConstruction()
+		g_shopMenu:onButtonConstruction()
 	end
 end
 

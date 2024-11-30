@@ -690,5 +690,5 @@ function CpCourseManagerFrame:modeDisabled()
 end
 
 function CpCourseManagerFrame:openEditorDisabled()
-	return not self:clearCurrentCourseDisabled() or self.actionState ~= self.actionStates.disabled
+	return true --not self:clearCurrentCourseDisabled() or self.actionState ~= self.actionStates.disabled -- TODO_25
 end
