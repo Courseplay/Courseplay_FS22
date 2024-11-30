@@ -3089,6 +3089,10 @@ TPS extension
 			<Text language="de"><![CDATA[CP: CP-Helfer starten/stoppen]]></Text>
 			<Text language="en"><![CDATA[CP: Start/stop driver]]></Text>
 		</Translation>
+		<Translation name="input_CP_GENERATE_COURSE">
+			<Text language="de"><![CDATA[CP: Kurs generieren]]></Text>
+			<Text language="en"><![CDATA[CP: Generate course]></Text>
+		</Translation>
 		<Translation name="input_CP_CHANGE_SELECTED_JOB">
 			<Text language="de"><![CDATA[CP: Aktuell ausgewählten Job ändern]]></Text>
 			<Text language="en"><![CDATA[CP: Change current selected job]]></Text>

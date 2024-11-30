@@ -128,6 +128,7 @@ function CpAIWorker:onRegisterActionEvents(isActiveForInput, isActiveForInputIgn
             end
 
             addActionEvent(self, InputAction.CP_START_STOP, CpAIWorker.startStopCpActionEvent)
+            addActionEvent(self, InputAction.CP_GENERATE_COURSE, CpAIWorker.generateCourse)
             addActionEvent(self, InputAction.CP_CHANGE_SELECTED_JOB, CpAIWorker.changeCurrentSelectedJob)
             addActionEvent(self, InputAction.CP_CHANGE_STARTING_POINT, CpAIWorker.changeStartingPoint)
             addActionEvent(self, InputAction.CP_CLEAR_COURSE, CpAIWorker.clearCourse,
@@ -542,6 +543,13 @@ function CpAIWorker:onStartAutoDrive()
         SpecializationUtil.raiseEvent(self, "onCpADStartedByPlayer")
         CpJobStartAtLastWpSyncRequestEvent.sendEvent(self)
     end
+end
+
+-----------------------------------------------
+--- Generate course
+---------------------------------------------
+function CpAIWorker:generateCourse()
+    CourseGeneratorInterface.generateDefaultCourse()
 end
 
 ---------------------------------------------

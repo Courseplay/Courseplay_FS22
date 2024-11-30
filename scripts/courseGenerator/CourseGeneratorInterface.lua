@@ -176,6 +176,8 @@ end
 --- Console Commands
 ---------------------------------------------
 
+--- Generate a course with the current course generator settings
+---@param nHeadlands number|nil override number of headlands
 function CourseGeneratorInterface.generateDefaultCourse(nHeadlands)
     local vehicle = CpUtil.getCurrentVehicle()
     local x, _, z = getWorldTranslation(vehicle.rootNode)
@@ -189,7 +191,9 @@ function CourseGeneratorInterface.generateDefaultCourse(nHeadlands)
     settings.workWidth:refresh()
     settings.workWidth:setFloatValue(width)
     vehicle:getCpSettings().toolOffsetX:setFloatValue(offset)
-    settings.numberOfHeadlands:setFloatValue(nHeadlands or 3)
+    if nHeadlands then
+        settings.numberOfHeadlands:setFloatValue(nHeadlands)
+    end
     settings.sharpenCorners:setValue(true)
     CpUtil.infoVehicle(vehicle, "Generating default course with %d headlands", settings.numberOfHeadlands:getValue())
     local ok, course = CourseGeneratorInterface.generate(points, {x = x, z = z}, vehicle, settings)

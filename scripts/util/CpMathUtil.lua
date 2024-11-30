@@ -125,6 +125,8 @@ function CpMathUtil.isPointInPolygon(polygon, x, z)
 	return pointInPolygon ~= -1
 end
 
+-- TODO: this isn't the distance to the edge, this is the distance to a vertex, so won't be accurate for polygons
+-- with long edges
 function CpMathUtil.getClosestDistanceToPolygonEdge(polygon, x, z)
     local closestDistance = math.huge
     for _, p in ipairs(polygon) do
