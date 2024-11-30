@@ -96,7 +96,7 @@ function CpCourseManagerFrame:getCurrentEntry()
 	return element.viewEntry
 end
 
-function CpCourseManagerFrame:initialize()	
+function CpCourseManagerFrame:initialize(menu)	
 	--- Changes the input actions.
 	self.modeButton = {
 		profile = "buttonActivate",
@@ -540,10 +540,8 @@ function CpCourseManagerFrame:onClickSaveEntryDialog(text, clickOk, viewEntry)
 		end
 		local vehicle = CpUtil.getCurrentVehicle()
 		if not vehicle:saveCpCourses(file, text) then 
-			g_gui:showInfoDialog({
-				text = string.format(g_i18n:getText(self.translations.invalidNameError), 
-					text)
-			})
+			InfoDialog.show(
+				string.format(g_i18n:getText(self.translations.invalidNameError), text))
 		end
 	end
 end
@@ -618,39 +616,30 @@ end
 
 
 function CpCourseManagerFrame:showInputTextDialog(title, callbackFunc, viewEntry, defaultText)
-	g_gui:showTextInputDialog({
-		disableFilter = true,
-		callback = function (self, text, clickOk, viewEntry)
+	TextInputDialog.show(
+		function (self, text, clickOk, viewEntry)
 			text = CpUtil.cleanFilePath(text)
 			callbackFunc(self, text, clickOk, viewEntry)
 			self:updateLists()
 		end,
-		target = self,
-		defaultText = defaultText or "",
-		dialogPrompt = string.format(g_i18n:getText(title), viewEntry and viewEntry:getName()),
-		imePrompt = g_i18n:getText(title),
-		maxCharacters = 50,
-		confirmText = g_i18n:getText("button_ok"),
-		args = viewEntry
-	})
+		self, defaultText or "",  
+		string.format(g_i18n:getText(title), viewEntry and viewEntry:getName()),
+		g_i18n:getText(title), 50, g_i18n:getText("button_ok"), viewEntry)
 end
 
 function CpCourseManagerFrame:showYesNoDialog(title, callbackFunc, viewEntry)
-	g_gui:showYesNoDialog({
-		text = string.format(g_i18n:getText(title), viewEntry:getName()),
-		callback = function (self, clickOk, viewEntry)
+	YesNoDialog.show(
+		function (self, clickOk, viewEntry)
 			callbackFunc(self, clickOk, viewEntry)
 			self:updateLists()
 		end,
-		target = self,
-		args = viewEntry
-	})
+		self, string.format(g_i18n:getText(title), viewEntry:getName()),
+		nil, nil, nil, nil,
+		nil, nil, viewEntry)
 end
 
 function CpCourseManagerFrame.showInfoDialog(title, viewEntry)
-	g_gui:showInfoDialog({
-		text = string.format(g_i18n:getText(title), viewEntry:getName())
-	})
+	InfoDialog.show(string.format(g_i18n:getText(title), viewEntry:getName()))
 end
 
 ---------------------------------------------------

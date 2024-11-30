@@ -538,9 +538,8 @@ end
 
 --- Used for text input settings.
 function AIParameterSettingList:showInputTextDialog(guiElement)
-	g_gui:showTextInputDialog({
-		disableFilter = true,
-		callback = function (self, value, clickOk)
+	TextInputDialog.show(
+		function (self, value, clickOk)
 			if clickOk and value ~= nil then
 				local v = value:match("-%d[%d., ]*")
 				v = v or value:match("%d[%d., ]*")
@@ -569,11 +568,8 @@ function AIParameterSettingList:showInputTextDialog(guiElement)
 				FocusManager:setFocus(guiElement)
 			end
 		end,
-		maxCharacters = 7,
-		target = self,
-		dialogPrompt = self:getTitle(),
-		confirmText = g_i18n:getText("button_ok"),
-	})
+		self, nil, self:getTitle(), nil, 7,
+		g_i18n:getText("button_ok"), nil, nil, false)
 end
 
 function AIParameterSettingList:resetGuiElement()

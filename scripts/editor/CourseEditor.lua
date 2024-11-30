@@ -68,19 +68,17 @@ function CourseEditor:onClickLaneOffsetSetting(closure, ignoreDialog)
 	local allowedValues = Course.MultiVehicleData.getAllowedPositions(course:getMultiTools())
 	local texts = CpFieldWorkJobParameters.laneOffset:getTextsForValues(allowedValues)
 	if not ignoreDialog and not g_gui:getIsDialogVisible() then 
-		g_gui:showOptionDialog({
-			title = "",
-			text = CpFieldWorkJobParameters.laneOffset:getTitle(),
-			options = texts,
-			callback = function (item)
+		OptionDialog.show(
+			function (item)
 				if item > 0 then
 					local value = allowedValues[item]
 					self.courseWrapper:getCourse():setPosition(value)
 					self.courseDisplay:setCourse(self.courseWrapper)
 					closure(texts[item])
 				end
-			end
-		})
+			end,
+			CpFieldWorkJobParameters.laneOffset:getTitle(),
+			"", texts)
 	else
 		local position = course.multiVehicleData.position
 		for ix, v in ipairs(allowedValues) do 
@@ -142,14 +140,12 @@ end
 
 
 function CourseEditor:showYesNoDialog(title, callbackFunc)
-	g_gui:showYesNoDialog({
-		text = string.format(g_i18n:getText(title)),
-		callback = function (self, clickOk, viewEntry)
+	YesNoDialog.show(
+		function (self, clickOk, viewEntry)
 			callbackFunc(self, clickOk, viewEntry)
 			self:updateLists()
 		end,
-		target = self,
-	})
+		self, string.format(g_i18n:getText(title)))
 end
 
 function CourseEditor:delete()

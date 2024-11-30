@@ -76,35 +76,26 @@ function CustomFieldManager:addField(waypoints)
     ---@type CustomField
     local newField = CustomField()
     newField:setup(self.namePrefix..self:getNewFieldNumber(), waypoints)
-    g_gui:showYesNoDialog({
-        text = string.format(g_i18n:getText("CP_customFieldManager_confirm_save"), newField:getName()),
-        callback = CustomFieldManager.onClickSaveDialog,
-        target = self,
-        args = newField
-    })
+    YesNoDialog.show(
+        CustomFieldManager.onClickSaveDialog, self,
+        string.format(g_i18n:getText("CP_customFieldManager_confirm_save"), newField:getName()),
+        nil, nil, nil, nil, nil, nil, newField)
 end
 
 
 function CustomFieldManager:deleteField(fieldToDelete)
-    g_gui:showYesNoDialog({
-        text = string.format(g_i18n:getText("CP_customFieldManager_confirm_delete"), fieldToDelete:getName()),
-        callback = CustomFieldManager.onClickDeleteDialog,
-        target = self,
-        args = fieldToDelete
-    })
+    YesNoDialog.show(
+        CustomFieldManager.onClickDeleteDialog, self,
+        string.format(g_i18n:getText("CP_customFieldManager_confirm_delete"), fieldToDelete:getName()),
+        nil, nil, nil, nil, nil, nil, fieldToDelete)
 end
 
 function CustomFieldManager:renameField(field, hotspot)
-    g_gui:showTextInputDialog({
-		disableFilter = true,
-		callback = CustomFieldManager.onClickRenameDialog,
-		target = self,
-		defaultText = field:getName() or "",
-		dialogPrompt = g_i18n:getText("CP_customFieldManager_rename"),
-		maxCharacters = 30,
-		confirmText = g_i18n:getText("button_ok"),
-		args = field
-	})
+    TextInputDialog.show(
+		CustomFieldManager.onClickRenameDialog, self,
+		field:getName() or "",
+		g_i18n:getText("CP_customFieldManager_rename"),
+        nil, 30, g_i18n:getText("button_ok"), field)
 end
 
 function CustomFieldManager:editField(fieldToEdit, hotspot)
@@ -185,9 +176,7 @@ function CustomFieldManager:onClickRenameDialog(newName, clickOk, fieldToRename)
                     else 
                         CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Could not rename custom field from %s to %s.', fieldToRename:getName(), newName)
                         --- New field name already in use.
-                        g_gui:showInfoDialog({
-                            text = string.format(g_i18n:getText("CP_customFieldManager_rename_error"), newName)
-                        })
+                        InfoDialog.show(string.format(g_i18n:getText("CP_customFieldManager_rename_error"), newName))
                     end
                     return
                 end

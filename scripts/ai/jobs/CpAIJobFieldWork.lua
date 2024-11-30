@@ -242,10 +242,8 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
         )
     end
     if not ok then
-        g_gui:showInfoDialog({
-            dialogType = DialogElement.TYPE_ERROR,
-            text = g_i18n:getText('CP_error_could_not_generate_course')
-        })
+        InfoDialog.show(g_i18n:getText('CP_error_could_not_generate_course'),
+            nil, nil, DialogElement.TYPE_ERROR)
         return false
     end
 
