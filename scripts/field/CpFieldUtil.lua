@@ -162,3 +162,25 @@ function CpFieldUtil.getFieldPolygonAtWorldPosition(x, z)
     end
     return fieldPolygon, isCustomField
 end
+
+--- Find the boundary of field at position, using either the statically configured map field boundaries or our
+--- field scanner.
+---@param x number
+---@param z number
+---@param detect boolean use one of the field boundary detectors. If false, only the static map field boundaries are used.
+---@param useGiantsDetector boolean use the Giants field boundary detector. If false, the CP field scanner is used.
+---@return [{x, z]|nil the field boundary, nil if not on field
+function CpFieldUtil.detectFieldBoundary(x, z, detect, useGiantsDetector)
+    if detect then
+        if useGiantsDetector then
+            -- not implemented
+            return nil
+        else
+            local valid, points = g_fieldScanner:findContour(x, z)
+            return valid and points or nil
+        end
+    else
+        local field = CpFieldUtil.getFieldAtWorldPosition(x, z)
+        return field and CpFieldUtil.getFieldPolygon(field) or nil
+    end
+end
