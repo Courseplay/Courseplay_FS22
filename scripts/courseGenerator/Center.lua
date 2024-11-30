@@ -174,7 +174,7 @@ function Center:generate()
         local sequencedBlocks, entries = chromosome:getBlockSequenceAndEntries()
         local distance, _ = calculateDistanceAndConnectingPaths(sequencedBlocks, entries)
         chromosome:setDistance(distance)
-        chromosome:setFitness(10000 / distance)
+        chromosome:setFitness(CpMathUtil.divide(10000 / distance))
     end
 
     local blocksInSequence, entries, _ = CourseGenerator.BlockSequencer(blocks):findBlockSequence(calculateFitness)
