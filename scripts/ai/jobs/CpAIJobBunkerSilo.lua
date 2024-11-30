@@ -29,7 +29,7 @@ function CpAIJobBunkerSilo:setupJobParameters()
 end
 
 function CpAIJobBunkerSilo:getIsAvailableForVehicle(vehicle)
-	return vehicle.getCanStartCpBunkerSiloWorker and vehicle:getCanStartCpBunkerSiloWorker()
+	return false--vehicle.getCanStartCpBunkerSiloWorker and vehicle:getCanStartCpBunkerSiloWorker() -- TODO_25
 end
 
 function CpAIJobBunkerSilo:getCanStartJob()

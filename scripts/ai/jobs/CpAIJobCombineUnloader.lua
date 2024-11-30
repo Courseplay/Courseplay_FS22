@@ -59,7 +59,7 @@ function CpAIJobCombineUnloader:setupJobParameters()
 end
 
 function CpAIJobCombineUnloader:getIsAvailableForVehicle(vehicle)
-	return vehicle.getCanStartCpCombineUnloader and vehicle:getCanStartCpCombineUnloader()
+	return false--vehicle.getCanStartCpCombineUnloader and vehicle:getCanStartCpCombineUnloader() -- TODO_25
 end
 
 function CpAIJobCombineUnloader:getCanStartJob()
