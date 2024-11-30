@@ -92,8 +92,10 @@ function CpCourseManagerFrame:getCurrentEntry()
 	if not layout then 
 		return
 	end
-	local element = layout:getSelectedElement()
-	return element.viewEntry
+	if layout.getSelectedElement then
+		local element = layout:getSelectedElement()
+		return element.viewEntry
+	end
 end
 
 function CpCourseManagerFrame:initialize(menu)	
@@ -190,9 +192,10 @@ function CpCourseManagerFrame:initialize(menu)
 				inputAction = InputAction.MENU_EXTRA_2,
 				text = g_i18n:getText(self.translations.createDirectory),
 				callback = function ()
+					local viewEntry = self:getCurrentEntry()
 					CpCourseManagerFrame.showInputTextDialog(
-					self, self.translations.folderDialogTitle,
-					self.onClickCreateDirectoryDialog)
+						self, self.translations.folderDialogTitle,
+						self.onClickCreateDirectoryDialog, viewEntry)
 				--	self.actionState = CpCourseManagerFrame.actionStates.createDirectory
 					self:updateMenuButtons()
 				end,
