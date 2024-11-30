@@ -223,11 +223,13 @@ end
 function AIDriveStrategyFieldWorkCourse:setAITarget()
     --local dx, _, dz = localDirectionToWorld(self.vehicle:getAIDirectionNode(), 0, 0, 1)
     local wp = self.ppc:getCurrentWaypoint()
-    --- TODO: For some reason wp.dx and wp.dz are nil sometimes.
+    --- TODO: For some reason wp.dx and wp.dz are nil sometimes
     local dx, dz = wp.dx or 0, wp.dz or 0
-    local length = MathUtil.vector2Length(dx, dz)
-    dx = dx / length
-    dz = dz / length
+    if wp.dx ~= 0 or wp.dz ~= 0 then
+        local length = MathUtil.vector2Length(dx, dz)
+        dx = dx / length
+        dz = dz / length
+    end
     self.vehicle.aiDriveDirection = { dx, dz }
     local x, _, z = getWorldTranslation(self.vehicle:getAIDirectionNode())
     self.vehicle.aiDriveTarget = { x, z }
