@@ -77,10 +77,10 @@ CpBaseHud.uvs = {
         {40, 256, 32, 32}, {256, 512}
     },
     eye = { 
-        {148, 148, 32, 32}, {256, 512}
+        {148, 150, 32, 32}, {256, 512}
     },
     refresh = { 
-        {220, 220, 32, 32}, {256, 512}
+        {220, 222, 32, 32}, {256, 512}
     },
     cpIcon = {
         {80, 26, 144, 144}, {256, 256}
@@ -107,7 +107,7 @@ CpBaseHud.uvs = {
         {7*128, 3*128, 128, 128}
     },
     playSymbol = {
-        {224, 296, 32, 32}, {256, 512}
+        {224, 294, 32, 32}, {256, 512}
     }
 
 }
@@ -284,7 +284,7 @@ function CpBaseHud:init(vehicle)
                                                         self.alignments.bottomRight)
     self.onOffButton = CpHudButtonElement.new(onOffIndicatorOverlay, self.baseHud)
     local x, y = unpack(self.lines[8].right)
-    self.onOffButton:setPosition(x, y)
+    self.onOffButton:setPosition(x, y - self.hMargin/8)
     self.onOffButton:setCallback("onClickPrimary", self.vehicle, function(vehicle)
         vehicle:cpStartStopDriver(true)
     end)
@@ -299,7 +299,7 @@ function CpBaseHud:init(vehicle)
     self.startStopRecordingBtn = CpHudButtonElement.new(circleOverlay, self.baseHud)
     local x, y = unpack(self.lines[8].right)
     x = x - onOffBtnWidth - self.wMargin/2
-    self.startStopRecordingBtn:setPosition(x, y)
+    self.startStopRecordingBtn:setPosition(x, y - self.hMargin/16)
     self.startStopRecordingBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
         if vehicle:getIsCpCourseRecorderActive() then 
             vehicle:cpStopCourseRecorder()

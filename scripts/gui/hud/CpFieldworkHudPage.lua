@@ -27,7 +27,7 @@ function CpFieldWorkHudPageElement:setupElements(baseHud, vehicle, lines, wMargi
                                                         CpBaseHud.alignments.bottomRight)
     self.courseVisibilityBtn = CpHudButtonElement.new(courseVisibilityOverlay, self)
     local x, y = unpack(lines[8].right)
-    y = y - hMargin/16
+    y = y - hMargin/8
     local courseVisibilityBtnX = x - width - wMargin/4
     self.courseVisibilityBtn:setPosition(courseVisibilityBtnX, y)
     self.courseVisibilityBtn:setCallback("onClickPrimary", vehicle, function (vehicle)
@@ -99,7 +99,8 @@ function CpFieldWorkHudPageElement:updateContent(vehicle, status)
     self.startingPointBtn:setTextDetails(startingPoint:getString())
     
 	local laneOffset = vehicle:getCpLaneOffsetSetting()
-    self.laneOffsetBtn:setVisible(laneOffset:getCanBeChanged())
+    self.laneOffsetBtn:setVisible(laneOffset:getIsVisible())
+    self.laneOffsetBtn:setDisabled(laneOffset:getIsDisabled())
     self.laneOffsetBtn:setTextDetails(laneOffset:getString())
 
     local workWidth = vehicle:getCourseGeneratorSettings().workWidth
