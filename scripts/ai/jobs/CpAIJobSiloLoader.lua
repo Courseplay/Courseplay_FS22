@@ -52,7 +52,7 @@ function CpAIJobSiloLoader:setupJobParameters()
 end
 
 function CpAIJobSiloLoader:getIsAvailableForVehicle(vehicle)
-	return false --vehicle.getCanStartCpSiloLoaderWorker and vehicle:getCanStartCpSiloLoaderWorker() -- TODO_25
+	return CpAIJob.getIsAvailableForVehicle(self, vehicle, cpJobsAllowed) and vehicle.getCanStartCpSiloLoaderWorker and vehicle:getCanStartCpSiloLoaderWorker() -- TODO_25
 end
 
 function CpAIJobSiloLoader:getCanStartJob()

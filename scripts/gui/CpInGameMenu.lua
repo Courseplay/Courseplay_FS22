@@ -86,10 +86,16 @@ end
 -- Lines 279-324
 function CpInGameMenu:initializePages()
 	self.clickBackCallback = self:makeSelfCallback(self.onButtonBack)
-	self.pageGlobalSettings:initialize()
-	self.pageVehicleSettings:initialize()
-	self.pageCourseGenerator:initialize()
-	self.pageCourseManager:initialize()
+
+	self.pageCourseGenerator:setInGameMap(
+		g_inGameMenu.baseIngameMap, 
+		g_currentMission.terrainSize,
+		g_currentMission.hud)
+
+	self.pageGlobalSettings:initialize(self)
+	self.pageVehicleSettings:initialize(self)
+	self.pageCourseGenerator:initialize(self)
+	self.pageCourseManager:initialize(self)
 	self.pageCourseManager:setCourseStorage(self.courseStorage)
 end
 

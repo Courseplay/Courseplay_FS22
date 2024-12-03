@@ -40,7 +40,7 @@ function CpVehicleSettingsFrame.createFromExistingGui(gui, guiName)
 	return newGui
 end
 
-function CpVehicleSettingsFrame:initialize()
+function CpVehicleSettingsFrame:initialize(menu)
 	
 	self.booleanPrefab:unlinkElement()
 	FocusManager:removeElement(self.booleanPrefab)

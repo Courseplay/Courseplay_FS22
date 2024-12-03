@@ -29,8 +29,8 @@ function CpAIJobBaleFinder:setupJobParameters()
     self:setupCpJobParameters(CpBaleFinderJobParameters(self))
 end
 
-function CpAIJobBaleFinder:getIsAvailableForVehicle(vehicle)
-	return false--vehicle.getCanStartCpBaleFinder and vehicle:getCanStartCpBaleFinder() -- TODO_25
+function CpAIJobBaleFinder:getIsAvailableForVehicle(vehicle, cpJobsAllowed)
+	return CpAIJob.getIsAvailableForVehicle(self, vehicle, cpJobsAllowed) and vehicle.getCanStartCpBaleFinder and vehicle:getCanStartCpBaleFinder() -- TODO_25
 end
 
 function CpAIJobBaleFinder:getCanStartJob()
