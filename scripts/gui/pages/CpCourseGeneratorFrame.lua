@@ -85,7 +85,7 @@ function CpCourseGeneratorFrame.new(target, custom_mt)
 	self.loadAiTargetMapHotspot = AITargetHotspot.new()
 
 	self.aiTargetMapHotspot = self.driveToAiTargetMapHotspot
-
+	self.updateTime = 0
 	self.mapSelectorTexts = {
 		g_i18n:getText("ui_mapOverviewHotspots"),
 		g_i18n:getText("button_createJob"),
@@ -142,7 +142,9 @@ function CpCourseGeneratorFrame:initialize(menu)
 	FocusManager:removeElement(self.createPositionTemplate)
 	self.createPositionRotationTemplate:unlinkElement()
 	FocusManager:removeElement(self.createPositionRotationTemplate)
-
+	self.createButtonTemplate:unlinkElement()
+	FocusManager:removeElement(self.createButtonTemplate)
+	
 	for key = 1, CpCourseGeneratorFrame.NUM_CATEGORIES do 
 		self.subCategoryPaging:addText(tostring(key))
 		self.subCategoryTabs[key] = self.selectorPrefab:clone(self.subCategoryBox)
@@ -180,6 +182,33 @@ function CpCourseGeneratorFrame:initialize(menu)
 	self.currentHotspot = nil
 end
 
+function CpCourseGeneratorFrame:update(dt)
+	if self.updateTime < g_time then
+		for i = 1, self.activeWorkerList:getItemCount() do
+			local element = self.activeWorkerList:getElementAtSectionIndex(1, i)
+			if element ~= nil then
+				local job = g_currentMission.aiSystem:getJobByIndex(i)
+
+				if job ~= nil then
+					element:getAttribute("text"):setText(job:getDescription())
+				end
+			end
+		end
+		self.updateTime = g_time + 1000
+	end
+	local hasChanged = false
+	for i = 1, #self.statusMessages do
+		local removeTime = self.statusMessages[1].removeTime
+		if removeTime < g_time then
+			table.remove(self.statusMessages, 1)
+			hasChanged = true
+		end
+	end
+	if hasChanged then
+		self:updateStatusMessages()
+	end
+end
+
 function CpCourseGeneratorFrame:onFrameOpen()
 	local vehicle = CpUtil.getCurrentVehicle()
 	if not vehicle then 
@@ -208,11 +237,20 @@ function CpCourseGeneratorFrame:onFrameOpen()
 	g_messageCenter:subscribe(MessageType.AI_JOB_STARTED, function(self)
 		self.activeWorkerList:reloadData()
 	end, self)
-	-- g_messageCenter:subscribe(MessageType.AI_JOB_STOPPED, function()
-		
-	-- end, self)
-	g_messageCenter:subscribe(MessageType.AI_JOB_REMOVED, function()
+
+	g_messageCenter:subscribe(MessageType.AI_JOB_STOPPED, function(self, job, aiMessage)
+		if aiMessage ~= nil and job ~= nil and g_localPlayer ~= nil then
+			if job.startedFarmId and g_localPlayer.farmId then
+				local helperName = job:getHelperName()
+				local text = aiMessage:getMessage()
+				self:addStatusMessage(string.format(text, helperName or "Unknown"))
+			end
+		end
+	end, self)
+	g_messageCenter:subscribe(MessageType.AI_JOB_REMOVED, function(self, jobId)
 		self.activeWorkerList:reloadData()
+
+		-- InGameMenuMapUtil.hideContextBox(self.contextBox) 
 	end, self)
 	-- g_messageCenter:subscribe(MessageType.AI_TASK_SKIPPED, self.onAITaskSkipped, self)
 	local hotspotValue = g_gameSettings:getValue(GameSettings.SETTING.INGAME_MAP_HOTSPOT_FILTER)
@@ -239,10 +277,7 @@ function CpCourseGeneratorFrame:onFrameOpen()
 	end
 	self.filterList:reloadData()
 	self.ingameMapBase:restoreDefaultFilter()
-
 	self:generateJobTypes()
-
-
 	self.mode = self.AI_MODE_OVERVIEW
 	self.currentJob = nil
 	self.currentJobVehicle = nil
@@ -287,23 +322,25 @@ function CpCourseGeneratorFrame:onFrameClose()
 	g_currentMission:removeMapHotspot(self.loadAiTargetMapHotspot)
 
 	self.ingameMapBase:restoreDefaultFilter()
-	-- self.isOpen = false
+	if not self:getIsPicking() then
+		g_inGameMenu.pageMapOverview.executePickingCallback(self, false)
+	end
 	self.mode = self.AI_MODE_OVERVIEW
 	self:setJobMenuVisible(false)
 	self:setMapSelectionItem(nil)
+	self.statusMessages = {}
+	self:updateStatusMessages()
 end
 
 function CpCourseGeneratorFrame:requestClose()
 	if self.mode == self.AI_MODE_CREATE then 
 		if self:getIsPicking() then
-			self:executePickingCallback(false)
+			g_inGameMenu.pageMapOverview.executePickingCallback(self, false)
 			self:updateContextActions()
 			return false
 		end 
 		self.mode = self.AI_MODE_OVERVIEW
 		self:setJobMenuVisible(false)
-		FocusManager:setFocus(self.activeWorkerList)
-		self:setMapSelectionItem(nil)
 		return false
 	elseif self.currentHotspot then 
 		self:setMapSelectionItem(nil)
@@ -372,13 +409,14 @@ function CpCourseGeneratorFrame:onDrawPostIngameMap()
 	
 end
 
-function CpCourseGeneratorFrame:onClickMap()
+function CpCourseGeneratorFrame:onClickMap(element ,worldX, worldZ)
 	if self.isPickingLocation then 
-		
+		g_inGameMenu.pageMapOverview.executePickingCallback(self, true, worldX, worldZ)
 		return
 	end
 	if self.isPickingRotation then 
-
+		local angle = math.atan2(worldX - self.pickingRotationOrigin[1], worldZ - self.pickingRotationOrigin[2])
+		g_inGameMenu.pageMapOverview.executePickingCallback(self, true, angle)
 		return
 	end
 	self:setMapSelectionItem(nil)
@@ -386,12 +424,12 @@ end
 
 function CpCourseGeneratorFrame:onClickHotspot(element, hotspot)
 	if self.isPickingLocation then 
-		--- g_inGameMenu.pageMapOverview.executePickingCallback(self, true, hotspot.worldX, hotspot.worldZ)
+		g_inGameMenu.pageMapOverview.executePickingCallback(self, true, hotspot.worldX, hotspot.worldZ)
 		return 
 	end 
 	if self.isPickingRotation then 
-		--- g_inGameMenu.pageMapOverview.executePickingCallback(self, true, worldX, worldZ)
-		--- g_inGameMenu.pageMapOverview.executePickingCallback(self, true, math.atan2(hotspot.worldX - self.pickingRotationOrigin[0], hotspot.worldZ - self.pickingRotationOrigin[1]))
+		g_inGameMenu.pageMapOverview.executePickingCallback(self, true, worldX, worldZ)
+		g_inGameMenu.pageMapOverview.executePickingCallback(self, true, math.atan2(hotspot.worldX - self.pickingRotationOrigin[0], hotspot.worldZ - self.pickingRotationOrigin[1]))
 		return
 	end
 	self:setMapSelectionItem(hotspot)
@@ -439,31 +477,52 @@ function CpCourseGeneratorFrame:onClickDeselectAll()
 	self.filterList:reloadData()
 end
 
-function CpCourseGeneratorFrame:onJobTypeChanged()
-	
+function CpCourseGeneratorFrame:onJobTypeChanged(index)
+	local jobTypeIndex = self.currentJobTypes[index]
+	self:setActiveJobTypeSelection(jobTypeIndex)
 end
 
-function CpCourseGeneratorFrame:onClickMultiTextOptionParameter()
-	
+function CpCourseGeneratorFrame:onClickMultiTextOptionParameter(index, element)
+	if self.currentJob ~= nil then
+		self.currentJob:onParameterValueChanged(element.aiParameter)
+		self:updateParameterValueTexts()
+	end
+	self:validateParameters()
 end
 
 function CpCourseGeneratorFrame:onClickPositionParameter(element)
 	local parameter = element.aiParameter
-
+	g_currentMission:removeMapHotspot(self.loadAiTargetMapHotspot)
+	g_currentMission:removeMapHotspot(self.fieldSiloAiTargetMapHotspot)
+	g_currentMission:removeMapHotspot(self.unloadAiTargetMapHotspot)
+	g_currentMission:removeMapHotspot(self.driveToAiTargetMapHotspot)
+	if parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.LOAD then 
+		self.aiTargetMapHotspot = self.loadAiTargetMapHotspot
+	elseif parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.FIELD_OR_SILO then 
+		self.aiTargetMapHotspot = self.fieldSiloAiTargetMapHotspot
+	elseif parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.UNLOAD then 
+		self.aiTargetMapHotspot = self.unloadAiTargetMapHotspot
+	else
+		self.aiTargetMapHotspot = self.driveToAiTargetMapHotspot
+	end
+	self.contextBox:setVisible(false)
 	g_inGameMenu.pageMapOverview.startPickPosition(self, parameter, function (success, x, z)
 		if success then
 			element:setText(parameter:getString())
 		end
+		self:updateParameterValueTexts()
 	end)
 end
 
 function CpCourseGeneratorFrame:onClickPositionRotationParameter(element)
+	self.contextBox:setVisible(false)
 	local parameter = element.aiParameter
 
 	g_inGameMenu.pageMapOverview.startPickPositionAndRotation(self, parameter, function (success, x, z, angle)
 		if success then
 			element:setText(parameter:getString())
 		end
+		self:updateParameterValueTexts()
 	end)
 end
 
@@ -472,19 +531,96 @@ function CpCourseGeneratorFrame:getIsPicking()
 end
 
 function CpCourseGeneratorFrame:validateParameters()
-	
+	local isValid = true
+	local errorText = ""
+	if self.currentJob ~= nil then
+		self.currentJob:setValues()
+		errorText = self.currentJob:validate()
+		self:updateWarnings()
+	end
+	self.errorMessage:setText(errorText)
+	self.errorMessage:setVisible(not isValid)
+end
+
+function CpCourseGeneratorFrame:updateWarnings()
+	for _, element in ipairs(self.currentJobElements) do 
+		local parameter = element.aiParameter
+		local invalidElement = element:getDescendantByName("invalid")
+		if invalidElement ~= nil then
+			invalidElement:setVisible(not parameter:getIsValid() and not parameter:getIsDisabled())
+		end
+	end
 end
 
 function CpCourseGeneratorFrame:updateParameterValueTexts()
-	
+	g_currentMission:removeMapHotspot(self.driveToAiTargetMapHotspot)
+	g_currentMission:removeMapHotspot(self.fieldSiloAiTargetMapHotspot)
+	g_currentMission:removeMapHotspot(self.unloadAiTargetMapHotspot)
+	g_currentMission:removeMapHotspot(self.loadAiTargetMapHotspot)
+	local addedPositionHotspot = false
+	for _, element in ipairs(self.currentJobElements) do 
+		local parameter = element.aiParameter
+		local invalidElement = element:getDescendantByName("invalid")
+		if invalidElement ~= nil then
+			invalidElement:setVisible(not parameter:getIsValid() and not parameter:getIsDisabled())
+		end
+
+		local parameterType = parameter:getType()
+		if parameterType == AIParameterType.TEXT then
+			local title = element:getDescendantByName("title")
+
+			title:setText(parameter:getString())
+		elseif parameter.is_a and parameter:is_a(CpAIParameterPosition) then 
+			element:setText(parameter:getString())
+			if parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.DRIVE_TO then 
+				if parameter:applyToMapHotspot(self.driveToAiTargetMapHotspot) then
+					g_currentMission:addMapHotspot(self.driveToAiTargetMapHotspot)
+				end
+			elseif parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.FIELD_OR_SILO then 
+				if parameter:applyToMapHotspot(self.fieldSiloAiTargetMapHotspot) then
+					g_currentMission:addMapHotspot(self.fieldSiloAiTargetMapHotspot)
+				end
+			elseif parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.UNLOAD then 
+				if parameter:applyToMapHotspot(self.unloadAiTargetMapHotspot) then
+					g_currentMission:addMapHotspot(self.unloadAiTargetMapHotspot)
+				end
+			elseif parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.LOAD then 
+				if parameter:applyToMapHotspot(self.loadAiTargetMapHotspot) then
+					g_currentMission:addMapHotspot(self.loadAiTargetMapHotspot)
+				end
+			end
+		elseif element.updateTitle then
+			element:updateTitle()
+		end
+	end
+
 end
 
-function CpCourseGeneratorFrame:showActionMessage()
-	
+function CpCourseGeneratorFrame:showActionMessage(localKey)
+	if localKey ~= nil then
+		self.actionMessage:setVisible(true)
+		self.actionMessage:setLocaKey(localKey)
+		return
+	end
+	self.actionMessage:setVisible(false)
+end
+
+function CpCourseGeneratorFrame:getCanCancelJob()
+	return self.mode == self.AI_MODE_OVERVIEW and self.canCancel and 
+		not self:getIsPicking() and g_currentMission:getHasPlayerPermission("hireAssistant")
+end
+
+function CpCourseGeneratorFrame:getCanStartJob()
+	return self.mode == self.AI_MODE_CREATE and not self:getIsPicking() and 
+		g_currentMission:getHasPlayerPermission("hireAssistant") 
 end
 
 function CpCourseGeneratorFrame:onStartCancelJob()
-	
+	if self:getCanCancelJob() then
+		self:cancelJob()
+	elseif self:getCanStartJob() then
+		self:startJob()
+	end
 end
 
 function CpCourseGeneratorFrame:getNumberOfSections(list)
@@ -598,6 +734,32 @@ function CpCourseGeneratorFrame:onListSelectionChanged(list, section, index)
 	
 end
 
+function CpCourseGeneratorFrame:mouseEvent(posX, posY, isDown, isUp, button, eventUsed)
+	if self.isPickingRotation then
+		local localX, localY = self.ingameMap:getLocalPosition(posX, posY)
+		local worldX, worldZ = self.ingameMap:localToWorldPos(localX, localY)
+		local angle = math.atan2(worldX - self.pickingRotationOrigin[1], worldZ - self.pickingRotationOrigin[2])
+		angle = angle + math.pi
+
+		if self.pickingRotationSnapAngle > 0 then
+			local numSteps = MathUtil.round(angle / self.pickingRotationSnapAngle, 0)
+			angle = numSteps * self.pickingRotationSnapAngle
+		end
+
+		self.aiTargetMapHotspot:setWorldRotation(angle)
+	end
+
+	self.lastMousePoxY = posY
+	self.lastMousePosX = posX
+
+	if self.isPickingLocation then
+		local localX, localY = self.ingameMap:getLocalPosition(self.lastMousePosX, self.lastMousePoxY)
+		local worldX, worldZ = self.ingameMap:localToWorldPos(localX, localY)
+		self.aiTargetMapHotspot:setWorldPosition(worldX, worldZ)
+	end
+	return CpCourseGeneratorFrame:superClass().mouseEvent(self, posX, posY, isDown, isUp, button, eventUsed)
+end
+
 function CpCourseGeneratorFrame:updateInputGlyphs()
 	local moveActions, moveText = nil
 
@@ -656,17 +818,32 @@ function CpCourseGeneratorFrame:generateJobTypes()
 	end
 end
 
+function CpCourseGeneratorFrame:addStatusMessage(message)
+	table.insert(self.statusMessages, {
+		removeTime = g_time + 5000,
+		text = message
+	})
+	self:updateStatusMessages()
+end
+
+function CpCourseGeneratorFrame:updateStatusMessages()
+	local text = ""
+	for _, message in ipairs(self.statusMessages) do
+		text = text .. message.text .. "\n"
+	end
+	self.statusMessage:setText(text)
+end
 
 function CpCourseGeneratorFrame:initializeContextActions()
 	self.contextActions = {
 		[self.CONTEXT_ACTIONS.ENTER_VEHICLE] = {
-			text = "button_enterVehicle",
+			text = g_i18n:getText("button_enterVehicle"),
 			callback = function()
 				if self.currentHotspot then 
 					local vehicle = self.currentHotspot:getVehicle()
 					if vehicle then 
 						if vehicle.getIsEnterableFromMenu ~= nil and vehicle:getIsEnterableFromMenu() then
-							self:onClickBackCallback()
+							self.onClickBackCallback(nil, nil, true)
 							g_localPlayer:requestToEnterVehicle(vehicle)
 						end
 					end
@@ -675,70 +852,24 @@ function CpCourseGeneratorFrame:initializeContextActions()
 			isActive = false
 		},
 		[self.CONTEXT_ACTIONS.CREATE_JOB] = {
-			text = "button_createJob",
-			callback = function()
-				if self.currentHotspot then 
-					local vehicle = self.currentHotspot:getVehicle()
-					if vehicle then 
-						local currentJobTypesTexts = {}
-						for index, job in pairs(self.jobTypeInstances) do 
-							if job:getIsAvailableForVehicle(vehicle, true) then 
-								table.insert(self.currentJobTypes, index)
-								table.insert(currentJobTypesTexts, g_currentMission.aiJobTypeManager:getJobTypeByIndex(index).title)
-							end
-						end
-						self.jobTypeElement:setTexts(currentJobTypesTexts)
-						self.jobTypeElement:setState(1)
-						self.mode = self.AI_MODE_CREATE
-						self.currentJobVehicle = vehicle
-						self.currentJob = nil
-						self:setJobMenuVisible(true)
-						FocusManager:setFocus(self.jobTypeElement)
-						self:setActiveJobTypeSelection(self.currentJobTypes[1])
-					end
-				end
-			end,
+			text = g_i18n:getText("button_createJob"),
+			callback = self.onCreateJob,
 			isActive = false
 		},
 		[self.CONTEXT_ACTIONS.START_JOB] = {
-			text = "button_startJob",
-			callback = function()
-				if self.currentHotspot then 
-					local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
-					if vehicle then 
-						if vehicle.getIsEnterableFromMenu ~= nil and not vehicle:getIsEnterableFromMenu() then
-							self:onClickBackCallback()
-							g_localPlayer:requestToEnterVehicle(vehicle)
-						end
-					end
-				end
-			end,
+			text = g_i18n:getText("button_startJob"),
+			callback = self.onStartCancelJob,
 			isActive = false
 		},
 		[self.CONTEXT_ACTIONS.STOP_JOB] = {
-			text = "button_cancelJob",
-			callback = function()
-				if self.currentHotspot then 
-					local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
-					if vehicle and vehicle:getIsAIActive() then 
-						vehicle:stopCurrentAIJob()
-					end
-				end
-			end,
+			text = g_i18n:getText("button_cancelJob"),
+			callback = self.onStartCancelJob,
 			isActive = false
 		},
 		[self.CONTEXT_ACTIONS.GENERATE_COURSE] = {
-			text = "CP_ai_page_generate_course",
+			text = g_i18n:getText("CP_ai_page_generate_course"),
 			callback = function()
-				if self.currentHotspot then 
-					local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
-					if vehicle then 
-						if vehicle.getIsEnterableFromMenu ~= nil and not vehicle:getIsEnterableFromMenu() then
-							self:onClickBackCallback()
-							g_localPlayer:requestToEnterVehicle(vehicle)
-						end
-					end
-				end
+				
 			end,
 			isActive = false
 		}
@@ -748,21 +879,20 @@ end
 function CpCourseGeneratorFrame:updateContextActions()
 	local vehicle = self.currentHotspot and self.currentHotspot:getVehicle()
 	self.contextActions[self.CONTEXT_ACTIONS.ENTER_VEHICLE].isActive = vehicle and vehicle:getIsEnterableFromMenu()
-	local canCreateJob = false
-	if not canCreateJob and not self.currentJobVehicle then
+	self.canCreateJob = false
+	if not self.canCreateJob and not self.currentJobVehicle then
 		for _, job in pairs(self.jobTypeInstances) do 
 			if job:getIsAvailableForVehicle(vehicle, true) then 
-				canCreateJob = true
+				self.canCreateJob = true
 			end
 		end
 	end
-	self.contextActions[self.CONTEXT_ACTIONS.CREATE_JOB].isActive = canCreateJob 
-	self.contextActions[self.CONTEXT_ACTIONS.START_JOB].isActive = false
-	self.contextActions[self.CONTEXT_ACTIONS.STOP_JOB].isActive = false
+	self.canCancel = vehicle and vehicle.spec_aiJobVehicle and vehicle:getIsAIActive()
+	self.contextActions[self.CONTEXT_ACTIONS.CREATE_JOB].isActive = self.canCreateJob
+	self.contextActions[self.CONTEXT_ACTIONS.START_JOB].isActive = self:getCanStartJob()
+	self.contextActions[self.CONTEXT_ACTIONS.STOP_JOB].isActive = self:getCanCancelJob()
 	self.contextActions[self.CONTEXT_ACTIONS.GENERATE_COURSE].isActive = false 
-
-
-	self.contextButtonList:reloadData()
+	self.contextButtonList:reloadData()	
 end
 
 function CpCourseGeneratorFrame:toggleMapInput(isActive)
@@ -780,6 +910,10 @@ function CpCourseGeneratorFrame:toggleMapInput(isActive)
 end
 
 function CpCourseGeneratorFrame:setMapSelectionItem(hotspot)
+	if self.mode == self.AI_MODE_CREATE then 
+		return
+	end
+
 	if hotspot ~= nil then
 		
 		local x, _ = hotspot:getWorldPosition()
@@ -840,8 +974,31 @@ function CpCourseGeneratorFrame:setAIVehicle(vehicle)
 	local hotspot = vehicle:getMapHotspot()
 	self:setMapSelectionItem(hotspot)
 	self.ingameMap:panToHotspot(hotspot)
-	-- self:onCreateJob()
+	self:onCreateJob()
 	self.createJobEmptyText:setVisible(false)
+end
+
+function CpCourseGeneratorFrame:onCreateJob()
+	if self.currentHotspot then 
+		local vehicle = self.currentHotspot:getVehicle()
+		if vehicle then 
+			local currentJobTypesTexts = {}
+			for index, job in pairs(self.jobTypeInstances) do 
+				if job:getIsAvailableForVehicle(vehicle, true) then 
+					table.insert(self.currentJobTypes, index)
+					table.insert(currentJobTypesTexts, g_currentMission.aiJobTypeManager:getJobTypeByIndex(index).title)
+				end
+			end
+			self.jobTypeElement:setTexts(currentJobTypesTexts)
+			self.jobTypeElement:setState(1)
+			self.mode = self.AI_MODE_CREATE
+			self.currentJobVehicle = vehicle
+			self.currentJob = nil
+			self:setJobMenuVisible(true)
+			FocusManager:setFocus(self.jobTypeElement)
+			self:setActiveJobTypeSelection(self.currentJobTypes[1])
+		end
+	end
 end
 
 function CpCourseGeneratorFrame:resetUIDeadzones()
@@ -862,6 +1019,8 @@ function CpCourseGeneratorFrame:setJobMenuVisible(isVisible)
 	self.jobTypeElement:setVisible(isVisible)
 	self.jobMenuLayout:setVisible(isVisible)
 	if not isVisible then
+		self.currentJob = nil
+		self.currentJobVehicle = nil
 		self:setMapSelectionItem(self.currentHotspot)		
 		FocusManager:setFocus(self.mapOverviewSelector)
 		self.mapOverviewSelector:setState(self.MAP_SELECTOR_ACTIVE_JOBS, true)

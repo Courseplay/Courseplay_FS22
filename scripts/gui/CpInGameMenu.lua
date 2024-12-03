@@ -230,8 +230,8 @@ function CpInGameMenu:onMenuOpened()
 	-- end
 end
 
-function CpInGameMenu:onButtonBack()
-	if self.currentPage:requestClose(self.clickBackCallback) then
+function CpInGameMenu:onButtonBack(_, _, force)
+	if force or self.currentPage:requestClose(self.clickBackCallback) then
 		CpInGameMenu:superClass().onButtonBack(self)
 	end
 end

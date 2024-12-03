@@ -67,15 +67,20 @@
                         <MultiTextOption profile="fs25_aiJobTypeMultiTextOption" id="jobTypeElement"
                             onClick="onJobTypeChanged" />
                         <BoxLayout profile="fs25_aiCreateJobLayout" id="jobMenuLayout">
-                            <OptionToggle profile="fs25_aiCreateJobMultiTextOption"
+                            <CpOptionToggle profile="fs25_aiCreateJobMultiTextOption"
                                 id="createMultiOptionTemplate" onClick="onClickMultiTextOptionParameter">
                                 <Bitmap profile="fs25_aiCreateJobParameterInvalid" name="invalid" />
-                            </OptionToggle>
+                            </CpOptionToggle>
                             <ThreePartBitmap profile="fs25_aiCreateJobParameterBg" id="createTextTemplate">
                                 <Bitmap profile="fs25_aiCreateJobParameterVehicleIcon" />
                                 <Text profile="fs25_multiTextOptionText" name="title" />
                                 <Bitmap profile="fs25_aiCreateJobParameterInvalid" name="invalid" />
                             </ThreePartBitmap>
+                            <Button profile="fs25_aiCreateJobParameterBg" id="createButtonTemplate">
+                                <Bitmap profile="fs25_aiCreateJobParameterVehicleIcon" />
+                                <Text profile="fs25_multiTextOptionText" name="title" />
+                                <Bitmap profile="fs25_aiCreateJobParameterInvalid" name="invalid" />
+                            </Button>
                             <Text profile="fs25_aiCreateJobParameterTitle" id="createTitleTemplate"
                                 text="Group title" />
                             <Button profile="fs25_aiCreateJobParameterButton" id="createPositionTemplate"
@@ -126,6 +131,16 @@
                         </ThreePartBitmap>
                     </GuiElement>
                 </Bitmap>
+            </GuiElement>
+            <GuiElement profile="fs25_menuContainer">
+                <GuiElement profile="fs25_menuHeaderPanel">
+                    <!-- <RoundCorner profile="fs25_mapMoneyBoxBg" id="shopMoneyBoxBg" />
+                    <BoxLayout profile="fs25_shopMoneyBox" id="shopMoneyBox">
+                        <Text profile="fs25_shopBalance" text="$l10n_ui_balance:" />
+                        <Text profile="fs25_shopMoney" id="currentBalanceText" />
+                    </BoxLayout> -->
+                    <Text profile="fs25_ingameMenuAIStatusText" id="statusMessage" />
+                </GuiElement>
             </GuiElement>
             <GuiElement profile="fs25_mapContextBoxContainer" newLayer="true">
                 <GuiElement profile="fs25_mapContextBox" id="contextBox">
