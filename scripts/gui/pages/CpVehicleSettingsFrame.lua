@@ -5,12 +5,10 @@
 
 CpVehicleSettingsFrame = {
 	CATEGRORIES = {
-		BASIC_SETTINGS = 1,
-		DEBUG_SETTINGS = 2
+		BASIC_SETTINGS = 1
 	},
 	CATEGRORY_TEXTS = {
-		"CP_global_setting_subTitle_general",
-		"TODO: Debug"
+		"CP_vehicle_setting_subTitle_vehicle",
 	}
 }
 CpVehicleSettingsFrame.NUM_CATEGORIES = #CpVehicleSettingsFrame.CATEGRORY_TEXTS

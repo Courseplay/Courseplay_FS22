@@ -51,7 +51,7 @@ function CpAIJobSiloLoader:setupJobParameters()
 	self.cpJobParameters.unloadPosition:setSnappingAngle(math.pi/8) -- AI menu snapping angle of 22.5 degree.
 end
 
-function CpAIJobSiloLoader:getIsAvailableForVehicle(vehicle)
+function CpAIJobSiloLoader:getIsAvailableForVehicle(vehicle, cpJobsAllowed)
 	return CpAIJob.getIsAvailableForVehicle(self, vehicle, cpJobsAllowed) and vehicle.getCanStartCpSiloLoaderWorker and vehicle:getCanStartCpSiloLoaderWorker() -- TODO_25
 end
 

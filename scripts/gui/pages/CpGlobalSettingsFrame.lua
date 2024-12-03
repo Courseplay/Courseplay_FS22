@@ -6,13 +6,11 @@
 CpGlobalSettingsFrame = {
 	CATEGRORIES = {
 		BASIC_SETTINGS = 1,
-		USER_SETTINGS = 2,
-		DEBUG_SETTINGS = 3
+		USER_SETTINGS = 2
 	},
 	CATEGRORY_TEXTS = {
 		"CP_global_setting_subTitle_general",
-		"CP_global_setting_subTitle_userSettings",
-		"TODO: Debug"
+		"CP_global_setting_subTitle_userSettings"
 	}
 }
 CpGlobalSettingsFrame.NUM_CATEGORIES = #CpGlobalSettingsFrame.CATEGRORY_TEXTS

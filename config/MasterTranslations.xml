@@ -463,6 +463,10 @@
 			<Text language="de"><![CDATA[Fahrzeugeinstellungen für (%s)]]></Text>
 			<Text language="en"><![CDATA[Vehicle settings for (%s)]]></Text>
 		</Translation>
+		<Translation name="CP_vehicle_setting_subTitle_vehicle">
+			<Text language="de"><![CDATA[Fahrzeugeinstellungen]]></Text>
+			<Text language="en"><![CDATA[Vehicle settings]]></Text>
+		</Translation>
 		<Translation name="CP_vehicle_setting_subTitle_basic">
 			<Text language="de"><![CDATA[Grundeinstellungen]]></Text>
 			<Text language="en"><![CDATA[Basic settings]]></Text>
@@ -1821,6 +1825,12 @@ The course is saved automatically on closing of the editor and overrides the sel
 		<Translation name="CP_controllerGui_unpauseRecording">
 			<Text language="de"><![CDATA[Feldrandaufnahme fortsetzen]]></Text>
 			<Text language="en"><![CDATA[Unpause custom field recording]]></Text>
+		</Translation>
+	</Category>
+	<Category name="CP ingame menu">
+		<Translation name="CP_ingameMenu_map_title">
+			<Text language="de"><![CDATA[Karte]]></Text>
+			<Text language="en"><![CDATA[Map]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Help menu">	

@@ -58,7 +58,7 @@ function CpAIJobCombineUnloader:setupJobParameters()
 	self.waitForFillingTask = self.combineUnloaderTask
 end
 
-function CpAIJobCombineUnloader:getIsAvailableForVehicle(vehicle)
+function CpAIJobCombineUnloader:getIsAvailableForVehicle(vehicle, cpJobsAllowed)
 	return CpAIJob.getIsAvailableForVehicle(self, vehicle, cpJobsAllowed) and vehicle.getCanStartCpCombineUnloader and vehicle:getCanStartCpCombineUnloader() -- TODO_25
 end
 
