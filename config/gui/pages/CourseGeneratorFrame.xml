@@ -97,15 +97,22 @@
                                 <Bitmap profile="fs25_aiCreateJobParameterInvalid" name="invalid" />
                             </Button>
                         </BoxLayout>
-                        
-                        <GuiElement profile="fs25_mapButtonContainer" id="buttonStartJobContainer" width="340px"
+                        <SmoothList profile="cpMapContextButtonList" id="createJobButtonList"
+                            onClick="onClickList" visible="true">
+                            <ListItem profile="fs25_mapContextButtonListItem">
+                                <ThreePartBitmap profile="fs25_mapContextButtonListItemBg" />
+                                <Text profile="fs25_mapButtonText" name="text" />
+                                <Button profile="fs25_mapContextButtonListItemButton" />
+                            </ListItem>
+                        </SmoothList>
+                        <!-- <GuiElement profile="fs25_mapButtonContainer" id="buttonStartJobContainer" width="340px"
                             position="-10px 0px">
                             <ThreePartBitmap profile="fs25_mapButtonBgLight" />
                             <Text profile="fs25_mapButtonText" id="buttonStartJobText"
                                 text="$l10n_button_startJob" textOffset="15px 0px" />
                             <Button profile="fs25_mapButtonAction1" id="buttonStartJob"
                                 onClick="onStartCancelJob" />
-                        </GuiElement>
+                        </GuiElement> -->
                         <Text profile="fs25_aiContainerEmptyText" id="createJobEmptyText"
                             text="$l10n_ui_createJobEmpty"/>
                     </GuiElement>
@@ -628,6 +635,9 @@
         </Profile>
         <Profile name="cpSubCategorySelectorTabbedContainer" extends="fs25_subCategorySelectorTabbedContainer">
            <!-- <absoluteSizeOffset value="56px 0px" /> -->
+        </Profile>
+        <Profile name="cpMapContextButtonList" extends="fs25_mapContextButtonList" with="anchorBottomStretchingX">
+            <!-- <height value="25px" /> -->
         </Profile>
 
     </GUIProfiles>

@@ -80,7 +80,7 @@ function CpCourseGeneratorFrame.new(target, custom_mt)
 	self.isInputContextActive = false
 	self.driveToAiTargetMapHotspot = AITargetHotspot.new()
 	self.fieldSiloAiTargetMapHotspot = AITargetHotspot.new()
-	self.fieldSiloAiTargetMapHotspot.icon:setUVs(GuiUtils.getUVs({760, 111, 100, 100}, AIPlaceableMarkerHotspot.FILE_RESOLUTION)) --- TODO_25
+	self.fieldSiloAiTargetMapHotspot.icon:setUVs(GuiUtils.getUVs({760, 0, 100, 100}, AIPlaceableMarkerHotspot.FILE_RESOLUTION))
 	self.unloadAiTargetMapHotspot = AITargetHotspot.new()
 	self.loadAiTargetMapHotspot = AITargetHotspot.new()
 
@@ -179,7 +179,6 @@ function CpCourseGeneratorFrame:initialize(menu)
 
 	self.currentContextBox = self.contextBox 
 	self.currentHotspot = nil
-	self.ingameMap:setTerrainSize(g_currentMission.terrainSize)
 end
 
 function CpCourseGeneratorFrame:update(dt)
@@ -214,6 +213,7 @@ function CpCourseGeneratorFrame:onFrameOpen()
 	if not vehicle then 
 		return
 	end
+	self.ingameMap:setTerrainSize(g_currentMission.terrainSize)
 	local settings = vehicle:getCourseGeneratorSettings()
 	local settingsBySubTitle, pageTitle = CpCourseGeneratorSettings.getSettingSetup()
 	local title = string.format(g_i18n:getText(pageTitle), vehicle:getName())
@@ -284,6 +284,7 @@ function CpCourseGeneratorFrame:onFrameOpen()
 	self.currentHotspot = nil
 	self:setMapSelectionItem(nil)
 	self:setJobMenuVisible(false)
+	self.startJobPending = false
 end
 
 function CpCourseGeneratorFrame:saveHotspotFilter()
@@ -330,6 +331,7 @@ function CpCourseGeneratorFrame:onFrameClose()
 	self:setMapSelectionItem(nil)
 	self.statusMessages = {}
 	self:updateStatusMessages()
+	self.startJobPending = false
 end
 
 function CpCourseGeneratorFrame:requestClose()
@@ -502,6 +504,7 @@ function CpCourseGeneratorFrame:onClickMultiTextOptionCenterParameter()
 end
 
 function CpCourseGeneratorFrame:onClickPositionParameter(element)
+	self.contextBox:setVisible(false)
 	local parameter = element.aiParameter
 	g_currentMission:removeMapHotspot(self.loadAiTargetMapHotspot)
 	g_currentMission:removeMapHotspot(self.fieldSiloAiTargetMapHotspot)
@@ -516,9 +519,7 @@ function CpCourseGeneratorFrame:onClickPositionParameter(element)
 	else
 		self.aiTargetMapHotspot = self.driveToAiTargetMapHotspot
 	end
-	self.contextBox:setVisible(false)
 	g_inGameMenu.pageMapOverview.startPickPosition(self, parameter, function (success, x, z)
-		print(success, x, z)
 		if success then
 			element:setText(parameter:getString())
 		end
@@ -533,6 +534,15 @@ function CpCourseGeneratorFrame:onClickPositionRotationParameter(element)
 	g_currentMission:removeMapHotspot(self.fieldSiloAiTargetMapHotspot)
 	g_currentMission:removeMapHotspot(self.unloadAiTargetMapHotspot)
 	g_currentMission:removeMapHotspot(self.driveToAiTargetMapHotspot)
+	if parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.LOAD then 
+		self.aiTargetMapHotspot = self.loadAiTargetMapHotspot
+	elseif parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.FIELD_OR_SILO then 
+		self.aiTargetMapHotspot = self.fieldSiloAiTargetMapHotspot
+	elseif parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.UNLOAD then 
+		self.aiTargetMapHotspot = self.unloadAiTargetMapHotspot
+	else
+		self.aiTargetMapHotspot = self.driveToAiTargetMapHotspot
+	end
 	g_inGameMenu.pageMapOverview.startPickPositionAndRotation(self, parameter, function (success, x, z, angle)
 		if success then
 			element:setText(parameter:getString())
@@ -552,6 +562,8 @@ function CpCourseGeneratorFrame:validateParameters()
 		self.currentJob:setValues()
 		errorText = self.currentJob:validate()
 		self:updateWarnings()
+		self:updateContextActions()
+		self:updateParameterValueTexts()
 	end
 	self.errorMessage:setText(errorText)
 	self.errorMessage:setVisible(not isValid)
@@ -608,7 +620,6 @@ function CpCourseGeneratorFrame:updateParameterValueTexts()
 			element:updateTitle()
 		end
 	end
-
 end
 
 function CpCourseGeneratorFrame:showActionMessage(localKey)
@@ -630,11 +641,75 @@ function CpCourseGeneratorFrame:getCanStartJob()
 		g_currentMission:getHasPlayerPermission("hireAssistant") 
 end
 
+function CpCourseGeneratorFrame:getCanGenerateFieldWorkCourse()
+	return self.mode == self.AI_MODE_CREATE and self.currentJob and 
+		self.currentJob:getCanGenerateFieldWorkCourse()
+end
 function CpCourseGeneratorFrame:onStartCancelJob()
 	if self:getCanCancelJob() then
 		self:cancelJob()
 	elseif self:getCanStartJob() then
 		self:startJob()
+	end
+end
+
+function CpCourseGeneratorFrame:startJob()
+	if self.startJobPending then
+		return
+	end
+	self.currentJob:setValues()
+	local success, errorMessage = self.currentJob:validate(g_localPlayer.farmId)
+	if success then
+		local function callback(state)
+			if state == AIJob.START_SUCCESS then
+				self.mode = self.AI_MODE_OVERVIEW
+				self:setJobMenuVisible(false)
+			end
+		end
+		self:tryStartJob(self.currentJob, 
+		g_localPlayer.farmId, callback)
+	else
+		InfoDialog.show(tostring(errorMessage), nil, nil, DialogElement.TYPE_WARNING)
+		self:updateWarnings()
+	end
+end
+
+function CpCourseGeneratorFrame:onStartedJob(args, state, jobTypeIndex)
+	local callback = args[1]
+	self.startJobPending = false
+	g_messageCenter:unsubscribe(AIJobStartRequestEvent, self)
+	if state == AIJob.START_SUCCESS then
+		self.mapOverviewSelector:setState(InGameMenuMapFrame.AI_WORKER_LIST, true)
+	else
+		local jobType = g_currentMission.aiJobTypeManager:getJobTypeByIndex(jobTypeIndex)
+		local text = jobType.classObject.getIsStartErrorText(state)
+
+		InfoDialog.show(text, nil, nil, DialogElement.TYPE_INFO)
+	end
+
+	callback(state)
+
+end
+
+function CpCourseGeneratorFrame:tryStartJob(job, farmId, callback)
+	self.startJobPending = true
+
+	g_messageCenter:subscribe(AIJobStartRequestEvent, 
+		self.onStartedJob, self, {callback})
+	g_client:getServerConnection():sendEvent(
+		AIJobStartRequestEvent.new(job, farmId))
+end
+
+function CpCourseGeneratorFrame:cancelJob()
+	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
+	if vehicle then 
+		if vehicle:getIsAIActive() then
+			vehicle:stopCurrentAIJob()
+			g_currentMission:removeMapHotspot(self.driveToAiTargetMapHotspot)
+			g_currentMission:removeMapHotspot(self.fieldSiloAiTargetMapHotspot)
+			g_currentMission:removeMapHotspot(self.unloadAiTargetMapHotspot)
+			g_currentMission:removeMapHotspot(self.loadAiTargetMapHotspot)
+		end
 	end
 end
 
@@ -659,14 +734,14 @@ function CpCourseGeneratorFrame:getNumberOfItemsInSection(list, section)
 		return #self.hotspotFilterCategories[section]
 	end
 	if list == self.contextButtonList then 
-		if self.mode == self.AI_MODE_CREATE then  
-			return 0
-		end
 		self.contextActionMapping = {}
 		for index, action in pairs(self.contextActions) do 
 			if action.isActive then 
 				table.insert(self.contextActionMapping, index)
 			end
+		end
+		if self.mode == self.AI_MODE_CREATE then  
+			return 0
 		end
 		return #self.contextActionMapping
 	end
@@ -683,6 +758,11 @@ function CpCourseGeneratorFrame:getNumberOfItemsInSection(list, section)
 		end
 		self.activeWorkerListEmpty:setVisible(count == 0)
 		return count
+	elseif list == self.createJobButtonList then
+		if self.mode ~= self.AI_MODE_CREATE then 
+			return 0
+		end
+		return #self.contextActionMapping
 	end
 	return 0
 end
@@ -722,6 +802,10 @@ function CpCourseGeneratorFrame:populateCellForItemInSection(list, section, inde
 			cell:getAttribute("title"):setText(currentJob:getTitle())
 			cell:getAttribute("helper"):setText(currentJob:getHelperName())
 		end
+	elseif list == self.createJobButtonList then
+		local buttonInfo = self.contextActions[self.contextActionMapping[index]]
+		cell:getAttribute("text"):setText(buttonInfo.text)
+		cell.onClickCallback = buttonInfo.callback
 	end
 end
 
@@ -741,6 +825,8 @@ function CpCourseGeneratorFrame:onClickList(list, section, index, listElement)
 			end
 		end
 	elseif list == self.contextButtonList then
+		listElement.onClickCallback(self)	
+	elseif list == self.createJobButtonList then
 		listElement.onClickCallback(self)	
 	end
 end
@@ -771,7 +857,6 @@ function CpCourseGeneratorFrame:mouseEvent(posX, posY, isDown, isUp, button, eve
 		local localX, localY = self.ingameMap:getLocalPosition(self.lastMousePosX, self.lastMousePoxY)
 		local worldX, worldZ = self.ingameMap:localToWorldPos(localX, localY)
 		self.aiTargetMapHotspot:setWorldPosition(worldX, worldZ)
-		CpUtil.info("%s, %s, %s, %s, %s, %s", self.lastMousePosX, self.lastMousePoxY, localX, localY, worldX, worldZ)
 	end
 	return CpCourseGeneratorFrame:superClass().mouseEvent(self, posX, posY, isDown, isUp, button, eventUsed)
 end
@@ -885,7 +970,9 @@ function CpCourseGeneratorFrame:initializeContextActions()
 		[self.CONTEXT_ACTIONS.GENERATE_COURSE] = {
 			text = g_i18n:getText("CP_ai_page_generate_course"),
 			callback = function()
-				
+				if self.currentJob then 
+					CpUtil.try(self.currentJob.onClickGenerateFieldWorkCourse, self.currentJob)
+				end
 			end,
 			isActive = false
 		}
@@ -894,7 +981,7 @@ end
 
 function CpCourseGeneratorFrame:updateContextActions()
 	local vehicle = self.currentHotspot and self.currentHotspot:getVehicle()
-	self.contextActions[self.CONTEXT_ACTIONS.ENTER_VEHICLE].isActive = vehicle and vehicle:getIsEnterableFromMenu()
+	self.contextActions[self.CONTEXT_ACTIONS.ENTER_VEHICLE].isActive = vehicle and vehicle:getIsEnterableFromMenu() and self.mode ~= self.AI_MODE_CREATE
 	self.canCreateJob = false
 	if not self.canCreateJob and not self.currentJobVehicle then
 		for _, job in pairs(self.jobTypeInstances) do 
@@ -904,11 +991,12 @@ function CpCourseGeneratorFrame:updateContextActions()
 		end
 	end
 	self.canCancel = vehicle and vehicle.spec_aiJobVehicle and vehicle:getIsAIActive()
-	self.contextActions[self.CONTEXT_ACTIONS.CREATE_JOB].isActive = self.canCreateJob
+	self.contextActions[self.CONTEXT_ACTIONS.CREATE_JOB].isActive = self.canCreateJob and self.mode ~= self.AI_MODE_CREATE
 	self.contextActions[self.CONTEXT_ACTIONS.START_JOB].isActive = self:getCanStartJob()
-	self.contextActions[self.CONTEXT_ACTIONS.STOP_JOB].isActive = self:getCanCancelJob()
-	self.contextActions[self.CONTEXT_ACTIONS.GENERATE_COURSE].isActive = false 
+	self.contextActions[self.CONTEXT_ACTIONS.STOP_JOB].isActive = self:getCanCancelJob() and self.mode ~= self.AI_MODE_CREATE
+	self.contextActions[self.CONTEXT_ACTIONS.GENERATE_COURSE].isActive = self:getCanGenerateFieldWorkCourse() 
 	self.contextButtonList:reloadData()	
+	self.createJobButtonList:reloadData()
 end
 
 function CpCourseGeneratorFrame:toggleMapInput(isActive)
@@ -1016,6 +1104,7 @@ function CpCourseGeneratorFrame:onCreateJob()
 			self:setActiveJobTypeSelection(self.currentJobTypes[1])
 		end
 	end
+	self:updateContextActions()
 end
 
 function CpCourseGeneratorFrame:resetUIDeadzones()
