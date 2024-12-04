@@ -89,7 +89,6 @@ function CpInGameMenu:initializePages()
 
 	self.pageCourseGenerator:setInGameMap(
 		g_inGameMenu.baseIngameMap, 
-		g_currentMission.terrainSize,
 		g_currentMission.hud)
 
 	self.pageGlobalSettings:initialize(self)

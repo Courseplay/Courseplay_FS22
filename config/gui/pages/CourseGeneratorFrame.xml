@@ -68,7 +68,7 @@
                             onClick="onJobTypeChanged" />
                         <BoxLayout profile="fs25_aiCreateJobLayout" id="jobMenuLayout">
                             <CpOptionToggle profile="fs25_aiCreateJobMultiTextOption"
-                                id="createMultiOptionTemplate" onClick="onClickMultiTextOptionParameter">
+                                id="createMultiOptionTemplate" onClick="onClickMultiTextOptionParameter" onClickCenter="onClickMultiTextOptionCenterParameter">
                                 <Bitmap profile="fs25_aiCreateJobParameterInvalid" name="invalid" />
                             </CpOptionToggle>
                             <ThreePartBitmap profile="fs25_aiCreateJobParameterBg" id="createTextTemplate">
@@ -76,7 +76,7 @@
                                 <Text profile="fs25_multiTextOptionText" name="title" />
                                 <Bitmap profile="fs25_aiCreateJobParameterInvalid" name="invalid" />
                             </ThreePartBitmap>
-                            <Button profile="fs25_aiCreateJobParameterBg" id="createButtonTemplate">
+                            <Button profile="fs25_aiCreateJobParameterBg" id="createButtonTemplate" onClick="onClickMultiTextOptionCenterParameter">
                                 <Bitmap profile="fs25_aiCreateJobParameterVehicleIcon" />
                                 <Text profile="fs25_multiTextOptionText" name="title" />
                                 <Bitmap profile="fs25_aiCreateJobParameterInvalid" name="invalid" />
@@ -97,6 +97,7 @@
                                 <Bitmap profile="fs25_aiCreateJobParameterInvalid" name="invalid" />
                             </Button>
                         </BoxLayout>
+                        
                         <GuiElement profile="fs25_mapButtonContainer" id="buttonStartJobContainer" width="340px"
                             position="-10px 0px">
                             <ThreePartBitmap profile="fs25_mapButtonBgLight" />

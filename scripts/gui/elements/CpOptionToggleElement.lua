@@ -19,7 +19,6 @@ function CpOptionToggleElement:copyAttributes(src)
 	self.onClickCenterCallback = src.onClickCenterCallback
 end
 
-
 function CpOptionToggleElement:onCenterButtonClicked()
 	self:raiseCallback("onClickCenterCallback", self)
 	if self.dataSource ~= nil then
@@ -61,17 +60,17 @@ function CpOptionToggleElement:setLabelElement(element)
 	self:updateTitle()
 end
 
-function CpOptionToggleElement:mouseEvent(posX, posY, isDown, isUp, button, eventUsed)
-	if self.parent then 
-		-- Fixes giants bug, where the scrolling layout is not disabling the mouse event for invisible child elements.
-		local _, clipY1 , _, clipY2 = self.parent:getClipArea(0,0,1,1)
-		if (clipY1 - self.absPosition[2] * 0.02) > (self.absPosition[2]) or 
-			(clipY2 + self.absPosition[2] * 0.02) < ( self.absPosition[2] + self.absSize[2]) then 
-			return eventUsed
-		end
-	end
-	return CpOptionToggleElement:superClass().mouseEvent(self, posX, posY, isDown, isUp, button, eventUsed)
-end
+-- function CpOptionToggleElement:mouseEvent(posX, posY, isDown, isUp, button, eventUsed)
+-- 	if self.parent then 
+-- 		-- Fixes giants bug, where the scrolling layout is not disabling the mouse event for invisible child elements.
+-- 		local _, clipY1 , _, clipY2 = self.parent:getClipArea(0,0,1,1)
+-- 		if (clipY1 - self.absPosition[2] * 0.02) > (self.absPosition[2]) or 
+-- 			(clipY2 + self.absPosition[2] * 0.02) < ( self.absPosition[2] + self.absSize[2]) then 
+-- 			return eventUsed
+-- 		end
+-- 	end
+-- 	return CpOptionToggleElement:superClass().mouseEvent(self, posX, posY, isDown, isUp, button, eventUsed)
+-- end
 
 function CpOptionToggleElement:inputEvent(action, value, eventUsed)
 	if self:getIsActive() then

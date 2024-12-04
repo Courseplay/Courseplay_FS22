@@ -80,7 +80,7 @@ function CpCourseGeneratorFrame.new(target, custom_mt)
 	self.isInputContextActive = false
 	self.driveToAiTargetMapHotspot = AITargetHotspot.new()
 	self.fieldSiloAiTargetMapHotspot = AITargetHotspot.new()
-	-- self.fieldSiloAiTargetMapHotspot.icon:setUVs(POSITION_UVS) --- TODO_25
+	self.fieldSiloAiTargetMapHotspot.icon:setUVs(GuiUtils.getUVs({760, 111, 100, 100}, AIPlaceableMarkerHotspot.FILE_RESOLUTION)) --- TODO_25
 	self.unloadAiTargetMapHotspot = AITargetHotspot.new()
 	self.loadAiTargetMapHotspot = AITargetHotspot.new()
 
@@ -110,10 +110,9 @@ function CpCourseGeneratorFrame.createFromExistingGui(gui, guiName)
 	return newGui
 end
 
-function CpCourseGeneratorFrame:setInGameMap(ingameMap, terrainSize, hud)
+function CpCourseGeneratorFrame:setInGameMap(ingameMap, hud)
 	self.ingameMapBase = ingameMap
 	self.ingameMap:setIngameMap(ingameMap)
-	self.ingameMap:setTerrainSize(terrainSize)
 	self.hud = hud
 end
 
@@ -180,6 +179,7 @@ function CpCourseGeneratorFrame:initialize(menu)
 
 	self.currentContextBox = self.contextBox 
 	self.currentHotspot = nil
+	self.ingameMap:setTerrainSize(g_currentMission.terrainSize)
 end
 
 function CpCourseGeneratorFrame:update(dt)
@@ -403,6 +403,13 @@ function CpCourseGeneratorFrame:onDrawPostIngameMapHotspots()
 	if self.currentContextBox ~= nil then
 		InGameMenuMapUtil.updateContextBoxPosition(self.currentContextBox, self.currentHotspot)
 	end
+	if self.aiTargetMapHotspot ~= nil then
+
+		local icon = self.aiTargetMapHotspot.icon
+		
+		--Lx: [952, 952], [19, 35], 1
+		self.actionMessage:setAbsolutePosition(icon.x + icon.width * 0.5, icon.y + icon.height * 0.5)
+	end
 end
 
 function CpCourseGeneratorFrame:onDrawPostIngameMap()
@@ -490,6 +497,10 @@ function CpCourseGeneratorFrame:onClickMultiTextOptionParameter(index, element)
 	self:validateParameters()
 end
 
+function CpCourseGeneratorFrame:onClickMultiTextOptionCenterParameter()
+	
+end
+
 function CpCourseGeneratorFrame:onClickPositionParameter(element)
 	local parameter = element.aiParameter
 	g_currentMission:removeMapHotspot(self.loadAiTargetMapHotspot)
@@ -507,6 +518,7 @@ function CpCourseGeneratorFrame:onClickPositionParameter(element)
 	end
 	self.contextBox:setVisible(false)
 	g_inGameMenu.pageMapOverview.startPickPosition(self, parameter, function (success, x, z)
+		print(success, x, z)
 		if success then
 			element:setText(parameter:getString())
 		end
@@ -517,7 +529,10 @@ end
 function CpCourseGeneratorFrame:onClickPositionRotationParameter(element)
 	self.contextBox:setVisible(false)
 	local parameter = element.aiParameter
-
+	g_currentMission:removeMapHotspot(self.loadAiTargetMapHotspot)
+	g_currentMission:removeMapHotspot(self.fieldSiloAiTargetMapHotspot)
+	g_currentMission:removeMapHotspot(self.unloadAiTargetMapHotspot)
+	g_currentMission:removeMapHotspot(self.driveToAiTargetMapHotspot)
 	g_inGameMenu.pageMapOverview.startPickPositionAndRotation(self, parameter, function (success, x, z, angle)
 		if success then
 			element:setText(parameter:getString())
@@ -756,6 +771,7 @@ function CpCourseGeneratorFrame:mouseEvent(posX, posY, isDown, isUp, button, eve
 		local localX, localY = self.ingameMap:getLocalPosition(self.lastMousePosX, self.lastMousePoxY)
 		local worldX, worldZ = self.ingameMap:localToWorldPos(localX, localY)
 		self.aiTargetMapHotspot:setWorldPosition(worldX, worldZ)
+		CpUtil.info("%s, %s, %s, %s, %s, %s", self.lastMousePosX, self.lastMousePoxY, localX, localY, worldX, worldZ)
 	end
 	return CpCourseGeneratorFrame:superClass().mouseEvent(self, posX, posY, isDown, isUp, button, eventUsed)
 end
@@ -982,6 +998,7 @@ function CpCourseGeneratorFrame:onCreateJob()
 	if self.currentHotspot then 
 		local vehicle = self.currentHotspot:getVehicle()
 		if vehicle then 
+			self.currentJobTypes = {}
 			local currentJobTypesTexts = {}
 			for index, job in pairs(self.jobTypeInstances) do 
 				if job:getIsAvailableForVehicle(vehicle, true) then 
