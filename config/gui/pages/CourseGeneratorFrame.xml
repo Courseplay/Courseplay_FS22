@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <GUI name="cpInGameMenuCourseGenerator">
-    <InGameMap id="ingameMap" profile="cpIngameMapOverview" cursorId="mapCursor"
+    <InGameMap id="ingameMap" profile="ingameMapOverview" cursorId="mapCursor"
         onClickMap="onClickMap" onDrawPostIngameMap="onDrawPostIngameMap"
         onDrawPostIngameMapHotspots="onDrawPostIngameMapHotspots" onClickHotspot="onClickHotspot" />
     <Bitmap profile="ingameMapCursor" id="mapCursor" visible="false"/>
@@ -67,10 +67,10 @@
                         <MultiTextOption profile="fs25_aiJobTypeMultiTextOption" id="jobTypeElement"
                             onClick="onJobTypeChanged" />
                         <BoxLayout profile="fs25_aiCreateJobLayout" id="jobMenuLayout">
-                            <CpOptionToggle profile="fs25_aiCreateJobMultiTextOption"
+                            <OptionToggle profile="fs25_aiCreateJobMultiTextOption"
                                 id="createMultiOptionTemplate" onClick="onClickMultiTextOptionParameter" onClickCenter="onClickMultiTextOptionCenterParameter">
                                 <Bitmap profile="fs25_aiCreateJobParameterInvalid" name="invalid" />
-                            </CpOptionToggle>
+                            </OptionToggle>
                             <ThreePartBitmap profile="fs25_aiCreateJobParameterBg" id="createTextTemplate">
                                 <Bitmap profile="fs25_aiCreateJobParameterVehicleIcon" />
                                 <Text profile="fs25_multiTextOptionText" name="title" />
@@ -97,7 +97,7 @@
                                 <Bitmap profile="fs25_aiCreateJobParameterInvalid" name="invalid" />
                             </Button>
                         </BoxLayout>
-                        <SmoothList profile="cpMapContextButtonList" id="createJobButtonList"
+                        <SmoothList profile="fs25_mapContextButtonList" id="createJobButtonList"
                             onClick="onClickList" visible="true">
                             <ListItem profile="fs25_mapContextButtonListItem">
                                 <ThreePartBitmap profile="fs25_mapContextButtonListItemBg" />
@@ -202,7 +202,6 @@
         </GuiElement>
 
         <!-- Prefabs -->
-
         <Button profile="fs25_subCategorySelectorTabbedTab" id="selectorPrefab">
             <ThreePartBitmap profile="fs25_subCategorySelectorTabbedTabBg" name="background" />
         </Button>
@@ -219,28 +218,17 @@
 
         <Bitmap profile="fs25_multiTextOptionContainer" id="booleanPrefab">
             <CpBinaryyOption profile="fs25_settingsBinaryOption" name="setting" namedComponents="true" onClick="onClickCpMultiTextOption">
-                <!-- <Text profile="fs25_multiTextOptionTooltip" name="tooltip"/> -->
+                <Text profile="fs25_multiTextOptionTooltip" name="tooltip"/>
                 <Text profile="fs25_settingsMultiOptionTitle" name="label"/>
             </CpBinaryyOption>
         </Bitmap>
         <Text profile="fs25_settingsSectionHeader" name="sectionHeader" id="sectionHeaderPrefab"/>
         <Bitmap profile="fs25_multiTextOptionContainer" id="multiTextPrefab">
             <CpOptionToggle profile="fs25_settingsMultiTextOption" name="setting" namedComponents="true" onClick="onClickCpMultiTextOption">
-                <!-- <Text profile="fs25_multiTextOptionTooltip" name="tooltip"/> -->
+                <Text profile="fs25_multiTextOptionTooltip" name="tooltip"/>
                 <Text profile="fs25_settingsMultiOptionTitle" name="label"/>
             </CpOptionToggle>
         </Bitmap>
-
-        <!-- <GuiElement profile="fs25_aiSettingsMapContainer" id="mapBox">
-            <InGameMapPreview profile="fs25_aiSettingsIngameMap" id="ingameMapElement"
-                onDrawPostIngameMapHotspots="onDrawPostIngameMapHotspots" />
-            <Text profile="fs25_aiSettingsNoFieldFound" id="noFieldFoundText"
-                text="$l10n_ui_aiSettingsFieldNotFound" />
-            <Animation profile="fs25_aiSettingsLoadingAnimation" id="loadingAnimation"
-                visible="false" />
-            <Bitmap profile="fs25_aiSettingsWorkDirection" id="workDirectionArrow" />
-        </GuiElement> -->
-
     </GuiElement>
     <ThreePartBitmap profile="fs25_sliderDockedBg" id="settingsSliderBox">
         <ThreePartBitmap profile="fs25_sliderDockedBox">
@@ -604,19 +592,6 @@
             <text2Offset value="-1px -1px" />
             <text2Color value="$preset_colorBlack" />
         </Profile>
-
-
-        <Profile name="cpIngameMapOverview" extends="ingameMapOverview" with="anchorStretchingYStretchingX pivotBottomCenter">
-            <absoluteSizeOffset value="0px 80px" />
-            <size></size>
-            <!-- <absoluteSizeOffset value="536px 40px" />
-            <mapAlpha value="0.9" />
-            <limitMapWidth value="true" />
-            <Variant name="mobile">
-                <limitMapWidth value="true" />
-                <mapAlpha value="1" />
-            </Variant> -->
-        </Profile>
         <Profile name="cpLeftSideBackground" extends="fs25_fullScreenBackground" with="pivotMiddleLeft">
             <height value="100%"/>
             <width value="250px" />
@@ -633,12 +608,5 @@
             <width value="100%"/>
             <height value="80px" />
         </Profile>
-        <Profile name="cpSubCategorySelectorTabbedContainer" extends="fs25_subCategorySelectorTabbedContainer">
-           <!-- <absoluteSizeOffset value="56px 0px" /> -->
-        </Profile>
-        <Profile name="cpMapContextButtonList" extends="fs25_mapContextButtonList" with="anchorBottomStretchingX">
-            <!-- <height value="25px" /> -->
-        </Profile>
-
     </GUIProfiles>
 </GUI>

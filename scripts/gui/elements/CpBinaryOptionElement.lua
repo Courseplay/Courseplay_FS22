@@ -8,20 +8,22 @@ function CpBinaryOptionElement.new(target, custom_mt)
 	return self
 end
 
--- Lines 19-23
 function CpBinaryOptionElement:delete()
 	self.dataSource = nil
 
 	CpBinaryOptionElement:superClass().delete(self)
 end
 
--- Lines 25-28
 function CpBinaryOptionElement:setDataSource(dataSource)
 	self.dataSource = dataSource
-
-	self:updateTitle()
+	self.useYesNoTexts = false
+	self:setTexts({self.dataSource.texts[1], self.dataSource.texts[2]})
+	if self.dataSource:getValue() then 
+		self:setState(BinaryOptionElement.STATE_RIGHT, true)
+	else 
+		self:setState(BinaryOptionElement.STATE_LEFT, true)
+	end	
 end
-
 
 function CpBinaryOptionElement:addElement(element, ...)
 	CpBinaryOptionElement:superClass().addElement(self, element, ...)
@@ -36,41 +38,27 @@ function CpBinaryOptionElement:addElement(element, ...)
 	end
 end
 
--- Lines 30-33
 function CpBinaryOptionElement:updateTitle()
-	if self.dataSource:getValue() then 
-		self:setState(2)
-	else
-		self:setState(1)
-	end
 	if self.labelElement then 
 		self.labelElement:setText(self.dataSource:getTitle())
 	end
 	if self.toolTipElement then
 		self.toolTipElement:setText(self.dataSource:getTooltip())
 	end
-	-- self:setState(1)
 end
 
--- Lines 35-42
-function CpBinaryOptionElement:onRightButtonClicked(steps, noFocus)
-	if self.dataSource ~= nil then
-		self.dataSource:setNextItem()
-
-		-- self.texts[1] = self.dataSource:getString()
+function CpBinaryOptionElement:setState(state, ...)
+	if state == BinaryOptionElement.STATE_RIGHT then 
+		self.dataSource:setValue(true)
+	else 
+		self.dataSource:setValue(false)
 	end
-
-	CpBinaryOptionElement:superClass().onRightButtonClicked(self, steps, noFocus)
-end
-
--- Lines 44-51
-function CpBinaryOptionElement:onLeftButtonClicked(steps, noFocus)
-	if self.dataSource ~= nil then
-		self.dataSource:setPreviousItem()
-
-		-- self.texts[1] = self.dataSource:getString()
+	self:updateTitle()
+	if self.dataSource:getValue() then 
+		CpBinaryOptionElement:superClass().setState(self, BinaryOptionElement.STATE_RIGHT, true)
+	else
+		CpBinaryOptionElement:superClass().setState(self, BinaryOptionElement.STATE_LEFT, true)
 	end
-
-	CpBinaryOptionElement:superClass().onLeftButtonClicked(self, steps, noFocus)
 end
+
 Gui.registerGuiElement("CpBinaryyOption", CpBinaryOptionElement)
