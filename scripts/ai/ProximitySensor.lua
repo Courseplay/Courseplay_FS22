@@ -114,7 +114,7 @@ function ProximitySensor:update()
     self.objectId = nil
     self.hitTerrain = false
     if self.enabled then
-        local raycastMask = CollisionFlag.DEFAULT + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE
+        local raycastMask = CollisionFlag.DEFAULT + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE + CollisionFlag.BUILDING
         raycastClosest(x, y1 + self.height, z, nx, ny, nz, self.range, 'raycastCallback', self, raycastMask)
         if CpDebug:isChannelActive(CpDebug.DBG_TRAFFIC, self.vehicle) then
             DebugUtil.drawDebugLine(x, y1 + self.height, z, x + 5 * nx, y1 + self.height + 5 * ny, z + 5 * nz, 0, 1, 0)
