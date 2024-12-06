@@ -877,6 +877,10 @@
 			<Text language="de"><![CDATA[Grundeinstellungen]]></Text>
 			<Text language="en"><![CDATA[Basic settings]]></Text>
 		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_subTitle_vineField">
+			<Text language="de"><![CDATA[Weinfeld Einstellungen]]></Text>
+			<Text language="en"><![CDATA[Vine field settings]]></Text>
+		</Translation>
 		<Translation name="CP_vehicle_courseGeneratorSetting_subTitle_headland">
 			<Text language="de"><![CDATA[Einstellungen Vorgewende]]></Text>
 			<Text language="en"><![CDATA[Settings headland]]></Text>

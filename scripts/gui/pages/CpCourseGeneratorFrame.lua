@@ -5,13 +5,15 @@
 
 CpCourseGeneratorFrame = {
 	CATEGRORIES = {
-		BASIC_SETTINGS = 1,
-		IN_GAME_MAP = 2,
+		IN_GAME_MAP = 1,
+		BASIC_SETTINGS = 2,
+		Vine_SETTINGS = 3
 	},
 	INPUT_CONTEXT_NAME = "CP_COURSE_GENERATOR_MENU",
 	CATEGRORY_TEXTS = {
-		"CP_vehicle_courseGeneratorSetting_subTitle_basic",
 		"CP_ingameMenu_map_title",
+		"CP_vehicle_courseGeneratorSetting_subTitle_basic",
+		"CP_vehicle_courseGeneratorSetting_subTitle_vineField",
 	},
 	CLEAR_INPUT_ACTIONS = {
 		InputAction.MENU_ACTIVATE,
@@ -155,7 +157,7 @@ function CpCourseGeneratorFrame:initialize(menu)
 		self.subCategoryTabs[key].onClickCallback = function ()
 			self:updateSubCategoryPages(key)
 		end
-		if key == 2 then
+		if key == self.CATEGRORIES.IN_GAME_MAP then
 			self.subCategoryPages[key] = self.containerMap
 		else
 			self.subCategoryPages[key] = self.containerPrefab:clone(self)
@@ -219,7 +221,7 @@ function CpCourseGeneratorFrame:onFrameOpen()
 	local title = string.format(g_i18n:getText(pageTitle), vehicle:getName())
 	self.categoryHeaderText:setText(title)
 
-	local layout = self.subCategoryPages[1]:getDescendantByName("layout")
+	local layout = self.subCategoryPages[self.CATEGRORIES.BASIC_SETTINGS]:getDescendantByName("layout")
 	for i = #layout.elements, 1, -1 do
 		layout.elements[i]:delete()
 	end
@@ -228,6 +230,17 @@ function CpCourseGeneratorFrame:onFrameOpen()
 		self.sectionHeaderPrefab, settings)
 	CpSettingsUtil.updateGuiElementsBoundToSettings(layout, vehicle)
 	
+	settings = vehicle:getCpVineSettings()
+	settingsBySubTitle = CpCourseGeneratorSettings.getVineSettingSetup()
+	layout = self.subCategoryPages[self.CATEGRORIES.Vine_SETTINGS]:getDescendantByName("layout")
+	for i = #layout.elements, 1, -1 do
+		layout.elements[i]:delete()
+	end
+	CpSettingsUtil.generateAndBindGuiElementsToSettings(settingsBySubTitle,
+		layout, self.multiTextPrefab, self.booleanPrefab, 
+		self.sectionHeaderPrefab, settings)
+	CpSettingsUtil.updateGuiElementsBoundToSettings(layout, vehicle)
+
 	-- g_messageCenter:subscribe(MessageType.AI_VEHICLE_STATE_CHANGE, self.onAIVehicleStateChanged, self)
 	self.activeWorkerList:reloadData()
 	g_messageCenter:subscribe(MessageType.AI_JOB_STARTED, function(self)
@@ -283,8 +296,7 @@ function CpCourseGeneratorFrame:onFrameOpen()
 	self.startJobPending = false
 	self.ingameMap:onOpen()
 
-	self:updateSubCategoryPages(self.CATEGRORIES.BASIC_SETTINGS)
-	FocusManager:setFocus(self.subCategoryPages[self.CATEGRORIES.BASIC_SETTINGS]:getDescendantByName("layout"))
+	self:updateSubCategoryPages(self.CATEGRORIES.IN_GAME_MAP)
 
 	CpCourseGeneratorFrame:superClass().onFrameOpen(self)
 end
