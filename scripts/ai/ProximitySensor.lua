@@ -460,7 +460,7 @@ function VerticalProximitySensor:update()
     self.objectId = nil
     self.hitTerrain = false
     if self.enabled then
-        local raycastMask = CollisionFlag.DEFAULT + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE
+        local raycastMask = CollisionFlag.DEFAULT + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE + CollisionFlag.BUILDING
         -- straight up from 10 cm above the ground to height
         raycastClosest(x, y + self.minHeightAboveGround, z, 0, 1, 0,
                 self.height - self.minHeightAboveGround,
