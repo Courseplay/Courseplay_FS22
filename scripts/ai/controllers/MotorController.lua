@@ -26,7 +26,7 @@ function MotorController:update()
         return
     end
     if not self.settings.fuelSave:getValue() then
-        if not self.vehicle:getIsMotorStarted() then
+        if not self:getIsStarted() then
             self:startMotor()
             self.vehicle:raiseAIEvent('onAIFieldWorkerContinue', 'onAIImplementContinue')
         end
@@ -35,7 +35,7 @@ function MotorController:update()
     end
     if self:isFuelSaveDisabled() or self.driveStrategy:getMaxSpeed() >
         self.speedThreshold then
-        if not self.vehicle:getIsMotorStarted() then
+        if not self:getIsStarted() then
             self:startMotor()
             self.vehicle:raiseAIEvent("onAIFieldWorkerContinue", "onAIImplementContinue")
         end
@@ -47,7 +47,7 @@ function MotorController:update()
             self.timerSet = true
         end
         if self.timer:get() then
-            if self.vehicle:getIsMotorStarted() then
+            if self:getIsStarted() then
                 self.vehicle:raiseAIEvent('onAIFieldWorkerBlock', 'onAIImplementBlock')
                 self:stopMotor()
             end
@@ -113,12 +113,8 @@ end
 
 function MotorController:startMotor()
     self.vehicle.spec_cpAIWorker.motorDisabled = false
-    -- TODO 25 for whatever reason, vehicle:getIsMotorStarted() returns true only much later after the motor was started
-    -- so we call this and log for quite a few seconds when the motor was not running when the helper was started
-    if self.vehicle:getCanBeTurnedOn() then
-        self.implement:startMotor()
-        self:debug('Started motor after fuel save.')
-    end
+    self.implement:startMotor()
+    self:debug('Started motor after fuel save.')
 end
 
 function MotorController:stopMotor()
@@ -132,4 +128,8 @@ function MotorController:onFinished()
     if spec.fillTrigger.isFilling then
         self.implement:setFillUnitIsFilling(false)
     end
+end
+
+function MotorController:getIsStarted()
+    return self.vehicle:getMotorState() ~= MotorState.OFF
 end
