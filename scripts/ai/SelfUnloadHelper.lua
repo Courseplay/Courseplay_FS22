@@ -144,10 +144,11 @@ function SelfUnloadHelper:getTargetParameters(fieldPolygon, myVehicle, implement
 
     local _, _, dZ = localToLocal(trailerRootNode, targetNode, 0, 0, 0)
 
-    -- this should put the pipe's end 1.1 m from the trailer's edge towards the middle. We are not aiming for
+    -- this should put the pipe's end 1.6 m from the trailer's edge towards the middle (but not more than half the width
+    -- of the trailer, so the pipe always stays on the side closer to the harvester. We are not aiming for
     -- the centerline of the trailer to avoid bumping into very wide trailers, we don't want to get closer
     -- than what is absolutely necessary.
-    local offsetX = math.max(3.8, math.abs(objectWithPipeAttributes.pipeOffsetX)) + trailerWidth / 2 - 1.6
+    local offsetX = math.max(3.8, math.abs(objectWithPipeAttributes.pipeOffsetX)) + trailerWidth / 2 - math.min(1.6, trailerWidth / 2)
     offsetX = objectWithPipeAttributes.pipeOnLeftSide and -offsetX or offsetX
     -- arrive near the trailer alignLength meters behind the target, from there, continue straight a bit
     local _, steeringLength = AIUtil.getSteeringParameters(myVehicle)
