@@ -114,7 +114,11 @@ function CoursePlot:drawLineBetween(map, x, z, nx, nz, isHudMap, lineThickness, 
 	local endX, endY, _, ev = CpGuiUtil.worldToScreen(map, nx, nz, isHudMap)
 	local dx, dz = nx - x, nz - z
 	local length = MathUtil.vector2Length(dx, dz)
-	local dirX, dirZ = length > 0 and MathUtil.vector2Normalize(dx, dz) or 0, 1
+	local dirX, dirZ = 0, 1
+	if length <= 0 then
+		return
+	end
+	dirX, dirZ = MathUtil.vector2Normalize(dx, dz)
 	if startX and startY and endX and endY then
 		local dx2D = endX - startX
 		local dy2D = ( endY - startY ) / g_screenAspectRatio
