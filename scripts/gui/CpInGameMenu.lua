@@ -86,10 +86,15 @@ end
 -- Lines 279-324
 function CpInGameMenu:initializePages()
 	self.clickBackCallback = self:makeSelfCallback(self.onButtonBack)
-	self.pageGlobalSettings:initialize()
-	self.pageVehicleSettings:initialize()
-	self.pageCourseGenerator:initialize()
-	self.pageCourseManager:initialize()
+
+	self.pageCourseGenerator:setInGameMap(
+		g_inGameMenu.baseIngameMap, 
+		g_currentMission.hud)
+
+	self.pageGlobalSettings:initialize(self)
+	self.pageVehicleSettings:initialize(self)
+	self.pageCourseGenerator:initialize(self)
+	self.pageCourseManager:initialize(self)
 	self.pageCourseManager:setCourseStorage(self.courseStorage)
 end
 
@@ -143,41 +148,38 @@ end
 -- Lines 365-397
 function CpInGameMenu:setupMenuButtonInfo()
 	CpInGameMenu:superClass().setupMenuButtonInfo(self)
-
 	local onButtonBackFunction = self.clickBackCallback
-	local onButtonQuitFunction = self:makeSelfCallback(self.onButtonQuit)
-	local onButtonSaveGameFunction = self:makeSelfCallback(self.onButtonSaveGame)
-	self.backButtonInfo = {
-		inputAction = InputAction.MENU_BACK,
-		text = self.l10n:getText(CpInGameMenu.L10N_SYMBOL.BUTTON_BACK),
-		callback = onButtonBackFunction
-	}
-	self.saveButtonInfo = {
-		showWhenPaused = true,
-		inputAction = InputAction.MENU_ACTIVATE,
-		text = self.l10n:getText(CpInGameMenu.L10N_SYMBOL.BUTTON_SAVE_GAME),
-		callback = onButtonSaveGameFunction
-	}
-	self.quitButtonInfo = {
-		showWhenPaused = true,
-		inputAction = InputAction.MENU_CANCEL,
-		text = self.l10n:getText(CpInGameMenu.L10N_SYMBOL.BUTTON_CANCEL_GAME),
-		callback = onButtonQuitFunction
-	}
+	local onButtonPagePreviousFunction = self:makeSelfCallback(self.onPagePrevious)
+	local onButtonPageNextFunction = self:makeSelfCallback(self.onPageNext)
+
+
+	self.backButtonInfo = { 
+		inputAction = InputAction.MENU_BACK,  
+		text = g_i18n:getText(InGameMenu.L10N_SYMBOL.BUTTON_BACK),
+		callback = onButtonBackFunction }
+	self.nextPageButtonInfo = { 
+		inputAction = InputAction.MENU_PAGE_NEXT,
+		text = g_i18n:getText("ui_ingameMenuNext"),
+		callback = self.onPageNext }
+	self.prevPageButtonInfo = { 
+		inputAction = InputAction.MENU_PAGE_PREV,
+		text = g_i18n:getText("ui_ingameMenuPrev"),
+		callback = self.onPagePrevious }
+
 
 	self.defaultMenuButtonInfo = {
 		self.backButtonInfo,
-		self.saveButtonInfo,
-		self.quitButtonInfo
+		self.nextPageButtonInfo,
+		self.prevPageButtonInfo
 	}
 
 	self.defaultMenuButtonInfoByActions[InputAction.MENU_BACK] = self.defaultMenuButtonInfo[1]
-	self.defaultMenuButtonInfoByActions[InputAction.MENU_ACTIVATE] = self.defaultMenuButtonInfo[2]
-	self.defaultMenuButtonInfoByActions[InputAction.MENU_CANCEL] = self.defaultMenuButtonInfo[3]
+	self.defaultMenuButtonInfoByActions[InputAction.MENU_PAGE_NEXT] = self.defaultMenuButtonInfo[2]
+	self.defaultMenuButtonInfoByActions[InputAction.MENU_PAGE_PREV] = self.defaultMenuButtonInfo[3]
 	self.defaultButtonActionCallbacks = {
 		[InputAction.MENU_BACK] = onButtonBackFunction,
-		[InputAction.MENU_CANCEL] = onButtonQuitFunction,
-		[InputAction.MENU_ACTIVATE] = onButtonSaveGameFunction
+		[InputAction.MENU_PAGE_NEXT] = onButtonPageNextFunction,
+		[InputAction.MENU_PAGE_PREV] = onButtonPagePreviousFunction
 	}
 end
 
@@ -225,6 +227,12 @@ function CpInGameMenu:onMenuOpened()
 	-- else
 	-- 	self.messageCenter:publish(MessageType.GUI_INGAME_OPEN)
 	-- end
+end
+
+function CpInGameMenu:onButtonBack(_, _, force)
+	if force or self.currentPage:requestClose(self.clickBackCallback) then
+		CpInGameMenu:superClass().onButtonBack(self)
+	end
 end
 
 -- Lines 559-578

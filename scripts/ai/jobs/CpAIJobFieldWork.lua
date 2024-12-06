@@ -262,8 +262,8 @@ function CpAIJobFieldWork:isPipeOnLeftSide(vehicle)
     end
 end
 
-function CpAIJobFieldWork:getIsAvailableForVehicle(vehicle)
-    return false --vehicle.getCanStartCpFieldWork and vehicle:getCanStartCpFieldWork() -- TODO_25
+function CpAIJobFieldWork:getIsAvailableForVehicle(vehicle, cpJobsAllowed)
+    return CpAIJob.getIsAvailableForVehicle(self, vehicle, cpJobsAllowed) and vehicle.getCanStartCpFieldWork and vehicle:getCanStartCpFieldWork() -- TODO_25
 end
 
 function CpAIJobFieldWork:resetStartPositionAngle(vehicle)

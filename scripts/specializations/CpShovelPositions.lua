@@ -358,7 +358,6 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, height
 	local ax, ay, az = localToLocal(armTool.node, armVehicle.rootNode, 0, 0, 0)
 	local wx, _, wz = getWorldTranslation(armVehicle.rootNode)
 
-
 	local function draw(x1, y1, z1, x2, y2, z2, r, g, b)
 		if CpUtil.getCurrentVehicle() == shovelVehicle.rootVehicle and
 			CpDebug:isChannelActive(CpDebug.DBG_SILO, shovelVehicle.rootVehicle) then 
@@ -445,7 +444,7 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, height
 	end
 
 	local alpha, oldRotRelativeArmRot = 0, 0
-	if hasIntersection then
+	if hasIntersection and i1y ~= nil then
 		--- Controls the arm height
 		setTranslation(armProjectionNode, 0, i1y, i1z)
 		setTranslation(armToolRefNode, ax, ay, az)

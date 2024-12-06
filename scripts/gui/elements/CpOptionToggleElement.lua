@@ -19,7 +19,6 @@ function CpOptionToggleElement:copyAttributes(src)
 	self.onClickCenterCallback = src.onClickCenterCallback
 end
 
-
 function CpOptionToggleElement:onCenterButtonClicked()
 	self:raiseCallback("onClickCenterCallback", self)
 	if self.dataSource ~= nil then

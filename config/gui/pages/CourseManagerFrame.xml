@@ -42,14 +42,14 @@
                     <Text profile="fs25_statisticsHeaderText" size="340px 104px" id="leftColumnHeader"  />
                 </BoxLayout> -->
 
-                <SmoothList profile="fs25_pricesProductList" id="leftList" focusChangeTop="nil" focusChangeBottom="nil" selectedWithoutFocus="true">
+                <SmoothList profile="cpLeftList" id="leftList" focusChangeTop="nil" focusChangeBottom="nil" selectedWithoutFocus="true">
                     <ListItem profile="fs25_pricesProductListItem">
                         <Bitmap name="icon" profile="fs25_pricesProductListItemIcon" />
                         <Text name="title" profile="fs25_pricesProductListItemName" />
                     </ListItem>
                 </SmoothList>
 
-                <ThreePartBitmap profile="fs25_pricesProductListSliderBox">
+                <ThreePartBitmap profile="cpLeftListSliderBox">
                     <Slider profile="fs25_listSlider" dataElementId="leftList" id="leftListSlider" />
                 </ThreePartBitmap>
             </GuiElement>
@@ -59,14 +59,14 @@
                     <Text profile="fs25_statisticsHeaderText" size="330px 104px" id="rightColumnHeader"  />
                 </BoxLayout> -->
 
-                <SmoothList profile="fs25_pricesPriceList" id="rightList" focusChangeTop="nil" focusChangeBottom="nil">
+                <SmoothList profile="cpRightList" id="rightList" focusChangeTop="nil" focusChangeBottom="nil">
                     <ListItem profile="fs25_pricesPriceListItem">
                         <Bitmap name="icon" profile="fs25_pricesPriceListItemHotspot" />
                         <Text name="title" profile="fs25_pricesPriceListItemName" />
                     </ListItem>
                 </SmoothList>
 
-                <ThreePartBitmap profile="fs25_pricesPriceSliderBox">
+                <ThreePartBitmap profile="cpRightListSliderBox">
                     <Slider profile="fs25_listSlider" dataElementId="rightList" id="rightListSlider" />
                 </ThreePartBitmap>
             </GuiElement>
@@ -93,9 +93,9 @@
             <imageColor value="$preset_colorWhite_50" />
             <imageSliceId value="gui.prices_buying" />
         </Profile>
-        <Profile name="fs25_pricesProductList" extends="emptyPanel"
+        <Profile name="cpLeftList" extends="emptyPanel"
             with="anchorStretchingYLeft pivotTopLeft">
-            <width value="396px" />
+            <width value="695px" />
             <absoluteSizeOffset value="0px 56px" />
             <position value="25px -56px" />
         </Profile>
@@ -122,13 +122,13 @@
             <textOffset value="-10px 0px" />
             <textAlignment value="right" />
         </Profile>
-        <Profile name="fs25_pricesProductListSliderBox" extends="fs25_listSliderBox"
+        <Profile name="cpLeftListSliderBox" extends="fs25_listSliderBox"
             with="anchorTopLeft">
             <absoluteSizeOffset value="0px 56px" />
-            <position value="434px -56px" />
+            <position value="733px -56px" />
         </Profile>
-        <Profile name="fs25_pricesPriceList" extends="emptyPanel" with="anchorTopRight">
-            <size value="1025px 240px" />
+        <Profile name="cpRightList" extends="emptyPanel" with="anchorStretchingYLeft pivotTopRight">
+            <width value="695px" />
             <absoluteSizeOffset value="0px 56px" />
             <position value="-63px -56px" />
             <selectedWithoutFocus value="false" />
@@ -172,8 +172,8 @@
             <format value="currency" />
             <formatDecimalPlaces value="0" />
         </Profile>
-        <Profile name="fs25_pricesPriceSliderBox" extends="fs25_listSliderBox" with="anchorTopRight">
-            <height value="240px" />
+        <Profile name="cpRightListSliderBox" extends="fs25_listSliderBox" with="anchorTopRight">
+            <absoluteSizeOffset value="0px 56px" />
             <position value="-41px -56px" />
         </Profile>
         <Profile name="fs25_pricesNoSellpointsText" extends="textDefault" with="anchorTopCenter">
