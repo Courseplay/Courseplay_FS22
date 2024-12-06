@@ -156,6 +156,7 @@
     <!--Vehicle settings-->
     <!---->
     <text name="CP_vehicle_setting_title" text="Configuração do veículo para (%s)"/>
+    <text name="CP_vehicle_setting_subTitle_vehicle" text="Vehicle settings"/>
     <text name="CP_vehicle_setting_subTitle_basic" text="Configurações básicas"/>
     <text name="CP_vehicle_setting_subTitle_implement" text="Configurações das alfaias"/>
     <text name="CP_vehicle_setting_subTitle_combine" text="Configurações da Ceifeira"/>
@@ -515,6 +516,10 @@ A rota é guardada automaticamente ao fechar o editor e sobrepõe-se a qualquer 
     <text name="CP_controllerGui_stopRecording" text="Pára a gravação de campo personalizado."/>
     <text name="CP_controllerGui_pauseRecording" text="Pausa a gravação de campo personalizado."/>
     <text name="CP_controllerGui_unpauseRecording" text="Continua a gravação de campo personalizado."/>
+    <!---->
+    <!--CP ingame menu-->
+    <!---->
+    <text name="CP_ingameMenu_map_title" text="Map"/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -1008,7 +1013,7 @@ Now your selection should look similar to the image.
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Mostra o menu do canal de depuração sim/não."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Abrir mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Iniciar/parar Condutor"/>
-    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Change current selected job"/>
+    <text name="input_CP_GENERATE_COURSE" text="CP: Change current selected job"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Altera Ponto de Ínicio"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: Limpa actual rotas"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Mostra as rotas actuais do veículo"/>

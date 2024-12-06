@@ -156,6 +156,7 @@
     <!--Vehicle settings-->
     <!---->
     <text name="CP_vehicle_setting_title" text="车辆设置(%s)"/>
+    <text name="CP_vehicle_setting_subTitle_vehicle" text="Vehicle settings"/>
     <text name="CP_vehicle_setting_subTitle_basic" text="基本设置"/>
     <text name="CP_vehicle_setting_subTitle_implement" text="工具设置"/>
     <text name="CP_vehicle_setting_subTitle_combine" text="收割机设置"/>
@@ -515,6 +516,10 @@
     <text name="CP_controllerGui_stopRecording" text="停止自定义田地记录。"/>
     <text name="CP_controllerGui_pauseRecording" text="暂停自定义田地记录。"/>
     <text name="CP_controllerGui_unpauseRecording" text="继续自定义田地记录。"/>
+    <!---->
+    <!--CP ingame menu-->
+    <!---->
+    <text name="CP_ingameMenu_map_title" text="Map"/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -1006,7 +1011,7 @@ hud还显示助手工作时堆或思洛存储器的剩余填充水平。
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: 打开迷你HUB"/>
     <text name="input_CP_START_STOP" text="CP: 启动/停止司机
 "/>
-    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: 更改当前选定的任务路线"/>
+    <text name="input_CP_GENERATE_COURSE" text="CP: Change current selected job"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: 更改起始点"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: 清除当前加载的任务路线"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="显示车辆的当前路线"/>

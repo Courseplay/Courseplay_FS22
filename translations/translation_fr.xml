@@ -156,6 +156,7 @@
     <!--Vehicle settings-->
     <!---->
     <text name="CP_vehicle_setting_title" text="Paramètres du véhicule pour (%s)"/>
+    <text name="CP_vehicle_setting_subTitle_vehicle" text="Vehicle settings"/>
     <text name="CP_vehicle_setting_subTitle_basic" text="Paramètres de base"/>
     <text name="CP_vehicle_setting_subTitle_implement" text="Paramètres outil"/>
     <text name="CP_vehicle_setting_subTitle_combine" text="Paramètres moissonneuse-batteuse"/>
@@ -515,6 +516,10 @@ La course est automatiquement sauvegardée à la fermeture de l'éditeur et remp
     <text name="CP_controllerGui_stopRecording" text="Arrêter l'enregistrement du champ personnalisé"/>
     <text name="CP_controllerGui_pauseRecording" text="Suspendre l'enregistrement du champ personnalisé"/>
     <text name="CP_controllerGui_unpauseRecording" text="Reprendre l'enregistrement du champ personnalisé"/>
+    <!---->
+    <!--CP ingame menu-->
+    <!---->
+    <text name="CP_ingameMenu_map_title" text="Map"/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -999,7 +1004,7 @@ Votre sélection devrait ressembler à l'illustration ci-contre.
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Affiche/masque les canaux de debogage."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Affiche mini ATH"/>
     <text name="input_CP_START_STOP" text="CP: Ouvrier Courseplay"/>
-    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Change current selected job"/>
+    <text name="input_CP_GENERATE_COURSE" text="CP: Change current selected job"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Change le point de départ"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: Efface la course actuellement sélectionnée"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="CP: Affiche la course actuelle du véhicule"/>
