@@ -1495,7 +1495,7 @@ end
 
 function AIDriveStrategyCombineCourse:handleCombinePipe(dt)
     -- don't open the pipe while turning
-    if not self.state == self.states.TURNING and (self:isAGoodTrailerInRange() or self:isAutoDriveWaitingForPipe()) then
+    if self.state ~= self.states.TURNING and (self:isAGoodTrailerInRange() or self:isAutoDriveWaitingForPipe()) then
         self.pipeController:openPipe()
     else
         if not self.forcePipeOpen:get() then
