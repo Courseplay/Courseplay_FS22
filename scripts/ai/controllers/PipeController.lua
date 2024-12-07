@@ -209,7 +209,7 @@ function PipeController:getClosestObject()
 end
 
 function PipeController:isAutoAimPipe()
-     return #self.pipeSpec.autoAimingStates > 0
+     return self.pipeSpec.numAutoAimingStates > 0
 end
 
 function PipeController:handleChopperPipe()

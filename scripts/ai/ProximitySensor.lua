@@ -182,7 +182,7 @@ function ProximitySensor:showDebugInfo()
             end
         end
     end
-    renderText(0.6, 0.4 + self.yRotation / 10, 0.018, text .. string.format(' %d', math.deg(self.yRotation)))
+    renderText(0.6, 0.4 + self.yRotation / 5, 0.012, text .. string.format(' %d', math.deg(self.yRotation)))
 end
 
 ---@class ProximitySensorPack

@@ -175,16 +175,6 @@ function Courseplay.saveToXMLFile(missionInfo)
 end
 FSCareerMissionInfo.saveToXMLFile = Utils.prependedFunction(FSCareerMissionInfo.saveToXMLFile, Courseplay.saveToXMLFile)
 
--- TODO 25
-function Courseplay.raiseAIEvent(vehicle, event1, event2, something, ...)
-	if event1 ~= 'onAIFieldWorkerActive' and event1 ~= 'onAIFieldWorkerTurnProgress' then
-		CpUtil.infoVehicle(vehicle, "raiseAIEvent: %s %s %s", tostring(event1), tostring(event2), tostring(something))
-		g_devHelper:showFs25Debug(vehicle)
-	end
-end
-
-AIVehicle.raiseAIEvent = Utils.prependedFunction(AIVehicle.raiseAIEvent, Courseplay.raiseAIEvent)
-
 function Courseplay:update(dt)
     g_devHelper:update()
     g_bunkerSiloManager:update(dt)
