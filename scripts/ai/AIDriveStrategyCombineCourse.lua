@@ -1306,7 +1306,7 @@ function AIDriveStrategyCombineCourse:shouldHoldInTurnManeuver()
     local discharging = self:isDischarging() and not self:alwaysNeedsUnloader()
     local stillProcessingFruit = self:alwaysNeedsUnloader() and self:isProcessingFruit()
     local isFinishingRow = self.aiTurn and self.aiTurn:isFinishingRow()
-    local waitForStraw = self.combineController:isDroppingStrawSwath() and not isFinishingRow
+    local waitForStraw = self.combineController:isDroppingStrawSwath() and not isFinishingRow and not self:isOnHeadland()
 
     self:debugSparse('Turn maneuver=> Autoaim: %s, discharging: %s, wait for straw: %s, straw swath active: %s, processing: %s, finishing row: %s',
             tostring(self:hasAutoAimPipe()), tostring(discharging), tostring(waitForStraw),
