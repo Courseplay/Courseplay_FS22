@@ -1495,7 +1495,7 @@ end
 
 function AIDriveStrategyCombineCourse:handleCombinePipe(dt)
     -- don't open the pipe while turning
-    if self.state ~= self.states.TURNING and (self:isAGoodTrailerInRange() or self:isAutoDriveWaitingForPipe()) then
+    if self:isPipeOpenEnabled() and (self:isAGoodTrailerInRange() or self:isAutoDriveWaitingForPipe()) then
         self.pipeController:openPipe()
     else
         if not self.forcePipeOpen:get() then
@@ -1504,6 +1504,18 @@ function AIDriveStrategyCombineCourse:handleCombinePipe(dt)
             -- upwards
             self.pipeController:closePipe(true)
         end
+    end
+end
+
+--- we don't want random triggers to open the pipe while turning or driving to another trailer
+function AIDriveStrategyCombineCourse:isPipeOpenEnabled()
+    if self:isTurning() then
+        return false
+    elseif self.state == self.states.UNLOADING_ON_FIELD and
+            self:isUnloadStateOneOf(self.drivingToSelfUnloadStates) and not self:isCloseToCourseEnd(10) then
+        return false
+    else
+        return true
     end
 end
 
