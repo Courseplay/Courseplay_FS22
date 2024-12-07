@@ -50,7 +50,7 @@ end
 --- making sure that the towed implement's trajectory remains closer to the
 --- course.
 ---@param course Course
-function AIUtil.calculateTightTurnOffset(vehicle, vehicleTurningRadius, course, previousOffset, useCalculatedRadius)
+function AIUtil.calculateTightTurnOffset(vehicle, vehicleTurningRadius, course, previousOffset)
 	local tightTurnOffset
 
 	local function smoothOffset(offset)
@@ -58,12 +58,7 @@ function AIUtil.calculateTightTurnOffset(vehicle, vehicleTurningRadius, course, 
 	end
 
 	-- first of all, does the current waypoint have radius data?
-	local r
-	if useCalculatedRadius then
-		r = course:getCalculatedRadiusAtIx(course:getCurrentWaypointIx())
-	else
-		r = course:getRadiusAtIx(course:getCurrentWaypointIx())
-	end
+	local r = course:getCalculatedRadiusAtIx(course:getCurrentWaypointIx())
 	if not r then
 		return smoothOffset(0)
 	end
@@ -104,12 +99,52 @@ function AIUtil.calculateTightTurnOffset(vehicle, vehicleTurningRadius, course, 
 
 	-- smooth the offset a bit to avoid sudden changes
 	tightTurnOffset = smoothOffset(offset)
-	CpUtil.debugVehicle(CpDebug.DBG_AI_DRIVER, vehicle,
+	CpUtil.debugVehicle(CpDebug.DBG_TURN, vehicle,
 		'Tight turn, r = %.1f, tow bar = %.1f m, currentAngle = %.0f, nextAngle = %.0f, offset = %.1f, smoothOffset = %.1f',
 		r, towBarLength, currentAngle, nextAngle, offset, tightTurnOffset )
 	-- remember the last value for smoothing
 	return tightTurnOffset
 end
+
+function AIUtil.calculateTightTurnOffsetForTurnManeuver(vehicle, steeringLength, course, ix, previousOffset)
+	local tightTurnOffset
+
+	local function smoothOffset(offset)
+		return (offset + 4 * (previousOffset or 0 )) / 5
+	end
+
+	-- first of all, does the current waypoint have radius data?
+	local r = course:getCalculatedRadiusAtIx(ix)
+	if not r then
+		return smoothOffset(0)
+	end
+
+	-- Ok, looks like a tight turn, so we need to move a bit left or right of the course
+	-- to keep the tool on the course. Use a little less than the calculated, this is purely empirical and should probably
+	-- be reviewed why the calculated one seems to overshoot.
+	local offset = 1 * AIUtil.getTractorRadiusFromImplementRadius(r, steeringLength) - r
+	if offset ~= offset then
+		-- check for nan
+		return smoothOffset(0)
+	end
+	-- figure out left or right now?
+	local nextAngle = course:getWaypointAngleDeg(ix + 1)
+	local currentAngle = course:getWaypointAngleDeg(ix)
+	if not nextAngle or not currentAngle then
+		return smoothOffset(0)
+	end
+
+	if CpMathUtil.getDeltaAngle(math.rad(nextAngle), math.rad(currentAngle)) > 0 then offset = -offset end
+
+	-- smooth the offset a bit to avoid sudden changes
+	tightTurnOffset = smoothOffset(offset)
+	CpUtil.debugVehicle(CpDebug.DBG_TURN, vehicle,
+			'Tight turn, r = %.1f, tow bar = %.1f m, currentAngle = %.0f, nextAngle = %.0f, offset = %.1f, smoothOffset = %.1f',
+			r, steeringLength, currentAngle, nextAngle, offset, tightTurnOffset )
+	-- remember the last value for smoothing
+	return tightTurnOffset
+end
+
 
 function AIUtil.getTowBarLength(vehicle)
 	-- is there a wheeled implement behind the tractor and is it on a pivot?
@@ -141,8 +176,17 @@ function AIUtil.getSteeringParameters(vehicle)
 end
 
 function AIUtil.getOffsetForTowBarLength(r, towBarLength)
+	return AIUtil.getTractorRadiusFromImplementRadius(r, towBarLength) - r
+end
+
+function AIUtil.getImplementRadiusFromTractorRadius(r, towBarLength)
+	local rImplement = math.sqrt( r * r - towBarLength * towBarLength ) -- the radius the tractor should be on
+	return rImplement
+end
+
+function AIUtil.getTractorRadiusFromImplementRadius(r, towBarLength)
 	local rTractor = math.sqrt( r * r + towBarLength * towBarLength ) -- the radius the tractor should be on
-	return rTractor - r
+	return rTractor
 end
 
 function AIUtil.getArticulatedAxisVehicleReverserNode(vehicle)
@@ -359,9 +403,9 @@ function AIUtil.getFirstAttachedImplement(vehicle, suppressLog)
 			-- the distance from the vehicle's root node to the front of the implement
 			local _, _, d = localToLocal(implement.object.rootNode, AIUtil.getDirectionNode(vehicle), 0, 0,
 				implement.object.size.length / 2 + implement.object.size.lengthOffset)
-			if implement.object.spec_leveler then 
+			if implement.object.spec_leveler then
 				local nodeData = ImplementUtil.getLevelerNode(implement.object)
-				if nodeData then 
+				if nodeData then
 					_, _, d = localToLocal(nodeData.node, AIUtil.getDirectionNode(vehicle), 0, 0, 0)
 				end
 			end
@@ -388,9 +432,9 @@ function AIUtil.getLastAttachedImplement(vehicle,suppressLog)
 			-- the distance from the vehicle's root node to the back of the implement
 			local _, _, d = localToLocal(implement.object.rootNode, AIUtil.getDirectionNode(vehicle), 0, 0,
 				- implement.object.size.length / 2 + implement.object.size.lengthOffset)
-			if implement.object.spec_leveler then 
+			if implement.object.spec_leveler then
 				local nodeData = ImplementUtil.getLevelerNode(implement.object)
-				if nodeData then 
+				if nodeData then
 					_, _, d = localToLocal(nodeData.node, AIUtil.getDirectionNode(vehicle), 0, 0, 0)
 				end
 			end	
@@ -452,7 +496,7 @@ function AIUtil.getNumberOfChildVehiclesWithSpecialization(vehicle, specializati
 	return #vehicles
 end
 
---- Gets all child vehicles with a given specialization. 
+--- Gets all child vehicles with a given specialization.
 --- This can include the rootVehicle and implements
 --- that are not directly attached to the rootVehicle.
 ---@param vehicle table
@@ -462,7 +506,7 @@ end
 ---@return boolean at least one vehicle/implement was found
 function AIUtil.getAllChildVehiclesWithSpecialization(vehicle, specialization, specializationReference)
 	if vehicle == nil then
-		printCallstack() 
+		printCallstack()
 		CpUtil.info("Vehicle is nil!")
 		return {}, false
 	end
@@ -661,7 +705,7 @@ function AIUtil.getLength(vehicle)
 	if vehicle.getAIAgentSize then
 		vehicle:updateAIAgentAttachments()
 		local width, length, lengthOffset, frontOffset, height = vehicle:getAIAgentSize()
-		for _, attachment in ipairs(vehicle.spec_aiDrivable.attachments) do 
+		for _, attachment in ipairs(vehicle.spec_aiDrivable.attachments) do
 			length = length + attachment.length
 		end
 		return length
@@ -697,7 +741,7 @@ function AIUtil.hasCutterOnTrailerAttached(vehicle)
 end
 
 --- Checks if a cutter is attached and it's not registered as a valid combine cutter.
---- A Example is the New Holland Superflex header, when it is attached as transport trailer. 
+--- A Example is the New Holland Superflex header, when it is attached as transport trailer.
 function AIUtil.hasCutterAsTrailerAttached(vehicle)
 	local cutters, found = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, Cutter)
 	if not found then
@@ -705,12 +749,12 @@ function AIUtil.hasCutterAsTrailerAttached(vehicle)
 		return false
 	end
 	local combines, found = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, Combine)
-	if not found then 
+	if not found then
 		--- No valid combine object was found.
 		return false
 	end
 	local spec = combines[1].spec_combine
-	if spec.numAttachedCutters <= 0 then 
+	if spec.numAttachedCutters <= 0 then
 		--- The cutter is not available for threshing in this combination.
 		return true
 	end
