@@ -339,8 +339,13 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
     self:debug('Start generating')
 
     local turnEndNode, endZOffset = self.turnContext:getTurnEndNodeAndOffsets(self.steeringLength)
-    self:debug('r=%.1f, w=%.1f, steeringLength=%.1f, distanceToFieldEdge=%.1f, goalOffset=%.1f',
-            turningRadius, workWidth, steeringLength, distanceToFieldEdge, endZOffset)
+    local _, _, dz = localToLocal(vehicleDirectionNode, turnEndNode, 0, 0, 0)
+    -- zOffset from the turn end (work start). If there is a zOffset in the turn, that is, the turn end is behind the
+    -- turn start due to an angled headland, we still want to make the complete 180 turn es close to the field edge
+    -- as we can, so a towed implement, with an offset arc is turned 180 as soon as possible and has time to align
+    endZOffset = math.min(dz, endZOffset)
+    self:debug('r=%.1f, w=%.1f, steeringLength=%.1f, distanceToFieldEdge=%.1f, goalOffset=%.1f, dz=%.1f',
+            turningRadius, workWidth, steeringLength, distanceToFieldEdge, endZOffset, dz)
     self.course = self:findAnalyticPath(vehicleDirectionNode, 0, 0, turnEndNode, self.turnEndXOffset, endZOffset, self.turningRadius)
     local endingTurnLength
     local dBack = self:getDistanceToMoveBack(self.course, workWidth, distanceToFieldEdge)
@@ -372,9 +377,11 @@ function AnalyticTurnManeuver:getDistanceToMoveBack(course, workWidth, distanceT
     distanceToFieldEdge = distanceToFieldEdge + turnEndForwardOffset / 2
     -- with a headland at angle, we have to move further back, so the left/right edge of the swath also stays on
     -- the field, not only the center
-    distanceToFieldEdge = distanceToFieldEdge - (workWidth / 2 / math.abs(math.tan(self.turnContext:getHeadlandAngle())))
-    self:debug('dzMax=%.1f, workWidth=%.1f, spaceNeeded=%.1f, turnEndForwardOffset=%.1f, distanceToFieldEdge=%.1f', dzMax, workWidth,
-            spaceNeededOnFieldForTurn, turnEndForwardOffset, distanceToFieldEdge)
+    local headlandAngle = self.turnContext:getHeadlandAngle()
+    distanceToFieldEdge = distanceToFieldEdge -
+            (headlandAngle > 0.0001 and (workWidth / 2 / math.abs(math.tan(headlandAngle))) or 0)
+    self:debug('dzMax=%.1f, workWidth=%.1f, spaceNeeded=%.1f, turnEndForwardOffset=%.1f, headlandAngle=%.1f, distanceToFieldEdge=%.1f', dzMax, workWidth,
+            spaceNeededOnFieldForTurn, turnEndForwardOffset, math.deg(headlandAngle), distanceToFieldEdge)
     return spaceNeededOnFieldForTurn - distanceToFieldEdge
 end
 
@@ -400,12 +407,13 @@ TowedDubinsTurnManeuver = CpObject(DubinsTurnManeuver)
 function TowedDubinsTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius,
                                       workWidth, steeringLength, distanceToFieldEdge)
     self.debugPrefix = '(TowedDubinsTurn): '
-    local xOffset = turningRadius - AIUtil.getImplementRadiusFromTractorRadius(turningRadius, steeringLength)
+    self.vehicle = vehicle
+    local implementRadius = AIUtil.getImplementRadiusFromTractorRadius(turningRadius, steeringLength)
+    local xOffset = turningRadius - implementRadius
     self.turnEndXOffset = turnContext:isLeftTurn() and -xOffset or xOffset
-    self:debug('Towed implement, offsetting turn end %.1f to accommodate tight turn ', xOffset)
+    self:debug('Towed implement, offsetting turn end %.1f to accommodate tight turn, implement radius %.1f ', xOffset, implementRadius)
     AnalyticTurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius,
             workWidth, steeringLength, distanceToFieldEdge)
-    --self:calculateTractorCourse(self.course)
 end
 
 function TowedDubinsTurnManeuver:calculateTractorCourse(course)

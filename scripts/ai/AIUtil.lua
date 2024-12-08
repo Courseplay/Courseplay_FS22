@@ -179,13 +179,25 @@ function AIUtil.getOffsetForTowBarLength(r, towBarLength)
 	return AIUtil.getTractorRadiusFromImplementRadius(r, towBarLength) - r
 end
 
+--- When a tractor is towing an implement in a turn, on what radius will the implement be if
+--- the radius the tractor is driving is known?
+---@param r number the radius the tractor is on
+---@param towBarLength number the length of the tow bar
+---@return number the radius the implement will be on. Can be negative, meaning the implement will be
+--- moving backwards in the turn
 function AIUtil.getImplementRadiusFromTractorRadius(r, towBarLength)
-	local rImplement = math.sqrt( r * r - towBarLength * towBarLength ) -- the radius the tractor should be on
+	local rSquared = r * r - towBarLength * towBarLength
+	local rImplement = rSquared > 0 and math.sqrt(rSquared) or -math.sqrt(-rSquared)
 	return rImplement
 end
 
+--- When a tractor is towing an implement in a turn, on what radius will the tractor be if
+--- the radius the implement is known?
+---@param r number the radius the implement is following
+---@param towBarLength number the length of the tow bar
+---@return number the radius the tractor will be on
 function AIUtil.getTractorRadiusFromImplementRadius(r, towBarLength)
-	local rTractor = math.sqrt( r * r + towBarLength * towBarLength ) -- the radius the tractor should be on
+	local rTractor = math.sqrt( r * r + towBarLength * towBarLength )
 	return rTractor
 end
 
