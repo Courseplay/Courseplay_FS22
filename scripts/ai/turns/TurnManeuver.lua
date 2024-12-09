@@ -17,7 +17,7 @@ TurnManeuver.CHANGE_TO_FWD_WHEN_REACHED = 'changeToFwdWhenReached'
 -- making sure it is lowered when we reach the start of the next row)
 TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END = 'lowerImplementAtTurnEnd'
 -- Mark waypoints for dynamic tight turn offset
-TurnManeuver.tightTurnOffsetEnabled = false
+TurnManeuver.tightTurnOffsetEnabled = true
 
 ---@param course Course
 function TurnManeuver.hasTurnControl(course, ix, control)
@@ -354,11 +354,11 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
         dBack = dBack < 2 and 2 or dBack
         self:debug('Not enough space on field, regenerating course back %.1f meters', dBack)
         self.course = self:findAnalyticPath(vehicleDirectionNode, 0, -dBack, turnEndNode, self.turnEndXOffset, endZOffset + dBack, self.turningRadius)
-        self:applyTightTurnOffset(1000)
+        self:applyTightTurnOffset()
         local ixBeforeEndingTurnSection = self.course:getNumberOfWaypoints()
         self.course, endingTurnLength = self:adjustCourseToFitField(self.course, dBack, ixBeforeEndingTurnSection)
     else
-        self:applyTightTurnOffset(1000)
+        self:applyTightTurnOffset()
         endingTurnLength = self.turnContext:appendEndingTurnCourse(self.course, steeringLength, self.tightTurnOffsetEnabled)
     end
     TurnManeuver.setLowerImplements(self.course, endingTurnLength, true)
@@ -411,6 +411,7 @@ function TowedDubinsTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode
     local implementRadius = AIUtil.getImplementRadiusFromTractorRadius(turningRadius, steeringLength)
     local xOffset = turningRadius - implementRadius
     self.turnEndXOffset = turnContext:isLeftTurn() and -xOffset or xOffset
+    self.turnEndXOffset = 0
     self:debug('Towed implement, offsetting turn end %.1f to accommodate tight turn, implement radius %.1f ', xOffset, implementRadius)
     AnalyticTurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius,
             workWidth, steeringLength, distanceToFieldEdge)
