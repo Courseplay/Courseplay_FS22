@@ -217,8 +217,6 @@ end
 
 function CpCourseManager:addCourse(course,noEventSend)
     local spec = self.spec_cpCourseManager
-    -- reset temporary offset field course, this will be regenerated based on the current settings when the job starts
-    spec.offsetFieldWorkCourse = nil
     course:setVehicle(self)
     table.insert(spec.courses,course)
     SpecializationUtil.raiseEvent(self,"onCpCourseChange",course,noEventSend)
@@ -226,10 +224,11 @@ end
 
 function CpCourseManager:resetCourses()
     local spec = self.spec_cpCourseManager
-    spec.offsetFieldWorkCourse = nil
-    spec.courses = {}
-    spec.assignedCoursesID = nil
-    SpecializationUtil.raiseEvent(self,"onCpCourseChange")
+    if spec.courses then
+        spec.courses = {}
+        spec.assignedCoursesID = nil
+        SpecializationUtil.raiseEvent(self,"onCpCourseChange")
+    end
 end
 
 function CpCourseManager:resetCpCoursesFromGui()
