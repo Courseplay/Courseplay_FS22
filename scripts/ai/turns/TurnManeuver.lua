@@ -287,7 +287,7 @@ function TurnManeuver:adjustCourseToFitField(course, dBack, ixBeforeEndingTurnSe
         local forwardAfterTurn = Course.createFromNode(self.vehicle, self.turnContext.vehicleAtTurnEndNode, 0,
                 dFromTurnEnd + 1 + self.steeringLength / 2, dFromTurnEnd + 1 + self.steeringLength, 0.8, false)
         courseWithReversing:append(forwardAfterTurn)
-        --self:applyTightTurnOffset(forwardAfterTurn:getLength())
+        self:applyTightTurnOffset(forwardAfterTurn:getLength())
         -- allow early direction change when aligned
         TurnManeuver.setTurnControlForLastWaypoints(courseWithReversing, forwardAfterTurn:getLength(),
                 TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED, true, true)
@@ -308,7 +308,7 @@ function TurnManeuver:adjustCourseToFitField(course, dBack, ixBeforeEndingTurnSe
             local forwardAfterTurn = Course.createFromNode(self.vehicle, self.turnContext.workStartNode, 0,
                     dFromWorkStart, 1, 0.8, false)
             courseWithReversing:append(forwardAfterTurn)
-            --self:applyTightTurnOffset(forwardAfterTurn:getLength())
+            self:applyTightTurnOffset(forwardAfterTurn:getLength())
             TurnManeuver.setTurnControlForLastWaypoints(courseWithReversing, forwardAfterTurn:getLength(),
                     TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED, true, true)
         end
@@ -318,14 +318,15 @@ function TurnManeuver:adjustCourseToFitField(course, dBack, ixBeforeEndingTurnSe
         endingTurnLength = reverseAfterTurn:getLength()
     else
         self:debug('Reverse to work start not needed')
-        endingTurnLength = self.turnContext:appendEndingTurnCourse(courseWithReversing, self.steeringLength, self.tightTurnOffsetEnabled)
+        endingTurnLength = self.turnContext:appendEndingTurnCourse(courseWithReversing, self.steeringLength)
+        self:applyTightTurnOffset(endingTurnLength)
     end
     return courseWithReversing, endingTurnLength
 end
 
 function TurnManeuver:applyTightTurnOffset(length)
     if self.tightTurnOffsetEnabled then
-        -- use the default length (a quarter circle) unless there is a configured value
+        -- use the default length (a half circle) unless there is a configured value
         length = length or self.turningRadius * math.pi
         self.course:setUseTightTurnOffsetForLastWaypoints(
                 g_vehicleConfigurations:getRecursively(self.vehicle, 'tightTurnOffsetDistanceInTurns') or length)
@@ -340,9 +341,12 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 
     local turnEndNode, endZOffset = self.turnContext:getTurnEndNodeAndOffsets(self.steeringLength)
     local _, _, dz = localToLocal(vehicleDirectionNode, turnEndNode, 0, 0, 0)
-    -- zOffset from the turn end (work start). If there is a zOffset in the turn, that is, the turn end is behind the
-    -- turn start due to an angled headland, we still want to make the complete 180 turn es close to the field edge
-    -- as we can, so a towed implement, with an offset arc is turned 180 as soon as possible and has time to align
+    -- zOffset from the turn end (work start). If there is a negative zOffset in the turn, that is, the turn end is behind the
+    -- turn start due to an angled headland, we still want to make the complete 180 turn as close to the field edge
+    -- as we can, so a towed implement, with an offset arc is turned 180 as soon as possible and has time to align.
+    -- This way, the tight turn offset can make its magic during the 180 turn. Otherwise, the Dubins generated will split
+    -- the 180 into two turns, one over 120 at the turn start, and one less than 60 at the turn end. This latter one
+    -- is not enough direction change for the tight turn offset to work.
     endZOffset = math.min(dz, endZOffset)
     self:debug('r=%.1f, w=%.1f, steeringLength=%.1f, distanceToFieldEdge=%.1f, goalOffset=%.1f, dz=%.1f',
             turningRadius, workWidth, steeringLength, distanceToFieldEdge, endZOffset, dz)
@@ -359,7 +363,8 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
         self.course, endingTurnLength = self:adjustCourseToFitField(self.course, dBack, ixBeforeEndingTurnSection)
     else
         self:applyTightTurnOffset()
-        endingTurnLength = self.turnContext:appendEndingTurnCourse(self.course, steeringLength, self.tightTurnOffsetEnabled)
+        endingTurnLength = self.turnContext:appendEndingTurnCourse(self.course, steeringLength)
+        self:applyTightTurnOffset(endingTurnLength)
     end
     TurnManeuver.setLowerImplements(self.course, endingTurnLength, true)
 end
@@ -402,6 +407,9 @@ function DubinsTurnManeuver:findAnalyticPath(startNode, startXOffset, startZOffs
     return Course.createFromAnalyticPath(self.vehicle, path, true)
 end
 
+-- This is an experiment to create turns with towed implements that better align with the next row.
+-- Instead of relying on the dynamic tight turn offset, we offset the turn end already while generating the turn
+-- to get the implement closer to the next row.
 ---@class TowedDubinsTurnManeuver : DubinsTurnManeuver
 TowedDubinsTurnManeuver = CpObject(DubinsTurnManeuver)
 function TowedDubinsTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius,
@@ -411,20 +419,9 @@ function TowedDubinsTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode
     local implementRadius = AIUtil.getImplementRadiusFromTractorRadius(turningRadius, steeringLength)
     local xOffset = turningRadius - implementRadius
     self.turnEndXOffset = turnContext:isLeftTurn() and -xOffset or xOffset
-    self.turnEndXOffset = 0
     self:debug('Towed implement, offsetting turn end %.1f to accommodate tight turn, implement radius %.1f ', xOffset, implementRadius)
     AnalyticTurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius,
             workWidth, steeringLength, distanceToFieldEdge)
-end
-
-function TowedDubinsTurnManeuver:calculateTractorCourse(course)
-    local offsetX = 0
-    for ix, wp in ipairs(course.waypoints) do
-        offsetX = AIUtil.calculateTightTurnOffsetForTurnManeuver(self.vehicle, self.steeringLength, course, ix, offsetX)
-        wp:setOffsetPosition(offsetX, 0)
-    end
-    course:enrichWaypointData()
-    return course
 end
 
 ---@class LeftTurnReedsSheppSolver : ReedsSheppSolver

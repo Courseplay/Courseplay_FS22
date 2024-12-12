@@ -728,13 +728,8 @@ function CourseTurn:generateCalculatedTurn()
             -- TODO: the generated Dubins turn may not fit on the field and we we'll move it back, forcing the
             -- vehicle to reverse at the start and at the end of the turn. This will be very slow, and if the
             -- vehicle is able to reverse, a Reeds-Shepp would be lot faster
-            if self.steeringLength > 0 then
-                turnManeuver = TowedDubinsTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
-                        self.turningRadius, self.workWidth, self.steeringLength, distanceToFieldEdge)
-            else
-                turnManeuver = DubinsTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
-                        self.turningRadius, self.workWidth, self.steeringLength, distanceToFieldEdge)
-            end
+            turnManeuver = DubinsTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
+                    self.turningRadius, self.workWidth, self.steeringLength, distanceToFieldEdge)
         else
             turnManeuver = ReedsSheppTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
                     self.turningRadius, self.workWidth, self.steeringLength, distanceToFieldEdge)
@@ -774,7 +769,8 @@ function CourseTurn:onPathfindingDone(path)
         self.turnCourse = Course(self.vehicle, CpMathUtil.pointsToGameInPlace(path), true)
         -- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
         self.turnCourse:setUseTightTurnOffsetForLastWaypoints(15)
-        local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.turnCourse, nil, true)
+        local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.turnCourse, nil)
+        self.turnCourse:setUseTightTurnOffsetForLastWaypoints(endingTurnLength)
         local x = AIUtil.getDirectionNodeToReverserNodeOffset(self.vehicle)
         self:debug('Extending course at direction switch for reversing to %.1f m (or at least 1m)', -x)
         self.turnCourse:adjustForReversing(math.max(1, -x))
@@ -1024,6 +1020,7 @@ function StartRowOnly:init(vehicle, driveStrategy, ppc, turnContext, startRowCou
     self.turnCourse:setUseTightTurnOffsetForLastWaypoints(15)
     -- add a turn ending section into the row to make sure the implements are lowered correctly
     local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.turnCourse, 3, true)
+    self.turnCourse:setUseTightTurnOffsetForLastWaypoints(endingTurnLength)
     TurnManeuver.setLowerImplements(self.turnCourse, endingTurnLength, true)
     self.turnCourse:adjustForReversing(2)
     self.state = self.states.DRIVING_TO_ROW
