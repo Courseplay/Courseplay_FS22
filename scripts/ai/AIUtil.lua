@@ -110,7 +110,11 @@ function AIUtil.calculateTightTurnOffsetForTurnManeuver(vehicle, steeringLength,
 	local tightTurnOffset
 
 	local function smoothOffset(offset)
-		return (offset + 4 * (previousOffset or 0 )) / 5
+		-- smooth more for articulated axis or track vehicle
+		-- as those usually have a very small turn radius anyway, causing jackknifing
+		-- TODO: use the vehicle's solo radius instead?
+		local factor = AIUtil.hasArticulatedAxis(vehicle) and 6 or 4
+		return (offset + factor * (previousOffset or 0 )) / (factor + 1)
 	end
 
 	-- first of all, does the current waypoint have radius data?
@@ -119,10 +123,7 @@ function AIUtil.calculateTightTurnOffsetForTurnManeuver(vehicle, steeringLength,
 		return smoothOffset(0)
 	end
 
-	-- Ok, looks like a tight turn, so we need to move a bit left or right of the course
-	-- to keep the tool on the course. Use a little less than the calculated, this is purely empirical and should probably
-	-- be reviewed why the calculated one seems to overshoot.
-	local offset = 1 * AIUtil.getTractorRadiusFromImplementRadius(r, steeringLength) - r
+	local offset = AIUtil.getTractorRadiusFromImplementRadius(r, steeringLength) - r
 	if offset ~= offset then
 		-- check for nan
 		return smoothOffset(0)

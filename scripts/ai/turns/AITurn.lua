@@ -734,9 +734,8 @@ function CourseTurn:generateCalculatedTurn()
             turnManeuver = ReedsSheppTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
                     self.turningRadius, self.workWidth, self.steeringLength, distanceToFieldEdge)
         end
-        -- only use tight turn offset if we are towing something and not an articulated axis or track vehicle
-        -- as those usually have a very small turn radius anyway, causing jackknifing
-        if self.steeringLength > 0 and not AIUtil.hasArticulatedAxis(self.vehicle) then
+        -- only use tight turn offset if we are towing something
+        if self.steeringLength > 0 then
             self:debug('Enabling tight turn offset')
             self.enableTightTurnOffset = true
         end
@@ -1014,8 +1013,7 @@ function StartRowOnly:init(vehicle, driveStrategy, ppc, turnContext, startRowCou
 
     self.forceTightTurnOffset = false
     local _, steeringLength = AIUtil.getSteeringParameters(self.vehicle)
-    self.enableTightTurnOffset = steeringLength > 0 and not AIUtil.hasArticulatedAxis(self.vehicle)
-
+    self.enableTightTurnOffset = steeringLength > 0
     -- TODO: do we need tight turn offset here?
     self.turnCourse:setUseTightTurnOffsetForLastWaypoints(15)
     -- add a turn ending section into the row to make sure the implements are lowered correctly
