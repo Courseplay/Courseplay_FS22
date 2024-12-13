@@ -38,7 +38,7 @@
         </Bitmap>
         <Text profile="fs25_settingsSectionHeader" name="sectionHeader" id="sectionHeaderPrefab"/>
         <Bitmap profile="fs25_multiTextOptionContainer" id="multiTextPrefab">
-            <CpOptionToggle profile="fs25_settingsMultiTextOption" name="setting" namedComponents="true" onClick="onClickCpMultiTextOption">
+            <CpOptionToggle profile="fs25_settingsMultiTextOption" name="setting" namedComponents="true" onClick="onClickCpMultiTextOption" hideButtonOnLimitReached="False">
                 <Text profile="fs25_multiTextOptionTooltip" name="tooltip"/>
                 <Text profile="cpSettingsMultiOptionTitle" name="label"/>
             </CpOptionToggle>

@@ -219,6 +219,15 @@ function CpCourseGeneratorFrame:update(dt)
 			end
 		end
 		self.updateTime = g_time + 1000
+		local vehicle = self.currentHotspot and self.currentContextBox and self.currentHotspot:getVehicle()
+		if vehicle then 
+			if vehicle.getIsCpActive and vehicle:getIsCpActive() then 
+				local status = vehicle:getCpStatus()
+				self.currentContextBox:getDescendantByName("statusText"):setText(status:getText())
+			else 
+				self.currentContextBox:getDescendantByName("statusText"):setText("")
+			end
+		end
 	end
 	local hasChanged = false
 	for i = 1, #self.statusMessages do
@@ -263,18 +272,21 @@ end
 
 function CpCourseGeneratorFrame:onFrameOpen()
 	self.ingameMap:setTerrainSize(g_currentMission.terrainSize)
-	-- g_messageCenter:subscribe(MessageType.AI_VEHICLE_STATE_CHANGE, self.onAIVehicleStateChanged, self)
-	
+	g_messageCenter:subscribe(MessageType.AI_VEHICLE_STATE_CHANGE, function(self, _, vehicle)
+		if self.currentHotspot and vehicle and InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot) == vehicle then
+			self:updateContextActions()
+		end
+	end, self)
+
 	g_messageCenter:subscribe(MessageType.AI_JOB_STARTED, function(self)
 		self.activeWorkerList:reloadData()
 	end, self)
 
 	g_messageCenter:subscribe(MessageType.AI_JOB_STOPPED, function(self, job, aiMessage)
 		if aiMessage ~= nil and job ~= nil and g_localPlayer ~= nil then
-			if job.startedFarmId and g_localPlayer.farmId then
-				local helperName = job:getHelperName()
-				local text = aiMessage:getMessage()
-				self:addStatusMessage(string.format(text, helperName or "Unknown"))
+			if job.startedFarmId == g_localPlayer.farmId then
+				local text = aiMessage:getMessage(job)
+				self:addStatusMessage(text)
 			end
 		end
 	end, self)
@@ -450,8 +462,45 @@ end
 -------------------------------
 
 function CpCourseGeneratorFrame:onDrawPostIngameMapHotspots()
-	if self.currentContextBox ~= nil then
-		InGameMenuMapUtil.updateContextBoxPosition(self.currentContextBox, self.currentHotspot)
+	if self.currentContextBox and self.currentHotspot and self.currentContextBox:getIsVisible() then
+		local posX, posY, _ = self.currentHotspot:getLastScreenPositionCenter()
+		local buttonBox = self.currentContextBox:getDescendantByName("buttonBox")
+		local bottomOffset = buttonBox == nil and 0 or (buttonBox.contentSize or 0)
+		local outRight = posX + self.currentContextBox.size[1] > self.rightBackground.absPosition[1]
+		local outLeft = posX - self.currentContextBox.size[1] < self.leftBox.absPosition[1] + self.leftBox.size[1]
+		local outTop = posY + self.currentContextBox.size[2] + bottomOffset > self.topBackground.absPosition[2]
+		-- local outBottom = posY + self.currentContextBox.size[2] + bottomOffset > self.cpTopSideBackground.absPosition[2]
+		local orientation = InGameMenuMapUtil.CONTEXT_BOX_ORIENTATION.TOP_RIGHT
+		if outRight then
+			if outTop then
+				orientation = InGameMenuMapUtil.CONTEXT_BOX_ORIENTATION.BOTTOM_LEFT
+			else
+				orientation = InGameMenuMapUtil.CONTEXT_BOX_ORIENTATION.TOP_LEFT
+			end
+		elseif outLeft then
+			if outTop then
+				orientation = InGameMenuMapUtil.CONTEXT_BOX_ORIENTATION.BOTTOM_RIGHT
+			else
+				orientation = InGameMenuMapUtil.CONTEXT_BOX_ORIENTATION.TOP_RIGHT
+			end
+		elseif outTop then
+			orientation = InGameMenuMapUtil.CONTEXT_BOX_ORIENTATION.BOTTOM_RIGHT
+		end
+		
+		local goLeft = orientation == InGameMenuMapUtil.CONTEXT_BOX_ORIENTATION.TOP_LEFT and true or orientation == InGameMenuMapUtil.CONTEXT_BOX_ORIENTATION.BOTTOM_LEFT
+		local goDown = orientation == InGameMenuMapUtil.CONTEXT_BOX_ORIENTATION.BOTTOM_LEFT and true or orientation == InGameMenuMapUtil.CONTEXT_BOX_ORIENTATION.BOTTOM_RIGHT
+		if goLeft then
+			posX = posX - self.currentContextBox.size[1]
+		end
+		if goDown then
+			posY = posY - self.currentContextBox.size[2]
+		end
+		self.currentContextBox:setAbsolutePosition(posX, posY + ((buttonBox == nil or 
+			orientation ~= InGameMenuMapUtil.CONTEXT_BOX_ORIENTATION.TOP_RIGHT and 
+				orientation ~= InGameMenuMapUtil.CONTEXT_BOX_ORIENTATION.TOP_LEFT) and 
+			0 or (buttonBox.contentSize or 0)))
+
+
 	end
 	if self.aiTargetMapHotspot ~= nil then
 
@@ -538,7 +587,6 @@ function CpCourseGeneratorFrame:onClickHotspot(element, hotspot)
 		return
 	end
 	self:setMapSelectionItem(hotspot)
-	-- self:refreshContextInput()
 end
 
 function CpCourseGeneratorFrame:showMapHotspot(self, hotspot) 
@@ -849,14 +897,12 @@ end
 
 function CpCourseGeneratorFrame:cancelJob()
 	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
-	if vehicle then 
-		if vehicle:getIsAIActive() then
-			vehicle:stopCurrentAIJob()
-			g_currentMission:removeMapHotspot(self.driveToAiTargetMapHotspot)
-			g_currentMission:removeMapHotspot(self.fieldSiloAiTargetMapHotspot)
-			g_currentMission:removeMapHotspot(self.unloadAiTargetMapHotspot)
-			g_currentMission:removeMapHotspot(self.loadAiTargetMapHotspot)
-		end
+	if vehicle and vehicle:getIsAIActive() then
+		vehicle:stopCurrentAIJob(AIMessageSuccessStoppedByUser.new())
+		g_currentMission:removeMapHotspot(self.driveToAiTargetMapHotspot)
+		g_currentMission:removeMapHotspot(self.fieldSiloAiTargetMapHotspot)
+		g_currentMission:removeMapHotspot(self.unloadAiTargetMapHotspot)
+		g_currentMission:removeMapHotspot(self.loadAiTargetMapHotspot)
 	end
 end
 
@@ -1226,7 +1272,9 @@ function CpCourseGeneratorFrame:setAIVehicle(vehicle)
 	local hotspot = vehicle:getMapHotspot()
 	self:setMapSelectionItem(hotspot)
 	self.ingameMap:panToHotspot(hotspot)
-	self:onCreateJob()
+	if not vehicle:getIsAIActive() then 
+		self:onCreateJob()
+	end
 end
 
 function CpCourseGeneratorFrame:onCreateJob()
