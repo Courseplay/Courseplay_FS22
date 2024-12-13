@@ -505,7 +505,6 @@ You can define the following custom settings:
              baleCollectorOffset = "1.6"
     />
     <Vehicle name="pw10012.xml"
-             noReverse = "true"
              implementWheelAlwaysOnGround = "true"
              tightTurnOffsetDistanceInTurns = "1"
              workingWidth = "5.8"
