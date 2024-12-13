@@ -455,7 +455,6 @@ function FieldworkCourse:_getHeadlandOffset(n)
         return self:_getHeadlandWorkingWidth(1) / 2
     else
         -- for n > 1, the headland width is with the overlap
-        print(n)
         return self:_getHeadlandWorkingWidth(1) + (n - 1 - 0.5) * self:_getHeadlandWorkingWidth(n)
     end
 end

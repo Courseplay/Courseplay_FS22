@@ -147,12 +147,15 @@ end
 --- Rice fields work differently, just defined by their polygon, no density map, so the scanner
 --- wouldn't work
 function CpFieldUtil.getRiceFieldPolygon(riceField)
-    local vertices = {}
+    local boundary = Polygon()
     for i = 1, riceField.polygon:getNumVertices() do
         local x, z = riceField.polygon:getVertex(i)
-        table.insert(vertices, { x = x, y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 1, z), z = z })
+        boundary:append({ x = x, y = -z })
     end
-    return vertices
+    boundary:calculateProperties()
+    -- for some reason, the rice field boundary is wider than the actual field, so shrink it a bit
+    local offsetBoundary = CourseGenerator.Headland(boundary, boundary:isClockwise(), 0, 0.8, false):getPolygon()
+    return CpMathUtil.pointsToGameInPlace(offsetBoundary)
 end
 
 --- Get the field polygon (field edge vertices) at the world position.
