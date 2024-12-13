@@ -345,7 +345,7 @@ function CpBaseHud:init(vehicle)
     end)
 
     --- Goal button.
-    local width, height = getNormalizedScreenValues(30, 30)    
+    local width, height = getNormalizedScreenValues(28, 28)    
     local goalOverlay = CpGuiUtil.createOverlay({width, height},
                                                 {"dataS/menu/gui.png", nil}, 
                                                 self.OFF_COLOR,
