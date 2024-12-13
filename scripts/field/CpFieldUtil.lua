@@ -130,11 +130,26 @@ function CpFieldUtil.isField(x, z, widthX, widthZ)
     return isField, area, totalArea
 end
 
+--- Get the field polygon vertices from the map. These determine the field boundary in the game's
+--- initial state. These do not reflect changes made by terrain modification or plowing, to get a
+--- field polygon with those changes, use the FieldScanner
+---@return table [{x, y, z}] field polygon vertices
 function CpFieldUtil.getFieldPolygon(field)
     local unpackedVertices = field:getDensityMapPolygon():getVerticesList()
     local vertices = {}
     for i = 1, #unpackedVertices, 2 do
         local x, z = unpackedVertices[i], unpackedVertices[i + 1]
+        table.insert(vertices, { x = x, y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 1, z), z = z })
+    end
+    return vertices
+end
+
+--- Rice fields work differently, just defined by their polygon, no density map, so the scanner
+--- wouldn't work
+function CpFieldUtil.getRiceFieldPolygon(riceField)
+    local vertices = {}
+    for i = 1, riceField.polygon:getNumVertices() do
+        local x, z = riceField.polygon:getVertex(i)
         table.insert(vertices, { x = x, y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 1, z), z = z })
     end
     return vertices
@@ -176,8 +191,15 @@ function CpFieldUtil.detectFieldBoundary(x, z, detect, useGiantsDetector)
             -- not implemented
             return nil
         else
-            local valid, points = g_fieldScanner:findContour(x, z)
-            return valid and points or nil
+            local y = getTerrainHeightAtWorldPos(g_terrainNode, x, 0, z)
+            local _, _, _, riceField = PlaceableRiceField.getRiceFieldAtPosition(x, y, z)
+            if riceField then
+                -- rice fields are somewhat special, so always use the Giants method
+                return CpFieldUtil.getRiceFieldPolygon(riceField)
+            else
+                local valid, points = g_fieldScanner:findContour(x, z)
+                return valid and points or nil
+            end
         end
     else
         local field = CpFieldUtil.getFieldAtWorldPosition(x, z)
