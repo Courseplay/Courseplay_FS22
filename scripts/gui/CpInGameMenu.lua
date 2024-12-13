@@ -10,37 +10,53 @@ function CpInGameMenu.new(target, customMt, messageCenter, l10n, inputManager, c
 
 	self.defaultMenuButtonInfo = {}
 	self.backButtonInfo = {}
+	self.currentVehicle = nil
 
 	self.messageCenter:subscribe(MessageType.GUI_CP_INGAME_OPEN, function (menu)
 		g_gui:showGui("CpInGameMenu")
 		self:changeScreen(CpInGameMenu)
+		self:updatePages()
 		-- local index = self.pagingElement:getPageMappingIndexByElement(self.page)
 		-- self.pageSelector:setState(pageAIIndex, true)
 	end, self)
 	self.messageCenter:subscribe(MessageType.GUI_CP_INGAME_OPEN_GLOBAL_SETTINGS, function (menu)
 		g_gui:showGui("CpInGameMenu")
 		self:changeScreen(CpInGameMenu)
+		self:updatePages()
 		local index = self.pagingElement:getPageMappingIndexByElement(self.pageGlobalSettings)
 		self.pageSelector:setState(index, true)
 	end, self)
 	self.messageCenter:subscribe(MessageType.GUI_CP_INGAME_OPEN_VEHICLE_SETTINGS, function (menu)
 		g_gui:showGui("CpInGameMenu")
 		self:changeScreen(CpInGameMenu)
+		self:updatePages()
 		local index = self.pagingElement:getPageMappingIndexByElement(self.pageVehicleSettings)
 		self.pageSelector:setState(index, true)
 	end, self)
 	self.messageCenter:subscribe(MessageType.GUI_CP_INGAME_OPEN_COURSE_GENERATOR, function (menu)
 		g_gui:showGui("CpInGameMenu")
 		self:changeScreen(CpInGameMenu)
+		self:updatePages()
 		local index = self.pagingElement:getPageMappingIndexByElement(self.pageCourseGenerator)
 		self.pageSelector:setState(index, true)
 	end, self)
 	self.messageCenter:subscribe(MessageType.GUI_CP_INGAME_OPEN_COURSE_MANAGER, function (menu)
 		g_gui:showGui("CpInGameMenu")
 		self:changeScreen(CpInGameMenu)
+		self:updatePages()
 		local index = self.pagingElement:getPageMappingIndexByElement(self.pageCourseManager)
 		self.pageSelector:setState(index, true)
 	end, self)
+	self.messageCenter:subscribe(MessageType.GUI_CP_INGAME_OPEN_HELP_MENU, function (menu)
+		g_gui:showGui("CpInGameMenu")
+		self:changeScreen(CpInGameMenu)
+		self:updatePages()
+		local index = self.pagingElement:getPageMappingIndexByElement(self.pageHelpLine)
+		self.pageSelector:setState(index, true)
+	end, self)
+
+	self.messageCenter:subscribe(MessageType.GUI_CP_INGAME_CURRENT_VEHICLE_CHANGED, 
+		self.onCurrentVehicleChanged, self)
 	return self
 end
 
@@ -50,6 +66,7 @@ function CpInGameMenu.createFromExistingGui(gui, guiName)
 	CpVehicleSettingsFrame.createFromExistingGui(g_gui.frames.cpInGameMenuVehicleSettings.target, "CpVehicleSettingsFrame")
 	CpCourseGeneratorFrame.createFromExistingGui(g_gui.frames.cpInGameMenuCourseGenerator.target, "CpCourseGeneratorFrame")
 	CpCourseManagerFrame.createFromExistingGui(g_gui.frames.cpInGameMenuCourseManager.target, "CpCourseManagerFrame")
+	CpHelpFrame.createFromExistingGui(g_gui.frames.cpInGameMenuHelpLine.target, "CpHelpFrame")
 
 	local messageCenter = gui.messageCenter
 	local l10n = gui.l10n
@@ -72,11 +89,14 @@ function CpInGameMenu.setupGui(courseStorage)
 	MessageType.GUI_CP_INGAME_OPEN_VEHICLE_SETTINGS = nextMessageTypeId()
 	MessageType.GUI_CP_INGAME_OPEN_COURSE_GENERATOR = nextMessageTypeId()
 	MessageType.GUI_CP_INGAME_OPEN_COURSE_MANAGER = nextMessageTypeId()
+	MessageType.GUI_CP_INGAME_OPEN_HELP_MENU = nextMessageTypeId()
+	MessageType.GUI_CP_INGAME_CURRENT_VEHICLE_CHANGED = nextMessageTypeId()
 
 	CpCourseGeneratorFrame.setupGui()
 	CpGlobalSettingsFrame.setupGui()
 	CpVehicleSettingsFrame.setupGui()
 	CpCourseManagerFrame.setupGui()
+	CpHelpFrame.setupGui()
 
 	g_cpInGameMenu = CpInGameMenu.new(nil, nil, g_messageCenter, g_i18n, g_inputBinding, courseStorage)
 	g_gui:loadGui(Utils.getFilename("config/gui/CpInGameMenu.xml", Courseplay.BASE_DIRECTORY),
@@ -91,6 +111,7 @@ function CpInGameMenu:initializePages()
 		g_inGameMenu.baseIngameMap, 
 		g_currentMission.hud)
 
+	self.pageHelpLine:initialize(self)
 	self.pageGlobalSettings:initialize(self)
 	self.pageVehicleSettings:initialize(self)
 	self.pageCourseGenerator:initialize(self)
@@ -112,14 +133,14 @@ function CpInGameMenu:setupMenuPages()
 		{
 			self.pageVehicleSettings,
 			function ()
-				return CpUtil.getCurrentVehicle() ~= nil
+				return self.currentVehicle ~= nil
 			end,
 			{896, 0, 128, 128}
 		},
 		{
 			self.pageCourseGenerator,
 			function ()
-				return CpUtil.getCurrentVehicle() ~= nil
+				return true
 			end,
 			{128, 0, 128, 128}
 		},
@@ -129,18 +150,29 @@ function CpInGameMenu:setupMenuPages()
 				return true
 			end,
 			{256, 0, 128, 128}
+		},
+		{
+			self.pageHelpLine,
+			function ()
+				return true
+			end,
+			nil,
+			"gui.icon_options_help2"
 		}
 	}
 
 	for i, pageDef in ipairs(orderedDefaultPages) do
-		local page, predicate, iconUVs = unpack(pageDef)
+		local page, predicate, iconUVs, sliceId = unpack(pageDef)
 
 		if page ~= nil then
 			self:registerPage(page, i, predicate)
-
-			local normalizedUVs = GuiUtils.getUVs(iconUVs)
-
-			self:addPageTab(page, Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY), normalizedUVs)
+			local normalizedUVs = nil
+			local path = nil
+			if iconUVs then
+				normalizedUVs = GuiUtils.getUVs(iconUVs)
+				path = Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY)
+			end
+			self:addPageTab(page, path, normalizedUVs, sliceId)
 		end
 	end
 end
@@ -229,16 +261,24 @@ function CpInGameMenu:onMenuOpened()
 	-- end
 end
 
-function CpInGameMenu:onButtonBack(_, _, force)
-	if force or self.currentPage:requestClose(self.clickBackCallback) then
-		CpInGameMenu:superClass().onButtonBack(self)
+function CpInGameMenu:onButtonBack()
+	if self.currentPage.onClickBack then 
+		if not self.currentPage:onClickBack() then 
+			return
+		end
 	end
+	CpInGameMenu:superClass().onButtonBack(self)
 end
 
 -- Lines 559-578
 function CpInGameMenu:onClose(element)
 	CpInGameMenu:superClass().onClose(self)
+	self:unlockCurrentVehicle()
+end
 
+function CpInGameMenu:onOpen()
+	CpInGameMenu:superClass().onOpen(self)
+	self:lockCurrentVehicle(CpUtil.getCurrentVehicle())
 end
 
 -- Lines 650-699
@@ -269,6 +309,27 @@ function CpInGameMenu:getPageButtonInfo(page)
 	local buttonInfo = CpInGameMenu:superClass().getPageButtonInfo(self, page)
 
 	return buttonInfo
+end
+
+function CpInGameMenu:lockCurrentVehicle(vehicle)
+	if vehicle ~= self.currentVehicle then 
+		g_messageCenter:publishDelayed(MessageType.GUI_CP_INGAME_CURRENT_VEHICLE_CHANGED, vehicle)
+	end
+	self.currentVehicle = vehicle
+end
+
+function CpInGameMenu:unlockCurrentVehicle()
+	self.currentVehicle = nil
+end
+
+function CpInGameMenu:getCurrentVehicle()
+	return self.currentVehicle
+end
+
+function CpInGameMenu:onCurrentVehicleChanged()
+	if self:getIsOpen() then
+		self:updatePages()
+	end
 end
 
 

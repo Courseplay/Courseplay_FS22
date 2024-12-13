@@ -56,14 +56,7 @@ CpBaseHud.uvs = {
     },
     driveNowSymbol = {
         {0, 768, 128, 128}
-    },
-    goalSymbol = GuiUtils.getUVs({
-        788,
-	30,
-	44,
-	44
-    }, AIPlaceableMarkerHotspot.FILE_RESOLUTION),
-    
+    },    
     exitSymbol = {
         {148, 184, 32, 32}, {256, 512}
     },
@@ -214,8 +207,6 @@ function CpBaseHud:init(vehicle)
 
     local leftTopText = CpTextHudElement.new(self.baseHud, CpBaseHud.x + self.wMargin, CpBaseHud.y + self.hMargin/4 + self.height - headerHeight, self.headerFontSize)
     leftTopText:setTextDetails("Courseplay")
-    local rightTopText = CpTextHudElement.new(self.baseHud, CpBaseHud.x + self.width - 3*self.wMargin/2, CpBaseHud.y + self.hMargin/4 + self.height - headerHeight, self.headerFontSize, RenderText.ALIGN_RIGHT)
-    rightTopText:setTextDetails(g_Courseplay.currentVersion)
 
     --------------------------------------
     --- Left side
@@ -261,20 +252,34 @@ function CpBaseHud:init(vehicle)
     --- Right side
     --------------------------------------
     --- Exit button                                                  
-    local width, height = getNormalizedScreenValues(18, 18)
+    local exitWidth, height = getNormalizedScreenValues(18, 18)
     local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
-    local exitBtnOverlay = CpGuiUtil.createOverlay({width, height},
+    local exitBtnOverlay = CpGuiUtil.createOverlay({exitWidth, height},
                                                     {imageFilename, GuiUtils.getUVs(unpack(self.uvs.exitSymbol))}, 
                                                     self.WHITE_COLOR,
                                                     self.alignments.bottomRight)
 
     self.exitBtn = CpHudButtonElement.new(exitBtnOverlay, self.baseHud)
-    local x, y = CpBaseHud.x + self.width -width/3 , CpBaseHud.y + self.height - headerHeight + self.hMargin/12
+    local x, y = CpBaseHud.x + self.width -exitWidth/3 , CpBaseHud.y + self.height - headerHeight + self.hMargin/12
     self.exitBtn:setPosition(x, y) 
     self.exitBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
         vehicle:closeCpHud()
     end)
+    local width, height = getNormalizedScreenValues(20, 20)
+    local helpMenuOverlay = CpGuiUtil.createOverlay({width, height},
+                                                    {"dataS/menu/gui.png", {nil}}, 
+                                                    self.WHITE_COLOR,
+                                                    self.alignments.bottomRight,
+                                                    "gui.icon_options_help2")
 
+    self.helpMenuBtn = CpHudButtonElement.new(helpMenuOverlay, self.baseHud)
+    local x, y = CpBaseHud.x + self.width -width/3 - exitWidth - self.wMargin/2, CpBaseHud.y + self.height - headerHeight + self.hMargin/12
+    self.helpMenuBtn:setPosition(x, y) 
+    self.helpMenuBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
+        CpGuiUtil.openHelpMenuGui()
+    end)
+    local rightTopText = CpTextHudElement.new(self.baseHud, x - 3*self.wMargin/2, CpBaseHud.y + self.hMargin/4 + self.height - headerHeight, self.headerFontSize, RenderText.ALIGN_RIGHT)
+    rightTopText:setTextDetails(g_Courseplay.currentVersion)
 
     --- Create start/stop button
     local onOffBtnWidth, height = getNormalizedScreenValues(20, 20)
@@ -340,15 +345,16 @@ function CpBaseHud:init(vehicle)
     end)
 
     --- Goal button.
-    local width, height = getNormalizedScreenValues(34, 34)    
+    local width, height = getNormalizedScreenValues(28, 28)    
     local goalOverlay = CpGuiUtil.createOverlay({width, height},
-                                                {AIPlaceableMarkerHotspot.FILENAME, self.uvs.goalSymbol}, 
+                                                {"dataS/menu/gui.png", nil}, 
                                                 self.OFF_COLOR,
-                                                self.alignments.bottomRight)
+                                                self.alignments.bottomRight,
+                                                "gui.aiParameterPosition")
     
     self.goalBtn = CpHudButtonElement.new(goalOverlay, self.baseHud)
     local x, y = unpack(self.lines[7].right)
-    self.goalBtn:setPosition(x + self.wMargin/4, y - self.hMargin/4)
+    self.goalBtn:setPosition(x + self.wMargin/4, y - self.hMargin/3)
     self.goalBtn:setCallback("onClickPrimary", vehicle, function (vehicle)
         self:openCourseGeneratorGui(vehicle)
     end)
