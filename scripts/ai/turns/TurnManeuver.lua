@@ -348,7 +348,7 @@ function TurnManeuver:applyTightTurnOffsetToAnalyticPath(course)
             totalDistance = totalDistance + course:getDistanceToNextWaypoint(i - 1)
             if totalDistance >
                     (g_vehicleConfigurations:getRecursively(self.vehicle, 'tightTurnOffsetDistanceInTurns') or math.huge) then
-                selff:debug('Total distance %.1f > configured, stop applying tight turn offset', totalDistance)
+                self:debug('Total distance %.1f > configured, stop applying tight turn offset', totalDistance)
                 break
             end
             -- Check for direction change: this is to have offset only at the foot of an omega turn and not
