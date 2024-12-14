@@ -300,15 +300,13 @@ end
 
 function CpCourseManagerFrame.setFolderIcon(element)
 	element.iconImageSize = {32, 32}
-	element:setImageFilename(Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY))
-	element:setImageUVs(nil, unpack(GuiUtils.getUVs({0, 220, 32, 32}, {256, 512})))
+	element:setImageSlice(nil, "cpIconSprite.folder")
 	element:setImageColor(nil, 0, 0, 0, 0.5)
 end
 
 function CpCourseManagerFrame.setCourseIcon(element)
 	element.iconImageSize = {32, 32}
-	element:setImageFilename(Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY))
-	element:setImageUVs(nil, unpack(GuiUtils.getUVs({40, 76, 32, 32}, {256, 512})))
+	element:setImageSlice(nil, "cpIconSprite.white_fieldworkCourse")
 	element:setImageColor(nil, 0, 0, 0, 0.5)
 end
 

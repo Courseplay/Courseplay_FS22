@@ -128,51 +128,42 @@ function CpInGameMenu:setupMenuPages()
 			function ()
 				return true
 			end,
-			{768, 0, 128, 128}
+			"cpUi.cogwheel"
 		},
 		{
 			self.pageVehicleSettings,
 			function ()
 				return self.currentVehicle ~= nil
 			end,
-			{896, 0, 128, 128}
+			"cpUi.vehicleCogwheel"
 		},
 		{
 			self.pageCourseGenerator,
 			function ()
 				return true
 			end,
-			{128, 0, 128, 128}
+			"cpUi.navigation"
 		},
 		{
 			self.pageCourseManager,
 			function ()
 				return true
 			end,
-			{256, 0, 128, 128}
+			"cpUi.navigationPath"
 		},
 		{
 			self.pageHelpLine,
 			function ()
 				return true
 			end,
-			nil,
 			"gui.icon_options_help2"
 		}
 	}
-
 	for i, pageDef in ipairs(orderedDefaultPages) do
-		local page, predicate, iconUVs, sliceId = unpack(pageDef)
-
+		local page, predicate, sliceId = unpack(pageDef)
 		if page ~= nil then
 			self:registerPage(page, i, predicate)
-			local normalizedUVs = nil
-			local path = nil
-			if iconUVs then
-				normalizedUVs = GuiUtils.getUVs(iconUVs)
-				path = Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY)
-			end
-			self:addPageTab(page, path, normalizedUVs, sliceId)
+			self:addPageTab(page, nil, nil, sliceId)
 		end
 	end
 end

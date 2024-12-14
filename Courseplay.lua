@@ -17,6 +17,9 @@ function Courseplay:init()
 	createFolder(self.baseDir)
 	--- Base cp folder
 	self.cpFilePath = self.baseDir.."courseplay.xml"
+
+	g_overlayManager:addTextureConfigFile(Utils.getFilename("img/iconSprite.xml", self.BASE_DIRECTORY), "cpIconSprite")
+	g_overlayManager:addTextureConfigFile(Utils.getFilename("img/ui_courseplay.xml", self.BASE_DIRECTORY), "cpUi")
 end
 
 function Courseplay:registerXmlSchema()
