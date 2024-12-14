@@ -649,7 +649,7 @@ end
 function CourseTurn:onWaypointChange(ix)
     AITurn.onWaypointChange(self, ix)
     if self.turnCourse then
-        if self.forceTightTurnOffset or (self.enableTightTurnOffset and self.turnCourse:useTightTurnOffset(ix)) then
+        if self.forceTightTurnOffset or (self.enableTightTurnOffset and self.turnCourse:getUseTightTurnOffset(ix)) then
             -- adjust the course a bit to the outside in a curve to keep a towed implement on the course
             self.tightTurnOffset = AIUtil.calculateTightTurnOffsetForTurnManeuver(self.vehicle, self.steeringLength,
                     self.turnCourse, self.turnCourse:getCurrentWaypointIx(), self.tightTurnOffset)

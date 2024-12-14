@@ -285,6 +285,14 @@ function Waypoint:setOnConnectingPath(onConnectingPath)
 	self.attributes:setOnConnectingPath(onConnectingPath)
 end
 
+function Waypoint:setUseTightTurnOffset()
+	self.useTightTurnOffset = true
+end
+
+function Waypoint:getUseTightTurnOffset()
+	return self.useTightTurnOffset
+end
+
 function Waypoint:copyRowData(other)
 	self.attributes.rowNumber = other.attributes.rowNumber
 	self.attributes.leftSideWorked = other.attributes.leftSideWorked

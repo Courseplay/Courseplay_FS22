@@ -333,6 +333,42 @@ function TurnManeuver:applyTightTurnOffset(length)
     end
 end
 
+-- Apply tight turn offset to an analytically generated 180 turn section. The goal is to align a towed
+-- implement properly with the next row
+function TurnManeuver:applyTightTurnOffsetToAnalyticPath(course)
+    if self.tightTurnOffsetEnabled then
+        local totalDeltaAngle = 0
+        local totalDistance = 0
+        local previousDeltaAngle = course:getDeltaAngle(course:getNumberOfWaypoints())
+        for i = course:getNumberOfWaypoints(), 2, -1 do
+            course:setUseTightTurnOffset(i)
+            local deltaAngle = course:getDeltaAngle(i)
+            totalDeltaAngle = totalDeltaAngle + deltaAngle
+            -- check for configured distance
+            totalDistance = totalDistance + course:getDistanceToNextWaypoint(i - 1)
+            if totalDistance > g_vehicleConfigurations:getRecursively(self.vehicle, 'tightTurnOffsetDistanceInTurns') then
+                self:debug('Total distance %.1f > configured, stop applying tight turn offset', totalDistance)
+                break
+            end
+            -- Check for direction change: this is to have offset only at the foot of an omega turn and not
+            -- around the body, only when the foot is significantly narrower than the body.
+            -- This is for the case when the turn diameter is significantly bigger than the working width
+            if math.abs(totalDeltaAngle) > math.pi / 6 and
+                    math.abs(deltaAngle) > 0.01 and math.sign(deltaAngle) ~= math.sign(previousDeltaAngle) then
+                self:debug('Curve direction change at %d (total delta angle %.1f, stop applying tight turn offset',
+                        i, math.deg(totalDeltaAngle))
+                break
+            end
+            -- in all other cases, apply to half circle
+            if math.abs(totalDeltaAngle) > math.pi / 2 then
+                self:debug('Total direction change more than 90, stop applying tight turn offset')
+                break
+            end
+            previousDeltaAngle = deltaAngle
+        end
+    end
+end
+
 ---@class AnalyticTurnManeuver : TurnManeuver
 AnalyticTurnManeuver = CpObject(TurnManeuver)
 function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, steeringLength, distanceToFieldEdge)
@@ -358,11 +394,11 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
         dBack = dBack < 2 and 2 or dBack
         self:debug('Not enough space on field, regenerating course back %.1f meters', dBack)
         self.course = self:findAnalyticPath(vehicleDirectionNode, 0, -dBack, turnEndNode, self.turnEndXOffset, endZOffset + dBack, self.turningRadius)
-        self:applyTightTurnOffset()
+        self:applyTightTurnOffsetToAnalyticPath(self.course)
         local ixBeforeEndingTurnSection = self.course:getNumberOfWaypoints()
         self.course, endingTurnLength = self:adjustCourseToFitField(self.course, dBack, ixBeforeEndingTurnSection)
     else
-        self:applyTightTurnOffset()
+        self:applyTightTurnOffsetToAnalyticPath(self.course)
         endingTurnLength = self.turnContext:appendEndingTurnCourse(self.course, steeringLength)
         self:applyTightTurnOffset(endingTurnLength)
     end

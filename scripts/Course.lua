@@ -273,9 +273,12 @@ function Course:enrichWaypointData(startIx)
             'Course with %d waypoints created/updated, %.1f meters, %d turns', #self.waypoints, self.length, self.totalTurns)
 end
 
+function Course:getDeltaAngle(ix)
+    return CpMathUtil.getDeltaAngle(self.waypoints[ix].yRot, self.waypoints[ix - 1].yRot)
+end
+
 function Course:calculateSignedRadius(ix)
-    local deltaAngle = CpMathUtil.getDeltaAngle(self.waypoints[ix].yRot, self.waypoints[ix - 1].yRot)
-    return CpMathUtil.divide(self:getDistanceToNextWaypoint(ix), (2 * math.sin(deltaAngle / 2)))
+    return CpMathUtil.divide(self:getDistanceToNextWaypoint(ix), (2 * math.sin(self:getDeltaAngle(ix) / 2)))
 end
 
 function Course:calculateRadius(ix)
@@ -493,8 +496,12 @@ function Course:getTurnControls(ix)
     return self.waypoints[ix].turnControls
 end
 
-function Course:useTightTurnOffset(ix)
-    return self.waypoints[ix].useTightTurnOffset
+function Course:setUseTightTurnOffset(ix)
+    return self.waypoints[ix]:setUseTightTurnOffset()
+end
+
+function Course:getUseTightTurnOffset(ix)
+    return self.waypoints[ix]:getUseTightTurnOffset()
 end
 
 --- Returns the position of the waypoint at ix with the current offset applied.
@@ -1230,7 +1237,9 @@ function Course:draw()
         Utils.renderTextAtWorldPosition(x, y + 3.2, z, tostring(i), getCorrectTextSize(0.012), 0, color)
         if i < self:getNumberOfWaypoints() then
             local nx, ny, nz = self:getWaypointPosition(i + 1)
-            DebugUtil.drawDebugLine(x, y + 3, z, nx, ny + 3, nz, 0, 0, 100)
+            -- cyan, darker blue with tight turn offset
+            color = self:getUseTightTurnOffset(i) and {0, 0, 0.5} or {0, 0.5, 0.5}
+            DebugUtil.drawDebugLine(x, y + 3, z, nx, ny + 3, nz, table.unpack(color))
         end
     end
 end
@@ -1275,7 +1284,7 @@ end
 
 function Course:setUseTightTurnOffsetForLastWaypoints(d)
     self:executeFunctionForLastWaypoints(d, function(wp)
-        wp.useTightTurnOffset = true
+        wp:setUseTightTurnOffset()
     end)
 end
 
