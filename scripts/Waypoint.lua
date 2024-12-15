@@ -34,7 +34,6 @@ function Waypoint:init(wp)
 	---@type CourseGenerator.WaypointAttributes
 	self.attributes = wp.attributes and wp.attributes:clone() or CourseGenerator.WaypointAttributes()
 	self.angle = wp.angle or nil
-	self.radius = wp.radius or nil
 	self.rev = wp.rev or wp.reverse or false
 	self.rev = self.rev or wp.gear and wp.gear == Gear.Backward
 	-- dynamically added/calculated properties
@@ -284,6 +283,14 @@ end
 
 function Waypoint:setOnConnectingPath(onConnectingPath)
 	self.attributes:setOnConnectingPath(onConnectingPath)
+end
+
+function Waypoint:setUseTightTurnOffset()
+	self.useTightTurnOffset = true
+end
+
+function Waypoint:getUseTightTurnOffset()
+	return self.useTightTurnOffset
 end
 
 function Waypoint:copyRowData(other)

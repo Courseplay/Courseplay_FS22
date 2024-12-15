@@ -649,10 +649,10 @@ end
 function CourseTurn:onWaypointChange(ix)
     AITurn.onWaypointChange(self, ix)
     if self.turnCourse then
-        if self.forceTightTurnOffset or (self.enableTightTurnOffset and self.turnCourse:useTightTurnOffset(ix)) then
+        if self.forceTightTurnOffset or (self.enableTightTurnOffset and self.turnCourse:getUseTightTurnOffset(ix)) then
             -- adjust the course a bit to the outside in a curve to keep a towed implement on the course
-            self.tightTurnOffset = AIUtil.calculateTightTurnOffset(self.vehicle, self.turningRadius, self.turnCourse,
-                    self.tightTurnOffset, true)
+            self.tightTurnOffset = AIUtil.calculateTightTurnOffsetForTurnManeuver(self.vehicle, self.steeringLength,
+                    self.turnCourse, self.turnCourse:getCurrentWaypointIx(), self.tightTurnOffset)
             self.turnCourse:setOffset(self.tightTurnOffset, 0)
         else
             -- reset offset to 0 if tight turn offset is not on
@@ -734,9 +734,8 @@ function CourseTurn:generateCalculatedTurn()
             turnManeuver = ReedsSheppTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
                     self.turningRadius, self.workWidth, self.steeringLength, distanceToFieldEdge)
         end
-        -- only use tight turn offset if we are towing something and not an articulated axis or track vehicle
-        -- as those usually have a very small turn radius anyway, causing jackknifing
-        if self.steeringLength > 0 and not AIUtil.hasArticulatedAxis(self.vehicle) then
+        -- only use tight turn offset if we are towing something
+        if self.steeringLength > 0 then
             self:debug('Enabling tight turn offset')
             self.enableTightTurnOffset = true
         end
@@ -769,7 +768,8 @@ function CourseTurn:onPathfindingDone(path)
         self.turnCourse = Course(self.vehicle, CpMathUtil.pointsToGameInPlace(path), true)
         -- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
         self.turnCourse:setUseTightTurnOffsetForLastWaypoints(15)
-        local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.turnCourse, nil, true)
+        local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.turnCourse, nil)
+        self.turnCourse:setUseTightTurnOffsetForLastWaypoints(endingTurnLength)
         local x = AIUtil.getDirectionNodeToReverserNodeOffset(self.vehicle)
         self:debug('Extending course at direction switch for reversing to %.1f m (or at least 1m)', -x)
         self.turnCourse:adjustForReversing(math.max(1, -x))
@@ -1013,12 +1013,12 @@ function StartRowOnly:init(vehicle, driveStrategy, ppc, turnContext, startRowCou
 
     self.forceTightTurnOffset = false
     local _, steeringLength = AIUtil.getSteeringParameters(self.vehicle)
-    self.enableTightTurnOffset = steeringLength > 0 and not AIUtil.hasArticulatedAxis(self.vehicle)
-
+    self.enableTightTurnOffset = steeringLength > 0
     -- TODO: do we need tight turn offset here?
     self.turnCourse:setUseTightTurnOffsetForLastWaypoints(15)
     -- add a turn ending section into the row to make sure the implements are lowered correctly
     local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.turnCourse, 3, true)
+    self.turnCourse:setUseTightTurnOffsetForLastWaypoints(endingTurnLength)
     TurnManeuver.setLowerImplements(self.turnCourse, endingTurnLength, true)
     self.turnCourse:adjustForReversing(2)
     self.state = self.states.DRIVING_TO_ROW
