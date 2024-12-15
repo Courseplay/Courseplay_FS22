@@ -324,7 +324,10 @@ end
 
 function CpInGameMenu:onCurrentVehicleChanged()
 	if self:getIsOpen() then
+		local prevPage = self.pagingElement:getPageElementByIndex(self.currentPageId)
 		self:updatePages()
+		local index = self.pagingElement:getPageMappingIndexByElement(prevPage)
+		self.pagingTabList:setSelectedIndex(index, true, 0)
 	end
 end
 

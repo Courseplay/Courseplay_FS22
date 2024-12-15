@@ -150,7 +150,7 @@
                         <ListItem profile="cpInfoTextListElement">
                             <Bitmap profile="cpInfoTextListElementBg" />
                             <Text profile="cpInfoTextListElementText" name="text" />
-                            <Button profile="cpInfoTextListElementIcon"/>
+                            <Button profile="cpInfoTextListElementIcon" name="icon"/>
                         </ListItem>
                     </SmoothList>
                 </GuiElement>
@@ -304,7 +304,8 @@
             <absoluteSizeOffset value="3px 3px"/>
             <iconSliceId value="cpIconSprite.white_vehicle" />
             <iconSize value="20px 20px" />
-            <iconColor value="$preset_fs25_colorMainHighlight" />
+            <iconColor value="$preset_fs25_colorGrey" />
+            <iconSelectedColor value="$preset_fs25_colorMainHighlight" />
         </Profile>
         <Profile name="cpInfoTextListElementBg" extends="baseReference" with="anchorTopStretchingX">
             <imageSliceId value="gui.animalScreen_left" />

@@ -187,23 +187,9 @@ function CpCourseGeneratorFrame:initialize(menu)
 	self.currentHotspot = nil
 	g_messageCenter:subscribe(MessageType.GUI_CP_INGAME_CURRENT_VEHICLE_CHANGED, 
 		function(self, vehicle)
-			if vehicle then 
-				self.subCategoryPaging:setDisabled(false)
-				for ix=1, self.NUM_CATEGORIES do 
-					if ix ~= self.CATEGRORIES.IN_GAME_MAP then
-						self.subCategoryTabs[ix]:setDisabled(false)		
-					end
-				end
-				self:updateSettings(vehicle)
-			else
-				self:updateSubCategoryPages(self.CATEGRORIES.IN_GAME_MAP)
-				self.subCategoryPaging:setDisabled(true)
-				for ix=1, self.NUM_CATEGORIES do 
-					if ix ~= self.CATEGRORIES.IN_GAME_MAP then
-						self.subCategoryTabs[ix]:setDisabled(true)		
-					end
-				end
-			end
+			local _, pageTitle = CpCourseGeneratorSettings.getSettingSetup()
+			local title = string.format(g_i18n:getText(pageTitle), vehicle and vehicle:getName() or "--")
+			self.categoryHeaderText:setText(title)
 		end, self)
 end
 
@@ -246,9 +232,7 @@ end
 
 function CpCourseGeneratorFrame:updateSettings(vehicle)
 	local settings = vehicle:getCourseGeneratorSettings()
-	local settingsBySubTitle, pageTitle = CpCourseGeneratorSettings.getSettingSetup()
-	local title = string.format(g_i18n:getText(pageTitle), vehicle:getName())
-	self.categoryHeaderText:setText(title)
+	local settingsBySubTitle = CpCourseGeneratorSettings.getSettingSetup()
 
 	local layout = self.subCategoryPages[self.CATEGRORIES.BASIC_SETTINGS]:getDescendantByName("layout")
 	for i = #layout.elements, 1, -1 do
@@ -343,14 +327,12 @@ function CpCourseGeneratorFrame:onFrameOpen()
 	self:updateSubCategoryPages(self.CATEGRORIES.IN_GAME_MAP)
 
 	CpCourseGeneratorFrame:superClass().onFrameOpen(self)
-
+	self:updateCourseGenerator(false)
 	local vehicle = self.cpMenu:getCurrentVehicle()
 	if vehicle and self.currentHotspot == nil then
-		self.subCategoryPaging:setDisabled(false)
 		self:setAIVehicle(vehicle)
 	elseif vehicle == nil then
 		self:updateSubCategoryPages(self.CATEGRORIES.IN_GAME_MAP)
-		self.subCategoryPaging:setDisabled(true)
 		self:setMapSelectionItem(nil)
 	end	
 
@@ -430,13 +412,33 @@ function CpCourseGeneratorFrame:onClickBack(force)
 		self:setMapSelectionItem(nil)
 	elseif self.currentHotspot then 
 		self:setMapSelectionItem(nil)
-		return not force
+		return force
 	end
 	return true
 end
 
 function CpCourseGeneratorFrame:onClickCpMultiTextOption(_, guiElement)
 	CpSettingsUtil.updateGuiElementsBoundToSettings(guiElement.parent.parent, self.cpMenu:getCurrentVehicle())
+end
+
+function CpCourseGeneratorFrame:updateCourseGenerator(visible, vehicle)
+	if visible then 
+		self.subCategoryPaging:setDisabled(false)
+		for ix=1, self.NUM_CATEGORIES do 
+			if ix ~= self.CATEGRORIES.IN_GAME_MAP then
+				self.subCategoryTabs[ix]:setDisabled(false)		
+			end
+		end
+		self:updateSettings(vehicle)
+	else
+		self:updateSubCategoryPages(self.CATEGRORIES.IN_GAME_MAP)
+		self.subCategoryPaging:setDisabled(true)
+		for ix=1, self.NUM_CATEGORIES do 
+			if ix ~= self.CATEGRORIES.IN_GAME_MAP then
+				self.subCategoryTabs[ix]:setDisabled(true)		
+			end
+		end
+	end
 end
 
 function CpCourseGeneratorFrame:updateSubCategoryPages(state)
@@ -1023,6 +1025,9 @@ function CpCourseGeneratorFrame:populateCellForItemInSection(list, section, inde
 		cell.onClickCallback = buttonInfo.callback
 	elseif list == self.infoTextList then 
 		cell:getAttribute("text"):setText(self.activeInfoTexts[index].text)
+		cell:getAttribute("icon").getIsSelected = function ()
+			return self.currentHotspot and self.currentHotspot:getVehicle() == self.activeInfoTexts[index].vehicle
+		end
 		cell.onClickCallback = function ()
 			if self:getIsPicking() then 
 				return
@@ -1365,6 +1370,7 @@ function CpCourseGeneratorFrame:setJobMenuVisible(isVisible)
 	if not isVisible then
 		self.currentJob = nil
 		self.currentJobVehicle = nil
+		self:updateCourseGenerator(false)
 		FocusManager:setFocus(self.mapOverviewSelector)
 		self.mapOverviewSelector:setState(self.MAP_SELECTOR_ACTIVE_JOBS, true)
 	else
@@ -1421,6 +1427,7 @@ function CpCourseGeneratorFrame:setActiveJobTypeSelection(jobTypeIndex)
 		self:validateParameters()
 		self.jobMenuLayout:invalidateLayout()
 		FocusManager:setFocus(self.jobTypeElement)
+		self:updateCourseGenerator(self.currentJob:isa(CpAIJobFieldWork), self.currentJobVehicle)
 	end
 	self:updateContextActions()
 end
