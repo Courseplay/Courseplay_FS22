@@ -81,7 +81,6 @@ function CpHudInfoTexts:init()
     leftTopText:setTextDetails("Courseplay")
     local rightTopText = CpTextHudElement.new(self.baseHud, CpHudInfoTexts.x + self.width - self.wMargin, CpHudInfoTexts.y - headerHeight + self.hMargin/16, self.titleFontSize, RenderText.ALIGN_RIGHT)
     rightTopText:setTextDetails(g_Courseplay.currentVersion)
-    local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
 
     local width, height = getNormalizedScreenValues(20, 20)
 
@@ -92,11 +91,12 @@ function CpHudInfoTexts:init()
     for i=1, self.maxLines do 
         y = y - self.lineHeight
     
-        local vehicleOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
-        vehicleOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_LEFT)
-        vehicleOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.vehicleIcon),{256,512}))
-        vehicleOverlay:setColor(unpack(self.OFF_COLOR))
-
+        local vehicleOverlay = CpGuiUtil.createOverlayFromSlice(
+            "cpIconSprite.white_vehicle", 
+            {width, height},
+            CpBaseHud.OFF_COLOR,
+            CpBaseHud.alignments.bottomLeft)
+     
         local vehicleBtn = CpHudButtonElement.new(vehicleOverlay, self.baseHud)
         vehicleBtn:setPosition(x, y)
     

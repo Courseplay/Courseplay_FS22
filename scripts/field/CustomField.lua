@@ -81,7 +81,8 @@ function CustomField:draw(map)
     if not self.fieldHotspot then
         -- add hotspot when draw first called. Can't create in the constructor as on game load
         -- when the custom fields are loaded there's no player yet
-        self:addHotspot()
+        -- TODO_25
+        -- self:addHotspot()
     end
     self.fieldPlot:draw(map)
 end

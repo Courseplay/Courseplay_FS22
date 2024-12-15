@@ -100,6 +100,7 @@ function CpInfoTexts:raiseDirtyFlag()
 	if self.isServer then
 		local spec = self.spec_cpInfoTexts
 		self:raiseDirtyFlags(spec.dirtyFlag)
+		g_messageCenter:publishDelayed(MessageType.CP_INFO_TEXT_CHANGED)
 	end
 end
 

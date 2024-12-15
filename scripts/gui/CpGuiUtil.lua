@@ -300,19 +300,29 @@ end
 ---@param iconData table filename, uvs
 ---@param color table r, g, b, alpha
 ---@param alignment table vertical, horizontal alignments
----@param sliceId string|nil slice id
-function CpGuiUtil.createOverlay(size, iconData, color, alignment, sliceId)
+---@return table
+function CpGuiUtil.createOverlay(size, iconData, color, alignment)
 	local filename, uvs = unpack(iconData)
 	local overlay = Overlay.new(filename, 0, 0, unpack(size))
-	if sliceId then 
-		overlay:setSliceId(sliceId)
-	else 
-		overlay:setUVs(uvs)
-	end
+	overlay:setUVs(uvs)
     overlay:setColor(unpack(color))
     overlay:setAlignment(unpack(alignment))
 	return overlay
 end
+
+--- Creates a new overlay with the overlay manager
+---@param sliceId string slice id
+---@param size table x, y
+---@param color table r, g, b, alpha
+---@param alignment table vertical, horizontal alignments
+---@return table
+function CpGuiUtil.createOverlayFromSlice(sliceId, size, color, alignment)
+	local overlay = g_overlayManager:createOverlay(sliceId, 0, 0, unpack(size))
+    overlay:setColor(unpack(color))
+    overlay:setAlignment(unpack(alignment))
+	return overlay
+end
+
 
 --- Enable/disable camera rotation when a vehicle is selected. We want to disable camera rotation per mouse
 --- when we enable the mouse cursor so it can be used click controls on a GUI
@@ -349,26 +359,26 @@ end
 ---@param hMargin number
 ---@param line number
 function CpGuiUtil.addCopyAndPasteButtons(layout, baseHud, vehicle, lines, wMargin, hMargin, line)
-	local imageFilename = Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY)
-    local imageFilename2 = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
-                                      
 	local leftX, leftY = unpack(lines[line].left)
     local rightX, rightY = unpack(lines[line].right)
     local btnYOffset = hMargin/3
 	local width, height = getNormalizedScreenValues(22, 22)
 
-	local copyOverlay = CpGuiUtil.createOverlay({width, height},
-	{imageFilename, GuiUtils.getUVs(unpack(CpBaseHud.uvs.copySymbol))}, 
-	CpBaseHud.OFF_COLOR,
-	CpBaseHud.alignments.bottomRight)
-
-	local pasteOverlay = CpGuiUtil.createOverlay({width, height},
-		{imageFilename, GuiUtils.getUVs(unpack(CpBaseHud.uvs.pasteSymbol))}, 
+	local copyOverlay = CpGuiUtil.createOverlayFromSlice(
+		"cpUi.copy", 
+		{width, height},
 		CpBaseHud.OFF_COLOR,
 		CpBaseHud.alignments.bottomRight)
-
-	local clearCourseOverlay = CpGuiUtil.createOverlay({width, height},
-		{imageFilename2, GuiUtils.getUVs(unpack(CpBaseHud.uvs.clearCourseSymbol))}, 
+	
+	local pasteOverlay = CpGuiUtil.createOverlayFromSlice(
+		"cpUi.paste", 
+		{width, height},
+		CpBaseHud.OFF_COLOR,
+		CpBaseHud.alignments.bottomRight)
+	
+	local clearCourseOverlay = CpGuiUtil.createOverlayFromSlice(
+		"cpIconSprite.clear", 
+		{width, height},
 		CpBaseHud.OFF_COLOR,
 		CpBaseHud.alignments.bottomRight)
 
