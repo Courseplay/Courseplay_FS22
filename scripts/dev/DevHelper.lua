@@ -83,7 +83,7 @@ function DevHelper:update()
     self.data.isOnFieldArea, self.data.onFieldArea, self.data.totalOnFieldArea = CpFieldUtil.isOnFieldArea(self.data.x, self.data.z)
     self.data.nx, self.data.ny, self.data.nz = getTerrainNormalAtWorldPos(g_currentMission.terrainRootNode, self.data.x, y, self.data.z)
 
-    local collisionMask = CollisionFlag.DEFAULT + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE + CollisionFlag.TERRAIN_DELTA + CollisionFlag.BUILDING
+    local collisionMask = CpUtil.getDefaultCollisionFlags() + CollisionFlag.TERRAIN_DELTA
     self.data.collidingShapes = ''
     overlapBox(self.data.x, self.data.y + 0.2, self.data.z, 0, self.yRot, 0, 1.6, 1, 8, "overlapBoxCallback", self, collisionMask, true, true, true)
 
@@ -153,11 +153,8 @@ function DevHelper:keyEvent(unicode, sym, modifier, isDown)
     elseif bitAND(modifier, Input.MOD_LCTRL) ~= 0 and isDown and sym == Input.KEY_space then
         -- restore vehicle position
         DevHelper.restoreVehiclePosition(CpUtil.getCurrentVehicle())
-    elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_c then
-        self:debug('Finding contour of current field')
-        local valid, points = g_fieldScanner:findContour(self.data.x, self.data.z)
     elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_g then
-        local valid, points = g_fieldScanner:findContour(self.data.x, self.data.z)
+        local points = CpFieldUtil.detectFieldBoundary(self.data.x, self.data.z, true)
         self:debug('Generate course')
 
         local vehicle = CpUtil.getCurrentVehicle()

@@ -477,3 +477,8 @@ end
 function CpUtil.getCurrentVehicle()
 	return g_currentMission.playerSystem:getLocalPlayer():getCurrentVehicle()
 end
+
+function CpUtil.getDefaultCollisionFlags()
+	return CollisionFlag.DEFAULT + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + 
+		CollisionFlag.VEHICLE + CollisionFlag.BUILDING + CollisionFlag.PLACEMENT_BLOCKING
+end

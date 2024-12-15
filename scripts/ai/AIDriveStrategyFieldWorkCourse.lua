@@ -580,8 +580,9 @@ function AIDriveStrategyFieldWorkCourse:startAlignmentTurn(fieldWorkCourse, star
         self:startCourse(self.workStarter:getCourse(), 1)
     else
         self:debug('Could not create alignment course to first up/down row waypoint, continue without it')
-        self:startWaitingForLower()
-        self:lowerImplements()
+        self:startCourse(fieldWorkCourse, startIx)
+        self.state = self.states.INITIAL
+        self:prepareForFieldWork()
     end
 end
 

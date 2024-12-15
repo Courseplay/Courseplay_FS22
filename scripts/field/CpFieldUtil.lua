@@ -167,15 +167,15 @@ function CpFieldUtil.getFieldPolygonAtWorldPosition(x, z)
     local fieldNum = CpFieldUtil.getFieldIdAtWorldPosition(x, z)
     CpUtil.info('Scanning field %d on %s, prefer custom fields %s',
             fieldNum, g_currentMission.missionInfo.mapTitle, g_Courseplay.globalSettings.preferCustomFields:getValue())
-    local mapField, mapFieldPolygon = g_fieldScanner:findContour(x, z)
+    local mapFieldPolygon = CpFieldUtil.detectFieldBoundary(x, z, true)
 
-    if customField and (not mapField or g_Courseplay.globalSettings.preferCustomFields:getValue()) then
+    if customField and (not mapFieldPolygon or g_Courseplay.globalSettings.preferCustomFields:getValue()) then
         -- use a custom field if there is one under us and either there's no regular map field or, there is,
         -- but the user prefers custom fields
         CpUtil.info('Custom field found: %s', customField:getName())
         fieldPolygon = customField:getVertices()
         isCustomField = true
-    elseif mapField then
+    elseif mapFieldPolygon then
         fieldPolygon = mapFieldPolygon
     end
     return fieldPolygon, isCustomField
@@ -198,6 +198,7 @@ function CpFieldUtil.detectFieldBoundary(x, z, detect, useGiantsDetector)
             local _, _, _, riceField = PlaceableRiceField.getRiceFieldAtPosition(x, y, z)
             if riceField then
                 -- rice fields are somewhat special, so always use the Giants method
+                CpUtil.info('Rice field found')
                 return CpFieldUtil.getRiceFieldPolygon(riceField)
             else
                 local valid, points = g_fieldScanner:findContour(x, z)
