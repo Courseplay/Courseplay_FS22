@@ -105,8 +105,13 @@ end
 
 -- Lines 279-324
 function CpInGameMenu:initializePages()
-	self.clickBackCallback = self:makeSelfCallback(self.onButtonBack)
-
+	self.clickBackCallback = function ()
+		if self.currentPage.onClickBack then 
+			--- Force closes the page 
+			self.currentPage:onClickBack(true)
+		end
+		self:exitMenu()
+	end
 	self.pageCourseGenerator:setInGameMap(
 		g_inGameMenu.baseIngameMap, 
 		g_currentMission.hud)

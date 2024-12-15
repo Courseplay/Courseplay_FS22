@@ -90,7 +90,7 @@
                                 <Bitmap profile="fs25_aiCreateJobParameterInvalid" name="invalid" />
                             </Button>
                             <Button profile="fs25_aiCreateJobParameterButton"
-                                id="createPositionRotationTemplate" text="172a"
+                                id="createPositionRotationTemplate"
                                 onClick="onClickPositionRotationParameter">
                                 <ThreePartBitmap profile="fs25_aiCreateJobParameterBg" />
                                 <Bitmap profile="fs25_aiCreateJobParameterIcon" />
@@ -141,14 +141,25 @@
                 </Bitmap>
             </GuiElement>
             <GuiElement profile="cpMenuContainer">
-                <GuiElement profile="fs25_menuHeaderPanel">
-                    <!-- <RoundCorner profile="fs25_mapMoneyBoxBg" id="shopMoneyBoxBg" />
-                    <BoxLayout profile="fs25_shopMoneyBox" id="shopMoneyBox">
-                        <Text profile="fs25_shopBalance" text="$l10n_ui_balance:" />
-                        <Text profile="fs25_shopMoney" id="currentBalanceText" />
-                    </BoxLayout> -->
-                    <Text profile="fs25_ingameMenuAIStatusText" id="statusMessage" />
+                <GuiElement id="infoTextHud">
+                    <GuiElement profile="cpInfoTextHeaderPanel">
+                        <Bitmap profile="cpInfoTextHeaderBg"/>
+                        <Text profile="cpInfoTextHeaderTitle" text="$l10n_CP_help_title"/>
+                    </GuiElement>
+                    <SmoothList profile="cpInfoTextList" id="infoTextList" onClick="onClickList">
+                        <ListItem profile="cpInfoTextListElement">
+                            <Bitmap profile="cpInfoTextListElementBg" />
+                            <Text profile="cpInfoTextListElementText" name="text" />
+                            <Button profile="cpInfoTextListElementIcon"/>
+                        </ListItem>
+                    </SmoothList>
                 </GuiElement>
+                <!-- <RoundCorner profile="fs25_mapMoneyBoxBg" id="shopMoneyBoxBg" />
+                <BoxLayout profile="fs25_shopMoneyBox" id="shopMoneyBox">
+                    <Text profile="fs25_shopBalance" text="$l10n_ui_balance:" />
+                    <Text profile="fs25_shopMoney" id="currentBalanceText" />
+                </BoxLayout> -->
+                <Text profile="fs25_ingameMenuAIStatusText" id="statusMessage" />
             </GuiElement>
             <GuiElement profile="fs25_mapContextBoxContainer" newLayer="true">
                 <GuiElement profile="fs25_mapContextBox" id="contextBox">
@@ -256,10 +267,48 @@
             <width value="100%"/>
             <height value="80px" />
         </Profile>
-        <Profile name="cpMenuContainer" extends="fs25_menuContainer">
-            <position value="0px 0px"/>
-            <absoluteSizeOffset value="10px 10px" />
+        <Profile name="cpMenuContainer" extends="fs25_menuContainer" with="anchorTopRight">
+            <position value="20px 0px"/>
             <!-- <position value="0px 92px" /> -->
+        </Profile>
+        <Profile name="cpInfoTextHeaderPanel" extends="emptyPanel" with="anchorTopRight">
+
+        </Profile>
+        <Profile name="cpInfoTextHeaderBg" extends="baseReference" with="anchorTopRight">
+            <size value="250px 20px"/>
+            <imageSliceId value="gui.button_middle" />
+            <imageColor value="$preset_fs25_colorMainHighlight"/>
+        </Profile>
+        <Profile name="cpInfoTextHeaderTitle" extends="fs25_textDefault" with="anchorTopRight">
+            <textOffset value="10px 0px" />
+        </Profile>
+        <Profile name="cpInfoTextList" extends="emptyPanel" with="anchorTopRight">
+            <size value="250px 300px"/>
+            <position value="0 -20px" />
+            <listItemSpacing value="3px" />
+            <!-- <position value="0px -200px" /> -->
+        </Profile>
+        <Profile name="cpInfoTextListElement" extends="emptyPanel" with="anchorTopStretchingX">
+            <height value="26px" />
+        </Profile>
+        <Profile name="cpInfoTextListElementText" extends="fs25_textDefault" with="anchorTopStretchingX">
+            <width value="100%" />
+            <textSize value="12px" />
+            <textOffset value="30px -2px" />
+            <textSelectedColor value="$preset_fs25_colorMainHighlight" />
+            <textFocusedColor value="$preset_fs25_colorMainHighlight" />
+            <textHighlightedColor value="$preset_fs25_colorMainHighlight" />
+        </Profile>
+        <Profile name="cpInfoTextListElementIcon" extends="emptyPanel" with="anchorTopLeft">
+            <size value="26px 26px"/>
+            <absoluteSizeOffset value="3px 3px"/>
+            <iconSliceId value="cpIconSprite.white_vehicle" />
+            <iconSize value="20px 20px" />
+            <iconColor value="$preset_fs25_colorMainHighlight" />
+        </Profile>
+        <Profile name="cpInfoTextListElementBg" extends="baseReference" with="anchorTopStretchingX">
+            <imageSliceId value="gui.animalScreen_left" />
+            <!-- <imageSelectedColor value="$preset_colorBlack80" /> -->
         </Profile>
     </GUIProfiles>
 </GUI>

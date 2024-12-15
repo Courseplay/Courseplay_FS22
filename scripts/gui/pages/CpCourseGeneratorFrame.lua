@@ -62,6 +62,7 @@ function CpCourseGeneratorFrame.new(target, custom_mt)
 	self.subCategoryTabs = {}
 	self.contextActions = {}
 	self.contextActionMapping = {}
+	self.activeInfoTexts = {}
 	self.hasFullScreenMap = true
 	self.dataTables = {}
 	self.hotspotModeActive = false
@@ -295,6 +296,9 @@ function CpCourseGeneratorFrame:onFrameOpen()
 
 		-- InGameMenuMapUtil.hideContextBox(self.contextBox) 
 	end, self)
+	g_messageCenter:subscribe(MessageType.CP_INFO_TEXT_CHANGED, function (menu)
+		self.infoTextList:reloadData()
+	end, self)
 	-- g_messageCenter:subscribe(MessageType.AI_TASK_SKIPPED, self.onAITaskSkipped, self)
 	local hotspotValue = g_gameSettings:getValue(GameSettings.SETTING.INGAME_MAP_HOTSPOT_FILTER)
 	for i, hotspotCategory in pairs(self.hotspotFilterCategories[1]) do 
@@ -320,6 +324,12 @@ function CpCourseGeneratorFrame:onFrameOpen()
 	end
 	self.activeWorkerList:reloadData()
 	self.filterList:reloadData()
+	if g_Courseplay.globalSettings.infoTextHudActive:getValue() > 0 then 
+		self.infoTextList:reloadData()
+		self.infoTextHud:setVisible(true)
+	else 
+		self.infoTextHud:setVisible(false)
+	end
 	self.ingameMapBase:restoreDefaultFilter()
 	self:generateJobTypes()
 	self.mode = self.AI_MODE_OVERVIEW
@@ -377,6 +387,8 @@ function CpCourseGeneratorFrame:onFrameClose()
 	g_messageCenter:unsubscribe(MessageType.AI_JOB_STARTED, self)
 	g_messageCenter:unsubscribe(MessageType.AI_JOB_STOPPED, self)
 	g_messageCenter:unsubscribe(MessageType.AI_JOB_REMOVED, self)
+	g_messageCenter:unsubscribe(MessageType.AI_VEHICLE_STATE_CHANGE, self)
+	g_messageCenter:unsubscribe(MessageType.CP_INFO_TEXT_CHANGED, self)
 	g_messageCenter:unsubscribe(AIJobStartRequestEvent, self)
 	self.jobTypeInstances = {}
 	g_currentMission:removeMapHotspot(self.driveToAiTargetMapHotspot)
@@ -397,23 +409,28 @@ function CpCourseGeneratorFrame:onFrameClose()
 	CpCourseGeneratorFrame:superClass().onFrameClose(self)
 end
 
-function CpCourseGeneratorFrame:onClickBack()
-	if self.startJobPending then
-		return
+function CpCourseGeneratorFrame:onClickBack(force)
+	if self.startJobPending and not force then
+		return false
 	end
 	if self.mode == self.AI_MODE_CREATE then 
 		if self:getIsPicking() then
 			self:executePickingCallback(false)
 			self:updateContextActions()
-			return false
+			if not force then
+				return false
+			end
 		end 
 		self.mode = self.AI_MODE_OVERVIEW
 		self:setJobMenuVisible(false)
-		self:setMapSelectionItem(self.currentHotspot)
-		return false
+		if not force then 
+			self:setMapSelectionItem(self.currentHotspot)
+			return false
+		end
+		self:setMapSelectionItem(nil)
 	elseif self.currentHotspot then 
 		self:setMapSelectionItem(nil)
-		return false
+		return not force
 	end
 	return true
 end
@@ -956,6 +973,9 @@ function CpCourseGeneratorFrame:getNumberOfItemsInSection(list, section)
 			return 0
 		end
 		return #self.contextActionMapping
+	elseif list == self.infoTextList then 
+		self.activeInfoTexts = g_infoTextManager:getActiveInfoTexts()
+		return #self.activeInfoTexts
 	end
 	return 0
 end
@@ -1001,6 +1021,18 @@ function CpCourseGeneratorFrame:populateCellForItemInSection(list, section, inde
 		local buttonInfo = self.contextActions[self.contextActionMapping[index]]
 		cell:getAttribute("text"):setText(buttonInfo.text)
 		cell.onClickCallback = buttonInfo.callback
+	elseif list == self.infoTextList then 
+		cell:getAttribute("text"):setText(self.activeInfoTexts[index].text)
+		cell.onClickCallback = function ()
+			if self:getIsPicking() then 
+				return
+			end
+			if self.mode == self.AI_MODE_CREATE then 
+				self.mode = self.AI_MODE_OVERVIEW
+				self:setJobMenuVisible(false)
+			end
+			self:setAIVehicle(self.activeInfoTexts[index].vehicle)
+		end
 	end
 end
 
@@ -1023,6 +1055,8 @@ function CpCourseGeneratorFrame:onClickList(list, section, index, listElement)
 		listElement.onClickCallback(self)	
 	elseif list == self.createJobButtonList then
 		listElement.onClickCallback(self)	
+	elseif list == self.infoTextList then 
+		listElement.onClickCallback(self)
 	end
 end
 
@@ -1115,6 +1149,10 @@ function CpCourseGeneratorFrame:generateJobTypes()
 end
 
 function CpCourseGeneratorFrame:addStatusMessage(message)
+	if g_Courseplay.globalSettings.infoTextHudActive:getValue() > 0 then 
+		--- Status Meldung werden als info text angezeigt ..
+		return
+	end
 	table.insert(self.statusMessages, {
 		removeTime = g_time + 5000,
 		text = message
@@ -1139,7 +1177,7 @@ function CpCourseGeneratorFrame:initializeContextActions()
 					local vehicle = self.currentHotspot:getVehicle()
 					if vehicle then 
 						if vehicle.getIsEnterableFromMenu ~= nil and vehicle:getIsEnterableFromMenu() then
-							self.onClickBackCallback(nil, nil, true)
+							self.onClickBackCallback()
 							g_localPlayer:requestToEnterVehicle(vehicle)
 						end
 					end
