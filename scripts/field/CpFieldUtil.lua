@@ -198,6 +198,7 @@ function CpFieldUtil.detectFieldBoundary(x, z, detect, useGiantsDetector)
             local _, _, _, riceField = PlaceableRiceField.getRiceFieldAtPosition(x, y, z)
             if riceField then
                 -- rice fields are somewhat special, so always use the Giants method
+                CpUtil.info('Rice field found')
                 return CpFieldUtil.getRiceFieldPolygon(riceField)
             else
                 local valid, points = g_fieldScanner:findContour(x, z)
