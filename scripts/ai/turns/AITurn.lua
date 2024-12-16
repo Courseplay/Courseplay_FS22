@@ -253,10 +253,41 @@ function AITurn:getDriveData(dt)
     return gx, gz, moveForwards, maxSpeed
 end
 
--- default for 180 turns: we need to raise the implement (when finishing a row) when we reach the
--- workEndNode.
 function AITurn:getRaiseImplementNode()
-    return self.turnContext.workEndNode
+    if not self.raiseImplementNode then
+        self.raiseImplementNode, self.lowerImplementNode = self:setRaiseLowerNodes()
+    end
+    return self.raiseImplementNode
+end
+
+function AITurn:getLowerImplementNode()
+    if not self.lowerImplementNode then
+        self.raiseImplementNode, self.lowerImplementNode = self:setRaiseLowerNodes()
+    end
+    return self.lowerImplementNode
+end
+
+---@return number, number the node where the implements should be raised when finishing work, the node where the
+--- implements should be lowered when starting work
+function AITurn:setRaiseLowerNodes()
+    if self.turnContext:isHeadlandCorner() then
+        -- in headland corners, we want to stay on the field as much as possible to avoid hitting obstacles around the field.
+        local _, backMarkerDistance = self.driveStrategy:getFrontAndBackMarkers()
+        if backMarkerDistance < 0 then
+            -- implement on the back of the vehicle, so before the corner, we don't work all the way to the field edge,
+            -- stop a work width before it, then make the turn, back up until the implement reaches the field edge,
+            -- lower, and continue on the new headland direction
+            return self.turnContext.workEndNode, self.turnContext.workStartNode
+        else
+            -- implement on the front of the vehicle, so we can work all the way to the field edge, then make the turn
+            -- and back up only until the implement reaches the already worked part, work width from the field edge
+            return self.turnContext.lateWorkEndNode, self.turnContext.lateWorkStartNode
+        end
+    else
+        -- default for 180 turns: we need to raise the implement (when finishing a row) when we reach the
+        -- workEndNode.
+        return self.turnContext.workEndNode, self.turnContext.workStartNode
+    end
 end
 
 function AITurn:finishRow(dt)
@@ -286,7 +317,7 @@ function AITurn:resumeFieldworkAfterTurn(ix)
     -- just in case, raise this event so plows are rotated to the working position. Should really never end up
     -- here though, as the course should be long enough for the normal turn end processing to be triggered.
     self.driveStrategy:raiseControllerEvent(AIDriveStrategyCourse.onTurnEndProgressEvent,
-            self.turnContext.workStartNode, self.ppc:isReversing(), true, self.turnContext:isLeftTurn())
+            self:getLowerImplementNode(), self.ppc:isReversing(), true, self.turnContext:isLeftTurn())
 
     if self.proximityController then
         self.proximityController:unregisterBlockingObjectListener()
@@ -432,12 +463,6 @@ end
 function CombineHeadlandTurn:onWaypointPassed(ix, course)
     -- nothing to do, especially because the row finishing course is still active in the PPC and we may
     -- pass the last waypoint which causes the turn to end and return to field work
-end
-
--- in a combine headland turn we want to raise the header after it reached the field edge (or headland edge on an inner
--- headland.
-function CombineHeadlandTurn:getRaiseImplementNode()
-    return self.turnContext.lateWorkEndNode
 end
 
 function CombineHeadlandTurn:turn(dt)
@@ -613,9 +638,9 @@ end
 ---@return boolean true if it is ok the continue driving, false when the vehicle should stop
 function CourseTurn:endTurn(dt)
     -- keep driving on the turn course until we need to lower our implements
-    local shouldLower, dz = self.driveStrategy:shouldLowerImplements(self.turnContext.workStartNode, self.ppc:isReversing())
+    local shouldLower, dz = self.driveStrategy:shouldLowerImplements(self:getLowerImplementNode(), self.ppc:isReversing())
     self.driveStrategy:raiseControllerEvent(AIDriveStrategyCourse.onTurnEndProgressEvent,
-            self.turnContext.workStartNode, self.ppc:isReversing(), shouldLower, self.turnContext:isLeftTurn())
+            self:getLowerImplementNode(), self.ppc:isReversing(), shouldLower, self.turnContext:isLeftTurn())
     if shouldLower then
         if not self.implementsLowered then
             -- have not started lowering implements yet
@@ -849,22 +874,6 @@ function RecoveryTurn:onBlocked()
     end
 end
 
---- Combines (in general, when harvesting) in headland corners we want to work the corner first, then back up and then
---- turn so we harvest any area before we drive over it
----@class CombineCourseTurn : CourseTurn
-CombineCourseTurn = CpObject(CourseTurn)
-
----@param turnContext TurnContext
-function CombineCourseTurn:init(vehicle, driveStrategy, ppc, proximityController, turnContext, fieldWorkCourse, workWidth, name)
-    CourseTurn.init(self, vehicle, driveStrategy, ppc, proximityController, turnContext, fieldWorkCourse, workWidth, name or 'CombineCourseTurn')
-end
-
--- in a combine headland turn we want to raise the header after it reached the field edge (or headland edge on an inner
--- headland.
-function CombineCourseTurn:getRaiseImplementNode()
-    return self.turnContext.lateWorkEndNode
-end
-
 --[[
   Headland turn for combines on the outermost headland:
   1. drive forward to the field edge or the headland path edge
@@ -873,13 +882,13 @@ end
      corner while reversing
   4. forward to the turn start to continue on headland
 ]]
----@class CombinePocketHeadlandTurn : CombineCourseTurn
-CombinePocketHeadlandTurn = CpObject(CombineCourseTurn)
+---@class CombinePocketHeadlandTurn : CourseTurn
+CombinePocketHeadlandTurn = CpObject(CourseTurn)
 
 ---@param driveStrategy AIDriveStrategyCombineCourse
 ---@param turnContext TurnContext
 function CombinePocketHeadlandTurn:init(vehicle, driveStrategy, ppc, proximityController, turnContext, fieldWorkCourse, workWidth)
-    CombineCourseTurn.init(self, vehicle, driveStrategy, ppc, proximityController, turnContext, fieldWorkCourse,
+    CourseTurn.init(self, vehicle, driveStrategy, ppc, proximityController, turnContext, fieldWorkCourse,
             workWidth, 'CombinePocketHeadlandTurn')
 end
 
@@ -1036,11 +1045,10 @@ function StartRowOnly:getDriveData()
             self.state = self.states.APPROACHING_ROW
             self:debug('Approaching row')
             self.driveStrategy:raiseControllerEvent(AIDriveStrategyCourse.onTurnEndProgressEvent,
-                    self.turnContext.workStartNode, self.ppc:isReversing(), true, not self.turnContext:isNextTurnLeft())
+                    self:getLowerImplementNode(), self.ppc:isReversing(), true, not self.turnContext:isNextTurnLeft())
         end
     elseif self.state == self.states.APPROACHING_ROW then
-        local shouldLower, _ = self.driveStrategy:shouldLowerImplements(self.turnContext.workStartNode,
-                self.ppc:isReversing())
+        local shouldLower, _ = self.driveStrategy:shouldLowerImplements(self:getLowerImplementNode(), self.ppc:isReversing())
         if shouldLower then
             -- have not started lowering implements yet
             self:debug('Lowering implements')
@@ -1053,7 +1061,7 @@ function StartRowOnly:getDriveData()
         end
         return nil, nil, nil, self:getForwardSpeed()
     elseif self.state == self.states.IMPLEMENTS_LOWERING then
-        local _, dz = self.driveStrategy:shouldLowerImplements(self.turnContext.workStartNode, self.ppc:isReversing())
+        local _, dz = self.driveStrategy:shouldLowerImplements(self:getLowerImplementNode(), self.ppc:isReversing())
         -- implements already lowering, making sure we check if they are lowered, the faster we go, the earlier,
         -- for those people who set insanely high turn speeds...
         local implementCheckDistance = math.max(1, 0.1 * self.vehicle:getLastSpeed())
