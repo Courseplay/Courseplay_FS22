@@ -44,6 +44,8 @@ CpCourseGeneratorFrame = {
 	MAP_SELECTOR_HOTSPOT = 1,
 	MAP_SELECTOR_CREATE_JOB = 2,
 	MAP_SELECTOR_ACTIVE_JOBS = 3,
+	CP_MAP_HOTSPOT_OFFSET = 200,
+	BASE_XML_KEY = "CourseGenerator"
 
 	-- POSITION_UVS = GuiUtils.getUVs({
 	-- 	760,
@@ -94,6 +96,7 @@ function CpCourseGeneratorFrame.new(target, custom_mt)
 		g_i18n:getText("button_createJob"),
 		g_i18n:getText("ui_activeAIJobs")}
 
+	self.cpHotspotSettingValue = 1
 	return self
 end
 
@@ -111,6 +114,22 @@ function CpCourseGeneratorFrame.createFromExistingGui(gui, guiName)
 	g_gui:loadGui(gui.xmlFilename, guiName, newGui, true)
 
 	return newGui
+end
+
+function CpCourseGeneratorFrame.registerXmlSchema(xmlSchema, xmlKey)
+	xmlKey = xmlKey .. CpCourseGeneratorFrame.BASE_XML_KEY
+	xmlSchema:register(XMLValueType.INT, xmlKey .. "#mapHotspotValue", "Selected hotspots")
+end
+
+
+function CpCourseGeneratorFrame:loadFromXMLFile(xmlFile, baseKey)
+	self.cpHotspotSettingValue = xmlFile:getValue(
+		string.format("%s%s#mapHotspotValue", baseKey, self.BASE_XML_KEY), 0xFF)
+end
+
+function CpCourseGeneratorFrame:saveToXMLFile(xmlFile, baseKey)
+	xmlFile:setValue(string.format("%s%s#mapHotspotValue", 
+		baseKey, self.BASE_XML_KEY), self.cpHotspotSettingValue)
 end
 
 function CpCourseGeneratorFrame:setInGameMap(ingameMap, hud)
@@ -173,7 +192,14 @@ function CpCourseGeneratorFrame:initialize(menu)
 	self.mapOverviewSelector:setTexts(self.mapSelectorTexts)
 	self.mapOverviewSelector:setState(1, true)
 
-	self.hotspotFilterCategories = InGameMenuMapFrame.HOTSPOT_FILTER_CATEGORIES
+	self.hotspotFilterCategories = table.clone(InGameMenuMapFrame.HOTSPOT_FILTER_CATEGORIES)
+	table.insert(self.hotspotFilterCategories[2], {
+		["id"] = CustomFieldHotspot.CATEGORY,
+		["sliceId"] = CustomFieldHotspot.SLICE_ID,
+		["name"] = CustomFieldHotspot.NAME,
+		["color"] = {CustomFieldHotspot.COLOR}})
+	self.CUSTOM_FIELD_HOTSPOTS = #self.hotspotFilterCategories[2]
+
 	self.hotspotStateFilter = {}
 	for i, data in ipairs(self.hotspotFilterCategories) do 
 		self.hotspotStateFilter[i] = {}
@@ -287,11 +313,17 @@ function CpCourseGeneratorFrame:onFrameOpen()
 	local hotspotValue = g_gameSettings:getValue(GameSettings.SETTING.INGAME_MAP_HOTSPOT_FILTER)
 	for i, hotspotCategory in pairs(self.hotspotFilterCategories[1]) do 
 		local isBitSet = Utils.isBitSet(hotspotValue, hotspotCategory.id)
+		if hotspotCategory.id >= self.CP_MAP_HOTSPOT_OFFSET then 
+			isBitSet = Utils.isBitSet(self.cpHotspotSettingValue, hotspotCategory.id - self.CP_MAP_HOTSPOT_OFFSET)
+		end
 		self.hotspotStateFilter[1][i] = isBitSet
 		self.ingameMapBase:setDefaultFilterValue(hotspotCategory.id, isBitSet)
 	end
 	for i, hotspotCategory in pairs(self.hotspotFilterCategories[2]) do 
 		local isBitSet = Utils.isBitSet(hotspotValue, hotspotCategory.id)
+		if hotspotCategory.id >= self.CP_MAP_HOTSPOT_OFFSET then 
+			isBitSet = Utils.isBitSet(self.cpHotspotSettingValue, hotspotCategory.id - self.CP_MAP_HOTSPOT_OFFSET)
+		end
 		self.hotspotStateFilter[2][i] = isBitSet
 		self.ingameMapBase:setDefaultFilterValue(hotspotCategory.id, isBitSet)
 	end
@@ -335,19 +367,30 @@ function CpCourseGeneratorFrame:onFrameOpen()
 		self:updateSubCategoryPages(self.CATEGRORIES.IN_GAME_MAP)
 		self:setMapSelectionItem(nil)
 	end	
-
+	g_customFieldManager:refresh()
 end
 
 function CpCourseGeneratorFrame:saveHotspotFilter()
 	local hotspotValue = 0
+	self.cpHotspotSettingValue = 0
 	for i, state in pairs(self.hotspotStateFilter[1]) do 
 		if state then
-			hotspotValue = Utils.setBit(hotspotValue, i)
+			local id = self.hotspotFilterCategories[1][i].id
+			if id >= self.CP_MAP_HOTSPOT_OFFSET then 
+				self.cpHotspotSettingValue = Utils.setBit(self.cpHotspotSettingValue, id - self.CP_MAP_HOTSPOT_OFFSET)
+			else 
+				hotspotValue = Utils.setBit(hotspotValue, id)
+			end
 		end
 	end
 	for i, state in pairs(self.hotspotStateFilter[2]) do 
 		if state then
-			hotspotValue = Utils.setBit(hotspotValue, i + #self.hotspotStateFilter[1])
+			local id = self.hotspotFilterCategories[2][i].id
+			if id >= self.CP_MAP_HOTSPOT_OFFSET then 
+				self.cpHotspotSettingValue = Utils.setBit(self.cpHotspotSettingValue, id - self.CP_MAP_HOTSPOT_OFFSET)
+			else 
+				hotspotValue = Utils.setBit(hotspotValue, id)
+			end
 		end
 	end
 	g_gameSettings:setValue(GameSettings.SETTING.INGAME_MAP_HOTSPOT_FILTER, hotspotValue, true)
@@ -543,8 +586,10 @@ function CpCourseGeneratorFrame:onDrawPostIngameMap(element, ingameMap)
 	elseif vehicle and vehicle.drawCpCoursePlot  then 
 		vehicle:drawCpCoursePlot(ingameMap)
 	end
-	-- show the custom fields on the AI map
-	g_customFieldManager:draw(ingameMap)
+	if self.hotspotStateFilter[2][self.CUSTOM_FIELD_HOTSPOTS] then
+		-- show the custom fields on the AI map
+		g_customFieldManager:draw(ingameMap)
+	end
 	-- show the selected field on the AI screen map when creating a job
 	if self.currentJob and self.currentJob.draw then
 		self.currentJob:draw(ingameMap, self.mode == self.MODE_OVERVIEW)

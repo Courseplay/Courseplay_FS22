@@ -88,7 +88,7 @@ function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'hasCpCourse', CpCourseManager.hasCourse)
     SpecializationUtil.registerFunction(vehicleType, 'cpCopyCourse', CpCourseManager.cpCopyCourse)
     
-    SpecializationUtil.registerFunction(vehicleType, 'appendLoadedCpCourse', CpCourseManager.appendLoadedCourse)
+    SpecializationUtil.registerFunction(vehicleType, 'appendLoadedCpCourse', CpCourseManager.appendLoadedCpCourse)
     SpecializationUtil.registerFunction(vehicleType, 'saveCpCourses', CpCourseManager.saveCourses)
     SpecializationUtil.registerFunction(vehicleType, 'resetCpCourses', CpCourseManager.resetCourses)
     SpecializationUtil.registerFunction(vehicleType, 'resetCpCoursesFromGui', CpCourseManager.resetCpCoursesFromGui)
@@ -148,7 +148,7 @@ function CpCourseManager:loadAssignedCourses(xmlFile, baseKey, noEventSend, name
         CpUtil.debugVehicle(CpDebug.DBG_COURSES,self,"Loading assigned course: %s",key)
         local course = Course.createFromXml(self,xmlFile,key)
         course:setVehicle(self)
-        table.insert(courses,course)
+        table.insert(courses, course)
     end)    
     if courses ~= nil and next(courses) then
         spec.courses = courses
@@ -385,11 +385,14 @@ function CpCourseManager.getCourseName(course)
     return name
 end
 
-function CpCourseManager:appendLoadedCourse(file)
+--- Trys to load a course from the file system
+---@param file File
+---@return boolean success
+function CpCourseManager:appendLoadedCpCourse(file)
     --- For now clear the previous courses.
     CpCourseManager.resetCourses(self)
-    file:load(CpCourseManager.xmlSchema, CpCourseManager.xmlKeyFileManager, 
-    CpCourseManager.loadAssignedCourses, self, false)
+    return file:load(CpCourseManager.xmlSchema, CpCourseManager.xmlKeyFileManager, 
+        CpCourseManager.loadAssignedCourses, self, false)
 end
 
 function CpCourseManager:saveCourses(file,text)
@@ -428,10 +431,6 @@ function CpCourseManager:cpReverseCurrentCourse(noEventSend)
             self:updateCpCourseDisplayVisibility()
         end
     end
-end
-
-function CpCourseManager:appendCourse(course)
-
 end
 
 function CpCourseManager:rememberCpLastWaypointIx(ix)

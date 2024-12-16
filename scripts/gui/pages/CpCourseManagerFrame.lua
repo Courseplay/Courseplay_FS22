@@ -83,6 +83,18 @@ function CpCourseManagerFrame.setupGui()
 	 			 "CpCourseManagerFrame", courseManagerFrame, true)
 end
 
+function CpCourseManagerFrame.registerXmlSchema(xmlSchema, xmlKey)
+	
+end
+
+function CpCourseManagerFrame:loadFromXMLFile(xmlFile, baseKey)
+   
+end
+
+function CpCourseManagerFrame:saveToXMLFile(xmlFile, baseKey)
+   
+end
+
 function CpCourseManagerFrame:setCourseStorage(courseStorage)
 	self.courseStorage = courseStorage
 end
@@ -133,7 +145,9 @@ function CpCourseManagerFrame:initialize(menu)
 					if viewEntry then
 						if not viewEntry:isDirectory() then 
 							local vehicle = CpUtil.getCurrentVehicle()
-							vehicle:appendLoadedCpCourse(viewEntry:getEntity())
+							if not vehicle:appendLoadedCpCourse(viewEntry:getEntity()) then 
+								--TODO_25 Error message missing!
+							end
 						else 
 							self.showInfoDialog(
 								self.translations.targetIsNoCourse, viewEntry)

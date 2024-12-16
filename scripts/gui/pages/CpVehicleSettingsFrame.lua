@@ -38,6 +38,18 @@ function CpVehicleSettingsFrame.createFromExistingGui(gui, guiName)
 	return newGui
 end
 
+function CpVehicleSettingsFrame.registerXmlSchema(xmlSchema, xmlKey)
+	
+end
+
+function CpVehicleSettingsFrame:loadFromXMLFile(xmlFile, baseKey)
+   
+end
+
+function CpVehicleSettingsFrame:saveToXMLFile(xmlFile, baseKey)
+   
+end
+
 function CpVehicleSettingsFrame:initialize(menu)
 	self.cpMenu = menu
 	self.booleanPrefab:unlinkElement()
