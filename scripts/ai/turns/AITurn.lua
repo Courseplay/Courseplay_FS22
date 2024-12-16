@@ -888,7 +888,7 @@ CombinePocketHeadlandTurn = CpObject(CourseTurn)
 ---@param driveStrategy AIDriveStrategyCombineCourse
 ---@param turnContext TurnContext
 function CombinePocketHeadlandTurn:init(vehicle, driveStrategy, ppc, proximityController, turnContext, fieldWorkCourse, workWidth)
-    CombineCourseTurn.init(self, vehicle, driveStrategy, ppc, proximityController, turnContext, fieldWorkCourse,
+    CourseTurn.init(self, vehicle, driveStrategy, ppc, proximityController, turnContext, fieldWorkCourse,
             workWidth, 'CombinePocketHeadlandTurn')
 end
 
