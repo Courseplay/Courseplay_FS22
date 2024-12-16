@@ -504,6 +504,7 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <!---->
     <!--Custom field manager-->
     <!---->
+    <text name="CP_customFieldManager_hotspotName" text="Randkurs"/>
     <text name="CP_customFieldManager_confirm_save" text="Möchtest du diesen benutzerdefinierten Randkurs als %s speichern?"/>
     <text name="CP_customFieldManager_confirm_delete" text="Möchtest du den Randkurs %s löschen?"/>
     <text name="CP_customFieldManager_delete" text="Randkurs löschen"/>
