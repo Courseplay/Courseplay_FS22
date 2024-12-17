@@ -28,20 +28,28 @@ end
 --- Loads the course, might be a good idea to consolidate this with the loading of CpCourseManager.
 function CourseEditor:loadCourse()
 	local function load(self, xmlFile, baseKey, noEventSend, name)
+		local course = nil
 		xmlFile:iterate(baseKey, function (i, key)
 			CpUtil.debugVehicle(CpDebug.DBG_COURSES, self, "Loading assigned course: %s", key)
-			local course = Course.createFromXml(nil, xmlFile, key)
+			course = Course.createFromXml(nil, xmlFile, key)
 			course:setName(name)
+		end)  
+		if course then
 			self.courseWrapper = EditorCourseWrapper(course)
-		end)    
+			return true
+		end
+		return false
 	end
-    self.file:load(CpCourseManager.xmlSchema, CpCourseManager.xmlKeyFileManager, 
-    load, self, false)
-	self.courseDisplay:setCourse(self.courseWrapper)
-	local course = self.courseWrapper:getCourse()
-	if course and course:getMultiTools() > 1 then
-		self.needsMultiToolDialog = true
+    if self.file:load(CpCourseManager.xmlSchema, CpCourseManager.xmlKeyFileManager, 
+    	load, self, false) then
+		self.courseDisplay:setCourse(self.courseWrapper)
+		local course = self.courseWrapper:getCourse()
+		if course and course:getMultiTools() > 1 then
+			self.needsMultiToolDialog = true
+		end
+		return true
 	end
+	return false
 end
 
 --- Saves the course, might be a good idea to consolidate this with the saving of CpCourseManager.
@@ -96,12 +104,15 @@ function CourseEditor:activate(file)
 		return
 	end
 	if file then 
-		self.isActive = true
-		self.file = file
-		self:loadCourse()
-		g_gui:showGui("ShopMenu")
-		g_shopMenu:onButtonConstruction()
+		if self:loadCourse() then
+			self.isActive = true
+			self.file = file
+			g_gui:showGui("ShopMenu")
+			g_shopMenu:onButtonConstruction()
+			return true
+		end
 	end
+	return false
 end
 
 function CourseEditor:activateCustomField(file, field)

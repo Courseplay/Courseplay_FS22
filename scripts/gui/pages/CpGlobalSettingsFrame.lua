@@ -40,6 +40,18 @@ function CpGlobalSettingsFrame.createFromExistingGui(gui, guiName)
 	return newGui
 end
 
+function CpGlobalSettingsFrame.registerXmlSchema(xmlSchema, xmlKey)
+	
+end
+
+function CpGlobalSettingsFrame:loadFromXMLFile(xmlFile, baseKey)
+   
+end
+
+function CpGlobalSettingsFrame:saveToXMLFile(xmlFile, baseKey)
+   
+end
+
 function CpGlobalSettingsFrame:initialize(menu)
 	
 	self.booleanPrefab:unlinkElement()

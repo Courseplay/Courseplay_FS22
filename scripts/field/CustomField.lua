@@ -25,16 +25,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ---@class CustomField
 CustomField = CpObject()
-
-CustomField.xmlSchema = XMLSchema.new("customField")
-CustomField.xmlSchema:register(XMLValueType.STRING ,"customField#name", "Name") -- for backwards compatibility
-CustomField.xmlSchema:register(XMLValueType.STRING ,"customField.vertices", "Vertices of the field polygon")
-
 CustomField.rootXmlKey = "customField"
-
-function CustomField:init()
-    
-end
+CustomField.vertexKey = "vertex"
+CustomField.xmlSchema = XMLSchema.new(CustomField.rootXmlKey)
+CustomField.xmlSchema:register(XMLValueType.VECTOR_2, 
+    string.format("%s.%s(?)", CustomField.rootXmlKey, CustomField.vertexKey), 
+    "Vertices of the field polygon")
 
 function CustomField:setup(name, vertices)
 
@@ -81,8 +77,7 @@ function CustomField:draw(map)
     if not self.fieldHotspot then
         -- add hotspot when draw first called. Can't create in the constructor as on game load
         -- when the custom fields are loaded there's no player yet
-        -- TODO_25
-        -- self:addHotspot()
+        self:addHotspot()
     end
     self.fieldPlot:draw(map)
 end
@@ -128,15 +123,26 @@ function CustomField:findFieldCenter()
     self.posZ = z / #self.vertices
 end
 
-
-function CustomField:saveToXml(xmlFile, baseKey,name)
-    xmlFile:setValue(baseKey  .. '#name', name)
-    xmlFile:setValue(baseKey  .. '.vertices', self:serializeVertices())
+function CustomField:getCenter()
+    return self.posX, self.posZ
 end
 
-function CustomField:loadFromXml(xmlFile,baseKey)
-    local vertices = CustomField.deserializeVertices(xmlFile:getValue(baseKey  .. '.vertices'))
-    self:setup(nil,vertices)
+function CustomField:saveToXml(xmlFile, baseKey, name)
+    for i=1, #self.vertices do 
+        xmlFile:setValue(string.format('%s.%s(%d)', baseKey, self.vertexKey, i-1), self.vertices[i].x, self.vertices[i].z )
+    end
+end
+
+function CustomField:loadFromXml(xmlFile, baseKey)
+    local vertices = {}
+    xmlFile:iterate(baseKey .. "." .. self.vertexKey, function (_, key)
+        local x, z = xmlFile:getValue(key)
+        table.insert(vertices, {x = x, z = z})
+    end)
+    if #vertices > 0 then
+        self:setup(nil, vertices)
+        return true
+    end
 end
 
 function CustomField:writeStream(streamId, connection)
@@ -169,12 +175,17 @@ function CustomField.deserializeVertices(serializedVertices)
     return vertices
 end
 
+--- Trys to load a custom field
+---@param file File
+---@return CustomField|nil
 function CustomField.createFromXmlFile(file)
     local field = CustomField()
-    file:load(CustomField.xmlSchema,CustomField.rootXmlKey,
-    CustomField.loadFromXml,field)
-    field:setName(file:getName())
-    return field
+    if file:load(CustomField.xmlSchema, CustomField.rootXmlKey,
+        CustomField.loadFromXml, field) then
+        field:setName(file:getName())
+        return field
+    end
+    return nil
 end
 
 function CustomField.createFromStream(streamId, connection)

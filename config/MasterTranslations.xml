@@ -1778,6 +1778,10 @@ The course is saved automatically on closing of the editor and overrides the sel
 		</Translation>
 	</Category>
 	<Category name="Custom field manager">	
+		<Translation name="CP_customFieldManager_hotspotName">
+			<Text language="de"><![CDATA[Randkurs]]></Text>
+			<Text language="en"><![CDATA[Custom field]]></Text>
+		</Translation>
 		<Translation name="CP_customFieldManager_confirm_save">
 			<Text language="de"><![CDATA[Möchtest du diesen benutzerdefinierten Randkurs als %s speichern?]]></Text>
 			<Text language="en"><![CDATA[Do you want to save the recorded course as custom field %s?]]></Text>

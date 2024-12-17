@@ -504,6 +504,7 @@ Banan sparas automatiskt vid stängning av editorn och åsidosätter den valda b
     <!---->
     <!--Custom field manager-->
     <!---->
+    <text name="CP_customFieldManager_hotspotName" text="Custom field"/>
     <text name="CP_customFieldManager_confirm_save" text="Vill du spara den inspelade kursen som anpassat fält %s?"/>
     <text name="CP_customFieldManager_confirm_delete" text="Vill du radera det anpassade fältet %s?"/>
     <text name="CP_customFieldManager_delete" text="Ta bort anpassat fält"/>

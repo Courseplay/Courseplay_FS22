@@ -27,6 +27,18 @@ function CpHelpFrame.createFromExistingGui(gui, guiName)
 	return newGui
 end
 
+function CpHelpFrame.registerXmlSchema(xmlSchema, xmlKey)
+	
+end
+
+function CpHelpFrame:loadFromXMLFile(xmlFile, baseKey)
+   
+end
+
+function CpHelpFrame:saveToXMLFile(xmlFile, baseKey)
+   
+end
+
 function CpHelpFrame:initialize(menu)
 	self.helpLineDotTemplate:unlinkElement()
 	FocusManager:removeElement(self.helpLineDotTemplate)

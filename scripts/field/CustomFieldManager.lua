@@ -40,34 +40,37 @@ function CustomFieldManager:load()
     self.fileSystem:refresh()
     local entries = self.rootDir:getEntries(false, true)
     for i, entry in pairs(entries) do
-        table.insert(self.fields, CustomField.createFromXmlFile(entry))
+        local field = CustomField.createFromXmlFile(entry)
+        if field == nil then 
+            CpUtil.info("Failed to load custom field: %s", tostring(entry))
+        else 
+            table.insert(self.fields, CustomField.createFromXmlFile(entry))
+        end
     end
     --- Adds reference to the custom fields, for extern mod support.
 	g_fieldManager.cpCustomFields = self.fields
 end
 
 --- New fields are created with a prefix and the next available number.
+---@return number
 function CustomFieldManager:getNewFieldNumber()
     local numbers = {}
     for i, entry in pairs(self.fields) do 
         local name = entry:getName()
         if name:startsWith("CP-") then 
             local n = entry:getFieldNumber()
-            if n then 
-                table.insert(numbers, entry)
-            end
+            numbers[n] = true
         end
     end
-    table.sort(numbers, function (a, b) return a:getFieldNumber() < b:getFieldNumber() end)
-    for i, entry in pairs(numbers) do
-        if i ~= entry:getFieldNumber() then
-            -- the i. entry is not i, so we can use i as a new number (entries is sorted)
-            return i
-        end
+    local ix = 1
+    while self.currentView:hasEntryWithName(self.namePrefix..tostring(ix)) or numbers[ix] do 
+        ix = ix + 1
     end
-    return #numbers + 1
+    return ix
 end
 
+--- Creates a new custom field from a given vertices table.
+---@param waypoints table
 function CustomFieldManager:addField(waypoints)
     if #waypoints < 10 then
         CpUtil.info('Recorded course has less than 10 waypoints, ignoring.')
@@ -82,7 +85,8 @@ function CustomFieldManager:addField(waypoints)
         nil, nil, nil, nil, nil, nil, newField)
 end
 
-
+--- Tries to delete a given custom field.
+---@param fieldToDelete CustomField
 function CustomFieldManager:deleteField(fieldToDelete)
     YesNoDialog.show(
         CustomFieldManager.onClickDeleteDialog, self,
@@ -90,7 +94,9 @@ function CustomFieldManager:deleteField(fieldToDelete)
         nil, nil, nil, nil, nil, nil, fieldToDelete)
 end
 
-function CustomFieldManager:renameField(field, hotspot)
+--- Tries renames a given custom field 
+---@param field CustomField
+function CustomFieldManager:renameField(field)
     TextInputDialog.show(
 		CustomFieldManager.onClickRenameDialog, self,
 		field:getName() or "",
@@ -98,7 +104,9 @@ function CustomFieldManager:renameField(field, hotspot)
         nil, 30, g_i18n:getText("button_ok"), field)
 end
 
-function CustomFieldManager:editField(fieldToEdit, hotspot)
+--- Tries to edit a given custom field, with the course editor.
+---@param fieldToEdit CustomField
+function CustomFieldManager:editField(fieldToEdit)
     for i, field in pairs(self.fields) do
         if field == fieldToEdit then
             local file = self.currentView:getEntryByName(fieldToEdit:getName())
@@ -109,13 +117,17 @@ function CustomFieldManager:editField(fieldToEdit, hotspot)
     end
 end
 
+--- Saves the given custom field
+---@param file File
+---@param field CustomField
+---@param forceReload boolean|nil
 function CustomFieldManager:saveField(file, field, forceReload)
     file:save(CustomField.rootXmlKey, 
-    CustomField.xmlSchema,
-    CustomField.rootXmlKey, 
-    CustomField.saveToXml, 
-    field,
-    field:getName())
+        CustomField.xmlSchema,
+        CustomField.rootXmlKey, 
+        CustomField.saveToXml, 
+        field,
+        field:getName())
     if forceReload then
         self:delete()
         self:load()
@@ -133,6 +145,8 @@ function CustomFieldManager:onClickSaveDialog(clickOk, field)
             fieldValid = true
             table.insert(self.fields, field)
             self.fileSystem:refresh()
+        else 
+            CpUtil.info("Failed to create custom Field: %s", field:getName())
         end
     end
     if not fieldValid then 

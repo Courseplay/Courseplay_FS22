@@ -28,6 +28,7 @@ function Courseplay:registerXmlSchema()
 	self.globalSettings:registerXmlSchema(self.xmlSchema, self.xmlKey)
 	CpBaseHud.registerXmlSchema(self.xmlSchema, self.xmlKey)
 	CpHudInfoTexts.registerXmlSchema(self.xmlSchema, self.xmlKey)
+	CpInGameMenu.registerXmlSchema(self.xmlSchema, self.xmlKey)
 end
 
 --- Loads data not tied to a savegame.
@@ -36,6 +37,7 @@ function Courseplay:loadUserSettings()
 	if xmlFile then
 		self:showUserInformation(xmlFile, self.baseXmlKey)
 		self.globalSettings:loadFromXMLFile(xmlFile, self.xmlKey)
+		g_cpInGameMenu:loadFromXMLFile(xmlFile, self.xmlKey)
 		CpBaseHud.loadFromXmlFile(xmlFile, self.xmlKey)
 		CpHudInfoTexts.loadFromXmlFile(xmlFile, self.xmlKey)
 		xmlFile:save()
@@ -55,6 +57,7 @@ function Courseplay:saveUserSettings()
 		if self.currentVersion then
 			xmlFile:setValue(self.baseXmlKey.."#lastVersion", self.currentVersion)
 		end
+		g_cpInGameMenu:saveToXMLFile(xmlFile, g_Courseplay.xmlKey)
 		xmlFile:save()
 		xmlFile:delete()
 	end
@@ -94,7 +97,6 @@ end
 function Courseplay:loadMap(filename)
 	self.globalSettings = CpGlobalSettings()
 	self:registerXmlSchema()
-	self:loadUserSettings()
 	--- Savegame infos here
 	CpUtil.info("Map loaded: %s, Savegame name: %s(%d)", 
 		g_currentMission.missionInfo.mapId, 
@@ -102,6 +104,7 @@ function Courseplay:loadMap(filename)
 		g_currentMission.missionInfo.savegameIndex)
 	self:load()
 	self:setupGui()
+	self:loadUserSettings()
 	if g_currentMission.missionInfo.savegameDirectory ~= nil then
 		local saveGamePath = g_currentMission.missionInfo.savegameDirectory .."/"
 		local filePath = saveGamePath .. "Courseplay.xml"

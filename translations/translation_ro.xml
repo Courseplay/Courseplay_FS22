@@ -504,6 +504,7 @@ The course is saved automatically on closing of the editor and overrides the sel
     <!---->
     <!--Custom field manager-->
     <!---->
+    <text name="CP_customFieldManager_hotspotName" text="Custom field"/>
     <text name="CP_customFieldManager_confirm_save" text="Do you want to save the recorded course as custom field %s?"/>
     <text name="CP_customFieldManager_confirm_delete" text="Do you want to delete the custom field %s?"/>
     <text name="CP_customFieldManager_delete" text="Delete custom field"/>

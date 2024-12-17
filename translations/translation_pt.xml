@@ -504,6 +504,7 @@ A rota é guardada automaticamente ao fechar o editor e sobrepõe-se a qualquer 
     <!---->
     <!--Custom field manager-->
     <!---->
+    <text name="CP_customFieldManager_hotspotName" text="Custom field"/>
     <text name="CP_customFieldManager_confirm_save" text="Queres guardar a rota gravada como um campo personalizado %s?"/>
     <text name="CP_customFieldManager_confirm_delete" text="Queres apagar o campo personalizado %s?"/>
     <text name="CP_customFieldManager_delete" text="Apagar o campo personalizado"/>

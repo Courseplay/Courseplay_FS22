@@ -1,4 +1,6 @@
-CpInGameMenu = {}
+CpInGameMenu = {
+	BASE_XML_KEY = "InGameMenu"
+}
 local CpInGameMenu_mt = Class(CpInGameMenu, TabbedMenu)
 function CpInGameMenu.new(target, customMt, messageCenter, l10n, inputManager, courseStorage)
 	local self = CpInGameMenu:superClass().new(target, customMt or CpInGameMenu_mt, messageCenter, l10n, inputManager)
@@ -103,7 +105,33 @@ function CpInGameMenu.setupGui(courseStorage)
 				"CpInGameMenu", g_cpInGameMenu)
 end
 
--- Lines 279-324
+function CpInGameMenu.registerXmlSchema(xmlSchema, xmlKey)
+	xmlKey = xmlKey .. CpInGameMenu.BASE_XML_KEY .. "."
+	CpCourseGeneratorFrame.registerXmlSchema(xmlSchema, xmlKey)
+	CpGlobalSettingsFrame.registerXmlSchema(xmlSchema, xmlKey)
+	CpVehicleSettingsFrame.registerXmlSchema(xmlSchema, xmlKey)
+	CpCourseManagerFrame.registerXmlSchema(xmlSchema, xmlKey)
+	CpHelpFrame.registerXmlSchema(xmlSchema, xmlKey)
+end
+
+function CpInGameMenu:loadFromXMLFile(xmlFile, baseKey)
+	baseKey = baseKey .. CpInGameMenu.BASE_XML_KEY .. "."
+	self.pageCourseGenerator:loadFromXMLFile(xmlFile, baseKey)
+	self.pageGlobalSettings:loadFromXMLFile(xmlFile, baseKey)
+	self.pageVehicleSettings:loadFromXMLFile(xmlFile, baseKey)
+	self.pageCourseManager:loadFromXMLFile(xmlFile, baseKey)
+	self.pageHelpLine:loadFromXMLFile(xmlFile, baseKey)
+end
+
+function CpInGameMenu:saveToXMLFile(xmlFile, baseKey)
+	baseKey = baseKey .. CpInGameMenu.BASE_XML_KEY .. "."
+	self.pageCourseGenerator:saveToXMLFile(xmlFile, baseKey)
+	self.pageGlobalSettings:saveToXMLFile(xmlFile, baseKey)
+	self.pageVehicleSettings:saveToXMLFile(xmlFile, baseKey)
+	self.pageCourseManager:saveToXMLFile(xmlFile, baseKey)
+	self.pageHelpLine:saveToXMLFile(xmlFile, baseKey)
+end
+
 function CpInGameMenu:initializePages()
 	self.clickBackCallback = function ()
 		if self.currentPage.onClickBack then 
@@ -115,13 +143,13 @@ function CpInGameMenu:initializePages()
 	self.pageCourseGenerator:setInGameMap(
 		g_inGameMenu.baseIngameMap, 
 		g_currentMission.hud)
+	self.pageCourseManager:setCourseStorage(self.courseStorage)
 
 	self.pageHelpLine:initialize(self)
 	self.pageGlobalSettings:initialize(self)
 	self.pageVehicleSettings:initialize(self)
 	self.pageCourseGenerator:initialize(self)
 	self.pageCourseManager:initialize(self)
-	self.pageCourseManager:setCourseStorage(self.courseStorage)
 end
 
 -- Lines 327-362
