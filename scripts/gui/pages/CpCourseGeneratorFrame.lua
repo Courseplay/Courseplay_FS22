@@ -96,6 +96,7 @@ function CpCourseGeneratorFrame.new(target, custom_mt)
 		g_i18n:getText("button_createJob"),
 		g_i18n:getText("ui_activeAIJobs")}
 
+	--- Bitmask for the visible cp hotspots.
 	self.cpHotspotSettingValue = 1
 	return self
 end
@@ -123,6 +124,8 @@ end
 
 
 function CpCourseGeneratorFrame:loadFromXMLFile(xmlFile, baseKey)
+	--- We save the hotspot setting in the Courseplay User settings, 
+	--- as we don't want to pollute the giants hotspot setting.
 	self.cpHotspotSettingValue = xmlFile:getValue(
 		string.format("%s%s#mapHotspotValue", baseKey, self.BASE_XML_KEY), 0xFF)
 end
@@ -311,9 +314,13 @@ function CpCourseGeneratorFrame:onFrameOpen()
 	end, self)
 	-- g_messageCenter:subscribe(MessageType.AI_TASK_SKIPPED, self.onAITaskSkipped, self)
 	local hotspotValue = g_gameSettings:getValue(GameSettings.SETTING.INGAME_MAP_HOTSPOT_FILTER)
+	------------------------------------------
+	--- Loads the hotspot selection
+	------------------------------------------
 	for i, hotspotCategory in pairs(self.hotspotFilterCategories[1]) do 
 		local isBitSet = Utils.isBitSet(hotspotValue, hotspotCategory.id)
 		if hotspotCategory.id >= self.CP_MAP_HOTSPOT_OFFSET then 
+			--- Every hotspot selection with a greater ID than X will be saved in the courseplay user settings.
 			isBitSet = Utils.isBitSet(self.cpHotspotSettingValue, hotspotCategory.id - self.CP_MAP_HOTSPOT_OFFSET)
 		end
 		self.hotspotStateFilter[1][i] = isBitSet
@@ -322,6 +329,7 @@ function CpCourseGeneratorFrame:onFrameOpen()
 	for i, hotspotCategory in pairs(self.hotspotFilterCategories[2]) do 
 		local isBitSet = Utils.isBitSet(hotspotValue, hotspotCategory.id)
 		if hotspotCategory.id >= self.CP_MAP_HOTSPOT_OFFSET then 
+			--- Every hotspot selection with a greater ID than X will be saved in the courseplay user settings.
 			isBitSet = Utils.isBitSet(self.cpHotspotSettingValue, hotspotCategory.id - self.CP_MAP_HOTSPOT_OFFSET)
 		end
 		self.hotspotStateFilter[2][i] = isBitSet
