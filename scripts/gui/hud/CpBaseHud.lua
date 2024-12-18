@@ -110,8 +110,8 @@ function CpBaseHud:init(vehicle)
     self.baseHud:setPosition(CpBaseHud.x, CpBaseHud.y)
     self.baseHud:setDimension(self.width, self.height)
     self.baseHud:setCallback("onMove", self, function (self, _, x, y)
-        self.x = x
-        self.y = y
+        CpBaseHud.x = x
+        CpBaseHud.y = y
     end)
 
     self.fieldworkLayout = self:addHudPage(CpFieldWorkHudPageElement, vehicle)
