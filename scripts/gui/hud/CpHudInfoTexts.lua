@@ -226,9 +226,7 @@ function CpHudInfoTexts.loadFromXmlFile(xmlFile,baseKey)
     local posX = xmlFile:getValue(baseKey..CpHudInfoTexts.xmlKey.."#posX")
     local posY = xmlFile:getValue(baseKey..CpHudInfoTexts.xmlKey.."#posY")
     if posX ~= nil and posY ~= nil then 
-        CpHudInfoTexts.savedPositions = {
-           posX, posY
-        }
+        g_Courseplay.infoTextsHud:moveToPosition(nil, posX, posY)
     end
 end
 
