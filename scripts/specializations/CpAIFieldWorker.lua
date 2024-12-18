@@ -308,3 +308,14 @@ local function onUpdate(vehicle, superFunc, ...)
 end
 
 AIFieldWorker.onUpdate = Utils.overwrittenFunction(AIFieldWorker.onUpdate, onUpdate)
+
+--- Ugly hack to avoid restarting the giants helper after loading a savegame,
+--- if cp was active prior to saving the game ...
+local function saveToXMLFile(vehicle, superFunc, xmlFile, key, ...)
+    superFunc(vehicle, xmlFile, key, ...)
+    if vehicle.getIsCpActive and vehicle:getIsCpActive() then 
+        xmlFile:setValue(key .. "#isActive", false)
+    end
+end
+
+AIFieldWorker.saveToXMLFile = Utils.overwrittenFunction(AIFieldWorker.saveToXMLFile, saveToXMLFile)
