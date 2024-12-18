@@ -39,7 +39,7 @@ function Courseplay:loadUserSettings()
 		self.globalSettings:loadFromXMLFile(xmlFile, self.xmlKey)
 		g_cpInGameMenu:loadFromXMLFile(xmlFile, self.xmlKey)
 		CpBaseHud.loadFromXmlFile(xmlFile, self.xmlKey)
-		CpHudInfoTexts.loadFromXmlFile(xmlFile, self.xmlKey)
+		self.infoTextsHud:loadFromXmlFile(xmlFile, self.xmlKey)
 		xmlFile:save()
 		xmlFile:delete()
 	else
@@ -53,11 +53,11 @@ function Courseplay:saveUserSettings()
 	if xmlFile then 
 		self.globalSettings:saveUserSettingsToXmlFile(xmlFile, self.xmlKey)
 		CpBaseHud.saveToXmlFile(xmlFile, self.xmlKey)
-		CpHudInfoTexts.saveToXmlFile(xmlFile, self.xmlKey)
+		self.infoTextsHud:saveToXmlFile(xmlFile, self.xmlKey)
 		if self.currentVersion then
-			xmlFile:setValue(self.baseXmlKey.."#lastVersion", self.currentVersion)
+			xmlFile:setValue(self.baseXmlKey .. "#lastVersion", self.currentVersion)
 		end
-		g_cpInGameMenu:saveToXMLFile(xmlFile, g_Courseplay.xmlKey)
+		g_cpInGameMenu:saveToXMLFile(xmlFile, self.xmlKey)
 		xmlFile:save()
 		xmlFile:delete()
 	end
@@ -130,8 +130,6 @@ end
 
 function Courseplay:setupGui()
 	CpInGameMenu.setupGui(self.courseStorage)
-			  
-
 	self.infoTextsHud = CpHudInfoTexts()
 
 	-- TODO_25

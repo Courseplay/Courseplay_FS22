@@ -109,7 +109,10 @@ function CpBaseHud:init(vehicle)
     self.baseHud = CpHudMoveableElement.new(background)
     self.baseHud:setPosition(CpBaseHud.x, CpBaseHud.y)
     self.baseHud:setDimension(self.width, self.height)
-    self.baseHud:setCallback("onMove", self, self.moveToPosition)
+    self.baseHud:setCallback("onMove", self, function (self, _, x, y)
+        CpBaseHud.x = x
+        CpBaseHud.y = y
+    end)
 
     self.fieldworkLayout = self:addHudPage(CpFieldWorkHudPageElement, vehicle)
 
@@ -438,9 +441,8 @@ function CpBaseHud:addLineTextButtonWithIncrementalButtons(parent, line, textSiz
 end
 
 
-function CpBaseHud:moveToPosition(element, x, y)
-    CpBaseHud.x = x 
-    CpBaseHud.y = y
+function CpBaseHud:moveToPosition(x, y)
+    self.baseHud:moveTo(x, y)
 end
 
 function CpBaseHud:openClose(open)

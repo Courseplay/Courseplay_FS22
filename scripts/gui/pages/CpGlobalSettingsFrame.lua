@@ -116,5 +116,6 @@ function CpGlobalSettingsFrame:updateSubCategoryPages(state)
 	self.subCategoryPages[state]:setVisible(true)
 	self.subCategoryTabs[state]:setSelected(true)
 	local layout = self.subCategoryPages[state]:getDescendantByName("layout")
+	CpSettingsUtil.updateGuiElementsBoundToSettings(layout)
 	self.settingsSlider:setDataElement(layout)
 end
