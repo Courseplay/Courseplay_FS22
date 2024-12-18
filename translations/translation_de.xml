@@ -570,7 +570,7 @@ Hast du einen CP-Job ausgewählt, musst du mit der Feldposition dein Feld auswä
 Die Position bestimmt ungefähr die Startposition deines Kurses.
 Wenn du möchtest, dass der Giants-Helfer dein Fahrzeug zum Feld bringt, dann muss zusätzlich noch die Zielposition nahe des Startpunktes gesetzt werden.
 Die Einstellung für die Bahn wird nur benutzt, wenn du mehrere Fahrzeuge auf einem Kurs fahren lassen möchtest. Mehr dazu unter Multitool.
-Tip: Stehst du bereits auf einem Feld wenn du über &quot;kein Kurs&quot; in diese Menü gelangst, sind die Marker bereits auf dem Feld platziert.
+Tip: Stehst du bereits auf einem Feld, wenn du über &quot;kein Kurs&quot; in diese Menü gelangst, sind die Marker bereits auf dem Feld platziert.
 "/>
     <text name="CP_help_page_readyJobMenuFunctions_text" text="
 Wenn die Feldposition richtig auf einem Feld platziert wurde, wird der Feldrand weiß auf der Karte markiert.
