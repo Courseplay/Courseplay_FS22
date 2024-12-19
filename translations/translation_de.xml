@@ -535,7 +535,7 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
 Mit Courseplay ist es möglich, Feldkurse mit zusätzlichen Funktionen zu generieren, beispielsweise Vorgewende.
 Ebenso ermöglicht es die Nutzung von Ballenpressen und Sammelwagen mit dem Helfer auf dem selben Kurs, welcher zuvor von einem Mähwerk oder Drescher bearbeitet wurde.
 Eine weitere Funktion ist das Ballenwickeln oder -sammeln auf einem Feld.
-Ganz neu in Courseplay ist die Bearbeitung von Reben.
+Courseplay ist auch in der Lage, auf Reisfeldern oder Reben zu arbeiten.
 Feldkurse können auch als Multitoolkurs gebaut werden, dadurch ist es möglich bis zu 5 Arbeitsgeräte im Fahrzeugverband auf dem gleichen Feld arbeiten zu lassen.
 Für Drescher gibt es die Möglichkeit des automatischen Abtankens in einen Anhänger nahe des Feldes.
 Eigene Feldränder können mit einem Fahrzeug aufgezeichnet oder auf der Menükarte gezeichnet werden und anschließend für die Generierung eines Feldkurses benutzt werden.
@@ -555,9 +555,9 @@ Mit dieser Funktion versuchen wir neuen Courseplay-Nutzern den Einstieg zu erlei
     <text name="CP_help_page_extendedJobMenu_title" text="Erweitertes Helfermenü"/>
     <text name="CP_help_page_startJobMenuBase_text" text="
 Die Einstellungen für jeden Helfer finden jetzt im Menü &quot;Helfer Einstellungen&quot; statt.
-Das Menü funktioniert Grundlegend wie das alte Helfer Menü.
-Wird ein Fahrzeug auf der Map gewählt, könnt ihr einen Job erstellen, in abhängigkeit der angeschlossenen Geräte und des Fahrzeugstyps.
-Neben der Karte und den Job Einstellungen findet ihr oben im Menü noch die Einstellungen für den Feldkurs Generator und den Reben Generator. Diese sind nur Verfügbar, wenn ihr ein gültiges Fahrzeug gewählt habt und einen Job erstellt habt.
+Das Menü funktioniert grundlegend wie das alte Helfer Menü.
+Wird ein Fahrzeug auf der Map ausgewählt, könnt ihr einen Job erstellen, in Abhängigkeit der angeschlossenen Geräte und des Fahrzeugstyps.
+Neben der Karte und den Job Einstellungen findet ihr oben im Menü noch die Einstellungen für den Feldkurs Generator und den Reben Generator. Diese sind nur verfügbar, wenn ihr ein gültiges Fahrzeug ausgewählt habt und einen Job erstellt habt.
 Um einen Feldkurs generieren zu können, muss ein gültiges Fahrzeug für Feldarbeit auf der Helferkarte ausgewählt sein.
 Tip: Um etwas schneller zu sein, könnt ihr das Menü über den Text im HUD &quot;Kein Kurs&quot; öffnen. Ihr seid dann direkt im Modus Job erstellen des Fahrzeugs in dem ihr drin sitzt.
 "/>
@@ -570,7 +570,7 @@ Hast du einen CP-Job ausgewählt, musst du mit der Feldposition dein Feld auswä
 Die Position bestimmt ungefähr die Startposition deines Kurses.
 Wenn du möchtest, dass der Giants-Helfer dein Fahrzeug zum Feld bringt, dann muss zusätzlich noch die Zielposition nahe des Startpunktes gesetzt werden.
 Die Einstellung für die Bahn wird nur benutzt, wenn du mehrere Fahrzeuge auf einem Kurs fahren lassen möchtest. Mehr dazu unter Multitool.
-Tip: Stehst du bereits auf einem Feld, wenn du über &quot;kein Kurs&quot; in diese Menü gelangst, sind die Marker bereits auf dem Feld platziert.
+Tip: Stehst du bereits auf einem Feld, wenn du über &quot;kein Kurs&quot; in dieses Menü gelangst, sind die Marker bereits auf dem Feld platziert.
 "/>
     <text name="CP_help_page_readyJobMenuFunctions_text" text="
 Wenn die Feldposition richtig auf einem Feld platziert wurde, wird der Feldrand weiß auf der Karte markiert.
@@ -677,7 +677,7 @@ Der Kursmanager erlaubt es dir, Kurse zu speichern und später wieder zu laden.
 Das ist z.B. wichtig, wenn mehrere Fahrzeuge auf einem Kurs arbeiten sollten (Multitool).
 Außerdem kannst du so z.B. die Kurse von einem Drescher später für eine Ballenpresse oder einen Sammelwagen zum Stroh aufsammeln verwenden.
 
-Der Speicherort für die Kurse ist: ..\My Games\FarmingSimulator2022\modSettings\FS25_Courseplay\Courses\Mapname.SampleModMap (oder für Vanilla z.B. MapUS).
+Der Speicherort für die Kurse ist: ..\My Games\FarmingSimulator2025\modSettings\FS25_Courseplay\Courses\Mapname.SampleModMap (oder für Vanilla z.B. MapUS).
 Der Kursmanager funktioniert anders als du es im LS19 gewohnt bist.
 Kurse werden immer in Ordnern gespeichert, welche auf der linken Seite angezeigt werden. Das bedeutet, du brauchst mindestens einen Ordner, um dort Kurse abspeichern zu können.
 Ordner können ganz leicht durch den Button unten am Bildschirmrand erstellt werden.

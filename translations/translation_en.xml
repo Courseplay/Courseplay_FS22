@@ -534,7 +534,7 @@ The course is saved automatically on closing of the editor and overrides the sel
 Courseplay allows you to generate field courses with additional features, for example: headlands.
 It also enables the usage of balers and forage wagons, that can be send on the same course, as a mower or harvester from before.
 Another big feature is the collecting or wrapping of bales on the field.
-New with this iteration of CP is the vine fieldwork.
+Courseplay is also able to work on rice fields and vines.
 Fieldwork courses can be setup in multitool mode, which allows the use of up to 5 driver working in a convoy on the same field.
 It's also possible to have the combine unload in a trailer on/near the field automatically.
 Custom field borders can be assigned for Courseplay to use, for example: in case of a meadow, which isn't recognised as a normal field.
@@ -684,7 +684,7 @@ The course manager allows you to save courses and enables you to load the saved 
 This is really important, when you want to have multiple workers driving the same course for convoy (multi tools).
 This feature also allows you to pick up the swath left behind by a combine or a windrower with a forage wagon or a baler.
 
-The save location for the course files is: ..\My Games\FarmingSimulator2022\modSettings\FS25_Courseplay\Courses\Mapname.SampleModMap (or for vanilla e.g. MapUS).
+The save location for the course files is: ..\My Games\FarmingSimulator2025\modSettings\FS25_Courseplay\Courses\Mapname.SampleModMap (or for vanilla e.g. MapUS).
 The course manager works differently from what you are used to in FS19.
 Courses are saved into folders, which will be displayed on the left. This means you would need at least one folder to start saving courses into. 
 Folders can simply be created by the button at the bottom of the screen and entering a name.
