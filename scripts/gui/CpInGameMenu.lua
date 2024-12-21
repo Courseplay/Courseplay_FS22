@@ -207,8 +207,6 @@ function CpInGameMenu:setupMenuButtonInfo()
 	local onButtonBackFunction = self.clickBackCallback
 	local onButtonPagePreviousFunction = self:makeSelfCallback(self.onPagePrevious)
 	local onButtonPageNextFunction = self:makeSelfCallback(self.onPageNext)
-
-
 	self.backButtonInfo = { 
 		inputAction = InputAction.MENU_BACK,  
 		text = g_i18n:getText(InGameMenu.L10N_SYMBOL.BUTTON_BACK),
@@ -222,7 +220,6 @@ function CpInGameMenu:setupMenuButtonInfo()
 		text = g_i18n:getText("ui_ingameMenuPrev"),
 		callback = self.onPagePrevious }
 
-
 	self.defaultMenuButtonInfo = {
 		self.backButtonInfo,
 		self.nextPageButtonInfo,
@@ -232,11 +229,11 @@ function CpInGameMenu:setupMenuButtonInfo()
 	self.defaultMenuButtonInfoByActions[InputAction.MENU_BACK] = self.defaultMenuButtonInfo[1]
 	self.defaultMenuButtonInfoByActions[InputAction.MENU_PAGE_NEXT] = self.defaultMenuButtonInfo[2]
 	self.defaultMenuButtonInfoByActions[InputAction.MENU_PAGE_PREV] = self.defaultMenuButtonInfo[3]
+	
 	self.defaultButtonActionCallbacks = {
 		[InputAction.MENU_BACK] = onButtonBackFunction,
 		[InputAction.MENU_PAGE_NEXT] = onButtonPageNextFunction,
-		[InputAction.MENU_PAGE_PREV] = onButtonPagePreviousFunction
-	}
+		[InputAction.MENU_PAGE_PREV] = onButtonPagePreviousFunction}
 end
 
 -- Lines 399-424
@@ -258,31 +255,8 @@ function CpInGameMenu:reset()
 
 end
 
--- Lines 529-556
 function CpInGameMenu:onMenuOpened()
-	-- if self.playerFarmId == FarmManager.SPECTATOR_FARM_ID then
-	-- 	self:setSoundSuppressed(true)
 
-	-- 	local farmsPageId = self.pagingElement:getPageIdByElement(self.pageMultiplayerFarms)
-	-- 	local farmsPageIndex = self.pagingElement:getPageMappingIndex(farmsPageId)
-
-	-- 	self.pageSelector:setState(farmsPageIndex, true)
-	-- 	self:setSoundSuppressed(false)
-	-- end
-
-	-- if GS_IS_MOBILE_VERSION then
-	-- 	g_currentMission:setManualPause(true)
-	-- end
-
-	-- if self.currentPage.dynamicMapImageLoading ~= nil then
-	-- 	if not self.currentPage.dynamicMapImageLoading:getIsVisible() then
-	-- 		self.messageCenter:publish(MessageType.GUI_INGAME_OPEN)
-	-- 	else
-	-- 		self.sendDelayedOpenMessage = true
-	-- 	end
-	-- else
-	-- 	self.messageCenter:publish(MessageType.GUI_INGAME_OPEN)
-	-- end
 end
 
 function CpInGameMenu:onButtonBack()
@@ -294,7 +268,6 @@ function CpInGameMenu:onButtonBack()
 	CpInGameMenu:superClass().onButtonBack(self)
 end
 
--- Lines 559-578
 function CpInGameMenu:onClose(element)
 	CpInGameMenu:superClass().onClose(self)
 	self:unlockCurrentVehicle()
@@ -305,30 +278,23 @@ function CpInGameMenu:onOpen()
 	self:lockCurrentVehicle(CpUtil.getCurrentVehicle())
 end
 
--- Lines 650-699
 function CpInGameMenu:update(dt)
 
 	CpInGameMenu:superClass().update(self, dt)
 end
 
--- Lines 820-823
 function CpInGameMenu:onClickMenu()
 	self:exitMenu()
 
 	return true
 end
 
--- Lines 844-866
 function CpInGameMenu:onPageChange(pageIndex, pageMappingIndex, element, skipTabVisualUpdate)
 
-
 	CpInGameMenu:superClass().onPageChange(self, pageIndex, pageMappingIndex, element, skipTabVisualUpdate)
-
-	-- self.header:applyProfile(self:getTabBarProfile())
 	self:updateBackground()
 end
 
--- Lines 869-873
 function CpInGameMenu:getPageButtonInfo(page)
 	local buttonInfo = CpInGameMenu:superClass().getPageButtonInfo(self, page)
 
@@ -358,136 +324,3 @@ function CpInGameMenu:onCurrentVehicleChanged()
 		self.pagingTabList:setSelectedIndex(index, true, 0)
 	end
 end
-
-
-CpInGameMenu.TAB_UV = {
-	MAP = {
-		0,
-		0,
-		65,
-		65
-	},
-	AI = {
-		910,
-		65,
-		65,
-		65
-	},
-	CALENDAR = {
-		65,
-		0,
-		65,
-		65
-	},
-	WEATHER = {
-		130,
-		0,
-		65,
-		65
-	},
-	PRICES = {
-		195,
-		0,
-		65,
-		65
-	},
-	VEHICLES = {
-		260,
-		0,
-		65,
-		65
-	},
-	FINANCES = {
-		325,
-		0,
-		65,
-		65
-	},
-	ANIMALS = {
-		390,
-		0,
-		65,
-		65
-	},
-	CONTRACTS = {
-		455,
-		0,
-		65,
-		65
-	},
-	PRODUCTION = {
-		520,
-		0,
-		65,
-		65
-	},
-	STATISTICS = {
-		585,
-		0,
-		65,
-		65
-	},
-	GAME_SETTINGS = {
-		650,
-		0,
-		65,
-		65
-	},
-	GENERAL_SETTINGS = {
-		715,
-		0,
-		65,
-		65
-	},
-	CONTROLS_SETTINGS = {
-		845,
-		0,
-		65,
-		65
-	},
-	TOUR = {
-		780,
-		130,
-		65,
-		65
-	},
-	HELP = {
-		0,
-		65,
-		65,
-		65
-	},
-	FARMS = {
-		260,
-		65,
-		65,
-		65
-	},
-	USERS = {
-		650,
-		65,
-		65,
-		65
-	}
-}
-CpInGameMenu.L10N_SYMBOL = {
-	END_WITHOUT_SAVING = "ui_endWithoutSaving",
-	BUTTON_SAVE_GAME = "button_saveGame",
-	BUTTON_RESTART = "button_restart",
-	SAVE_OVERWRITE = "dialog_savegameOverwrite",
-	TUTORIAL_NOT_SAVED = "ui_tutorialIsNotSaved",
-	END_GAME = "ui_youWantToQuitGame",
-	SAVING_CONTENT = "ui_savingContent",
-	SAVE_NO_SPACE = "ui_savegameSaveNoSpace",
-	SELECT_DEVICE = "dialog_savegameSelectDevice",
-	MASTER_SERVER_CONNECTION_LOST = "ui_masterServerConnectionLost",
-	BUTTON_CANCEL_GAME = "button_cancelGame",
-	END_TUTORIAL = "ui_endTutorial",
-	NOT_SAVED = "ui_savegameNotSaved",
-	SAVE_NO_DEVICE = "ui_savegameSaveNoDevice",
-	BUTTON_BACK = "button_back"
-}
-CpInGameMenu.PROFILES = {
-	TAB_BAR_DARK = "uiCpInGameMenuHeaderDark",
-	TAB_BAR_LIGHT = "uiCpInGameMenuHeader"
-}

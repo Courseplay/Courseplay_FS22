@@ -98,11 +98,11 @@
                             </Button>
                         </BoxLayout>
                         <SmoothList profile="fs25_mapContextButtonList" id="createJobButtonList"
-                            onClick="onClickList" visible="true" position="0px -165px">
+                            onClick="onClickList" visible="true" position="0px -165px" handleFocus="false">
                             <ListItem profile="fs25_mapContextButtonListItem">
                                 <ThreePartBitmap profile="fs25_mapContextButtonListItemBg" />
                                 <Text profile="fs25_mapButtonText" name="text" />
-                                <Button profile="fs25_mapContextButtonListItemButton" />
+                                <Button profile="cpCreateJobContextButtonListItemButton" name="button"/>
                             </ListItem>
                         </SmoothList>
                         <!-- <GuiElement profile="fs25_mapButtonContainer" id="buttonStartJobContainer" width="340px"
@@ -159,7 +159,7 @@
                     <Text profile="fs25_shopBalance" text="$l10n_ui_balance:" />
                     <Text profile="fs25_shopMoney" id="currentBalanceText" />
                 </BoxLayout> -->
-                <Text profile="fs25_ingameMenuAIStatusText" id="statusMessage" />
+                <Text profile="cpAIStatusText" id="statusMessage" />
             </GuiElement>
             <GuiElement profile="fs25_mapContextBoxContainer" newLayer="true">
                 <GuiElement profile="fs25_mapContextBox" id="contextBox">
@@ -310,6 +310,15 @@
         <Profile name="cpInfoTextListElementBg" extends="baseReference" with="anchorTopStretchingX">
             <imageSliceId value="gui.animalScreen_left" />
             <!-- <imageSelectedColor value="$preset_colorBlack80" /> -->
+        </Profile>
+        <Profile name="cpCreateJobContextButtonListItemButton" extends="fs25_mapContextButtonListItemButton">
+            <iconColor value="$preset_fs25_colorMainDark" />
+            <iconHighlightedColor value="$preset_fs25_colorMainDark" />
+            <iconBgColor value="$preset_fs25_colorMainHighlight" />
+            <iconBgHighlightedColor value="$preset_fs25_colorMainHighlight" />
+        </Profile>
+        <Profile name="cpAIStatusText" extends="fs25_ingameMenuAIStatusText" with="anchorTopRight">
+            <position value="-300px 0px" />
         </Profile>
     </GUIProfiles>
 </GUI>

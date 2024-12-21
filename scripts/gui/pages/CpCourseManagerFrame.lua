@@ -111,6 +111,7 @@ function CpCourseManagerFrame:getCurrentEntry()
 end
 
 function CpCourseManagerFrame:initialize(menu)	
+	self.cpMenu = menu
 	--- Changes the input actions.
 	self.modeButton = {
 		profile = "buttonActivate",
@@ -483,14 +484,7 @@ function CpCourseManagerFrame:updateMenuButtons()
 	local title = string.format(g_i18n:getText(self.translations.title), vehicle:getName(), courseName)
 	
 	self.categoryHeaderText:setText(title)
-	self.menuButtonInfo = {
-		{
-			inputAction = InputAction.MENU_BACK,
-		}
-	}
-	if self.courseStorage:getCanIterateBackwards() then
-		self.menuButtonInfo[1].callback = function () self:onClickIterateBack() end
-	end
+	self.menuButtonInfo = table.clone(self.cpMenu.defaultMenuButtonInfo) 
 	if self.activateButton.callbackDisabled == nil or not self.activateButton.callbackDisabled(self) then
 		table.insert(self.menuButtonInfo, self.activateButton)
 	end
@@ -507,6 +501,14 @@ function CpCourseManagerFrame:updateMenuButtons()
 					or  g_i18n:getText(self.translations.advancedSettings)
 	self.rightColumnHeader:setText(text)
 	--self.rightToggleBtn:setText(text)
+end
+
+function CpCourseManagerFrame:onClickBack()
+	if self.courseStorage:getCanIterateBackwards() then
+		self:onClickIterateBack()
+		return true
+	end
+	return false
 end
 
 ---------------------------------------------------

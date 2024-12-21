@@ -116,22 +116,21 @@ function CpHud:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSe
             ---  callback, triggerUp, triggerDown, triggerAlways, startActive,
             ---  callbackState, customIconName, ignoreCollisions, reportAnyDeviceCollision)
             if self:getCpSettings().openHudWithMouse:getValue() then
-                local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_TOGGLE_MOUSE, self,
-                        CpHud.actionEventMouse, false, true, false, true, nil, nil, true)
+                local _, actionEventId = self:addActionEvent(spec.actionEvents, 
+                    InputAction.CP_TOGGLE_MOUSE, self,
+                    CpHud.actionEventMouse, false, true, false, true, nil, nil, true)
                 g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_NORMAL)
                 g_inputBinding:setActionEventText(actionEventId, spec.openCloseText)
                 g_inputBinding:setActionEventTextVisibility(actionEventId, 
                     g_Courseplay.globalSettings.showActionEventHelp:getValue())
             end
-            if self.isActiveForInputIgnoreSelectionIgnoreAI then
-                local _, actionEventId = self:addActionEvent(spec.actionEvents, 
-                    InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, 
-                    CpHud.actionEventMouse, false, true, false, true, nil)
-                g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
-                g_inputBinding:setActionEventText(actionEventId, spec.openCloseText)
-                g_inputBinding:setActionEventTextVisibility(actionEventId, 
-                    g_Courseplay.globalSettings.showActionEventHelp:getValue())
-            end
+            local _, actionEventId = self:addActionEvent(spec.actionEvents, 
+                InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, 
+                CpHud.actionEventMouse, false, true, false, true, nil)
+            g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
+            g_inputBinding:setActionEventText(actionEventId, spec.openCloseText)
+            g_inputBinding:setActionEventTextVisibility(actionEventId, 
+                g_Courseplay.globalSettings.showActionEventHelp:getValue())
         end
     end
 end
