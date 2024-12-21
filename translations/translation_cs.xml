@@ -1015,6 +1015,7 @@ hud还显示助手工作时堆或思洛存储器的剩余填充水平。
     <text name="input_CP_START_STOP" text="CP: 启动/停止司机
 "/>
     <text name="input_CP_GENERATE_COURSE" text="CP: Change current selected job"/>
+    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Change current selected job"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: 更改起始点"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: 清除当前加载的任务路线"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="显示车辆的当前路线"/>
