@@ -122,16 +122,15 @@ function CpHud:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSe
                 g_inputBinding:setActionEventText(actionEventId, spec.openCloseText)
                 g_inputBinding:setActionEventTextVisibility(actionEventId, 
                     g_Courseplay.globalSettings.showActionEventHelp:getValue())
-            else
-                if self.isActiveForInputIgnoreSelectionIgnoreAI then
-                    local _, actionEventId = self:addActionEvent(spec.actionEvents, 
-                        InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, 
-                        CpHud.actionEventMouse, false, true, false, true, nil)
-                    g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
-                    g_inputBinding:setActionEventText(actionEventId, spec.openCloseText)
-                    g_inputBinding:setActionEventTextVisibility(actionEventId, 
-                        g_Courseplay.globalSettings.showActionEventHelp:getValue())
-                end
+            end
+            if self.isActiveForInputIgnoreSelectionIgnoreAI then
+                local _, actionEventId = self:addActionEvent(spec.actionEvents, 
+                    InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, 
+                    CpHud.actionEventMouse, false, true, false, true, nil)
+                g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
+                g_inputBinding:setActionEventText(actionEventId, spec.openCloseText)
+                g_inputBinding:setActionEventTextVisibility(actionEventId, 
+                    g_Courseplay.globalSettings.showActionEventHelp:getValue())
             end
         end
     end
