@@ -483,7 +483,6 @@ function CpCourseGeneratorFrame:onClickCpMultiTextOption(_, guiElement)
 end
 
 function CpCourseGeneratorFrame:updateCourseGenerator(visible, vehicle)
-	self.menuButtonInfo = table.clone(self.cpMenu.defaultMenuButtonInfo) 
 	if visible then 
 		self.subCategoryPaging:setDisabled(false)
 		for ix=1, self.NUM_CATEGORIES do 
@@ -492,15 +491,6 @@ function CpCourseGeneratorFrame:updateCourseGenerator(visible, vehicle)
 			end
 		end
 		self:updateSettings(vehicle)
-		table.insert(self.menuButtonInfo, {
-			inputAction = InputAction.MENU_EXTRA_2,
-			text = g_i18n:getText("CP_ai_page_generate_course"),
-			callback = function ()
-				if self.currentJob then 
-					CpUtil.try(self.currentJob.onClickGenerateFieldWorkCourse, self.currentJob)
-					self:updateSubCategoryPages(self.CATEGRORIES.IN_GAME_MAP)
-				end
-			end})
 	else
 		self:updateSubCategoryPages(self.CATEGRORIES.IN_GAME_MAP)
 		self.subCategoryPaging:setDisabled(true)
@@ -510,10 +500,10 @@ function CpCourseGeneratorFrame:updateCourseGenerator(visible, vehicle)
 			end
 		end
 	end
-	self:setMenuButtonInfoDirty()
 end
 
 function CpCourseGeneratorFrame:updateSubCategoryPages(state)
+	self.menuButtonInfo = table.clone(self.cpMenu.defaultMenuButtonInfo) 
 	for i, _ in ipairs(self.subCategoryPages) do
 		self.subCategoryPages[i]:setVisible(false)
 		self.subCategoryTabs[i]:setSelected(false)
@@ -528,11 +518,22 @@ function CpCourseGeneratorFrame:updateSubCategoryPages(state)
 		layout:invalidateLayout()
 		self.settingsSlider:setDataElement(layout)
 		FocusManager:setFocus(self.subCategoryPages[state])
+		table.insert(self.menuButtonInfo, {
+			inputAction = InputAction.MENU_EXTRA_2,
+			text = g_i18n:getText("CP_ai_page_generate_course"),
+			callback = function ()
+				if self.currentJob then 
+					CpUtil.try(self.currentJob.onClickGenerateFieldWorkCourse, self.currentJob)
+					self:updateSubCategoryPages(self.CATEGRORIES.IN_GAME_MAP)
+				end
+			end})
+
 	else
 		self.settingsSliderBox:setVisible(false)
 		self.ingameMap:setVisible(true)
 		self:openMap()
 	end 
+	self:setMenuButtonInfoDirty()
 end
 
 function CpCourseGeneratorFrame:delete()
