@@ -9,14 +9,10 @@ We'll keep you updated on our progress here, please be patient.
 This (and later, the Giants modhub) is the **only official source for Courseplay**,
 if you see it anywhere else, it's a scam.
 
-# TODO
-
-- [x] Can't start worker when the field is not owned. This may or may not be problem, need to check what happens on mission fields. TurnOnVehicle:getCanBeTurnedOn() returns false, and ever loop when we try to turn the vehicle on, it turns it off in the next loop. 
-- [x] Pea harvester doesn't lower implements on start.
-- [ ] Measure unfolded pipe somehow as PipeController:measurePipeProperties() messes up the vehicle state
-
 ## Help Us Out
 
 We work long, hard, in our own free time at developing and improving Courseplay. If you like the project, show us your undying love:
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=7PDM2P6HQ5D56&item_name=Promote+the+development+of+Courseplay&currency_code=EUR&source=url)
+
+<a href="https://www.buymeacoffee.com/courseplay" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
