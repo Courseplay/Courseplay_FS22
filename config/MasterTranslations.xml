@@ -3113,7 +3113,7 @@ TPS extension
 		</Translation>
 		<Translation name="input_CP_GENERATE_COURSE">
 			<Text language="de"><![CDATA[CP: Kurs generieren]]></Text>
-			<Text language="en"><![CDATA[CP: Generate course]></Text>
+			<Text language="en"><![CDATA[CP: Generate course]]></Text>
 		</Translation>
 		<Translation name="input_CP_CHANGE_SELECTED_JOB">
 			<Text language="de"><![CDATA[CP: Aktuell ausgewählten Job ändern]]></Text>
