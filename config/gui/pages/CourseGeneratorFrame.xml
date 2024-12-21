@@ -159,7 +159,7 @@
                     <Text profile="fs25_shopBalance" text="$l10n_ui_balance:" />
                     <Text profile="fs25_shopMoney" id="currentBalanceText" />
                 </BoxLayout> -->
-                <Text profile="fs25_ingameMenuAIStatusText" id="statusMessage" />
+                <Text profile="cpAIStatusText" id="statusMessage" />
             </GuiElement>
             <GuiElement profile="fs25_mapContextBoxContainer" newLayer="true">
                 <GuiElement profile="fs25_mapContextBox" id="contextBox">
@@ -316,6 +316,9 @@
             <iconHighlightedColor value="$preset_fs25_colorMainDark" />
             <iconBgColor value="$preset_fs25_colorMainHighlight" />
             <iconBgHighlightedColor value="$preset_fs25_colorMainHighlight" />
+        </Profile>
+        <Profile name="cpAIStatusText" extends="fs25_ingameMenuAIStatusText" with="anchorTopRight">
+            <position value="-300px 0px" />
         </Profile>
     </GUIProfiles>
 </GUI>

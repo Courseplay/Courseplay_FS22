@@ -310,13 +310,16 @@ function CpCourseGeneratorFrame:onFrameOpen()
 		if aiMessage ~= nil and job ~= nil and g_localPlayer ~= nil then
 			if job.startedFarmId == g_localPlayer.farmId then
 				local text = aiMessage:getMessage(job)
-				self:addStatusMessage(text)
+				local releaseMessage= g_infoTextManager:getInfoTextDataByAIMessage(aiMessage)
+				if g_Courseplay.globalSettings.infoTextHudActive:getValue() == g_Courseplay.globalSettings.DISABLED or 
+					not releaseMessage then 
+					self:addStatusMessage(text)
+				end 
 			end
 		end
 	end, self)
 	g_messageCenter:subscribe(MessageType.AI_JOB_REMOVED, function(self, jobId)
 		self.activeWorkerList:reloadData()
-
 		-- InGameMenuMapUtil.hideContextBox(self.contextBox) 
 	end, self)
 	g_messageCenter:subscribe(MessageType.CP_INFO_TEXT_CHANGED, function (menu)
@@ -1236,10 +1239,6 @@ function CpCourseGeneratorFrame:generateJobTypes()
 end
 
 function CpCourseGeneratorFrame:addStatusMessage(message)
-	if g_Courseplay.globalSettings.infoTextHudActive:getValue() > 0 then 
-		--- Status Meldung werden als info text angezeigt ..
-		return
-	end
 	table.insert(self.statusMessages, {
 		removeTime = g_time + 5000,
 		text = message
