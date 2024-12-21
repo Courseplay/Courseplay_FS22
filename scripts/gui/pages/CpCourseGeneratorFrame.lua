@@ -146,6 +146,16 @@ function CpCourseGeneratorFrame:initialize(menu)
 	self.onClickBackCallback = menu.clickBackCallback
 	self:initializeContextActions()
 
+	self.generateCourseMenuButton = {
+		["inputAction"] = InputAction.MENU_EXTRA_1,
+		["text"] = g_i18n:getText("button_blocklist"),
+		["callback"] = function()
+			-- upvalues: (copy) p_u_39
+			p_u_39:onButtonUnBan()
+		end
+	}
+
+
 	self.booleanPrefab:unlinkElement()
 	FocusManager:removeElement(self.booleanPrefab)
 	self.multiTextPrefab:unlinkElement()
@@ -473,6 +483,7 @@ function CpCourseGeneratorFrame:onClickCpMultiTextOption(_, guiElement)
 end
 
 function CpCourseGeneratorFrame:updateCourseGenerator(visible, vehicle)
+	self.menuButtonInfo = table.clone(self.cpMenu.defaultMenuButtonInfo) 
 	if visible then 
 		self.subCategoryPaging:setDisabled(false)
 		for ix=1, self.NUM_CATEGORIES do 
@@ -481,6 +492,15 @@ function CpCourseGeneratorFrame:updateCourseGenerator(visible, vehicle)
 			end
 		end
 		self:updateSettings(vehicle)
+		table.insert(self.menuButtonInfo, {
+			inputAction = InputAction.MENU_EXTRA_2,
+			text = g_i18n:getText("CP_ai_page_generate_course"),
+			callback = function ()
+				if self.currentJob then 
+					CpUtil.try(self.currentJob.onClickGenerateFieldWorkCourse, self.currentJob)
+					self:updateSubCategoryPages(self.CATEGRORIES.IN_GAME_MAP)
+				end
+			end})
 	else
 		self:updateSubCategoryPages(self.CATEGRORIES.IN_GAME_MAP)
 		self.subCategoryPaging:setDisabled(true)
@@ -490,6 +510,7 @@ function CpCourseGeneratorFrame:updateCourseGenerator(visible, vehicle)
 			end
 		end
 	end
+	self:setMenuButtonInfoDirty()
 end
 
 function CpCourseGeneratorFrame:updateSubCategoryPages(state)
@@ -1027,6 +1048,12 @@ function CpCourseGeneratorFrame:getNumberOfItemsInSection(list, section)
 		if self.mode ~= self.AI_MODE_CREATE then 
 			return 0
 		end
+		for _, index in pairs(self.contextActionMapping) do 
+			local action = self.contextActions[index]
+			if action.isActive and action.action then 
+				g_inputBinding:registerActionEvent(action.action, self, action.callback, false, true, false, true)
+			end
+		end
 		return #self.contextActionMapping
 	elseif list == self.infoTextList then 
 		self.activeInfoTexts = g_infoTextManager:getActiveInfoTexts()
@@ -1075,6 +1102,7 @@ function CpCourseGeneratorFrame:populateCellForItemInSection(list, section, inde
 	elseif list == self.createJobButtonList then
 		local buttonInfo = self.contextActions[self.contextActionMapping[index]]
 		cell:getAttribute("text"):setText(buttonInfo.text)
+		cell:getAttribute("button"):setInputAction(buttonInfo.action)
 		cell.onClickCallback = buttonInfo.callback
 	elseif list == self.infoTextList then 
 		cell:getAttribute("text"):setText(self.activeInfoTexts[index].text)
@@ -1250,6 +1278,7 @@ function CpCourseGeneratorFrame:initializeContextActions()
 		},
 		[self.CONTEXT_ACTIONS.START_JOB] = {
 			text = g_i18n:getText("button_startJob"),
+			action = InputAction.MENU_EXTRA_1,
 			callback = self.onStartCancelJob,
 			isActive = false
 		},
@@ -1260,6 +1289,7 @@ function CpCourseGeneratorFrame:initializeContextActions()
 		},
 		[self.CONTEXT_ACTIONS.GENERATE_COURSE] = {
 			text = g_i18n:getText("CP_ai_page_generate_course"),
+			action = InputAction.MENU_EXTRA_2,
 			callback = function()
 				if self.currentJob then 
 					CpUtil.try(self.currentJob.onClickGenerateFieldWorkCourse, self.currentJob)
@@ -1286,6 +1316,11 @@ function CpCourseGeneratorFrame:updateContextActions()
 	self.contextActions[self.CONTEXT_ACTIONS.START_JOB].isActive = self:getCanStartJob()
 	self.contextActions[self.CONTEXT_ACTIONS.STOP_JOB].isActive = self:getCanCancelJob() and self.mode ~= self.AI_MODE_CREATE
 	self.contextActions[self.CONTEXT_ACTIONS.GENERATE_COURSE].isActive = self:getCanGenerateFieldWorkCourse() 
+	for _, action in ipairs(self.contextActions) do 
+		if action.action then 
+			g_inputBinding:removeActionEventsByActionName(action.action)
+		end
+	end
 	self.contextButtonList:reloadData()	
 	self.createJobButtonList:reloadData()
 end

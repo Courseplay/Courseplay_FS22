@@ -98,11 +98,11 @@
                             </Button>
                         </BoxLayout>
                         <SmoothList profile="fs25_mapContextButtonList" id="createJobButtonList"
-                            onClick="onClickList" visible="true" position="0px -165px">
+                            onClick="onClickList" visible="true" position="0px -165px" handleFocus="false">
                             <ListItem profile="fs25_mapContextButtonListItem">
                                 <ThreePartBitmap profile="fs25_mapContextButtonListItemBg" />
                                 <Text profile="fs25_mapButtonText" name="text" />
-                                <Button profile="fs25_mapContextButtonListItemButton" />
+                                <Button profile="cpCreateJobContextButtonListItemButton" name="button"/>
                             </ListItem>
                         </SmoothList>
                         <!-- <GuiElement profile="fs25_mapButtonContainer" id="buttonStartJobContainer" width="340px"
@@ -310,6 +310,12 @@
         <Profile name="cpInfoTextListElementBg" extends="baseReference" with="anchorTopStretchingX">
             <imageSliceId value="gui.animalScreen_left" />
             <!-- <imageSelectedColor value="$preset_colorBlack80" /> -->
+        </Profile>
+        <Profile name="cpCreateJobContextButtonListItemButton" extends="fs25_mapContextButtonListItemButton">
+            <iconColor value="$preset_fs25_colorMainDark" />
+            <iconHighlightedColor value="$preset_fs25_colorMainDark" />
+            <iconBgColor value="$preset_fs25_colorMainHighlight" />
+            <iconBgHighlightedColor value="$preset_fs25_colorMainHighlight" />
         </Profile>
     </GUIProfiles>
 </GUI>
