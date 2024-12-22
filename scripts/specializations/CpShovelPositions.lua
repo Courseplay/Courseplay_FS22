@@ -417,7 +417,7 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, height
 		sy = yMin + 0.01
 		ey = yMin + 0.01
 	end
-	local hasIntersection, i1z, i1y, i2z, i2y = MathUtil.getCircleLineIntersection(
+	local hasIntersection, i1z, i1y, i2z, i2y = CpMathUtil.getCircleLineIntersection(
 		az, ay, radiusArmToolToShovelTool,
 		sz, sy, ez, ey)
 
@@ -500,9 +500,10 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, height
 				name = "shovelY", value = shovelY})
 			table.insert(debugData, {
 				name = "dirRot", value = math.deg(oldRotRelativeArmRot) })
-			table.insert(debugData, {
-				name = "distAlpha", value = MathUtil.vector2Length(i1z - tz, i1y - ty) })
-
+			if i1z ~= nil and i1y ~= nil then
+				table.insert(debugData, {
+					name = "distAlpha", value = MathUtil.vector2Length(i1z - tz, i1y - ty) })
+			end
 			table.insert(debugData, {
 				value = "",
 				name = "",

@@ -320,3 +320,27 @@ end
 function CpMathUtil.divide(a, b)
 	return b == 0 and math.huge or a / b
 end
+
+--- Legancy function form LS22
+function CpMathUtil.getCircleLineIntersection(circleX, circleZ, radius, lineStartX, lineStartZ, lineEndX, lineEndZ)
+	local p3x = lineStartX - circleX
+	local p3z = lineStartZ - circleZ
+	local p4x = lineEndX - circleX
+	local p4z = lineEndZ - circleZ
+	local m = (p4z - p3z) / (p4x - p3x)
+	local b = p3z - m * p3x
+	local dis = math.pow(radius, 2) * math.pow(m, 2) + math.pow(radius, 2) - math.pow(b, 2)
+
+	if dis < 0 then
+		return false
+	else
+		local t1 = (-m * b + math.sqrt(dis)) / (math.pow(m, 2) + 1)
+		local t2 = (-m * b - math.sqrt(dis)) / (math.pow(m, 2) + 1)
+		local intersect1X = t1 + circleX
+		local intersect1Z = m * t1 + b + circleZ
+		local intersect2X = t2 + circleX
+		local intersect2Z = m * t2 + b + circleZ
+
+		return true, intersect1X, intersect1Z, intersect2X, intersect2Z
+	end
+end

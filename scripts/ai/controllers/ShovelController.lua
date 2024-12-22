@@ -189,7 +189,7 @@ function ShovelController:calculateMinimalUnloadingHeight(triggerNode)
     local maxHeightObjectHit = 0
     for i=self.MIN_TRIGGER_HEIGHT, self.MAX_TRIGGER_HEIGHT, 0.1 do 
         self.objectWasHit = false
-        raycastAll(sx, terrainHeight + i, sz,  dx, 0, dz, length
+        raycastAll(sx, terrainHeight + i, sz,  dx, 0, dz, length,
             "calculateMinimalUnloadingHeightRaycastCallback", self, 
             self.TRIGGER_HEIGHT_RAYCAST_COLLISION_MASK)
         if self.objectWasHit then 

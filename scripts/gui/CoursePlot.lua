@@ -23,7 +23,7 @@ CoursePlot = CpObject()
 -- x = 0, y = 0 is the bottom left corner of the screen, terrainSize is in meters
 function CoursePlot:init()
 	self.lineThickness = 2 / g_screenHeight -- 2 pixels
-	self.arrowThickness = 3 / g_screenHeight -- 3 pixels
+	self.arrowThickness = 10 / g_screenHeight -- 10 pixels
 	-- the normal FS22 blue
 	self.color = {CpGuiUtil.getNormalizedRgb(42, 193, 237)}
 	-- a lighter shade of the same color
@@ -173,7 +173,7 @@ end
 ---@param a number|nil
 ---@param isHudMap boolean|nil
 function CoursePlot:drawArrow(map, x, z, rotation, r, g, b, a, isHudMap)
-	local zoom = isHudMap and map.layout:getIconZoom() or map.fullScreenLayout:getIconZoom()
+	local zoom = map.layout:getIconZoom() * map.layout:getIconZoom()
 	if isHudMap and map.state == IngameMap.STATE_MAP then 
 		--- When the hud is completely open, then the signs need to be scaled down.
 		zoom = zoom * 0.5
@@ -226,7 +226,7 @@ function CoursePlot:draw(map, isHudMap)
 	-- render the start and stop signs
 
 	local signSizeMeters = 0.02
-	local zoom = isHudMap and map.layout:getIconZoom() or map.fullScreenLayout:getIconZoom()
+	local zoom = map.layout:getIconZoom() 
 	if isHudMap and map.state == IngameMap.STATE_MAP then 
 		--- When the hud is completely open, then the signs need to be scaled down.
 		zoom = zoom * 0.5
