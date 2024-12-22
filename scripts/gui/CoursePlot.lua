@@ -23,7 +23,7 @@ CoursePlot = CpObject()
 -- x = 0, y = 0 is the bottom left corner of the screen, terrainSize is in meters
 function CoursePlot:init()
 	self.lineThickness = 2 / g_screenHeight -- 2 pixels
-	self.arrowThickness = 10 / g_screenHeight -- 3 pixels
+	self.arrowThickness = 10 / g_screenHeight -- 10 pixels
 	-- the normal FS22 blue
 	self.color = {CpGuiUtil.getNormalizedRgb(42, 193, 237)}
 	-- a lighter shade of the same color
