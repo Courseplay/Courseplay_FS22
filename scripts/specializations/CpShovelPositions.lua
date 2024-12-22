@@ -417,7 +417,7 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, height
 		sy = yMin + 0.01
 		ey = yMin + 0.01
 	end
-	local hasIntersection, i1z, i1y, i2z, i2y = MathUtil.getCircleLineIntersection(
+	local hasIntersection, i1z, i1y, i2z, i2y = CpMathUtil.getCircleLineIntersection(
 		az, ay, radiusArmToolToShovelTool,
 		sz, sy, ez, ey)
 
