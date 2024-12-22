@@ -355,7 +355,7 @@ function CpAIJobCombineUnloader:getStartTaskIndex()
 	local vehicle = self:getVehicle()
 	local fieldPolygon = self:getFieldPolygon()
 	local x, _, z = getWorldTranslation(vehicle.rootNode)
-	local fillLevelPercentage = FillLevelManager.getTotalTrailerFillLevelPercentage(vehicle)
+	local fillLevelPercentage = FillLevelUtil.getTotalTrailerFillLevelPercentage(vehicle)
 	local readyToDriveUnloading = vehicle:getCpSettings().fullThreshold:getValue() <= fillLevelPercentage
 	if readyToDriveUnloading then 
 		CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Not close to the field and vehicle is full, so start driving to unload.")

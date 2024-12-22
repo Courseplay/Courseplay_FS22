@@ -135,7 +135,7 @@ function PipeController:isFillableTrailerInRange()
     local myFillType = self:getFillType()
     for trailer, value in pairs(self.pipeSpec.objectsInTriggers) do
         if value > 0 then
-            if myFillType == FillType.UNKNOWN or FillLevelManager.canLoadTrailer(trailer, myFillType) then
+            if myFillType == FillType.UNKNOWN or FillLevelUtil.canLoadTrailer(trailer, myFillType) then
                 return true, trailer
             end
         end

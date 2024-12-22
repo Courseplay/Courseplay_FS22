@@ -102,7 +102,7 @@ function CpCombineUnloaderHudPageElement:updateContent(vehicle, status)
     local unloadModeSetting = vehicle:getCpCombineUnloaderJobParameters().unloadTarget
     self.unloadModeBtn:setTextDetails(unloadModeSetting:getTitle(), unloadModeSetting:getString())
 
-    local fillLevelPercentage = FillLevelManager.getTotalTrailerFillLevelPercentage(vehicle)
+    local fillLevelPercentage = FillLevelUtil.getTotalTrailerFillLevelPercentage(vehicle)
     if fillLevelPercentage > 0.01 then 
         self.driveNowBtn:setColor(unpack(CpBaseHud.SEMI_ON_COLOR))    
     else
