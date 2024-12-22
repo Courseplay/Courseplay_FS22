@@ -169,6 +169,7 @@ Changelog 8.0.0.0:
 		<sourceFile filename="scripts/ai/util/AIUtil.lua"/>
 		<sourceFile filename="scripts/ai/util/FillLevelUtil.lua"/>
 		<sourceFile filename="scripts/ai/util/ImplementUtil.lua"/>
+		<sourceFile filename="scripts/ai/util/WorkWidthUtil.lua"/>
 		<sourceFile filename="scripts/ai/PathfinderController.lua"/>
 		<sourceFile filename="scripts/ai/ProximityController.lua"/>
 		<sourceFile filename="scripts/ai/FieldWorkerProximityController.lua"/>
@@ -181,7 +182,6 @@ Changelog 8.0.0.0:
 		<sourceFile filename="scripts/ai/PurePursuitController.lua"/>
 		<sourceFile filename="scripts/ai/SelfUnloadHelper.lua"/>
 		<sourceFile filename="scripts/ai/VehicleScanner.lua"/>
-		<sourceFile filename="scripts/ai/WorkWidthUtil.lua"/>
 		<sourceFile filename="scripts/ai/AIReverseDriver.lua"/>
 
 		<sourceFile filename="scripts/ai/turns/AITurn.lua"/>
