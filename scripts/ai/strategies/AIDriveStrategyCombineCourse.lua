@@ -1565,7 +1565,7 @@ end
 
 function AIDriveStrategyCombineCourse:canLoadTrailer(trailer)
     local fillType = self:getFillType()
-    return FillLevelManager.canLoadTrailer(trailer, fillType)
+    return FillLevelUtil.canLoadTrailer(trailer, fillType)
 end
 
 function AIDriveStrategyCombineCourse:getCurrentDischargeNode()

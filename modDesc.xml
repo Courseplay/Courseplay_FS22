@@ -176,7 +176,7 @@ Changelog 8.0.0.0:
 		<sourceFile filename="scripts/ai/Markers.lua"/>
 		<sourceFile filename="scripts/ai/ProximitySensor.lua"/>
 		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
-		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
+		<sourceFile filename="scripts/ai/FillLevelUtil.lua"/>
 		<sourceFile filename="scripts/ai/InfoTextsManager.lua"/>
 		<sourceFile filename="scripts/ai/PurePursuitController.lua"/>
 		<sourceFile filename="scripts/ai/SelfUnloadHelper.lua"/>

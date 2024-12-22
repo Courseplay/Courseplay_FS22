@@ -1108,12 +1108,12 @@ function AIDriveStrategyUnloadCombine:getCombinesMeasuredBackDistance()
 end
 
 function AIDriveStrategyUnloadCombine:getAllTrailersFull(fullThresholdPercentage)
-    return FillLevelManager.areAllTrailersFull(self.vehicle, fullThresholdPercentage)
+    return FillLevelUtil.areAllTrailersFull(self.vehicle, fullThresholdPercentage)
 end
 
 --- Fill level in %.
 function AIDriveStrategyUnloadCombine:getFillLevelPercentage()
-    return FillLevelManager.getTotalTrailerFillLevelPercentage(self.vehicle)
+    return FillLevelUtil.getTotalTrailerFillLevelPercentage(self.vehicle)
 end
 
 function AIDriveStrategyUnloadCombine:isDriveUnloadNowRequested()
