@@ -500,9 +500,10 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, height
 				name = "shovelY", value = shovelY})
 			table.insert(debugData, {
 				name = "dirRot", value = math.deg(oldRotRelativeArmRot) })
-			table.insert(debugData, {
-				name = "distAlpha", value = MathUtil.vector2Length(i1z - tz, i1y - ty) })
-
+			if i1z ~= nil and i1y ~= nil then
+				table.insert(debugData, {
+					name = "distAlpha", value = MathUtil.vector2Length(i1z - tz, i1y - ty) })
+			end
 			table.insert(debugData, {
 				value = "",
 				name = "",
