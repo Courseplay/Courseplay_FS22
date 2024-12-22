@@ -1495,7 +1495,7 @@ end
 
 function AIDriveStrategyCombineCourse:handleCombinePipe(dt)
     -- don't open the pipe while turning
-    if self:isPipeOpenEnabled() and (self:isAGoodTrailerInRange() or self:isAutoDriveWaitingForPipe()) then
+    if self:isPipeOpenEnabled() and self:isAGoodTrailerInRange() then
         self.pipeController:openPipe()
     else
         if not self.forcePipeOpen:get() then
@@ -1574,12 +1574,6 @@ end
 
 function AIDriveStrategyCombineCourse:getFillLevelPercentage()
     return self.combineController:getFillLevelPercentage()
-end
-
---- Support for AutoDrive mod: they'll only find us if we open the pipe
-function AIDriveStrategyCombineCourse:isAutoDriveWaitingForPipe()
-    return self.vehicle.spec_autodrive and self.vehicle.spec_autodrive.combineIsCallingDriver and
-            self.vehicle.spec_autodrive:combineIsCallingDriver(self.vehicle)
 end
 
 function AIDriveStrategyCombineCourse:shouldStopForUnloading()
