@@ -485,9 +485,13 @@ You can define the following custom settings:
         turnRadius = "10"
 	/>
     <Vehicle name="lm845.xml"
-    turnRadius = "10"
-    fixWheelLoaderDirectionNodeByMovingToolIx = "1"
-    articulatedAxisReverseNodeInverted = "true"
+        articulatedAxisReverseNodeInverted = "true"
+        turnRadius = "10"
+        fixWheelLoaderDirectionNodeByMovingToolIx = "1"
+    />
+    <Vehicle name="wheelLoader435S.xml"
+        fixWheelLoaderDirectionNodeByMovingToolIx = "1"
+        turnRadius = "10"
     />
 
     <!--Vermeer-->
