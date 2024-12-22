@@ -227,18 +227,18 @@ Changelog 8.0.0.0:
 		<sourceFile filename="scripts/ai/controllers/PalletFillerController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/TreePlanterController.lua"/>
 
-		<sourceFile filename="scripts/ai/AIDriveStrategyCourse.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyDriveToFieldWorkStart.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyAttachHeader.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyFieldWorkCourse.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyPlowCourse.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyCombineCourse.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyFindBales.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyUnloadCombine.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyVineFieldWorkCourse.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyBunkerSilo.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategySiloLoader.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyShovelSiloLoader.lua"/>
+		<sourceFile filename="scripts/ai/strategies/AIDriveStrategyCourse.lua"/>
+		<sourceFile filename="scripts/ai/strategies/AIDriveStrategyDriveToFieldWorkStart.lua"/>
+		<sourceFile filename="scripts/ai/strategies/AIDriveStrategyAttachHeader.lua"/>
+		<sourceFile filename="scripts/ai/strategies/AIDriveStrategyFieldWorkCourse.lua"/>
+		<sourceFile filename="scripts/ai/strategies/AIDriveStrategyPlowCourse.lua"/>
+		<sourceFile filename="scripts/ai/strategies/AIDriveStrategyCombineCourse.lua"/>
+		<sourceFile filename="scripts/ai/strategies/AIDriveStrategyFindBales.lua"/>
+		<sourceFile filename="scripts/ai/strategies/AIDriveStrategyUnloadCombine.lua"/>
+		<sourceFile filename="scripts/ai/strategies/AIDriveStrategyVineFieldWorkCourse.lua"/>
+		<sourceFile filename="scripts/ai/strategies/AIDriveStrategyBunkerSilo.lua"/>
+		<sourceFile filename="scripts/ai/strategies/AIDriveStrategySiloLoader.lua"/>
+		<sourceFile filename="scripts/ai/strategies/AIDriveStrategyShovelSiloLoader.lua"/>
 
 		<sourceFile filename="scripts/ai/parameters/AIParameterSettingInterface.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterSetting.lua"/>
