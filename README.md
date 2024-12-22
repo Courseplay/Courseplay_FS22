@@ -2,8 +2,8 @@
 
 <!-- [![Modhub release](https://img.shields.io/badge/Modhub%20Release-Modification-blue.svg)](https://www.farming-simulator.com/mod.php?mod_id=248390title=fs2022)-->
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Courseplay/Courseplay_FS25?include_prereleases&style=flat-square&label=Github+Release)](https://github.com/Courseplay/Courseplay_FS25/releases/latest)
-[![GitHub Pre-Releases (by Asset)](https://img.shields.io/github/downloads-pre/Courseplay/Courseplay_FS25/latest/FS25_Courseplay.zip?style=flat-square)](https://github.com/Courseplay/Courseplay_FS22/releases/latest/download/FS22_Courseplay.zip)
-[![GitHub issues](https://img.shields.io/github/issues/Courseplay/Courseplay_FS25?style=flat-square)](https://github.com/Courseplay/Courseplay_FS22/issues)
+[![GitHub Pre-Releases (by Asset)](https://img.shields.io/github/downloads-pre/Courseplay/Courseplay_FS25/latest/FS25_Courseplay.zip?style=flat-square)](https://github.com/Courseplay/Courseplay_FS25/releases/latest/download/FS25_Courseplay.zip)
+[![GitHub issues](https://img.shields.io/github/issues/Courseplay/Courseplay_FS25?style=flat-square)](https://github.com/Courseplay/Courseplay_FS25/issues)
 
 **[Download the latest developer version](https://github.com/Courseplay/Courseplay_FS25/releases/latest)** (the file FS25_Courseplay.zip).
 
