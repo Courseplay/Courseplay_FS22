@@ -166,8 +166,9 @@ Changelog 8.0.0.0:
 		<sourceFile filename="scripts/pathfinder/PathfinderContext.lua"/>
 		<sourceFile filename="scripts/pathfinder/PathfinderUtil.lua"/>
 
-		<sourceFile filename="scripts/ai/AIUtil.lua"/>
-		<sourceFile filename="scripts/ai/ImplementUtil.lua"/>
+		<sourceFile filename="scripts/ai/util/AIUtil.lua"/>
+		<sourceFile filename="scripts/ai/util/FillLevelUtil.lua"/>
+		<sourceFile filename="scripts/ai/util/ImplementUtil.lua"/>
 		<sourceFile filename="scripts/ai/PathfinderController.lua"/>
 		<sourceFile filename="scripts/ai/ProximityController.lua"/>
 		<sourceFile filename="scripts/ai/FieldWorkerProximityController.lua"/>
@@ -176,7 +177,6 @@ Changelog 8.0.0.0:
 		<sourceFile filename="scripts/ai/Markers.lua"/>
 		<sourceFile filename="scripts/ai/ProximitySensor.lua"/>
 		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
-		<sourceFile filename="scripts/ai/FillLevelUtil.lua"/>
 		<sourceFile filename="scripts/ai/InfoTextsManager.lua"/>
 		<sourceFile filename="scripts/ai/PurePursuitController.lua"/>
 		<sourceFile filename="scripts/ai/SelfUnloadHelper.lua"/>
