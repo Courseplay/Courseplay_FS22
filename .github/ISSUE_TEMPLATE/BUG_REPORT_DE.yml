@@ -19,8 +19,11 @@ body:
     label: Version
     description: Welche CP Version verwendest du?
     options:
-    - 8.0.0.0
-    default: 1
+    - 7.4.0.0
+    - 7.4.2.4
+    - 7.5.0.0
+    - 7.5.0.1
+    default: 3
   validations:
     required: true
 - type: dropdown
@@ -29,7 +32,7 @@ body:
     label: Spielversion
     description: Welche Spielversion verwendest du?
     options:
-    - 1.4.0.0
+    - 1.14.0.0
     default: 0
   validations:
     required: true
