@@ -23,7 +23,7 @@ body:
     description: Which CoursePlay version are you using?
     options:
     - 8.0.0.0
-    default: 3
+    default: 1
   validations:
     required: true
 - type: dropdown
