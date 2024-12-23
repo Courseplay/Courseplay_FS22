@@ -385,7 +385,7 @@ Changelog 8.0.0.0:
 			<binding device="" input="" />
 		</actionBinding>
 		<actionBinding action="CP_OPEN_INGAME_MENU">
-			<binding device="" input="KEY_lalt KEY_g" />
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_lalt KEY_g" />
 		</actionBinding>
 
 		<actionBinding action="CP_TOGGLE_MOUSE">
