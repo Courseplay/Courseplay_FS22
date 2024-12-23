@@ -3160,6 +3160,10 @@ TPS extension
 			<Text language="de"><![CDATA[CP: Kursmanager öffnen]]></Text>
 			<Text language="en"><![CDATA[CP: Open course manager]]></Text>
 		</Translation>
+		<Translation name="input_CP_OPEN_INGAME_MENU">
+			<Text language="de"><![CDATA[CP: Menu öffnen]]></Text>
+			<Text language="en"><![CDATA[CP: Open menu]]></Text>
+		</Translation>
 <!--
 		<Translation name="TEST">
 			<Text language="de"><![CDATA[CP: TEST]]></Text>

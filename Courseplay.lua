@@ -132,6 +132,17 @@ function Courseplay:setupGui()
 	CpInGameMenu.setupGui(self.courseStorage)
 	self.infoTextsHud = CpHudInfoTexts()
 
+	--- Adding Player input bindings 
+	local function addPlayerActionEvents(self, superFunc, ...)
+		superFunc(self, ...)
+		local _, id = g_inputBinding:registerActionEvent(InputAction.CP_OPEN_INGAME_MENU, self, function ()
+			g_messageCenter:publishDelayed(MessageType.GUI_CP_INGAME_OPEN)
+		end, false, true, false, true)
+		g_inputBinding:setActionEventTextVisibility(id, true)
+	end
+	PlayerInputComponent.registerGlobalPlayerActionEvents = Utils.overwrittenFunction(
+		PlayerInputComponent.registerGlobalPlayerActionEvents, addPlayerActionEvents)
+	
 	-- TODO_25
 	-- g_currentMission.hud.ingameMap.drawFields = Utils.appendedFunction(g_currentMission.hud.ingameMap.drawFields, Courseplay.drawHudMap)
 
@@ -249,65 +260,6 @@ function Courseplay:load()
 	--- Register additional AI messages.
 	CpAIMessages.register()	
 	g_vineScanner:setup()
-end
-------------------------------------------------------------------------------------------------------------------------
--- Player action events
-------------------------------------------------------------------------------------------------------------------------
-
---- Adds player mouse action event, for global info texts.
-function Courseplay.addPlayerActionEvents(mission)
-	if mission.player then
-		CpUtil.debugFormat(CpDebug.DBG_HUD, "Added player input events")
-		mission.player.inputInformation.registrationList[InputAction.CP_TOGGLE_MOUSE] = {
-			text = "",
-			triggerAlways = false,
-			triggerDown = false,
-			eventId = "",
-			textVisibility = false,
-			triggerUp = true,
-			callback = Courseplay.onOpenCloseMouseEvent,
-			activeType = Player.INPUT_ACTIVE_TYPE.STARTS_ENABLED
-		}
-		mission.player.updateActionEvents = Utils.appendedFunction(mission.player.updateActionEvents, Courseplay.updatePlayerActionEvents)
-		mission.player.removeActionEvents = Utils.prependedFunction(mission.player.removeActionEvents, Courseplay.removePlayerActionEvents)
-	end
-end
-FSBaseMission.onStartMission = Utils.appendedFunction(FSBaseMission.onStartMission , Courseplay.addPlayerActionEvents)
-
---- Open/close mouse in player state.
-function Courseplay.onOpenCloseMouseEvent(player, forceReset)
-	if g_Courseplay.infoTextsHud:isVisible() and not player:hasHandtoolEquipped() then
-		if forceReset or g_Courseplay.globalSettings.infoTextHudPlayerMouseActive:getValue() then
-			local showMouseCursor = not g_inputBinding:getShowMouseCursor()
-			g_inputBinding:setShowMouseCursor(showMouseCursor)
-			local leftRightRotationEventId = player.inputInformation.registrationList[InputAction.AXIS_LOOK_LEFTRIGHT_PLAYER].eventId
-			local upDownRotationEventId = player.inputInformation.registrationList[InputAction.AXIS_LOOK_UPDOWN_PLAYER].eventId
-			g_inputBinding:setActionEventActive(leftRightRotationEventId, not showMouseCursor)
-			g_inputBinding:setActionEventActive(upDownRotationEventId, not showMouseCursor)
-			player.wasCpMouseActive = showMouseCursor
-		end
-	end
-end
-
---- Enables/disables the player mouse action event, if there are any info texts.
-function Courseplay.updatePlayerActionEvents(player)
-	local eventId = player.inputInformation.registrationList[InputAction.CP_TOGGLE_MOUSE].eventId
-	g_inputBinding:setActionEventTextVisibility(eventId, false)
-	if not player:hasHandtoolEquipped() then
-		if g_Courseplay.infoTextsHud:isVisible() and g_Courseplay.globalSettings.infoTextHudPlayerMouseActive:getValue() then 
-			g_inputBinding:setActionEventTextVisibility(eventId, true)
-		elseif player.wasCpMouseActive then 
-			Courseplay.onOpenCloseMouseEvent(player, true)
-		end
-	end
-end
-
---- Resets the mouse cursor on entering a vehicle for example.
-function Courseplay.removePlayerActionEvents(player)
-	if player.wasCpMouseActive then
-		g_inputBinding:setShowMouseCursor(false)
-	end
-	player.wasCpMouseActive = nil
 end
 
 --- Registers all cp specializations.

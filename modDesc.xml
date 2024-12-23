@@ -384,6 +384,9 @@ Changelog 8.0.0.0:
 		<actionBinding action="CP_OPEN_COURSEMANAGER">
 			<binding device="" input="" />
 		</actionBinding>
+		<actionBinding action="CP_OPEN_INGAME_MENU">
+			<binding device="" input="" />
+		</actionBinding>
 
 		<actionBinding action="CP_TOGGLE_MOUSE">
 			<binding device="KB_MOUSE_DEFAULT" input="MOUSE_BUTTON_RIGHT" />
@@ -409,6 +412,7 @@ Changelog 8.0.0.0:
 		<action name="CP_OPEN_GLOBAL_SETTINGS"/>
 		<action name="CP_OPEN_COURSEGENERATOR_SETTINGS"/>
 		<action name="CP_OPEN_COURSEMANAGER"/>		
+		<action name="CP_OPEN_INGAME_MENU"/>		
 
 		<action name="CP_TOGGLE_MOUSE" />
 	</actions>
