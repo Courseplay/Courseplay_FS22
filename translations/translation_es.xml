@@ -156,6 +156,7 @@
     <!--Vehicle settings-->
     <!---->
     <text name="CP_vehicle_setting_title" text="Configuración del vehículo (%s)"/>
+    <text name="CP_vehicle_setting_subTitle_vehicle" text="Configuración del vehículo"/>
     <text name="CP_vehicle_setting_subTitle_basic" text="Configuración Básica"/>
     <text name="CP_vehicle_setting_subTitle_implement" text="Configuración de Herramientas"/>
     <text name="CP_vehicle_setting_subTitle_combine" text="Configuración de Cosechadoras"/>
@@ -271,6 +272,8 @@
     <!---->
     <text name="CP_vehicle_courseGeneratorSetting_title" text="Configuración del generador de rutas de (%s)"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_basic" text="Básicos"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_vineField" text="Configuración del Campo de Vid"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_fieldwork" text="Configuración del trabajo de campo"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_headland" text="Cabeceras"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="Centro"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_island" text="Islas"/>
@@ -446,7 +449,7 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <!--Course editor-->
     <!---->
     <text name="CP_editor_course_title" text="Editor de Cursos"/>
-    <text name="CP_editor_change_lane_offset" text="Change selected lane offset(%s)"/>
+    <text name="CP_editor_change_lane_offset" text="Cambiar el desplazamiento del carril seleccionado(%s)"/>
     <text name="CP_editor_delete_title" text="Borrar puntos de ruta"/>
     <text name="CP_editor_delete_primary_text" text="primario"/>
     <text name="CP_editor_delete_secondary_text" text="secundario"/>
@@ -501,6 +504,7 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <!---->
     <!--Custom field manager-->
     <!---->
+    <text name="CP_customFieldManager_hotspotName" text="Campo personalizado"/>
     <text name="CP_customFieldManager_confirm_save" text="¿Quieres guardar la ruta como campo personalizado %s?"/>
     <text name="CP_customFieldManager_confirm_delete" text="¿Quieres eliminar el campo personalizado %s?"/>
     <text name="CP_customFieldManager_delete" text="Borrar Campo Personalizado"/>
@@ -515,6 +519,10 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <text name="CP_controllerGui_stopRecording" text="Parar grabación del campo personalizado."/>
     <text name="CP_controllerGui_pauseRecording" text="Pausar grabación del campo."/>
     <text name="CP_controllerGui_unpauseRecording" text="Continuar grbación del campo."/>
+    <!---->
+    <!--CP ingame menu-->
+    <!---->
+    <text name="CP_ingameMenu_map_title" text="Mapa"/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -604,24 +612,24 @@ Redondo tendrá en cuenta el radio de giro de los vehículos seleccionados actua
 - Superposición de cabeceras: Cuánto % de superposición deben tener todas las cabeceras. El primero no se superpondrá con el borde del campo, pero los interiores se superpondrán con su vecino.
 "/>
     <text name="CP_help_page_courseGeneratorCenter_text" text="
-For the center of the field, different strategies are available to do the work. Mostly the selected tool is a reason to choose a specific strategie over the other. The available strategies where created based on feedback and informations from our community.
-The simple up down strategie works almost every time for any tool. But it can be better to choose another, for example when harvesting with a combine, lands is a better way to keep the pipe outside of the fruit for a more efficient unloading.
-For Chopping, racetrack can be a better solution for less narrow turns to make the work for the unloader easier.
-Spirale is a better solution for towed harvester with an offset, to keep the tool in the fruit and the tractor outside.
+Para el centro del campo, se dispone de diferentes estrategias para realizar el trabajo. Principalmente, la herramienta seleccionada es una razón para elegir una estrategia específica sobre otra. Las estrategias disponibles se crearon en base a comentarios e información de nuestra comunidad.
+La estrategia simple de arriba a abajo funciona casi siempre para cualquier herramienta. Pero puede ser mejor elegir otro, por ejemplo al cosechar con cosechadora, las tierras son una mejor manera de mantener la tubería fuera de la fruta para una descarga más eficiente.
+Para el picado, la pista de carreras puede ser una mejor solución para giros menos estrechos para facilitar el trabajo del descargador.
+Espiral es una mejor solución para cosechadoras remolcadas con desplazamiento, para mantener la herramienta dentro de la fruta y el tractor afuera.
 "/>
     <text name="CP_help_page_courseGeneratorCenterFunctions_text" text="
-- Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
-Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have the combine's pipe point out of the fruit most of the time to easier unload them.
-- Center direction: Works the same as the headland, but can now be set independantly.
-- Even row width: If the center of a field have a total width, that can't be evenly split over the work width of the tool, the 1st or last line will have a narrow rest work. To prevent this the width of each row gets reduced to have a even split over all lines.
-- Row direction: automatic mostly finds the best direction, but sometimes the longest edge fits better. If you are not happy with either one, choose manual and set the direction manually.
-- Row angle: When the row direction is set to manual, this setting appears and will tell the generator the direction of the rows.
+- Centro de campo: Hay diferentes modos sobre cómo debería verse el patrón del centro de campo. El clásico y más utilizado es arriba/abajo.
+Spiral, Racetrack y Lands tienen sus propias ventajas específicas sobre los demás. Los terrenos, por ejemplo, tendrán la tubería de la cosechadora apuntando hacia la fruta la mayor parte del tiempo para facilitar su descarga.
+- Dirección central: funciona igual que la cabecera, pero ahora se puede configurar de forma independiente.
+- Ancho de fila uniforme: si el centro de un campo tiene un ancho total que no se puede dividir uniformemente en el ancho de trabajo de la herramienta, la primera o última línea tendrá un resto de trabajo estrecho. Para evitar esto, el ancho de cada fila se reduce para tener una división uniforme en todas las líneas.
+- Dirección de la fila: automáticamente encuentra la mejor dirección, pero a veces el borde más largo encaja mejor. Si no está satisfecho con ninguno de los dos, elija manual y configure la dirección manualmente.
+- Ángulo de fila: cuando la dirección de la fila se establece en manual, esta configuración aparece y le indicará al generador la dirección de las filas.
 
-These settings appear only for specific settings you have done before:
-- Rows to skip: Appears when field center is set to &quot;up/down&quot;. This is a very helpful option to accelerate your work, as tools won't have to back up to turn into the next row.
-- Rows per Land: Appears when field center is set to &quot;lands&quot;. This has only impact when the field center is set to lands and will tell the generator how many rows each land should have. The more rows, the fewer lands will be generated.
-- Spiral from inside: Appears when field center is set to &quot;spiral&quot;.
-- Number of circles: Appears when field center is set to &quot;racetrack&quot;.
+Estas configuraciones aparecen solo para configuraciones específicas que haya realizado antes:
+- Filas para omitir: aparece cuando el centro del campo está configurado en (arriba/abajo). Esta es una opción muy útil para acelerar su trabajo, ya que las herramientas no tendrán que retroceder para pasar a la siguiente fila.
+- Filas por terreno: aparece cuando el centro del campo está configurado en (terrenos). Esto solo tiene impacto cuando el centro del campo está configurado en terrenos y le indicará al generador cuántas filas debe tener cada terreno. Cuantas más filas, menos tierras se generarán.
+- Espiral desde el interior: aparece cuando el centro del campo está configurado en &quot;spiral&quot;.
+- Número de círculos: aparece cuando el centro del campo está configurado en &quot;racetrack&quot;.
 "/>
     <text name="CP_help_page_courseGeneratorCenterExampleUpdown_text" text="
 up/down
@@ -636,32 +644,32 @@ spiral
 racetrack
 "/>
     <text name="CP_help_page_courseGeneratorIsland_text" text="
-Driving arround the island is now only possible with a complete round arround it.
-Even in the new generator, limits for island too close to the field border.
-The work width of the tool is decisive if the island is too close or not.
-Like how many headlands do fit between the island and the field border.
+Conducir por la isla ahora sólo es posible con una vuelta completa a su alrededor.
+Incluso en el nuevo generador, los límites de la isla están demasiado cerca del borde del campo.
+El ancho de trabajo de la herramienta es decisivo si la isla está demasiado cerca o no.
+Por ejemplo, cuántos promontorios caben entre la isla y el borde del campo.
 "/>
     <text name="CP_help_page_courseGeneratorIslandFunctions_text" text="
-- Island bypass: Turns on or off the bypass of the island, if an island is found. This does not work for custom fields!
-- Island headlands: The amount of rounds arround the island can now be set indipendantly from the headland setting.
-- Island headland direction: In which direction the driver drives arround the island, to not have strange direction changes. This can be tricky to set up as it depends on the field and the rest of the course.
+- Desvío de isla: activa o desactiva el desvío de la isla, si se encuentra una isla. ¡Esto no funciona para campos personalizados!
+- Cabeceras de isla: la cantidad de rondas alrededor de la isla ahora se puede configurar independientemente de la configuración de cabecera.
+- Dirección del cabo de la isla: en qué dirección conduce el conductor alrededor de la isla, para no tener cambios de dirección extraños. Esto puede ser complicado de configurar ya que depende del campo y del resto del campo.
 "/>
     <text name="CP_help_page_courseGeneratorExpert_text" text="
-Some settings are only visible, if you set the expert mode to active on the global courseplay settings.
-Before you play arround with those settings, you should make sure you know what the basic settings do.
-Some expert settings only work properly under some conditions.
+Algunas configuraciones solo son visibles si configura el modo experto como activo en la configuración global del curso.
+Antes de jugar con esas configuraciones, debes asegurarte de saber qué hacen las configuraciones básicas.
+Algunas configuraciones expertas sólo funcionan correctamente bajo ciertas condiciones.
 
-- Multiple Tools: This setting is used when you want more then just one vehicle to work on your course. As this gets a bit more complicated, there is a separate help topic for it.
-- Narrow field: Creates the headland only at two short edges of the field. In that case, it is not possible to keep your vehicle on the field on the longest edges at the headland.
-- Headland overlap: There is a default value that will always be used. This value can be changed with this setting. The overlap will be withing the field and won't overlap the field border.
-- Field margin: This setting lets you move the field border in- or outwards of the original border.
-- Use base line edge: A completly new feature, what only works on specific fields. If you have a field with a long radial border and place the field marker near it, the center line will follow that border.
-IMPORTANT NOTE: Should the generated course not be perfect or even bad, the selected edge or the field will not work with this feature. There also won't be an Update for this!
+- Herramientas múltiples: esta configuración se utiliza cuando desea que más de un vehículo trabaje en su recorrido. Como esto se vuelve un poco más complicado, hay un tema de ayuda aparte.
+- Campo estrecho: crea el cabecero solo en dos bordes cortos del campo. En ese caso, no es posible mantener el vehículo en el campo en los bordes más largos de la cabecera.
+- Superposición de cabecera: existe un valor predeterminado que siempre se utilizará. Este valor se puede cambiar con esta configuración. La superposición será dentro del campo y no se superpondrá al borde del campo.
+- Margen de campo: esta configuración le permite mover el borde del campo hacia adentro o hacia afuera del borde original.
+- Usar borde de línea base: una característica completamente nueva, que solo funciona en campos específicos. Si tiene un campo con un borde radial largo y coloca el marcador de campo cerca de él, la línea central seguirá ese borde.
+NOTA IMPORTANTE: Si el rumbo generado no es perfecto o incluso malo, el borde o el campo seleccionado no funcionará con esta función. ¡Tampoco habrá una actualización para esto!
 "/>
-    <text name="CP_help_page_courseGeneratorHeadland_title" text="Course generator headland"/>
-    <text name="CP_help_page_courseGeneratorCenter_title" text="Course generator center"/>
-    <text name="CP_help_page_courseGeneratorIsland_title" text="Course generator island"/>
-    <text name="CP_help_page_courseGeneratorExpert_title" text="Course generator expert"/>
+    <text name="CP_help_page_courseGeneratorHeadland_title" text="Generador de Cursos: Cabeceras"/>
+    <text name="CP_help_page_courseGeneratorCenter_title" text="Generador de Cursos: Centro"/>
+    <text name="CP_help_page_courseGeneratorIsland_title" text="Generador de Cursos: Islas"/>
+    <text name="CP_help_page_courseGeneratorExpert_title" text="Generador de Cursos: Experto"/>
     <text name="CP_help_page_courseManager_title" text="Administrador de Cursos"/>
     <text name="CP_help_page_courseManagerBase_text" text="
 El administrador de cursos le permite guardar cursos y le permite cargar el curso guardado más tarde nuevamente.
@@ -1015,7 +1023,8 @@ Ahora su selección debería verse similar a la imagen.
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Muestra el menú del canal de depuración Sí/No."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Abrir/Cerrar GUI del vehículo."/>
     <text name="input_CP_START_STOP" text="CP: Iniciar/Detener conductor."/>
-    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Change current selected job"/>
+    <text name="input_CP_GENERATE_COURSE" text="CP: Generar Curso"/>
+    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Cambiar el trabajo seleccionado"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Cambia el punto de inicio."/>
     <text name="input_CP_CLEAR_COURSE" text="CP: Borra el curso cargado actualmente"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Muestra el curso actual del vehículo"/>
