@@ -104,11 +104,6 @@ function CpHud:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSe
     if self.isClient then
         local spec = self.spec_cpHud
         self:clearActionEventsTable(spec.actionEvents)
-
-        -- if g_Courseplay.globalSettings.controllerHudSelected:getValue() then 
-        --     return 
-        -- end
-
         if self.isActiveForInputIgnoreSelectionIgnoreAI then
             --- Toggle mouse cursor action event
             --- Parameters: 
@@ -116,9 +111,8 @@ function CpHud:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSe
             ---  callback, triggerUp, triggerDown, triggerAlways, startActive,
             ---  callbackState, customIconName, ignoreCollisions, reportAnyDeviceCollision)
             if self:getCpSettings().openHudWithMouse:getValue() then
-                local _, actionEventId = self:addActionEvent(spec.actionEvents, 
-                    InputAction.CP_TOGGLE_MOUSE, self,
-                    CpHud.actionEventMouse, false, true, false, true, nil, nil, true)
+                local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_TOGGLE_MOUSE, self,
+                        CpHud.actionEventMouse, false, true, false, true, nil, true, true)
                 g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_NORMAL)
                 g_inputBinding:setActionEventText(actionEventId, spec.openCloseText)
                 g_inputBinding:setActionEventTextVisibility(actionEventId, 
@@ -135,17 +129,18 @@ function CpHud:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSe
     end
 end
 
-function CpHud:actionEventMouse(isMouseEvent)
+function CpHud:actionEventMouse(_, inputValue)
     if self ~= CpUtil.getCurrentVehicle() then
         ---Player has entered a child vehicle, so don't open the hud.
         return
     end
-
-    --- Disables closing of the hud with the mouse button, while auto drive is in editor mode.
-    if isMouseEvent and g_Courseplay.autoDrive and g_Courseplay.autoDrive.isEditorModeEnabled() then 
-        return
-    end
     local spec = self.spec_cpHud
+    --- Disables closing of the hud with the mouse button, while auto drive is in editor mode.
+    if inputValue ~= nil and g_Courseplay.autoDrive and g_Courseplay.autoDrive.getSetting("showHUD") then 
+        if not spec.hud:getIsHovered() and g_inputBinding:getShowMouseCursor() then 
+            return
+        end
+    end
     local showMouseCursor = not g_inputBinding:getShowMouseCursor()
     if not spec.hud:getIsOpen() then
         showMouseCursor = true
