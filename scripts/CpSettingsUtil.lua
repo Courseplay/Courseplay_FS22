@@ -300,7 +300,7 @@ function CpSettingsUtil.generateAndBindGuiElements(settingsData, parentGuiElemen
 			clonedSettingElement:getDescendantByName("setting"):setDataSource(setting)
 			clonedSettingElement.aiParameter = setting
 			-- clonedSettingElement:applyScreenAlignment()
-			FocusManager:loadElementFromCustomValues(clonedSettingElement)
+			FocusManager:loadElementFromCustomValues(clonedSettingElement:getDescendantByName("setting"))
 		end
 	end
 	parentGuiElement:invalidateLayout()
@@ -312,9 +312,7 @@ function CpSettingsUtil.generateAndBindGuiElementsToSettings(settingsBySubTitle,
 		local clonedSubTitleElement = genericSubTitleElement:clone(parentGuiElement)
 		clonedSubTitleElement:setText(g_i18n:getText(data.title))
 		clonedSubTitleElement.subTitleConfigData = data
-		-- clonedSubTitleElement:applyScreenAlignment()
 		FocusManager:loadElementFromCustomValues(clonedSubTitleElement)
-
 		CpSettingsUtil.generateAndBindGuiElements(data,
 			parentGuiElement, genericMultiSettingElement, 
 			genericBooleanSettingElement, settings)

@@ -32,8 +32,6 @@ end
 function CpOptionToggleElement:addElement(element, ...)
 	CpOptionToggleElement:superClass().addElement(self, element, ...)
 	if self.textElement then
-		self.textElement.forceHighlight = true
-		self.textElement:setHandleFocus(false)
 		self.textElement.target = self
 		self.textElement:setCallback("onClickCallback", "onCenterButtonClicked")
 	end
@@ -83,10 +81,5 @@ function CpOptionToggleElement:inputEvent(action, value, eventUsed)
 		end
 	end
 	return eventUsed
-end
-function CpOptionToggleElement:raiseClickCallback(...)
-	CpOptionToggleElement:superClass().raiseClickCallback(self, ...)
-	--- Magic gui fix, no idea why this is needed ...
-	FocusManager:unsetFocus(self)
 end
 Gui.registerGuiElement("CpOptionToggle", CpOptionToggleElement)

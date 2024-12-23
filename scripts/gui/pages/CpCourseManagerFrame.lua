@@ -505,10 +505,10 @@ end
 
 function CpCourseManagerFrame:onClickBack()
 	if self.courseStorage:getCanIterateBackwards() then
-		self:onClickIterateBack()
-		return true
+		-- self:onClickIterateBack()
+		-- return false
 	end
-	return false
+	return true
 end
 
 ---------------------------------------------------
