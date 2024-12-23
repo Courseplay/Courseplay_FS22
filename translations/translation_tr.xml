@@ -156,7 +156,7 @@
     <!--Vehicle settings-->
     <!---->
     <text name="CP_vehicle_setting_title" text="Araç ayarları (%s)"/>
-	<text name="CP_vehicle_setting_subTitle_vehicle" text="Araç ayarları"/>
+    <text name="CP_vehicle_setting_subTitle_vehicle" text="Araç ayarları"/>
     <text name="CP_vehicle_setting_subTitle_basic" text="Temel ayarlar"/>
     <text name="CP_vehicle_setting_subTitle_implement" text="Ekipman ayarları"/>
     <text name="CP_vehicle_setting_subTitle_combine" text="Biçerdöver ayarları"/>
@@ -272,8 +272,8 @@
     <!---->
     <text name="CP_vehicle_courseGeneratorSetting_title" text="Yardımcı ayarları - (%s)"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_basic" text="Temel ayarlar"/>
-	<text name="CP_vehicle_courseGeneratorSetting_subTitle_vineField" text="Asma tarlası ayarları"/>
-	<text name="CP_vehicle_courseGeneratorSetting_subTitle_fieldwork" text="Tarla çalışması ayarları"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_vineField" text="Asma tarlası ayarları"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_fieldwork" text="Tarla çalışması ayarları"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_headland" text="Manevra koridoru ayarları"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="merkez düzeni"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_island" text="ada düzeni"/>
@@ -504,7 +504,7 @@ Düzenleyici kapatıldığında rota otomatik olarak kaydedilir ve önceki rotay
     <!---->
     <!--Custom field manager-->
     <!---->
-	<text name="CP_customFieldManager_hotspotName" text="Özel çalışma alanı"/>
+    <text name="CP_customFieldManager_hotspotName" text="Özel çalışma alanı"/>
     <text name="CP_customFieldManager_confirm_save" text="Kaydı yapılan rotayı özel çalışma alanı %s olarak kaydetmek istiyor musunuz?"/>
     <text name="CP_customFieldManager_confirm_delete" text="Özel çalışma alanı %s'i silmek istiyor musunuz?"/>
     <text name="CP_customFieldManager_delete" text="Özel çalışma alanını sil"/>
@@ -520,7 +520,7 @@ Düzenleyici kapatıldığında rota otomatik olarak kaydedilir ve önceki rotay
     <text name="CP_controllerGui_pauseRecording" text="Özel çalışma alanı kaydını duraklat."/>
     <text name="CP_controllerGui_unpauseRecording" text="Özel çalışma alanı kaydını devam ettir."/>
     <!---->
-	<!--CP ingame menu-->
+    <!--CP ingame menu-->
     <!---->
     <text name="CP_ingameMenu_map_title" text="Harita"/>
     <!---->
@@ -1057,14 +1057,14 @@ Seçimler tamamlandığında örnek görsele benzer bir görüntü olması gerek
     <!---->
     <!--Input bindings-->
     <!---->
-	<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" text="CP: Önceki hata ayıklama kanalını seçin"/>
+    <text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" text="CP: Önceki hata ayıklama kanalını seçin"/>
     <text name="input_CP_DBG_CHANNEL_SELECT_NEXT" text="CP: Sonraki hata ayıklama kanalını seçin"/>
     <text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT" text="CP: Geçerli hata ayıklama kanalını değiştir"/>
-	<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Hata ayıklama kanalı menüsünü göster/gizle"/>
-	<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Mini arayüzü aç"/>
-	<text name="input_CP_START_STOP" text="CP: Sürücüyü başlat/durdur"/>
-	<text name="input_CP_GENERATE_COURSE" text="CP: Rota oluştur"/>
-	<text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Seçili işi değiştir"/>
+    <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Hata ayıklama kanalı menüsünü göster/gizle"/>
+    <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Mini arayüzü aç"/>
+    <text name="input_CP_START_STOP" text="CP: Sürücüyü başlat/durdur"/>
+    <text name="input_CP_GENERATE_COURSE" text="CP: Rota oluştur"/>
+    <text name="input_CP_CHANGE_SELECTED_JOB" text="CP: Seçili işi değiştir"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Başlangıç noktasını değiştir"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: Şu anda ayarlı olan rotayı temizle"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="CP: Rota görünürlüğünü değiştir"/>
