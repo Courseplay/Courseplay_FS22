@@ -81,6 +81,16 @@ function CpVehicleSettingsFrame:initialize(menu)
 	end
 end
 
+
+function CpVehicleSettingsFrame:delete()
+	self.booleanPrefab:delete()
+	self.multiTextPrefab:delete()
+	self.sectionHeaderPrefab:delete()
+	self.selectorPrefab:delete()
+	self.containerPrefab:delete()
+	CpVehicleSettingsFrame:superClass().delete(self)
+end
+
 function CpVehicleSettingsFrame:onFrameOpen()
 	CpVehicleSettingsFrame:superClass().onFrameOpen(self)
 	local vehicle = self.cpMenu:getCurrentVehicle()
