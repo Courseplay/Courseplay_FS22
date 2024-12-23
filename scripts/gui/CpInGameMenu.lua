@@ -180,7 +180,7 @@ function CpInGameMenu:setupMenuPages()
 		{
 			self.pageCourseManager,
 			function ()
-				return true
+				return self.currentVehicle ~= nil
 			end,
 			"cpUi.navigationPath"
 		},
