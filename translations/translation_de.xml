@@ -1058,5 +1058,6 @@ Das Kreuz sollte jetzt, wie im Bild dargestellt, gelb sein.
     <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Globale Einstellungen öffnen"/>
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Kursgenerator/Jobmenü öffnen"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Kursmanager öffnen"/>
+    <text name="input_CP_OPEN_INGAME_MENU" text="CP: Menu öffnen"/>
   </texts>
 </l10n>

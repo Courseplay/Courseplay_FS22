@@ -1074,5 +1074,6 @@ Seçimler tamamlandığında örnek görsele benzer bir görüntü olması gerek
     <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Genel ayarları aç"/>
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Rota oluşturucu/iş menüsünü aç"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Rota yöneticisini aç"/>
+    <text name="input_CP_OPEN_INGAME_MENU" text="CP: Open menu"/>
   </texts>
 </l10n>

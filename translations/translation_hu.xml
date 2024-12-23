@@ -1042,5 +1042,6 @@ A kijelölésnek hasonlónak kell lennie, mint a képen.
     <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Globális beállítások megnyitása"/>
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Útvonalszerkesztő/munka menü megnyitása"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Útvonalszerkesztő megnyitása"/>
+    <text name="input_CP_OPEN_INGAME_MENU" text="CP: Open menu"/>
   </texts>
 </l10n>

@@ -1042,5 +1042,6 @@ HUD также показывает оставшийся уровень запо
     <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Открыть глобальные настройки"/>
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Генератор курсов/меню работ"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Открыть управление курсами"/>
+    <text name="input_CP_OPEN_INGAME_MENU" text="CP: Open menu"/>
   </texts>
 </l10n>

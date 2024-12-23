@@ -1018,5 +1018,6 @@ Votre sélection devrait ressembler à l'illustration ci-contre.
     <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Ouvre les paramètres globaux"/>
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Ouvre le générateur de course/menu de la course"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Ouvre le gestionnaire de courses"/>
+    <text name="input_CP_OPEN_INGAME_MENU" text="CP: Open menu"/>
   </texts>
 </l10n>
