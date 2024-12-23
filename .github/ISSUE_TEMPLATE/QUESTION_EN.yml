@@ -22,10 +22,7 @@ body:
     label: Version
     description: Which CoursePlay version are you using?
     options:
-    - 7.4.0.0
-    - 7.4.2.4
-    - 7.5.0.0
-    - 7.5.0.1
+    - 8.0.0.0
     default: 3
   validations:
     required: true
