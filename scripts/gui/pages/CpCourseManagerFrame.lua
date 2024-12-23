@@ -145,7 +145,7 @@ function CpCourseManagerFrame:initialize(menu)
 					local viewEntry = self:getCurrentEntry()
 					if viewEntry then
 						if not viewEntry:isDirectory() then 
-							local vehicle = CpUtil.getCurrentVehicle()
+							local vehicle = self.cpMenu:getCurrentVehicle()
 							if not vehicle:appendLoadedCpCourse(viewEntry:getEntity()) then 
 								--TODO_25 Error message missing!
 							end
@@ -479,7 +479,7 @@ end
 
 --- Updates the button at the bottom, which depends on the current select mode.
 function CpCourseManagerFrame:updateMenuButtons()
-	local vehicle = CpUtil.getCurrentVehicle()
+	local vehicle = self.cpMenu:getCurrentVehicle()
 	local courseName = vehicle:getCurrentCpCourseName()
 	local title = string.format(g_i18n:getText(self.translations.title), vehicle:getName(), courseName)
 	
@@ -536,7 +536,7 @@ end
 --- Clears the current courses.
 function CpCourseManagerFrame:onClickClearCurrentCourse()
 	CpUtil.debugFormat(CpUtil.DBG_HUD, "onClickClearCurrentCourse")
-	local vehicle = CpUtil.getCurrentVehicle()
+	local vehicle = self.cpMenu:getCurrentVehicle()
 	local hasCourse = vehicle:hasCpCourse()
 	if hasCourse then 
 		vehicle:resetCpCoursesFromGui()
@@ -555,7 +555,7 @@ function CpCourseManagerFrame:onClickSaveEntryDialog(text, clickOk, viewEntry)
 				self.translations.entryExistAlreadyError, viewEntry)
 			return 
 		end
-		local vehicle = CpUtil.getCurrentVehicle()
+		local vehicle = self.cpMenu:getCurrentVehicle()
 		if not vehicle:saveCpCourses(file, text) then 
 			InfoDialog.show(
 				string.format(g_i18n:getText(self.translations.invalidNameError), text))
@@ -664,17 +664,17 @@ end
 ---------------------------------------------------
 
 function CpCourseManagerFrame:clearCurrentCourseDisabled()
-	local vehicle = CpUtil.getCurrentVehicle()
+	local vehicle = self.cpMenu:getCurrentVehicle()
 	return not vehicle:hasCpCourse() or self.actionState ~= self.actionStates.disabled
 end
 
 function CpCourseManagerFrame:loadCourseDisabled()
-	local vehicle = CpUtil.getCurrentVehicle()
+	local vehicle = self.cpMenu:getCurrentVehicle()
 	return vehicle:hasCpCourse() or self.actionState ~= self.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
 end
 
 function CpCourseManagerFrame:saveCourseDisabled()
-	local vehicle = CpUtil.getCurrentVehicle()
+	local vehicle = self.cpMenu:getCurrentVehicle()
 	return not vehicle:hasCpCourse() or self.actionState ~= self.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
 end
 
